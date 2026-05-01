@@ -3,9 +3,15 @@
 ArchSpine 面向公开发布版本的显著变化记录在此文件中。
 封闭开发阶段的内部演进记录不在这里保留。
 
-## [Unreleased]
+## [1.0.2] - 2026-05-01
 
-- 暂无
+### 📄 文档与元数据 (Docs & Metadata)
+
+- 新增 CI 徽章、package.json bugs 字段、扩展 npm 关键词
+- 修复 CONTRIBUTING.md 中无效的 git URL
+- 更新 AGENTS.md 中已过时的 lint 配置描述
+- 清理 GitHub Sponsors 引用（尚未开通）
+- **清理全部开发历史，重新初始化仓库为一个干净初始提交**
 
 ## [1.0.0] - 2026-04-24
 
