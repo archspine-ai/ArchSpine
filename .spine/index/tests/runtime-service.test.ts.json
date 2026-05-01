@@ -1,0 +1,258 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/runtime-service.test.ts",
+    "contentHash": "a115e138281e676deefcb7c9a7d34c1fbc820e3bd0bac8b496b27ecafa9fc6e2",
+    "skeletonHash": "1ac00c6611e9e2b274e5aad85eed338e1621e42f180a3f955ed47d5e54b0577c",
+    "semanticHash": "8b50dcd228414fb170402374514158093648e069decbed3cc3247be87f87dade",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for RuntimeService, validating LLM configuration resolution, secret injection, and runtime override behavior.",
+    "responsibilities": [
+      "Creates isolated temporary directories per test to prevent side effects between test cases.",
+      "Mocks Config and Secrets instances to control LLM provider, mode, prompt tier, validation policy, and API key.",
+      "Asserts that RuntimeService.getResolvedLLMSettings() correctly reflects configuration overrides (provider, mode, prompt tier, validate policy).",
+      "Validates that runtime overrides are applied correctly and do not leak across test boundaries via afterEach cleanup.",
+      "Imports and exercises resolveExecutionProfileFromSettings to verify execution profile derivation from LLM settings."
+    ],
+    "outOfScope": [
+      "Does not test RuntimeService methods beyond getResolvedLLMSettings.",
+      "Does not test database interactions, file scanning, or manifest operations.",
+      "Does not test error handling paths or edge cases for invalid configurations.",
+      "Does not test integration with actual LLM providers or credential backends."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts (rule: test-file-suffix).",
+      "Each test must create and clean up its own temporary directory to ensure isolation.",
+      "RuntimeService must reflect the latest configuration overrides after they are applied."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a focused, isolated test suite for the RuntimeService LLM configuration resolution layer, ensuring configuration overrides are correctly propagated and isolated between tests.",
+      "recentChangeIntent": "General development velocity and maintenance (commit message: 'fast fast'). No specific architectural shift detected."
+    },
+    "publicSurface": [
+      "describe('RuntimeService')",
+      "beforeEach hook",
+      "afterEach hook",
+      "it('should resolve LLM settings with overrides')"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for RuntimeService, validating LLM configuration resolution, secret injection, and runtime override behavior.",
+        "responsibilities": [
+          "Creates isolated temporary directories per test to prevent side effects between test cases.",
+          "Mocks Config and Secrets instances to control LLM provider, mode, prompt tier, validation policy, and API key.",
+          "Asserts that RuntimeService.getResolvedLLMSettings() correctly reflects configuration overrides (provider, mode, prompt tier, validate policy).",
+          "Validates that runtime overrides are applied correctly and do not leak across test boundaries via afterEach cleanup.",
+          "Imports and exercises resolveExecutionProfileFromSettings to verify execution profile derivation from LLM settings."
+        ],
+        "outOfScope": [
+          "Does not test RuntimeService methods beyond getResolvedLLMSettings.",
+          "Does not test database interactions, file scanning, or manifest operations.",
+          "Does not test error handling paths or edge cases for invalid configurations.",
+          "Does not test integration with actual LLM providers or credential backends."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "RuntimeService 的 Vitest 单元测试套件，用于验证 LLM 配置解析、密钥注入和运行时覆盖行为。",
+        "responsibilities": [
+          "为每个测试创建隔离的临时目录，防止测试用例之间的副作用。",
+          "模拟 Config 和 Secrets 实例，以控制 LLM 提供商、模式、提示层级、验证策略和 API 密钥。",
+          "断言 RuntimeService.getResolvedLLMSettings() 正确反映配置覆盖（提供商、模式、提示层级、验证策略）。",
+          "验证运行时覆盖被正确应用，并且通过 afterEach 清理不会在测试边界之间泄漏。",
+          "导入并执行 resolveExecutionProfileFromSettings，以验证从 LLM 设置派生的执行配置文件。"
+        ],
+        "outOfScope": [
+          "不测试 getResolvedLLMSettings 之外的 RuntimeService 方法。",
+          "不测试数据库交互、文件扫描或清单操作。",
+          "不测试错误处理路径或无效配置的边缘情况。",
+          "不测试与实际 LLM 提供商或凭据后端的集成。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/secrets.js'",
+        "symbols": [
+          "Secrets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/credentials/backend.js'",
+        "symbols": [
+          "MemoryCredentialBackend"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/llm.js'",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/services/runtime-service.js'",
+        "symbols": [
+          "RuntimeService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/services/runtime-execution-profile.js'",
+        "symbols": [
+          "resolveExecutionProfileFromSettings"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/core/errors.js'",
+        "symbols": [
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 14,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/secrets.js",
+        "relation": "import",
+        "symbols": [
+          "Secrets"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/credentials/backend.js",
+        "relation": "import",
+        "symbols": [
+          "MemoryCredentialBackend"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets"
+        ]
+      },
+      {
+        "targetPath": "../src/services/runtime-service.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeService"
+        ]
+      },
+      {
+        "targetPath": "../src/services/runtime-execution-profile.js",
+        "relation": "import",
+        "symbols": [
+          "resolveExecutionProfileFromSettings"
+        ]
+      },
+      {
+        "targetPath": "../src/core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ErrorCodes"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:44.223Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

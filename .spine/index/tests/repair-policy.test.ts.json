@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/repair-policy.test.ts",
+    "contentHash": "f1b368aac5194f664a11a39a71dd620f7318238dae974d8da46e76190638e341",
+    "skeletonHash": "fd07ee2c446b5cf779d885574ceb8844a27fa9a4ae825ecc7564afabc091e2fb",
+    "semanticHash": "63909a9572c96d1492f966ed65def8e546ad702b18f579406993b6515da4bfa4",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for the repair policy evaluation logic.",
+    "responsibilities": [
+      "Validates the evaluateRepairPolicy function's decision-making for file-level violations.",
+      "Tests that targeted repair is used for small file-level violations with specific path mappings.",
+      "Asserts that aggregate-level paths are correctly identified and handled.",
+      "Verifies safe non-interactive downgrade behavior in appropriate scenarios."
+    ],
+    "outOfScope": [
+      "Implementing the repair policy logic.",
+      "Handling non-test runtime execution.",
+      "Providing user-facing CLI commands."
+    ],
+    "invariants": [
+      "Must be a test file (suffix .test.ts or .spec.ts).",
+      "Must import the function under test (evaluateRepairPolicy).",
+      "Must use the Vitest testing framework."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure the repair policy's behavior is well-defined and correct through automated tests.",
+      "recentChangeIntent": "No recent changes to this specific test file are evidenced in the provided snippet."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for the repair policy evaluation logic.",
+        "responsibilities": [
+          "Validates the evaluateRepairPolicy function's decision-making for file-level violations.",
+          "Tests that targeted repair is used for small file-level violations with specific path mappings.",
+          "Asserts that aggregate-level paths are correctly identified and handled.",
+          "Verifies safe non-interactive downgrade behavior in appropriate scenarios."
+        ],
+        "outOfScope": [
+          "Implementing the repair policy logic.",
+          "Handling non-test runtime execution.",
+          "Providing user-facing CLI commands."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/repair-policy.js'",
+        "symbols": [
+          "evaluateRepairPolicy"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/repair-policy.js",
+        "relation": "import",
+        "symbols": [
+          "evaluateRepairPolicy"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:44.013Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "examples/demo-project/.spine/index/demo.gif.json",
+    "contentHash": "e9d5e83abde54dc0e222dd35c9faa2751af3926532a8f93bf3fea4157505a892",
+    "semanticHash": "522152885eb091f0102ed126f27306e6071ab61fb29d1b1b99245d9d31698c8a",
+    "language": "unsupported",
+    "fileKind": "config",
+    "scope": "examples/demo-project/.spine/index"
+  },
+  "semantic": {
+    "role": "Metadata index entry for a binary/document file (demo.gif) within the ArchSpine mirror system",
+    "responsibilities": [
+      "Records file identity (path, content hash, semantic hash) for change tracking",
+      "Declares file kind and language classification",
+      "Captures structural skeleton (imports/exports/symbols) for non-code files",
+      "Maintains dependency graph edges and reverse index completeness flag",
+      "Logs provenance metadata (index timestamp, generator version, pipeline stages)"
+    ],
+    "outOfScope": [],
+    "invariants": [
+      "contentHash must match the actual file content to detect drift",
+      "semanticHash must be consistent with the file's role and responsibilities",
+      "fileKind must accurately reflect the file type (e.g., 'document' for non-code assets)",
+      "driftDetected must be set to true if contentHash or semanticHash mismatch is found"
+    ],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Metadata index entry for a binary/document file (demo.gif) within the ArchSpine mirror system",
+        "parameter_definitions": {
+          "schemaVersion": "Version of the metadata schema used; ensures forward/backward compatibility",
+          "identity.filePath": "Relative path to the file from the repository root; used for lookup and linking",
+          "identity.contentHash": "SHA-256 hash of the file's raw content; detects unauthorized or accidental modifications",
+          "identity.semanticHash": "Hash of the file's semantic role and responsibilities; detects changes in meaning or purpose",
+          "identity.language": "Programming or document language classification; 'unsupported' for binary files like GIFs",
+          "identity.fileKind": "Categorization of the file (e.g., 'document', 'code', 'config'); affects how the system processes it",
+          "identity.scope": "Scope or namespace the file belongs to; empty for standalone assets",
+          "semantic.role": "Human-readable description of the file's functional purpose within the project",
+          "semantic.responsibilities": "List of subsystems or behaviors this file is responsible for",
+          "semantic.outOfScope": "Explicit list of responsibilities this file does NOT cover",
+          "semantic.invariants": "Mandatory constraints or safety limits that must hold true for this file",
+          "semantic.changeIntent.architecturalIntent": "Original design rationale for the file's existence; null if not documented",
+          "semantic.changeIntent.recentChangeIntent": "Purpose of the most recent modification; null if unchanged",
+          "semantic.publicSurface": "List of public APIs, symbols, or interfaces exposed by this file",
+          "semantic.ruleViolations": "Any detected violations of project rules or conventions",
+          "semantic.driftDetected": "Boolean flag indicating whether the file has drifted from its indexed state",
+          "semantic.driftReason": "Explanation of why drift was detected, if applicable",
+          "skeleton.imports": "List of imported dependencies (empty for non-code files)",
+          "skeleton.exports": "List of exported symbols (empty for non-code files)",
+          "skeleton.declaredSymbols": "Symbols declared within the file (empty for non-code files)",
+          "skeleton.structuralHints.importCount": "Number of imports; used for quick structural analysis",
+          "skeleton.structuralHints.exportCount": "Number of exports; used for quick structural analysis",
+          "skeleton.structuralHints.isBarrel": "Whether the file is a barrel (re-export) module",
+          "skeleton.structuralHints.isTypeOnly": "Whether the file contains only type definitions",
+          "graph.dependsOn": "List of files this file depends on",
+          "graph.dependedBy": "List of files that depend on this file",
+          "graph.reverseIndexComplete": "Whether the reverse dependency index has been fully computed",
+          "graph.symbolEdges": "Fine-grained symbol-level dependency edges",
+          "provenance.indexedAt": "Timestamp when this metadata was last indexed",
+          "provenance.generatorVersion": "Version of the ArchSpine indexer that generated this entry",
+          "provenance.pipelineStages": "Stages of the indexing pipeline that processed this file (e.g., ast, llm)"
+        },
+        "stability_and_risks": "This configuration file is a metadata index entry for a binary/document asset (demo.gif). It does not directly control system behavior but is critical for change tracking and consistency verification. The primary risk is drift between the actual file content and the recorded hashes, which could lead to undetected modifications or broken dependency links. If contentHash or semanticHash become stale, the system may incorrectly assume the file is unchanged, potentially masking security or integrity issues. The reverseIndexComplete flag, if false, indicates incomplete dependency analysis, which could cause missing impact assessments during refactoring. Overall, this file contributes to system stability by providing a verifiable, auditable record of file identity and relationships, but its accuracy depends on timely re-indexing after file changes."
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine镜像系统中二进制/文档文件（demo.gif）的元数据索引条目",
+        "parameter_definitions": {
+          "schemaVersion": "元数据模式版本号；确保向前/向后兼容性",
+          "identity.filePath": "文件相对于仓库根目录的路径；用于查找和链接",
+          "identity.contentHash": "文件原始内容的SHA-256哈希值；检测未经授权或意外的修改",
+          "identity.semanticHash": "文件语义角色和职责的哈希值；检测含义或用途的变化",
+          "identity.language": "编程语言或文档语言分类；对于GIF等二进制文件标记为'unsupported'",
+          "identity.fileKind": "文件类别（如'document'、'code'、'config'）；影响系统处理方式",
+          "identity.scope": "文件所属的作用域或命名空间；独立资产为空",
+          "semantic.role": "文件在项目中的功能用途的人类可读描述",
+          "semantic.responsibilities": "此文件负责的子系统或行为列表",
+          "semantic.outOfScope": "明确列出此文件不负责的职责范围",
+          "semantic.invariants": "此文件必须满足的强制性约束或安全限制",
+          "semantic.changeIntent.architecturalIntent": "文件存在的原始设计理由；未记录时为null",
+          "semantic.changeIntent.recentChangeIntent": "最近一次修改的目的；未修改时为null",
+          "semantic.publicSurface": "此文件暴露的公共API、符号或接口列表",
+          "semantic.ruleViolations": "检测到的违反项目规则或约定的情况",
+          "semantic.driftDetected": "布尔标志，指示文件是否已偏离其索引状态",
+          "semantic.driftReason": "检测到漂移的原因说明（如适用）",
+          "skeleton.imports": "导入的依赖项列表（非代码文件为空）",
+          "skeleton.exports": "导出的符号列表（非代码文件为空）",
+          "skeleton.declaredSymbols": "文件中声明的符号（非代码文件为空）",
+          "skeleton.structuralHints.importCount": "导入数量；用于快速结构分析",
+          "skeleton.structuralHints.exportCount": "导出数量；用于快速结构分析",
+          "skeleton.structuralHints.isBarrel": "文件是否为桶模块（重新导出）",
+          "skeleton.structuralHints.isTypeOnly": "文件是否仅包含类型定义",
+          "graph.dependsOn": "此文件依赖的其他文件列表",
+          "graph.dependedBy": "依赖此文件的其他文件列表",
+          "graph.reverseIndexComplete": "反向依赖索引是否已完全计算",
+          "graph.symbolEdges": "细粒度的符号级依赖关系边",
+          "provenance.indexedAt": "此元数据上次索引的时间戳",
+          "provenance.generatorVersion": "生成此条目的ArchSpine索引器版本",
+          "provenance.pipelineStages": "处理此文件的索引流水线阶段（如ast、llm）"
+        },
+        "stability_and_risks": "此配置文件是二进制/文档资产（demo.gif）的元数据索引条目。它不直接控制系统行为，但对于变更跟踪和一致性验证至关重要。主要风险在于实际文件内容与记录的哈希值之间出现漂移，可能导致修改未被检测到或依赖链接断裂。如果contentHash或semanticHash变得过时，系统可能错误地认为文件未更改，从而可能掩盖安全或完整性问题。reverseIndexComplete标志若为false，表示依赖分析不完整，可能在重构期间导致影响评估缺失。总体而言，该文件通过提供可验证、可审计的文件身份和关系记录来促进系统稳定性，但其准确性取决于文件更改后及时重新索引。"
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:43:58.766Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

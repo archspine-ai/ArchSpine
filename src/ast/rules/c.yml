@@ -1,0 +1,25 @@
+imports:
+  - id: include
+    pattern: '#include $SOURCE'
+exports:
+  - id: function
+    pattern: '$RET $NAME($$$ARGS) { $$$BODY }'
+    kind: Function
+  - id: struct
+    pattern:
+      rule:
+        kind: struct_specifier
+        has:
+          kind: type_identifier
+          pattern: $NAME
+    kind: Class
+  - id: variable
+    pattern: '$TYPE $NAME = $VAL;'
+    kind: Variable
+usages:
+  - id: call
+    pattern: '$NAME($$$ARGS)'
+  - id: field
+    pattern: '$OBJ.$NAME'
+  - id: pointer_field
+    pattern: '$OBJ->$NAME'

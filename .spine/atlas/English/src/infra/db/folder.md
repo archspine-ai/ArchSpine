@@ -1,0 +1,21 @@
+<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/infra/db","role":"Infrastructure persistence layer providing SQLite database lifecycle management, schema evolution, and data access for the ArchSpine indexing system.","responsibility":"Manages the SQLite database lifecycle including file preparation, WAL recovery, schema migration, and error mapping, while providing a unified data access layer for CRUD operations on file metadata, symbol tables, drift events, usage metrics, and violation records.","children":[{"filePath":"src/infra/db/batch.ts","role":"Infrastructure-layer batch commit function for atomic file metadata synchronization to the SQLite index database.","fileKind":"source"},{"filePath":"src/infra/db/errors.ts","role":"Database runtime error mapping utility in the infrastructure layer.","fileKind":"source"},{"filePath":"src/infra/db/repositories","role":"Persistence layer for the ArchSpine indexing system, providing SQLite-based data access objects for all core entities.","fileKind":"folder"},{"filePath":"src/infra/db/runtime.ts","role":"Infrastructure facade module providing low-level runtime SQLite database lifecycle management, including filesystem preparation, stale WAL file detection/recovery, and error handling.","fileKind":"source"},{"filePath":"src/infra/db/schema.ts","role":"Database infrastructure utility for SQLite schema migration error handling and safe column addition.","fileKind":"source"},{"filePath":"src/infra/db/types.ts","role":"Infrastructure Type Definitions module providing stable data contracts for the indexing, audit, and status reporting domains.","fileKind":"source"},{"filePath":"src/infra/db/wal-recovery.ts","role":"Infrastructure utility module for SQLite Write-Ahead Log (WAL) stale file detection and cleanup.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T03:58:48.572Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
+# `src/infra/db` — SQLite Persistence Layer
+
+This directory is the infrastructure persistence backbone of the ArchSpine indexing system. It owns the entire SQLite database lifecycle: file preparation, Write-Ahead Log (WAL) recovery, schema migration, and runtime error mapping. The layer provides a unified data access surface for all core entities.
+
+## Notable Children
+
+- **`runtime.ts`** — The main facade for low-level database lifecycle management. It handles filesystem preparation, stale WAL file detection and recovery, and wraps all error handling so callers never deal with raw SQLite exceptions.
+- **`wal-recovery.ts`** — A focused utility that detects and cleans up stale WAL files before the database is opened, preventing corruption from interrupted writes.
+- **`schema.ts`** — Manages schema migration logic, including safe column addition and error handling during DDL operations.
+- **`errors.ts`** — Maps SQLite runtime errors into domain-specific error types used throughout the system.
+- **`types.ts`** — Defines stable TypeScript interfaces and data contracts for indexing, audit, and status reporting domains.
+- **`batch.ts`** — Provides an atomic batch commit function for synchronizing file metadata into the index database.
+- **`repositories/`** — A subfolder containing SQLite-based data access objects (DAOs) for all core entities: file metadata, symbol tables, drift events, usage metrics, and violation records. This is where the actual CRUD logic lives.
+
+## Key Implementation Areas
+
+- **Lifecycle Management** — `runtime.ts` and `wal-recovery.ts` together ensure the database is always in a consistent state before any read or write operation.
+- **Schema Evolution** — `schema.ts` handles migrations safely, with support for additive changes and error recovery.
+- **Data Access** — The `repositories/` subfolder implements the actual persistence logic, each repository focusing on a single entity type.
+- **Error Mapping** — `errors.ts` translates low-level SQLite errors into meaningful domain errors, keeping the rest of the system decoupled from database internals.

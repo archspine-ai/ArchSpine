@@ -1,0 +1,232 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/core/task.ts",
+    "contentHash": "d263b409ce94ca18dc94122ca1961ff8d677b56d0d9c91c050a29a6c3a41da05",
+    "skeletonHash": "8794375b68198df5a588d1d54d5c78980109120173bb5a365eeaa46db5b8a37e",
+    "semanticHash": "fe04a4ce31c7c9521188248b1d39085f1a6cd992b9519e0963389b376a7833f2",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/core"
+  },
+  "semantic": {
+    "role": "Core interface defining the dependency injection context for ArchSpine task execution.",
+    "responsibilities": [
+      "Defines the TaskContext interface that provides task implementations with access to shared engines (Scanner, Aggregator, ContextEngine, RuleEngine, ASTExtractor) and infrastructure (Manifest, OutputManager).",
+      "Declares type-only dependencies for LLM client, prompt policies, runtime I/O, execution checkpoint store, view identifiers, and task state types to support task execution contracts."
+    ],
+    "outOfScope": [
+      "Implementing concrete task logic",
+      "Providing CLI command handlers or entry points",
+      "Managing pipeline orchestration or stage transitions"
+    ],
+    "invariants": [
+      "Must remain a pure TypeScript interface with no runtime implementation",
+      "Must only depend on core engine, infrastructure, and type definitions, not on CLI or UI layers"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Decouple task implementations from concrete dependencies by providing a centralized injection context interface.",
+      "recentChangeIntent": "Unrelated to this static interface file; recent commit focuses on sync mode features elsewhere."
+    },
+    "publicSurface": [
+      "TaskContext interface"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core interface defining the dependency injection context for ArchSpine task execution.",
+        "responsibilities": [
+          "Defines the TaskContext interface that provides task implementations with access to shared engines (Scanner, Aggregator, ContextEngine, RuleEngine, ASTExtractor) and infrastructure (Manifest, OutputManager).",
+          "Declares type-only dependencies for LLM client, prompt policies, runtime I/O, execution checkpoint store, view identifiers, and task state types to support task execution contracts."
+        ],
+        "outOfScope": [
+          "Implementing concrete task logic",
+          "Providing CLI command handlers or entry points",
+          "Managing pipeline orchestration or stage transitions"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../engines/scanner.js'",
+        "symbols": [
+          "Scanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../engines/aggregator.js'",
+        "symbols": [
+          "Aggregator"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/output.js'",
+        "symbols": [
+          "OutputManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../engines/rules.js'",
+        "symbols": [
+          "RuleEngine"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../engines/context.js'",
+        "symbols": [
+          "ContextEngine"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/extractor.js'",
+        "symbols": [
+          "ASTExtractor"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "TaskContext",
+        "kind": "interface",
+        "signature": "interface TaskContext"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "TaskContext",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../engines/scanner.js",
+        "relation": "import",
+        "symbols": [
+          "Scanner"
+        ]
+      },
+      {
+        "targetPath": "../infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "../engines/aggregator.js",
+        "relation": "import",
+        "symbols": [
+          "Aggregator"
+        ]
+      },
+      {
+        "targetPath": "../infra/output.js",
+        "relation": "import",
+        "symbols": [
+          "OutputManager"
+        ]
+      },
+      {
+        "targetPath": "../engines/rules.js",
+        "relation": "import",
+        "symbols": [
+          "RuleEngine"
+        ]
+      },
+      {
+        "targetPath": "../engines/context.js",
+        "relation": "import",
+        "symbols": [
+          "ContextEngine"
+        ]
+      },
+      {
+        "targetPath": "../ast/extractor.js",
+        "relation": "import",
+        "symbols": [
+          "ASTExtractor"
+        ]
+      },
+      {
+        "targetPath": "../infra/llm.js",
+        "relation": "type-import",
+        "symbols": [
+          "LLMClient"
+        ]
+      },
+      {
+        "targetPath": "../infra/prompt-context.js",
+        "relation": "type-import",
+        "symbols": [
+          "PromptPolicyTier",
+          "ValidatePolicy"
+        ]
+      },
+      {
+        "targetPath": "../infra/runtime-io.js",
+        "relation": "type-import",
+        "symbols": [
+          "RuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "../infra/execution-checkpoint.js",
+        "relation": "type-import",
+        "symbols": [
+          "ExecutionCheckpointStore"
+        ]
+      },
+      {
+        "targetPath": "../types/view.js",
+        "relation": "type-import",
+        "symbols": [
+          "ViewId"
+        ]
+      },
+      {
+        "targetPath": "./task-types.js",
+        "relation": "type-import",
+        "symbols": [
+          "TaskArtifactsState",
+          "TaskState"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:37.352Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

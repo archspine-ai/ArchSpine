@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db/repositories/symbols.ts",
+    "contentHash": "c0b6b4d82eeb7184246221a3a20ea9977bd4c1b77e48c06d3d6e193935914b8b",
+    "skeletonHash": "c0de5278cfc86865882f564825ff6d22ed53073cc67f8e6e767e29808c2d053a",
+    "semanticHash": "c02567dfd7eb79aa3d02a8a2def8a62a9def65510c381302bc7897064cdb350c",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/db/repositories"
+  },
+  "semantic": {
+    "role": "Infrastructure Data Access Object (DAO) for SQLite symbol table persistence.",
+    "responsibilities": [
+      "Provides atomic operations to invalidate the entire symbol cache.",
+      "Inserts or ignores exported symbol names associated with a source file path.",
+      "Deletes symbols by file path.",
+      "Queries file paths by symbol name."
+    ],
+    "outOfScope": [
+      "Orchestrating service or task workflows.",
+      "Providing high-level business logic or application services.",
+      "Exposing a public facade beyond direct database operations."
+    ],
+    "invariants": [
+      "Exposes stable, low-level SQLite operations for the symbols table.",
+      "Callers must provide an active Database.Database instance.",
+      "Functions are atomic and transaction-aware where appropriate."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Encapsulate raw SQLite interactions for the symbol cache, providing a stable data access layer for infrastructure consumers.",
+      "recentChangeIntent": "Part of a broader refactor to modularize CLI and decouple core infra services, though no direct changes to this file's API are evident from the snippet."
+    },
+    "publicSurface": [
+      "invalidateCache(db: Database.Database): void",
+      "addFileExports(db: Database.Database, filePath: string, exports: string[]): void",
+      "deleteSymbolsByFilePath(db: Database.Database, filePath: string): void",
+      "queryFilesBySymbol(db: Database.Database, symbol: string): string[]"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure Data Access Object (DAO) for SQLite symbol table persistence.",
+        "responsibilities": [
+          "Provides atomic operations to invalidate the entire symbol cache.",
+          "Inserts or ignores exported symbol names associated with a source file path.",
+          "Deletes symbols by file path.",
+          "Queries file paths by symbol name."
+        ],
+        "outOfScope": [
+          "Orchestrating service or task workflows.",
+          "Providing high-level business logic or application services.",
+          "Exposing a public facade beyond direct database operations."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "invalidateCache",
+        "kind": "function",
+        "signature": "invalidateCache(db: Database.Database)"
+      },
+      {
+        "name": "addFileExports",
+        "kind": "function",
+        "signature": "addFileExports(db: Database.Database, filePath: string, exports: string[])"
+      },
+      {
+        "name": "clearFileExports",
+        "kind": "function",
+        "signature": "clearFileExports(db: Database.Database, filePath: string)"
+      },
+      {
+        "name": "resolveSymbol",
+        "kind": "function",
+        "signature": "resolveSymbol(db: Database.Database, symbol: string)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "invalidateCache",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/symbols.ts#"
+      },
+      {
+        "name": "addFileExports",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/symbols.ts#"
+      },
+      {
+        "name": "clearFileExports",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/symbols.ts#"
+      },
+      {
+        "name": "resolveSymbol",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/symbols.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 4,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "better-sqlite3",
+        "relation": "import",
+        "symbols": [
+          "Database"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:38.553Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

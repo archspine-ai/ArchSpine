@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/engines",
+  "role": "Core engine and CLI command modules for scanning, aggregating, analyzing, and reporting on architectural data within the ArchSpine mirror system.",
+  "responsibility": "Provides the foundational scanning engine, aggregation logic, architectural rule enforcement, context resolution, fix generation, and CLI reporting commands that collectively discover, validate, and document the codebase architecture.",
+  "children": [
+    {
+      "filePath": "src/engines/aggregator.ts",
+      "role": "Core engine class for traversing the spine filesystem and aggregating index and atlas data into structured SpineUnit collections for downstream sync and view operations.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/check.ts",
+      "role": "Public API barrel module for the check subsystem, re-exporting core service and CLI runner.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/context-path-resolver.ts",
+      "role": "Path resolution utility for the scanning engine, specializing in resolving relative import targets within a source tree.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/context-relevance.ts",
+      "role": "Engine utility function for extracting and filtering keywords from architectural rule text.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/context.ts",
+      "role": "Architectural context resolution engine for dependency analysis and relevance scoring in the ArchSpine mirror system.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/fix-prompt.ts",
+      "role": "LLM prompt template generator for architectural violation fixes.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/fix.ts",
+      "role": "Public API facade barrel file for the fix service module.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/god.ts",
+      "role": "CLI command orchestrator for generating a comprehensive architectural dossier (God Mode report) from the .spine/index directory.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/info.ts",
+      "role": "CLI command module for checking project sync status, validating protected outputs, and reporting system health.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/rules.ts",
+      "role": "Core rule engine for loading, storing, and matching architectural rules against file paths within the ArchSpine system.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/scanner-git.ts",
+      "role": "Reusable engine utility providing a git command execution client for scanner modules.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/scanner-utils.ts",
+      "role": "Scanner engine utility module providing path and pattern normalization for file scanning operations.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/scanner.ts",
+      "role": "Core file system scanner engine that discovers, filters, and reports on repository files using layered ignore rules, git diff integration, and configurable scan policies.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/usage.ts",
+      "role": "ArchSpine CLI utility function generating formatted usage and audit reports from the manifest database.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-01T07:20:46.509Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

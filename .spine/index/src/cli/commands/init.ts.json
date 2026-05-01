@@ -1,0 +1,155 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/init.ts",
+    "contentHash": "ab10d0fb9dbfac90cea76c35d4c1f5eaaaa23db1476b9caaaa1d1dba0970008a",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "b6fe54e8eb92bbc2c954e01f694d1e4341964d111de2ab981d33fbba6e1c4139",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command orchestrator for initializing the ArchSpine environment, configuration, and repository structure.",
+    "responsibilities": [
+      "Parses CLI arguments for agent file specification (--agent-file), artifact strategy (--artifact-strategy), and package script injection (--inject-package-scripts).",
+      "Manages language configuration selection and persistence for documentation via the Config service.",
+      "Orchestrates repository bootstrap to set up .spine directory structure via the runRepositoryBootstrap function.",
+      "Orchestrates runtime bootstrap to initialize runtime state via the runRuntimeBootstrap function and prompt for initial sync."
+    ],
+    "outOfScope": [
+      "Pipeline or persistence logic that belongs in services, core, engines, or infra.",
+      "Direct filesystem or database operations beyond delegation to bootstrap functions."
+    ],
+    "invariants": [
+      "Must remain a thin CLI adapter, delegating all pipeline and persistence work to services or bootstrap modules.",
+      "Must not absorb logic that would make runtime behavior non-reusable outside the CLI."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain a clean CLI entrypoint that delegates initialization tasks to dedicated bootstrap and service modules.",
+      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, ensuring the init command adheres to separation of concerns."
+    },
+    "publicSurface": [
+      "parseInitAgentFileArg",
+      "parseInitArtifactStrategyArg",
+      "parseInitInjectPackageScriptsArg",
+      "parseInitLanguageArg",
+      "runInit"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command orchestrator for initializing the ArchSpine environment, configuration, and repository structure.",
+        "responsibilities": [
+          "Parses CLI arguments for agent file specification (--agent-file), artifact strategy (--artifact-strategy), and package script injection (--inject-package-scripts).",
+          "Manages language configuration selection and persistence for documentation via the Config service.",
+          "Orchestrates repository bootstrap to set up .spine directory structure via the runRepositoryBootstrap function.",
+          "Orchestrates runtime bootstrap to initialize runtime state via the runRuntimeBootstrap function and prompt for initial sync."
+        ],
+        "outOfScope": [
+          "Pipeline or persistence logic that belongs in services, core, engines, or infra.",
+          "Direct filesystem or database operations beyond delegation to bootstrap functions."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于初始化 ArchSpine 环境、配置和仓库结构的 CLI 命令编排器。",
+        "responsibilities": [
+          "解析 CLI 参数，包括代理文件规范 (--agent-file)、产物策略 (--artifact-strategy) 和包脚本注入 (--inject-package-scripts)。",
+          "通过 Config 服务管理文档的语言配置选择与持久化。",
+          "通过 runRepositoryBootstrap 函数编排仓库引导，以设置 .spine 目录结构。",
+          "通过 runRuntimeBootstrap 函数编排运行时引导，以初始化运行时状态并提示初始同步。"
+        ],
+        "outOfScope": [
+          "属于服务、核心、引擎或基础设施的管道或持久化逻辑。",
+          "超出委托给引导函数范围之外的直接文件系统或数据库操作。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../../services/runtime-service.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeService"
+        ]
+      },
+      {
+        "targetPath": "../../types/protocol.js",
+        "relation": "import-type",
+        "symbols": [
+          "LanguageSnapshot"
+        ]
+      },
+      {
+        "targetPath": "../init/repository-bootstrap.js",
+        "relation": "import",
+        "symbols": [
+          "runRepositoryBootstrap"
+        ]
+      },
+      {
+        "targetPath": "../init/runtime-bootstrap.js",
+        "relation": "import",
+        "symbols": [
+          "promptForInitialSync",
+          "runRuntimeBootstrap"
+        ]
+      },
+      {
+        "targetPath": "../init/types.js",
+        "relation": "import-type",
+        "symbols": [
+          "LLMScope"
+        ]
+      },
+      {
+        "targetPath": "../cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "normalizeOptionalString",
+          "throwCliUsage"
+        ]
+      },
+      {
+        "targetPath": "../repo/strategy.js",
+        "relation": "import",
+        "symbols": [
+          "parseArtifactStrategy"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T03:57:40.279Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

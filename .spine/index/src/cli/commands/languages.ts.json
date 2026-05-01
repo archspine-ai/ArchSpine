@@ -1,0 +1,188 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/languages.ts",
+    "contentHash": "ab312cd25e97a5290cb5ac6cfb80370cf50fc2acb270a59b3cff0d2e969abd1b",
+    "skeletonHash": "11a135ad73bf75504e942bf0324efa880f5b6fb1c88a875eb7d01d03243196d1",
+    "semanticHash": "5984f1ed63577fc64be86dcc0af47aa8e8183abaebccdaad365a4cb7994d5cb6",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command adapter for interactive documentation language configuration management in the ArchSpine system.",
+    "responsibilities": [
+      "Presents an interactive prompt for users to select documentation languages from available choices.",
+      "Lists currently configured languages from the system configuration.",
+      "Loads and displays language snapshots from the manifest for user reference.",
+      "Saves updated language selections back to the configuration via the infra layer."
+    ],
+    "outOfScope": [
+      "Implementing core language discovery or validation logic (delegated to document-languages module).",
+      "Direct persistence operations (delegated to Config service).",
+      "Business logic for language processing or analysis."
+    ],
+    "invariants": [
+      "Must remain a thin command adapter, delegating business logic and persistence to services and infra.",
+      "Must not contain pipeline, scanning, or data transformation logic."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Decouple CLI entrypoints from core services to improve testability and reuse, aligning with the recent refactor to modularize CLI and decouple core infra services.",
+      "recentChangeIntent": "Refactor to modularize CLI and decouple core infra services, ensuring CLI modules act as thin adapters."
+    },
+    "publicSurface": [
+      "ExecuteLanguagesCommandOptions interface"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command adapter for interactive documentation language configuration management in the ArchSpine system.",
+        "responsibilities": [
+          "Presents an interactive prompt for users to select documentation languages from available choices.",
+          "Lists currently configured languages from the system configuration.",
+          "Loads and displays language snapshots from the manifest for user reference.",
+          "Saves updated language selections back to the configuration via the infrastructure layer."
+        ],
+        "outOfScope": [
+          "Implementing core language discovery or validation logic (delegated to the document-languages module).",
+          "Direct persistence operations (delegated to the Config service).",
+          "Business logic for language processing or analysis."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../document-languages.js'",
+        "symbols": [
+          "getDocumentLanguageChoices",
+          "HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "printLanguageDiscovery"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'prompts'",
+        "symbols": [
+          "prompts"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "promptForDocumentationLanguages",
+        "kind": "function",
+        "signature": "promptForDocumentationLanguages(\n  currentLanguages: string[] = [],\n)"
+      },
+      {
+        "name": "executeLanguagesCommand",
+        "kind": "function",
+        "signature": "executeLanguagesCommand(\n  options: ExecuteLanguagesCommandOptions,\n)"
+      },
+      {
+        "name": "ExecuteLanguagesCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteLanguagesCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "promptForDocumentationLanguages",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/languages.ts#"
+      },
+      {
+        "name": "executeLanguagesCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/languages.ts#"
+      },
+      {
+        "name": "ExecuteLanguagesCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/languages.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../../infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "../document-languages.js",
+        "relation": "import",
+        "symbols": [
+          "getDocumentLanguageChoices",
+          "HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE"
+        ]
+      },
+      {
+        "targetPath": "../cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "printLanguageDiscovery"
+        ]
+      },
+      {
+        "targetPath": "prompts",
+        "relation": "import",
+        "symbols": [
+          "prompts"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:36.467Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

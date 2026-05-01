@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/resume-services.test.ts",
+    "contentHash": "765402c623a8847c2a09cf59d6c4b07fbe1ed9f0cda8d3dc299fbfa8f5e5ad58",
+    "skeletonHash": "e879ad4699326f3ab7bf131b5d4d339d0cd2f0e28a7ea307512f6e4d56c4045b",
+    "semanticHash": "89c84dfc485c50eeb33ca004e8b918459d169c2975c4630c192dff90e08ccc22",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for validating resume-aware aggregation service behavior in the ArchSpine system.",
+    "responsibilities": [
+      "Mocks SyncService, CheckService, and FixService to isolate resume logic testing.",
+      "Verifies that interrupted sync candidates are correctly fed back into scan and forced-sync paths.",
+      "Uses vi (Vitest's mocking utilities) to reset state between test cases.",
+      "Hardens scan resume validation and fallback path logic as per recent changes."
+    ],
+    "outOfScope": [
+      "Production service implementation.",
+      "Direct HTTP or database interactions.",
+      "UI or CLI rendering."
+    ],
+    "invariants": [
+      "Follows Vitest testing framework conventions.",
+      "Isolates unit tests with vi.mock and vi.resetModules.",
+      "Focuses on resume logic for sync, scan, and fix operations."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure robust resume behavior for interrupted synchronization tasks, validating that state is correctly persisted and resumed across service boundaries.",
+      "recentChangeIntent": "Recent changes likely focus on hardening scan resume validation and fallback paths, as indicated by test descriptions and previous contract."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for validating resume-aware aggregation service behavior in the ArchSpine system.",
+        "responsibilities": [
+          "Mocks SyncService, CheckService, and FixService to isolate resume logic testing.",
+          "Verifies that interrupted sync candidates are correctly fed back into scan and forced-sync paths.",
+          "Uses vi (Vitest's mocking utilities) to reset state between test cases.",
+          "Hardens scan resume validation and fallback path logic as per recent changes."
+        ],
+        "outOfScope": [
+          "Production service implementation.",
+          "Direct HTTP or database interactions.",
+          "UI or CLI rendering."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/core/task-state.js'",
+        "symbols": [
+          "createTaskTelemetryState"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "../src/core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "createTaskTelemetryState"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:44.084Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

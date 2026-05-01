@@ -1,0 +1,63 @@
+imports:
+  - id: include
+    pattern: '#include $SOURCE'
+exports:
+  - id: function
+    pattern:
+      rule:
+        kind: function_definition
+        all:
+          - has:
+              kind: function_declarator
+              stopBy: end
+              has:
+                kind: identifier
+                pattern: $NAME
+          - has:
+              kind: function_declarator
+              stopBy: end
+              has:
+                kind: parameter_list
+                pattern: $ARGS
+    kind: Function
+  - id: class
+    pattern:
+      rule:
+        kind: class_specifier
+        has:
+          kind: type_identifier
+          pattern: $NAME
+    kind: Class
+  - id: struct
+    pattern:
+      rule:
+        kind: struct_specifier
+        has:
+          kind: type_identifier
+          pattern: $NAME
+    kind: Class
+  - id: namespace
+    pattern:
+      rule:
+        kind: namespace_definition
+        has:
+          kind: namespace_identifier
+          pattern: $NAME
+    kind: Type
+  - id: template_class
+    pattern:
+      rule:
+        kind: template_declaration
+        has:
+          kind: class_specifier
+          has:
+            kind: type_identifier
+            pattern: $NAME
+    kind: Class
+usages:
+  - id: call
+    pattern: '$NAME($$$ARGS)'
+  - id: scoped
+    pattern: '$OBJ::$NAME'
+  - id: method
+    pattern: '$OBJ.$NAME($$$ARGS)'

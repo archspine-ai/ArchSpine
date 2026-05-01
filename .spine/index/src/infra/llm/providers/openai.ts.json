@@ -1,0 +1,232 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/llm/providers/openai.ts",
+    "contentHash": "e24d3e25f9cef0e11b46e8684a4ea56674072b80cbc6e40fdd8477757ce66709",
+    "skeletonHash": "738940c6eabb8a7fb88fb570efc76f020750a4ef0de3a2cf1104d814fa5d9fab",
+    "semanticHash": "ded0a51122ea0c0b15332d187e6f434cc1435d98ca3612681dc4fb121efe06fa",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/llm/providers"
+  },
+  "semantic": {
+    "role": "OpenAI-compatible LLM provider client implementing the LLMClient interface, with embedded prompt generation orchestration for ArchSpine's semantic analysis pipeline.",
+    "responsibilities": [
+      "Initializes OpenAI SDK client with configurable API endpoint, API key, model, and timeout from ProviderConfig.",
+      "Implements LLMClient interface methods for generating semantic summaries across FileKind types (source, document, config, folder, project, markdown).",
+      "Executes structured prompts using the configured generation strategy and prompt policy tier via imported prompt generators.",
+      "Parses LLM responses into structured JSON and markdown blocks using utility functions.",
+      "Accumulates and merges usage information across multiple LLM calls within a single summary generation."
+    ],
+    "outOfScope": [
+      "Direct database or filesystem access.",
+      "User authentication or authorization.",
+      "Network request handling beyond OpenAI API calls.",
+      "Caching or persistence of LLM responses."
+    ],
+    "invariants": [
+      "Must implement the LLMClient interface from '../base.js'.",
+      "Must use OpenAI SDK for API communication.",
+      "Must support all FileKind types for prompt generation.",
+      "Must parse LLM responses into structured formats."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable, configurable LLM provider client that integrates with ArchSpine's prompt generation system to produce semantic summaries for various file types.",
+      "recentChangeIntent": "infra: harden runtime database and llm client stability - likely includes stability improvements to this LLM client, such as timeout handling or error recovery."
+    },
+    "publicSurface": [
+      "OpenAICompatibleClient class",
+      "constructor(config: ProviderConfig)",
+      "LLMClient interface methods (generateSource, generateDocument, generateConfig, generateFolder, generateProject, generateMarkdown)"
+    ],
+    "ruleViolations": [
+      {
+        "id": "infra-facade-imports",
+        "severity": "warning",
+        "reason": "The file imports prompt generators (generateConfigPrompt, generateDocumentPrompt, etc.) from '../../prompt.js' and '../../lite-prompt.js', which are orchestration concerns. This violates the rule that infra modules should not absorb service/task/engine orchestration concerns. The client should receive pre-built prompts or delegate prompt generation to a separate orchestration layer."
+      }
+    ],
+    "driftDetected": true,
+    "driftReason": "The previous semantic contract described this as a pure LLM provider client, but the actual code shows it also orchestrates prompt generation by importing and using prompt generators directly, which is a broader responsibility than just providing LLM client capabilities.",
+    "localized": {
+      "English": {
+        "role": "OpenAI-compatible LLM provider client implementing the LLMClient interface, with embedded prompt generation orchestration for ArchSpine's semantic analysis pipeline.",
+        "responsibilities": [
+          "Initializes OpenAI SDK client with configurable API endpoint, API key, model, and timeout from ProviderConfig.",
+          "Implements LLMClient interface methods for generating semantic summaries across FileKind types (source, document, config, folder, project, markdown).",
+          "Executes structured prompts using the configured generation strategy and prompt policy tier via imported prompt generators.",
+          "Parses LLM responses into structured JSON and markdown blocks using utility functions.",
+          "Accumulates and merges usage information across multiple LLM calls within a single summary generation."
+        ],
+        "outOfScope": [
+          "Direct database or filesystem access.",
+          "User authentication or authorization.",
+          "Network request handling beyond OpenAI API calls.",
+          "Caching or persistence of LLM responses."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "实现 LLMClient 接口的 OpenAI 兼容 LLM 提供者客户端，内嵌提示生成编排功能，用于 ArchSpine 的语义分析流水线。",
+        "responsibilities": [
+          "根据 ProviderConfig 配置 API 端点、API 密钥、模型和超时时间，初始化 OpenAI SDK 客户端。",
+          "实现 LLMClient 接口方法，为 FileKind 类型（source、document、config、folder、project、markdown）生成语义摘要。",
+          "通过导入的提示生成器，使用配置的生成策略和提示策略层级执行结构化提示。",
+          "使用工具函数将 LLM 响应解析为结构化 JSON 和 Markdown 块。",
+          "在单个摘要生成过程中，跨多次 LLM 调用累积并合并使用信息。"
+        ],
+        "outOfScope": [
+          "直接访问数据库或文件系统。",
+          "用户认证或授权。",
+          "超出 OpenAI API 调用的网络请求处理。",
+          "LLM 响应的缓存或持久化。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../base.js'",
+        "symbols": [
+          "LLMClient",
+          "LLMResponse",
+          "PreviousSemanticContext",
+          "ProviderConfig",
+          "UsageInfo"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../prompt.js'",
+        "symbols": [
+          "generateConfigPrompt",
+          "generateDocumentPrompt",
+          "generateFolderPrompt",
+          "generateMarkdownPrompt",
+          "generateProjectPrompt",
+          "generateSourcePrompt"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../lite-prompt.js'",
+        "symbols": [
+          "generateLitePrompt"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../types/protocol.js'",
+        "symbols": [
+          "FileKind"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./utils.js'",
+        "symbols": [
+          "buildSupportingContext",
+          "mergeUsage",
+          "parseMarkdownBlocks",
+          "parseStructuredResponse"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'openai'",
+        "symbols": [
+          "OpenAI"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "OpenAICompatibleClient",
+        "kind": "class",
+        "signature": "class OpenAICompatibleClient"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "OpenAICompatibleClient",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/llm/providers/openai.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../base.js",
+        "relation": "import",
+        "symbols": [
+          "LLMClient",
+          "LLMResponse",
+          "PreviousSemanticContext",
+          "ProviderConfig",
+          "UsageInfo"
+        ]
+      },
+      {
+        "targetPath": "../../prompt.js",
+        "relation": "import",
+        "symbols": [
+          "generateConfigPrompt",
+          "generateDocumentPrompt",
+          "generateFolderPrompt",
+          "generateMarkdownPrompt",
+          "generateProjectPrompt",
+          "generateSourcePrompt"
+        ]
+      },
+      {
+        "targetPath": "../../lite-prompt.js",
+        "relation": "import",
+        "symbols": [
+          "generateLitePrompt"
+        ]
+      },
+      {
+        "targetPath": "../../../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "FileKind"
+        ]
+      },
+      {
+        "targetPath": "./utils.js",
+        "relation": "import",
+        "symbols": [
+          "buildSupportingContext",
+          "mergeUsage",
+          "parseMarkdownBlocks",
+          "parseStructuredResponse"
+        ]
+      },
+      {
+        "targetPath": "openai",
+        "relation": "import",
+        "symbols": [
+          "OpenAI"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:39.119Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/utils/git-hook.ts",
+    "contentHash": "c6248d699a7f3fe2b89203d82d765b7eeb66392f4f0d93085b74895781b0e03f",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "af6f6f683731336021deb4ac1ec669d9d80ffc72cb3164525b235a4e88e91a09",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/utils"
+  },
+  "semantic": {
+    "role": "Infrastructure utility module for generating and managing the ArchSpine pre-commit Git hook shell script block.",
+    "responsibilities": [
+      "Defines the `InstallGitHookResult` discriminated union type to represent outcomes of Git hook installation operations.",
+      "Implements `getManagedHookBlock()` to generate the standardized shell script block for the ArchSpine pre-commit hook, including logic to locate the `spine` CLI command."
+    ],
+    "outOfScope": [
+      "Actual installation, update, or removal of the hook file in the `.git/hooks` directory.",
+      "Validation of the Git repository root or file system operations beyond generating the hook script content."
+    ],
+    "invariants": [
+      "The generated hook block must always include the ArchSpine marker comments (`# >>> ArchSpine pre-commit >>>` and `# <<< ArchSpine pre-commit <<<`).",
+      "The hook block must attempt to use `./node_modules/.bin/spine` first, then fall back to a globally installed `spine`, then to `dist/cli/index.js`."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable, standardized mechanism for generating the ArchSpine pre-commit hook script content, ensuring consistent hook behavior across projects.",
+      "recentChangeIntent": "No direct evidence of recent changes related to lint errors or pipeline fixes; the module remains a stable utility for hook script generation."
+    },
+    "publicSurface": [
+      "InstallGitHookResult (type export)",
+      "getManagedHookBlock (function export)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure utility module for generating and managing the ArchSpine pre-commit Git hook shell script block.",
+        "responsibilities": [
+          "Defines the `InstallGitHookResult` discriminated union type to represent outcomes of Git hook installation operations.",
+          "Implements `getManagedHookBlock()` to generate the standardized shell script block for the ArchSpine pre-commit hook, including logic to locate the `spine` CLI command."
+        ],
+        "outOfScope": [
+          "Actual installation, update, or removal of the hook file in the `.git/hooks` directory.",
+          "Validation of the Git repository root or file system operations beyond generating the hook script content."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施工具模块，用于生成和管理 ArchSpine 预提交 Git 钩子的 shell 脚本块。",
+        "responsibilities": [
+          "定义 `InstallGitHookResult` 联合类型，表示 Git 钩子安装操作的结果。",
+          "实现 `getManagedHookBlock()` 函数，生成 ArchSpine 预提交钩子的标准化 shell 脚本块，包括定位 `spine` CLI 命令的逻辑。"
+        ],
+        "outOfScope": [
+          "实际在 `.git/hooks` 目录中安装、更新或删除钩子文件。",
+          "验证 Git 仓库根目录或执行超出生成钩子脚本内容的文件系统操作。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "./fs.js",
+        "relation": "import",
+        "symbols": [
+          "FileSystemManager"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T03:58:19.274Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

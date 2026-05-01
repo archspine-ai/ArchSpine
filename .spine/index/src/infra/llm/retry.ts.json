@@ -1,0 +1,133 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/llm/retry.ts",
+    "contentHash": "5f1cea756b3d4e7a6175104ff81f3970b356d0e580746ba69d3049ce4e80168b",
+    "skeletonHash": "88d012ac2e029c4c1513edd3c0e07bc1618dae920070c1140cc0e2323cd6fcd3",
+    "semanticHash": "c22e80f930c7a40ed7b59c8337e409f7cd3e580ea6b2b11c06eb32eaf3d9eafc",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/llm"
+  },
+  "semantic": {
+    "role": "Infrastructure utility providing configurable retry logic with exponential backoff for resilient asynchronous operations.",
+    "responsibilities": [
+      "Defines the RetryOptions interface for configuring retry behavior (maxRetries, initialDelayMs, onRetry callback).",
+      "Implements the withRetry function that wraps an async function and retries on transient network/socket errors.",
+      "Provides the isRetryableError predicate to identify retryable errors based on error message patterns (e.g., ECONNRESET, ETIMEDOUT, socket errors).",
+      "Applies exponential backoff delay with jitter between retry attempts."
+    ],
+    "outOfScope": [
+      "Does not handle non-retryable errors or application-level exceptions.",
+      "Does not manage retry state across multiple calls or provide circuit breaker patterns.",
+      "Does not integrate with any logging or monitoring framework beyond optional onRetry callback."
+    ],
+    "invariants": [
+      "Retry logic must only be applied to transient network/socket errors as identified by isRetryableError.",
+      "The withRetry function must not modify the original function's return type or behavior beyond retrying on failure.",
+      "Exponential backoff with jitter must be applied between retry attempts to avoid thundering herd problems."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable, configurable retry mechanism for resilient async operations in the infrastructure layer.",
+      "recentChangeIntent": "Fix lint warnings and type errors, ensuring the retry utility adheres to project coding standards."
+    },
+    "publicSurface": [
+      "RetryOptions",
+      "isRetryableError",
+      "withRetry"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure utility providing configurable retry logic with exponential backoff for resilient asynchronous operations.",
+        "responsibilities": [
+          "Defines the RetryOptions interface for configuring retry behavior (maxRetries, initialDelayMs, onRetry callback).",
+          "Implements the withRetry function that wraps an async function and retries on transient network/socket errors.",
+          "Provides the isRetryableError predicate to identify retryable errors based on error message patterns (e.g., ECONNRESET, ETIMEDOUT, socket errors).",
+          "Applies exponential backoff delay with jitter between retry attempts."
+        ],
+        "outOfScope": [
+          "Does not handle non-retryable errors or application-level exceptions.",
+          "Does not manage retry state across multiple calls or provide circuit breaker patterns.",
+          "Does not integrate with any logging or monitoring framework beyond optional onRetry callback."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施工具，提供可配置的指数退避重试逻辑，用于弹性异步操作。",
+        "responsibilities": [
+          "定义 RetryOptions 接口，用于配置重试行为（maxRetries、initialDelayMs、onRetry 回调）。",
+          "实现 withRetry 函数，包装异步函数并在临时网络/套接字错误时重试。",
+          "提供 isRetryableError 谓词，基于错误消息模式（如 ECONNRESET、ETIMEDOUT、套接字错误）识别可重试错误。",
+          "在重试尝试之间应用带抖动的指数退避延迟。"
+        ],
+        "outOfScope": [
+          "不处理不可重试的错误或应用程序级异常。",
+          "不管理跨多次调用的重试状态，也不提供断路器模式。",
+          "不集成任何日志或监控框架，仅提供可选的 onRetry 回调。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "RetryOptions",
+        "kind": "interface",
+        "signature": "interface RetryOptions"
+      },
+      {
+        "name": "isRetryableError",
+        "kind": "function",
+        "signature": "const isRetryableError"
+      },
+      {
+        "name": "withRetry",
+        "kind": "function",
+        "signature": "const withRetry"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "RetryOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/llm/retry.ts#"
+      },
+      {
+        "name": "isRetryableError",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/llm/retry.ts#"
+      },
+      {
+        "name": "withRetry",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/llm/retry.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 3,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:57:06.972Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/__mocks__/llm.ts",
+    "contentHash": "fec64456f50fd4693f75af63e428dada850c91c2bd24bc0b0618ce7d23d59f6c",
+    "skeletonHash": "2572e29729c3582f752430acbde8bbc17efa51bb0da45d117d65db18b1c3cdeb",
+    "semanticHash": "2817d25ddf3a545d50c4064b3a4ee776cd4147fcaa254d5f65cd1ab9f7f44eae",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/__mocks__"
+  },
+  "semantic": {
+    "role": "Infrastructure facade module providing a public re-export of the MockClient for LLM provider mocking.",
+    "responsibilities": [
+      "Exposes the MockClient from the internal '../llm/providers/mock.js' implementation as a stable public export."
+    ],
+    "outOfScope": [
+      "Orchestrating service, task, or engine logic",
+      "Providing concrete LLM provider implementations",
+      "Managing state or configuration for the mock client"
+    ],
+    "invariants": [
+      "Must remain a simple re-export facade; should not absorb orchestration logic.",
+      "Callers should import MockClient from this facade rather than the deep private path directly."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable public import surface for mocking LLM providers, insulating callers from internal path changes.",
+      "recentChangeIntent": "No recent changes to this file indicated by the git context; the commit intent focuses on risk hotspots and engine decoupling elsewhere."
+    },
+    "publicSurface": [
+      "MockClient"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure facade module providing a public re-export of the MockClient for LLM provider mocking.",
+        "responsibilities": [
+          "Exposes the MockClient from the internal '../llm/providers/mock.js' implementation as a stable public export."
+        ],
+        "outOfScope": [
+          "Orchestrating service, task, or engine logic",
+          "Providing concrete LLM provider implementations",
+          "Managing state or configuration for the mock client"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "MockClient",
+        "kind": "unknown",
+        "signature": "export { MockClient }"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "MockClient",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/__mocks__/llm.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../llm/providers/mock.js",
+        "relation": "import",
+        "symbols": [
+          "MockClient"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/demo-governance.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:37.882Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

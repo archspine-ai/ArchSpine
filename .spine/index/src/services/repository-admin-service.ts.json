@@ -1,0 +1,377 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/repository-admin-service.ts",
+    "contentHash": "0a61eb606355f9f438f29e3c095b034fc1d70ffee5127bf71fb77f9e8cd70fce",
+    "skeletonHash": "545f5d40cbb359377da3035a2344566a70f6182b94e451d7f21fd63b2565e8c8",
+    "semanticHash": "3d375aa4d34921e43a800cee5af18fe13762ce450317ce63a867bd30d375f0fe",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Infrastructure module defining interfaces and orchestration logic for repository artifact management and initialization strategies.",
+    "responsibilities": [
+      "Defines result interfaces for repository strategy checks, application, rule template installation, agent instructions synchronization, managed file operations, and package script injection.",
+      "Orchestrates validation of managed repository files (e.g., .gitattributes, .gitignore) against expected templates using imported utility functions.",
+      "Coordinates synchronization of ArchSpine-specific configuration files and agent instructions into the target repository via imported sync functions.",
+      "Provides logic to determine and apply artifact strategies (e.g., distributable vs. init) based on configuration from Config."
+    ],
+    "outOfScope": [
+      "Direct file system I/O (delegated to imported utilities)",
+      "View-specific rendering or UI logic",
+      "HTTP request handling or API endpoints",
+      "Low-level Git operations"
+    ],
+    "invariants": [
+      "Relies on Config for artifact strategy configuration.",
+      "Depends on utility modules for file synchronization and block management.",
+      "Exports only interface definitions for strategy results, not concrete implementations."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Encapsulate repository initialization and artifact management logic behind well-typed interfaces, separating strategy from concrete file operations.",
+      "recentChangeIntent": "Refactoring to extract repository and LLM admin services (as per git intent), though this specific file appears to be an infrastructure module defining strategy interfaces, not a service itself."
+    },
+    "publicSurface": [
+      "RepositoryStrategyCheckResult",
+      "RepositoryStrategyApplyResult",
+      "RuleTemplateInstallResult",
+      "AgentInstructionsSyncResult",
+      "ManagedRepositoryFilesResult",
+      "InjectPackageScriptsResult"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure module defining interfaces and orchestration logic for repository artifact management and initialization strategies.",
+        "responsibilities": [
+          "Defines result interfaces for repository strategy checks, application, rule template installation, agent instructions synchronization, managed file operations, and package script injection.",
+          "Orchestrates validation of managed repository files (e.g., .gitattributes, .gitignore) against expected templates using imported utility functions.",
+          "Coordinates synchronization of ArchSpine-specific configuration files and agent instructions into the target repository via imported sync functions.",
+          "Provides logic to determine and apply artifact strategies (e.g., distributable vs. init) based on configuration from Config."
+        ],
+        "outOfScope": [
+          "Direct file system I/O (delegated to imported utilities)",
+          "View-specific rendering or UI logic",
+          "HTTP request handling or API endpoints",
+          "Low-level Git operations"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/repository-artifacts.js'",
+        "symbols": [
+          "listTrackedSnapshotFiles",
+          "managedBlockIncludesAll",
+          "readManagedFileBlock",
+          "snapshotOutputsPresent"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../utils/agent-instructions.js'",
+        "symbols": [
+          "injectArchSpineScripts",
+          "removeManagedGitAttributesFile",
+          "syncAgentInstructionsFile",
+          "syncGitAttributesFile",
+          "syncGitIgnoreFile",
+          "syncSearchIgnoreFile",
+          "syncSpineIgnoreFile",
+          "type AgentInstructionsSyncStatus",
+          "type GitAttributesRemovalStatus",
+          "type GitAttributesSyncStatus",
+          "type GitIgnoreSyncStatus",
+          "type PackageScriptStatus",
+          "type SearchIgnoreSyncStatus",
+          "type SpineIgnoreSyncStatus"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../utils/agent-instructions.templates.js'",
+        "symbols": [
+          "DISTRIBUTABLE_GITATTRIBUTES_LINES",
+          "GITATTRIBUTES_BLOCK_END",
+          "GITATTRIBUTES_BLOCK_START",
+          "GITIGNORE_BLOCK_END",
+          "GITIGNORE_BLOCK_START",
+          "type ArtifactStrategy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "checkRepositoryStrategy",
+        "kind": "function",
+        "signature": "checkRepositoryStrategy(\n  rootDir: string,\n  config: Config,\n)"
+      },
+      {
+        "name": "applyRepositoryStrategy",
+        "kind": "function",
+        "signature": "applyRepositoryStrategy(\n  rootDir: string,\n  config: Config,\n  nextStrategy: ArtifactStrategy,\n)"
+      },
+      {
+        "name": "installRecommendedRuleTemplates",
+        "kind": "function",
+        "signature": "installRecommendedRuleTemplates(rootDir: string)"
+      },
+      {
+        "name": "syncAgentInstructionsConfiguration",
+        "kind": "function",
+        "signature": "syncAgentInstructionsConfiguration(\n  rootDir: string,\n  config: Config,\n  selectedAgentInstructionsFile: string,\n)"
+      },
+      {
+        "name": "syncManagedRepositoryFiles",
+        "kind": "function",
+        "signature": "syncManagedRepositoryFiles(\n  rootDir: string,\n  config: Config,\n  artifactStrategy: ArtifactStrategy,\n)"
+      },
+      {
+        "name": "injectRepositoryPackageScripts",
+        "kind": "function",
+        "signature": "injectRepositoryPackageScripts(\n  rootDir: string,\n  config: Config,\n)"
+      },
+      {
+        "name": "RepositoryStrategyCheckResult",
+        "kind": "interface",
+        "signature": "interface RepositoryStrategyCheckResult"
+      },
+      {
+        "name": "RepositoryStrategyApplyResult",
+        "kind": "interface",
+        "signature": "interface RepositoryStrategyApplyResult"
+      },
+      {
+        "name": "RuleTemplateInstallResult",
+        "kind": "interface",
+        "signature": "interface RuleTemplateInstallResult"
+      },
+      {
+        "name": "AgentInstructionsSyncResult",
+        "kind": "interface",
+        "signature": "interface AgentInstructionsSyncResult"
+      },
+      {
+        "name": "ManagedRepositoryFilesResult",
+        "kind": "interface",
+        "signature": "interface ManagedRepositoryFilesResult"
+      },
+      {
+        "name": "InjectPackageScriptsResult",
+        "kind": "interface",
+        "signature": "interface InjectPackageScriptsResult"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "checkRepositoryStrategy",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "applyRepositoryStrategy",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "installRecommendedRuleTemplates",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "syncAgentInstructionsConfiguration",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "syncManagedRepositoryFiles",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "injectRepositoryPackageScripts",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "RepositoryStrategyCheckResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "RepositoryStrategyApplyResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "RuleTemplateInstallResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "AgentInstructionsSyncResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "ManagedRepositoryFilesResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "InjectPackageScriptsResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 12,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../infra/repository-artifacts.js",
+        "relation": "import",
+        "symbols": [
+          "listTrackedSnapshotFiles",
+          "managedBlockIncludesAll",
+          "readManagedFileBlock",
+          "snapshotOutputsPresent"
+        ]
+      },
+      {
+        "targetPath": "../utils/agent-instructions.js",
+        "relation": "import",
+        "symbols": [
+          "injectArchSpineScripts",
+          "removeManagedGitAttributesFile",
+          "syncAgentInstructionsFile",
+          "syncGitAttributesFile",
+          "syncGitIgnoreFile",
+          "syncSearchIgnoreFile",
+          "syncSpineIgnoreFile",
+          "AgentInstructionsSyncStatus",
+          "GitAttributesRemovalStatus",
+          "GitAttributesSyncStatus",
+          "GitIgnoreSyncStatus",
+          "PackageScriptStatus",
+          "SearchIgnoreSyncStatus",
+          "SpineIgnoreSyncStatus"
+        ]
+      },
+      {
+        "targetPath": "../utils/agent-instructions.templates.js",
+        "relation": "import",
+        "symbols": [
+          "DISTRIBUTABLE_GITATTRIBUTES_LINES",
+          "GITATTRIBUTES_BLOCK_END",
+          "GITATTRIBUTES_BLOCK_START",
+          "GITIGNORE_BLOCK_END",
+          "GITIGNORE_BLOCK_START",
+          "ArtifactStrategy"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:40.748Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db/repositories/violations.ts",
+    "contentHash": "02de2bea6657fea6927779a797250d454e4adc15a5492f83817b1a35de8bbc19",
+    "skeletonHash": "2212a9c4f2c2856df0cde3a753d00ee248370fb3b816cf523e2af31ebd19a2ff",
+    "semanticHash": "5aed3bb0de4e3890fe8d3ddee1469660dd1878a85c0eed0a8a4f680b236b32c4",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/db/repositories"
+  },
+  "semantic": {
+    "role": "Infrastructure Data Access Object (DAO) for persisting and querying architectural rule violation records in SQLite.",
+    "responsibilities": [
+      "Inserts new violation records (file path, rule ID, severity, reason, timestamp) into the SQLite violations table.",
+      "Deletes all violation records associated with a specific file path.",
+      "Retrieves all violation records ordered by severity and detection time for reporting."
+    ],
+    "outOfScope": [
+      "Orchestrating scanning or audit processes.",
+      "Enforcing architectural rules or performing validation.",
+      "Providing a high-level facade for other infrastructure services."
+    ],
+    "invariants": [
+      "Depends only on the SQLite driver (better-sqlite3) and internal types.",
+      "Exposes a stable, low-level data access interface for violation records.",
+      "Callers must provide an active database connection."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a dedicated data persistence layer for audit results, isolating database logic from scanning and reporting engines.",
+      "recentChangeIntent": "No direct evidence of change in this file from the provided git intent. The commit 'refactor: modularize CLI and decouple core infra services' suggests broader modularization, but this DAO's role remains consistent."
+    },
+    "publicSurface": [
+      "recordViolation(db, filePath, ruleId, severity, reason): void",
+      "deleteViolationsForFile(db, filePath): void",
+      "getAllViolations(db): ViolationRecord[]"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure Data Access Object (DAO) for persisting and querying architectural rule violation records in SQLite.",
+        "responsibilities": [
+          "Inserts new violation records (file path, rule ID, severity, reason, timestamp) into the SQLite violations table.",
+          "Deletes all violation records associated with a specific file path.",
+          "Retrieves all violation records ordered by severity and detection time for reporting."
+        ],
+        "outOfScope": [
+          "Orchestrating scanning or audit processes.",
+          "Enforcing architectural rules or performing validation.",
+          "Providing a high-level facade for other infrastructure services."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "recordViolation",
+        "kind": "function",
+        "signature": "recordViolation(\n  db: Database.Database,\n  filePath: string,\n  ruleId: string,\n  severity: string,\n  reason: string,\n)"
+      },
+      {
+        "name": "clearViolations",
+        "kind": "function",
+        "signature": "clearViolations(db: Database.Database, filePath: string)"
+      },
+      {
+        "name": "getActiveViolations",
+        "kind": "function",
+        "signature": "getActiveViolations(db: Database.Database)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "recordViolation",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/violations.ts#"
+      },
+      {
+        "name": "clearViolations",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/violations.ts#"
+      },
+      {
+        "name": "getActiveViolations",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/violations.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 3,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "better-sqlite3",
+        "relation": "import",
+        "symbols": [
+          "Database"
+        ]
+      },
+      {
+        "targetPath": "../types.js",
+        "relation": "import",
+        "symbols": [
+          "ViolationRecord"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:38.624Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt/shared.ts",
+    "contentHash": "be70097ede9d3a94955696ccc1211eaf63ba4db7cc7fd12458933a79ffb02541",
+    "skeletonHash": "9b3b1fbf065a94ae8cff22f4413063e19bedb3045890ef9ac49b53056f86d9f0",
+    "semanticHash": "db07d7b749121bf607739f9e0ffde204431dc94d7b555f0e60afd638610a83d1",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt"
+  },
+  "semantic": {
+    "role": "Utility function generating formatted output contract strings for the ArchSpine prompt response system.",
+    "responsibilities": [
+      "Renders the OUTPUT CONTRACT section text based on the specified PromptResponseMode and target languages.",
+      "Conditionally includes markdown block instructions when response mode is not 'json-only'.",
+      "Validates language list to ensure 'English' is included as a required base language."
+    ],
+    "outOfScope": [
+      "Does not handle actual JSON schema generation or validation.",
+      "Does not manage prompt construction beyond the output contract section.",
+      "Does not interact with file I/O, network, or external services."
+    ],
+    "invariants": [
+      "The function must always return a string that starts with 'OUTPUT CONTRACT:'.",
+      "The function must always include the first two numbered contract points.",
+      "When responseMode is 'json-only', the function must return only the JSON contract without markdown instructions.",
+      "The function must validate that 'English' is present in the languages array, case-insensitively."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable, parameterized output contract renderer that adapts to different response modes and language requirements, ensuring consistent prompt formatting across the system.",
+      "recentChangeIntent": "No recent changes detected; the file aligns with the modularization intent of the CLI and core infra services."
+    },
+    "publicSurface": [
+      "renderOutputContract(responseMode: PromptResponseMode, languages: string[]): string"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Utility function generating formatted output contract strings for the ArchSpine prompt response system.",
+        "responsibilities": [
+          "Renders the OUTPUT CONTRACT section text based on the specified PromptResponseMode and target languages.",
+          "Conditionally includes markdown block instructions when response mode is not 'json-only'.",
+          "Validates language list to ensure 'English' is included as a required base language."
+        ],
+        "outOfScope": [
+          "Does not handle actual JSON schema generation or validation.",
+          "Does not manage prompt construction beyond the output contract section.",
+          "Does not interact with file I/O, network, or external services."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "为 ArchSpine 提示响应系统生成格式化输出合约字符串的实用函数。",
+        "responsibilities": [
+          "根据指定的 PromptResponseMode 和目标语言列表，渲染 OUTPUT CONTRACT 部分的文本。",
+          "当响应模式不是 'json-only' 时，有条件地包含 Markdown 块指令。",
+          "验证语言列表，确保 'English' 作为必需的基础语言被包含在内。"
+        ],
+        "outOfScope": [
+          "不处理实际的 JSON 模式生成或验证。",
+          "不管理超出输出合约部分的提示构建。",
+          "不与文件 I/O、网络或外部服务交互。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "renderOutputContract",
+        "kind": "function",
+        "signature": "renderOutputContract(\n  responseMode: PromptResponseMode,\n  languages: string[],\n)"
+      },
+      {
+        "name": "buildLocalizedLanguageInstructions",
+        "kind": "function",
+        "signature": "buildLocalizedLanguageInstructions(languages: string[])"
+      },
+      {
+        "name": "buildMarkdownSectionGuidance",
+        "kind": "function",
+        "signature": "buildMarkdownSectionGuidance(fileKind: FileKind | 'project')"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "renderOutputContract",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt/shared.ts#"
+      },
+      {
+        "name": "buildLocalizedLanguageInstructions",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt/shared.ts#"
+      },
+      {
+        "name": "buildMarkdownSectionGuidance",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt/shared.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 3,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "FileKind"
+        ]
+      },
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "PromptResponseMode"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:40.181Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

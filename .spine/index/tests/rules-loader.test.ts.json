@@ -1,0 +1,181 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/rules-loader.test.ts",
+    "contentHash": "18475d0c4bd6012273632c62a681623e7a0eeec8587ee725290bfae40cfd8a3d",
+    "skeletonHash": "010dfbef11c17335f1c7f5dcf78e7769d786a1741fe9046bea8250493da2879c",
+    "semanticHash": "1f45f805528ce200d0045b264b8ac5b2117c95aaff812f3a575219c8881dbd8e",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite validating the rule loading subsystem.",
+    "responsibilities": [
+      "Validates that loadRulesFromDir correctly parses YAML rule templates into normalized rule documents.",
+      "Ensures rule properties (ruleId, appliesTo, severity, summary) are correctly extracted and match expected values.",
+      "Tests rule loading from a temporary directory to isolate filesystem dependencies.",
+      "Verifies that rule loading handles directory paths relative to the current working directory."
+    ],
+    "outOfScope": [
+      "Testing other subsystems like CLI or scanners.",
+      "Production rule enforcement or runtime validation.",
+      "UI or API endpoints."
+    ],
+    "invariants": [
+      "Uses Vitest testing framework with describe/it/expect assertions.",
+      "Isolates filesystem operations using temporary directories.",
+      "Depends on the loadRulesFromDir function from ../src/infra/rules-loader.js."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure rule loading is robust and correctly parses architectural rule definitions.",
+      "recentChangeIntent": "No direct evidence of changes from the provided git intent; the test appears focused on core rule loading functionality."
+    },
+    "publicSurface": [],
+    "ruleViolations": [
+      {
+        "id": "test-file-suffix",
+        "severity": "error",
+        "reason": "Rule requires test files to end with .test.ts or .spec.ts, but the filename cannot be determined from the provided AST header. If the file does not match the suffix, it would be a violation."
+      }
+    ],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite validating the rule loading subsystem.",
+        "responsibilities": [
+          "Validates that loadRulesFromDir correctly parses YAML rule templates into normalized rule documents.",
+          "Ensures rule properties (ruleId, appliesTo, severity, summary) are correctly extracted and match expected values.",
+          "Tests rule loading from a temporary directory to isolate filesystem dependencies.",
+          "Verifies that rule loading handles directory paths relative to the current working directory."
+        ],
+        "outOfScope": [
+          "Testing other subsystems like CLI or scanners.",
+          "Production rule enforcement or runtime validation.",
+          "UI or API endpoints."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/rules-loader.js'",
+        "symbols": [
+          "loadRulesFromDir"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../src/infra/rules-loader.js",
+        "relation": "import",
+        "symbols": [
+          "loadRulesFromDir"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:44.154Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

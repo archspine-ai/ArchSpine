@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/architecture-diagram-view.ts",
+    "contentHash": "db0ec1c2e54c8c2276fb1af7f12a266f430a8dfc7fbe96d5beba72cc5e4b022d",
+    "skeletonHash": "c9eb33e75938fa48f62cfaa6972fdd8b27e62b9bd34b2eef4f5a4c5a646e3944",
+    "semanticHash": "d58b668e5a20aef825293399c07e5925f34a353d336f57f2b090a6aeb24e7bcd",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "ArchSpine view derivation service for generating and rendering interactive architecture diagrams from project metadata using LLM-based specification generation.",
+    "responsibilities": [
+      "Loads project and folder units from the view index via ViewIndexLoader to gather architectural context.",
+      "Constructs LLM prompts using the predefined generateArchitectureDiagramPrompt template to request an architecture diagram specification.",
+      "Invokes a text-generation LLM client to produce a structured ArchDiagramSpec JSON.",
+      "Validates the generated specification for required fields, node types, and structural integrity using internal validation logic.",
+      "Renders the validated specification into HTML using ArchitectureDiagramRenderer.",
+      "Saves the rendered HTML and view data via OutputManager for persistence."
+    ],
+    "outOfScope": [
+      "Directly managing LLM client configuration or authentication.",
+      "Handling low-level diagram rendering graphics or SVG generation.",
+      "Providing user interface components for diagram interaction."
+    ],
+    "invariants": [
+      "Requires a text-generation LLM client for diagram specification generation.",
+      "Depends on ViewIndexLoader for architectural context.",
+      "Outputs must be saved via OutputManager's saveView and saveViewHtml methods."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Facade service orchestrating LLM-based diagram generation, validation, and rendering to produce view artifacts.",
+      "recentChangeIntent": "Refactoring to establish subsystem facades and resolve layer inversions, as indicated by the git commit."
+    },
+    "publicSurface": [
+      "deriveArchitectureDiagramView function"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "ArchSpine view derivation service for generating and rendering interactive architecture diagrams from project metadata using LLM-based specification generation.",
+        "responsibilities": [
+          "Loads project and folder units from the view index via ViewIndexLoader to gather architectural context.",
+          "Constructs LLM prompts using the predefined generateArchitectureDiagramPrompt template to request an architecture diagram specification.",
+          "Invokes a text-generation LLM client to produce a structured ArchDiagramSpec JSON.",
+          "Validates the generated specification for required fields, node types, and structural integrity using internal validation logic.",
+          "Renders the validated specification into HTML using ArchitectureDiagramRenderer.",
+          "Saves the rendered HTML and view data via OutputManager for persistence."
+        ],
+        "outOfScope": [
+          "Directly managing LLM client configuration or authentication.",
+          "Handling low-level diagram rendering graphics or SVG generation.",
+          "Providing user interface components for diagram interaction."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../assets/templates/prompts/arch-diagram.js'",
+        "symbols": [
+          "generateArchitectureDiagramPrompt"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./arch-diagram-renderer.js'",
+        "symbols": [
+          "ArchitectureDiagramRenderer"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./index-loader.js'",
+        "symbols": [
+          "ViewIndexLoader"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "deriveArchitectureDiagramView",
+        "kind": "function",
+        "signature": "deriveArchitectureDiagramView(\n  loader: ViewIndexLoader,\n  outputManager: Pick<OutputManager, 'saveView' | 'saveViewHtml'>,\n  runtimeIO?: RuntimeIO,\n  llmClient?: LLMClient,\n)"
+      },
+      {
+        "name": "validateArchDiagramSpec",
+        "kind": "function",
+        "signature": "validateArchDiagramSpec(input: unknown)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "deriveArchitectureDiagramView",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/architecture-diagram-view.ts#"
+      },
+      {
+        "name": "validateArchDiagramSpec",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/architecture-diagram-view.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../assets/templates/prompts/arch-diagram.js",
+        "relation": "import",
+        "symbols": [
+          "generateArchitectureDiagramPrompt"
+        ]
+      },
+      {
+        "targetPath": "./arch-diagram-renderer.js",
+        "relation": "import",
+        "symbols": [
+          "ArchitectureDiagramRenderer"
+        ]
+      },
+      {
+        "targetPath": "./index-loader.js",
+        "relation": "import",
+        "symbols": [
+          "ViewIndexLoader"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:41.065Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

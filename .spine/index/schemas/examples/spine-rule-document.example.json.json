@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "schemas/examples/spine-rule-document.example.json",
+    "contentHash": "0091b0a51af342ef54f9e690cbfd5389df755cf4a7e5d74cf048ed33b24b2d3b",
+    "semanticHash": "ac84e2d98e2bb6d75b26a5bb60dbe734a0dbdd9fbf40d44ef23d169b5e5ecc87",
+    "language": "unsupported",
+    "fileKind": "config",
+    "scope": "schemas/examples"
+  },
+  "semantic": {
+    "role": "Architectural dependency rule enforcing layer isolation in the ArchSpine system",
+    "responsibilities": [
+      "Preventing direct imports from database adapters in service and middleware layers",
+      "Enforcing domain boundary separation between business logic and storage implementation"
+    ],
+    "outOfScope": [],
+    "invariants": [
+      "Files matching src/**/*.ts (excluding src/db/**) must not import from src/db/*",
+      "Violations are treated as errors (severity: error)",
+      "Rule is enforceable and cannot be bypassed"
+    ],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Architectural rule that prohibits direct database layer imports to maintain clean domain boundaries.",
+        "parameter_definitions": {
+          "schemaVersion": "Defines the version of the rule schema format for compatibility.",
+          "ruleId": "Unique identifier for this rule: no-direct-db-import.",
+          "title": "Human-readable title of the rule in Chinese: '禁止直接导入数据库层' (Prohibit direct database layer imports).",
+          "summary": "Brief description: Service and middleware layers must not directly depend on low-level database adapters.",
+          "appliesTo": "Glob patterns specifying which files are subject to the rule; includes all TypeScript files except those in src/db/.",
+          "severity": "Impact level: 'error' means violations block compilation or deployment.",
+          "enforceable": "Boolean flag indicating the rule can be automatically enforced by tooling.",
+          "rationale": "Reason for the rule in Chinese: Maintain clear domain boundaries and avoid coupling business logic to storage implementation.",
+          "bodyMarkdown": "Detailed rule text in Markdown format explaining the prohibition and allowed alternatives."
+        },
+        "stability_and_risks": "This rule enhances system stability by enforcing a strict layered architecture, preventing accidental coupling between business logic and database specifics. It reduces the risk of cascading changes when storage implementations are modified. However, overly strict enforcement may require additional abstraction layers, increasing initial development complexity. Violations are treated as errors, ensuring early detection in CI/CD pipelines."
+      },
+      "Simplified Chinese": {
+        "role": "架构规则，禁止直接导入数据库层，以保持清晰的领域边界。",
+        "parameter_definitions": {
+          "schemaVersion": "定义规则模式格式的版本，用于兼容性检查。",
+          "ruleId": "规则的唯一标识符：no-direct-db-import。",
+          "title": "规则的人类可读标题：'禁止直接导入数据库层'。",
+          "summary": "简要描述：服务层和中间层不得直接依赖底层数据库适配器。",
+          "appliesTo": "指定受规则影响的文件的通配模式；包括所有 TypeScript 文件，但排除 src/db/ 目录下的文件。",
+          "severity": "影响级别：'error' 表示违反规则将阻止编译或部署。",
+          "enforceable": "布尔标志，指示该规则可以被工具自动强制执行。",
+          "rationale": "规则的制定理由：保持领域边界清晰，避免业务层耦合底层存储实现。",
+          "bodyMarkdown": "Markdown 格式的详细规则文本，说明禁止的内容和允许的替代方案。"
+        },
+        "stability_and_risks": "此规则通过强制严格的分层架构来增强系统稳定性，防止业务逻辑与数据库细节之间的意外耦合。它降低了存储实现变更时引发级联修改的风险。然而，过于严格的执行可能需要额外的抽象层，增加了初始开发的复杂性。违反规则被视为错误，确保在 CI/CD 流水线中及早发现。"
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:44:39.287Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

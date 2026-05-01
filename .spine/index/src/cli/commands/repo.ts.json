@@ -1,0 +1,154 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/repo.ts",
+    "contentHash": "7cf308e51abca3228e225829a0af22011fdeb2326a8cba6c79607e959c6301c1",
+    "skeletonHash": "c63d0d9e0c8df5e844fd862c36ec5fa1fbbfb5f06e4f717d5bec3ad0777102b5",
+    "semanticHash": "dd835594d6bb8e29e32305fc1b127409f7d5afe407e69fe7dc1824f19adb57c5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command router for repository-level operations in the ArchSpine system.",
+    "responsibilities": [
+      "Defines the interface for repository command execution options (ExecuteRepoCommandOptions).",
+      "Routes the 'repo' subcommand to appropriate strategy functions: 'check', 'strategy', or 'help'.",
+      "Validates subcommand arguments and provides usage guidance via throwCliUsage.",
+      "Coordinates repository artifact strategy parsing and execution via parseArtifactStrategy."
+    ],
+    "outOfScope": [
+      "Implementing repository analysis or strategy logic (delegated to repo/strategy.js).",
+      "Handling configuration loading or persistence.",
+      "Directly managing file I/O or pipeline execution."
+    ],
+    "invariants": [
+      "Must remain a thin command router, delegating core logic to services/engines.",
+      "Must not contain business logic for repository scanning, analysis, or artifact generation."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Separate CLI command routing from core business logic to maintain testability and reusability.",
+      "recentChangeIntent": "No recent changes to this file's core responsibilities detected from the provided git intent."
+    },
+    "publicSurface": [
+      "ExecuteRepoCommandOptions interface",
+      "executeRepoCommand function"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command router for repository-level operations in the ArchSpine system.",
+        "responsibilities": [
+          "Defines the interface for repository command execution options (ExecuteRepoCommandOptions).",
+          "Routes the 'repo' subcommand to appropriate strategy functions: 'check', 'strategy', or 'help'.",
+          "Validates subcommand arguments and provides usage guidance via throwCliUsage.",
+          "Coordinates repository artifact strategy parsing and execution via parseArtifactStrategy."
+        ],
+        "outOfScope": [
+          "Implementing repository analysis or strategy logic (delegated to repo/strategy.js).",
+          "Handling configuration loading or persistence.",
+          "Directly managing file I/O or pipeline execution."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../repo/strategy.js'",
+        "symbols": [
+          "runRepoCheck",
+          "runRepoStrategySet",
+          "parseArtifactStrategy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "throwCliUsage",
+          "printStep"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeRepoCommand",
+        "kind": "function",
+        "signature": "executeRepoCommand({\n  args,\n  rootDir,\n  config,\n}: ExecuteRepoCommandOptions)"
+      },
+      {
+        "name": "ExecuteRepoCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteRepoCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeRepoCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/repo.ts#"
+      },
+      {
+        "name": "ExecuteRepoCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/repo.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../repo/strategy.js",
+        "relation": "import",
+        "symbols": [
+          "runRepoCheck",
+          "runRepoStrategySet",
+          "parseArtifactStrategy"
+        ]
+      },
+      {
+        "targetPath": "../cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "throwCliUsage",
+          "printStep"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:36.647Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

@@ -1,0 +1,275 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db.ts",
+    "contentHash": "0e38f6ab676e967b8fa5d6860e7ee17a576f44d2b5fdcebced228bda5ba726ac",
+    "skeletonHash": "6462dd8094e5f3efbdf13c21e4ea8564202b9562120d80e3ee3a99b647e49015",
+    "semanticHash": "b8465e520bd6121be4997790b721b1dcdea634add49f7d415f7ad2c474fdf2a3",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Database Facade / Repository Aggregator that provides a unified interface for all SQLite runtime database operations in the ArchSpine mirror system.",
+    "responsibilities": [
+      "Manages database connection lifecycle and schema initialization for the runtime SQLite database.",
+      "Provides a consolidated API for file tracking operations (create, read, update status, delete, list).",
+      "Handles symbol export registration, cache invalidation, and cross-file symbol resolution for dependency analysis.",
+      "Records and queries LLM usage metrics for cost monitoring and analytics.",
+      "Manages architectural rule violation recording and querying.",
+      "Provides batch transaction commit for atomic operations."
+    ],
+    "outOfScope": [
+      "Orchestrating high-level business logic or engine workflows.",
+      "Directly executing SQL queries (delegated to repository modules).",
+      "Providing HTTP or network interfaces."
+    ],
+    "invariants": [
+      "Exposes a stable, aggregated public API for all runtime database operations.",
+      "Delegates specific domain operations (files, symbols, usage, violations) to internal repository modules.",
+      "Manages database connection as a private resource."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a single, stable facade for all database interactions, insulating callers from internal repository structure and enabling safe refactoring of low-level infra.",
+      "recentChangeIntent": "Refactoring to modularize CLI and decouple core infra services (per git intent). This file's role as a facade aligns with that intent by providing a decoupled, stable interface."
+    },
+    "publicSurface": [
+      "SpineDB class"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Database Facade / Repository Aggregator that provides a unified interface for all SQLite runtime database operations in the ArchSpine mirror system.",
+        "responsibilities": [
+          "Manages database connection lifecycle and schema initialization for the runtime SQLite database.",
+          "Provides a consolidated API for file tracking operations (create, read, update status, delete, list).",
+          "Handles symbol export registration, cache invalidation, and cross-file symbol resolution for dependency analysis.",
+          "Records and queries LLM usage metrics for cost monitoring and analytics.",
+          "Manages architectural rule violation recording and querying.",
+          "Provides batch transaction commit for atomic operations."
+        ],
+        "outOfScope": [
+          "Orchestrating high-level business logic or engine workflows.",
+          "Directly executing SQL queries (delegated to repository modules).",
+          "Providing HTTP or network interfaces."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./db/batch.js'",
+        "symbols": [
+          "commitBatch"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./db/errors.js'",
+        "symbols": [
+          "mapRuntimeDbError"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./db/repositories/files.js'",
+        "symbols": [
+          "deleteFile",
+          "ensureFileRecord",
+          "getFileDocs",
+          "getFileStatus",
+          "getGlobalStatus",
+          "getTrackedFiles",
+          "updateFileStatus",
+          "updateFileStatusWithDocs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./db/repositories/drift.js'",
+        "symbols": [
+          "getDriftHistory"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./db/repositories/symbols.js'",
+        "symbols": [
+          "addFileExports",
+          "clearFileExports",
+          "invalidateCache",
+          "resolveSymbol"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./db/repositories/usage.js'",
+        "symbols": [
+          "getTotalUsage",
+          "getUsageSummary",
+          "recordUsage"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./db/repositories/violations.js'",
+        "symbols": [
+          "clearViolations",
+          "getActiveViolations",
+          "recordViolation"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./db/runtime.js'",
+        "symbols": [
+          "openRuntimeDatabase"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./db/schema.js'",
+        "symbols": [
+          "initializeRuntimeSchema"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'better-sqlite3'",
+        "symbols": [
+          "Database"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "SpineDB",
+        "kind": "class",
+        "signature": "class SpineDB"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "SpineDB",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/db.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./db/batch.js",
+        "relation": "import",
+        "symbols": [
+          "commitBatch"
+        ]
+      },
+      {
+        "targetPath": "./db/errors.js",
+        "relation": "import",
+        "symbols": [
+          "mapRuntimeDbError"
+        ]
+      },
+      {
+        "targetPath": "./db/repositories/files.js",
+        "relation": "import",
+        "symbols": [
+          "deleteFile",
+          "ensureFileRecord",
+          "getFileDocs",
+          "getFileStatus",
+          "getGlobalStatus",
+          "getTrackedFiles",
+          "updateFileStatus",
+          "updateFileStatusWithDocs"
+        ]
+      },
+      {
+        "targetPath": "./db/repositories/drift.js",
+        "relation": "import",
+        "symbols": [
+          "getDriftHistory"
+        ]
+      },
+      {
+        "targetPath": "./db/repositories/symbols.js",
+        "relation": "import",
+        "symbols": [
+          "addFileExports",
+          "clearFileExports",
+          "invalidateCache",
+          "resolveSymbol"
+        ]
+      },
+      {
+        "targetPath": "./db/repositories/usage.js",
+        "relation": "import",
+        "symbols": [
+          "getTotalUsage",
+          "getUsageSummary",
+          "recordUsage"
+        ]
+      },
+      {
+        "targetPath": "./db/repositories/violations.js",
+        "relation": "import",
+        "symbols": [
+          "clearViolations",
+          "getActiveViolations",
+          "recordViolation"
+        ]
+      },
+      {
+        "targetPath": "./db/runtime.js",
+        "relation": "import",
+        "symbols": [
+          "openRuntimeDatabase"
+        ]
+      },
+      {
+        "targetPath": "./db/schema.js",
+        "relation": "import",
+        "symbols": [
+          "initializeRuntimeSchema"
+        ]
+      },
+      {
+        "targetPath": "better-sqlite3",
+        "relation": "import",
+        "symbols": [
+          "Database"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/error-system.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:38.377Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

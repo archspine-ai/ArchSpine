@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/rules-loader.ts",
+    "contentHash": "ce2a624f89a580296de0a86a672046186ba0b6486fb21e193a6d5c1a70e9f6c1",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "8a2092751f98d1d4c35157f268e290dbdcd6a0b75431bd90fc330c7e8a42896f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure utility for loading and parsing Spine rule documents from the filesystem.",
+    "responsibilities": [
+      "Reads rule files from disk using synchronous file system operations.",
+      "Parses rule file content using gray-matter frontmatter parsing.",
+      "Normalizes rule severity values to a standard lowercase format.",
+      "Generates URL-friendly slugs from rule identifiers for consistent referencing."
+    ],
+    "outOfScope": [
+      "Rule validation or enforcement logic.",
+      "Rule execution or application logic.",
+      "Asynchronous file system operations.",
+      "Writing or modifying rule files on disk."
+    ],
+    "invariants": [
+      "Must only expose stable low-level file reading and parsing capabilities.",
+      "Must not absorb service/task/engine orchestration concerns.",
+      "Callers should prefer this public facade over reaching into deep private implementation paths."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, low-level infrastructure facade for loading and parsing Spine rule documents from the filesystem, ensuring consistent rule document structure and severity normalization.",
+      "recentChangeIntent": "No recent changes detected beyond general pipeline fixes; the file remains a stable infrastructure utility."
+    },
+    "publicSurface": [
+      "slugifyRuleId",
+      "normalizeSeverity",
+      "LoadedRuleFile interface"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure utility for loading and parsing Spine rule documents from the filesystem.",
+        "responsibilities": [
+          "Reads rule files from disk using synchronous file system operations.",
+          "Parses rule file content using gray-matter frontmatter parsing.",
+          "Normalizes rule severity values to a standard lowercase format.",
+          "Generates URL-friendly slugs from rule identifiers for consistent referencing."
+        ],
+        "outOfScope": [
+          "Rule validation or enforcement logic.",
+          "Rule execution or application logic.",
+          "Asynchronous file system operations.",
+          "Writing or modifying rule files on disk."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于从文件系统加载和解析 Spine 规则文档的基础设施工具。",
+        "responsibilities": [
+          "使用同步文件系统操作从磁盘读取规则文件。",
+          "使用 gray-matter 前置元数据解析器解析规则文件内容。",
+          "将规则严重性值规范化为标准小写格式。",
+          "从规则标识符生成 URL 友好的短横线命名，以便一致引用。"
+        ],
+        "outOfScope": [
+          "规则验证或执行逻辑。",
+          "规则应用或执行逻辑。",
+          "异步文件系统操作。",
+          "在磁盘上写入或修改规则文件。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "gray-matter",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SpineRuleDocument"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T03:58:07.472Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

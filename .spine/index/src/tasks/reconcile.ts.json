@@ -1,0 +1,230 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/reconcile.ts",
+    "contentHash": "5d642058c221eccda07e205cb7f354f41cf58cad386c7c36173c93e4a7334f14",
+    "skeletonHash": "2a5833fdd24386458fb26dee316c92118b3bd9fbae90eb2048578b7f9240fa2b",
+    "semanticHash": "dc7601850d7bb0ccd5fe7bce1d6a90700c812acdb7f17f1d7f71685223529971",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "ArchSpine reconciliation task that synchronizes the manifest's file status with the actual repository state, validates index document compatibility, and updates cache metadata.",
+    "responsibilities": [
+      "Loads the language snapshot from the manifest to identify available language extensions.",
+      "Filters tracked files based on detected language extensions and supported document types (e.g., .md, .json).",
+      "Identifies missing or outdated files by comparing manifest entries with filesystem existence and hash calculations.",
+      "Updates manifest file status (e.g., 'missing') and clears exports for missing files.",
+      "Reads and validates index documents for compatibility, reporting issues via runtime warnings.",
+      "Updates manifest file status with document metadata and clears exports for incompatible or missing index documents."
+    ],
+    "outOfScope": [
+      "CLI command parsing or argument handling.",
+      "Orchestration of other pipeline stages or services.",
+      "Direct filesystem scanning or traversal (delegated to scanner).",
+      "Language detection logic (delegated to LangRegistry)."
+    ],
+    "invariants": [
+      "Task modules must implement stage-local work on top of core contracts and engines, and must not take over CLI command parsing or unrelated service orchestration."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a dedicated reconciliation stage that ensures the manifest's view of the repository is consistent with the actual filesystem state, including index document compatibility checks.",
+      "recentChangeIntent": "Fix lint warnings and type errors, and add CI workflow (from commit efb2705). No semantic changes to reconciliation logic detected."
+    },
+    "publicSurface": [
+      "ReconcileTask (class extending SpineTask<void>)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "ArchSpine reconciliation task that synchronizes the manifest's file status with the actual repository state, validates index document compatibility, and updates cache metadata.",
+        "responsibilities": [
+          "Loads the language snapshot from the manifest to identify available language extensions.",
+          "Filters tracked files based on detected language extensions and supported document types (e.g., .md, .json).",
+          "Identifies missing or outdated files by comparing manifest entries with filesystem existence and hash calculations.",
+          "Updates manifest file status (e.g., 'missing') and clears exports for missing files.",
+          "Reads and validates index documents for compatibility, reporting issues via runtime warnings.",
+          "Updates manifest file status with document metadata and clears exports for incompatible or missing index documents."
+        ],
+        "outOfScope": [
+          "CLI command parsing or argument handling.",
+          "Orchestration of other pipeline stages or services.",
+          "Direct filesystem scanning or traversal (delegated to scanner).",
+          "Language detection logic (delegated to LangRegistry)."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 的协调任务，负责将清单中的文件状态与实际仓库状态同步，验证索引文档的兼容性，并更新缓存元数据。",
+        "responsibilities": [
+          "从清单加载语言快照，识别可用的语言扩展名。",
+          "根据检测到的语言扩展名和支持的文档类型（如 .md、.json）过滤已跟踪的文件。",
+          "通过比较清单条目与文件系统存在性及哈希计算，识别缺失或过时的文件。",
+          "更新清单文件状态（例如标记为“缺失”），并清除缺失文件的导出信息。",
+          "读取并验证索引文档的兼容性，通过运行时警告报告问题。",
+          "使用文档元数据更新清单文件状态，并清除不兼容或缺失的索引文档的导出信息。"
+        ],
+        "outOfScope": [
+          "CLI 命令解析或参数处理。",
+          "编排其他流水线阶段或服务。",
+          "直接的文件系统扫描或遍历（委托给扫描器）。",
+          "语言检测逻辑（委托给 LangRegistry）。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/lang-registry.js'",
+        "symbols": [
+          "LangRegistry"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/index-reader.js'",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "ReconcileTask",
+        "kind": "class",
+        "signature": "class ReconcileTask"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ReconcileTask",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/tasks/reconcile.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "../ast/lang-registry.js",
+        "relation": "import",
+        "symbols": [
+          "LangRegistry"
+        ]
+      },
+      {
+        "targetPath": "../infra/index-reader.js",
+        "relation": "import",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/tasks/reconcile.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/state.ts/loadLanguageSnapshot#",
+        "targetPath": "src/infra/manifest/state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:57:22.566Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

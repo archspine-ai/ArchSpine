@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/scanner-utils.ts",
+    "contentHash": "c71b9afe66b27ee29f18692e09e7d8cd8bc9020ca9e6f4a45c6f6fb00afe3ced",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "629eb84fb3f32fffc99100344222af54b7605af2182754139f758cef51cc163c",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Scanner engine utility module providing path and pattern normalization for file scanning operations.",
+    "responsibilities": [
+      "Normalizes file paths to Unix-style slashes and strips leading './' prefixes.",
+      "Normalizes scanner patterns, ensuring directory patterns are expanded with '**'.",
+      "Defines the NotableExclusion interface for tracking excluded patterns with metadata."
+    ],
+    "outOfScope": [
+      "File system traversal or directory walking logic.",
+      "Pattern matching execution or glob evaluation.",
+      "Scan result aggregation or reporting."
+    ],
+    "invariants": [
+      "Must remain free of CLI entrypoint imports to satisfy engine-independence rule.",
+      "Must not import service-level orchestration modules."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide reusable path and pattern normalization utilities for the scanner engine, ensuring consistent handling of file paths and glob patterns across scanning operations.",
+      "recentChangeIntent": "No recent changes detected; the module remains stable as part of the pre-v1.0 pipeline fixes."
+    },
+    "publicSurface": [
+      "normalizeScannerPath(file: string): string",
+      "normalizeScannerPattern(pattern: string): string",
+      "NotableExclusion interface"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Scanner engine utility module providing path and pattern normalization for file scanning operations.",
+        "responsibilities": [
+          "Normalizes file paths to Unix-style slashes and strips leading './' prefixes.",
+          "Normalizes scanner patterns, ensuring directory patterns are expanded with '**'.",
+          "Defines the NotableExclusion interface for tracking excluded patterns with metadata."
+        ],
+        "outOfScope": [
+          "File system traversal or directory walking logic.",
+          "Pattern matching execution or glob evaluation.",
+          "Scan result aggregation or reporting."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "扫描引擎工具模块，提供文件路径和模式的规范化功能，用于文件扫描操作。",
+        "responsibilities": [
+          "将文件路径规范化为 Unix 风格斜杠，并去除开头的 './' 前缀。",
+          "规范化扫描模式，确保目录模式扩展为包含 '**' 的形式。",
+          "定义 NotableExclusion 接口，用于跟踪带有元数据的排除模式。"
+        ],
+        "outOfScope": [
+          "文件系统遍历或目录行走逻辑。",
+          "模式匹配执行或 glob 评估。",
+          "扫描结果聚合或报告生成。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "picomatch",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "./scanner.js",
+        "relation": "import-type",
+        "symbols": [
+          "ScanDryRunReport"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T03:57:47.844Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

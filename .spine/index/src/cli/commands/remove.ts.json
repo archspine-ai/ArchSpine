@@ -1,0 +1,227 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/remove.ts",
+    "contentHash": "dd3c82c8882288e516a438d9a23bc86829087c16ca17b2b364d7429a67b79514",
+    "skeletonHash": "a4ea4970c9d68f3116a45bb016a91cb346fb4f35966a0c4039d3163e927ceb8b",
+    "semanticHash": "c153489df11a75ed52b08e89c00d8f21128d19b7b379be952386fd759a3d3076",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command adapter for the 'remove' operation, orchestrating the cleanup of ArchSpine-managed artifacts from a repository.",
+    "responsibilities": [
+      "Parses command-line arguments to determine removal scope and confirmation requirements.",
+      "Coordinates the removal of ArchSpine-managed files (agent instructions, git attributes, git ignore, search ignore, spine ignore) based on configuration state.",
+      "Manages the uninstallation of ArchSpine-managed Git hooks from the repository.",
+      "Provides user confirmation prompts before performing destructive removal operations."
+    ],
+    "outOfScope": [
+      "Implementing low-level file system removal logic.",
+      "Managing persistence of configuration state.",
+      "Executing core pipeline or scanning logic."
+    ],
+    "invariants": [
+      "Must remain a thin command adapter, delegating all file and hook operations to dedicated utility modules.",
+      "Must not contain business logic for determining what constitutes an ArchSpine-managed artifact; that logic belongs to the Config service."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Decouple CLI entrypoints from core services to keep command routing thin and runtime behavior reusable.",
+      "recentChangeIntent": "Refactor to modularize CLI and decouple core infra services, aligning with the separation rule."
+    },
+    "publicSurface": [
+      "ExecuteRemoveCommandOptions interface"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command adapter for the 'remove' operation, orchestrating the cleanup of ArchSpine-managed artifacts from a repository.",
+        "responsibilities": [
+          "Parses command-line arguments to determine removal scope and confirmation requirements.",
+          "Coordinates the removal of ArchSpine-managed files (agent instructions, git attributes, git ignore, search ignore, spine ignore) based on configuration state.",
+          "Manages the uninstallation of ArchSpine-managed Git hooks from the repository.",
+          "Provides user confirmation prompts before performing destructive removal operations."
+        ],
+        "outOfScope": [
+          "Implementing low-level file system removal logic.",
+          "Managing persistence of configuration state.",
+          "Executing core pipeline or scanning logic."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../utils/confirm.js'",
+        "symbols": [
+          "promptForExplicitConfirmation"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../utils/agent-instructions.js'",
+        "symbols": [
+          "removeArchSpineScripts",
+          "removeManagedAgentInstructionsFile",
+          "removeManagedGitAttributesFile",
+          "removeManagedGitIgnoreFile",
+          "removeManagedSearchIgnoreFile",
+          "removeManagedSpineIgnoreFile"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../utils/git-hook.js'",
+        "symbols": [
+          "uninstallGitHook"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "printStep"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeRemoveCommand",
+        "kind": "function",
+        "signature": "executeRemoveCommand(options: ExecuteRemoveCommandOptions)"
+      },
+      {
+        "name": "ExecuteRemoveCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteRemoveCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeRemoveCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/remove.ts#"
+      },
+      {
+        "name": "ExecuteRemoveCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/remove.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../../utils/confirm.js",
+        "relation": "import",
+        "symbols": [
+          "promptForExplicitConfirmation"
+        ]
+      },
+      {
+        "targetPath": "../../utils/agent-instructions.js",
+        "relation": "import",
+        "symbols": [
+          "removeArchSpineScripts",
+          "removeManagedAgentInstructionsFile",
+          "removeManagedGitAttributesFile",
+          "removeManagedGitIgnoreFile",
+          "removeManagedSearchIgnoreFile",
+          "removeManagedSpineIgnoreFile"
+        ]
+      },
+      {
+        "targetPath": "../../utils/git-hook.js",
+        "relation": "import",
+        "symbols": [
+          "uninstallGitHook"
+        ]
+      },
+      {
+        "targetPath": "../cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "printStep"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:36.612Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

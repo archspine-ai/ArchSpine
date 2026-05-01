@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/prompt-engine.test.ts",
+    "contentHash": "f92ec89e43efe99972a72990195d43a928d87e3642ade081180fe4d010f2c834",
+    "skeletonHash": "eb0421be3195163432d60bcf5099b7ecf3b5a9ea965d0c923a5c98ffa3dbefd9",
+    "semanticHash": "a6482f9d32815c6b2599e178fe913fbd9ef794074ce73d76c79dea8fa796f68f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest benchmark test suite for evaluating prompt engine performance and scaling characteristics under large inputs.",
+    "responsibilities": [
+      "Benchmarks the compacting of source prompt artifacts using task-specific budgets with large content and rule blocks.",
+      "Tests generation of source prompts with extensive import/export structures and validates output constraints.",
+      "Verifies integration between prompt-context artifact building and prompt generation modules under scaled conditions.",
+      "Asserts structural constraints (line counts, import/export counts) in generated prompt artifacts."
+    ],
+    "outOfScope": [
+      "Unit testing of individual prompt-context or prompt-rendering functions",
+      "Integration with non-prompt engine subsystems",
+      "End-to-end user workflow validation"
+    ],
+    "invariants": [
+      "Uses Vitest testing framework with describe/it/expect assertions",
+      "Imports from src/infra/prompt-context.js and src/infra/prompt-rendering.js",
+      "Focuses on performance and scaling under artificially large inputs"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Benchmark and validate prompt engine performance and scaling under load to ensure robustness.",
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest benchmark test suite for evaluating prompt engine performance and scaling characteristics under large inputs.",
+        "responsibilities": [
+          "Benchmarks the compacting of source prompt artifacts using task-specific budgets with large content and rule blocks.",
+          "Tests generation of source prompts with extensive import/export structures and validates output constraints.",
+          "Verifies integration between prompt-context artifact building and prompt generation modules under scaled conditions.",
+          "Asserts structural constraints (line counts, import/export counts) in generated prompt artifacts."
+        ],
+        "outOfScope": [
+          "Unit testing of individual prompt-context or prompt-rendering functions",
+          "Integration with non-prompt engine subsystems",
+          "End-to-end user workflow validation"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/prompt-context.js'",
+        "symbols": [
+          "buildSourcePromptArtifacts",
+          "calculateSourcePromptBudgets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/prompt-rendering.js'",
+        "symbols": [
+          "generateMarkdownPrompt",
+          "generateSourcePrompt"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/prompt-context.js",
+        "relation": "import",
+        "symbols": [
+          "buildSourcePromptArtifacts",
+          "calculateSourcePromptBudgets"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/prompt-rendering.js",
+        "relation": "import",
+        "symbols": [
+          "generateMarkdownPrompt",
+          "generateSourcePrompt"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.836Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

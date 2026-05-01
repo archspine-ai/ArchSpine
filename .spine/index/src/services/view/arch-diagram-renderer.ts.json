@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/arch-diagram-renderer.ts",
+    "contentHash": "1d7791df0810ee432819291c04933a0b0b2ef673dacd9536ba5668178aa4a7b9",
+    "skeletonHash": "9f46acb2cfd710ddac4fff293e7ddd6d98b3bf3b0ca1597f3ff5d59538534b91",
+    "semanticHash": "5609db5d3aef27de5419c4b9251ec82a73a9cb2e9ffd9eb07221b66d48cf7f31",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "Pure rendering utility that transforms architectural diagram specifications into SVG markup.",
+    "responsibilities": [
+      "Defines visual styling (fill, stroke) for each architectural node type (frontend, backend, database, etc.).",
+      "Orders node layers according to a predefined sequence for consistent layout.",
+      "Converts an ArchDiagramSpec into a complete SVG string representation via a static render method.",
+      "Calculates node positions within the SVG canvas to avoid overlaps and maintain layer separation.",
+      "Escapes HTML entities in node labels for safe SVG text content."
+    ],
+    "outOfScope": [
+      "Orchestrating runtime services or business logic",
+      "Handling user interactions or dynamic updates",
+      "Persisting diagram data or managing application state",
+      "Providing interactive diagram editing capabilities"
+    ],
+    "invariants": [
+      "Pure function with no side effects; output depends solely on input spec.",
+      "SVG generation is deterministic given the same spec.",
+      "Node positioning algorithm ensures no overlaps within the same layer."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable, stateless component for generating architectural diagrams as SVG images, decoupled from any specific UI framework or runtime environment.",
+      "recentChangeIntent": null
+    },
+    "publicSurface": [
+      "ArchitectureDiagramRenderer.render(spec: ArchDiagramSpec): string"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Pure rendering utility that transforms architectural diagram specifications into SVG markup.",
+        "responsibilities": [
+          "Defines visual styling (fill, stroke) for each architectural node type (frontend, backend, database, etc.).",
+          "Orders node layers according to a predefined sequence for consistent layout.",
+          "Converts an ArchDiagramSpec into a complete SVG string representation via a static render method.",
+          "Calculates node positions within the SVG canvas to avoid overlaps and maintain layer separation.",
+          "Escapes HTML entities in node labels for safe SVG text content."
+        ],
+        "outOfScope": [
+          "Orchestrating runtime services or business logic",
+          "Handling user interactions or dynamic updates",
+          "Persisting diagram data or managing application state",
+          "Providing interactive diagram editing capabilities"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "ArchitectureDiagramRenderer",
+        "kind": "class",
+        "signature": "class ArchitectureDiagramRenderer"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ArchitectureDiagramRenderer",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/services/view/arch-diagram-renderer.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../types/view.js",
+        "relation": "import",
+        "symbols": [
+          "ArchDiagramSpec",
+          "ArchDiagramNode",
+          "ArchNodeType"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:41.031Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

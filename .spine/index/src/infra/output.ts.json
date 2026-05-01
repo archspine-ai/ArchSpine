@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/output.ts",
+    "contentHash": "7286b2595c28ca3b40b9bf87979ca1a44a9aa9919674712b12a23f5eb9d45876",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "6337c3f0cfe912c70dece4f853d5cc378bb7dea7bad545d577736098fb91cea6",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure facade for writing Spine index units (JSON) to the filesystem within the .spine directory.",
+    "responsibilities": [
+      "Manages root and .spine directory paths for output operations",
+      "Writes SpineUnit, SpineFolderUnit, and SpineProjectUnit objects as JSON files to appropriate locations under .spine",
+      "Reads SpineUnit objects from disk by relative path, with fallback to .json extension if missing",
+      "Ensures target directories exist before writing files via ensureDir method"
+    ],
+    "outOfScope": [
+      "Does not handle reading or writing of non-Spine files",
+      "Does not manage runtime I/O or process orchestration",
+      "Does not validate the content of Spine units beyond type constraints"
+    ],
+    "invariants": [
+      "All output paths are relative to the .spine directory under rootDir",
+      "Target directories are created before any file write operation",
+      "File reads fallback to .json extension if the exact path is not found"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, low-level filesystem facade for persisting Spine index data, isolating file I/O concerns from higher-level orchestration logic.",
+      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0 - this file appears stable with no lint issues."
+    },
+    "publicSurface": [
+      "OutputConfig interface",
+      "OutputManager class"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure facade for writing Spine index units (JSON) to the filesystem within the .spine directory.",
+        "responsibilities": [
+          "Manages root and .spine directory paths for output operations",
+          "Writes SpineUnit, SpineFolderUnit, and SpineProjectUnit objects as JSON files to appropriate locations under .spine",
+          "Reads SpineUnit objects from disk by relative path, with fallback to .json extension if missing",
+          "Ensures target directories exist before writing files via ensureDir method"
+        ],
+        "outOfScope": [
+          "Does not handle reading or writing of non-Spine files",
+          "Does not manage runtime I/O or process orchestration",
+          "Does not validate the content of Spine units beyond type constraints"
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施外观层，用于将 Spine 索引单元（JSON）写入 .spine 目录下的文件系统。",
+        "responsibilities": [
+          "管理输出操作的根目录和 .spine 目录路径",
+          "将 SpineUnit、SpineFolderUnit 和 SpineProjectUnit 对象以 JSON 文件形式写入 .spine 下的适当位置",
+          "通过相对路径从磁盘读取 SpineUnit 对象，若路径缺失则回退到 .json 扩展名",
+          "通过 ensureDir 方法确保写入文件前目标目录已存在"
+        ],
+        "outOfScope": [
+          "不处理非 Spine 文件的读写操作",
+          "不管理运行时 I/O 或流程编排",
+          "不验证 Spine 单元内容，仅进行类型约束检查"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SpineUnit",
+          "SpineFolderUnit",
+          "SpineProjectUnit"
+        ]
+      },
+      {
+        "targetPath": "../utils/fs.js",
+        "relation": "import",
+        "symbols": [
+          "FileSystemManager"
+        ]
+      },
+      {
+        "targetPath": "./runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T03:58:07.671Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

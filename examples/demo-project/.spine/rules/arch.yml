@@ -1,0 +1,14 @@
+# ArchSpine Demo Project Rules
+# These YAML blocks intentionally use the parser-compatible rule syntax.
+
+- [Rule: Layer Isolation]
+  - Scope: src/api/**
+  - Constraint: API handlers may import from src/domain/**, but must not import src/infra/** directly.
+  - Severity: error
+  - Reason: Keep the API layer independent from infrastructure details.
+
+- [Rule: Documentation]
+  - Scope: src/domain/**
+  - Constraint: Public domain classes and methods should keep TSDoc comments.
+  - Severity: warning
+  - Reason: Keep domain contracts readable in generated architecture context.

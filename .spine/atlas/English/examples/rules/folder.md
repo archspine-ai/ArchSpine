@@ -1,0 +1,9 @@
+<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/rules","role":"This directory contains architectural governance and naming convention rule definitions for the ArchSpine project.","responsibility":"Collectively, these files define and enforce the structural constraints and naming standards that ensure consistency, maintainability, and proper dependency isolation across the entire ArchSpine monorepo.","children":[{"filePath":"examples/rules/layered-architecture.yml","role":"Architectural governance rule definition","fileKind":"document"},{"filePath":"examples/rules/naming-conventions.yml","role":"Defines naming conventions to ensure codebase consistency across a large monorepo.","fileKind":"document"}],"provenance":{"indexedAt":"2026-05-01T03:58:51.870Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
+# `examples/rules` — Architectural Governance & Naming Convention Rules
+
+This directory defines the structural constraints and naming standards that enforce consistency, maintainability, and proper dependency isolation across the entire ArchSpine monorepo. It contains two concrete rule definition files:
+
+- **`layered-architecture.yml`** — Defines architectural governance rules that specify how layers must interact, ensuring dependency isolation and preventing circular or forbidden dependencies.
+- **`naming-conventions.yml`** — Establishes naming conventions to maintain codebase consistency across a large monorepo, covering file names, module names, and other identifiers.
+
+These rules are the authoritative source for automated validation and enforcement of the project's architectural standards.

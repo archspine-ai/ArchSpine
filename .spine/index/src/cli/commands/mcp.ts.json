@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/mcp.ts",
+    "contentHash": "e117a8dd04548fde000352fe2cad7d3e0e865d22cba8b9f04f46f3e0a1bfd42d",
+    "skeletonHash": "ec53950f50fb4dd664ea9d172b42959bf4898c13bd24fffe9124704bbe6e8fc7",
+    "semanticHash": "4ecdc0f9b12ecc1cabba852effc79c34d03e66911ad792eab29e74bea5bbeb8c",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command adapter for starting the ArchSpine Model Context Protocol (MCP) server.",
+    "responsibilities": [
+      "Parses command-line arguments for the 'mcp' subcommand.",
+      "Instantiates and starts the ArchSpineMCPServer when the 'start' subcommand is invoked.",
+      "Provides a structured interface (ExecuteMcpCommandOptions) for MCP command execution options.",
+      "Delegates server lifecycle management to the dedicated MCP server implementation in the infrastructure layer."
+    ],
+    "outOfScope": [
+      "Implementing MCP server logic (handled by infra/mcp/server)",
+      "Persistence or pipeline operations",
+      "Complex command-line argument validation beyond basic subcommand routing"
+    ],
+    "invariants": [
+      "Must remain a thin adapter; all MCP server logic belongs in the infrastructure layer.",
+      "Must not absorb business logic, pipeline, or persistence responsibilities."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Separate CLI command routing from server implementation to keep CLI thin and reusable.",
+      "recentChangeIntent": null
+    },
+    "publicSurface": [
+      "ExecuteMcpCommandOptions interface",
+      "executeMcpCommand function"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command adapter for starting the ArchSpine Model Context Protocol (MCP) server.",
+        "responsibilities": [
+          "Parses command-line arguments for the 'mcp' subcommand.",
+          "Instantiates and starts the ArchSpineMCPServer when the 'start' subcommand is invoked.",
+          "Provides a structured interface (ExecuteMcpCommandOptions) for MCP command execution options.",
+          "Delegates server lifecycle management to the dedicated MCP server implementation in the infrastructure layer."
+        ],
+        "outOfScope": [
+          "Implementing MCP server logic (handled by infra/mcp/server)",
+          "Persistence or pipeline operations",
+          "Complex command-line argument validation beyond basic subcommand routing"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../infra/mcp/server.js'",
+        "symbols": [
+          "ArchSpineMCPServer"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "throwCliUsage"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeMcpCommand",
+        "kind": "function",
+        "signature": "executeMcpCommand({\n  args,\n  rootDir,\n}: ExecuteMcpCommandOptions)"
+      },
+      {
+        "name": "ExecuteMcpCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteMcpCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeMcpCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/mcp.ts#"
+      },
+      {
+        "name": "ExecuteMcpCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/mcp.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../infra/mcp/server.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineMCPServer"
+        ]
+      },
+      {
+        "targetPath": "../cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "throwCliUsage"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:36.541Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

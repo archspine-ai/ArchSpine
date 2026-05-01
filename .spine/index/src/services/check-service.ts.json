@@ -1,0 +1,343 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/check-service.ts",
+    "contentHash": "7f7810704c0660b198c5d7b6d6403e13185e9393662b7ca85c0b70a660857dd5",
+    "skeletonHash": "b39d8e436afb35dfd4be1abf19613497bace5ffd66029d9e8db15c6019a1781f",
+    "semanticHash": "1fc1ea39387951b38c6209280832735f95356dcc1937a51b37efad53906ff5c7",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Service facade orchestrating the ArchSpine 'check' command pipeline, coordinating scanning, AST extraction, validation, and usage recording within a managed runtime session.",
+    "responsibilities": [
+      "Orchestrates the sequential execution of scanning, cleanup, AST extraction, and validation tasks via a TaskRunner.",
+      "Manages runtime session lifecycle and execution checkpoints for resumable operations using runWithRuntimeSession and deriveCheckResumeCandidateFiles.",
+      "Records usage metrics and validation summaries into the project manifest via context.manifest.recordUsage.",
+      "Handles errors, logs stage-specific metrics (file counts, byte sizes), and formats byte counts for human-readable output."
+    ],
+    "outOfScope": [
+      "Direct file system I/O operations (delegated to RuntimeIO).",
+      "LLM client configuration and secret resolution (delegated to infra/llm and infra/secrets).",
+      "Task implementation details (scanning, AST extraction, validation logic).",
+      "Execution profile resolution (delegated to runtime-execution-profile)."
+    ],
+    "invariants": [
+      "The check pipeline must always execute within a runtime session managed by runWithRuntimeSession.",
+      "Execution checkpoints must be derived via deriveCheckResumeCandidateFiles before starting a run.",
+      "Usage metrics must be recorded into the manifest after pipeline completion."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized orchestration service for the 'check' command that coordinates task execution, session management, and metrics recording.",
+      "recentChangeIntent": "gogogo"
+    },
+    "publicSurface": [
+      "CheckService",
+      "CheckServiceOptions"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Service facade orchestrating the ArchSpine 'check' command pipeline, coordinating scanning, AST extraction, validation, and usage recording within a managed runtime session.",
+        "responsibilities": [
+          "Orchestrates the sequential execution of scanning, cleanup, AST extraction, and validation tasks via a TaskRunner.",
+          "Manages runtime session lifecycle and execution checkpoints for resumable operations using runWithRuntimeSession and deriveCheckResumeCandidateFiles.",
+          "Records usage metrics and validation summaries into the project manifest via context.manifest.recordUsage.",
+          "Handles errors, logs stage-specific metrics (file counts, byte sizes), and formats byte counts for human-readable output."
+        ],
+        "outOfScope": [
+          "Direct file system I/O operations (delegated to RuntimeIO).",
+          "LLM client configuration and secret resolution (delegated to infra/llm and infra/secrets).",
+          "Task implementation details (scanning, AST extraction, validation logic).",
+          "Execution profile resolution (delegated to runtime-execution-profile)."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "服务外观层，负责编排 ArchSpine 'check' 命令的流水线，在受管理的运行时会话中协调扫描、AST 提取、验证和用量记录。",
+        "responsibilities": [
+          "通过 TaskRunner 编排扫描、清理、AST 提取和验证任务的顺序执行。",
+          "使用 runWithRuntimeSession 和 deriveCheckResumeCandidateFiles 管理运行时会话生命周期和可恢复操作的执行检查点。",
+          "通过 context.manifest.recordUsage 将用量指标和验证摘要记录到项目清单中。",
+          "处理错误，记录阶段特定指标（文件数量、字节大小），并将字节数格式化为人类可读的输出。"
+        ],
+        "outOfScope": [
+          "直接的文件系统 I/O 操作（委托给 RuntimeIO）。",
+          "LLM 客户端配置和密钥解析（委托给 infra/llm 和 infra/secrets）。",
+          "任务实现细节（扫描、AST 提取、验证逻辑）。",
+          "执行配置文件解析（委托给 runtime-execution-profile）。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/pipeline.js'",
+        "symbols": [
+          "TaskRunner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../tasks/scan-cleanup.js'",
+        "symbols": [
+          "ScanAndCleanupTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../tasks/ast-extra.js'",
+        "symbols": [
+          "ASTExtractionTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../tasks/validate.js'",
+        "symbols": [
+          "ValidationSummary",
+          "ValidationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/scan-policy.js'",
+        "symbols": [
+          "ScanPolicy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./task-runtime.js'",
+        "symbols": [
+          "createTaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/llm.js'",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets",
+          "resolveLLMSettings"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/secrets.js'",
+        "symbols": [
+          "Secrets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./runtime-execution-profile.js'",
+        "symbols": [
+          "resolveExecutionProfileFromSettings"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes",
+          "toArchSpineError"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/execution-checkpoint.js'",
+        "symbols": [
+          "deriveCheckResumeCandidateFiles"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./runtime-session.js'",
+        "symbols": [
+          "runWithRuntimeSession"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "runCheck",
+        "kind": "function",
+        "signature": "runCheck(\n  rootDir: string,\n  llmClient?: LLMClient,\n  scanPolicy?: ScanPolicy,\n)"
+      },
+      {
+        "name": "CheckService",
+        "kind": "class",
+        "signature": "class CheckService"
+      },
+      {
+        "name": "CheckServiceOptions",
+        "kind": "interface",
+        "signature": "interface CheckServiceOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "runCheck",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/check-service.ts#"
+      },
+      {
+        "name": "CheckService",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/services/check-service.ts#"
+      },
+      {
+        "name": "CheckServiceOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/check-service.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 14,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/pipeline.js",
+        "relation": "import",
+        "symbols": [
+          "TaskRunner"
+        ]
+      },
+      {
+        "targetPath": "../tasks/scan-cleanup.js",
+        "relation": "import",
+        "symbols": [
+          "ScanAndCleanupTask"
+        ]
+      },
+      {
+        "targetPath": "../tasks/ast-extra.js",
+        "relation": "import",
+        "symbols": [
+          "ASTExtractionTask"
+        ]
+      },
+      {
+        "targetPath": "../tasks/validate.js",
+        "relation": "import",
+        "symbols": [
+          "ValidationSummary",
+          "ValidationTask"
+        ]
+      },
+      {
+        "targetPath": "../core/scan-policy.js",
+        "relation": "import",
+        "symbols": [
+          "ScanPolicy"
+        ]
+      },
+      {
+        "targetPath": "../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "./task-runtime.js",
+        "relation": "import",
+        "symbols": [
+          "createTaskContext"
+        ]
+      },
+      {
+        "targetPath": "../infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets",
+          "resolveLLMSettings"
+        ]
+      },
+      {
+        "targetPath": "../infra/secrets.js",
+        "relation": "import",
+        "symbols": [
+          "Secrets"
+        ]
+      },
+      {
+        "targetPath": "./runtime-execution-profile.js",
+        "relation": "import",
+        "symbols": [
+          "resolveExecutionProfileFromSettings"
+        ]
+      },
+      {
+        "targetPath": "../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes",
+          "toArchSpineError"
+        ]
+      },
+      {
+        "targetPath": "../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "../infra/execution-checkpoint.js",
+        "relation": "import",
+        "symbols": [
+          "deriveCheckResumeCandidateFiles"
+        ]
+      },
+      {
+        "targetPath": "./runtime-session.js",
+        "relation": "import",
+        "symbols": [
+          "runWithRuntimeSession"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:40.607Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

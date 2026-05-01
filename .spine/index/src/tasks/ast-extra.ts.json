@@ -1,0 +1,253 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/ast-extra.ts",
+    "contentHash": "1380be2216ac28161f2e053b7b87af0c464a34bad0fede2658bb3ff017ffea1c",
+    "skeletonHash": "709499b04d28b03c0e109a70348ab04b4ad642f65a9c749f0f10d7cf5a1ccc47",
+    "semanticHash": "2e4ccc3a3635f60fba50cac59ba007d901e4513c8be7bd0dba6134cb00da3c1d",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "Core pipeline task for AST extraction and symbol registration within the ArchSpine mirror system.",
+    "responsibilities": [
+      "Identifies source files using LangRegistry.isSourceFile and resolves their programming language via resolveLanguage.",
+      "Extracts AST skeletons from supported source files using the configured extractor (ctx.extractor.extract).",
+      "Registers extracted skeletons into the runtime cache and task state via setTaskSkeleton.",
+      "Handles unsupported files by logging warnings, updating the manifest to skip them, and marking them as unsupported via setUnsupportedTaskFile.",
+      "Manages file state transitions (started, skipped, removed) through execution checkpoint and manifest operations.",
+      "Forces re-extraction of files marked in ctx.forcedSyncFiles by clearing their export records and recalculating hashes."
+    ],
+    "outOfScope": [
+      "CLI command parsing or argument handling.",
+      "Service orchestration beyond the extraction stage boundary.",
+      "Direct filesystem scanning or discovery (delegated to ScanStage).",
+      "Language registration or language registry configuration."
+    ],
+    "invariants": [
+      "Task modules should implement stage-local work on top of core contracts and engines, and should not take over CLI command parsing or unrelated service orchestration."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Implement the AST extraction pipeline stage that transforms scanned file metadata into structured AST skeletons for downstream analysis.",
+      "recentChangeIntent": "Fix lint warnings and type errors, and add CI workflow integration."
+    },
+    "publicSurface": [
+      "ASTExtractionTask (class extending SpineTask<ScanStageOutput, ExtractionStageOutput>)",
+      "name = 'AST Extraction & Symbol Registration'",
+      "checkpointId = 'ast-extraction'",
+      "execute(ctx: TaskContext, input: ScanStageOutput): Promise<ExtractionStageOutput>"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core pipeline task for AST extraction and symbol registration within the ArchSpine mirror system.",
+        "responsibilities": [
+          "Identifies source files using LangRegistry.isSourceFile and resolves their programming language via resolveLanguage.",
+          "Extracts AST skeletons from supported source files using the configured extractor (ctx.extractor.extract).",
+          "Registers extracted skeletons into the runtime cache and task state via setTaskSkeleton.",
+          "Handles unsupported files by logging warnings, updating the manifest to skip them, and marking them as unsupported via setUnsupportedTaskFile.",
+          "Manages file state transitions (started, skipped, removed) through execution checkpoint and manifest operations.",
+          "Forces re-extraction of files marked in ctx.forcedSyncFiles by clearing their export records and recalculating hashes."
+        ],
+        "outOfScope": [
+          "CLI command parsing or argument handling.",
+          "Service orchestration beyond the extraction stage boundary.",
+          "Direct filesystem scanning or discovery (delegated to ScanStage).",
+          "Language registration or language registry configuration."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 镜像系统中负责 AST 提取与符号注册的核心流水线任务。",
+        "responsibilities": [
+          "通过 LangRegistry.isSourceFile 识别源文件，并使用 resolveLanguage 解析其编程语言。",
+          "从支持的源文件中提取 AST 骨架，使用配置的提取器 (ctx.extractor.extract)。",
+          "将提取的骨架注册到运行时缓存和任务状态中，通过 setTaskSkeleton 实现。",
+          "处理不支持的源文件：记录警告、更新清单以跳过这些文件，并通过 setUnsupportedTaskFile 标记为不支持。",
+          "通过执行检查点和清单操作管理文件状态转换（开始、跳过、移除）。",
+          "对标记在 ctx.forcedSyncFiles 中的文件强制重新提取，清除其导出记录并重新计算哈希。"
+        ],
+        "outOfScope": [
+          "CLI 命令解析或参数处理。",
+          "超出提取阶段边界的服务编排。",
+          "直接的文件系统扫描或发现（委托给 ScanStage）。",
+          "语言注册或语言注册表配置。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/lang-registry.js'",
+        "symbols": [
+          "LangRegistry"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/lang-discovery.js'",
+        "symbols": [
+          "resolveLanguage"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/task-state.js'",
+        "symbols": [
+          "setTaskSkeleton",
+          "setUnsupportedTaskFile"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "ASTExtractionTask",
+        "kind": "class",
+        "signature": "class ASTExtractionTask"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ASTExtractionTask",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/tasks/ast-extra.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "../core/task-types.js",
+        "relation": "import",
+        "symbols": [
+          "ExtractionStageOutput",
+          "ScanStageOutput"
+        ]
+      },
+      {
+        "targetPath": "../ast/lang-registry.js",
+        "relation": "import",
+        "symbols": [
+          "LangRegistry"
+        ]
+      },
+      {
+        "targetPath": "../ast/lang-discovery.js",
+        "relation": "import",
+        "symbols": [
+          "resolveLanguage"
+        ]
+      },
+      {
+        "targetPath": "../core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "setTaskSkeleton",
+          "setUnsupportedTaskFile"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/tasks/ast-extra.ts/_file_#",
+        "targetSymbol": "src/ast/lang-discovery.ts/resolveLanguage#",
+        "targetPath": "src/ast/lang-discovery.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/ast-extra.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/setUnsupportedTaskFile#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/ast-extra.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/setTaskSkeleton#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:57:20.834Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

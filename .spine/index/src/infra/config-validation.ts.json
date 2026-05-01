@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/config-validation.ts",
+    "contentHash": "358196900136a339181ab9adb9a0acd6c75bfe0a8d45a80df16a2c47773034fe",
+    "skeletonHash": "cef7738862fe4deae4b80a442884eb732b8a96a00d2b7f28cd31b3206dc6e002",
+    "semanticHash": "1190278dd0c4ce4886fe9403e5dfc225bbe01ed656fc6ddaeffdae5c55715bed",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure facade providing a stable public API for ArchSpine configuration resolution and validation.",
+    "responsibilities": [
+      "Re-exports the `resolveSpineConfig` and `validateSpineConfig` functions from the core configuration schema module.",
+      "Re-exports the `SpineConfigValidationResult` type to provide a complete configuration utility interface.",
+      "Provides a dedicated, stable import path within the infra layer, insulating upstream callers from internal module restructuring."
+    ],
+    "outOfScope": [
+      "Orchestrating service, task, or engine workflows.",
+      "Implementing configuration logic or schema definitions.",
+      "Handling runtime execution or business logic."
+    ],
+    "invariants": [
+      "Must only re-export stable configuration utilities from the core schema module.",
+      "Must not contain implementation code or absorb orchestration concerns."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Decouple infrastructure API surface from internal module structure to enable safe refactoring.",
+      "recentChangeIntent": "No recent changes detected in this file; recent commit 'tighten schema handling and add try preview' likely relates to core schema, not this facade."
+    },
+    "publicSurface": [
+      "resolveSpineConfig",
+      "validateSpineConfig",
+      "SpineConfigValidationResult"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure facade providing a stable public API for ArchSpine configuration resolution and validation.",
+        "responsibilities": [
+          "Re-exports the `resolveSpineConfig` and `validateSpineConfig` functions from the core configuration schema module.",
+          "Re-exports the `SpineConfigValidationResult` type to provide a complete configuration utility interface.",
+          "Provides a dedicated, stable import path within the infra layer, insulating upstream callers from internal module restructuring."
+        ],
+        "outOfScope": [
+          "Orchestrating service, task, or engine workflows.",
+          "Implementing configuration logic or schema definitions.",
+          "Handling runtime execution or business logic."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "resolveSpineConfig",
+        "kind": "unknown",
+        "signature": "export { resolveSpineConfig }"
+      },
+      {
+        "name": "validateSpineConfig",
+        "kind": "unknown",
+        "signature": "export { validateSpineConfig }"
+      },
+      {
+        "name": "type SpineConfigValidationResult",
+        "kind": "unknown",
+        "signature": "export { type SpineConfigValidationResult }"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "resolveSpineConfig",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/config-validation.ts#"
+      },
+      {
+        "name": "validateSpineConfig",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/config-validation.ts#"
+      },
+      {
+        "name": "type SpineConfigValidationResult",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/config-validation.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 3,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/config-schema.js",
+        "relation": "import",
+        "symbols": [
+          "resolveSpineConfig",
+          "validateSpineConfig",
+          "SpineConfigValidationResult"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:37.952Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

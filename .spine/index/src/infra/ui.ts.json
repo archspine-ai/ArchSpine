@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/ui.ts",
+    "contentHash": "4b58f9f22a604e283f3de3f302bee00289cdd0bf32a4be8c4fba78ad20b82aa8",
+    "skeletonHash": "b555e4753ddb445ba7c602494f178784fe8a54325ecdb7e67a141d660dffb01e",
+    "semanticHash": "afd9739e35dae5280c82597cae17022d924f0655609d279166a738140c827d8e",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "CLI utility function for interactive foldable console output management during asynchronous operations.",
+    "responsibilities": [
+      "Wraps asynchronous actions with a foldable UI that displays a blinking orange status indicator and allows SPACE key to unfold detailed output.",
+      "Detects CI or non-TTY environments and falls back to native console behavior for safety and compatibility.",
+      "Intercepts and buffers console.log, console.warn, and console.error output while folded, displaying it upon unfold.",
+      "Manages raw terminal input mode and event listeners for interactive key handling."
+    ],
+    "outOfScope": [
+      "Persistent logging or file I/O.",
+      "Network or IPC communication.",
+      "Configuration management or environment variable parsing beyond CI detection.",
+      "Any domain-specific business logic."
+    ],
+    "invariants": [
+      "Must not absorb service/task/engine orchestration concerns (per rule infra-facade-imports).",
+      "Must fall back to native console behavior in CI or non-TTY environments.",
+      "Must restore terminal state (raw mode, listeners) after completion."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable interactive console output wrapper for long-running tasks, improving developer experience by reducing visual noise while preserving access to detailed logs.",
+      "recentChangeIntent": "Fix lint warnings and type errors, add CI workflow integration."
+    },
+    "publicSurface": [
+      "runWithFoldableOutput"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI utility function for interactive foldable console output management during asynchronous operations.",
+        "responsibilities": [
+          "Wraps asynchronous actions with a foldable UI that displays a blinking orange status indicator and allows SPACE key to unfold detailed output.",
+          "Detects CI or non-TTY environments and falls back to native console behavior for safety and compatibility.",
+          "Intercepts and buffers console.log, console.warn, and console.error output while folded, displaying it upon unfold.",
+          "Manages raw terminal input mode and event listeners for interactive key handling."
+        ],
+        "outOfScope": [
+          "Persistent logging or file I/O.",
+          "Network or IPC communication.",
+          "Configuration management or environment variable parsing beyond CI detection.",
+          "Any domain-specific business logic."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于异步操作期间交互式可折叠控制台输出的 CLI 工具函数。",
+        "responsibilities": [
+          "将异步操作包装为可折叠的 UI，显示闪烁的橙色状态指示器，并允许按空格键展开详细输出。",
+          "检测 CI 或非 TTY 环境，并回退到原生控制台行为以确保安全性和兼容性。",
+          "在折叠状态下拦截并缓冲 console.log、console.warn 和 console.error 的输出，展开时显示。",
+          "管理原始终端输入模式和用于交互式按键处理的事件监听器。"
+        ],
+        "outOfScope": [
+          "持久化日志记录或文件 I/O。",
+          "网络或 IPC 通信。",
+          "超出 CI 检测范围的配置管理或环境变量解析。",
+          "任何特定领域的业务逻辑。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'util'",
+        "symbols": [
+          "* as util"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'chalk'",
+        "symbols": [
+          "chalk"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'util'",
+        "symbols": [
+          "* as util"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "runWithFoldableOutput",
+        "kind": "function",
+        "signature": "runWithFoldableOutput(\n  action: () => Promise<T>,\n  options: { fallbackMessage?: string } = {},\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "runWithFoldableOutput",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/ui.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "util",
+        "relation": "import",
+        "symbols": [
+          "* as util"
+        ]
+      },
+      {
+        "targetPath": "chalk",
+        "relation": "import",
+        "symbols": [
+          "chalk"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:57:09.873Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/scan-policy.test.ts",
+    "contentHash": "f80b93e99520f1390ec618be4c7fb19cf0ce6600a848fb2220d7564b8a8fecf3",
+    "skeletonHash": "749b2f6d00553d6ad823a40ac2510e01f628bb8c149bfe07378de974c85a45d3",
+    "semanticHash": "e62f8f573b51948fae08062deca51b0eb79d9b9f5dd61b8267f328beb8dc967d",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite for validating the ScanPolicy module's behavior with temporary file structures and configuration schema.",
+    "responsibilities": [
+      "Creates temporary directories and file structures to simulate repository layouts for testing",
+      "Tests the DEFAULT_SCAN_POLICY constants and scanning behavior",
+      "Validates that the Scanner correctly applies scan policies in a controlled environment",
+      "Tests configuration schema handling and version compatibility",
+      "Cleans up test artifacts after each test run"
+    ],
+    "outOfScope": [
+      "Production deployment logic",
+      "User interface components",
+      "Permanent file system modifications",
+      "Network or external API calls"
+    ],
+    "invariants": [
+      "Must be a test file with suffix .test.ts or .spec.ts",
+      "Must isolate test artifacts to temporary directories",
+      "Must not affect the actual project configuration"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure the scanning engine respects policies and configuration schemas through isolated, repeatable tests.",
+      "recentChangeIntent": "Tighten schema handling and add try preview capabilities, likely reflected in updated test cases for configuration validation."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite for validating the ScanPolicy module's behavior with temporary file structures and configuration schema.",
+        "responsibilities": [
+          "Creates temporary directories and file structures to simulate repository layouts for testing.",
+          "Tests the DEFAULT_SCAN_POLICY constants and scanning behavior.",
+          "Validates that the Scanner correctly applies scan policies in a controlled environment.",
+          "Tests configuration schema handling and version compatibility.",
+          "Cleans up test artifacts after each test run."
+        ],
+        "outOfScope": [
+          "Production deployment logic.",
+          "User interface components.",
+          "Permanent file system modifications.",
+          "Network or external API calls."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "beforeEach",
+          "afterEach"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/engines/scanner.js'",
+        "symbols": [
+          "Scanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/core/scan-policy.js'",
+        "symbols": [
+          "DEFAULT_SCAN_POLICY"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_CONFIG_SCHEMA_VERSION"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 12,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/engines/scanner.ts",
+        "relation": "import",
+        "symbols": [
+          "Scanner"
+        ]
+      },
+      {
+        "targetPath": "src/infra/config.ts",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "src/core/scan-policy.ts",
+        "relation": "import",
+        "symbols": [
+          "DEFAULT_SCAN_POLICY"
+        ]
+      },
+      {
+        "targetPath": "src/types/protocol.ts",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_CONFIG_SCHEMA_VERSION"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:44.294Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

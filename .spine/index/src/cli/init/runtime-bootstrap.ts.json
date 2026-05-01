@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/init/runtime-bootstrap.ts",
+    "contentHash": "b343483e3962c839f9c7d1914ea6c4fba72559f6081eed058e2375c18ffd53ea",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "fa28f5081f864a35fca8c2b948b3c6a50421d328d5d87d336e8709b02ed9b8cb",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/init"
+  },
+  "semantic": {
+    "role": "CLI runtime bootstrap orchestrator that initializes the ArchSpine system and triggers the build pipeline.",
+    "responsibilities": [
+      "Coordinates LLM credential setup and scope confirmation via runtime service prompts.",
+      "Triggers initial file system scan using the Scanner engine to discover tracked files.",
+      "Invokes language discovery to detect programming languages in the codebase.",
+      "Updates the system manifest with the discovered language snapshot.",
+      "Calls the build workflow command to process the scanned and discovered data."
+    ],
+    "outOfScope": [
+      "Direct file system I/O or persistence operations (delegated to Scanner and Manifest).",
+      "Language detection algorithms (delegated to discoverLanguages).",
+      "Build pipeline execution details (delegated to runBuildWorkflow)."
+    ],
+    "invariants": [
+      "CLI entrypoints must not absorb pipeline or persistence logic that belongs in services, core, engines, or infra."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a thin CLI bootstrap entrypoint that initializes the system and delegates to engines and services.",
+      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, likely involving adjustments to the bootstrap flow."
+    },
+    "publicSurface": [
+      "runRuntimeBootstrap(options: RuntimeBootstrapOptions): Promise<void>"
+    ],
+    "ruleViolations": [
+      {
+        "id": "cli-entrypoint-separation",
+        "severity": "error",
+        "reason": "The runRuntimeBootstrap function orchestrates pipeline steps (scan, language discovery, manifest update, build workflow) directly, absorbing logic that should reside in services, core, engines, or infra. This violates the rule that CLI modules must stay as entrypoints and command adapters."
+      }
+    ],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI runtime bootstrap orchestrator that initializes the ArchSpine system and triggers the build pipeline.",
+        "responsibilities": [
+          "Coordinates LLM credential setup and scope confirmation via runtime service prompts.",
+          "Triggers initial file system scan using the Scanner engine to discover tracked files.",
+          "Invokes language discovery to detect programming languages in the codebase.",
+          "Updates the system manifest with the discovered language snapshot.",
+          "Calls the build workflow command to process the scanned and discovered data."
+        ],
+        "outOfScope": [
+          "Direct file system I/O or persistence operations (delegated to Scanner and Manifest).",
+          "Language detection algorithms (delegated to discoverLanguages).",
+          "Build pipeline execution details (delegated to runBuildWorkflow)."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "CLI 运行时引导编排器，用于初始化 ArchSpine 系统并触发构建流水线。",
+        "responsibilities": [
+          "通过运行时服务提示协调 LLM 凭据设置和范围确认。",
+          "触发初始文件系统扫描，使用 Scanner 引擎发现跟踪的文件。",
+          "调用语言发现功能，检测代码库中的编程语言。",
+          "使用发现的语言快照更新系统清单。",
+          "调用构建工作流命令，处理扫描和发现的数据。"
+        ],
+        "outOfScope": [
+          "直接的文件系统 I/O 或持久化操作（委托给 Scanner 和 Manifest）。",
+          "语言检测算法（委托给 discoverLanguages）。",
+          "构建流水线执行细节（委托给 runBuildWorkflow）。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../engines/scanner.js",
+        "relation": "import",
+        "symbols": [
+          "Scanner"
+        ]
+      },
+      {
+        "targetPath": "../../ast/lang-discovery.js",
+        "relation": "import",
+        "symbols": [
+          "discoverLanguages"
+        ]
+      },
+      {
+        "targetPath": "../../infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeBootstrapOptions"
+        ]
+      },
+      {
+        "targetPath": "../commands/build.js",
+        "relation": "import",
+        "symbols": [
+          "runBuildWorkflow"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T03:57:50.123Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

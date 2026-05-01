@@ -1,0 +1,511 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-05-01T07:21:00.256Z",
+  "experimental": true,
+  "viewType": "risk-hotspots",
+  "summary": "Top 12 risk hotspots ranked by a transparent additive score model.",
+  "items": [
+    {
+      "id": "hotspot-1",
+      "hotspotPath": "src/infra/llm/providers/openai.ts",
+      "riskFactors": [
+        "semantic-change",
+        "fan-out",
+        "surface-exposure",
+        "large-file"
+      ],
+      "summary": "OpenAI-compatible LLM provider client implementing the LLMClient interface, with embedded prompt generation orchestration for ArchSpine's semantic analysis pipeline; ranked due to semantic-change, fan-out.",
+      "impactRadiusHint": "Likely localized impact with a few downstream touch points.",
+      "confidence": 0.72,
+      "totalScore": 59,
+      "scoreBreakdown": [
+        {
+          "factor": "fan-out",
+          "score": 12,
+          "reason": "File depends on 6 indexed file(s)."
+        },
+        {
+          "factor": "surface-exposure",
+          "score": 12,
+          "reason": "File exposes 3 public-surface item(s) and 1 export(s)."
+        },
+        {
+          "factor": "semantic-change",
+          "score": 16,
+          "reason": "The previous semantic contract described this as a pure LLM provider client, but the actual code shows it also orchestrates prompt generation by importing and using prompt generators directly, which is a broader responsibility than just providing LLM client capabilities."
+        },
+        {
+          "factor": "rule-violations",
+          "score": 5,
+          "reason": "File carries 1 active rule violation(s)."
+        },
+        {
+          "factor": "large-file",
+          "score": 8,
+          "reason": "File has 272 line(s), increasing change surface area."
+        },
+        {
+          "factor": "missing-adjacent-tests",
+          "score": 6,
+          "reason": "No adjacent test file was detected near a shared or exposed module."
+        }
+      ]
+    },
+    {
+      "id": "hotspot-2",
+      "hotspotPath": "src/cli/commands/publish.ts",
+      "riskFactors": [
+        "fan-out",
+        "semantic-change",
+        "rule-violations",
+        "surface-exposure"
+      ],
+      "summary": "CLI command handler orchestrating the publish workflow for the ArchSpine mirror system, coordinating preflight checks, sync, document backfill, and atlas state management; ranked due to fan-out, semantic-change.",
+      "impactRadiusHint": "Likely localized impact with a few downstream touch points.",
+      "confidence": 0.69,
+      "totalScore": 53,
+      "scoreBreakdown": [
+        {
+          "factor": "fan-out",
+          "score": 16,
+          "reason": "File depends on 8 indexed file(s)."
+        },
+        {
+          "factor": "surface-exposure",
+          "score": 7,
+          "reason": "File exposes 1 public-surface item(s) and 3 export(s)."
+        },
+        {
+          "factor": "semantic-change",
+          "score": 16,
+          "reason": "The previous semantic contract did not include responsibilities for running DocumentBackfillTask or clearing stale atlas data via Manifest. The current implementation adds these pipeline/persistence operations, indicating semantic drift."
+        },
+        {
+          "factor": "rule-violations",
+          "score": 8,
+          "reason": "File carries 1 active rule violation(s)."
+        },
+        {
+          "factor": "missing-adjacent-tests",
+          "score": 6,
+          "reason": "No adjacent test file was detected near a shared or exposed module."
+        }
+      ]
+    },
+    {
+      "id": "hotspot-3",
+      "hotspotPath": "src/ast/lang-registry.ts",
+      "riskFactors": [
+        "semantic-change",
+        "surface-exposure",
+        "large-file",
+        "fan-out"
+      ],
+      "summary": "Stateful language configuration registry and dynamic language loader for the ArchSpine code analysis pipeline, managing AST-grep language bindings and file-to-language resolution; ranked due to semantic-change, surface-exposure.",
+      "impactRadiusHint": "Likely localized impact with a few downstream touch points.",
+      "confidence": 0.69,
+      "totalScore": 52,
+      "scoreBreakdown": [
+        {
+          "factor": "fan-out",
+          "score": 6,
+          "reason": "File depends on 3 indexed file(s)."
+        },
+        {
+          "factor": "cross-boundary-density",
+          "score": 4,
+          "reason": "File crosses 1 directory-boundary edge(s)."
+        },
+        {
+          "factor": "surface-exposure",
+          "score": 12,
+          "reason": "File exposes 3 public-surface item(s) and 3 export(s)."
+        },
+        {
+          "factor": "semantic-change",
+          "score": 16,
+          "reason": "Previous semantic contract described a simpler interface/loader pattern (LangConfig, InternalLangConfig, createLoader, dynamicImport), but the actual implementation is a full class (LangRegistry) with state management, caching, and dynamic registration logic. The previous contract did not capture the class's responsibilities or internal state."
+        },
+        {
+          "factor": "large-file",
+          "score": 8,
+          "reason": "File has 257 line(s), increasing change surface area."
+        },
+        {
+          "factor": "missing-adjacent-tests",
+          "score": 6,
+          "reason": "No adjacent test file was detected near a shared or exposed module."
+        }
+      ]
+    },
+    {
+      "id": "hotspot-4",
+      "hotspotPath": "src/infra/mcp/tools.ts",
+      "riskFactors": [
+        "fan-out",
+        "surface-exposure",
+        "large-file",
+        "missing-adjacent-tests"
+      ],
+      "summary": "MCP (Model Context Protocol) tool facade exposing ArchSpine system capabilities as queryable tools for external AI agents; ranked due to fan-out, surface-exposure.",
+      "impactRadiusHint": "Likely localized impact with a few downstream touch points.",
+      "confidence": 0.69,
+      "totalScore": 52,
+      "scoreBreakdown": [
+        {
+          "factor": "fan-in",
+          "score": 4,
+          "reason": "File is depended on by 1 indexed file(s)."
+        },
+        {
+          "factor": "fan-out",
+          "score": 18,
+          "reason": "File depends on 9 indexed file(s)."
+        },
+        {
+          "factor": "cross-boundary-density",
+          "score": 4,
+          "reason": "File crosses 1 directory-boundary edge(s)."
+        },
+        {
+          "factor": "surface-exposure",
+          "score": 12,
+          "reason": "File exposes 6 public-surface item(s) and 1 export(s)."
+        },
+        {
+          "factor": "large-file",
+          "score": 8,
+          "reason": "File has 370 line(s), increasing change surface area."
+        },
+        {
+          "factor": "missing-adjacent-tests",
+          "score": 6,
+          "reason": "No adjacent test file was detected near a shared or exposed module."
+        }
+      ]
+    },
+    {
+      "id": "hotspot-5",
+      "hotspotPath": "src/infra/prompt-context.ts",
+      "riskFactors": [
+        "semantic-change",
+        "surface-exposure",
+        "fan-out",
+        "missing-adjacent-tests"
+      ],
+      "summary": "Public facade module for the prompt-context subsystem, providing a stable import surface for policy constants, budget profiles, artifact building, and resolution functions; ranked due to semantic-change, surface-exposure.",
+      "impactRadiusHint": "Likely localized impact with a few downstream touch points.",
+      "confidence": 0.68,
+      "totalScore": 50,
+      "scoreBreakdown": [
+        {
+          "factor": "fan-in",
+          "score": 4,
+          "reason": "File is depended on by 1 indexed file(s)."
+        },
+        {
+          "factor": "fan-out",
+          "score": 8,
+          "reason": "File depends on 4 indexed file(s)."
+        },
+        {
+          "factor": "cross-boundary-density",
+          "score": 4,
+          "reason": "File crosses 1 directory-boundary edge(s)."
+        },
+        {
+          "factor": "surface-exposure",
+          "score": 12,
+          "reason": "File exposes 15 public-surface item(s) and 15 export(s)."
+        },
+        {
+          "factor": "semantic-change",
+          "score": 16,
+          "reason": "The previous semantic contract did not include exports for calculateSourcePromptBudgets, parseLLMMode, parsePromptPolicyTier, parseRelevanceDiagnosticsMode, parseValidatePolicy, defaultPromptTierForTask, defaultValidatePolicyForTask, resolvePromptPolicyTier, and resolveValidatePolicy. The facade has expanded to include budget calculation, parsing, and resolution functions."
+        },
+        {
+          "factor": "missing-adjacent-tests",
+          "score": 6,
+          "reason": "No adjacent test file was detected near a shared or exposed module."
+        }
+      ]
+    },
+    {
+      "id": "hotspot-6",
+      "hotspotPath": "src/types/protocol/languages.ts",
+      "riskFactors": [
+        "semantic-change",
+        "rule-violations",
+        "surface-exposure",
+        "missing-adjacent-tests"
+      ],
+      "summary": "TypeScript type definition module defining the data contracts for language support metadata within the ArchSpine mirror system; ranked due to semantic-change, rule-violations.",
+      "impactRadiusHint": "Likely localized impact with a few downstream touch points.",
+      "confidence": 0.67,
+      "totalScore": 49,
+      "scoreBreakdown": [
+        {
+          "factor": "surface-exposure",
+          "score": 12,
+          "reason": "File exposes 3 public-surface item(s) and 3 export(s)."
+        },
+        {
+          "factor": "semantic-change",
+          "score": 16,
+          "reason": "Previous semantic contract did not report violations of the interface-prefix rule, but all three interfaces violate it."
+        },
+        {
+          "factor": "rule-violations",
+          "score": 15,
+          "reason": "File carries 3 active rule violation(s)."
+        },
+        {
+          "factor": "missing-adjacent-tests",
+          "score": 6,
+          "reason": "No adjacent test file was detected near a shared or exposed module."
+        }
+      ]
+    },
+    {
+      "id": "hotspot-7",
+      "hotspotPath": "src/engines/scanner.ts",
+      "riskFactors": [
+        "fan-out",
+        "surface-exposure",
+        "large-file",
+        "missing-adjacent-tests"
+      ],
+      "summary": "Core file system scanner engine that discovers, filters, and reports on repository files using layered ignore rules, git diff integration, and configurable scan policies; ranked due to fan-out, surface-exposure.",
+      "impactRadiusHint": "Likely localized impact with a few downstream touch points.",
+      "confidence": 0.67,
+      "totalScore": 48,
+      "scoreBreakdown": [
+        {
+          "factor": "fan-in",
+          "score": 4,
+          "reason": "File is depended on by 1 indexed file(s)."
+        },
+        {
+          "factor": "fan-out",
+          "score": 14,
+          "reason": "File depends on 7 indexed file(s)."
+        },
+        {
+          "factor": "cross-boundary-density",
+          "score": 4,
+          "reason": "File crosses 1 directory-boundary edge(s)."
+        },
+        {
+          "factor": "surface-exposure",
+          "score": 12,
+          "reason": "File exposes 5 public-surface item(s) and 0 export(s)."
+        },
+        {
+          "factor": "large-file",
+          "score": 8,
+          "reason": "File has 379 line(s), increasing change surface area."
+        },
+        {
+          "factor": "missing-adjacent-tests",
+          "score": 6,
+          "reason": "No adjacent test file was detected near a shared or exposed module."
+        }
+      ]
+    },
+    {
+      "id": "hotspot-8",
+      "hotspotPath": "src/infra/credentials/backend.ts",
+      "riskFactors": [
+        "semantic-change",
+        "fan-out",
+        "surface-exposure",
+        "large-file"
+      ],
+      "summary": "Infrastructure facade providing a platform-specific credential storage backend for secure secret persistence on macOS; ranked due to semantic-change, fan-out.",
+      "impactRadiusHint": "Likely localized impact with a few downstream touch points.",
+      "confidence": 0.67,
+      "totalScore": 48,
+      "scoreBreakdown": [
+        {
+          "factor": "fan-out",
+          "score": 10,
+          "reason": "File depends on 5 indexed file(s)."
+        },
+        {
+          "factor": "surface-exposure",
+          "score": 8,
+          "reason": "File exposes 2 public-surface item(s) and 0 export(s)."
+        },
+        {
+          "factor": "semantic-change",
+          "score": 16,
+          "reason": "The previous semantic contract described a file-based fallback backend, but the current source code only contains the MacOSKeychainBackend class. The file-based backend has been removed, indicating a narrowing of scope."
+        },
+        {
+          "factor": "large-file",
+          "score": 8,
+          "reason": "File has 259 line(s), increasing change surface area."
+        },
+        {
+          "factor": "missing-adjacent-tests",
+          "score": 6,
+          "reason": "No adjacent test file was detected near a shared or exposed module."
+        }
+      ]
+    },
+    {
+      "id": "hotspot-9",
+      "hotspotPath": "src/infra/mcp/server.ts",
+      "riskFactors": [
+        "fan-out",
+        "cross-boundary-density",
+        "surface-exposure",
+        "missing-adjacent-tests"
+      ],
+      "summary": "Infrastructure facade implementing the Model Context Protocol (MCP) server to expose ArchSpine's internal resources and tools to external AI agents via stdio transport; ranked due to fan-out, cross-boundary-density.",
+      "impactRadiusHint": "Likely medium impact beyond the local directory.",
+      "confidence": 0.67,
+      "totalScore": 48,
+      "scoreBreakdown": [
+        {
+          "factor": "fan-out",
+          "score": 18,
+          "reason": "File depends on 10 indexed file(s)."
+        },
+        {
+          "factor": "cross-boundary-density",
+          "score": 12,
+          "reason": "File crosses 3 directory-boundary edge(s)."
+        },
+        {
+          "factor": "surface-exposure",
+          "score": 12,
+          "reason": "File exposes 3 public-surface item(s) and 0 export(s)."
+        },
+        {
+          "factor": "missing-adjacent-tests",
+          "score": 6,
+          "reason": "No adjacent test file was detected near a shared or exposed module."
+        }
+      ]
+    },
+    {
+      "id": "hotspot-10",
+      "hotspotPath": "src/tasks/summarize.ts",
+      "riskFactors": [
+        "fan-out",
+        "surface-exposure",
+        "large-file",
+        "missing-adjacent-tests"
+      ],
+      "summary": "ArchSpine summarization pipeline task module that orchestrates LLM-based semantic summary generation from source code extraction outputs; ranked due to fan-out, surface-exposure.",
+      "impactRadiusHint": "Likely localized impact with a few downstream touch points.",
+      "confidence": 0.67,
+      "totalScore": 48,
+      "scoreBreakdown": [
+        {
+          "factor": "fan-out",
+          "score": 18,
+          "reason": "File depends on 9 indexed file(s)."
+        },
+        {
+          "factor": "surface-exposure",
+          "score": 12,
+          "reason": "File exposes 4 public-surface item(s) and 0 export(s)."
+        },
+        {
+          "factor": "large-file",
+          "score": 12,
+          "reason": "File has 668 line(s), increasing change surface area."
+        },
+        {
+          "factor": "missing-adjacent-tests",
+          "score": 6,
+          "reason": "No adjacent test file was detected near a shared or exposed module."
+        }
+      ]
+    },
+    {
+      "id": "hotspot-11",
+      "hotspotPath": "src/services/task-runtime.ts",
+      "riskFactors": [
+        "fan-out",
+        "fan-in",
+        "surface-exposure",
+        "missing-adjacent-tests"
+      ],
+      "summary": "Core service orchestrator that prepares and coordinates task execution engines and infrastructure for the ArchSpine system; ranked due to fan-out, fan-in.",
+      "impactRadiusHint": "Likely medium impact beyond the local directory.",
+      "confidence": 0.66,
+      "totalScore": 47,
+      "scoreBreakdown": [
+        {
+          "factor": "fan-in",
+          "score": 12,
+          "reason": "File is depended on by 3 indexed file(s)."
+        },
+        {
+          "factor": "fan-out",
+          "score": 18,
+          "reason": "File depends on 13 indexed file(s)."
+        },
+        {
+          "factor": "surface-exposure",
+          "score": 11,
+          "reason": "File exposes 2 public-surface item(s) and 3 export(s)."
+        },
+        {
+          "factor": "missing-adjacent-tests",
+          "score": 6,
+          "reason": "No adjacent test file was detected near a shared or exposed module."
+        }
+      ]
+    },
+    {
+      "id": "hotspot-12",
+      "hotspotPath": "src/engines/context.ts",
+      "riskFactors": [
+        "fan-out",
+        "surface-exposure",
+        "large-file",
+        "missing-adjacent-tests"
+      ],
+      "summary": "Architectural context resolution engine for dependency analysis and relevance scoring in the ArchSpine mirror system; ranked due to fan-out, surface-exposure.",
+      "impactRadiusHint": "Likely localized impact with a few downstream touch points.",
+      "confidence": 0.66,
+      "totalScore": 46,
+      "scoreBreakdown": [
+        {
+          "factor": "fan-in",
+          "score": 4,
+          "reason": "File is depended on by 1 indexed file(s)."
+        },
+        {
+          "factor": "fan-out",
+          "score": 12,
+          "reason": "File depends on 6 indexed file(s)."
+        },
+        {
+          "factor": "cross-boundary-density",
+          "score": 4,
+          "reason": "File crosses 1 directory-boundary edge(s)."
+        },
+        {
+          "factor": "surface-exposure",
+          "score": 12,
+          "reason": "File exposes 8 public-surface item(s) and 8 export(s)."
+        },
+        {
+          "factor": "large-file",
+          "score": 8,
+          "reason": "File has 288 line(s), increasing change surface area."
+        },
+        {
+          "factor": "missing-adjacent-tests",
+          "score": 6,
+          "reason": "No adjacent test file was detected near a shared or exposed module."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/scan-cleanup.ts",
+    "contentHash": "67eb7dc064be9ecd6afd80adb5611f10aefd95dac66a99dfadc35091c086ca65",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "e952da78db8658c0413b805213a006b9ad4c2b2e2b9800703324a88a6ee78a02",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "Pipeline stage task for scanning the file system and cleaning up orphaned or stale files within the ArchSpine tracked state.",
+    "responsibilities": [
+      "Loads language snapshot to determine tracked file extensions via LangRegistry.",
+      "Scans for all tracked files and changed files using the scanner service.",
+      "Filters out files that no longer exist on disk (orphans) using filesystem checks.",
+      "Calculates file hashes and checks if they need updates via manifest services."
+    ],
+    "outOfScope": [
+      "CLI command parsing or argument handling.",
+      "Orchestration of other pipeline stages or services.",
+      "Direct filesystem mutation beyond cleanup of orphan entries."
+    ],
+    "invariants": [
+      "Must operate only on tracked files defined by the language snapshot or LangRegistry.",
+      "Must not perform CLI command parsing or unrelated service orchestration (per task-stage-boundary rule)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a dedicated pipeline stage for scanning and cleaning orphaned files to maintain consistency between the tracked state and the actual filesystem.",
+      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, ensuring the scan-cleanup stage integrates cleanly with the task execution framework."
+    },
+    "publicSurface": [
+      "ScanAndCleanupTask class (extends SpineTask<ScanStageInput, ScanStageOutput>)",
+      "name property: 'Scan & Cleanup Orphan Files'",
+      "checkpointId property: 'scan-cleanup'",
+      "execute(ctx: TaskContext, input: ScanStageInput): Promise<ScanStageOutput>"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Pipeline stage task for scanning the file system and cleaning up orphaned or stale files within the ArchSpine tracked state.",
+        "responsibilities": [
+          "Loads language snapshot to determine tracked file extensions via LangRegistry.",
+          "Scans for all tracked files and changed files using the scanner service.",
+          "Filters out files that no longer exist on disk (orphans) using filesystem checks.",
+          "Calculates file hashes and checks if they need updates via manifest services."
+        ],
+        "outOfScope": [
+          "CLI command parsing or argument handling.",
+          "Orchestration of other pipeline stages or services.",
+          "Direct filesystem mutation beyond cleanup of orphan entries."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "管道阶段任务，用于扫描文件系统并清理 ArchSpine 跟踪状态中的孤立或过时文件。",
+        "responsibilities": [
+          "通过 LangRegistry 加载语言快照以确定跟踪的文件扩展名。",
+          "使用扫描服务扫描所有跟踪文件和已更改的文件。",
+          "通过文件系统检查过滤掉磁盘上不再存在的文件（孤立文件）。",
+          "计算文件哈希并通过清单服务检查是否需要更新。"
+        ],
+        "outOfScope": [
+          "CLI 命令解析或参数处理。",
+          "其他管道阶段或服务的编排。",
+          "超出清理孤立条目范围的文件系统直接修改。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "../core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "../core/task-types.js",
+        "relation": "import",
+        "symbols": [
+          "ScanStageInput",
+          "ScanStageOutput"
+        ]
+      },
+      {
+        "targetPath": "../ast/lang-registry.js",
+        "relation": "import",
+        "symbols": [
+          "LangRegistry"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T03:58:14.998Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

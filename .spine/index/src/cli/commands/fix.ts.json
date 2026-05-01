@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/fix.ts",
+    "contentHash": "c94b0f63a8aec23960a4b9aa23b327da190b0065e7f58db99ed754e65862f010",
+    "skeletonHash": "09f494f72ea7d82856aae68e091344b16efec00ae6143636c929d376e4296d44",
+    "semanticHash": "71ec5ef62590ff11db48579757ff1fdeced72aee77192a3ed6aa5a4141dbdf33",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command adapter for the 'fix' operation, providing a thin interface to delegate execution to the runtime service's fix subsystem facade.",
+    "responsibilities": [
+      "Defines the ExecuteFixCommandOptions interface, requiring a RuntimeService instance for dependency injection.",
+      "Logs experimental warnings to the console about the generative nature of the fix feature.",
+      "Executes the fix command by invoking runtimeService.getFixService().run() and awaits the result.",
+      "Throws an ArchSpineError with code CliCommandFailed if the fix operation reports any remaining architectural violations."
+    ],
+    "outOfScope": [
+      "Implementing the fix logic or pipeline (delegated to runtime service).",
+      "Handling persistence or data access.",
+      "Providing user input parsing or CLI argument validation (assumed upstream)."
+    ],
+    "invariants": [
+      "Must remain a thin adapter, delegating all business logic to the runtime service.",
+      "Must not absorb pipeline, engine, or persistence responsibilities."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Separate CLI command routing from core fix logic to maintain testability and reuse.",
+      "recentChangeIntent": "Tighten schema handling and add try preview (based on git intent, though not directly evidenced in this file's current code)."
+    },
+    "publicSurface": [
+      "ExecuteFixCommandOptions interface",
+      "executeFixCommand function"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command adapter for the 'fix' operation, providing a thin interface to delegate execution to the runtime service's fix subsystem facade.",
+        "responsibilities": [
+          "Defines the ExecuteFixCommandOptions interface, requiring a RuntimeService instance for dependency injection.",
+          "Logs experimental warnings to the console about the generative nature of the fix feature.",
+          "Executes the fix command by invoking runtimeService.getFixService().run() and awaits the result.",
+          "Throws an ArchSpineError with code CliCommandFailed if the fix operation reports any remaining architectural violations."
+        ],
+        "outOfScope": [
+          "Implementing the fix logic or pipeline (delegated to runtime service).",
+          "Handling persistence or data access.",
+          "Providing user input parsing or CLI argument validation (assumed upstream)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../services/runtime-service.js'",
+        "symbols": [
+          "RuntimeService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeFixCommand",
+        "kind": "function",
+        "signature": "executeFixCommand({\n  runtimeService,\n}: ExecuteFixCommandOptions)"
+      },
+      {
+        "name": "ExecuteFixCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteFixCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeFixCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/fix.ts#"
+      },
+      {
+        "name": "ExecuteFixCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/fix.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../services/runtime-service.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeService"
+        ]
+      },
+      {
+        "targetPath": "../../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:36.253Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/validate-task.test.ts",
+    "contentHash": "8cd208a9bf639b63ae364b3c7d90f92eae8543475933bb5419e7dc21ed7d3119",
+    "skeletonHash": "6478d3badbead64b427d833256d5359f9d80344a7b107f5df13b6e62daf5cb81",
+    "semanticHash": "9cc935dc28e979c125a244095ebfa690c139713e5ced055f18e4a9f6df52ee90",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for the ValidationTask class, validating its file selection and summary generation logic.",
+    "responsibilities": [
+      "Creates isolated temporary directories for each test case using fs.mkdtempSync.",
+      "Sets up mock file structures and invokes ValidationTask.execute to test file filtering and summary output.",
+      "Verifies that the task correctly filters files based on selection criteria and returns expected summary statistics.",
+      "Cleans up temporary directories after each test using fs.rmSync."
+    ],
+    "outOfScope": [
+      "Integration or end-to-end testing of the full validation pipeline.",
+      "Testing of external file system side effects beyond the temporary directory.",
+      "Performance or load testing of the ValidationTask."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts suffix (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a focused, isolated unit test suite for the ValidationTask to ensure correctness of file selection and summary generation in a controlled temporary environment.",
+      "recentChangeIntent": "Initial commit for open source release (v1.0.0) — this test file was included as part of the initial codebase."
+    },
+    "publicSurface": [
+      "describe('ValidationTask', ...)",
+      "beforeEach hook",
+      "afterEach hook",
+      "it('should return summary with correct counts', ...)",
+      "it('should filter files based on selection criteria', ...)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for the ValidationTask class, validating its file selection and summary generation logic.",
+        "responsibilities": [
+          "Creates isolated temporary directories for each test case using fs.mkdtempSync.",
+          "Sets up mock file structures and invokes ValidationTask.execute to test file filtering and summary output.",
+          "Verifies that the task correctly filters files based on selection criteria and returns expected summary statistics.",
+          "Cleans up temporary directories after each test using fs.rmSync."
+        ],
+        "outOfScope": [
+          "Integration or end-to-end testing of the full validation pipeline.",
+          "Testing of external file system side effects beyond the temporary directory.",
+          "Performance or load testing of the ValidationTask."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "针对 ValidationTask 类的 Vitest 单元测试套件，验证其文件选择与摘要生成逻辑。",
+        "responsibilities": [
+          "使用 fs.mkdtempSync 为每个测试用例创建独立的临时目录。",
+          "搭建模拟文件结构，调用 ValidationTask.execute 测试文件过滤与摘要输出。",
+          "验证任务能根据选择条件正确过滤文件，并返回预期的摘要统计信息。",
+          "测试结束后使用 fs.rmSync 清理临时目录。"
+        ],
+        "outOfScope": [
+          "完整验证管线的集成或端到端测试。",
+          "超出临时目录范围的外部文件系统副作用测试。",
+          "ValidationTask 的性能或负载测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/tasks/validate.js'",
+        "symbols": [
+          "ValidationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../src/tasks/validate.js",
+        "relation": "import",
+        "symbols": [
+          "ValidationTask"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:44.687Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "examples/demo-project/.spine/config.json",
+    "contentHash": "0b29a82af58e08dce738047947abb37345f3b6612b135a84b9798a6387d5098c",
+    "semanticHash": "29f744caf27012c7b2f7f3bffadff3e6339179eb8cc5a01818f451c95153f28f",
+    "language": "unsupported",
+    "fileKind": "config",
+    "scope": "examples/demo-project/.spine"
+  },
+  "semantic": {
+    "role": "Project-level configuration for the ArchSpine mirror system, defining localization, LLM provider, MCP context mode, hooks, artifact storage, and file scanning policy.",
+    "responsibilities": [
+      "Localization settings for multi-language support",
+      "LLM provider selection and configuration",
+      "MCP context mode control",
+      "Pre-commit hook and sync mode management",
+      "Artifact storage configuration",
+      "File scanning policy and ignore chain management"
+    ],
+    "outOfScope": [],
+    "invariants": [
+      "schemaVersion must be a valid semver string",
+      "project.locales must contain at least one locale",
+      "llm.provider must be a supported provider identifier",
+      "scanPolicy.fileSource must be one of the allowed sources",
+      "scanPolicy.ignoreChain.inheritGitIgnore must be a boolean",
+      "protocolExclusions and protocolInclusions must be arrays of path patterns"
+    ],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "This configuration file defines the core operational parameters for the ArchSpine mirror system project. It controls localization, the LLM provider, MCP context mode, hooks, artifacts, and file scanning policy.",
+        "parameter_definitions": {
+          "schemaVersion": "Defines the version of the configuration schema. Must be a valid semver string.",
+          "project.name": "The name of the project. Used for identification and logging.",
+          "project.locales": "List of supported locales for the project. At least one locale must be specified.",
+          "llm.provider": "Specifies the LLM provider to use. Currently set to 'mock' for testing.",
+          "mcp.contextMode": "Controls the MCP context mode. 'off' disables context injection.",
+          "hooks.preCommit": "Enables or disables the pre-commit hook. Currently set to false.",
+          "hooks.syncMode": "Defines the synchronization mode. 'hook' means sync is triggered by hooks.",
+          "artifacts": "Configuration for artifact storage. Currently empty.",
+          "scanPolicy.fileSource": "Defines the source of files to scan. 'git-tracked' means only files tracked by Git.",
+          "scanPolicy.ignoreChain.inheritGitIgnore": "Whether to inherit Git ignore rules. Set to true.",
+          "scanPolicy.ignoreChain.projectIgnore": "Path to the project-level ignore file.",
+          "scanPolicy.ignoreChain.localIgnore": "Path to the local ignore file.",
+          "scanPolicy.protocolExclusions": "List of path patterns to exclude from scanning.",
+          "scanPolicy.protocolInclusions": "List of path patterns to include in scanning."
+        },
+        "stability_and_risks": "This configuration is critical for system stability. Incorrect locale settings may cause localization failures. Disabling hooks may lead to inconsistent state. The mock LLM provider is for testing only and should not be used in production. The scan policy controls which files are processed; misconfiguration may cause security issues or data loss."
+      },
+      "Simplified Chinese": {
+        "role": "此配置文件定义了 ArchSpine 镜像系统项目的核心运行参数。它控制本地化设置、LLM 提供商、MCP 上下文模式、钩子、工件以及文件扫描策略。",
+        "parameter_definitions": {
+          "schemaVersion": "定义配置模式的版本。必须是有效的语义化版本字符串。",
+          "project.name": "项目名称，用于标识和日志记录。",
+          "project.locales": "项目支持的语言列表。必须至少指定一种语言。",
+          "llm.provider": "指定要使用的 LLM 提供商。当前设置为 'mock' 用于测试。",
+          "mcp.contextMode": "控制 MCP 上下文模式。'off' 表示禁用上下文注入。",
+          "hooks.preCommit": "启用或禁用预提交钩子。当前设置为 false。",
+          "hooks.syncMode": "定义同步模式。'hook' 表示通过钩子触发同步。",
+          "artifacts": "工件存储的配置。当前为空。",
+          "scanPolicy.fileSource": "定义要扫描的文件来源。'git-tracked' 表示仅扫描 Git 跟踪的文件。",
+          "scanPolicy.ignoreChain.inheritGitIgnore": "是否继承 Git 忽略规则。设置为 true。",
+          "scanPolicy.ignoreChain.projectIgnore": "项目级忽略文件的路径。",
+          "scanPolicy.ignoreChain.localIgnore": "本地忽略文件的路径。",
+          "scanPolicy.protocolExclusions": "要从扫描中排除的路径模式列表。",
+          "scanPolicy.protocolInclusions": "要包含在扫描中的路径模式列表。"
+        },
+        "stability_and_risks": "此配置对系统稳定性至关重要。错误的语言设置可能导致本地化失败。禁用钩子可能导致状态不一致。mock LLM 提供商仅用于测试，不应在生产环境中使用。扫描策略控制哪些文件被处理；配置错误可能导致安全问题或数据丢失。"
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:43:31.727Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

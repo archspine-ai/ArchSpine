@@ -1,0 +1,155 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/writer-boundary.ts",
+    "contentHash": "bc1e0169ea8058d2564ad8a0935dacf4c95ba23fa5534a89dc0c4f56ec222d88",
+    "skeletonHash": "8515c37618f504161e3e9b72c570c8de81292a239ad3e39f645915af23c1a034",
+    "semanticHash": "44f8b4873b10b77661030f27e06201e4bc7307877ba19ee5c0d7013cc4533a93",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure boundary component that enforces write protection for ArchSpine's internal directories and files.",
+    "responsibilities": [
+      "Defines protected directories (.spine/index, .spine/atlas, .spine/view) and protected file prefixes (.spine/.lock, .spine/cache.db).",
+      "Provides file system permission locking/unlocking mechanisms to prevent unauthorized writes via mode changes.",
+      "Validates file paths against protected patterns to enforce write boundaries.",
+      "Recursively walks directory trees to apply protection policies."
+    ],
+    "outOfScope": [
+      "Orchestrating high-level service or engine workflows.",
+      "Handling network or authentication concerns.",
+      "Providing generic file system utilities beyond the defined protection scope."
+    ],
+    "invariants": [
+      "Must only depend on Node.js built-in modules (fs, path) for low-level file operations.",
+      "Must expose a stable public class interface for write boundary enforcement, not absorb orchestration logic."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Encapsulate file system write protection as a stable infrastructure facade, isolating permission management from business logic.",
+      "recentChangeIntent": "No recent changes detected in this file; the git intent 'feat(sync): add repair policy and experimental view layer' does not correlate with this component's evidence."
+    },
+    "publicSurface": [
+      "SpineWriterBoundary"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure boundary component that enforces write protection for ArchSpine's internal directories and files.",
+        "responsibilities": [
+          "Defines protected directories (.spine/index, .spine/atlas, .spine/view) and protected file prefixes (.spine/.lock, .spine/cache.db).",
+          "Provides file system permission locking/unlocking mechanisms to prevent unauthorized writes via mode changes.",
+          "Validates file paths against protected patterns to enforce write boundaries.",
+          "Recursively walks directory trees to apply protection policies."
+        ],
+        "outOfScope": [
+          "Orchestrating high-level service or engine workflows.",
+          "Handling network or authentication concerns.",
+          "Providing generic file system utilities beyond the defined protection scope."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "withProtectedOutputsWriteAccess",
+        "kind": "function",
+        "signature": "withProtectedOutputsWriteAccess(\n  rootDir: string,\n  operation: () => Promise<T>,\n)"
+      },
+      {
+        "name": "SpineWriterBoundary",
+        "kind": "class",
+        "signature": "class SpineWriterBoundary"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "withProtectedOutputsWriteAccess",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/writer-boundary.ts#"
+      },
+      {
+        "name": "SpineWriterBoundary",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/writer-boundary.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/cli/commands/sync.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:40.571Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

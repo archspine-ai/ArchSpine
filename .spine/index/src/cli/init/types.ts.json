@@ -1,0 +1,181 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/init/types.ts",
+    "contentHash": "4234ccf343b7fcd33f546c8b735ced41145f80aa186c3612013e2bb872d66562",
+    "skeletonHash": "53755c5493ac614f9bb37b0837dcdbc31fa0f220de145e28996b171c76629a92",
+    "semanticHash": "ff209ed5cdb2a308a8531c1b3c02ae60762e2e816c1bdac036316df89c7817f5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/init"
+  },
+  "semantic": {
+    "role": "TypeScript module defining shared type contracts for the ArchSpine initialization and repository bootstrapping subsystem.",
+    "responsibilities": [
+      "Defines the InitSharedOptions interface that encapsulates dependencies (Config, RuntimeService) and utilities for initialization steps.",
+      "Defines the RepositoryBootstrapResult interface for structured results of repository bootstrapping operations.",
+      "Exports type aliases (LLMScope, HookSetupStatus, ArtifactStrategy) that standardize configuration domains across the initialization CLI.",
+      "Provides centralized type definitions to ensure consistency between CLI commands and service layers during project setup."
+    ],
+    "outOfScope": [
+      "Implementing initialization logic or business rules.",
+      "Providing runtime functions or classes.",
+      "Handling CLI command parsing or execution.",
+      "Managing persistence or pipeline operations."
+    ],
+    "invariants": [
+      "Must remain a pure type definition module with no executable code.",
+      "Must not import or depend on concrete implementations outside of type references.",
+      "Must serve as a central contract for initialization-related data structures."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Decouple type definitions from implementation to enable shared contracts across CLI and service layers, supporting consistent project initialization.",
+      "recentChangeIntent": "Tighten schema handling for initialization types, likely improving type safety and contract definitions."
+    },
+    "publicSurface": [
+      "InitSharedOptions",
+      "RepositoryBootstrapResult",
+      "LLMScope",
+      "HookSetupStatus",
+      "ArtifactStrategy"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "TypeScript module defining shared type contracts for the ArchSpine initialization and repository bootstrapping subsystem.",
+        "responsibilities": [
+          "Defines the InitSharedOptions interface that encapsulates dependencies (Config, RuntimeService) and utilities for initialization steps.",
+          "Defines the RepositoryBootstrapResult interface for structured results of repository bootstrapping operations.",
+          "Exports type aliases (LLMScope, HookSetupStatus, ArtifactStrategy) that standardize configuration domains across the initialization CLI.",
+          "Provides centralized type definitions to ensure consistency between CLI commands and service layers during project setup."
+        ],
+        "outOfScope": [
+          "Implementing initialization logic or business rules.",
+          "Providing runtime functions or classes.",
+          "Handling CLI command parsing or execution.",
+          "Managing persistence or pipeline operations."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../services/runtime-service.js'",
+        "symbols": [
+          "RuntimeService"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "InitSharedOptions",
+        "kind": "interface",
+        "signature": "interface InitSharedOptions"
+      },
+      {
+        "name": "RepositoryBootstrapResult",
+        "kind": "interface",
+        "signature": "interface RepositoryBootstrapResult"
+      },
+      {
+        "name": "LLMScope",
+        "kind": "type",
+        "signature": "type LLMScope"
+      },
+      {
+        "name": "HookSetupStatus",
+        "kind": "type",
+        "signature": "type HookSetupStatus"
+      },
+      {
+        "name": "ArtifactStrategy",
+        "kind": "type",
+        "signature": "type ArtifactStrategy"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "InitSharedOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/init/types.ts#"
+      },
+      {
+        "name": "RepositoryBootstrapResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/init/types.ts#"
+      },
+      {
+        "name": "LLMScope",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/cli/init/types.ts#"
+      },
+      {
+        "name": "HookSetupStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/cli/init/types.ts#"
+      },
+      {
+        "name": "ArtifactStrategy",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/cli/init/types.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 5,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../../services/runtime-service.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeService"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/cli/init/runtime-bootstrap.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:37.069Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

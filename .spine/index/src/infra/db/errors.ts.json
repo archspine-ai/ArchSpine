@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db/errors.ts",
+    "contentHash": "0f4aa608b4bcd4ef4869268c2c2015349c7edf3cf05bc0ef1fb731f45d0cf9d7",
+    "skeletonHash": "088f7f70f0b1201f038c9d6ca2c42d21372ba1ae2963eff677b1b8eb6f16653b",
+    "semanticHash": "307707f85cd5dc0f321c364dfeab00710b6bebde147880e7a2be43e32f2f2f56",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/db"
+  },
+  "semantic": {
+    "role": "Database runtime error mapping utility in the infrastructure layer.",
+    "responsibilities": [
+      "Maps unknown runtime database errors to standardized ArchSpineError instances.",
+      "Detects read-only database conditions via error message pattern matching.",
+      "Assigns appropriate error codes based on failure stage (open/init) and error characteristics."
+    ],
+    "outOfScope": [
+      "Orchestrating database connections or transactions.",
+      "Handling application-level business logic.",
+      "Providing database driver implementations."
+    ],
+    "invariants": [
+      "Pure function with no side effects.",
+      "Always returns an ArchSpineError instance.",
+      "Relies on core error definitions and codes."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, low-level error normalization facade for database runtime failures, insulating callers from driver-specific error details.",
+      "recentChangeIntent": "Generic commit (iZoy 's great commit) with no specific intent discernible from code evidence."
+    },
+    "publicSurface": [
+      "mapRuntimeDbError"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Database runtime error mapping utility in the infrastructure layer.",
+        "responsibilities": [
+          "Maps unknown runtime database errors to standardized ArchSpineError instances.",
+          "Detects read-only database conditions via error message pattern matching.",
+          "Assigns appropriate error codes based on failure stage (open/init) and error characteristics."
+        ],
+        "outOfScope": [
+          "Orchestrating database connections or transactions.",
+          "Handling application-level business logic.",
+          "Providing database driver implementations."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "mapRuntimeDbError",
+        "kind": "function",
+        "signature": "mapRuntimeDbError(\n  error: unknown,\n  stage: 'open' | 'init',\n  dbPath: string,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "mapRuntimeDbError",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/errors.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:38.447Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

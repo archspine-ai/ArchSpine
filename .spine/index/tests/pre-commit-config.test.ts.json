@@ -1,0 +1,182 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/pre-commit-config.test.ts",
+    "contentHash": "2058972c911ca2a4a03e2b9f91ac332895608830ebad6cc56fd08247b2bc7fa0",
+    "skeletonHash": "d85e154947fb73e998717eb0a30ceff34c1e71d59dccc774006dc3b4268cbc29",
+    "semanticHash": "9598d980651022806c2fd9f5fe1c977239a89a47429b91ad11b37b27893ff4ea",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for validating ArchSpine's pre-commit hook configuration and resolution logic.",
+    "responsibilities": [
+      "Tests the Config.getPreCommitResolution method for correct resolution values and sources.",
+      "Validates the Config.getHookSyncMode method returns expected sync mode.",
+      "Sets up isolated temporary directories for each test to avoid side effects.",
+      "Cleans up test artifacts after each test to maintain test isolation."
+    ],
+    "outOfScope": [
+      "Production runtime logic for pre-commit hooks.",
+      "Direct modification of git hooks outside test isolation.",
+      "Configuration schema validation beyond unit test scope."
+    ],
+    "invariants": [
+      "Must be a test file (imports vitest, uses describe/it).",
+      "Must isolate test environment using temporary directories.",
+      "Must clean up test artifacts after each test."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure pre-commit configuration resolution and hook sync mode behave correctly under various environment and config states.",
+      "recentChangeIntent": "Finalize v1.0.0 release closure (chore)."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for validating ArchSpine's pre-commit hook configuration and resolution logic.",
+        "responsibilities": [
+          "Tests the Config.getPreCommitResolution method for correct resolution values and sources.",
+          "Validates the Config.getHookSyncMode method returns expected sync mode.",
+          "Sets up isolated temporary directories for each test to avoid side effects.",
+          "Cleans up test artifacts after each test to maintain test isolation."
+        ],
+        "outOfScope": [
+          "Production runtime logic for pre-commit hooks.",
+          "Direct modification of git hooks outside test isolation.",
+          "Configuration schema validation beyond unit test scope."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/utils/git-hook.js'",
+        "symbols": [
+          "installGitHook"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_CONFIG_SCHEMA_VERSION"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 11,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "src/utils/git-hook.js",
+        "relation": "import",
+        "symbols": [
+          "installGitHook"
+        ]
+      },
+      {
+        "targetPath": "src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_CONFIG_SCHEMA_VERSION"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.766Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

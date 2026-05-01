@@ -1,0 +1,187 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/ast/lang-discovery.ts",
+    "contentHash": "42899fcd73195186868a9f96320a91fd8554531fd2cf54edab760a0ada83aa1b",
+    "skeletonHash": "4d24a2eea2e1da9a208fea44cfd7b0b38e68c1d517579658de35f747d56693f0",
+    "semanticHash": "54c139db4fa2f9e83dba5e78f2d32ae5d2c473f211b424cf955bccf92ad1c405",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/ast"
+  },
+  "semantic": {
+    "role": "AST language discovery and lifecycle module that scans file collections, resolves programming languages via extension mapping, computes deltas between snapshots, and validates language support.",
+    "responsibilities": [
+      "Scans a collection of file paths to identify unique file extensions and resolve them to programming languages using LangRegistry.",
+      "Exposes `resolveLanguage` function to determine the language of a single file path.",
+      "Computes LanguageDelta between current and previous language snapshots, tracking added, removed, and changed languages.",
+      "Validates language support by checking if detected extensions are registered in the LangRegistry and reporting unsupported languages."
+    ],
+    "outOfScope": [
+      "File system traversal or directory walking (operates on provided file paths only).",
+      "Language configuration or registration (delegated to LangRegistry).",
+      "Persistent storage of language snapshots."
+    ],
+    "invariants": [
+      "All detected extensions are lowercased before processing.",
+      "Language snapshots contain sorted arrays of detected extensions."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized module for discovering and tracking programming languages across file collections in the ArchSpine mirror system.",
+      "recentChangeIntent": "Fix lint warnings and type errors, and add CI workflow (general maintenance, no semantic change to this module)."
+    },
+    "publicSurface": [
+      "discoverLanguages(files: string[]): Promise<LanguageSnapshot>",
+      "diffLanguages(prev: LanguageSnapshot, curr: LanguageSnapshot): LanguageDelta",
+      "resolveLanguage(filePath: string): Promise<...>"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "AST language discovery and lifecycle module that scans file collections, resolves programming languages via extension mapping, computes deltas between snapshots, and validates language support.",
+        "responsibilities": [
+          "Scans a collection of file paths to identify unique file extensions and resolve them to programming languages using LangRegistry.",
+          "Exposes `resolveLanguage` function to determine the language of a single file path.",
+          "Computes LanguageDelta between current and previous language snapshots, tracking added, removed, and changed languages.",
+          "Validates language support by checking if detected extensions are registered in the LangRegistry and reporting unsupported languages."
+        ],
+        "outOfScope": [
+          "File system traversal or directory walking (operates on provided file paths only).",
+          "Language configuration or registration (delegated to LangRegistry).",
+          "Persistent storage of language snapshots."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "AST 语言发现与生命周期模块，负责扫描文件集合、通过扩展名映射解析编程语言、计算快照之间的差异，并验证语言支持。",
+        "responsibilities": [
+          "扫描文件路径集合，识别唯一的文件扩展名，并使用 LangRegistry 将其解析为编程语言。",
+          "提供 `resolveLanguage` 函数，用于确定单个文件路径对应的语言。",
+          "计算当前与之前语言快照之间的 LanguageDelta，跟踪新增、移除和变更的语言。",
+          "通过检查检测到的扩展名是否已在 LangRegistry 中注册，验证语言支持情况，并报告不支持的语言。"
+        ],
+        "outOfScope": [
+          "文件系统遍历或目录行走（仅操作提供的文件路径）。",
+          "语言配置或注册（委托给 LangRegistry）。",
+          "语言快照的持久化存储。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "LanguageSnapshot",
+          "LanguageDelta",
+          "LanguageSupport"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./lang-registry.js'",
+        "symbols": [
+          "LangRegistry"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "discoverLanguages",
+        "kind": "function",
+        "signature": "discoverLanguages(files: string[])"
+      },
+      {
+        "name": "diffLanguages",
+        "kind": "function",
+        "signature": "diffLanguages(prev: LanguageSnapshot, curr: LanguageSnapshot)"
+      },
+      {
+        "name": "resolveLanguage",
+        "kind": "function",
+        "signature": "resolveLanguage(filePath: string)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "discoverLanguages",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/ast/lang-discovery.ts#"
+      },
+      {
+        "name": "diffLanguages",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/ast/lang-discovery.ts#"
+      },
+      {
+        "name": "resolveLanguage",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/ast/lang-discovery.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "LanguageSnapshot",
+          "LanguageDelta",
+          "LanguageSupport"
+        ]
+      },
+      {
+        "targetPath": "./lang-registry.js",
+        "relation": "import",
+        "symbols": [
+          "LangRegistry"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:56:54.811Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

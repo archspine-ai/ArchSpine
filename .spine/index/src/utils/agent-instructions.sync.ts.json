@@ -1,0 +1,483 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/utils/agent-instructions.sync.ts",
+    "contentHash": "e8ace2ca53cb3649d745b222eeb22c4cd0853a9f47cf4be7d0af2f46c72625ed",
+    "skeletonHash": "d70514ab95a0684b332612aeddeee4f70d67f1dd2a6042edd54b798dcca0a62d",
+    "semanticHash": "b25eaa58392f03f5875e1fa43c740750cbb747b5962cbb00b5d2dbf665a430da",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/utils"
+  },
+  "semantic": {
+    "role": "Utility module providing file-level synchronization and removal operations for ArchSpine agent instruction blocks and configuration sections across repository configuration files.",
+    "responsibilities": [
+      "Defines status types (AgentInstructionsSyncStatus, PackageScriptStatus, SearchIgnoreSyncStatus, SpineIgnoreSyncStatus, GitIgnoreSyncStatus, GitAttributesSyncStatus) for tracking synchronization outcomes of ArchSpine blocks in various configuration files.",
+      "Defines removal status types (AgentInstructionsRemovalStatus, SearchIgnoreRemovalStatus, SpineIgnoreRemovalStatus, GitIgnoreRemovalStatus, GitAttributesRemovalStatus, PackageScriptRemovalStatus) for tracking block removal operations.",
+      "Provides file I/O utilities to insert, update, or remove bounded blocks (delimited by START/END markers) in .gitignore, .gitattributes, package.json scripts, spineignore, and search ignore files.",
+      "Manages the integrity of ArchSpine-specific configuration sections by reading, modifying, and writing configuration files using regex-based block pattern matching."
+    ],
+    "outOfScope": [
+      "Template content definition (delegated to agent-instructions.templates.js)",
+      "High-level orchestration of sync operations across multiple files",
+      "CLI command handling or user interaction logic"
+    ],
+    "invariants": [
+      "All block operations use consistent START/END markers defined in templates",
+      "File modifications preserve existing content outside bounded blocks",
+      "Removal operations clean up excessive newlines after block deletion"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable, file-level synchronization layer for ArchSpine agent instruction blocks, enabling consistent management of configuration sections across multiple repository files.",
+      "recentChangeIntent": "Refactored to split agent instruction sync helpers into focused utility functions, improving modularity and separation of concerns."
+    },
+    "publicSurface": [
+      "AgentInstructionsSyncStatus",
+      "PackageScriptStatus",
+      "SearchIgnoreSyncStatus",
+      "SpineIgnoreSyncStatus",
+      "GitIgnoreSyncStatus",
+      "GitAttributesSyncStatus",
+      "AgentInstructionsRemovalStatus",
+      "SearchIgnoreRemovalStatus",
+      "SpineIgnoreRemovalStatus",
+      "GitIgnoreRemovalStatus",
+      "GitAttributesRemovalStatus",
+      "PackageScriptRemovalStatus"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Utility module providing file-level synchronization and removal operations for ArchSpine agent instruction blocks and configuration sections across repository configuration files.",
+        "responsibilities": [
+          "Defines status types (AgentInstructionsSyncStatus, PackageScriptStatus, SearchIgnoreSyncStatus, SpineIgnoreSyncStatus, GitIgnoreSyncStatus, GitAttributesSyncStatus) for tracking synchronization outcomes of ArchSpine blocks in various configuration files.",
+          "Defines removal status types (AgentInstructionsRemovalStatus, SearchIgnoreRemovalStatus, SpineIgnoreRemovalStatus, GitIgnoreRemovalStatus, GitAttributesRemovalStatus, PackageScriptRemovalStatus) for tracking block removal operations.",
+          "Provides file I/O utilities to insert, update, or remove bounded blocks (delimited by START/END markers) in .gitignore, .gitattributes, package.json scripts, spineignore, and search ignore files.",
+          "Manages the integrity of ArchSpine-specific configuration sections by reading, modifying, and writing configuration files using regex-based block pattern matching."
+        ],
+        "outOfScope": [
+          "Template content definition (delegated to agent-instructions.templates.js)",
+          "High-level orchestration of sync operations across multiple files",
+          "CLI command handling or user interaction logic"
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "提供文件级别同步和移除操作的实用模块，用于管理仓库配置文件中 ArchSpine 代理指令块和配置段。",
+        "responsibilities": [
+          "定义同步状态类型（AgentInstructionsSyncStatus、PackageScriptStatus、SearchIgnoreSyncStatus、SpineIgnoreSyncStatus、GitIgnoreSyncStatus、GitAttributesSyncStatus），用于跟踪各种配置文件中 ArchSpine 块的同步结果。",
+          "定义移除状态类型（AgentInstructionsRemovalStatus、SearchIgnoreRemovalStatus、SpineIgnoreRemovalStatus、GitIgnoreRemovalStatus、GitAttributesRemovalStatus、PackageScriptRemovalStatus），用于跟踪块移除操作。",
+          "提供文件 I/O 工具，用于在 .gitignore、.gitattributes、package.json 脚本、spineignore 和搜索忽略文件中插入、更新或移除由 START/END 标记界定的块。",
+          "通过基于正则表达式的块模式匹配，读取、修改和写入配置文件，维护 ArchSpine 特定配置段的完整性。"
+        ],
+        "outOfScope": [
+          "模板内容定义（委托给 agent-instructions.templates.js）",
+          "跨多个文件的高级同步编排操作",
+          "CLI 命令处理或用户交互逻辑"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./agent-instructions.templates.js'",
+        "symbols": [
+          "AGENT_BLOCK_END",
+          "AGENT_BLOCK_START",
+          "ARCHSPINE_AGENT_BLOCK",
+          "ARCHSPINE_PACKAGE_SCRIPTS",
+          "ArtifactStrategy",
+          "DISTRIBUTABLE_GITATTRIBUTES_LINES",
+          "DISTRIBUTABLE_GITIGNORE_LINES",
+          "GITATTRIBUTES_BLOCK_END",
+          "GITATTRIBUTES_BLOCK_START",
+          "GITIGNORE_BLOCK_END",
+          "GITIGNORE_BLOCK_START",
+          "LOCAL_GITIGNORE_LINES",
+          "SEARCH_IGNORE_CONTENT",
+          "SEARCH_IGNORE_LINES",
+          "SEARCH_IGNORE_PATH",
+          "SPINEIGNORE_BLOCK_END",
+          "SPINEIGNORE_BLOCK_START",
+          "SPINEIGNORE_PATH",
+          "SPINEIGNORE_RECOMMENDED_LINES"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "normalizeAgentInstructionsFilename",
+        "kind": "function",
+        "signature": "normalizeAgentInstructionsFilename(filename: string)"
+      },
+      {
+        "name": "getGitIgnoreManagedLines",
+        "kind": "function",
+        "signature": "getGitIgnoreManagedLines(strategy: ArtifactStrategy)"
+      },
+      {
+        "name": "syncGitIgnoreFile",
+        "kind": "function",
+        "signature": "syncGitIgnoreFile(\n  rootDir: string,\n  strategy: ArtifactStrategy,\n)"
+      },
+      {
+        "name": "removeManagedGitIgnoreFile",
+        "kind": "function",
+        "signature": "removeManagedGitIgnoreFile(\n  rootDir: string,\n  deleteManagedFile: boolean,\n)"
+      },
+      {
+        "name": "syncGitAttributesFile",
+        "kind": "function",
+        "signature": "syncGitAttributesFile(rootDir: string)"
+      },
+      {
+        "name": "removeManagedGitAttributesFile",
+        "kind": "function",
+        "signature": "removeManagedGitAttributesFile(\n  rootDir: string,\n  deleteManagedFile: boolean,\n)"
+      },
+      {
+        "name": "syncAgentInstructionsFile",
+        "kind": "function",
+        "signature": "syncAgentInstructionsFile(\n  rootDir: string,\n  filename: string,\n)"
+      },
+      {
+        "name": "syncSearchIgnoreFile",
+        "kind": "function",
+        "signature": "syncSearchIgnoreFile(rootDir: string)"
+      },
+      {
+        "name": "syncSpineIgnoreFile",
+        "kind": "function",
+        "signature": "syncSpineIgnoreFile(rootDir: string)"
+      },
+      {
+        "name": "injectArchSpineScripts",
+        "kind": "function",
+        "signature": "injectArchSpineScripts(rootDir: string)"
+      },
+      {
+        "name": "removeManagedAgentInstructionsFile",
+        "kind": "function",
+        "signature": "removeManagedAgentInstructionsFile(\n  rootDir: string,\n  filename: string,\n  deleteEmptyHostFile: boolean,\n)"
+      },
+      {
+        "name": "removeManagedSearchIgnoreFile",
+        "kind": "function",
+        "signature": "removeManagedSearchIgnoreFile(\n  rootDir: string,\n  deleteManagedFile: boolean,\n)"
+      },
+      {
+        "name": "removeManagedSpineIgnoreFile",
+        "kind": "function",
+        "signature": "removeManagedSpineIgnoreFile(\n  rootDir: string,\n  deleteManagedFile: boolean,\n)"
+      },
+      {
+        "name": "removeArchSpineScripts",
+        "kind": "function",
+        "signature": "removeArchSpineScripts(\n  rootDir: string,\n  trackedScripts: string[],\n)"
+      },
+      {
+        "name": "AgentInstructionsSyncStatus",
+        "kind": "type",
+        "signature": "type AgentInstructionsSyncStatus"
+      },
+      {
+        "name": "PackageScriptStatus",
+        "kind": "type",
+        "signature": "type PackageScriptStatus"
+      },
+      {
+        "name": "SearchIgnoreSyncStatus",
+        "kind": "type",
+        "signature": "type SearchIgnoreSyncStatus"
+      },
+      {
+        "name": "SpineIgnoreSyncStatus",
+        "kind": "type",
+        "signature": "type SpineIgnoreSyncStatus"
+      },
+      {
+        "name": "GitIgnoreSyncStatus",
+        "kind": "type",
+        "signature": "type GitIgnoreSyncStatus"
+      },
+      {
+        "name": "GitAttributesSyncStatus",
+        "kind": "type",
+        "signature": "type GitAttributesSyncStatus"
+      },
+      {
+        "name": "AgentInstructionsRemovalStatus",
+        "kind": "type",
+        "signature": "type AgentInstructionsRemovalStatus"
+      },
+      {
+        "name": "SearchIgnoreRemovalStatus",
+        "kind": "type",
+        "signature": "type SearchIgnoreRemovalStatus"
+      },
+      {
+        "name": "SpineIgnoreRemovalStatus",
+        "kind": "type",
+        "signature": "type SpineIgnoreRemovalStatus"
+      },
+      {
+        "name": "GitIgnoreRemovalStatus",
+        "kind": "type",
+        "signature": "type GitIgnoreRemovalStatus"
+      },
+      {
+        "name": "GitAttributesRemovalStatus",
+        "kind": "type",
+        "signature": "type GitAttributesRemovalStatus"
+      },
+      {
+        "name": "PackageScriptRemovalStatus",
+        "kind": "type",
+        "signature": "type PackageScriptRemovalStatus"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "normalizeAgentInstructionsFilename",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "getGitIgnoreManagedLines",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "syncGitIgnoreFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "removeManagedGitIgnoreFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "syncGitAttributesFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "removeManagedGitAttributesFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "syncAgentInstructionsFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "syncSearchIgnoreFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "syncSpineIgnoreFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "injectArchSpineScripts",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "removeManagedAgentInstructionsFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "removeManagedSearchIgnoreFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "removeManagedSpineIgnoreFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "removeArchSpineScripts",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "AgentInstructionsSyncStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "PackageScriptStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "SearchIgnoreSyncStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "SpineIgnoreSyncStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "GitIgnoreSyncStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "GitAttributesSyncStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "AgentInstructionsRemovalStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "SearchIgnoreRemovalStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "SpineIgnoreRemovalStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "GitIgnoreRemovalStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "GitAttributesRemovalStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "PackageScriptRemovalStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 26,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./agent-instructions.templates.js",
+        "relation": "import",
+        "symbols": [
+          "AGENT_BLOCK_END",
+          "AGENT_BLOCK_START",
+          "ARCHSPINE_AGENT_BLOCK",
+          "ARCHSPINE_PACKAGE_SCRIPTS",
+          "ArtifactStrategy",
+          "DISTRIBUTABLE_GITATTRIBUTES_LINES",
+          "DISTRIBUTABLE_GITIGNORE_LINES",
+          "GITATTRIBUTES_BLOCK_END",
+          "GITATTRIBUTES_BLOCK_START",
+          "GITIGNORE_BLOCK_END",
+          "GITIGNORE_BLOCK_START",
+          "LOCAL_GITIGNORE_LINES",
+          "SEARCH_IGNORE_CONTENT",
+          "SEARCH_IGNORE_LINES",
+          "SEARCH_IGNORE_PATH",
+          "SPINEIGNORE_BLOCK_END",
+          "SPINEIGNORE_BLOCK_START",
+          "SPINEIGNORE_PATH",
+          "SPINEIGNORE_RECOMMENDED_LINES"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:42.200Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/utils/fs.ts",
+    "contentHash": "626129714884864cb8452ab7bf28806b02bfffa233939589d0cc5cdb1d26be62",
+    "skeletonHash": "e4c99c023f257f0ab23ba5fc9ab3c6d4eeaa22b57d26fd50caf919511f06880c",
+    "semanticHash": "612d68f1e339ad132bd33e21206f67e16c007b2ba1cd19b7361e89bb90e1169b",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/utils"
+  },
+  "semantic": {
+    "role": "Infrastructure utility class providing atomic file write and safe file copy operations for the ArchSpine system.",
+    "responsibilities": [
+      "Implements atomic file writes using a temporary file and rename pattern to prevent corruption.",
+      "Ensures target directory exists before writing, creating it recursively if necessary.",
+      "Provides a safe file copy operation that handles existing destination files and logs warnings on failure."
+    ],
+    "outOfScope": [
+      "Network I/O operations",
+      "File watching or event-driven filesystem changes",
+      "Asynchronous file operations (uses synchronous methods)",
+      "Complex file parsing or content transformation"
+    ],
+    "invariants": [
+      "All file system operations are performed synchronously.",
+      "Atomic writes are guaranteed via temporary file creation and atomic rename.",
+      "Directory existence is checked and created if missing before write operations."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reliable, corruption-resistant foundation for all file I/O within the ArchSpine system.",
+      "recentChangeIntent": null
+    },
+    "publicSurface": [
+      "FileSystemManager",
+      "FileSystemManager.safeWriteFile",
+      "FileSystemManager.safeCopyFile"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure utility class providing atomic file write and safe file copy operations for the ArchSpine system.",
+        "responsibilities": [
+          "Implements atomic file writes using a temporary file and rename pattern to prevent corruption.",
+          "Ensures target directory exists before writing, creating it recursively if necessary.",
+          "Provides a safe file copy operation that handles existing destination files and logs warnings on failure."
+        ],
+        "outOfScope": [
+          "Network I/O operations",
+          "File watching or event-driven filesystem changes",
+          "Asynchronous file operations (uses synchronous methods)",
+          "Complex file parsing or content transformation"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "crypto",
+        "relation": "import",
+        "symbols": [
+          "* as crypto"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:57:11.095Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/llm-command-ui.test.ts",
+    "contentHash": "af4ffc10c0d2c4a20e565ad1a20e91b980401bcef0f12cc7ab2860964abaf3bd",
+    "skeletonHash": "8d250295a1123873265dc80d70960c533b21fb9cb4dad63066a16adab4b0f09e",
+    "semanticHash": "9b7f8bee87e78edd6efccab42636aff66ba289c3e6474805d915f28bd19547ec",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for validating the LLM command's user interface and configuration surface.",
+    "responsibilities": [
+      "Validates that the LLM command rejects internal compatibility keys during 'set' operations.",
+      "Verifies that the LLM status command prints provider and model information to the console."
+    ],
+    "outOfScope": [
+      "Integration or end-to-end testing of the LLM command.",
+      "Testing of LLM API call execution or response handling.",
+      "Validation of configuration persistence or storage layer."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide automated regression coverage for the LLM command's CLI surface, ensuring configuration validation and status display work correctly.",
+      "recentChangeIntent": "gogogo"
+    },
+    "publicSurface": [
+      "describe('LLM command UI surface', ...)",
+      "it('rejects internal compatibility keys from llm set usage', ...)",
+      "it('prints provider and model info from llm status', ...)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for validating the LLM command's user interface and configuration surface.",
+        "responsibilities": [
+          "Validates that the LLM command rejects internal compatibility keys during 'set' operations.",
+          "Verifies that the LLM status command prints provider and model information to the console."
+        ],
+        "outOfScope": [
+          "Integration or end-to-end testing of the LLM command.",
+          "Testing of LLM API call execution or response handling.",
+          "Validation of configuration persistence or storage layer."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于验证 LLM 命令用户界面和配置表面的 Vitest 单元测试套件。",
+        "responsibilities": [
+          "验证 LLM 命令在 'set' 操作期间拒绝内部兼容性键。",
+          "确认 LLM 状态命令将提供商和模型信息打印到控制台。"
+        ],
+        "outOfScope": [
+          "LLM 命令的集成或端到端测试。",
+          "LLM API 调用执行或响应处理的测试。",
+          "配置持久化或存储层的验证。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/cli/commands/llm.js'",
+        "symbols": [
+          "executeLlmCommand",
+          "printLLMStatus"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "'vitest'",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "'../src/cli/commands/llm.js'",
+        "relation": "import",
+        "symbols": [
+          "executeLlmCommand",
+          "printLLMStatus"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.483Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

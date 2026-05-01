@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/index-loader.ts",
+    "contentHash": "e91992edd56819659c6a888ddc610d4b89e2b4107b9eaaaebce435e97260d721",
+    "skeletonHash": "41da33560a40321973eb260e832b13643ccaddd224dca1f35ec6c91980b109f5",
+    "semanticHash": "78457d2f0fb6c6cc38d306f8f1d5e24c91ffefc70259823bd4db48f3c2fb64eb",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "Infrastructure module that loads and caches indexed Spine units from the .spine/index directory for view layer consumption, particularly architecture diagram generation.",
+    "responsibilities": [
+      "Loads and caches SpineFolderUnit and SpineProjectUnit JSON files from the .spine/index directory via recursive directory traversal.",
+      "Validates loaded JSON against SpineUnit type schemas using infra/index-reader utilities (isCompatibleIndexDocument).",
+      "Provides indexed units for architecture diagram generation, limiting folder count for diagram clarity (MAX_ARCH_DIAGRAM_FOLDERS).",
+      "Warns via RuntimeIO about malformed or incompatible JSON files during loading using reportIndexReadIssueOnce."
+    ],
+    "outOfScope": [
+      "Rendering architecture diagrams or other visualizations.",
+      "Writing or updating the index files.",
+      "Orchestrating view-specific business logic beyond data loading."
+    ],
+    "invariants": [
+      "Depends on infra/index-reader.js for index document reading and validation.",
+      "Uses RuntimeIO for optional warning output.",
+      "Caches loaded units to avoid repeated filesystem reads."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a cached, validated data source for view layer operations, isolating filesystem access and index parsing.",
+      "recentChangeIntent": "No significant change detected; recent commit is a release chore."
+    },
+    "publicSurface": [
+      "ViewIndexLoader class (constructor, getIndexedUnits method)"
+    ],
+    "ruleViolations": [
+      {
+        "id": "service-runtime-boundary",
+        "severity": "warning",
+        "reason": "Module 'ViewIndexLoader' is view-specific (loads units for architecture diagrams) but resides under src/infra/ instead of src/services/view/ as required by rule."
+      }
+    ],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure module that loads and caches indexed Spine units from the .spine/index directory for view layer consumption, particularly architecture diagram generation.",
+        "responsibilities": [
+          "Loads and caches SpineFolderUnit and SpineProjectUnit JSON files from the .spine/index directory via recursive directory traversal.",
+          "Validates loaded JSON against SpineUnit type schemas using infra/index-reader utilities (isCompatibleIndexDocument).",
+          "Provides indexed units for architecture diagram generation, limiting folder count for diagram clarity (MAX_ARCH_DIAGRAM_FOLDERS).",
+          "Warns via RuntimeIO about malformed or incompatible JSON files during loading using reportIndexReadIssueOnce."
+        ],
+        "outOfScope": [
+          "Rendering architecture diagrams or other visualizations.",
+          "Writing or updating the index files.",
+          "Orchestrating view-specific business logic beyond data loading."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../infra/index-reader.js'",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "ViewIndexLoader",
+        "kind": "class",
+        "signature": "class ViewIndexLoader"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ViewIndexLoader",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/services/view/index-loader.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../infra/index-reader.js",
+        "relation": "import",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ]
+      },
+      {
+        "targetPath": "../../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "../../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SpineFolderUnit",
+          "SpineProjectUnit",
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "LoadedUnit"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:41.136Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

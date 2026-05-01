@@ -1,0 +1,277 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/llm/global.ts",
+    "contentHash": "d456cb2f632dcd4d26569c0497d0f3f6dc614bb709d46ae2ec26f43c5a3b026c",
+    "skeletonHash": "ef71cbaa0c47aa2de4efc75a8b0e2377f899b610107a44292d6c7aa95d60ce95",
+    "semanticHash": "8a9b7bb9670e1b1083a1e96e38f642a9ae8fb8c61d8065f814a2705757569a76",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/llm"
+  },
+  "semantic": {
+    "role": "Infrastructure facade for global LLM configuration file I/O and credential store integration.",
+    "responsibilities": [
+      "Defines the GlobalLLMConfigShape interface for structured LLM provider configuration including provider, model, baseURL, mode, prompt tier, and validation policy.",
+      "Implements GlobalLLMConfig class for reading, writing, and pruning a JSON config file at a platform-appropriate global directory (XDG_CONFIG_HOME or ~/.config).",
+      "Implements GlobalLLMSecrets class wrapping CredentialStore for secure LLM API key management via createGlobalLLMCredentialStore.",
+      "Exports getGlobalArchSpineDir utility to resolve the global ArchSpine configuration directory.",
+      "Re-exports type definitions for LLMMode, PromptPolicyTier, and ValidatePolicy from the prompt-policy module."
+    ],
+    "outOfScope": [
+      "Does not handle per-project or per-user override resolution.",
+      "Does not perform LLM inference or orchestration.",
+      "Does not validate provider-specific configuration schemas beyond the generic shape."
+    ],
+    "invariants": [
+      "GlobalLLMConfigShape must remain a stable interface for all LLM configuration consumers.",
+      "GlobalLLMSecrets must delegate credential storage to the CredentialStore abstraction, not manage secrets directly.",
+      "Config file path must be deterministic based on XDG_CONFIG_HOME or OS home directory."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, low-level infrastructure facade for global LLM configuration and secrets, isolating file I/O and credential management from higher-level orchestration.",
+      "recentChangeIntent": "Fix lint warnings and type errors, and add CI workflow (no semantic change to this file)."
+    },
+    "publicSurface": [
+      "getGlobalArchSpineDir",
+      "GlobalLLMConfig",
+      "GlobalLLMSecrets",
+      "GlobalLLMConfigShape",
+      "LLMMode",
+      "PromptPolicyTier",
+      "ValidatePolicy"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure facade for global LLM configuration file I/O and credential store integration.",
+        "responsibilities": [
+          "Defines the GlobalLLMConfigShape interface for structured LLM provider configuration including provider, model, baseURL, mode, prompt tier, and validation policy.",
+          "Implements GlobalLLMConfig class for reading, writing, and pruning a JSON config file at a platform-appropriate global directory (XDG_CONFIG_HOME or ~/.config).",
+          "Implements GlobalLLMSecrets class wrapping CredentialStore for secure LLM API key management via createGlobalLLMCredentialStore.",
+          "Exports getGlobalArchSpineDir utility to resolve the global ArchSpine configuration directory.",
+          "Re-exports type definitions for LLMMode, PromptPolicyTier, and ValidatePolicy from the prompt-policy module."
+        ],
+        "outOfScope": [
+          "Does not handle per-project or per-user override resolution.",
+          "Does not perform LLM inference or orchestration.",
+          "Does not validate provider-specific configuration schemas beyond the generic shape."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "全局 LLM 配置文件 I/O 与凭据存储集成的基础设施外观层。",
+        "responsibilities": [
+          "定义 GlobalLLMConfigShape 接口，用于结构化 LLM 提供商配置，包括 provider、model、baseURL、mode、prompt tier 和 validate policy。",
+          "实现 GlobalLLMConfig 类，在平台合适的全局目录（XDG_CONFIG_HOME 或 ~/.config）中读取、写入和修剪 JSON 配置文件。",
+          "实现 GlobalLLMSecrets 类，通过 createGlobalLLMCredentialStore 包装 CredentialStore 以安全地管理 LLM API 密钥。",
+          "导出 getGlobalArchSpineDir 工具函数，用于解析全局 ArchSpine 配置目录。",
+          "从 prompt-policy 模块重新导出 LLMMode、PromptPolicyTier 和 ValidatePolicy 的类型定义。"
+        ],
+        "outOfScope": [
+          "不处理按项目或按用户的覆盖解析。",
+          "不执行 LLM 推理或编排。",
+          "不验证超出通用形状的提供商特定配置模式。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../credentials/backend.js'",
+        "symbols": [
+          "CredentialBackend"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../credentials/store.js'",
+        "symbols": [
+          "CredentialSource",
+          "CredentialStore",
+          "createGlobalLLMCredentialStore"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../utils/fs.js'",
+        "symbols": [
+          "FileSystemManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "getGlobalArchSpineDir",
+        "kind": "function",
+        "signature": "getGlobalArchSpineDir()"
+      },
+      {
+        "name": "GlobalLLMConfig",
+        "kind": "class",
+        "signature": "class GlobalLLMConfig"
+      },
+      {
+        "name": "GlobalLLMSecrets",
+        "kind": "class",
+        "signature": "class GlobalLLMSecrets"
+      },
+      {
+        "name": "GlobalLLMConfigShape",
+        "kind": "interface",
+        "signature": "interface GlobalLLMConfigShape"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "getGlobalArchSpineDir",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/llm/global.ts#"
+      },
+      {
+        "name": "GlobalLLMConfig",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/llm/global.ts#"
+      },
+      {
+        "name": "GlobalLLMSecrets",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/llm/global.ts#"
+      },
+      {
+        "name": "GlobalLLMConfigShape",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/llm/global.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 4,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../credentials/backend.js",
+        "relation": "import",
+        "symbols": [
+          "CredentialBackend"
+        ]
+      },
+      {
+        "targetPath": "../credentials/store.js",
+        "relation": "import",
+        "symbols": [
+          "CredentialSource",
+          "CredentialStore",
+          "createGlobalLLMCredentialStore"
+        ]
+      },
+      {
+        "targetPath": "../../utils/fs.js",
+        "relation": "import",
+        "symbols": [
+          "FileSystemManager"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/llm/global.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/getGlobalArchSpineDir#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/global.ts/_file_#",
+        "targetSymbol": "src/infra/credentials/store.ts/createGlobalLLMCredentialStore#",
+        "targetPath": "src/infra/credentials/store.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:57:07.125Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

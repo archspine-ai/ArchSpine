@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/runtime-io.ts",
+    "contentHash": "016ba421678e07b86c6f6de4b72f1294bab567fc5ac8bbff89d158a8f8b13617",
+    "skeletonHash": "c547ca8e7757fa3ad6e9fe9d5b1afcc99cc276adea12fddc812ab442c0b25205",
+    "semanticHash": "884480bcd4e32b7add290950396f8432e19de628336a306a8782d56b16e63b1b",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Core Infrastructure facade for runtime I/O operations (logging, warnings, errors, and user confirmations).",
+    "responsibilities": [
+      "Defines the RuntimeIO interface standardizing info, warn, error, and confirm methods.",
+      "Provides defaultRuntimeIO implementation using console.log, console.warn, console.error for logging.",
+      "Delegates user confirmation prompts to the imported promptForExplicitConfirmation utility.",
+      "Centralizes I/O operations to enable test mocking and consistent runtime behavior across the application."
+    ],
+    "outOfScope": [
+      "Orchestrating service/task/engine workflows.",
+      "Providing high-level business logic or domain-specific operations.",
+      "Handling network I/O, file system operations, or other low-level system interactions beyond console and user prompts."
+    ],
+    "invariants": [
+      "Exposes a stable facade (RuntimeIO interface) for I/O operations.",
+      "Infra callers should depend on this facade rather than reaching into deeper private implementation paths for console or confirmation logic."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized, mockable I/O abstraction layer to decouple runtime output and user interaction from core business logic.",
+      "recentChangeIntent": "No recent changes detected for this file; recent commit 'feat: restore llm-authored markdown generation' is unrelated."
+    },
+    "publicSurface": [
+      "RuntimeIO",
+      "defaultRuntimeIO"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core Infrastructure facade for runtime I/O operations (logging, warnings, errors, and user confirmations).",
+        "responsibilities": [
+          "Defines the RuntimeIO interface standardizing info, warn, error, and confirm methods.",
+          "Provides defaultRuntimeIO implementation using console.log, console.warn, console.error for logging.",
+          "Delegates user confirmation prompts to the imported promptForExplicitConfirmation utility.",
+          "Centralizes I/O operations to enable test mocking and consistent runtime behavior across the application."
+        ],
+        "outOfScope": [
+          "Orchestrating service/task/engine workflows.",
+          "Providing high-level business logic or domain-specific operations.",
+          "Handling network I/O, file system operations, or other low-level system interactions beyond console and user prompts."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../utils/confirm.js'",
+        "symbols": [
+          "promptForExplicitConfirmation"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "RuntimeIO",
+        "kind": "interface",
+        "signature": "interface RuntimeIO"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "RuntimeIO",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/runtime-io.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../utils/confirm.js",
+        "relation": "import",
+        "symbols": [
+          "promptForExplicitConfirmation"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/engines/info.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:56:58.399Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

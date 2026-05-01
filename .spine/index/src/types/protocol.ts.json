@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/types/protocol.ts",
+    "contentHash": "c0cb9d58e839954e1fda00352d5eb29c51225a956d0bb212ca1f836038af84e5",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "b96d01255eb71cebdeaff0ead9f118237b942862849470895ed4455ab7baa032",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/types"
+  },
+  "semantic": {
+    "role": "Public protocol facade module providing a stable entry point for importing all ArchSpine protocol types.",
+    "responsibilities": [
+      "Re-exports all protocol type definitions from the internal module './protocol/index.js'.",
+      "Provides a single, stable import path for external consumers of the ArchSpine protocol.",
+      "Decouples the internal protocol module structure from external dependencies."
+    ],
+    "outOfScope": [
+      "Defining new protocol types or interfaces.",
+      "Implementing protocol logic or validation.",
+      "Handling runtime instantiation of protocol objects."
+    ],
+    "invariants": [
+      "Must only contain re-exports from the internal protocol module.",
+      "Must not contain any local type definitions or logic."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable public API boundary for the protocol subsystem, insulating consumers from internal restructuring.",
+      "recentChangeIntent": "Part of refactoring to establish subsystem facades; this file serves as the facade for the protocol subsystem."
+    },
+    "publicSurface": [
+      "All symbols exported from './protocol/index.js' are publicly exposed."
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Public protocol facade module providing a stable entry point for importing all ArchSpine protocol types.",
+        "responsibilities": [
+          "Re-exports all protocol type definitions from the internal module './protocol/index.js'.",
+          "Provides a single, stable import path for external consumers of the ArchSpine protocol.",
+          "Decouples the internal protocol module structure from external dependencies."
+        ],
+        "outOfScope": [
+          "Defining new protocol types or interfaces.",
+          "Implementing protocol logic or validation.",
+          "Handling runtime instantiation of protocol objects."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./protocol/index.js",
+        "relation": "export-star",
+        "symbols": [
+          "*"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/engines/info.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/mcp-context-mode.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/scan-policy.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/view-service.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:41.881Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

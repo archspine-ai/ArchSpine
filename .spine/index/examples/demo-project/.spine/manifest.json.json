@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "examples/demo-project/.spine/manifest.json",
+    "contentHash": "12c8b567f15a43d187207ac6c3e019507bdfb4a50548331f7d1f7116b6edfc1a",
+    "semanticHash": "dcac6db5b576b9b5ea71fed0126d49e4e52ae7c9534041be2f0904eb975ab930",
+    "language": "unsupported",
+    "fileKind": "config",
+    "scope": "examples/demo-project/.spine"
+  },
+  "semantic": {
+    "role": "Health-check and sync-state snapshot for the ArchSpine mirror system",
+    "responsibilities": [
+      "Tracking last synchronization timestamp and mode",
+      "Reporting reverse index completeness and indexed unit count",
+      "Exposing LLM provider and model configuration used during sync",
+      "Reporting active constraint violations and last sync duration"
+    ],
+    "outOfScope": [],
+    "invariants": [
+      "activeViolations must be non-negative",
+      "lastSyncDurationMs must be non-negative",
+      "indexedUnitCount must be non-negative",
+      "reverseIndexComplete must be a boolean"
+    ],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Provides a lightweight, read-only health-check view of the ArchSpine mirror system's synchronization state and constraint status.",
+        "parameter_definitions": {
+          "schemaVersion": "Version of the schema this file conforms to.",
+          "generatorVersion": "Version of the ArchSpine generator that produced this file.",
+          "project": "Name of the project this configuration belongs to.",
+          "sync.lastSyncAt": "ISO 8601 timestamp of the most recent synchronization.",
+          "sync.lastSyncMode": "Type of the last sync operation (e.g., full or incremental).",
+          "sync.reverseIndexComplete": "Boolean indicating whether the reverse index was fully built during the last sync.",
+          "sync.indexedUnitCount": "Number of units indexed during the last sync.",
+          "sync.llm.provider": "LLM provider used during the last sync (e.g., mock, openai).",
+          "sync.llm.providerSource": "Source of the LLM provider configuration (e.g., project-config, global-config).",
+          "sync.llm.model": "LLM model used during the last sync (e.g., deepseek-chat).",
+          "sync.llm.modelSource": "Source of the LLM model configuration (e.g., global-config).",
+          "health.activeViolations": "Number of currently active constraint violations. Zero indicates a healthy state.",
+          "health.lastSyncDurationMs": "Duration of the last sync operation in milliseconds.",
+          "_note": "Informational note indicating that the core state is stored in .spine/cache.db."
+        },
+        "stability_and_risks": "This file is a derived, read-only snapshot. It does not control system behavior directly. However, if the values become stale or inconsistent with the cache database, monitoring and alerting systems may report false positives or miss real issues. A non-zero activeViolations count indicates constraint breaches that could affect downstream operations. A very high lastSyncDurationMs may signal performance degradation or resource contention. The LLM provider/model fields are informational; mismatches with actual runtime configuration could cause confusion during debugging."
+      },
+      "Simplified Chinese": {
+        "role": "提供 ArchSpine 镜像系统的同步状态和约束健康状况的轻量级只读快照。",
+        "parameter_definitions": {
+          "schemaVersion": "此文件所遵循的架构版本。",
+          "generatorVersion": "生成此文件的 ArchSpine 生成器版本。",
+          "project": "此配置所属的项目名称。",
+          "sync.lastSyncAt": "最近一次同步的 ISO 8601 时间戳。",
+          "sync.lastSyncMode": "最近一次同步的类型（例如 full 或 incremental）。",
+          "sync.reverseIndexComplete": "布尔值，指示最近一次同步是否完整构建了反向索引。",
+          "sync.indexedUnitCount": "最近一次同步中索引的单元数量。",
+          "sync.llm.provider": "最近一次同步使用的 LLM 提供商（例如 mock、openai）。",
+          "sync.llm.providerSource": "LLM 提供商配置的来源（例如 project-config、global-config）。",
+          "sync.llm.model": "最近一次同步使用的 LLM 模型（例如 deepseek-chat）。",
+          "sync.llm.modelSource": "LLM 模型配置的来源（例如 global-config）。",
+          "health.activeViolations": "当前活跃的约束违规数量。零表示系统健康。",
+          "health.lastSyncDurationMs": "最近一次同步操作的持续时间（毫秒）。",
+          "_note": "提示信息，说明核心状态存储在 .spine/cache.db 中。"
+        },
+        "stability_and_risks": "此文件是一个派生的只读快照，不直接控制系统行为。但如果其值与缓存数据库不一致，监控和告警系统可能会误报或遗漏真实问题。非零的 activeViolations 表示存在约束违规，可能影响下游操作。过高的 lastSyncDurationMs 可能表明性能下降或资源争用。LLM 提供商和模型字段仅供参考；若与实际运行时配置不匹配，可能在调试时造成混淆。"
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:44:23.557Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

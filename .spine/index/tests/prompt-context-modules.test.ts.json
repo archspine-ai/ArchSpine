@@ -1,0 +1,128 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/prompt-context-modules.test.ts",
+    "contentHash": "e3ea23fa5bc5a6849155c992983edbc9ff6274d6b303b4f9d7c462ed4b2c570e",
+    "skeletonHash": "1b037eb653f2ee0837ae967490bc730c54c0c6bf3a1e951f2f1834921005c748",
+    "semanticHash": "f14a717f09a7c40745afa325b892c288a67f7ac4454152c79499648920e3e80d",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest test suite for validating prompt-context infrastructure modules (budget calculation and dependency diagnostics).",
+    "responsibilities": [
+      "Tests the calculateSourcePromptBudgets function for correct allocation of validation budgets based on input content and skeleton.",
+      "Tests the buildDependencySelectionDiagnostics function for accurate dependency candidate filtering and diagnostic reporting.",
+      "Tests the buildRuleBlockDiagnostics function for rule block diagnostic generation.",
+      "Asserts expected behavior of infrastructure modules using Vitest's describe/it/expect pattern."
+    ],
+    "outOfScope": [
+      "Implementing production logic for budget calculation or diagnostics.",
+      "Providing CLI or runtime services.",
+      "Handling non-test related infrastructure."
+    ],
+    "invariants": [
+      "Uses Vitest testing framework (describe/it/expect).",
+      "Imports specific prompt-context modules (budgets.js, diagnostics.js).",
+      "Follows test file naming convention (.test.ts or .spec.ts) per project rules."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure reliability of prompt-context infrastructure through unit tests.",
+      "recentChangeIntent": "Refactor to modularize CLI and decouple core infra services (from git intent, but not directly evidenced in this test file)."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite for validating prompt-context infrastructure modules (budget calculation and dependency diagnostics).",
+        "responsibilities": [
+          "Tests the calculateSourcePromptBudgets function for correct allocation of validation budgets based on input content and skeleton.",
+          "Tests the buildDependencySelectionDiagnostics function for accurate dependency candidate filtering and diagnostic reporting.",
+          "Tests the buildRuleBlockDiagnostics function for rule block diagnostic generation.",
+          "Asserts expected behavior of infrastructure modules using Vitest's describe/it/expect pattern."
+        ],
+        "outOfScope": [
+          "Implementing production logic for budget calculation or diagnostics.",
+          "Providing CLI or runtime services.",
+          "Handling non-test related infrastructure."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/prompt-context/budgets.js'",
+        "symbols": [
+          "calculateSourcePromptBudgets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/prompt-context/diagnostics.js'",
+        "symbols": [
+          "buildDependencySelectionDiagnostics",
+          "buildRuleBlockDiagnostics"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/prompt-context/budgets.js",
+        "relation": "import",
+        "symbols": [
+          "calculateSourcePromptBudgets"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/prompt-context/diagnostics.js",
+        "relation": "import",
+        "symbols": [
+          "buildDependencySelectionDiagnostics",
+          "buildRuleBlockDiagnostics"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.801Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

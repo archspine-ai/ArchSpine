@@ -1,0 +1,202 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/post-commit-derivation.test.ts",
+    "contentHash": "6ce11b2c806693e2b6d7f7d39dcd26ba65a57b65b9f9894ea9316e6b11e5845c",
+    "skeletonHash": "497f9036482f68243de9b2b204255b4c5156c7432a69af142c39498543abd420",
+    "semanticHash": "e3f46e120849b20477ae57a1988c6becaec913ab5fd8f3d310bb187e47f846c9",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite for the PostCommitDerivationTask orchestration pipeline.",
+    "responsibilities": [
+      "Verifies that PostCommitDerivationTask.execute invokes ReverseIndexingTask, AggregationTask, and ViewDerivationTask in the correct sequential order.",
+      "Mocks the execute methods of dependent tasks to isolate the orchestration logic from their implementations.",
+      "Uses createTaskTelemetryState to provide telemetry context for the task execution.",
+      "Cleans up all mocks after each test via afterEach to ensure test isolation."
+    ],
+    "outOfScope": [
+      "Unit testing of individual task implementations (ReverseIndexingTask, AggregationTask, ViewDerivationTask).",
+      "Integration testing with real file systems or databases.",
+      "Testing error handling or edge cases in the post-commit derivation pipeline."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (rule: test-file-suffix).",
+      "All mocks are restored after each test to prevent cross-test contamination."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provides a focused integration test for the post-commit derivation task orchestration, ensuring that the pipeline of sub-tasks executes in the correct order.",
+      "recentChangeIntent": "No specific recent change intent detected beyond the generic 'fast fast' commit message, which does not correlate with this test file's content."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite for the PostCommitDerivationTask orchestration pipeline.",
+        "responsibilities": [
+          "Verifies that PostCommitDerivationTask.execute invokes ReverseIndexingTask, AggregationTask, and ViewDerivationTask in the correct sequential order.",
+          "Mocks the execute methods of dependent tasks to isolate the orchestration logic from their implementations.",
+          "Uses createTaskTelemetryState to provide telemetry context for the task execution.",
+          "Cleans up all mocks after each test via afterEach to ensure test isolation."
+        ],
+        "outOfScope": [
+          "Unit testing of individual task implementations (ReverseIndexingTask, AggregationTask, ViewDerivationTask).",
+          "Integration testing with real file systems or databases.",
+          "Testing error handling or edge cases in the post-commit derivation pipeline."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "针对 PostCommitDerivationTask 编排管线的 Vitest 集成测试套件。",
+        "responsibilities": [
+          "验证 PostCommitDerivationTask.execute 按正确顺序调用 ReverseIndexingTask、AggregationTask 和 ViewDerivationTask。",
+          "模拟依赖任务的 execute 方法，以隔离编排逻辑与具体实现。",
+          "使用 createTaskTelemetryState 为任务执行提供遥测上下文。",
+          "通过 afterEach 在每个测试后清理所有模拟，确保测试隔离。"
+        ],
+        "outOfScope": [
+          "对单个任务实现（ReverseIndexingTask、AggregationTask、ViewDerivationTask）的单元测试。",
+          "与真实文件系统或数据库的集成测试。",
+          "对后提交派生管线中错误处理或边界情况的测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it",
+          "vi",
+          "afterEach"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/tasks/post-commit-derivation.js'",
+        "symbols": [
+          "PostCommitDerivationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/tasks/reverse-index.js'",
+        "symbols": [
+          "ReverseIndexingTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/tasks/aggregate.js'",
+        "symbols": [
+          "AggregationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/tasks/view-derivation.js'",
+        "symbols": [
+          "ViewDerivationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/services/view-service.js'",
+        "symbols": [
+          "ViewService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/services/view/view-registry.js'",
+        "symbols": [
+          "VIEW_DEFINITIONS"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/core/task-state.js'",
+        "symbols": [
+          "createTaskTelemetryState"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../src/tasks/post-commit-derivation.js",
+        "relation": "import",
+        "symbols": [
+          "PostCommitDerivationTask"
+        ]
+      },
+      {
+        "targetPath": "../src/tasks/reverse-index.js",
+        "relation": "import",
+        "symbols": [
+          "ReverseIndexingTask"
+        ]
+      },
+      {
+        "targetPath": "../src/tasks/aggregate.js",
+        "relation": "import",
+        "symbols": [
+          "AggregationTask"
+        ]
+      },
+      {
+        "targetPath": "../src/tasks/view-derivation.js",
+        "relation": "import",
+        "symbols": [
+          "ViewDerivationTask"
+        ]
+      },
+      {
+        "targetPath": "../src/services/view-service.js",
+        "relation": "import",
+        "symbols": [
+          "ViewService"
+        ]
+      },
+      {
+        "targetPath": "../src/services/view/view-registry.js",
+        "relation": "import",
+        "symbols": [
+          "VIEW_DEFINITIONS"
+        ]
+      },
+      {
+        "targetPath": "../src/core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "createTaskTelemetryState"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.731Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

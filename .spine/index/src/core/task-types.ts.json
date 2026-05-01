@@ -1,0 +1,300 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/core/task-types.ts",
+    "contentHash": "a814574705985da22e3e13bcef2cb71927da66649e69a4f5deb7ca1f2f9ae522",
+    "skeletonHash": "535eda90e9e0c3e80624464b3c6c9e11ef6497a35d25ec21248f4f091d3e5add",
+    "semanticHash": "93b3cae2ca9c410a66b8c9cf1670f274b828b475b11a4af58461ecd7dd285daa",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/core"
+  },
+  "semantic": {
+    "role": "Core TypeScript contract definitions for ArchSpine pipeline task state, metrics, and stage boundaries.",
+    "responsibilities": [
+      "Defines statistical interfaces for task processing metrics (TaskStats, TaskStageMetric).",
+      "Provides state container interfaces for different pipeline concerns (diagnostics, selection, artifacts, telemetry).",
+      "Establishes input/output contracts for pipeline stages (Scan, Extraction, Fix, Commit, ViewDerivation).",
+      "Serves as the central type definition hub for cross-stage data exchange in the ArchSpine system."
+    ],
+    "outOfScope": [
+      "Implementation of pipeline logic or business rules.",
+      "CLI command handling or user interaction.",
+      "Concrete data processing or transformation functions."
+    ],
+    "invariants": [
+      "Must remain free of CLI or runtime dependencies to preserve pipeline core isolation.",
+      "Defines only TypeScript interfaces and types, no executable code."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "To isolate and define the type contracts for pipeline state and stage communication, enabling type-safe cross-stage data flow and decoupling core pipeline logic from implementation details.",
+      "recentChangeIntent": "Refactoring to split task state contracts, likely separating concerns within the core type definitions for better modularity and maintainability."
+    },
+    "publicSurface": [
+      "TaskStats",
+      "TaskStageMetric",
+      "TaskDiagnosticsState",
+      "TaskSelectionState",
+      "TaskArtifactsState",
+      "TaskTelemetryState",
+      "TaskState",
+      "ScanStageInput",
+      "ScanStageOutput",
+      "ExtractionStageOutput",
+      "FixViolation",
+      "FixStageInput",
+      "FixStageOutput",
+      "CommitStageOutput",
+      "ViewDerivationStageOutput"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core TypeScript contract definitions for ArchSpine pipeline task state, metrics, and stage boundaries.",
+        "responsibilities": [
+          "Defines statistical interfaces for task processing metrics (TaskStats, TaskStageMetric).",
+          "Provides state container interfaces for different pipeline concerns (diagnostics, selection, artifacts, telemetry).",
+          "Establishes input/output contracts for pipeline stages (Scan, Extraction, Fix, Commit, ViewDerivation).",
+          "Serves as the central type definition hub for cross-stage data exchange in the ArchSpine system."
+        ],
+        "outOfScope": [
+          "Implementation of pipeline logic or business rules.",
+          "CLI command handling or user interaction.",
+          "Concrete data processing or transformation functions."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "FileKind",
+          "SpineUnit"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "TaskStats",
+        "kind": "interface",
+        "signature": "interface TaskStats"
+      },
+      {
+        "name": "TaskStageMetric",
+        "kind": "interface",
+        "signature": "interface TaskStageMetric"
+      },
+      {
+        "name": "TaskDiagnosticsState",
+        "kind": "interface",
+        "signature": "interface TaskDiagnosticsState"
+      },
+      {
+        "name": "TaskSelectionState",
+        "kind": "interface",
+        "signature": "interface TaskSelectionState"
+      },
+      {
+        "name": "TaskArtifactsState",
+        "kind": "interface",
+        "signature": "interface TaskArtifactsState"
+      },
+      {
+        "name": "TaskTelemetryState",
+        "kind": "interface",
+        "signature": "interface TaskTelemetryState"
+      },
+      {
+        "name": "TaskState",
+        "kind": "interface",
+        "signature": "interface TaskState"
+      },
+      {
+        "name": "ScanStageInput",
+        "kind": "interface",
+        "signature": "interface ScanStageInput"
+      },
+      {
+        "name": "ScanStageOutput",
+        "kind": "interface",
+        "signature": "interface ScanStageOutput"
+      },
+      {
+        "name": "ExtractionStageOutput",
+        "kind": "interface",
+        "signature": "interface ExtractionStageOutput"
+      },
+      {
+        "name": "FixViolation",
+        "kind": "interface",
+        "signature": "interface FixViolation"
+      },
+      {
+        "name": "FixStageInput",
+        "kind": "interface",
+        "signature": "interface FixStageInput"
+      },
+      {
+        "name": "FixStageOutput",
+        "kind": "interface",
+        "signature": "interface FixStageOutput"
+      },
+      {
+        "name": "CommitStageOutput",
+        "kind": "interface",
+        "signature": "interface CommitStageOutput"
+      },
+      {
+        "name": "ViewDerivationStageOutput",
+        "kind": "interface",
+        "signature": "interface ViewDerivationStageOutput"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "TaskStats",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "TaskStageMetric",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "TaskDiagnosticsState",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "TaskSelectionState",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "TaskArtifactsState",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "TaskTelemetryState",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "TaskState",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "ScanStageInput",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "ScanStageOutput",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "ExtractionStageOutput",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "FixViolation",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "FixStageInput",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "FixStageOutput",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "CommitStageOutput",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "ViewDerivationStageOutput",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 15,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "FileKind",
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "../ast/extractor.js",
+        "relation": "import",
+        "symbols": [
+          "FileSkeleton"
+        ]
+      },
+      {
+        "targetPath": "../infra/prompt-context.js",
+        "relation": "import",
+        "symbols": [
+          "RelevanceDiagnosticsMode",
+          "SourceFileDiagnosticsSnapshot"
+        ]
+      },
+      {
+        "targetPath": "../types/view.js",
+        "relation": "import",
+        "symbols": [
+          "ViewId"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:37.315Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

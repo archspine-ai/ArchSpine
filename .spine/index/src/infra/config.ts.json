@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/config.ts",
+    "contentHash": "093988ca1e757dc6bccd88d0bb6c5f9a0298ce4833df9aee9fe276e081420daa",
+    "skeletonHash": "1963300d6fbe2edc8a64d516da63a4f9ca87fd3932872fc2c2e7ec24d23aa535",
+    "semanticHash": "4ada5f86c8361c104827e7d683c9f2e16454ad0924e570c8fc18813c051bbf38",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Public API barrel file for the configuration subsystem, re-exporting the facade and type definitions.",
+    "responsibilities": [
+      "Aggregates and re-exports the public Config facade from './config/facade.js'.",
+      "Re-exports all type definitions from './config/types.js' to provide a unified import path.",
+      "Serves as the primary entry point for consumers of the configuration infrastructure."
+    ],
+    "outOfScope": [
+      "Implementing configuration logic or validation.",
+      "Providing runtime orchestration or service layer concerns.",
+      "Directly importing or depending on deep private implementation modules."
+    ],
+    "invariants": [
+      "Must only re-export public symbols from the config subsystem.",
+      "Must not contain any executable logic or stateful behavior.",
+      "Must maintain a stable export surface for external consumers."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, unified public interface for the configuration subsystem, encapsulating internal structure and facilitating refactoring.",
+      "recentChangeIntent": "No recent changes detected in this file; the git intent 'tighten schema handling and add try preview' does not directly affect this barrel export."
+    },
+    "publicSurface": [
+      "Config (exported from './config/facade.js')",
+      "All type definitions from './config/types.js'"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Public API barrel file for the configuration subsystem, re-exporting the facade and type definitions.",
+        "responsibilities": [
+          "Aggregates and re-exports the public Config facade from './config/facade.js'.",
+          "Re-exports all type definitions from './config/types.js' to provide a unified import path.",
+          "Serves as the primary entry point for consumers of the configuration infrastructure."
+        ],
+        "outOfScope": [
+          "Implementing configuration logic or validation.",
+          "Providing runtime orchestration or service layer concerns.",
+          "Directly importing or depending on deep private implementation modules."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "Config",
+        "kind": "unknown",
+        "signature": "export { Config }"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "Config",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/config.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./config/facade.js",
+        "relation": "export",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "./config/types.js",
+        "relation": "export",
+        "symbols": [
+          "*"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/engines/info.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/scan-policy.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:37.988Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

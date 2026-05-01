@@ -1,0 +1,154 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/context-path-resolver.ts",
+    "contentHash": "eaaf5fb357f94e149096b03418d2ff5f798eed2f8156dbe3169a3cde8bd7a00a",
+    "skeletonHash": "2cf13407c5e6897d222121ff8dcbb9ada21d3a0143796cdaeec223b09c1c9794",
+    "semanticHash": "ad87cf8e24a7cde9b0b3688dc7dd1889eee268e2a7e0eb78dc57e45753aa6610",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Path resolution utility for the scanning engine, specializing in resolving relative import targets within a source tree.",
+    "responsibilities": [
+      "Resolves relative import source strings to absolute file system paths given a root directory and containing directory.",
+      "Consults the language registry to determine valid source file extensions for existence checking.",
+      "Performs file existence and type validation (file vs. directory) for candidate paths.",
+      "Returns the resolved relative path from the root directory if a valid source file is found, otherwise returns null."
+    ],
+    "outOfScope": [
+      "Handling non-relative imports (e.g., package imports).",
+      "Module bundling or dependency graph construction.",
+      "CLI argument parsing or user interaction.",
+      "Service-level orchestration or state management."
+    ],
+    "invariants": [
+      "Must only process import sources that start with '.'.",
+      "Must rely on the LangRegistry for language-specific source file extensions.",
+      "Must validate that the resolved path exists and is a file.",
+      "Must be decoupled from CLI entrypoints and presentation logic (aligned with engine-independence rule)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable, language-aware path resolution function for static analysis engines, ensuring engine modules remain independent of orchestration concerns.",
+      "recentChangeIntent": "Part of a broader refactoring to split scanner and context responsibilities within the engines, likely to improve modularity and separation of concerns."
+    },
+    "publicSurface": [
+      "resolveRelativeImportTarget(rootDir: string, dir: string, source: string): string | null"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Path resolution utility for the scanning engine, specializing in resolving relative import targets within a source tree.",
+        "responsibilities": [
+          "Resolves relative import source strings to absolute file system paths given a root directory and containing directory.",
+          "Consults the language registry to determine valid source file extensions for existence checking.",
+          "Performs file existence and type validation (file vs. directory) for candidate paths.",
+          "Returns the resolved relative path from the root directory if a valid source file is found, otherwise returns null."
+        ],
+        "outOfScope": [
+          "Handling non-relative imports (e.g., package imports).",
+          "Module bundling or dependency graph construction.",
+          "CLI argument parsing or user interaction.",
+          "Service-level orchestration or state management."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../ast/lang-registry.js'",
+        "symbols": [
+          "LangRegistry"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "resolveRelativeImportTarget",
+        "kind": "function",
+        "signature": "resolveRelativeImportTarget(\n  rootDir: string,\n  dir: string,\n  source: string,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "resolveRelativeImportTarget",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/context-path-resolver.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../ast/lang-registry.js",
+        "relation": "import",
+        "symbols": [
+          "LangRegistry"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:37.457Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

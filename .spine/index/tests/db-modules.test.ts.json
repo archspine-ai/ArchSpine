@@ -1,0 +1,187 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/db-modules.test.ts",
+    "contentHash": "4ae04cb47d82695c028b7e8f77f468ee31d575034f957730c2f75d7fe02b7cc9",
+    "skeletonHash": "d010d042506702eb4dc816aec0c9384ec6b696ec37b102fd2e7ed58ae8d1ce13",
+    "semanticHash": "de53483cdfc00503fdbbed729070e2870c8a4fd5b4296c1821ba7a6607b0e324",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite for validating the runtime database schema initialization and batch commit operations.",
+    "responsibilities": [
+      "Validates that initializeRuntimeSchema creates all required database tables (files, symbols, usage_logs, violations, drift_events).",
+      "Tests the commitBatch function's ability to persist FileCommitRecord arrays to the database.",
+      "Asserts proper table structure and column definitions through PRAGMA table_info queries.",
+      "Provides test coverage for database repository layer integration points (e.g., getDriftHistory, getFileDocs, getTrackedFiles)."
+    ],
+    "outOfScope": [
+      "Unit testing of individual repository functions in isolation.",
+      "Testing of non-database components like scanners or MCP resources.",
+      "Performance or load testing of database operations."
+    ],
+    "invariants": [
+      "Must import 'vitest' for test framework functions.",
+      "Must import database schema and batch functions from '../src/infra/db/'.",
+      "Must use in-memory SQLite database for isolated testing.",
+      "Test file suffix must be .test.ts or .spec.ts per project rule."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure database layer integrity through integration tests covering schema creation and data persistence.",
+      "recentChangeIntent": "Finalize v1.0.0 release closure, likely involving test stabilization or minor adjustments."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite for validating the runtime database schema initialization and batch commit operations.",
+        "responsibilities": [
+          "Validates that initializeRuntimeSchema creates all required database tables (files, symbols, usage_logs, violations, drift_events).",
+          "Tests the commitBatch function's ability to persist FileCommitRecord arrays to the database.",
+          "Asserts proper table structure and column definitions through PRAGMA table_info queries.",
+          "Provides test coverage for database repository layer integration points (e.g., getDriftHistory, getFileDocs, getTrackedFiles)."
+        ],
+        "outOfScope": [
+          "Unit testing of individual repository functions in isolation.",
+          "Testing of non-database components like scanners or MCP resources.",
+          "Performance or load testing of database operations."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/db/batch.js'",
+        "symbols": [
+          "commitBatch"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/db/repositories/drift.js'",
+        "symbols": [
+          "getDriftHistory"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/db/repositories/files.js'",
+        "symbols": [
+          "getFileDocs",
+          "getTrackedFiles"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/db/schema.js'",
+        "symbols": [
+          "initializeRuntimeSchema"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "type SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'better-sqlite3'",
+        "symbols": [
+          "Database"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/db/batch.js",
+        "relation": "import",
+        "symbols": [
+          "commitBatch"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/db/repositories/drift.js",
+        "relation": "import",
+        "symbols": [
+          "getDriftHistory"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/db/repositories/files.js",
+        "relation": "import",
+        "symbols": [
+          "getFileDocs",
+          "getTrackedFiles"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/db/schema.js",
+        "relation": "import",
+        "symbols": [
+          "initializeRuntimeSchema"
+        ]
+      },
+      {
+        "targetPath": "../src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "type SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "better-sqlite3",
+        "relation": "import",
+        "symbols": [
+          "Database"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:42.910Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

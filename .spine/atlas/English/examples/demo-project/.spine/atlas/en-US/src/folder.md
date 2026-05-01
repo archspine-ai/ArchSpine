@@ -1,0 +1,17 @@
+<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/atlas/en-US/src","role":"This directory aggregates the second-level components of the ArchSpine mirror system, providing a consolidated view of subsystem interactions and data flow.","responsibility":"The components in this directory collectively manage the synchronization, indexing, validation, routing, and access control of mirrored data across distributed nodes, while defining logical and functional layers including configuration management and interface abstraction, ensuring consistency, fault tolerance, and a cohesive, extensible system architecture.","children":[{"filePath":"examples/demo-project/.spine/atlas/en-US/src/api","role":"This directory aggregates the second-level components of the ArchSpine mirror system, providing a consolidated view of subsystem interactions.","fileKind":"folder"},{"filePath":"examples/demo-project/.spine/atlas/en-US/src/domain","role":"This directory aggregates the second-level components of the ArchSpine mirror system, providing a consolidated view of subsystem interactions and data flow.","fileKind":"folder"},{"filePath":"examples/demo-project/.spine/atlas/en-US/src/infra","role":"This directory aggregates the second-level components of the ArchSpine mirror system, providing a consolidated view of its core structural modules.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-04-30T17:33:39.559Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
+# ArchSpine Mirror System – `src` Directory
+
+This directory serves as the core aggregation point for the second-level components of the ArchSpine mirror system. It provides a consolidated view of subsystem interactions, data flow, and structural modules that collectively manage the synchronization, indexing, validation, routing, and access control of mirrored data across distributed nodes.
+
+## Notable Children
+
+- **`api/`** – Aggregates second-level components focused on subsystem interactions. This is where interface abstractions and communication contracts between mirror nodes are defined.
+- **`domain/`** – Houses the logical and functional layers responsible for data flow, consistency, and fault tolerance. This directory contains the core business logic for mirror operations.
+- **`infra/`** – Contains the core structural modules of the system, including configuration management, persistence, and infrastructure abstractions that ensure a cohesive and extensible architecture.
+
+## Key Implementation Areas
+
+- **Synchronization & Indexing** – The `domain/` directory implements the algorithms and state machines that keep mirrored data consistent across nodes.
+- **Validation & Routing** – The `api/` directory defines the validation schemas and routing logic that govern how data moves between subsystems.
+- **Access Control & Configuration** – The `infra/` directory provides the security layer and configuration management that underpins the entire mirror system.
+- **Interface Abstraction** – Across all three subdirectories, abstract interfaces ensure that components remain decoupled and testable, enabling future extensions without breaking existing contracts.

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archspine.dev/schema/v1.0.0/spine-project-unit.schema.json",
+  "title": "ArchSpine SpineProjectUnit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "projectName", "role", "responsibility", "modules", "provenance"],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "./shared.schema.json#/$defs/schemaVersion"
+    },
+    "projectName": {
+      "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+    },
+    "role": {
+      "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+    },
+    "responsibility": {
+      "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+    },
+    "modules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["directory", "role", "childCount"],
+        "properties": {
+          "directory": {
+            "$ref": "./shared.schema.json#/$defs/scopePath"
+          },
+          "role": {
+            "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+          },
+          "childCount": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "provenance": {
+      "$ref": "#/$defs/provenance"
+    }
+  },
+  "$defs": {
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["indexedAt", "generatorVersion", "pipelineStages"],
+      "properties": {
+        "indexedAt": {
+          "$ref": "./shared.schema.json#/$defs/isoTimestamp"
+        },
+        "generatorVersion": {
+          "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+        },
+        "pipelineStages": {
+          "type": "array",
+          "items": {
+            "$ref": "./shared.schema.json#/$defs/pipelineStage"
+          }
+        }
+      }
+    }
+  }
+}

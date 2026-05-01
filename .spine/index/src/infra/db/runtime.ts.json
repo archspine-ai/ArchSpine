@@ -1,0 +1,191 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db/runtime.ts",
+    "contentHash": "1eff3b0cc540448d668d312d5aa8ef26de27c976259f35c6e37293a9980eafd1",
+    "skeletonHash": "fddf9583e48305ac8bdb698dae389b284cd2aef883c6986d75ba76d5e4ec9e41",
+    "semanticHash": "c2ccfc50543b6280ffa8eb66f9872f3ca151cce5cf78ba6335bb97712f0b67de",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/db"
+  },
+  "semantic": {
+    "role": "Infrastructure facade module providing low-level runtime SQLite database lifecycle management, including filesystem preparation, stale WAL file detection/recovery, and error handling.",
+    "responsibilities": [
+      "Manages the creation and opening of a SQLite database file within the project's .spine directory.",
+      "Handles filesystem operations to ensure the database directory exists.",
+      "Detects and recovers stale WAL (Write-Ahead Logging) files to prevent data loss or corruption.",
+      "Wraps database instantiation with error mapping for consistent runtime error handling."
+    ],
+    "outOfScope": [
+      "High-level business logic or application orchestration.",
+      "Database schema definition or migration management.",
+      "Query execution or transaction handling beyond initial connection."
+    ],
+    "invariants": [
+      "Exposes a stable facade for database lifecycle operations.",
+      "Relies on internal infra modules (errors, wal-recovery) for specific concerns.",
+      "Does not absorb service, task, or engine orchestration responsibilities."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a dedicated, stable infrastructure facade for database lifecycle, decoupling low-level SQLite management from higher-level application logic.",
+      "recentChangeIntent": "Part of broader hardening efforts, potentially related to database decoupling from other components like LLM services."
+    },
+    "publicSurface": [
+      "RuntimeDatabase interface",
+      "openRuntimeDatabase function"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure facade module providing low-level runtime SQLite database lifecycle management, including filesystem preparation, stale WAL file detection/recovery, and error handling.",
+        "responsibilities": [
+          "Manages the creation and opening of a SQLite database file within the project's .spine directory.",
+          "Handles filesystem operations to ensure the database directory exists.",
+          "Detects and recovers stale WAL (Write-Ahead Logging) files to prevent data loss or corruption.",
+          "Wraps database instantiation with error mapping for consistent runtime error handling."
+        ],
+        "outOfScope": [
+          "High-level business logic or application orchestration.",
+          "Database schema definition or migration management.",
+          "Query execution or transaction handling beyond initial connection."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./errors.js'",
+        "symbols": [
+          "mapRuntimeDbError"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./wal-recovery.js'",
+        "symbols": [
+          "recoverStaleWal"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'better-sqlite3'",
+        "symbols": [
+          "Database"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "openRuntimeDatabase",
+        "kind": "function",
+        "signature": "openRuntimeDatabase(rootDir: string)"
+      },
+      {
+        "name": "RuntimeDatabase",
+        "kind": "interface",
+        "signature": "interface RuntimeDatabase"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "openRuntimeDatabase",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/runtime.ts#"
+      },
+      {
+        "name": "RuntimeDatabase",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/db/runtime.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./errors.js",
+        "relation": "import",
+        "symbols": [
+          "mapRuntimeDbError"
+        ]
+      },
+      {
+        "targetPath": "./wal-recovery.js",
+        "relation": "import",
+        "symbols": [
+          "recoverStaleWal"
+        ]
+      },
+      {
+        "targetPath": "better-sqlite3",
+        "relation": "import",
+        "symbols": [
+          "Database"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:38.660Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

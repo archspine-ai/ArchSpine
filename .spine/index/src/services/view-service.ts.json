@@ -1,0 +1,201 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view-service.ts",
+    "contentHash": "0cd8b9df140c3d97e553e4003960dc81e5a4707a5ec38a542bbc4a33005ce58e",
+    "skeletonHash": "8c8c7af902cd3e21ee9c08ce802e74e43f3b255f3676f502463d03a991386d92",
+    "semanticHash": "82b37ec504d2f2d7f0610bd32dd345478a93852c3836b3929d4e30f6e425fdd9",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Service orchestrator for generating and managing architectural views from indexed codebase data.",
+    "responsibilities": [
+      "Orchestrates derivation of architecture diagram, public surface, and risk hotspot views via dedicated modules.",
+      "Renders derived view data into markdown and JSON artifacts using the ViewRenderer.",
+      "Persists view artifacts to the filesystem via OutputManager.",
+      "Deletes obsolete view artifacts when view definitions are removed."
+    ],
+    "outOfScope": [
+      "Directly scanning or indexing source code (delegated to ViewIndexLoader).",
+      "Defining view logic or rendering templates (delegated to view-specific modules).",
+      "Low-level file I/O (delegated to OutputManager)."
+    ],
+    "invariants": [
+      "Depends on infra modules (OutputManager) for output operations.",
+      "Depends on view-specific modules under `src/services/view/` for view derivation and rendering.",
+      "Service runtime boundary: orchestrates view generation but does not contain view-specific logic."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Facilitate a clean separation between view derivation logic and orchestration, enabling modular view addition and artifact management.",
+      "recentChangeIntent": "Refactor to establish subsystem facades and resolve layer inversions, likely consolidating view orchestration into this service."
+    },
+    "publicSurface": [
+      "ViewService (exported class)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Service orchestrator for generating and managing architectural views from indexed codebase data.",
+        "responsibilities": [
+          "Orchestrates derivation of architecture diagram, public surface, and risk hotspot views via dedicated modules.",
+          "Renders derived view data into markdown and JSON artifacts using the ViewRenderer.",
+          "Persists view artifacts to the filesystem via OutputManager.",
+          "Deletes obsolete view artifacts when view definitions are removed."
+        ],
+        "outOfScope": [
+          "Directly scanning or indexing source code (delegated to ViewIndexLoader).",
+          "Defining view logic or rendering templates (delegated to view-specific modules).",
+          "Low-level file I/O (delegated to OutputManager)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../infra/output.js'",
+        "symbols": [
+          "OutputManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./view/view-renderer.js'",
+        "symbols": [
+          "ViewRenderer"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./view/view-registry.js'",
+        "symbols": [
+          "getViewDefinition"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./view/architecture-diagram-view.js'",
+        "symbols": [
+          "deriveArchitectureDiagramView"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./view/index-loader.js'",
+        "symbols": [
+          "ViewIndexLoader"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./view/public-surface-view.js'",
+        "symbols": [
+          "buildPublicSurfaceView"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./view/risk-hotspots-view.js'",
+        "symbols": [
+          "buildRiskHotspotsView"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "ViewService",
+        "kind": "class",
+        "signature": "class ViewService"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ViewService",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/services/view-service.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../infra/output.js",
+        "relation": "import",
+        "symbols": [
+          "OutputManager"
+        ]
+      },
+      {
+        "targetPath": "./view/view-renderer.js",
+        "relation": "import",
+        "symbols": [
+          "ViewRenderer"
+        ]
+      },
+      {
+        "targetPath": "./view/view-registry.js",
+        "relation": "import",
+        "symbols": [
+          "getViewDefinition"
+        ]
+      },
+      {
+        "targetPath": "./view/architecture-diagram-view.js",
+        "relation": "import",
+        "symbols": [
+          "deriveArchitectureDiagramView"
+        ]
+      },
+      {
+        "targetPath": "./view/index-loader.js",
+        "relation": "import",
+        "symbols": [
+          "ViewIndexLoader"
+        ]
+      },
+      {
+        "targetPath": "./view/public-surface-view.js",
+        "relation": "import",
+        "symbols": [
+          "buildPublicSurfaceView"
+        ]
+      },
+      {
+        "targetPath": "./view/risk-hotspots-view.js",
+        "relation": "import",
+        "symbols": [
+          "buildRiskHotspotsView"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/view-service.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:40.995Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

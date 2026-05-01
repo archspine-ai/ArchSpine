@@ -1,0 +1,190 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/config-validation.test.ts",
+    "contentHash": "bfff1ff8db0973214b146dd011d918a8dad479a69114aaa0d636a0fdd894bce6",
+    "skeletonHash": "2def72545f2a7d3eb3061978e54294e35094bc9990e6301aa8f3b3c208ec3df2",
+    "semanticHash": "97645388e76fbdf1fb0cf27310b571a7931fa837343c162d7ae5327b6681e7ea",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite validating the configuration loading, language settings, hook synchronization mode, and warning emissions for the ArchSpine config system.",
+    "responsibilities": [
+      "Sets up isolated temporary directories with .spine subdirectory for each test case to avoid side effects.",
+      "Validates language configuration loading and default fallback behavior.",
+      "Tests hook synchronization mode configuration and default values.",
+      "Verifies warning emission for missing or invalid configuration files via console.warn spy."
+    ],
+    "outOfScope": [
+      "Integration tests with real file systems beyond temporary directories.",
+      "Performance or stress testing of configuration loading.",
+      "Validation of other configuration sections not related to languages or hook sync mode."
+    ],
+    "invariants": [
+      "Each test case creates a fresh temporary directory to prevent state leakage.",
+      "Test cleanup restores all mocks via vi.restoreAllMocks().",
+      "Configuration files are written in JSON format with CURRENT_CONFIG_SCHEMA_VERSION."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide deterministic, isolated unit tests for the configuration subsystem, ensuring language and hook sync defaults are correct and warnings are emitted for malformed configs.",
+      "recentChangeIntent": "gogogo — likely a bulk commit; no specific config validation changes indicated beyond general progress."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite validating the configuration loading, language settings, hook synchronization mode, and warning emissions for the ArchSpine config system.",
+        "responsibilities": [
+          "Sets up isolated temporary directories with .spine subdirectory for each test case to avoid side effects.",
+          "Validates language configuration loading and default fallback behavior.",
+          "Tests hook synchronization mode configuration and default values.",
+          "Verifies warning emission for missing or invalid configuration files via console.warn spy."
+        ],
+        "outOfScope": [
+          "Integration tests with real file systems beyond temporary directories.",
+          "Performance or stress testing of configuration loading.",
+          "Validation of other configuration sections not related to languages or hook sync mode."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "Vitest 单元测试套件，用于验证 ArchSpine 配置系统的配置加载、语言设置、钩子同步模式以及警告输出。",
+        "responsibilities": [
+          "为每个测试用例创建独立的临时目录（含 .spine 子目录），避免副作用。",
+          "验证语言配置加载及默认回退行为。",
+          "测试钩子同步模式的配置及其默认值。",
+          "通过 console.warn 间谍验证缺失或无效配置文件时的警告输出。"
+        ],
+        "outOfScope": [
+          "超出临时目录的真实文件系统集成测试。",
+          "配置加载的性能或压力测试。",
+          "与语言或钩子同步模式无关的其他配置部分的验证。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/core/config-schema.js'",
+        "symbols": [
+          "resolveSpineConfig"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_CONFIG_SCHEMA_VERSION"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../src/core/config-schema.js",
+        "relation": "import",
+        "symbols": [
+          "resolveSpineConfig"
+        ]
+      },
+      {
+        "targetPath": "../src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_CONFIG_SCHEMA_VERSION"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:42.733Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

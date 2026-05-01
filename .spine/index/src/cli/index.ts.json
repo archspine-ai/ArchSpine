@@ -1,0 +1,148 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/index.ts",
+    "contentHash": "b51a8022e11eb47172d04d6b43e80afbf6432f5f28375f224f8fd01e89956788",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "cec2d326159b21e0278b0393a272ad1159a11f5bee2ac9e841c59d60a3fb3a08",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli"
+  },
+  "semantic": {
+    "role": "Primary CLI entrypoint and command router for the ArchSpine semantic mirror system.",
+    "responsibilities": [
+      "Configures global HTTP proxy via undici based on environment variables before any other imports.",
+      "Bootstraps runtime environment by initializing core infrastructure services (Config, Secrets, LLM configuration) and the RuntimeService.",
+      "Parses command-line arguments to determine the requested operation and routes to the appropriate command executor (e.g., init, sync, build, publish, check, fix, scan, history, etc.).",
+      "Displays the system UI banner and provides help text for commands."
+    ],
+    "outOfScope": [
+      "Pipeline or persistence logic—delegated to services, core, engines, or infra modules.",
+      "Business logic for individual commands—delegated to command modules (e.g., init, sync)."
+    ],
+    "invariants": [
+      "CLI entrypoint must remain thin and not absorb pipeline or persistence logic (rule: cli-entrypoint-separation)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain a thin CLI entrypoint that delegates all domain logic to services and command modules, ensuring reusability and testability outside the CLI.",
+      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, likely involving cleanup of imports or command routing."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Primary CLI entrypoint and command router for the ArchSpine semantic mirror system.",
+        "responsibilities": [
+          "Configures global HTTP proxy via undici based on environment variables before any other imports.",
+          "Bootstraps runtime environment by initializing core infrastructure services (Config, Secrets, LLM configuration) and the RuntimeService.",
+          "Parses command-line arguments to determine the requested operation and routes to the appropriate command executor (e.g., init, sync, build, publish, check, fix, scan, history, etc.).",
+          "Displays the system UI banner and provides help text for commands."
+        ],
+        "outOfScope": [
+          "Pipeline or persistence logic—delegated to services, core, engines, or infra modules.",
+          "Business logic for individual commands—delegated to command modules (e.g., init, sync)."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 语义镜像系统的主 CLI 入口和命令路由器。",
+        "responsibilities": [
+          "在导入其他模块之前，基于环境变量通过 undici 配置全局 HTTP 代理。",
+          "通过初始化核心基础设施服务（Config、Secrets、LLM 配置）和 RuntimeService 来引导运行时环境。",
+          "解析命令行参数以确定请求的操作，并路由到相应的命令执行器（例如 init、sync、build、publish、check、fix、scan、history 等）。",
+          "显示系统 UI 横幅并提供命令帮助文本。"
+        ],
+        "outOfScope": [
+          "管道或持久化逻辑——委托给 services、core、engines 或 infra 模块。",
+          "单个命令的业务逻辑——委托给命令模块（例如 init、sync）。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "hasManifestBaseline"
+        ]
+      },
+      {
+        "targetPath": "../infra/secrets.js",
+        "relation": "import",
+        "symbols": [
+          "Secrets"
+        ]
+      },
+      {
+        "targetPath": "../infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets"
+        ]
+      },
+      {
+        "targetPath": "../utils/confirm.js",
+        "relation": "import",
+        "symbols": [
+          "promptForImmediateConfirmation"
+        ]
+      },
+      {
+        "targetPath": "../services/runtime-service.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeService"
+        ]
+      },
+      {
+        "targetPath": "../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ErrorCodes",
+          "toArchSpineError"
+        ]
+      },
+      {
+        "targetPath": "./commands/init.js",
+        "relation": "import",
+        "symbols": [
+          "executeInitCommand"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T03:57:48.870Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

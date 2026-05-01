@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/lite-prompt.ts",
+    "contentHash": "d7cd4aa65cdf6260b475fd286a98a6fbd8c01139ea55c0b2f76f6240bea3efd3",
+    "skeletonHash": "ac19cd076288bc00aca199015855d14ea88ce5f05b1bc0327e80d1a39e2f039b",
+    "semanticHash": "f130e219cc83b88ef87656f302348a06f42d8cfdd76324fabdcb41de2fca4077",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Utility class for constructing lightweight LLM prompts optimized for token-constrained APIs in low-precision 'Lite Mode' structural indexing.",
+    "responsibilities": [
+      "Builds concise prompt strings for high-level file summarization in low-precision structural indexing mode.",
+      "Supports configurable response modes (JSON-only or JSON-and-markdown).",
+      "Generates localized markdown instructions for specified languages.",
+      "Provides a fluent builder API for assembling prompt parts."
+    ],
+    "outOfScope": [
+      "Orchestrating LLM API calls or managing token counting.",
+      "Handling high-precision or full-context analysis prompts.",
+      "Infrastructure-level concerns like network, logging, or configuration management."
+    ],
+    "invariants": [
+      "Exports a single public class LitePromptBuilder with a fluent interface.",
+      "Exports a type LitePromptResponseMode defining allowed response modes.",
+      "Maintains internal state as a private array of string parts.",
+      "Generates prompts focused on structural indexing with minimal context overhead."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a lightweight, configurable prompt builder for low-precision structural indexing to reduce token usage in constrained API environments.",
+      "recentChangeIntent": "Restore LLM-authored markdown generation capabilities within the Lite Mode prompt builder."
+    },
+    "publicSurface": [
+      "LitePromptBuilder",
+      "LitePromptResponseMode"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Utility class for constructing lightweight LLM prompts optimized for token-constrained APIs in low-precision 'Lite Mode' structural indexing.",
+        "responsibilities": [
+          "Builds concise prompt strings for high-level file summarization in low-precision structural indexing mode.",
+          "Supports configurable response modes (JSON-only or JSON-and-markdown).",
+          "Generates localized markdown instructions for specified languages.",
+          "Provides a fluent builder API for assembling prompt parts."
+        ],
+        "outOfScope": [
+          "Orchestrating LLM API calls or managing token counting.",
+          "Handling high-precision or full-context analysis prompts.",
+          "Infrastructure-level concerns like network, logging, or configuration management."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "generateLitePrompt",
+        "kind": "function",
+        "signature": "generateLitePrompt(\n  filePath: string,\n  content: string,\n  languages: string[] = ['English'],\n  responseMode: LitePromptResponseMode = 'json-and-markdown',\n)"
+      },
+      {
+        "name": "LitePromptBuilder",
+        "kind": "class",
+        "signature": "class LitePromptBuilder"
+      },
+      {
+        "name": "LitePromptResponseMode",
+        "kind": "type",
+        "signature": "type LitePromptResponseMode"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "generateLitePrompt",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/lite-prompt.ts#"
+      },
+      {
+        "name": "LitePromptBuilder",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/lite-prompt.ts#"
+      },
+      {
+        "name": "LitePromptResponseMode",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/lite-prompt.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 3,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:38.871Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

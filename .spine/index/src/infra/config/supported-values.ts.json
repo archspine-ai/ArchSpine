@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/config/supported-values.ts",
+    "contentHash": "d3a6624c50bf055188a7286a6019c804967e25f404d7d7ca68cc11709691c824",
+    "skeletonHash": "df9f84006b06a1a2f2b3d6b154e1fc3e19cfd2048e372c1e0504d64e2ff90d7b",
+    "semanticHash": "2fc9491e45d79171d0e962f409f6e10c1e992c95b9f072f4a469949488a5bb93",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/config"
+  },
+  "semantic": {
+    "role": "Core TypeScript interface defining the contract for accessing supported configuration values within the ArchSpine system.",
+    "responsibilities": [
+      "Defines the type-safe interface for retrieving all user-configurable system parameters.",
+      "Centralizes the configuration access signature, ensuring consistency across config consumers.",
+      "Documents the available configuration options through method names (e.g., LLM settings, validation policies, hook modes)."
+    ],
+    "outOfScope": [
+      "Implementing configuration retrieval logic or storing values.",
+      "Orchestrating services, tasks, or engines.",
+      "Acting as an infrastructure facade or module."
+    ],
+    "invariants": [
+      "Must remain a pure TypeScript interface without implementation.",
+      "Must import only type definitions, not runtime modules.",
+      "Must define getter methods that return configuration values or undefined."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, type-safe contract for configuration access to decouple consumers from implementation details.",
+      "recentChangeIntent": null
+    },
+    "publicSurface": [
+      "ConfigSupportedValueAccess"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core TypeScript interface defining the contract for accessing supported configuration values within the ArchSpine system.",
+        "responsibilities": [
+          "Defines the type-safe interface for retrieving all user-configurable system parameters.",
+          "Centralizes the configuration access signature, ensuring consistency across config consumers.",
+          "Documents the available configuration options through method names (e.g., LLM settings, validation policies, hook modes)."
+        ],
+        "outOfScope": [
+          "Implementing configuration retrieval logic or storing values.",
+          "Orchestrating services, tasks, or engines.",
+          "Acting as an infrastructure facade or module."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./types.js'",
+        "symbols": [
+          "ArtifactStrategy",
+          "HookSyncMode",
+          "PromptPolicyTier",
+          "SupportedConfigKey"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "getSupportedValue",
+        "kind": "function",
+        "signature": "getSupportedValue(\n  access: ConfigSupportedValueAccess,\n  key: SupportedConfigKey,\n)"
+      },
+      {
+        "name": "setSupportedValue",
+        "kind": "function",
+        "signature": "setSupportedValue(\n  access: ConfigSupportedValueAccess,\n  key: SupportedConfigKey,\n  value: unknown,\n)"
+      },
+      {
+        "name": "ConfigSupportedValueAccess",
+        "kind": "interface",
+        "signature": "interface ConfigSupportedValueAccess"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "getSupportedValue",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/config/supported-values.ts#"
+      },
+      {
+        "name": "setSupportedValue",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/config/supported-values.ts#"
+      },
+      {
+        "name": "ConfigSupportedValueAccess",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/config/supported-values.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 3,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "ArtifactStrategy",
+          "HookSyncMode",
+          "PromptPolicyTier",
+          "SupportedConfigKey"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:38.200Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

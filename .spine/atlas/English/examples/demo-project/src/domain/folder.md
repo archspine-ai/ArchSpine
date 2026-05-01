@@ -1,0 +1,6 @@
+<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/src/domain","role":"This directory contains the domain service for the User entity.","responsibility":"The components in this directory collectively define the User entity interface and implement in-memory storage, creation, and retrieval of user data.","children":[{"filePath":"examples/demo-project/src/domain/user-service.ts","role":"Domain Service isolating business logic for the User entity.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T03:58:41.798Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
+# Domain Layer – User Entity
+
+This directory contains the core domain service for the User entity. It defines the interface and implements in-memory storage, creation, and retrieval of user data. The primary implementation resides in `user-service.ts`, which isolates business logic for the User entity.
+
+**Key submodule:** `user-service.ts` – Domain Service handling user operations.

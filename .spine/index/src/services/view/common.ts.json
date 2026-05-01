@@ -1,0 +1,187 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/common.ts",
+    "contentHash": "db976f85ed4617024f1e31634632f541907bbbf5aabf0377a5cb02ac534471de",
+    "skeletonHash": "9354c55d71307276e303440138675878dfdb0adc558d2497b9f4c13a56dc8348",
+    "semanticHash": "2df9ae9c739219c532a0354ea20049c726f7eddaebd0914e3b24a0e0c6bb9a8b",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "Pure utility module providing scoring and path suppression functions for the view layer.",
+    "responsibilities": [
+      "Detects suppressed file paths based on regex patterns for test, fixture, example, docs, dist, and build directories.",
+      "Sums scores from a breakdown of view score contributions.",
+      "Calculates confidence scores from total score and support count with normalization and clamping."
+    ],
+    "outOfScope": [
+      "View rendering or presentation logic.",
+      "Data access or persistence operations.",
+      "Architecture diagram generation or risk hotspot analysis."
+    ],
+    "invariants": [
+      "All exported functions are pure and side-effect free.",
+      "Path suppression logic uses a fixed regex pattern and does not depend on external configuration.",
+      "Confidence score is clamped between 0 and 0.99."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide reusable, stateless utility functions for the view layer to standardize path suppression and score computation.",
+      "recentChangeIntent": "Initial release of ArchSpine v1.0.0; no specific recent changes to this file beyond the initial implementation."
+    },
+    "publicSurface": [
+      "isSuppressedPath(filePath: string): boolean",
+      "sumScores(scoreBreakdown: ViewScoreContribution[]): number",
+      "toConfidence(totalScore: number, supportCount: number): number"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Pure utility module providing scoring and path suppression functions for the view layer.",
+        "responsibilities": [
+          "Detects suppressed file paths based on regex patterns for test, fixture, example, docs, dist, and build directories.",
+          "Sums scores from a breakdown of view score contributions.",
+          "Calculates confidence scores from total score and support count with normalization and clamping."
+        ],
+        "outOfScope": [
+          "View rendering or presentation logic.",
+          "Data access or persistence operations.",
+          "Architecture diagram generation or risk hotspot analysis."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "纯工具模块，为视图层提供评分和路径过滤功能。",
+        "responsibilities": [
+          "基于正则表达式模式检测被屏蔽的文件路径，涵盖测试、夹具、示例、文档、dist 和 build 目录。",
+          "对视图评分贡献的分解结果进行求和。",
+          "根据总分和支持计数计算置信度分数，并进行归一化和钳位处理。"
+        ],
+        "outOfScope": [
+          "视图渲染或展示逻辑。",
+          "数据访问或持久化操作。",
+          "架构图生成或风险热点分析。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "isSuppressedPath",
+        "kind": "function",
+        "signature": "isSuppressedPath(filePath: string)"
+      },
+      {
+        "name": "sumScores",
+        "kind": "function",
+        "signature": "sumScores(scoreBreakdown: ViewScoreContribution[])"
+      },
+      {
+        "name": "toConfidence",
+        "kind": "function",
+        "signature": "toConfidence(totalScore: number, supportCount: number)"
+      },
+      {
+        "name": "topLevelBoundary",
+        "kind": "function",
+        "signature": "topLevelBoundary(filePath: string)"
+      },
+      {
+        "name": "countCrossBoundaryEdges",
+        "kind": "function",
+        "signature": "countCrossBoundaryEdges(unit: SpineUnit)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "isSuppressedPath",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/common.ts#"
+      },
+      {
+        "name": "sumScores",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/common.ts#"
+      },
+      {
+        "name": "toConfidence",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/common.ts#"
+      },
+      {
+        "name": "topLevelBoundary",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/common.ts#"
+      },
+      {
+        "name": "countCrossBoundaryEdges",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/common.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 5,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "../../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "../../types/view.js",
+        "relation": "import",
+        "symbols": [
+          "ViewScoreContribution"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:41.100Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

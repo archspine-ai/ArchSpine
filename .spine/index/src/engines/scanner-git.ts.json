@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/scanner-git.ts",
+    "contentHash": "b268f44939fb5af3dc6825c30d4a420f514a9a633a1b32bdd31315b2f85df904",
+    "skeletonHash": "8b442d60ba13a8aece61c1549bd7a1a355f5cb45a8e77772f5eec4b83827671f",
+    "semanticHash": "854e6cf615ebb072ae4b86476bea39ff68e7e2f319f4b9e532b2c7ae5d128433",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Reusable engine utility providing a git command execution client for scanner modules.",
+    "responsibilities": [
+      "Defines the ScannerGitClient interface for executing git commands synchronously.",
+      "Provides a default implementation that delegates to child_process.execFileSync."
+    ],
+    "outOfScope": [
+      "Orchestrating scanner workflows or service-level logic.",
+      "Handling git repository state management or higher-level analysis.",
+      "Providing asynchronous git command execution."
+    ],
+    "invariants": [
+      "Must remain decoupled from CLI entrypoints and presentation concerns.",
+      "Must export a synchronous git client interface for engine consumption."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a decoupled, reusable git client interface for engine modules to execute git commands without depending on orchestration layers.",
+      "recentChangeIntent": "Part of refactoring to split scanner/context responsibilities; this file likely remains a stable utility supporting scanner engines."
+    },
+    "publicSurface": [
+      "ScannerGitClient interface",
+      "defaultScannerGitClient constant"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Reusable engine utility providing a git command execution client for scanner modules.",
+        "responsibilities": [
+          "Defines the ScannerGitClient interface for executing git commands synchronously.",
+          "Provides a default implementation that delegates to child_process.execFileSync."
+        ],
+        "outOfScope": [
+          "Orchestrating scanner workflows or service-level logic.",
+          "Handling git repository state management or higher-level analysis.",
+          "Providing asynchronous git command execution."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "* as childProcess"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "* as childProcess"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "ScannerGitClient",
+        "kind": "interface",
+        "signature": "interface ScannerGitClient"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ScannerGitClient",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/scanner-git.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "* as childProcess",
+          "ExecFileSyncOptionsWithStringEncoding"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:37.742Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

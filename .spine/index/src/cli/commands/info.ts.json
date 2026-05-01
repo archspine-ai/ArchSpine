@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/info.ts",
+    "contentHash": "c2352c26535f47d7ba78a3c2e16b2697a98455037fd2181ed57b7d49899dfbff",
+    "skeletonHash": "88a70fe36d134c09f48f841e76880bf54094ce7f9fd98054ee255ddfd79ddb8a",
+    "semanticHash": "b264b45f7f2ef89027f22b37de33b311cfa2e0497a6245c7ee9f5fc83e4c3370",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command handler for the 'info' command, acting as a thin adapter that orchestrates the execution of the info report engine.",
+    "responsibilities": [
+      "Defines the interface for the info command's runtime options (root directory and arguments).",
+      "Invokes the info report engine (runInfoReport) with configuration derived from command-line arguments and the default runtime I/O.",
+      "Provides error handling, catching internal errors and mapping them to structured ArchSpine errors for consistent CLI output."
+    ],
+    "outOfScope": [
+      "Executing the actual info report logic or data aggregation.",
+      "Directly accessing persistence or database layers.",
+      "Implementing any business logic beyond command orchestration."
+    ],
+    "invariants": [
+      "Must remain a thin CLI adapter, delegating all pipeline logic to engines and services.",
+      "Must not absorb persistence or core business logic."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a clean CLI entrypoint for the info command that delegates to the engine layer.",
+      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, ensuring consistent error handling and thin CLI adapters."
+    },
+    "publicSurface": [
+      "ExecuteInfoCommandOptions (interface)",
+      "executeInfoCommand (async function)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command handler for the 'info' command, acting as a thin adapter that orchestrates the execution of the info report engine.",
+        "responsibilities": [
+          "Defines the interface for the info command's runtime options (root directory and arguments).",
+          "Invokes the info report engine (runInfoReport) with configuration derived from command-line arguments and the default runtime I/O.",
+          "Provides error handling, catching internal errors and mapping them to structured ArchSpine errors for consistent CLI output."
+        ],
+        "outOfScope": [
+          "Executing the actual info report logic or data aggregation.",
+          "Directly accessing persistence or database layers.",
+          "Implementing any business logic beyond command orchestration."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "“info”命令的CLI处理程序，作为薄适配器，负责编排信息报告引擎的执行。",
+        "responsibilities": [
+          "定义info命令的运行时选项接口（根目录和参数）。",
+          "使用命令行参数和默认运行时I/O调用信息报告引擎（runInfoReport）。",
+          "提供错误处理，捕获内部错误并将其映射为结构化的ArchSpine错误，以实现一致的CLI输出。"
+        ],
+        "outOfScope": [
+          "执行实际的信息报告逻辑或数据聚合。",
+          "直接访问持久化或数据库层。",
+          "实现超出命令编排范围的任何业务逻辑。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../core/errors.js'",
+        "symbols": [
+          "ErrorCodes",
+          "toArchSpineError"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../engines/info.js'",
+        "symbols": [
+          "runInfoReport"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeInfoCommand",
+        "kind": "function",
+        "signature": "executeInfoCommand({\n  args,\n  rootDir,\n}: ExecuteInfoCommandOptions)"
+      },
+      {
+        "name": "ExecuteInfoCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteInfoCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeInfoCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/info.ts#"
+      },
+      {
+        "name": "ExecuteInfoCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/info.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ErrorCodes",
+          "toArchSpineError"
+        ]
+      },
+      {
+        "targetPath": "../../engines/info.js",
+        "relation": "import",
+        "symbols": [
+          "runInfoReport"
+        ]
+      },
+      {
+        "targetPath": "../../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:01:34.356Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

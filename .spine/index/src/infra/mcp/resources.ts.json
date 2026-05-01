@@ -1,0 +1,211 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/mcp/resources.ts",
+    "contentHash": "61a7bb613854e50823c625e15233e616641f1f291d5b27153361faf693117687",
+    "skeletonHash": "6650a6473d3c957f75e42efb77cda45e310d07bcba6059576e4e8cdc2724b29c",
+    "semanticHash": "8c48dd12ece95d0338fb205bdb29503071ede138cfcb2c3822509007e8f30022",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/mcp"
+  },
+  "semantic": {
+    "role": "Infrastructure facade providing MCP resource templates and handlers for accessing ArchSpine project metadata and files within the .spine directory, with context-aware access control via MCPContextGate.",
+    "responsibilities": [
+      "Exposes URI templates for MCP resources: spine://project, spine://file, spine://index.",
+      "Reads and formats Spine directory files (JSON, Markdown) for MCP resource consumption based on file extensions.",
+      "Enforces context gate access control for resource reads via MCPContextGate integration (requireResourceAccess, noteResourceRead).",
+      "Handles file existence checks and path resolution for .spine directory resources.",
+      "Normalizes resource URIs and resolves them to filesystem paths within the .spine directory."
+    ],
+    "outOfScope": [
+      "Does not handle authentication or authorization beyond the MCPContextGate interface.",
+      "Does not manage or orchestrate higher-level business logic or task execution.",
+      "Does not provide write or mutation capabilities for .spine resources."
+    ],
+    "invariants": [
+      "All resource paths must resolve within the .spine directory to prevent directory traversal.",
+      "Access to resources must be gated through MCPContextGate when provided.",
+      "Resource URIs must follow the spine:// scheme."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, low-level infrastructure facade for MCP resource access to ArchSpine project metadata, ensuring access control and path safety.",
+      "recentChangeIntent": "Fix lint warnings and type errors, and add CI workflow."
+    },
+    "publicSurface": [
+      "SpineResources",
+      "SpineResources.getResourceTemplates",
+      "SpineResources.readResource"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure facade providing MCP resource templates and handlers for accessing ArchSpine project metadata and files within the .spine directory, with context-aware access control via MCPContextGate.",
+        "responsibilities": [
+          "Exposes URI templates for MCP resources: spine://project, spine://file, spine://index.",
+          "Reads and formats Spine directory files (JSON, Markdown) for MCP resource consumption based on file extensions.",
+          "Enforces context gate access control for resource reads via MCPContextGate integration (requireResourceAccess, noteResourceRead).",
+          "Handles file existence checks and path resolution for .spine directory resources.",
+          "Normalizes resource URIs and resolves them to filesystem paths within the .spine directory."
+        ],
+        "outOfScope": [
+          "Does not handle authentication or authorization beyond the MCPContextGate interface.",
+          "Does not manage or orchestrate higher-level business logic or task execution.",
+          "Does not provide write or mutation capabilities for .spine resources."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施外观层，提供 MCP 资源模板和处理程序，用于访问 ArchSpine 项目 .spine 目录中的元数据和文件，并通过 MCPContextGate 实现上下文感知的访问控制。",
+        "responsibilities": [
+          "暴露 MCP 资源的 URI 模板：spine://project、spine://file、spine://index。",
+          "根据文件扩展名读取并格式化 Spine 目录中的文件（JSON、Markdown），以供 MCP 资源消费。",
+          "通过 MCPContextGate 集成（requireResourceAccess、noteResourceRead）对资源读取实施上下文门控访问控制。",
+          "处理 .spine 目录资源的文件存在性检查和路径解析。",
+          "规范化资源 URI 并将其解析为 .spine 目录内的文件系统路径。"
+        ],
+        "outOfScope": [
+          "不处理超出 MCPContextGate 接口的身份验证或授权。",
+          "不管理或编排更高级别的业务逻辑或任务执行。",
+          "不提供对 .spine 资源的写入或变更能力。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./context.js'",
+        "symbols": [
+          "MCPContextGate"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../index-reader.js'",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "SpineResources",
+        "kind": "class",
+        "signature": "class SpineResources"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "SpineResources",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/mcp/resources.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./context.js",
+        "relation": "import",
+        "symbols": [
+          "MCPContextGate"
+        ]
+      },
+      {
+        "targetPath": "../../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ]
+      },
+      {
+        "targetPath": "../index-reader.js",
+        "relation": "import",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/mcp-context-mode.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:57:11.011Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

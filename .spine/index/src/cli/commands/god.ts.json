@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/god.ts",
+    "contentHash": "eb5852e542698a8696c2876c0987f1975b56231532afdf54484aac9774bb0717",
+    "skeletonHash": "928db9acaf4fe1e5756227c4b9aedd4f822097e073edadbe9db5cc9da76fa21b",
+    "semanticHash": "2cea5652dd3b3817442b8a8d01e98dfdae9f4cbc5e814192436327f01ec7b7bc",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command handler for the God Mode feature, providing user warnings and confirmation before delegating to the God engine.",
+    "responsibilities": [
+      "Defines the command-line interface options for the God Mode command via ExecuteGodCommandOptions interface.",
+      "Displays warnings about the non-production nature and overwrite behavior of God Mode.",
+      "Checks for the --force flag to bypass interactive confirmation.",
+      "Prompts the user for explicit confirmation before proceeding (unless forced).",
+      "Delegates execution to the God engine's runGodMode function."
+    ],
+    "outOfScope": [
+      "Implementing the core God Mode document generation logic (delegated to engine).",
+      "Persisting or reading generated documents.",
+      "Handling complex pipeline orchestration."
+    ],
+    "invariants": [
+      "Must remain a thin adapter, delegating core logic to the God engine.",
+      "Must not absorb pipeline or persistence logic."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Separate CLI command routing from core engine logic to maintain reusability and testability.",
+      "recentChangeIntent": null
+    },
+    "publicSurface": [
+      "ExecuteGodCommandOptions interface",
+      "executeGodCommand function"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command handler for the God Mode feature, providing user warnings and confirmation before delegating to the God engine.",
+        "responsibilities": [
+          "Defines the command-line interface options for the God Mode command via ExecuteGodCommandOptions interface.",
+          "Displays warnings about the non-production nature and overwrite behavior of God Mode.",
+          "Checks for the --force flag to bypass interactive confirmation.",
+          "Prompts the user for explicit confirmation before proceeding (unless forced).",
+          "Delegates execution to the God engine's runGodMode function."
+        ],
+        "outOfScope": [
+          "Implementing the core God Mode document generation logic (delegated to engine).",
+          "Persisting or reading generated documents.",
+          "Handling complex pipeline orchestration."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../engines/god.js'",
+        "symbols": [
+          "runGodMode"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../utils/confirm.js'",
+        "symbols": [
+          "promptForExplicitConfirmation"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeGodCommand",
+        "kind": "function",
+        "signature": "executeGodCommand({\n  args,\n  rootDir,\n}: ExecuteGodCommandOptions)"
+      },
+      {
+        "name": "ExecuteGodCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteGodCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeGodCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/god.ts#"
+      },
+      {
+        "name": "ExecuteGodCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/god.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../engines/god.js",
+        "relation": "import",
+        "symbols": [
+          "runGodMode"
+        ]
+      },
+      {
+        "targetPath": "../../utils/confirm.js",
+        "relation": "import",
+        "symbols": [
+          "promptForExplicitConfirmation"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:36.288Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

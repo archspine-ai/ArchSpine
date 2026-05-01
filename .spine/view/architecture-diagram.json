@@ -1,0 +1,244 @@
+{
+  "title": "ArchSpine",
+  "subtitle": "A rule-enforced mirror system for documenting, analyzing, and synchronizing software architecture across distributed nodes.",
+  "nodes": [
+    {
+      "id": "cli",
+      "label": "CLI",
+      "sublabel": "User Commands",
+      "type": "frontend"
+    },
+    {
+      "id": "mcp-server",
+      "label": "MCP Server",
+      "sublabel": "AI Agent Integration",
+      "type": "backend"
+    },
+    {
+      "id": "services",
+      "label": "Services",
+      "sublabel": "Orchestration Layer",
+      "type": "backend"
+    },
+    {
+      "id": "tasks",
+      "label": "Tasks",
+      "sublabel": "Pipeline Stages",
+      "type": "backend"
+    },
+    {
+      "id": "engines",
+      "label": "Engines",
+      "sublabel": "Scanning & Analysis",
+      "type": "backend"
+    },
+    {
+      "id": "ast-parser",
+      "label": "AST Parser",
+      "sublabel": "Code Analysis",
+      "type": "backend"
+    },
+    {
+      "id": "view-generator",
+      "label": "View Generator",
+      "sublabel": "Diagrams & Reports",
+      "type": "backend"
+    },
+    {
+      "id": "infra-config",
+      "label": "Config Manager",
+      "sublabel": "Defaults & Validation",
+      "type": "backend"
+    },
+    {
+      "id": "infra-credentials",
+      "label": "Credential Store",
+      "sublabel": "Secure Storage",
+      "type": "security"
+    },
+    {
+      "id": "infra-db",
+      "label": "SQLite Database",
+      "sublabel": "Persistence",
+      "type": "database"
+    },
+    {
+      "id": "infra-llm",
+      "label": "LLM Client",
+      "sublabel": "AI Summarization",
+      "type": "external"
+    },
+    {
+      "id": "infra-manifest",
+      "label": "Manifest Manager",
+      "sublabel": "File Integrity",
+      "type": "backend"
+    },
+    {
+      "id": "infra-mcp",
+      "label": "MCP Infrastructure",
+      "sublabel": "Context & Tools",
+      "type": "backend"
+    },
+    {
+      "id": "infra-prompt",
+      "label": "Prompt Builder",
+      "sublabel": "LLM Prompts",
+      "type": "backend"
+    },
+    {
+      "id": "utils",
+      "label": "Utilities",
+      "sublabel": "File Ops & Locking",
+      "type": "backend"
+    },
+    {
+      "id": "spine-rules",
+      "label": "Spine Rules",
+      "sublabel": "Architectural Governance",
+      "type": "backend"
+    },
+    {
+      "id": "tests",
+      "label": "Test Suite",
+      "sublabel": "Unit & Integration",
+      "type": "backend"
+    }
+  ],
+  "edges": [
+    {
+      "from": "cli",
+      "to": "services",
+      "label": "commands",
+      "style": "solid"
+    },
+    {
+      "from": "mcp-server",
+      "to": "services",
+      "label": "requests",
+      "style": "solid"
+    },
+    {
+      "from": "services",
+      "to": "tasks",
+      "label": "orchestrates",
+      "style": "solid"
+    },
+    {
+      "from": "tasks",
+      "to": "engines",
+      "label": "runs",
+      "style": "solid"
+    },
+    {
+      "from": "engines",
+      "to": "ast-parser",
+      "label": "uses",
+      "style": "solid"
+    },
+    {
+      "from": "tasks",
+      "to": "view-generator",
+      "label": "triggers",
+      "style": "solid"
+    },
+    {
+      "from": "services",
+      "to": "infra-config",
+      "label": "reads",
+      "style": "solid"
+    },
+    {
+      "from": "services",
+      "to": "infra-credentials",
+      "label": "reads",
+      "style": "solid"
+    },
+    {
+      "from": "services",
+      "to": "infra-db",
+      "label": "persists",
+      "style": "solid"
+    },
+    {
+      "from": "services",
+      "to": "infra-llm",
+      "label": "calls",
+      "style": "solid"
+    },
+    {
+      "from": "services",
+      "to": "infra-manifest",
+      "label": "manages",
+      "style": "solid"
+    },
+    {
+      "from": "services",
+      "to": "infra-mcp",
+      "label": "exposes",
+      "style": "solid"
+    },
+    {
+      "from": "services",
+      "to": "infra-prompt",
+      "label": "builds",
+      "style": "solid"
+    },
+    {
+      "from": "services",
+      "to": "utils",
+      "label": "uses",
+      "style": "solid"
+    },
+    {
+      "from": "services",
+      "to": "spine-rules",
+      "label": "enforces",
+      "style": "solid"
+    },
+    {
+      "from": "tests",
+      "to": "services",
+      "label": "validates",
+      "style": "dashed"
+    },
+    {
+      "from": "tests",
+      "to": "engines",
+      "label": "validates",
+      "style": "dashed"
+    },
+    {
+      "from": "tests",
+      "to": "infra-db",
+      "label": "validates",
+      "style": "dashed"
+    }
+  ],
+  "summaryCards": [
+    {
+      "heading": "Core Modules",
+      "points": [
+        "CLI, MCP Server, and Services orchestrate user and AI agent interactions.",
+        "Engines, AST Parser, and Tasks drive scanning, analysis, and validation pipelines.",
+        "View Generator produces architectural diagrams and reports."
+      ]
+    },
+    {
+      "heading": "Key Dependencies",
+      "points": [
+        "SQLite for persistent state and indexing.",
+        "LLM Client for AI-powered summarization and analysis.",
+        "Config Manager, Credential Store, and Manifest Manager for infrastructure."
+      ]
+    },
+    {
+      "heading": "System Boundaries",
+      "points": [
+        "External LLM providers for semantic analysis.",
+        "File system for source code scanning and output generation.",
+        "Test suite validates all core components and pipelines."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/god-mode.test.ts",
+    "contentHash": "f88558db01bc5a9cb25a5fa79ebbe0de34c9b9ae4fa4c1d72fe4b096c88efba8",
+    "skeletonHash": "3a987cda04cf7a248cfa721cc3a0bb24ac3d62159eb2f8ab5ed82ba5d472bc2e",
+    "semanticHash": "2dcc0f32d553fd903f5a69b3b76c0b213c9a85fa2be7533de3bcdf7899216e84",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite for the God mode dossier feature in ArchSpine.",
+    "responsibilities": [
+      "Sets up a temporary test directory with mock project files and configuration to simulate a real ArchSpine project.",
+      "Executes CLI commands via child_process.execSync to test the God mode command.",
+      "Verifies God mode command execution and output behavior using a mocked LLM provider (MockClient).",
+      "Cleans up the temporary test directory after each test run."
+    ],
+    "outOfScope": [
+      "Unit testing of individual God mode engine functions.",
+      "Testing of production LLM provider integrations.",
+      "Testing of other CLI commands outside the God mode feature."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (Rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide an integration test harness for the God mode dossier feature, ensuring CLI command execution and LLM mocking work correctly in an isolated environment.",
+      "recentChangeIntent": "No recent change intent detected from git history that directly matches this test file."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite for the God mode dossier feature in ArchSpine.",
+        "responsibilities": [
+          "Sets up a temporary test directory with mock project files and configuration to simulate a real ArchSpine project.",
+          "Executes CLI commands via child_process.execSync to test the God mode command.",
+          "Verifies God mode command execution and output behavior using a mocked LLM provider (MockClient).",
+          "Cleans up the temporary test directory after each test run."
+        ],
+        "outOfScope": [
+          "Unit testing of individual God mode engine functions.",
+          "Testing of production LLM provider integrations.",
+          "Testing of other CLI commands outside the God mode feature."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 中 God mode 档案功能的 Vitest 集成测试套件。",
+        "responsibilities": [
+          "创建临时测试目录，写入模拟项目文件和配置，以模拟真实的 ArchSpine 项目。",
+          "通过 child_process.execSync 执行 CLI 命令，测试 God mode 命令。",
+          "使用模拟的 LLM 提供程序 (MockClient) 验证 God mode 命令的执行和输出行为。",
+          "每次测试运行后清理临时测试目录。"
+        ],
+        "outOfScope": [
+          "对 God mode 引擎各个功能的单元测试。",
+          "对生产环境 LLM 提供程序集成的测试。",
+          "对 God mode 功能之外的其他 CLI 命令的测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/services/sync-service.js'",
+        "symbols": [
+          "SyncService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/engines/god.js'",
+        "symbols": [
+          "runGodMode"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/__mocks__/llm.js'",
+        "symbols": [
+          "MockClient"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 11,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../src/services/sync-service.js",
+        "relation": "import",
+        "symbols": [
+          "SyncService"
+        ]
+      },
+      {
+        "targetPath": "../src/engines/god.js",
+        "relation": "import",
+        "symbols": [
+          "runGodMode"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/__mocks__/llm.js",
+        "relation": "import",
+        "symbols": [
+          "MockClient"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.153Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

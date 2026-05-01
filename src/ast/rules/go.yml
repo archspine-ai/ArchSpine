@@ -1,0 +1,32 @@
+imports:
+  - id: import
+    pattern: 'import $SOURCE'
+  - id: import_group
+    pattern: |
+      import (
+        $$$SYMBOLS
+      )
+exports:
+  - id: function
+    pattern: 'func $NAME($$$ARGS) $$$ { $$$BODY }'
+    kind: Function
+  - id: type_struct
+    pattern: 'type $NAME struct { $$$BODY }'
+    kind: Class
+  - id: type_interface
+    pattern: 'type $NAME interface { $$$BODY }'
+    kind: Interface
+  - id: type_alias
+    pattern: 'type $NAME = $VAL'
+    kind: Type
+  - id: variable
+    pattern: 'var $NAME = $VAL'
+    kind: Variable
+  - id: const
+    pattern: 'const $NAME = $VAL'
+    kind: Variable
+usages:
+  - id: call
+    pattern: '$NAME($$$ARGS)'
+  - id: selector
+    pattern: '$OBJ.$NAME'

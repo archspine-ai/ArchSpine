@@ -1,0 +1,175 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/view-renderer.ts",
+    "contentHash": "176f7429f3101af5df6c06ab093d1502114f2ff5824dd8482b082174eef3e2d1",
+    "skeletonHash": "140ee1e86528b893a2f56fa98ddcc22245aca8b453f3bf0b6f3e1c449b9c2464",
+    "semanticHash": "f6b6830bca3279e29ee4641cf53cf84b8839f2818c2f39c1b0cf4fe87fa0ca52",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "View service module that renders architectural view artifacts (risk hotspots, CLI entries, MCP entries, module entries, public surface) into formatted markdown reports using filesystem-loaded templates.",
+    "responsibilities": [
+      "Loads and caches markdown templates from the filesystem using template names.",
+      "Renders risk hotspot views with severity scoring, details formatting, and markdown escaping.",
+      "Renders CLI command entry views with command descriptions and metadata.",
+      "Renders MCP (Model Context Protocol) server entry views with tool and resource listings.",
+      "Renders module entry views with entrypoint, kind, symbols, confidence, and summary.",
+      "Escapes markdown inline symbols to prevent formatting issues in output.",
+      "Formats confidence scores and kinds for display in markdown."
+    ],
+    "outOfScope": [
+      "Fetching or generating the view artifact data (relies on imported types).",
+      "Serving markdown over HTTP or other protocols.",
+      "Persisting rendered output to databases or external systems.",
+      "Validating schema of input data beyond basic rendering."
+    ],
+    "invariants": [
+      "Uples filesystem (fs, path) to load and cache templates from disk.",
+      "Output is always markdown formatted with proper escaping.",
+      "Static class methods for each view artifact type (risk hotspots, CLI, MCP, modules).",
+      "Depends on centralized view types from '../../types/view.js'."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable, template-driven markdown rendering service for architectural view artifacts to support documentation and reporting.",
+      "recentChangeIntent": "Tighten schema handling and add try preview (likely related to template rendering or input validation, but not directly evidenced in AST)."
+    },
+    "publicSurface": [
+      "ViewRenderer class",
+      "ViewRenderer.renderRiskHotspots",
+      "ViewRenderer.renderCLIEntries",
+      "ViewRenderer.renderMCPEntries",
+      "ViewRenderer.renderModuleEntries",
+      "ViewRenderer.renderPublicSurface"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "View service module that renders architectural view artifacts (risk hotspots, CLI entries, MCP entries, module entries, public surface) into formatted markdown reports using filesystem-loaded templates.",
+        "responsibilities": [
+          "Loads and caches markdown templates from the filesystem using template names.",
+          "Renders risk hotspot views with severity scoring, details formatting, and markdown escaping.",
+          "Renders CLI command entry views with command descriptions and metadata.",
+          "Renders MCP (Model Context Protocol) server entry views with tool and resource listings.",
+          "Renders module entry views with entrypoint, kind, symbols, confidence, and summary.",
+          "Escapes markdown inline symbols to prevent formatting issues in output.",
+          "Formats confidence scores and kinds for display in markdown."
+        ],
+        "outOfScope": [
+          "Fetching or generating the view artifact data (relies on imported types).",
+          "Serving markdown over HTTP or other protocols.",
+          "Persisting rendered output to databases or external systems.",
+          "Validating schema of input data beyond basic rendering."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "ViewRenderer",
+        "kind": "class",
+        "signature": "class ViewRenderer"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ViewRenderer",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/services/view/view-renderer.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "../../types/view.js",
+        "relation": "import",
+        "symbols": [
+          "PublicSurfaceKind",
+          "PublicSurfaceViewItem",
+          "RiskHotspotViewItem",
+          "ViewArtifactEnvelope"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:41.348Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

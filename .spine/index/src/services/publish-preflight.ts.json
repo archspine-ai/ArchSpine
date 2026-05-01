@@ -1,0 +1,259 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/publish-preflight.ts",
+    "contentHash": "1f24e34f6ba205d2f3b5670c2bb8c3acbb229213653137aef3a502ca59cac792",
+    "skeletonHash": "1d3ca9f683dd3093034906f7364fb114bd89992466c6f1cc157da1d28af798d2",
+    "semanticHash": "d3d8a18e9993037a696fd19415dc31acab7cfd330614b2b13e07395e2ad0b158",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Infrastructure-layer validation facade that asserts runtime conditions for publish operations, including baseline checks, snapshot readiness, and local strategy warnings.",
+    "responsibilities": [
+      "Validates the presence of the .spine directory and required manifest.json before publish.",
+      "Checks for active runtime lock files and verifies their payload integrity, throwing ArchSpineError if invalid.",
+      "Ensures the index directory and its sub-structures (atlas, rules) exist for snapshot readiness.",
+      "Warns if publishing from a local strategy by checking runtime configuration and emitting a console warning.",
+      "Throws ArchSpineError with appropriate error codes if any baseline or snapshot condition fails."
+    ],
+    "outOfScope": [
+      "Does not perform the actual publish operation or file copying.",
+      "Does not handle network or remote storage operations.",
+      "Does not manage user authentication or authorization.",
+      "Does not implement any UI or user interaction beyond console warnings."
+    ],
+    "invariants": [
+      "All assertion functions must throw ArchSpineError with specific ErrorCodes on failure.",
+      "The .spine directory must exist before any publish operation can proceed.",
+      "Lock files must be parseable and contain valid payloads.",
+      "Index directory and its subdirectories (atlas, rules) must exist for snapshot readiness."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized validation layer for publish operations, ensuring runtime conditions are met before proceeding with publishing.",
+      "recentChangeIntent": "Fix lint warnings and type errors, likely related to type safety in the assertion functions."
+    },
+    "publicSurface": [
+      "assertPublishRuntimeBaseline(rootDir: string): void",
+      "assertPublishSnapshotReady(rootDir: string): void",
+      "warnIfPublishingFromLocalStrategy(rootDir: string, runtimeIO?: RuntimeIO): void"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure-layer validation facade that asserts runtime conditions for publish operations, including baseline checks, snapshot readiness, and local strategy warnings.",
+        "responsibilities": [
+          "Validates the presence of the .spine directory and required manifest.json before publish.",
+          "Checks for active runtime lock files and verifies their payload integrity, throwing ArchSpineError if invalid.",
+          "Ensures the index directory and its sub-structures (atlas, rules) exist for snapshot readiness.",
+          "Warns if publishing from a local strategy by checking runtime configuration and emitting a console warning.",
+          "Throws ArchSpineError with appropriate error codes if any baseline or snapshot condition fails."
+        ],
+        "outOfScope": [
+          "Does not perform the actual publish operation or file copying.",
+          "Does not handle network or remote storage operations.",
+          "Does not manage user authentication or authorization.",
+          "Does not implement any UI or user interaction beyond console warnings."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施层的验证门面，用于断言发布操作的运行时条件，包括基线检查、快照就绪状态和本地策略警告。",
+        "responsibilities": [
+          "在发布前验证 .spine 目录和必需的 manifest.json 文件是否存在。",
+          "检查活动的运行时锁文件并验证其负载完整性，如果无效则抛出 ArchSpineError。",
+          "确保索引目录及其子结构（atlas、rules）存在以保证快照就绪。",
+          "通过检查运行时配置并发出控制台警告，提醒用户是否从本地策略发布。",
+          "如果任何基线或快照条件失败，则使用适当的错误代码抛出 ArchSpineError。"
+        ],
+        "outOfScope": [
+          "不执行实际的发布操作或文件复制。",
+          "不处理网络或远程存储操作。",
+          "不管理用户身份验证或授权。",
+          "不实现任何用户界面或超出控制台警告的用户交互。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../utils/lock.js'",
+        "symbols": [
+          "parseLockPayload"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "assertPublishRuntimeBaseline",
+        "kind": "function",
+        "signature": "assertPublishRuntimeBaseline(rootDir: string)"
+      },
+      {
+        "name": "assertPublishSnapshotReady",
+        "kind": "function",
+        "signature": "assertPublishSnapshotReady(rootDir: string)"
+      },
+      {
+        "name": "warnIfPublishingFromLocalStrategy",
+        "kind": "function",
+        "signature": "warnIfPublishingFromLocalStrategy(\n  rootDir: string,\n  runtimeIO: RuntimeIO = defaultRuntimeIO,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "assertPublishRuntimeBaseline",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/publish-preflight.ts#"
+      },
+      {
+        "name": "assertPublishSnapshotReady",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/publish-preflight.ts#"
+      },
+      {
+        "name": "warnIfPublishingFromLocalStrategy",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/publish-preflight.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ]
+      },
+      {
+        "targetPath": "../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "../utils/lock.js",
+        "relation": "import",
+        "symbols": [
+          "parseLockPayload"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/publish-preflight.ts/_file_#",
+        "targetSymbol": "src/utils/lock.ts/parseLockPayload#",
+        "targetPath": "src/utils/lock.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/publish-preflight.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:57:14.784Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

@@ -1,0 +1,189 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integrity.test.ts",
+    "contentHash": "07a5d1cd45cc69eb91d4cab27cbd10122262f6c12803abd171715b0d657a7ea4",
+    "skeletonHash": "5832026d24e95ab1ddbe50f564039860484ee008385ddd46db538b55a420d985",
+    "semanticHash": "0c4a1bc142e19e8bfa15ea1d1e149b6a81f2c44ae4ca9328eb021f96c834e376",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest test suite for SpineDB batch commit operations and transaction integrity.",
+    "responsibilities": [
+      "Mocks SQLite prepare method to intercept and validate batch commit SQL statements.",
+      "Validates that batch commits roll back on constraint violations.",
+      "Creates temporary test directories and cleans up after each test.",
+      "Asserts that batch operations maintain atomicity and error handling."
+    ],
+    "outOfScope": [
+      "Unit testing of individual SpineDB methods outside batch commit context.",
+      "Integration testing with real database instances.",
+      "Performance or load testing of batch operations."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (Rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide automated regression coverage for SpineDB batch commit atomicity and error recovery.",
+      "recentChangeIntent": "Finalize v1.0.0 release closure; no specific changes to this test file detected."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite for SpineDB batch commit operations and transaction integrity.",
+        "responsibilities": [
+          "Mocks SQLite prepare method to intercept and validate batch commit SQL statements.",
+          "Validates that batch commits roll back on constraint violations.",
+          "Creates temporary test directories and cleans up after each test.",
+          "Asserts that batch operations maintain atomicity and error handling."
+        ],
+        "outOfScope": [
+          "Unit testing of individual SpineDB methods outside batch commit context.",
+          "Integration testing with real database instances.",
+          "Performance or load testing of batch operations."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "SpineDB 批量提交操作与事务完整性的 Vitest 测试套件。",
+        "responsibilities": [
+          "模拟 SQLite 的 prepare 方法，以拦截并验证批量提交的 SQL 语句。",
+          "验证批量提交在遇到约束违反时能够正确回滚。",
+          "在每个测试前后创建并清理临时测试目录。",
+          "断言批量操作保持原子性和正确的错误处理。"
+        ],
+        "outOfScope": [
+          "对批量提交上下文之外的单个 SpineDB 方法进行单元测试。",
+          "使用真实数据库实例进行集成测试。",
+          "批量操作的性能或负载测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/db.js'",
+        "symbols": [
+          "SpineDB"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../src/infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/db.js",
+        "relation": "import",
+        "symbols": [
+          "SpineDB"
+        ]
+      },
+      {
+        "targetPath": "../src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SpineUnit"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.448Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

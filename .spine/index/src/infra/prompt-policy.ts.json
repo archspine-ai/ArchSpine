@@ -1,0 +1,257 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-policy.ts",
+    "contentHash": "751c4ee4517dc3362146571e75a24c53df519c4159e04200f15d133379158676",
+    "skeletonHash": "ea6d55c8b3461837c522bdb23ff5426b86450a956bfeb636188184dbd63a2bd6",
+    "semanticHash": "387ecdb173f495babcdb6ac286caf3155e8a6b537b3a7a15df20b9e59517454b",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Public facade module providing a stable import surface for prompt policy constants, LLM mode enumerations, and their parsing/resolution utilities.",
+    "responsibilities": [
+      "Exports public constants defining LLM operational modes, prompt policy tiers, validation policies, and budget profiles.",
+      "Exports parsing functions (parseLLMMode, parsePromptPolicyTier, parseRelevanceDiagnosticsMode, parseValidatePolicy) to convert raw strings into typed enumerations.",
+      "Exports resolution functions (resolvePromptPolicyTier, resolveValidatePolicy) to determine appropriate policies for given contexts.",
+      "Exports helper functions (defaultPromptTierForTask, defaultValidatePolicyForTask) to provide default configurations based on task type."
+    ],
+    "outOfScope": [
+      "Prompt artifact generation or orchestration logic.",
+      "Direct implementation of parsing or resolution algorithms.",
+      "Infrastructure-level capabilities or runtime orchestration."
+    ],
+    "invariants": [
+      "Must remain a pure re-export facade without internal logic.",
+      "Must not absorb service/task/engine orchestration concerns.",
+      "Must provide a stable import surface for callers needing only policy constants and parsing utilities."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish a lightweight facade for policy constants and parsing utilities, separating them from broader prompt context concerns to reduce import overhead and improve modularity.",
+      "recentChangeIntent": "Refactor to establish subsystem facades and resolve layer inversions, aligning with the commit intent to clarify architectural boundaries."
+    },
+    "publicSurface": [
+      "LLM_MODES",
+      "PROMPT_POLICY_TIERS",
+      "STRICT_VALIDATE_BUDGET_PROFILES",
+      "VALIDATE_POLICIES",
+      "PROMPT_BUDGET_PROFILES",
+      "parseLLMMode",
+      "parsePromptPolicyTier",
+      "parseRelevanceDiagnosticsMode",
+      "parseValidatePolicy",
+      "defaultPromptTierForTask",
+      "defaultValidatePolicyForTask",
+      "resolvePromptPolicyTier",
+      "resolveValidatePolicy"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Public facade module providing a stable import surface for prompt policy constants, LLM mode enumerations, and their parsing/resolution utilities.",
+        "responsibilities": [
+          "Exports public constants defining LLM operational modes, prompt policy tiers, validation policies, and budget profiles.",
+          "Exports parsing functions (parseLLMMode, parsePromptPolicyTier, parseRelevanceDiagnosticsMode, parseValidatePolicy) to convert raw strings into typed enumerations.",
+          "Exports resolution functions (resolvePromptPolicyTier, resolveValidatePolicy) to determine appropriate policies for given contexts.",
+          "Exports helper functions (defaultPromptTierForTask, defaultValidatePolicyForTask) to provide default configurations based on task type."
+        ],
+        "outOfScope": [
+          "Prompt artifact generation or orchestration logic.",
+          "Direct implementation of parsing or resolution algorithms.",
+          "Infrastructure-level capabilities or runtime orchestration."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "LLM_MODES",
+        "kind": "unknown",
+        "signature": "export { LLM_MODES }"
+      },
+      {
+        "name": "PROMPT_POLICY_TIERS",
+        "kind": "unknown",
+        "signature": "export { PROMPT_POLICY_TIERS }"
+      },
+      {
+        "name": "STRICT_VALIDATE_BUDGET_PROFILES",
+        "kind": "unknown",
+        "signature": "export { STRICT_VALIDATE_BUDGET_PROFILES }"
+      },
+      {
+        "name": "VALIDATE_POLICIES",
+        "kind": "unknown",
+        "signature": "export { VALIDATE_POLICIES }"
+      },
+      {
+        "name": "PROMPT_BUDGET_PROFILES",
+        "kind": "unknown",
+        "signature": "export { PROMPT_BUDGET_PROFILES }"
+      },
+      {
+        "name": "parseLLMMode",
+        "kind": "unknown",
+        "signature": "export { parseLLMMode }"
+      },
+      {
+        "name": "parsePromptPolicyTier",
+        "kind": "unknown",
+        "signature": "export { parsePromptPolicyTier }"
+      },
+      {
+        "name": "parseRelevanceDiagnosticsMode",
+        "kind": "unknown",
+        "signature": "export { parseRelevanceDiagnosticsMode }"
+      },
+      {
+        "name": "parseValidatePolicy",
+        "kind": "unknown",
+        "signature": "export { parseValidatePolicy }"
+      },
+      {
+        "name": "defaultPromptTierForTask",
+        "kind": "unknown",
+        "signature": "export { defaultPromptTierForTask }"
+      },
+      {
+        "name": "defaultValidatePolicyForTask",
+        "kind": "unknown",
+        "signature": "export { defaultValidatePolicyForTask }"
+      },
+      {
+        "name": "resolvePromptPolicyTier",
+        "kind": "unknown",
+        "signature": "export { resolvePromptPolicyTier }"
+      },
+      {
+        "name": "resolveValidatePolicy",
+        "kind": "unknown",
+        "signature": "export { resolveValidatePolicy }"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "LLM_MODES",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-policy.ts#"
+      },
+      {
+        "name": "PROMPT_POLICY_TIERS",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-policy.ts#"
+      },
+      {
+        "name": "STRICT_VALIDATE_BUDGET_PROFILES",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-policy.ts#"
+      },
+      {
+        "name": "VALIDATE_POLICIES",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-policy.ts#"
+      },
+      {
+        "name": "PROMPT_BUDGET_PROFILES",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-policy.ts#"
+      },
+      {
+        "name": "parseLLMMode",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-policy.ts#"
+      },
+      {
+        "name": "parsePromptPolicyTier",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-policy.ts#"
+      },
+      {
+        "name": "parseRelevanceDiagnosticsMode",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-policy.ts#"
+      },
+      {
+        "name": "parseValidatePolicy",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-policy.ts#"
+      },
+      {
+        "name": "defaultPromptTierForTask",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-policy.ts#"
+      },
+      {
+        "name": "defaultValidatePolicyForTask",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-policy.ts#"
+      },
+      {
+        "name": "resolvePromptPolicyTier",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-policy.ts#"
+      },
+      {
+        "name": "resolveValidatePolicy",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-policy.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 13,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./prompt-context/constants.js",
+        "relation": "import",
+        "symbols": [
+          "LLM_MODES",
+          "PROMPT_POLICY_TIERS",
+          "STRICT_VALIDATE_BUDGET_PROFILES",
+          "VALIDATE_POLICIES",
+          "PROMPT_BUDGET_PROFILES",
+          "parseLLMMode",
+          "parsePromptPolicyTier",
+          "parseRelevanceDiagnosticsMode",
+          "parseValidatePolicy",
+          "defaultPromptTierForTask",
+          "defaultValidatePolicyForTask",
+          "resolvePromptPolicyTier",
+          "resolveValidatePolicy"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:39.969Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

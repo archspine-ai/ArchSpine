@@ -1,0 +1,201 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/spine-gate.ts",
+    "contentHash": "ca1480451afaf6bbccd5f98ed77312ace447ae864338fff242a9da32f9218f9d",
+    "skeletonHash": "9537badb8459c915b489a690b0065f2b2d81162d3e6095334ed33b97c34e9b7d",
+    "semanticHash": "03472883539db90e9b816d69c8a0c9a70fb0cce51145fc6f170dfed3ede6f031",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure utility module for detecting and reporting unauthorized mutations in ArchSpine's protected output directories.",
+    "responsibilities": [
+      "Defines constants for baseline file location and protected directories (.spine/index, .spine/atlas, .spine/view).",
+      "Exports the ProtectedOutputMutationReport interface for structured mutation reporting.",
+      "Provides functions to read baseline state, collect file hashes, and compute added/changed/removed paths.",
+      "Generates mutation reports to detect unauthorized changes in generated protected outputs."
+    ],
+    "outOfScope": [
+      "Orchestrating service, task, or engine workflows.",
+      "Providing a public facade for other infrastructure capabilities.",
+      "Handling authentication, authorization, or user sessions.",
+      "Managing database queries or external API calls."
+    ],
+    "invariants": [
+      "Must only depend on Node.js built-in modules (crypto, fs, path).",
+      "Must not import from other project modules to avoid absorbing orchestration concerns.",
+      "Must expose stable low-level file hash comparison and mutation detection."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a pure utility for mutation detection, isolating file system and hash operations from higher-level orchestration.",
+      "recentChangeIntent": null
+    },
+    "publicSurface": [
+      "ProtectedOutputMutationReport"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure utility module for detecting and reporting unauthorized mutations in ArchSpine's protected output directories.",
+        "responsibilities": [
+          "Defines constants for baseline file location and protected directories (.spine/index, .spine/atlas, .spine/view).",
+          "Exports the ProtectedOutputMutationReport interface for structured mutation reporting.",
+          "Provides functions to read baseline state, collect file hashes, and compute added, changed, and removed paths.",
+          "Generates mutation reports to detect unauthorized changes in generated protected outputs."
+        ],
+        "outOfScope": [
+          "Orchestrating service, task, or engine workflows.",
+          "Providing a public facade for other infrastructure capabilities.",
+          "Handling authentication, authorization, or user sessions.",
+          "Managing database queries or external API calls."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'crypto'",
+        "symbols": [
+          "* as crypto"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'crypto'",
+        "symbols": [
+          "* as crypto"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "detectProtectedOutputMutations",
+        "kind": "function",
+        "signature": "detectProtectedOutputMutations(rootDir: string)"
+      },
+      {
+        "name": "writeProtectedOutputBaseline",
+        "kind": "function",
+        "signature": "writeProtectedOutputBaseline(rootDir: string)"
+      },
+      {
+        "name": "formatProtectedOutputMutationWarning",
+        "kind": "function",
+        "signature": "formatProtectedOutputMutationWarning(\n  report: ProtectedOutputMutationReport,\n)"
+      },
+      {
+        "name": "ProtectedOutputMutationReport",
+        "kind": "interface",
+        "signature": "interface ProtectedOutputMutationReport"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "detectProtectedOutputMutations",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/spine-gate.ts#"
+      },
+      {
+        "name": "writeProtectedOutputBaseline",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/spine-gate.ts#"
+      },
+      {
+        "name": "formatProtectedOutputMutationWarning",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/spine-gate.ts#"
+      },
+      {
+        "name": "ProtectedOutputMutationReport",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/spine-gate.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 4,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "crypto",
+        "relation": "import",
+        "symbols": [
+          "* as crypto"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/engines/info.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:40.500Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

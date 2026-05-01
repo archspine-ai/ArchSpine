@@ -1,0 +1,209 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/init-cli.test.ts",
+    "contentHash": "b1a7ff01ef0f2f7478370e46cd9bb447e72f1a4a56340ec06f446f19d06e365e",
+    "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
+    "semanticHash": "bc0c14397bccfebd481eec84af5368ee65b2441236e44572f6a65ef29835e849",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest test utility module for CLI initialization integration tests.",
+    "responsibilities": [
+      "Provides temporary directory creation and cleanup for isolated test environments.",
+      "Generates wrapper scripts that inject mocked user prompts for CLI testing.",
+      "Sets up test fixtures and executes the built CLI binary with controlled inputs."
+    ],
+    "outOfScope": [
+      "Does not contain actual test cases or assertions.",
+      "Does not implement CLI logic or prompt handling.",
+      "Does not manage persistent state or configuration."
+    ],
+    "invariants": [
+      "Temporary directories are created under the OS temp directory with a consistent prefix.",
+      "Wrapper scripts are written to disk and executed via child_process.",
+      "The built CLI binary path is resolved relative to the repository root."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide reusable test infrastructure for CLI initialization integration tests, ensuring isolated and reproducible test environments.",
+      "recentChangeIntent": "iZoy 's great commit - likely introduced or updated this utility module to support new CLI initialization test scenarios."
+    },
+    "publicSurface": [
+      "makeTempDir(): string",
+      "writeWrapperScript(wrapperPath: string, cliArgs: string[], injectedAnswers: unknown[]): void"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test utility module for CLI initialization integration tests.",
+        "responsibilities": [
+          "Provides temporary directory creation and cleanup for isolated test environments.",
+          "Generates wrapper scripts that inject mocked user prompts for CLI testing.",
+          "Sets up test fixtures and executes the built CLI binary with controlled inputs."
+        ],
+        "outOfScope": [
+          "Does not contain actual test cases or assertions.",
+          "Does not implement CLI logic or prompt handling.",
+          "Does not manage persistent state or configuration."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于 CLI 初始化集成测试的 Vitest 测试工具模块。",
+        "responsibilities": [
+          "提供临时目录的创建和清理功能，用于隔离的测试环境。",
+          "生成包装脚本，注入模拟的用户提示，用于 CLI 测试。",
+          "设置测试夹具并执行构建后的 CLI 二进制文件，使用受控输入。"
+        ],
+        "outOfScope": [
+          "不包含实际的测试用例或断言。",
+          "不实现 CLI 逻辑或提示处理。",
+          "不管理持久状态或配置。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ]
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.412Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/repo/strategy.ts",
+    "contentHash": "af11cf4c189a12d47d81301e8a419f8813c157174f1f65aabaa47133f1c5f475",
+    "skeletonHash": "8ee9e3f44ecf45629433586226bd998d078359abd4cb75ac14c0a11d4a8e8e98",
+    "semanticHash": "27911e98727743ba66bb1ede5bdbe215ec4ca36ae13f378aa25cb9faa74dad17",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/repo"
+  },
+  "semantic": {
+    "role": "CLI command adapter for repository artifact strategy management within the ArchSpine system.",
+    "responsibilities": [
+      "Parses and validates the artifact strategy input from CLI arguments.",
+      "Coordinates repository strategy checks and application by delegating to the repository admin service.",
+      "Provides user-facing console output for strategy operations, including warnings and step-by-step feedback.",
+      "Integrates with the system configuration to retrieve persisted and initialization artifact strategies."
+    ],
+    "outOfScope": [
+      "Implementing repository strategy logic (handled by repository-admin-service)",
+      "Persisting configuration changes (handled by config infra)",
+      "Direct file system operations for artifact management"
+    ],
+    "invariants": [
+      "Must remain a thin command adapter, delegating core logic to services.",
+      "Must not contain business logic for repository strategy evaluation or application.",
+      "Must provide clear console feedback for CLI users."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Separate CLI command routing from core repository strategy logic, ensuring testability and reuse.",
+      "recentChangeIntent": "Refinement of artifact strategy parsing and user feedback output (based on git status showing modifications in CLI-related tests and scanner engines)."
+    },
+    "publicSurface": [
+      "parseArtifactStrategy(value: string | undefined): ArtifactStrategy | undefined"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command adapter for repository artifact strategy management within the ArchSpine system.",
+        "responsibilities": [
+          "Parses and validates the artifact strategy input from CLI arguments.",
+          "Coordinates repository strategy checks and application by delegating to the repository admin service.",
+          "Provides user-facing console output for strategy operations, including warnings and step-by-step feedback.",
+          "Integrates with the system configuration to retrieve persisted and initialization artifact strategies."
+        ],
+        "outOfScope": [
+          "Implementing repository strategy logic (handled by repository-admin-service)",
+          "Persisting configuration changes (handled by config infra)",
+          "Direct file system operations for artifact management"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../services/repository-admin-service.js'",
+        "symbols": [
+          "applyRepositoryStrategy",
+          "checkRepositoryStrategy"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "parseArtifactStrategy",
+        "kind": "function",
+        "signature": "parseArtifactStrategy(value: string | undefined)"
+      },
+      {
+        "name": "runRepoCheck",
+        "kind": "function",
+        "signature": "runRepoCheck(repoRoot: string, cfg: Config)"
+      },
+      {
+        "name": "runRepoStrategySet",
+        "kind": "function",
+        "signature": "runRepoStrategySet(\n  rootDir: string,\n  config: Config,\n  nextStrategy: ArtifactStrategy,\n  printStep: (message: string, options?: { inline?: boolean }) => void,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "parseArtifactStrategy",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/repo/strategy.ts#"
+      },
+      {
+        "name": "runRepoCheck",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/repo/strategy.ts#"
+      },
+      {
+        "name": "runRepoStrategySet",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/repo/strategy.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ]
+      },
+      {
+        "targetPath": "../../services/repository-admin-service.js",
+        "relation": "import",
+        "symbols": [
+          "applyRepositoryStrategy",
+          "checkRepositoryStrategy"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:37.104Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

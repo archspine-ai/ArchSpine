@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "schemas/spine-rules.schema.json",
+    "contentHash": "5b225a87d53d0d6e9145d758d0ef11810730c38104b5435b6ddaf17eceda04f6",
+    "semanticHash": "1c5ceb6d33c6770f25cc7e1c246ae9155fb416adc129742da3830ce85ba5d75c",
+    "language": "unsupported",
+    "fileKind": "config",
+    "scope": "schemas"
+  },
+  "semantic": {
+    "role": "Defines the schema for individual SpineRule documents within the ArchSpine mirror system, specifying the structure and validation constraints for governance rules.",
+    "responsibilities": [
+      "Rule document validation",
+      "Enforcement severity classification",
+      "Rule applicability scoping",
+      "Schema versioning and compliance"
+    ],
+    "outOfScope": [],
+    "invariants": [
+      "All required fields (schemaVersion, ruleId, title, summary, appliesTo, severity, enforceable, bodyMarkdown) must be present",
+      "ruleId must match lowercase kebab-case pattern",
+      "appliesTo array must contain at least one non-empty string",
+      "severity must be one of: advisory, warning, error",
+      "No additional properties beyond the defined schema are permitted"
+    ],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Defines the schema for individual SpineRule documents within the ArchSpine mirror system, specifying the structure and validation constraints for governance rules.",
+        "parameter_definitions": {
+          "schemaVersion": "Controls compatibility with the ArchSpine schema versioning system; mismatches can cause rule rejection or silent failures.",
+          "ruleId": "Unique identifier in lowercase kebab-case; used for rule referencing and deduplication; collisions may cause unpredictable behavior.",
+          "title": "Human-readable rule name; must be non-empty for clarity in reports and logs.",
+          "summary": "Brief description of the rule's purpose; non-empty requirement ensures minimum documentation.",
+          "appliesTo": "List of target subsystems or components the rule governs; empty arrays are rejected to prevent orphaned rules.",
+          "severity": "Operational impact level: 'advisory' for informational, 'warning' for non-blocking violations, 'error' for blocking violations that halt operations.",
+          "enforceable": "Boolean flag indicating whether the rule can be automatically enforced; false means manual review required.",
+          "rationale": "Optional justification string; null allowed when rationale is not provided.",
+          "bodyMarkdown": "Full rule text in Markdown format; must be non-empty to ensure actionable content."
+        },
+        "stability_and_risks": "This schema enforces structural integrity of governance rules. Missing required fields cause document rejection, preventing incomplete rules from entering the system. The severity enum ensures consistent enforcement levels across all rules. The strict additionalProperties constraint prevents schema drift and unexpected behavior from unknown fields. The appliesTo array with minItems:1 ensures rules are always scoped to at least one target, avoiding ambiguous or system-wide unintended effects. Overall, this schema promotes system stability by enforcing a rigid contract for rule documents, reducing parsing errors and misconfigurations."
+      },
+      "Simplified Chinese": {
+        "role": "定义ArchSpine镜像系统中单个SpineRule文档的架构，指定治理规则的结构和验证约束。",
+        "parameter_definitions": {
+          "schemaVersion": "控制与ArchSpine架构版本系统的兼容性；不匹配可能导致规则被拒绝或静默失败。",
+          "ruleId": "小写连字符格式的唯一标识符，用于规则引用和去重；冲突可能导致不可预测的行为。",
+          "title": "人类可读的规则名称；必须非空以确保报告和日志清晰。",
+          "summary": "规则目的的简要描述；非空要求确保最低限度的文档记录。",
+          "appliesTo": "规则所治理的目标子系统或组件列表；空数组将被拒绝，以防止孤立规则。",
+          "severity": "操作影响级别：'advisory'表示信息性，'warning'表示非阻塞违规，'error'表示阻塞违规并停止操作。",
+          "enforceable": "布尔标志，指示规则是否可以自动执行；false表示需要人工审查。",
+          "rationale": "可选的说明字符串；未提供说明时允许为null。",
+          "bodyMarkdown": "Markdown格式的完整规则文本；必须非空以确保可操作的内容。"
+        },
+        "stability_and_risks": "此架构强制治理规则的结构完整性。缺少必填字段会导致文档被拒绝，防止不完整的规则进入系统。严重性枚举确保所有规则具有一致的执行级别。严格的additionalProperties约束防止架构漂移和未知字段导致的意外行为。appliesTo数组的minItems:1确保规则始终至少作用于一个目标，避免模糊或系统范围的意外影响。总体而言，此架构通过强制执行规则文档的严格契约来促进系统稳定性，减少解析错误和配置错误。"
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:04.544Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

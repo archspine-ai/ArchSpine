@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-context/budgets.ts",
+    "contentHash": "c4776d0cb0149779bdc67072b52ada2c2a4e2797ca9c3a368bc57ddd736ece81",
+    "skeletonHash": "9eafe5172cab74cbda6e75a40fa242b6c18c2ca721b5bb8ac134781e0856b66d",
+    "semanticHash": "273d20e0de003c209be8d369521322285ae1bc03185f428ef25deab385e170e3",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt-context"
+  },
+  "semantic": {
+    "role": "Infrastructure utility function for calculating prompt token budgets based on task mode, validation policy, and source code artifacts.",
+    "responsibilities": [
+      "Determines the applicable prompt tier and validation policy for a given task mode and input overrides.",
+      "Selects the appropriate budget profile from constants based on the resolved task mode, validation policy, and tier.",
+      "Calculates line count and import count from the provided source content and skeleton.",
+      "Computes final budget allocations (like maxTokens, reservedTokens) by applying profile multipliers and clamps to the calculated base values."
+    ],
+    "outOfScope": [
+      "Orchestrating tasks or engines",
+      "Managing external API calls or network requests",
+      "Persisting or caching budget results",
+      "Providing a user-facing CLI or UI"
+    ],
+    "invariants": [
+      "Pure function with no side effects",
+      "Relies on imported constants and policy resolution functions",
+      "Output is deterministic based on input parameters"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, low-level utility for token budget calculation, decoupled from orchestration logic to support modular CLI and core infra services.",
+      "recentChangeIntent": "Modularize CLI and decouple core infra services (aligns with refactoring intent to keep infra focused on utilities)."
+    },
+    "publicSurface": [
+      "calculateSourcePromptBudgets"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure utility function for calculating prompt token budgets based on task mode, validation policy, and source code artifacts.",
+        "responsibilities": [
+          "Determines the applicable prompt tier and validation policy for a given task mode and input overrides.",
+          "Selects the appropriate budget profile from constants based on the resolved task mode, validation policy, and tier.",
+          "Calculates line count and import count from the provided source content and skeleton.",
+          "Computes final budget allocations (like maxTokens, reservedTokens) by applying profile multipliers and clamps to the calculated base values."
+        ],
+        "outOfScope": [
+          "Orchestrating tasks or engines",
+          "Managing external API calls or network requests",
+          "Persisting or caching budget results",
+          "Providing a user-facing CLI or UI"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./constants.js'",
+        "symbols": [
+          "PROMPT_BUDGET_PROFILES",
+          "STRICT_VALIDATE_BUDGET_PROFILES"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./policy.js'",
+        "symbols": [
+          "resolvePromptPolicyTier",
+          "resolveValidatePolicy"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "calculateSourcePromptBudgets",
+        "kind": "function",
+        "signature": "calculateSourcePromptBudgets(input: SourcePromptArtifactsInput)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "calculateSourcePromptBudgets",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/budgets.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./constants.js",
+        "relation": "import",
+        "symbols": [
+          "PROMPT_BUDGET_PROFILES",
+          "STRICT_VALIDATE_BUDGET_PROFILES"
+        ]
+      },
+      {
+        "targetPath": "./policy.js",
+        "relation": "import",
+        "symbols": [
+          "resolvePromptPolicyTier",
+          "resolveValidatePolicy"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:39.721Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

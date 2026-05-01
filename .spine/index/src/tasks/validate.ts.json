@@ -1,0 +1,261 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/validate.ts",
+    "contentHash": "898d7b195e123fc8955e0ef2d9148e9129a48e1ddbadc17c4b1b2b7f35f3b1f8",
+    "skeletonHash": "fda04b9356f6ac508ed57811508e5fb0d77bc486a5b1a76dd4b30e03ca42c8a9",
+    "semanticHash": "fb72ee3a1a75ea10c52a19422e1dd23cfb7f211070418f75651d1d8e0a6a3485",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "ArchSpine validation task orchestrator for LLM-powered architectural rule compliance checking.",
+    "responsibilities": [
+      "Orchestrates validation of source files against configured architectural rules using LLM-generated prompts.",
+      "Builds prompt artifacts from source files and rule contexts for LLM validation.",
+      "Executes LLM validation prompts with concurrency control and handles LLM response parsing.",
+      "Normalizes and filters LLM-generated rule violation entries to ensure structured compliance data.",
+      "Logs validation diagnostics and records violations to the manifest."
+    ],
+    "outOfScope": [
+      "CLI command parsing or unrelated service orchestration.",
+      "Direct LLM API communication or token management.",
+      "Rule definition or storage management."
+    ],
+    "invariants": [
+      "Must operate as a pipeline stage on top of core task contracts and engines.",
+      "Must delegate prompt generation and LLM execution to dedicated infrastructure modules.",
+      "Must output structured validation results compatible with the RuleViolation protocol."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Implements a validation stage that uses LLM prompts to check source code against architectural rules, integrating with the task execution graph.",
+      "recentChangeIntent": "Recent commits aimed to harden scan resume validation and fix fallback paths, though specific changes are not detailed in the provided AST."
+    },
+    "publicSurface": [
+      "ValidationSummary interface",
+      "ValidationTaskResult interface"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "ArchSpine validation task orchestrator for LLM-powered architectural rule compliance checking.",
+        "responsibilities": [
+          "Orchestrates validation of source files against configured architectural rules using LLM-generated prompts.",
+          "Builds prompt artifacts from source files and rule contexts for LLM validation.",
+          "Executes LLM validation prompts with concurrency control and handles LLM response parsing.",
+          "Normalizes and filters LLM-generated rule violation entries to ensure structured compliance data.",
+          "Logs validation diagnostics and records violations to the manifest."
+        ],
+        "outOfScope": [
+          "CLI command parsing or unrelated service orchestration.",
+          "Direct LLM API communication or token management.",
+          "Rule definition or storage management."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext",
+          "TaskContextFor"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/prompt-context.js'",
+        "symbols": [
+          "buildSourcePromptArtifacts",
+          "RelevanceDiagnosticsSnapshot"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/lang-registry.js'",
+        "symbols": [
+          "LangRegistry"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/prompt-rendering.js'",
+        "symbols": [
+          "generateSourceValidationJsonPrompt"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "RuleViolation"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/task-state.js'",
+        "symbols": [
+          "addTaskUsage",
+          "pushValidateDiagnostics"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'p-limit'",
+        "symbols": [
+          "pLimit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "ValidationTask",
+        "kind": "class",
+        "signature": "class ValidationTask"
+      },
+      {
+        "name": "ValidationSummary",
+        "kind": "interface",
+        "signature": "interface ValidationSummary"
+      },
+      {
+        "name": "ValidationTaskResult",
+        "kind": "interface",
+        "signature": "interface ValidationTaskResult"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ValidationTask",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/tasks/validate.ts#"
+      },
+      {
+        "name": "ValidationSummary",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/tasks/validate.ts#"
+      },
+      {
+        "name": "ValidationTaskResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/tasks/validate.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 11,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext",
+          "TaskContextFor"
+        ]
+      },
+      {
+        "targetPath": "../infra/prompt-context.js",
+        "relation": "import",
+        "symbols": [
+          "buildSourcePromptArtifacts",
+          "RelevanceDiagnosticsSnapshot"
+        ]
+      },
+      {
+        "targetPath": "../ast/lang-registry.js",
+        "relation": "import",
+        "symbols": [
+          "LangRegistry"
+        ]
+      },
+      {
+        "targetPath": "../infra/prompt-rendering.js",
+        "relation": "import",
+        "symbols": [
+          "generateSourceValidationJsonPrompt"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "RuleViolation"
+        ]
+      },
+      {
+        "targetPath": "../core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "addTaskUsage",
+          "pushValidateDiagnostics"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/check-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "src/services/fix-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:41.810Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

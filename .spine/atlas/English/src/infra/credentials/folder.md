@@ -1,0 +1,11 @@
+<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/infra/credentials","role":"Platform-specific credential storage and secure secret management infrastructure.","responsibility":"Provides a unified credential storage system with platform-specific backends (e.g., macOS Keychain) and secure file-based fallback, enabling safe persistence and retrieval of API keys and secrets across different environments.","children":[{"filePath":"src/infra/credentials/backend.ts","role":"Infrastructure facade providing a platform-specific credential storage backend for secure secret persistence on macOS.","fileKind":"source"},{"filePath":"src/infra/credentials/store.ts","role":"Infrastructure module providing secure credential storage with pluggable backends and file-based fallback safety.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T04:57:43.098Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
+# Credentials Infrastructure (`src/infra/credentials/`)
+
+This directory provides the platform-specific credential storage and secure secret management infrastructure for ArchSpine. It is responsible for offering a unified credential storage system that supports multiple backends, including platform-native solutions like the macOS Keychain, along with a secure file-based fallback mechanism. This ensures safe persistence and retrieval of API keys and secrets across different environments.
+
+The directory contains two core implementation files:
+
+- **`backend.ts`** – An infrastructure facade that delivers a platform-specific credential storage backend, optimized for secure secret persistence on macOS.
+- **`store.ts`** – An infrastructure module that implements the secure credential store with pluggable backends and a file-based fallback safety layer.
+
+The most critical implementation areas here are the abstraction layer for platform backends and the fallback safety logic, which together guarantee that credentials remain accessible and secure regardless of the underlying operating system.

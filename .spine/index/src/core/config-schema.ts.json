@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/core/config-schema.ts",
+    "contentHash": "c5f7465f64621bc4abe9afd24a859280652f2847552eef6846b773bb0f9ab45e",
+    "skeletonHash": "e0abe00c747d1f9c52cabc26f9d5147653c0496fbb316b87ad9fa9fad3f116ae",
+    "semanticHash": "306488d43bcb85ce988f73abad51fd85025ab542045ee3dcc5bca025f8363722",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/core"
+  },
+  "semantic": {
+    "role": "Core validation contract and constants definition for the ArchSpine configuration schema.",
+    "responsibilities": [
+      "Defines the SpineConfigValidationResult interface for structured validation output.",
+      "Declares constant sets of allowed values for key configuration fields (LLM modes, prompt tiers, validation policies, etc.)."
+    ],
+    "outOfScope": [
+      "Implementing validation logic (handled by separate modules like config-validation.ts).",
+      "CLI command entry or user interaction.",
+      "Reading or parsing configuration files."
+    ],
+    "invariants": [
+      "Provides centralized allowed value sets for configuration validation.",
+      "Exports a typed result structure for validation consistency across the pipeline."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish a shared vocabulary and contract for configuration validation across the ArchSpine pipeline.",
+      "recentChangeIntent": "Potential tightening of schema handling and addition of preview capabilities, as indicated by git commit."
+    },
+    "publicSurface": [
+      "SpineConfigValidationResult interface"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core validation contract and constants definition for the ArchSpine configuration schema.",
+        "responsibilities": [
+          "Defines the SpineConfigValidationResult interface for structured validation output.",
+          "Declares constant sets of allowed values for key configuration fields (LLM modes, prompt tiers, validation policies, etc.)."
+        ],
+        "outOfScope": [
+          "Implementing validation logic (handled by separate modules like config-validation.ts).",
+          "CLI command entry or user interaction.",
+          "Reading or parsing configuration files."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "CURRENT_CONFIG_SCHEMA_VERSION",
+          "type SpineConfig"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "resolveSpineConfig",
+        "kind": "function",
+        "signature": "resolveSpineConfig(value: unknown)"
+      },
+      {
+        "name": "validateSpineConfig",
+        "kind": "function",
+        "signature": "validateSpineConfig(value: unknown)"
+      },
+      {
+        "name": "SpineConfigValidationResult",
+        "kind": "interface",
+        "signature": "interface SpineConfigValidationResult"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "resolveSpineConfig",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/config-schema.ts#"
+      },
+      {
+        "name": "validateSpineConfig",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/config-schema.ts#"
+      },
+      {
+        "name": "SpineConfigValidationResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/config-schema.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 3,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_CONFIG_SCHEMA_VERSION",
+          "SpineConfig"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/config-validation.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:37.138Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

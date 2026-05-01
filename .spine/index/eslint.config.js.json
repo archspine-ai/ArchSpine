@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "eslint.config.js",
+    "contentHash": "d2d92d23457c350db9a900156919306f2997f66e06ab666fafef6bdcf98e5367",
+    "skeletonHash": "e25c73103a484e89ab8d4a2e9f53bebca67961c9fce4eb507f20f91d8d70e972",
+    "semanticHash": "70cbae80d852079063e22d758ceed1e6abfedcbc49026242fb6770f5db7285f7",
+    "language": "javascript",
+    "fileKind": "source",
+    "scope": ""
+  },
+  "semantic": {
+    "role": "ESLint flat configuration module defining static analysis rules for TypeScript source files in the ArchSpine project.",
+    "responsibilities": [
+      "Defines linting rules for TypeScript files in src/services/, src/tasks/, src/infra/, src/engines/, and src/utils/ directories.",
+      "Composes recommended ESLint configurations from @eslint/js, typescript-eslint, and eslint-config-prettier.",
+      "Configures ECMAScript version and module source type for the linter.",
+      "Enforces coding standards including no unused variables, const preference, strict equality, and mandatory curly braces."
+    ],
+    "outOfScope": [
+      "Does not configure linting for test files or root-level TypeScript files.",
+      "Does not define custom rules beyond the composed recommended configs."
+    ],
+    "invariants": [
+      "The configuration must always be exported as a default array via tseslint.config().",
+      "The files pattern must target only TypeScript files under src/ subdirectories."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish a centralized, composable ESLint configuration for the ArchSpine project to enforce consistent code quality and style across all TypeScript source modules.",
+      "recentChangeIntent": "Fix lint warnings and type errors, and add CI workflow integration."
+    },
+    "publicSurface": [
+      "default export (tseslint.config array)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": true,
+    "driftReason": "Previous semantic contract included test files (tests/ directory) in the linting scope, but the current AST shows only src/ subdirectories (services, tasks, infra, engines, utils). The file no longer applies to test files.",
+    "localized": {
+      "English": {
+        "role": "ESLint flat configuration module defining static analysis rules for TypeScript source files in the ArchSpine project.",
+        "responsibilities": [
+          "Defines linting rules for TypeScript files in src/services/, src/tasks/, src/infra/, src/engines/, and src/utils/ directories.",
+          "Composes recommended ESLint configurations from @eslint/js, typescript-eslint, and eslint-config-prettier.",
+          "Configures ECMAScript version and module source type for the linter.",
+          "Enforces coding standards including no unused variables, const preference, strict equality, and mandatory curly braces."
+        ],
+        "outOfScope": [
+          "Does not configure linting for test files or root-level TypeScript files.",
+          "Does not define custom rules beyond the composed recommended configs."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ESLint 扁平配置模块，为 ArchSpine 项目中的 TypeScript 源文件定义静态分析规则。",
+        "responsibilities": [
+          "为 src/services/、src/tasks/、src/infra/、src/engines/ 和 src/utils/ 目录中的 TypeScript 文件定义 lint 规则。",
+          "组合来自 @eslint/js、typescript-eslint 和 eslint-config-prettier 的推荐 ESLint 配置。",
+          "配置 linter 的 ECMAScript 版本和模块源类型。",
+          "强制执行编码标准，包括禁止未使用变量、优先使用 const、严格相等和强制使用花括号。"
+        ],
+        "outOfScope": [
+          "不配置测试文件或根级 TypeScript 文件的 lint 规则。",
+          "不定义超出组合推荐配置的自定义规则。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'@eslint/js'",
+        "symbols": [
+          "js"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'typescript-eslint'",
+        "symbols": [
+          "tseslint"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'eslint-config-prettier'",
+        "symbols": [
+          "prettier"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'globals'",
+        "symbols": [
+          "globals"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "default",
+        "kind": "unknown",
+        "signature": "default tseslint.config(\n"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "default",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "eslint.config.js#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "@eslint/js",
+        "relation": "import",
+        "symbols": [
+          "js"
+        ]
+      },
+      {
+        "targetPath": "typescript-eslint",
+        "relation": "import",
+        "symbols": [
+          "tseslint"
+        ]
+      },
+      {
+        "targetPath": "eslint-config-prettier",
+        "relation": "import",
+        "symbols": [
+          "prettier"
+        ]
+      },
+      {
+        "targetPath": "globals",
+        "relation": "import",
+        "symbols": [
+          "globals"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:56:56.262Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

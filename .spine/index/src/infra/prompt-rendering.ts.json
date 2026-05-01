@@ -1,0 +1,224 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-rendering.ts",
+    "contentHash": "092bd83998d0ce3b7fedecaf90b959688096b7610870ed79eed858053b1c42bc",
+    "skeletonHash": "6acb6effe1be3da69708ec50fb4c8b038dac09dda85271c50e3ad72585b3dd49",
+    "semanticHash": "e96bc5e8c079aea56952db2a9fc9ef6487f0cbc548c04511595bb21ae2f6fc37",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure facade module providing a stable public API for prompt rendering and composition utilities.",
+    "responsibilities": [
+      "Exposes the PromptBuilder class for programmatic prompt assembly",
+      "Provides aggregate prompt generation functions for different architectural scopes (config, document, folder, project)",
+      "Exports specialized prompt generators for Markdown and source code contexts",
+      "Maintains a stable import boundary separating prompt assembly from policy and budgeting concerns"
+    ],
+    "outOfScope": [
+      "Prompt policy or budgeting logic",
+      "Service orchestration or task execution",
+      "Engine runtime concerns"
+    ],
+    "invariants": [
+      "Must not import or re-export service, task, or engine orchestration modules",
+      "Must only expose prompt rendering and builder capabilities",
+      "Callers should prefer this public facade over importing deep private implementation paths"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, public-facing facade for prompt rendering utilities, isolating prompt assembly from policy and budgeting concerns.",
+      "recentChangeIntent": "refactor(arch): establish subsystem facades and resolve layer inversions — this file aligns with that intent by serving as a clean infra facade."
+    },
+    "publicSurface": [
+      "PromptBuilder",
+      "generateConfigPrompt",
+      "generateDocumentPrompt",
+      "generateFolderPrompt",
+      "generateProjectPrompt",
+      "generateMarkdownPrompt",
+      "generateSourcePrompt",
+      "generateSourceValidationJsonPrompt"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure facade module providing a stable public API for prompt rendering and composition utilities.",
+        "responsibilities": [
+          "Exposes the PromptBuilder class for programmatic prompt assembly",
+          "Provides aggregate prompt generation functions for different architectural scopes (config, document, folder, project)",
+          "Exports specialized prompt generators for Markdown and source code contexts",
+          "Maintains a stable import boundary separating prompt assembly from policy and budgeting concerns"
+        ],
+        "outOfScope": [
+          "Prompt policy or budgeting logic",
+          "Service orchestration or task execution",
+          "Engine runtime concerns"
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施外观模块，为提示渲染和组合工具提供稳定的公共 API。",
+        "responsibilities": [
+          "公开 PromptBuilder 类，用于程序化提示组装",
+          "为不同架构范围（配置、文档、文件夹、项目）提供聚合提示生成函数",
+          "导出针对 Markdown 和源代码上下文的专用提示生成器",
+          "维护稳定的导入边界，将提示组装与策略和预算关注点分离"
+        ],
+        "outOfScope": [
+          "提示策略或预算逻辑",
+          "服务编排或任务执行",
+          "引擎运行时关注点"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "PromptBuilder",
+        "kind": "unknown",
+        "signature": "export { PromptBuilder }"
+      },
+      {
+        "name": "generateConfigPrompt",
+        "kind": "unknown",
+        "signature": "export { generateConfigPrompt }"
+      },
+      {
+        "name": "generateDocumentPrompt",
+        "kind": "unknown",
+        "signature": "export { generateDocumentPrompt }"
+      },
+      {
+        "name": "generateFolderPrompt",
+        "kind": "unknown",
+        "signature": "export { generateFolderPrompt }"
+      },
+      {
+        "name": "generateProjectPrompt",
+        "kind": "unknown",
+        "signature": "export { generateProjectPrompt }"
+      },
+      {
+        "name": "generateMarkdownPrompt",
+        "kind": "unknown",
+        "signature": "export { generateMarkdownPrompt }"
+      },
+      {
+        "name": "generateSourcePrompt",
+        "kind": "unknown",
+        "signature": "export { generateSourcePrompt }"
+      },
+      {
+        "name": "generateSourceValidationJsonPrompt",
+        "kind": "unknown",
+        "signature": "export { generateSourceValidationJsonPrompt }"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "PromptBuilder",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-rendering.ts#"
+      },
+      {
+        "name": "generateConfigPrompt",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-rendering.ts#"
+      },
+      {
+        "name": "generateDocumentPrompt",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-rendering.ts#"
+      },
+      {
+        "name": "generateFolderPrompt",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-rendering.ts#"
+      },
+      {
+        "name": "generateProjectPrompt",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-rendering.ts#"
+      },
+      {
+        "name": "generateMarkdownPrompt",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-rendering.ts#"
+      },
+      {
+        "name": "generateSourcePrompt",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-rendering.ts#"
+      },
+      {
+        "name": "generateSourceValidationJsonPrompt",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-rendering.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 8,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./prompt/builder.js",
+        "relation": "import",
+        "symbols": [
+          "PromptBuilder"
+        ]
+      },
+      {
+        "targetPath": "./prompt/aggregate.js",
+        "relation": "import",
+        "symbols": [
+          "generateConfigPrompt",
+          "generateDocumentPrompt",
+          "generateFolderPrompt",
+          "generateProjectPrompt"
+        ]
+      },
+      {
+        "targetPath": "./prompt/markdown.js",
+        "relation": "import",
+        "symbols": [
+          "generateMarkdownPrompt"
+        ]
+      },
+      {
+        "targetPath": "./prompt/source.js",
+        "relation": "import",
+        "symbols": [
+          "generateSourcePrompt",
+          "generateSourceValidationJsonPrompt"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:40.004Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

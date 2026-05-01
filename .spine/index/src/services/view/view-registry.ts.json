@@ -1,0 +1,157 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/view-registry.ts",
+    "contentHash": "7ffff5b4bbfe3cc4b33e38a05eca773b705937134527121258ebde848d9db7e4",
+    "skeletonHash": "5deb7435cede2407cbe3f56ddb6b8f48348b1081c7e4b880fb7db0605ae55101",
+    "semanticHash": "97604a904da2eea7b3aec80b9ff537a2cb75194ad0fdb0f640ffeb2a0f2ec94c",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "Central registry and type definition module for architectural visualization views within the ArchSpine system.",
+    "responsibilities": [
+      "Defines the ViewDefinition TypeScript interface specifying metadata for each architectural view (ID, title, description, enabled status, requirements, outputs).",
+      "Maintains the VIEW_DEFINITIONS constant array as the canonical source of truth for all supported visualization outputs.",
+      "Provides derived data structures (VIEW_DEFINITION_MAP) for efficient O(1) lookups of view definitions by ID.",
+      "Exports utility functions to filter and retrieve view definitions (e.g., by defaultEnabled status)."
+    ],
+    "outOfScope": [
+      "Rendering or generating visualizations.",
+      "Orchestrating runtime services.",
+      "Handling user authentication or authorization.",
+      "Persisting view state or configurations."
+    ],
+    "invariants": [
+      "VIEW_DEFINITIONS is the single source of truth for view metadata.",
+      "ViewDefinition interface is stable and exported for type safety across the system."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized, type-safe configuration layer for architectural views, enabling modular view discovery and dependency management.",
+      "recentChangeIntent": "No recent changes detected in this file; the git intent references CLI and core infra refactoring, which does not directly impact this view definition module."
+    },
+    "publicSurface": [
+      "ViewDefinition interface",
+      "VIEW_DEFINITIONS constant array",
+      "VIEW_DEFINITION_MAP (likely exported constant)",
+      "Utility functions for filtering/view retrieval (e.g., getDefaultEnabledViews)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Central registry and type definition module for architectural visualization views within the ArchSpine system.",
+        "responsibilities": [
+          "Defines the ViewDefinition TypeScript interface specifying metadata for each architectural view (ID, title, description, enabled status, requirements, outputs).",
+          "Maintains the VIEW_DEFINITIONS constant array as the canonical source of truth for all supported visualization outputs.",
+          "Provides derived data structures (VIEW_DEFINITION_MAP) for efficient O(1) lookups of view definitions by ID.",
+          "Exports utility functions to filter and retrieve view definitions (e.g., by defaultEnabled status)."
+        ],
+        "outOfScope": [
+          "Rendering or generating visualizations.",
+          "Orchestrating runtime services.",
+          "Handling user authentication or authorization.",
+          "Persisting view state or configurations."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "isViewId",
+        "kind": "function",
+        "signature": "isViewId(value: string)"
+      },
+      {
+        "name": "getViewDefinition",
+        "kind": "function",
+        "signature": "getViewDefinition(viewId: ViewId)"
+      },
+      {
+        "name": "getDefaultEnabledViewIds",
+        "kind": "function",
+        "signature": "getDefaultEnabledViewIds()"
+      },
+      {
+        "name": "normalizeViewIds",
+        "kind": "function",
+        "signature": "normalizeViewIds(values: string[] | undefined)"
+      },
+      {
+        "name": "ViewDefinition",
+        "kind": "interface",
+        "signature": "interface ViewDefinition"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "isViewId",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/view-registry.ts#"
+      },
+      {
+        "name": "getViewDefinition",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/view-registry.ts#"
+      },
+      {
+        "name": "getDefaultEnabledViewIds",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/view-registry.ts#"
+      },
+      {
+        "name": "normalizeViewIds",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/view-registry.ts#"
+      },
+      {
+        "name": "ViewDefinition",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/view/view-registry.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 5,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../types/view.js",
+        "relation": "import",
+        "symbols": [
+          "ViewId"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/sync-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:41.312Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

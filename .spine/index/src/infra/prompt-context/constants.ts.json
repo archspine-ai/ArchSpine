@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-context/constants.ts",
+    "contentHash": "f549b4b475bdefa91a5dfdfa015bc9bfc548412e5f512a4b1a141f38cd51e15e",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "52a66a7cff583cfd803120d5a444aeab01511211905bb3fa0639b52ac60d2cef",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt-context"
+  },
+  "semantic": {
+    "role": "Centralized configuration module defining typed constants and budget profiles for the ArchSpine prompt policy system.",
+    "responsibilities": [
+      "Exports typed arrays of valid prompt policy tiers ('lite', 'balanced'), validation policies, and LLM modes for runtime validation and iteration.",
+      "Provides a structured record mapping each policy tier and task mode to a detailed prompt budget profile with line, import, and export constraints.",
+      "Serves as a single source of truth for prompt budgeting configuration, enabling consistent policy enforcement across the system."
+    ],
+    "outOfScope": [
+      "Runtime enforcement or validation of prompt budgets.",
+      "Loading or parsing of external configuration files.",
+      "Any logic related to LLM invocation or prompt generation."
+    ],
+    "invariants": [
+      "All exported arrays and records must remain consistent with the types defined in './types.js'.",
+      "The PROMPT_BUDGET_PROFILES record must cover every combination of PromptPolicyTier and PromptTaskMode."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Centralize prompt policy configuration into a single, typed module to ensure consistency and ease of maintenance across the system.",
+      "recentChangeIntent": "No recent change intent detected; the file appears stable and unchanged in the current git status."
+    },
+    "publicSurface": [
+      "PROMPT_POLICY_TIERS",
+      "VALIDATE_POLICIES",
+      "LLM_MODES",
+      "PROMPT_BUDGET_PROFILES"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Centralized configuration module defining typed constants and budget profiles for the ArchSpine prompt policy system.",
+        "responsibilities": [
+          "Exports typed arrays of valid prompt policy tiers ('lite', 'balanced'), validation policies, and LLM modes for runtime validation and iteration.",
+          "Provides a structured record mapping each policy tier and task mode to a detailed prompt budget profile with line, import, and export constraints.",
+          "Serves as a single source of truth for prompt budgeting configuration, enabling consistent policy enforcement across the system."
+        ],
+        "outOfScope": [
+          "Runtime enforcement or validation of prompt budgets.",
+          "Loading or parsing of external configuration files.",
+          "Any logic related to LLM invocation or prompt generation."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 提示策略系统的集中配置模块，定义类型化常量和预算配置文件。",
+        "responsibilities": [
+          "导出有效的提示策略层级（'lite'、'balanced'）、验证策略和 LLM 模式的类型化数组，用于运行时验证和迭代。",
+          "提供一个结构化记录，将每个策略层级和任务模式映射到详细的提示预算配置文件，包含行数、导入和导出约束。",
+          "作为提示预算配置的单一事实来源，确保系统范围内一致的策略执行。"
+        ],
+        "outOfScope": [
+          "提示预算的运行时执行或验证。",
+          "加载或解析外部配置文件。",
+          "任何与 LLM 调用或提示生成相关的逻辑。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "PromptBudgetProfile",
+          "PromptPolicyTier",
+          "PromptTaskMode",
+          "ValidatePolicy",
+          "LLMMode"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:39.757Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

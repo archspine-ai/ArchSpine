@@ -1,0 +1,226 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/aggregation-resume.test.ts",
+    "contentHash": "2d2729df844ddcb000db128ec8e5b674851a01a7fe1db42054e2e856f4982a61",
+    "skeletonHash": "715c884fe018f2bc114102ae7cd138092c66ec3781ff9454737c9d4b1b35a64c",
+    "semanticHash": "580a0114e0af3873e0a0907a266991233b427057621b43b1ec4b93cee18ff73f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest test suite for verifying the Aggregator engine's resume functionality and directory aggregation needs.",
+    "responsibilities": [
+      "Sets up and tears down temporary directories for isolated test runs.",
+      "Mocks and restores Vitest mocks to ensure test isolation.",
+      "Tests the Aggregator's needsDirectoryAggregation method under various file system states.",
+      "Validates that aggregation tasks can correctly identify directories requiring processing."
+    ],
+    "outOfScope": [
+      "Integration tests with external databases or services.",
+      "Performance or load testing of the aggregation engine.",
+      "Unit tests for individual utility functions outside the Aggregator."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts (rule: test-file-suffix).",
+      "Temporary directories must be cleaned up after each test via afterEach hook.",
+      "Mocks must be restored after each test to prevent cross-test contamination."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure the Aggregator engine correctly identifies directories needing aggregation, supporting resume capabilities in the ArchSpine mirror system.",
+      "recentChangeIntent": "No specific intent derived from commit message 'easy'; likely a minor fix or update to the test suite."
+    },
+    "publicSurface": [
+      "describe('aggregation resume support')",
+      "afterEach(() => { vi.restoreAllMocks(); ... })",
+      "it('should detect directories needing aggregation')",
+      "it('should handle empty directories')"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite for verifying the Aggregator engine's resume functionality and directory aggregation needs.",
+        "responsibilities": [
+          "Sets up and tears down temporary directories for isolated test runs.",
+          "Mocks and restores Vitest mocks to ensure test isolation.",
+          "Tests the Aggregator's needsDirectoryAggregation method under various file system states.",
+          "Validates that aggregation tasks can correctly identify directories requiring processing."
+        ],
+        "outOfScope": [
+          "Integration tests with external databases or services.",
+          "Performance or load testing of the aggregation engine.",
+          "Unit tests for individual utility functions outside the Aggregator."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于验证 Aggregator 引擎恢复功能和目录聚合需求的 Vitest 测试套件。",
+        "responsibilities": [
+          "创建和清理临时目录，确保测试在隔离环境中运行。",
+          "模拟并恢复 Vitest 模拟，保证测试之间的隔离性。",
+          "测试 Aggregator 的 needsDirectoryAggregation 方法在不同文件系统状态下的行为。",
+          "验证聚合任务能否正确识别需要处理的目录。"
+        ],
+        "outOfScope": [
+          "与外部数据库或服务的集成测试。",
+          "聚合引擎的性能或负载测试。",
+          "Aggregator 之外独立工具函数的单元测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/engines/aggregator.js'",
+        "symbols": [
+          "Aggregator"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/tasks/aggregate.js'",
+        "symbols": [
+          "AggregationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/core/task-state.js'",
+        "symbols": [
+          "createTaskTelemetryState"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../src/engines/aggregator.js",
+        "relation": "import",
+        "symbols": [
+          "Aggregator"
+        ]
+      },
+      {
+        "targetPath": "../src/tasks/aggregate.js",
+        "relation": "import",
+        "symbols": [
+          "AggregationTask"
+        ]
+      },
+      {
+        "targetPath": "../src/core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "createTaskTelemetryState"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:42.593Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

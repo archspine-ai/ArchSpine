@@ -1,0 +1,33 @@
+name: Research Bench
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: research-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  research-bench:
+    name: Research Bench (Node 20)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run research bench suite
+        run: npm run test:research

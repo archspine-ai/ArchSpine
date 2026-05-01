@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/try.ts",
+    "contentHash": "a175724ae462044e0cef102accaff027b8b901d7b94818f2e34f7f981ad62879",
+    "skeletonHash": "826fb66ac39a6ccf683834b387320f36a6a8890bb11daddbbed52cb16ceea388",
+    "semanticHash": "a62d06d275e63acd40e4acc17a68fe92dbc724ded5639b90883a27e8b3ec56c5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command adapter for the 'try' preview command, handling filesystem validation, configuration parsing, and user feedback.",
+    "responsibilities": [
+      "Validates the existence and non-empty state of specified directories using synchronous filesystem checks.",
+      "Parses and validates a configuration file (likely 'archspine.json') for required schema properties.",
+      "Outputs user guidance and error messages to the console based on validation results.",
+      "Coordinates the command flow, including displaying a UI banner and delegating usage errors."
+    ],
+    "outOfScope": [
+      "Business logic for scanning or analysis pipelines",
+      "Persistence operations beyond basic file reads",
+      "Network or external service communication",
+      "Complex data transformation or orchestration"
+    ],
+    "invariants": [
+      "Must remain a thin CLI adapter; all non-UI logic should be delegated to engines or services.",
+      "Must not contain business rules or domain logic.",
+      "Must rely on injected utilities for filesystem and configuration operations to allow testing."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a user-facing CLI command for previewing project structure, validating inputs, and giving immediate feedback.",
+      "recentChangeIntent": "Unclear from provided context; the git commit message 'iZoy 's great commit' does not convey specific intent."
+    },
+    "publicSurface": [
+      "ExecuteTryCommandOptions interface"
+    ],
+    "ruleViolations": [
+      {
+        "id": "cli-entrypoint-separation",
+        "severity": "error",
+        "reason": "The module directly performs filesystem I/O (fs.existsSync, fs.readdirSync, fs.readFileSync) and JSON parsing, which are pipeline/persistence logic. According to the rule, such logic belongs in services, core, engines, or infra, not in the CLI entrypoint."
+      }
+    ],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command adapter for the 'try' preview command, handling filesystem validation, configuration parsing, and user feedback.",
+        "responsibilities": [
+          "Validates the existence and non-empty state of specified directories using synchronous filesystem checks.",
+          "Parses and validates a configuration file (likely 'archspine.json') for required schema properties.",
+          "Outputs user guidance and error messages to the console based on validation results.",
+          "Coordinates the command flow, including displaying a UI banner and delegating usage errors."
+        ],
+        "outOfScope": [
+          "Business logic for scanning or analysis pipelines",
+          "Persistence operations beyond basic file reads",
+          "Network or external service communication",
+          "Complex data transformation or orchestration"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "throwCliUsage"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeTryCommand",
+        "kind": "function",
+        "signature": "executeTryCommand({\n  args,\n  rootDir,\n  displayUIBanner,\n}: ExecuteTryCommandOptions)"
+      },
+      {
+        "name": "ExecuteTryCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteTryCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeTryCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/try.ts#"
+      },
+      {
+        "name": "ExecuteTryCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/try.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "throwCliUsage"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:36.788Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

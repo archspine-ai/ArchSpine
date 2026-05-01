@@ -1,0 +1,241 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/info.ts",
+    "contentHash": "6892db4124c191610c3829a83cdc9d91957b4e9d57350dc45ce0d9a1c5a15ca3",
+    "skeletonHash": "520631c0581eaad32e5016ec0f644a6a27e3ea63e33753835d57604927380bc3",
+    "semanticHash": "0515e4bf43b95e5356fd88004b6205a66ee51f992192449c60b8367a7bf61764",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "CLI command module for checking project sync status, validating protected outputs, and reporting system health.",
+    "responsibilities": [
+      "Loads and inspects the project manifest to retrieve sync status, language snapshots, and indexed unit counts.",
+      "Validates protected output mutations using spine-gate detection and formats warnings for user display.",
+      "Reports sync completion status, reverse index state, and total usage statistics via runtime IO.",
+      "Integrates with runtime service to resolve LLM settings and execution profiles for context-aware checks."
+    ],
+    "outOfScope": [
+      "Performing actual sync operations or modifying the manifest.",
+      "Direct LLM inference or content generation.",
+      "Orchestrating multiple engines or analytical transformations."
+    ],
+    "invariants": [
+      "Must remain a CLI-facing command module, not an engine.",
+      "Depends on infrastructure modules (config, manifest, secrets, runtime-io) and runtime service for orchestration.",
+      "Should not import CLI entrypoints or presentation layers beyond runtime IO."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provides a user-facing CLI command for health and sync status reporting, leveraging the runtime service and infrastructure for consistent project state inspection.",
+      "recentChangeIntent": "Refactoring to establish subsystem facades and resolve layer inversions, likely aligning this module with clearer separation from engine logic."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command module for checking project sync status, validating protected outputs, and reporting system health.",
+        "responsibilities": [
+          "Loads and inspects the project manifest to retrieve sync status, language snapshots, and indexed unit counts.",
+          "Validates protected output mutations using spine-gate detection and formats warnings for user display.",
+          "Reports sync completion status, reverse index state, and total usage statistics via runtime IO.",
+          "Integrates with runtime service to resolve LLM settings and execution profiles for context-aware checks."
+        ],
+        "outOfScope": [
+          "Performing actual sync operations or modifying the manifest.",
+          "Direct LLM inference or content generation.",
+          "Orchestrating multiple engines or analytical transformations."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/secrets.js'",
+        "symbols": [
+          "Secrets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/llm.js'",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets",
+          "getGlobalArchSpineDir"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../services/runtime-service.js'",
+        "symbols": [
+          "RuntimeService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/spine-gate.js'",
+        "symbols": [
+          "detectProtectedOutputMutations",
+          "formatProtectedOutputMutationWarning"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "LanguageSnapshot"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "runInfoReport",
+        "kind": "function",
+        "signature": "runInfoReport(\n  rootDir: string,\n  options: { verbose?: boolean; runtimeIO?: RuntimeIO } = {},\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "runInfoReport",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/info.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 12,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/config.ts",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "src/infra/manifest.ts",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "src/infra/secrets.ts",
+        "relation": "import",
+        "symbols": [
+          "Secrets"
+        ]
+      },
+      {
+        "targetPath": "src/infra/llm.ts",
+        "relation": "import",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets",
+          "getGlobalArchSpineDir"
+        ]
+      },
+      {
+        "targetPath": "src/services/runtime-service.ts",
+        "relation": "import",
+        "symbols": [
+          "RuntimeService"
+        ]
+      },
+      {
+        "targetPath": "src/infra/spine-gate.ts",
+        "relation": "import",
+        "symbols": [
+          "detectProtectedOutputMutations",
+          "formatProtectedOutputMutationWarning"
+        ]
+      },
+      {
+        "targetPath": "src/types/protocol.ts",
+        "relation": "import",
+        "symbols": [
+          "LanguageSnapshot"
+        ]
+      },
+      {
+        "targetPath": "src/infra/runtime-io.ts",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:37.670Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/writer-boundary.test.ts",
+    "contentHash": "56433867829cce8f7e6879d3da00d2e6e96453d978db84a0e1f6a0c7662fce03",
+    "skeletonHash": "cd8d6516e2970b3a7c7d1dca503062c7d36617f0e714247c70861f388e254d4a",
+    "semanticHash": "4c14bfb851802b3468c8c644a649ee875f518e2022b7368997cebfa785132bf6",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite for the SpineWriterBoundary component's write protection and file system interaction.",
+    "responsibilities": [
+      "Creates isolated temporary directories and files to simulate real file system scenarios.",
+      "Tests the SpineWriterBoundary's enforcement of write permissions on protected output directories.",
+      "Validates the withProtectedOutputsWriteAccess decorator's behavior in allowing or denying file modifications.",
+      "Verifies that file system operations respect the boundary's access control rules."
+    ],
+    "outOfScope": [
+      "Production file system operations outside of test isolation.",
+      "Modifying the core implementation of SpineWriterBoundary.",
+      "Testing other components or system boundaries."
+    ],
+    "invariants": [
+      "Must use Vitest as the test framework.",
+      "Must isolate test artifacts in temporary directories.",
+      "Must test both allowed and denied write scenarios."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure file system write operations are properly guarded by the SpineWriterBoundary to prevent unintended modifications.",
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite for the SpineWriterBoundary component's write protection and file system interaction.",
+        "responsibilities": [
+          "Creates isolated temporary directories and files to simulate real file system scenarios.",
+          "Tests the SpineWriterBoundary's enforcement of write permissions on protected output directories.",
+          "Validates the withProtectedOutputsWriteAccess decorator's behavior in allowing or denying file modifications.",
+          "Verifies that file system operations respect the boundary's access control rules."
+        ],
+        "outOfScope": [
+          "Production file system operations outside of test isolation.",
+          "Modifying the core implementation of SpineWriterBoundary.",
+          "Testing other components or system boundaries."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/writer-boundary.js'",
+        "symbols": [
+          "SpineWriterBoundary",
+          "withProtectedOutputsWriteAccess"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/writer-boundary.js",
+        "relation": "import",
+        "symbols": [
+          "SpineWriterBoundary",
+          "withProtectedOutputsWriteAccess"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:44.897Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

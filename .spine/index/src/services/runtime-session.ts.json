@@ -1,0 +1,193 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/runtime-session.ts",
+    "contentHash": "663163db824f8166f327c12d5eac3fed6083e2a00a9f79dbde50d26b83901a2f",
+    "skeletonHash": "65cf8a6c2eb0002ab34162ba13dcf06bda183234311957146f5bc8c3d5193d23",
+    "semanticHash": "790096eb0a0418479f98cf19f3c0eff54bec551f192a62ee973257b8394d80f5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Infrastructure orchestration service for managing resumable command execution sessions with checkpoint validation and protected output mutation detection.",
+    "responsibilities": [
+      "Orchestrates runtime command sessions (sync, check, fix) with lifecycle management.",
+      "Validates and loads execution checkpoints to support resumable operations.",
+      "Detects and warns about protected output mutations via spine-gate integration.",
+      "Manages lock acquisition and release during task execution to prevent conflicts.",
+      "Validates runtime configuration and checkpoint state (from recent change intent)."
+    ],
+    "outOfScope": [
+      "Direct view rendering or UI logic.",
+      "Low-level file I/O or database operations (delegated to infra modules).",
+      "Business logic for specific tasks (delegated to task runtime)."
+    ],
+    "invariants": [
+      "Depends on infra modules for checkpoint storage, mutation detection, I/O, and write access control.",
+      "Exports the RuntimeCommand type for command specification.",
+      "Orchestrates session lifecycle but does not implement core task logic."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a resumable, safe orchestration layer for command execution with checkpoint validation and mutation protection.",
+      "recentChangeIntent": "Validate runtime config and checkpoint state."
+    },
+    "publicSurface": [
+      "RuntimeCommand type",
+      "RuntimeSessionOptions interface (inferred from header)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure orchestration service for managing resumable command execution sessions with checkpoint validation and protected output mutation detection.",
+        "responsibilities": [
+          "Orchestrates runtime command sessions (sync, check, fix) with lifecycle management.",
+          "Validates and loads execution checkpoints to support resumable operations.",
+          "Detects and warns about protected output mutations via spine-gate integration.",
+          "Manages lock acquisition and release during task execution to prevent conflicts.",
+          "Validates runtime configuration and checkpoint state."
+        ],
+        "outOfScope": [
+          "Direct view rendering or UI logic.",
+          "Low-level file I/O or database operations.",
+          "Business logic for specific tasks."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../infra/execution-checkpoint.js'",
+        "symbols": [
+          "ExecutionCheckpointStore",
+          "isResumableCheckpoint",
+          "type ExecutionCheckpointState"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/spine-gate.js'",
+        "symbols": [
+          "detectProtectedOutputMutations",
+          "formatProtectedOutputMutationWarning"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO",
+          "type RuntimeIO"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/writer-boundary.js'",
+        "symbols": [
+          "withProtectedOutputsWriteAccess"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "runWithRuntimeSession",
+        "kind": "function",
+        "signature": "runWithRuntimeSession(\n  options: RuntimeSessionOptions<TContext, TResult>,\n)"
+      },
+      {
+        "name": "RuntimeCommand",
+        "kind": "type",
+        "signature": "type RuntimeCommand"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "runWithRuntimeSession",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/runtime-session.ts#"
+      },
+      {
+        "name": "RuntimeCommand",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/services/runtime-session.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../infra/execution-checkpoint.js",
+        "relation": "import",
+        "symbols": [
+          "ExecutionCheckpointStore",
+          "isResumableCheckpoint",
+          "ExecutionCheckpointState"
+        ]
+      },
+      {
+        "targetPath": "../infra/spine-gate.js",
+        "relation": "import",
+        "symbols": [
+          "detectProtectedOutputMutations",
+          "formatProtectedOutputMutationWarning"
+        ]
+      },
+      {
+        "targetPath": "../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "../infra/writer-boundary.js",
+        "relation": "import",
+        "symbols": [
+          "withProtectedOutputsWriteAccess"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/check-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "src/services/fix-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "src/services/sync-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:40.889Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

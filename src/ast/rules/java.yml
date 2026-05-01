@@ -1,0 +1,21 @@
+imports:
+  - id: import
+    pattern: 'import $SOURCE;'
+exports:
+  - id: class
+    pattern: 'class $NAME $$$ { $$$BODY }'
+    kind: Class
+  - id: public_class
+    pattern: 'public class $NAME $$$ { $$$BODY }'
+    kind: Class
+  - id: interface
+    pattern: 'interface $NAME $$$ { $$$BODY }'
+    kind: Interface
+  - id: public_interface
+    pattern: 'public interface $NAME $$$ { $$$BODY }'
+    kind: Interface
+usages:
+  - id: call
+    pattern: '$OBJ.$NAME($$$ARGS)'
+  - id: new
+    pattern: 'new $NAME($$$ARGS)'

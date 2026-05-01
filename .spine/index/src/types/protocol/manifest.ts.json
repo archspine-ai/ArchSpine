@@ -1,0 +1,150 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/types/protocol/manifest.ts",
+    "contentHash": "fcf284698e43bd8557ea0f75e6df128be134bb54b3465c015032e7b158acf454",
+    "skeletonHash": "3393b13cceab58c08fd79f9761e2b65ecc7267dcf537a5df536090d7e0828a64",
+    "semanticHash": "c94aea4a1e064bc7da1e0c397ed6433baabec44bca34ded7a09b7ef7a3c5723b",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/types/protocol"
+  },
+  "semantic": {
+    "role": "Core TypeScript module defining shared data transfer object (DTO) interfaces for the ArchSpine synchronization and manifest system.",
+    "responsibilities": [
+      "Defines the SyncBlock interface representing the state of a synchronization operation.",
+      "Defines the DocRef interface representing a reference to a localized documentation file.",
+      "Defines the FileStatus interface representing the status of a file within the system.",
+      "Defines the SpineManifest interface representing the root manifest structure for the ArchSpine project."
+    ],
+    "outOfScope": [
+      "Implementation of synchronization logic.",
+      "Validation or transformation of DTO data.",
+      "Runtime instantiation of these interfaces."
+    ],
+    "invariants": [
+      "All exported symbols are TypeScript interfaces.",
+      "Interfaces define data structures without methods.",
+      "Relies on imported types from './index-documents.js' and './versions.js'."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized, type-safe contract for core data shapes used across the ArchSpine synchronization and manifest subsystems.",
+      "recentChangeIntent": "No recent changes detected in this file from the provided git intent; the refactor likely affected other components."
+    },
+    "publicSurface": [
+      "SyncBlock",
+      "DocRef",
+      "FileStatus",
+      "SpineManifest"
+    ],
+    "ruleViolations": [
+      {
+        "id": "interface-prefix",
+        "severity": "warning",
+        "reason": "Exported interfaces (SyncBlock, DocRef, FileStatus, SpineManifest) do not start with the character 'I' as required by the interface-prefix rule for internal interfaces."
+      }
+    ],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core TypeScript module defining shared data transfer object (DTO) interfaces for the ArchSpine synchronization and manifest system.",
+        "responsibilities": [
+          "Defines the SyncBlock interface representing the state of a synchronization operation.",
+          "Defines the DocRef interface representing a reference to a localized documentation file.",
+          "Defines the FileStatus interface representing the status of a file within the system.",
+          "Defines the SpineManifest interface representing the root manifest structure for the ArchSpine project."
+        ],
+        "outOfScope": [
+          "Implementation of synchronization logic.",
+          "Validation or transformation of DTO data.",
+          "Runtime instantiation of these interfaces."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "SyncBlock",
+        "kind": "interface",
+        "signature": "interface SyncBlock"
+      },
+      {
+        "name": "DocRef",
+        "kind": "interface",
+        "signature": "interface DocRef"
+      },
+      {
+        "name": "FileStatus",
+        "kind": "interface",
+        "signature": "interface FileStatus"
+      },
+      {
+        "name": "SpineManifest",
+        "kind": "interface",
+        "signature": "interface SpineManifest"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "SyncBlock",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/manifest.ts#"
+      },
+      {
+        "name": "DocRef",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/manifest.ts#"
+      },
+      {
+        "name": "FileStatus",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/manifest.ts#"
+      },
+      {
+        "name": "SpineManifest",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/manifest.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 4,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./index-documents.js",
+        "relation": "import",
+        "symbols": [
+          "FileKind"
+        ]
+      },
+      {
+        "targetPath": "./versions.js",
+        "relation": "import",
+        "symbols": [
+          "SchemaVersion"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:42.057Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

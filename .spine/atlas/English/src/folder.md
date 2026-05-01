@@ -1,0 +1,21 @@
+<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src","role":"The main source code directory containing all functional modules of the ArchSpine mirror system.","responsibility":"Collectively, the src directory houses the complete implementation of the ArchSpine system, including asset templates, AST parsing, CLI interface, core orchestration, scanning engines, infrastructure services, service orchestration, pipeline tasks, type definitions, and utility modules, providing a comprehensive framework for mirroring, analyzing, and documenting software architecture.","children":[{"filePath":"src/assets","role":"This directory contains the core template definitions and documentation standards for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"src/ast","role":"AST parsing and language discovery layer for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"src/cli","role":"CLI layer providing user-facing commands, utilities, and initialization logic for the ArchSpine system.","fileKind":"folder"},{"filePath":"src/core","role":"Core L2 aggregation and pipeline orchestration layer for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"src/engines","role":"Core engine directory for scanning, aggregating, and analyzing architectural data within the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"src/infra","role":"Infrastructure layer providing core services, persistence, and external integrations for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"src/services","role":"Service orchestration layer that coordinates the core ArchSpine pipelines (check, fix, sync) and runtime session management.","fileKind":"folder"},{"filePath":"src/tasks","role":"Pipeline task implementations for the ArchSpine mirror system's core processing stages.","fileKind":"folder"},{"filePath":"src/types","role":"Defines the core data contracts, configuration schema, and public API types for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"src/utils","role":"Provides foundational infrastructure and utility modules for file synchronization, path normalization, locking, and CLI presentation within the ArchSpine system.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T04:57:53.358Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
+# ArchSpine Source Directory (`src`)
+
+The `src` directory is the heart of the ArchSpine mirror system, containing all functional modules that collectively implement the complete framework for mirroring, analyzing, and documenting software architecture. This directory is organized into ten distinct subdirectories, each with a specific responsibility.
+
+## Key Submodules
+
+- **`src/assets`** – Core template definitions and documentation standards for the mirror system.
+- **`src/ast`** – AST parsing and language discovery layer, responsible for understanding source code structure.
+- **src/cli** – User-facing command-line interface with commands, utilities, and initialization logic.
+- **`src/core`** – L2 aggregation and pipeline orchestration, the central coordination hub.
+- **`src/engines`** – Scanning, aggregating, and analyzing architectural data.
+- **`src/infra`** – Infrastructure services including persistence, external integrations, and core service support.
+- **`src/services`** – Service orchestration layer managing the main pipelines: check, fix, and sync, plus runtime session management.
+- **`src/tasks`** – Concrete pipeline task implementations for each core processing stage.
+- **`src/types`** – Data contracts, configuration schemas, and public API type definitions.
+- **`src/utils`** – Foundational utilities for file synchronization, path normalization, locking, and CLI presentation.
+
+## Implementation Focus
+
+The most critical areas are the **AST parsing** (`src/ast`), **core orchestration** (`src/core`), and **engine scanning** (`src/engines`), as these form the backbone of the mirroring and analysis pipeline. The **service orchestration** (`src/services`) and **task implementations** (`src/tasks`) are equally important for executing the actual workflows. The **type definitions** (`src/types`) ensure consistency across all modules, while **infrastructure** (`src/infra`) provides the necessary backend support.

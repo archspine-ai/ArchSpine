@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/helpers/lock-worker.mjs",
+    "contentHash": "2478dbdc800821486e1b8fba0ec0ceb566c3cf5989c6a38c04f5fc6e5f975f12",
+    "semanticHash": "7e343166528ffa559de4897a74efc523b92f243b8da256f951e54a151198f0f1",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": "tests/helpers"
+  },
+  "semantic": {
+    "role": "Lock worker script for testing and validating the ArchSpine distributed lock mechanism",
+    "responsibilities": [
+      "Provides a CLI-based lock worker that acquires and optionally holds or releases a file lock",
+      "Supports three modes: acquire-release, acquire-hold, and acquire-release-rewrite",
+      "Emits structured JSON status messages to stdout for test harness consumption",
+      "Handles process lifecycle including signal-based exit and timed hold periods"
+    ],
+    "outOfScope": [
+      "Does not define the LockManager class itself (imported from ../../src/utils/lock.ts)",
+      "Does not handle multi-process coordination beyond the lock primitive",
+      "Does not include test assertions or validation logic"
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This document implements a lock worker script used to test the ArchSpine distributed locking system. It provides a command-line interface for acquiring, holding, and releasing file-based locks, emitting structured status messages for integration with automated test suites.",
+        "context_and_audience": "Intended for developers and QA engineers working on the ArchSpine mirror system who need to validate lock acquisition and release behavior across multiple processes. The script is designed to be invoked by test harnesses rather than used directly by end users.",
+        "key_takeaways": [
+          "Supports three operational modes: acquire-release, acquire-hold, and acquire-release-rewrite",
+          "Emits JSON status messages to stdout for test automation",
+          "Handles SIGINT and SIGTERM signals for clean process termination",
+          "Imports LockManager from the project's utility layer"
+        ]
+      },
+      "Simplified Chinese": {
+        "purpose": "本文档实现了一个锁工作进程脚本，用于测试 ArchSpine 分布式锁定系统。它提供命令行接口来获取、持有和释放基于文件的锁，并输出结构化状态消息以便与自动化测试套件集成。",
+        "context_and_audience": "适用于 ArchSpine 镜像系统的开发者和质量工程师，需要验证跨多个进程的锁获取和释放行为。该脚本设计为由测试框架调用，而非直接供最终用户使用。",
+        "key_takeaways": [
+          "支持三种操作模式：获取-释放、获取-持有和获取-释放-重写",
+          "向标准输出发送 JSON 格式的状态消息以支持测试自动化",
+          "处理 SIGINT 和 SIGTERM 信号以实现干净的进程终止",
+          "从项目的工具层导入 LockManager 类"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:46:02.162Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

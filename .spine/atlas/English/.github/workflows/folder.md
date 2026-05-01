@@ -1,0 +1,12 @@
+<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":".github/workflows","role":"CI/CD workflow definitions for the ArchSpine project.","responsibility":"Automates the continuous integration and delivery pipeline, including linting, building, testing across Node.js versions, research-level test suites, documentation verification, and release readiness checks.","children":[{"filePath":".github/workflows/ci.yml","role":"Defines the automated CI pipeline for the ArchSpine project","fileKind":"document"},{"filePath":".github/workflows/research.yml","role":"CI workflow definition for running research-level test suites","fileKind":"document"},{"filePath":".github/workflows/test.yml","role":"Defines the continuous integration (CI) pipeline for the ArchSpine project, automating verification, testing, documentation building, and release readiness checks.","fileKind":"document"}],"provenance":{"indexedAt":"2026-05-01T07:20:45.763Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
+# `.github/workflows` — CI/CD Pipeline Definitions
+
+This directory contains the workflow definitions that drive the continuous integration and delivery pipeline for the ArchSpine project. These YAML files automate every stage of the development lifecycle, from linting and building to multi-version Node.js testing, research-level test suites, documentation verification, and release readiness checks.
+
+The directory is organized around three primary workflows:
+
+- **`ci.yml`** — The main CI pipeline that runs on every push and pull request. It handles linting, building, and running the core test suite across multiple Node.js versions.
+- **`research.yml`** — A specialized workflow for executing research-level test suites, which may include experimental or computationally intensive tests not part of the standard CI.
+- **`test.yml`** — A comprehensive pipeline that automates verification, testing, documentation building, and release readiness checks, ensuring the project is always in a deployable state.
+
+The most critical implementation areas are the multi-version Node.js testing matrix in `ci.yml`, the isolation of research tests in `research.yml`, and the release readiness validation in `test.yml`. These workflows collectively ensure code quality, documentation accuracy, and deployment reliability.

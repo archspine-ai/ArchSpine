@@ -1,0 +1,187 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/renderer.test.ts",
+    "contentHash": "ac3628973b3fcecb3b73d4eb1e215b29288276a21b4f3375230b4e70640e9604",
+    "skeletonHash": "83cbf59801cdd203d72b73eee1ed8c9aef4f98a66ccc10c5b9f2ae9bed83cfa7",
+    "semanticHash": "77bbe6aab96cba637147e1b97997fb688fe2fe6abc2f367ce091a569c91dbfeb",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for the DocumentationRenderer component in the ArchSpine infrastructure layer.",
+    "responsibilities": [
+      "Sets up isolated temporary directories for each test case to avoid side effects.",
+      "Validates that DocumentationRenderer.render produces correct English and localized output structure.",
+      "Tests the renderExtraSections and renderStructureList helper functions for proper formatting.",
+      "Ensures test cleanup restores original working directory and removes temporary artifacts."
+    ],
+    "outOfScope": [
+      "Production rendering logic (delegated to DocumentationRenderer).",
+      "File system operations outside test isolation.",
+      "Integration testing with other system components."
+    ],
+    "invariants": [
+      "Must use Vitest test framework.",
+      "Must clean up temporary directories after each test.",
+      "Must not modify the source renderer implementation."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure DocumentationRenderer produces correct markdown output and handles localization as per ArchSpine's documentation generation requirements.",
+      "recentChangeIntent": "Restore LLM-authored markdown generation capabilities, likely updating tests to validate restored functionality."
+    },
+    "publicSurface": [
+      "DocumentationRenderer.render",
+      "renderExtraSections",
+      "renderStructureList"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for the DocumentationRenderer component in the ArchSpine infrastructure layer.",
+        "responsibilities": [
+          "Sets up isolated temporary directories for each test case to avoid side effects.",
+          "Validates that DocumentationRenderer.render produces correct English and localized output structure.",
+          "Tests the renderExtraSections and renderStructureList helper functions for proper formatting.",
+          "Ensures test cleanup restores original working directory and removes temporary artifacts."
+        ],
+        "outOfScope": [
+          "Production rendering logic (delegated to DocumentationRenderer).",
+          "File system operations outside test isolation.",
+          "Integration testing with other system components."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/renderer.js'",
+        "symbols": [
+          "DocumentationRenderer",
+          "renderExtraSections",
+          "renderStructureList"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../src/infra/renderer.js",
+        "relation": "import",
+        "symbols": [
+          "DocumentationRenderer",
+          "renderExtraSections",
+          "renderStructureList"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.942Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

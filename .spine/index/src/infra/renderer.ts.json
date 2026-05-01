@@ -1,0 +1,214 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/renderer.ts",
+    "contentHash": "3ef7fd12c2311bb5f2e61ed32be25c94a7d18cfad9409d2ce4e1f44509219192",
+    "skeletonHash": "0ba3888a287a2e0d33b85e6320eaa64930e42f484b1281f3a310ea5cf2a1ea9b",
+    "semanticHash": "031c90f1adebcff614071d3cd67fe07902afa5bb47cfe75c23db2787f8d7a163",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure utility class and helper functions for generating structured markdown documentation from layout types within the ArchSpine system.",
+    "responsibilities": [
+      "Defines the LayoutType union type ('source', 'document', 'config', 'folder', 'project') for categorizing documentation content.",
+      "Provides the DocumentationRenderer class with a static render method to convert structured data into formatted markdown documentation.",
+      "Exports renderStructureList to join an array of strings into a newline-separated list.",
+      "Exports renderExtraSections to concatenate multiple markdown sections with filtering and joining logic.",
+      "Handles text escaping, whitespace normalization, and list/section assembly for consistent documentation output."
+    ],
+    "outOfScope": [
+      "Does not handle file I/O or filesystem operations directly (relies on fs/path imports only for path resolution in the render method).",
+      "Does not implement any business logic or domain-specific content generation.",
+      "Does not manage graph rendering or Mermaid diagram generation (MermaidGraphConfig interface is defined but not exported or used in public API)."
+    ],
+    "invariants": [
+      "Must remain a stable low-level infrastructure facade, not absorbing orchestration or service concerns (per rule infra-facade-imports).",
+      "Public API surface (DocumentationRenderer, renderStructureList, renderExtraSections) should be preferred over deep internal implementation paths by callers."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable, stable markdown rendering utility for the ArchSpine documentation generation pipeline, isolating formatting concerns from higher-level orchestration.",
+      "recentChangeIntent": "No evidence of recent changes related to lint fixes, type errors, or CI workflow in the code; the commit intent is not reflected in this file's current state."
+    },
+    "publicSurface": [
+      "LayoutType (type export)",
+      "DocumentationRenderer (class export with static render method)",
+      "renderStructureList (function export)",
+      "renderExtraSections (function export)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure utility class and helper functions for generating structured markdown documentation from layout types within the ArchSpine system.",
+        "responsibilities": [
+          "Defines the LayoutType union type ('source', 'document', 'config', 'folder', 'project') for categorizing documentation content.",
+          "Provides the DocumentationRenderer class with a static render method to convert structured data into formatted markdown documentation.",
+          "Exports renderStructureList to join an array of strings into a newline-separated list.",
+          "Exports renderExtraSections to concatenate multiple markdown sections with filtering and joining logic.",
+          "Handles text escaping, whitespace normalization, and list/section assembly for consistent documentation output."
+        ],
+        "outOfScope": [
+          "Does not handle file I/O or filesystem operations directly (relies on fs/path imports only for path resolution in the render method).",
+          "Does not implement any business logic or domain-specific content generation.",
+          "Does not manage graph rendering or Mermaid diagram generation (MermaidGraphConfig interface is defined but not exported or used in public API)."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 系统中的基础设施工具类和辅助函数，用于根据布局类型生成结构化的 Markdown 文档。",
+        "responsibilities": [
+          "定义 LayoutType 联合类型（'source'、'document'、'config'、'folder'、'project'），用于对文档内容进行分类。",
+          "提供 DocumentationRenderer 类及其静态 render 方法，将结构化数据转换为格式化的 Markdown 文档。",
+          "导出 renderStructureList 函数，将字符串数组连接为换行符分隔的列表。",
+          "导出 renderExtraSections 函数，通过过滤和拼接逻辑合并多个 Markdown 章节。",
+          "处理文本转义、空白符规范化以及列表/章节的组装，确保文档输出的一致性。"
+        ],
+        "outOfScope": [
+          "不直接处理文件 I/O 或文件系统操作（仅在 render 方法中依赖 fs/path 进行路径解析）。",
+          "不实现任何业务逻辑或领域特定的内容生成。",
+          "不管理图形渲染或 Mermaid 图表生成（MermaidGraphConfig 接口已定义但未导出或用于公共 API）。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "renderStructureList",
+        "kind": "function",
+        "signature": "renderStructureList(items: string[])"
+      },
+      {
+        "name": "renderExtraSections",
+        "kind": "function",
+        "signature": "renderExtraSections(sections: string[])"
+      },
+      {
+        "name": "DocumentationRenderer",
+        "kind": "class",
+        "signature": "class DocumentationRenderer"
+      },
+      {
+        "name": "LayoutType",
+        "kind": "type",
+        "signature": "type LayoutType"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "renderStructureList",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/renderer.ts#"
+      },
+      {
+        "name": "renderExtraSections",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/renderer.ts#"
+      },
+      {
+        "name": "DocumentationRenderer",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/renderer.ts#"
+      },
+      {
+        "name": "LayoutType",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/renderer.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 4,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "FileDependencyEdge",
+          "SpineFolderUnit",
+          "SpineUnit"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:57:14.362Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

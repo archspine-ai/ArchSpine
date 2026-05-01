@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/types/protocol/config.ts",
+    "contentHash": "9de50da33880a4731fa18dbd18149828eb34d6c474d290296d40d3136b3fcb64",
+    "skeletonHash": "4df3fa499c4b8ef7f91292ae284b2e481ccd8712a3c1f25112f8497cfea008e1",
+    "semanticHash": "9fa970c2862f0cc10b0d58316b282c05f19796aa96ef9602880c49239cadf154",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/types/protocol"
+  },
+  "semantic": {
+    "role": "TypeScript interface defining the central configuration schema for the ArchSpine mirror system.",
+    "responsibilities": [
+      "Declares the structure for the system's root configuration object (SpineConfig).",
+      "Specifies required schema version and project metadata (name, locales).",
+      "Defines optional LLM integration settings (provider, model, baseURL, mode).",
+      "Exports the MCPContextMode type for context mode discrimination."
+    ],
+    "outOfScope": [
+      "Implementing configuration validation or parsing logic.",
+      "Providing default values or environment variable binding.",
+      "Handling runtime configuration updates or dynamic reloading."
+    ],
+    "invariants": [
+      "Exports the SpineConfig interface as the primary configuration contract.",
+      "Relies on imported types (PartialScanPolicy, SchemaVersion) for type safety.",
+      "Defines a nested structure for project and LLM settings."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Define a versioned, structured configuration schema to decouple system configuration from implementation details.",
+      "recentChangeIntent": "No evidence of recent changes in this file; the git intent 'establish subsystem facades and resolve layer inversions' does not directly apply to this configuration interface."
+    },
+    "publicSurface": [
+      "SpineConfig interface",
+      "MCPContextMode type"
+    ],
+    "ruleViolations": [
+      {
+        "id": "interface-prefix",
+        "severity": "warning",
+        "reason": "Interface 'SpineConfig' does not start with the character 'I' as required by the interface-prefix rule for internal interfaces."
+      }
+    ],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "TypeScript interface defining the central configuration schema for the ArchSpine mirror system.",
+        "responsibilities": [
+          "Declares the structure for the system's root configuration object (SpineConfig).",
+          "Specifies required schema version and project metadata such as name and locales.",
+          "Defines optional LLM integration settings including provider, model, baseURL, and mode.",
+          "Exports the MCPContextMode type for context mode discrimination."
+        ],
+        "outOfScope": [
+          "Implementing configuration validation or parsing logic.",
+          "Providing default values or environment variable binding.",
+          "Handling runtime configuration updates or dynamic reloading."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "SpineConfig",
+        "kind": "interface",
+        "signature": "interface SpineConfig"
+      },
+      {
+        "name": "MCPContextMode",
+        "kind": "type",
+        "signature": "type MCPContextMode"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "SpineConfig",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/config.ts#"
+      },
+      {
+        "name": "MCPContextMode",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/types/protocol/config.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../core/scan-policy.js",
+        "relation": "import",
+        "symbols": [
+          "PartialScanPolicy"
+        ]
+      },
+      {
+        "targetPath": "./versions.js",
+        "relation": "import",
+        "symbols": [
+          "SchemaVersion"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:41.916Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

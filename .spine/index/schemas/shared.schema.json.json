@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "schemas/shared.schema.json",
+    "contentHash": "c9cb1ce6d5d97a05a3783e17f4c68854472c69abfdc4ec0f9e978cf1fb03e7d9",
+    "semanticHash": "0c36b8afee3c20f47ecc4adb3610ca2e85542c204a8bb965f2888c1a8ff820b0",
+    "language": "unsupported",
+    "fileKind": "config",
+    "scope": "schemas"
+  },
+  "semantic": {
+    "role": "Defines reusable type definitions and validation schemas shared across the ArchSpine system.",
+    "responsibilities": [
+      "Schema versioning and timestamp formatting",
+      "Path validation for repository-relative and scope paths",
+      "Content integrity via hash validation",
+      "Locale and language selection key constraints",
+      "Source language and file kind classification",
+      "Symbol kind and dependency relation enumeration",
+      "Edge provenance and pipeline stage tracking",
+      "Generic string and array type definitions",
+      "Localized content map structure"
+    ],
+    "outOfScope": [],
+    "invariants": [
+      "schemaVersion must follow semantic versioning pattern (X.Y.Z)",
+      "repoRelativePath must not start with '/', './', or '../', and must not contain backslashes or double slashes",
+      "scopePath must be empty or match the same path constraints as repoRelativePath",
+      "contentHash must be a 64-character lowercase hex string (SHA-256)",
+      "locale must match a valid language tag pattern",
+      "sourceLanguage must be one of the enumerated values",
+      "fileKind must be one of the enumerated values",
+      "symbolKind must be one of the enumerated values",
+      "dependencyRelation must be one of the enumerated values",
+      "edgeProvenance must be one of the enumerated values",
+      "pipelineStage must be one of the enumerated values",
+      "nonEmptyString must have at least one character",
+      "localizedContentMap property names must conform to languageSelectionKey pattern"
+    ],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Defines reusable type definitions and validation schemas shared across the ArchSpine system.",
+        "parameter_definitions": {
+          "schemaVersion": "Enforces semantic versioning format for schema compatibility checks.",
+          "isoTimestamp": "Validates ISO 8601 date-time strings for event logging and synchronization.",
+          "repoRelativePath": "Ensures paths are relative to the repository root, preventing directory traversal or absolute paths.",
+          "scopePath": "Allows empty or valid relative paths for scoped configuration contexts.",
+          "contentHash": "Provides SHA-256 integrity verification for file contents.",
+          "locale": "Validates language tags (e.g., 'en', 'zh-CN') for internationalization.",
+          "languageSelectionKey": "Ensures language keys are non-empty strings for localization maps.",
+          "sourceLanguage": "Classifies source code language for analysis pipelines.",
+          "fileKind": "Categorizes files by purpose (source, config, document, other).",
+          "symbolKind": "Enumerates symbol types for dependency graph construction.",
+          "dependencyRelation": "Defines import relationships between modules.",
+          "edgeProvenance": "Tracks whether dependency edges are derived from AST or inferred.",
+          "pipelineStage": "Records which processing stage produced the data (AST, LLM, etc.).",
+          "nonEmptyString": "Guarantees string fields are not empty.",
+          "stringArray": "Defines a generic array of strings for flexible use.",
+          "localizedContentMap": "Structures localized content as key-value pairs with validated language keys."
+        },
+        "stability_and_risks": "This schema file is foundational for data integrity across ArchSpine. Incorrect validation could lead to path traversal vulnerabilities, hash mismatches causing data corruption, or locale parsing errors breaking internationalization. The strict patterns and enums reduce ambiguity but require careful maintenance when adding new languages or pipeline stages. Overall, this file enforces consistent data shapes that prevent many common configuration and security errors."
+      },
+      "Simplified Chinese": {
+        "role": "定义 ArchSpine 系统中共享的可复用类型定义和验证模式。",
+        "parameter_definitions": {
+          "schemaVersion": "强制使用语义化版本格式，确保模式兼容性检查。",
+          "isoTimestamp": "验证 ISO 8601 日期时间字符串，用于事件记录和同步。",
+          "repoRelativePath": "确保路径相对于仓库根目录，防止目录遍历或绝对路径。",
+          "scopePath": "允许空字符串或有效的相对路径，用于作用域配置上下文。",
+          "contentHash": "提供 SHA-256 完整性校验，验证文件内容。",
+          "locale": "验证语言标签（例如 'en'、'zh-CN'），支持国际化。",
+          "languageSelectionKey": "确保语言键为非空字符串，用于本地化映射。",
+          "sourceLanguage": "对源代码语言进行分类，供分析管道使用。",
+          "fileKind": "按用途对文件进行分类（源代码、配置、文档、其他）。",
+          "symbolKind": "枚举符号类型，用于构建依赖关系图。",
+          "dependencyRelation": "定义模块之间的导入关系。",
+          "edgeProvenance": "跟踪依赖边是来自 AST 还是推断得出。",
+          "pipelineStage": "记录数据由哪个处理阶段产生（AST、LLM 等）。",
+          "nonEmptyString": "确保字符串字段不为空。",
+          "stringArray": "定义通用的字符串数组，灵活使用。",
+          "localizedContentMap": "将本地化内容组织为键值对结构，使用经过验证的语言键。"
+        },
+        "stability_and_risks": "此模式文件是 ArchSpine 数据完整性的基础。验证不当可能导致路径遍历漏洞、哈希不匹配造成数据损坏，或区域设置解析错误破坏国际化功能。严格的模式和枚举减少了歧义，但在添加新语言或管道阶段时需要谨慎维护。总体而言，该文件强制执行一致的数据形状，可防止许多常见的配置和安全错误。"
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:00.458Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

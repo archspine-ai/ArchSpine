@@ -1,0 +1,208 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/init/repository-bootstrap.ts",
+    "contentHash": "1c6f6f674beeab7048c3f7e6ccd674dd7c0f28885d857bd37af9c63efd930408",
+    "skeletonHash": "505fe356130e59f54fbff4abd5b6a9137d01c450cf05522205b54b84ab6b8501",
+    "semanticHash": "02b1358853e56d3acc528d64a8e1b9708ba5191fca7f635e6f9a2cf657e89973",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/init"
+  },
+  "semantic": {
+    "role": "CLI command adapter for bootstrapping an ArchSpine configuration and artifacts in a target repository.",
+    "responsibilities": [
+      "Prompts the user to select or confirm an artifact strategy (e.g., 'index', 'atlas', 'hybrid') for initialization.",
+      "Coordinates the synchronization of managed repository files (e.g., .gitattributes, .gitignore) via the repository admin service.",
+      "Coordinates the injection of package scripts and installation of recommended rule templates into the repository.",
+      "Manages the installation and configuration of git hooks for pre-commit integrity checks."
+    ],
+    "outOfScope": [
+      "Implementing pipeline or persistence logic (delegated to services)",
+      "Direct file system operations beyond coordination",
+      "Business logic for artifact generation"
+    ],
+    "invariants": [
+      "Must remain a thin command adapter, delegating core operations to services.",
+      "Must not contain business logic for repository management or artifact generation."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Separate CLI entrypoints from core logic to ensure reusability and testability.",
+      "recentChangeIntent": "Refactored to extract repository and LLM admin services, moving logic out of CLI modules."
+    },
+    "publicSurface": [
+      "runRepositoryBootstrap function"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command adapter for bootstrapping an ArchSpine configuration and artifacts in a target repository.",
+        "responsibilities": [
+          "Prompts the user to select or confirm an artifact strategy (e.g., 'index', 'atlas', 'hybrid') for initialization.",
+          "Coordinates the synchronization of managed repository files (e.g., .gitattributes, .gitignore) via the repository admin service.",
+          "Coordinates the injection of package scripts and installation of recommended rule templates into the repository.",
+          "Manages the installation and configuration of git hooks for pre-commit integrity checks."
+        ],
+        "outOfScope": [
+          "Implementing pipeline or persistence logic (delegated to services)",
+          "Direct file system operations beyond coordination",
+          "Business logic for artifact generation"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../utils/git-hook.js'",
+        "symbols": [
+          "installGitHook"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../services/repository-admin-service.js'",
+        "symbols": [
+          "injectRepositoryPackageScripts",
+          "installRecommendedRuleTemplates",
+          "syncAgentInstructionsConfiguration",
+          "syncManagedRepositoryFiles"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "normalizeOptionalString",
+          "wrapPromptText"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'prompts'",
+        "symbols": [
+          "prompts"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "runRepositoryBootstrap",
+        "kind": "function",
+        "signature": "runRepositoryBootstrap(\n  options: RepositoryBootstrapOptions,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "runRepositoryBootstrap",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/init/repository-bootstrap.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../utils/git-hook.js",
+        "relation": "import",
+        "symbols": [
+          "installGitHook"
+        ]
+      },
+      {
+        "targetPath": "../../services/repository-admin-service.js",
+        "relation": "import",
+        "symbols": [
+          "injectRepositoryPackageScripts",
+          "installRecommendedRuleTemplates",
+          "syncAgentInstructionsConfiguration",
+          "syncManagedRepositoryFiles"
+        ]
+      },
+      {
+        "targetPath": "../cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "normalizeOptionalString",
+          "wrapPromptText"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "prompts",
+        "relation": "import",
+        "symbols": [
+          "prompts"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/agent-host-init.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:36.999Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

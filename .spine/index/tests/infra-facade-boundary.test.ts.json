@@ -1,0 +1,156 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/infra-facade-boundary.test.ts",
+    "contentHash": "7b5b9d28b8e8c2fa2ff4d18a33365eaf6b78aed82fe0b48401d6c207ebb28547",
+    "skeletonHash": "6802200e0efc0c1d902b90ecbf4f198286487c450b3ae0515e683b7869c318a0",
+    "semanticHash": "a5ce86f2539163947fbc54c56677636fbe5764f4f27aa79aab05003b32959604",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest test infrastructure utility for validating architectural boundary rules through import analysis.",
+    "responsibilities": [
+      "Recursively collects TypeScript file paths from directories for architectural analysis",
+      "Extracts import statements and their specifiers from TypeScript source files",
+      "Validates import paths against configured boundary rules to enforce architectural layer constraints",
+      "Provides test assertions for architectural integrity verification within Vitest test suites"
+    ],
+    "outOfScope": [
+      "Runtime enforcement of architectural rules in production code",
+      "Code transformation or refactoring of source files",
+      "Static analysis of non-TypeScript files"
+    ],
+    "invariants": [
+      "All test files must end with .test.ts or .spec.ts suffix"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable test utility for enforcing architectural boundary rules across the codebase.",
+      "recentChangeIntent": "No evidence of recent changes in the provided code."
+    },
+    "publicSurface": [
+      "collectFiles(dirPath, collected)",
+      "BoundaryRule interface",
+      "Import extraction and validation logic"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test infrastructure utility for validating architectural boundary rules through import analysis.",
+        "responsibilities": [
+          "Recursively collects TypeScript file paths from directories for architectural analysis",
+          "Extracts import statements and their specifiers from TypeScript source files",
+          "Validates import paths against configured boundary rules to enforce architectural layer constraints",
+          "Provides test assertions for architectural integrity verification within Vitest test suites"
+        ],
+        "outOfScope": [
+          "Runtime enforcement of architectural rules in production code",
+          "Code transformation or refactoring of source files",
+          "Static analysis of non-TypeScript files"
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于通过导入分析验证架构边界规则的 Vitest 测试基础设施工具。",
+        "responsibilities": [
+          "递归收集目录中的 TypeScript 文件路径以进行架构分析",
+          "从 TypeScript 源文件中提取导入语句及其说明符",
+          "根据配置的边界规则验证导入路径，以强制实施架构层约束",
+          "在 Vitest 测试套件中提供架构完整性验证的测试断言"
+        ],
+        "outOfScope": [
+          "生产代码中架构规则的运行时强制执行",
+          "源文件的代码转换或重构",
+          "非 TypeScript 文件的静态分析"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.299Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/spine-gate.test.ts",
+    "contentHash": "1126ca6fe7663c86264565e94ba20340ab6e469494c13d75d4e31ecb0b00aeb7",
+    "skeletonHash": "0a078a922f2a58608c01fd2001deaea7482dba188aeeeda44a5ee7fcaaab7809",
+    "semanticHash": "f347a6f08967bff3b959d8ae13c21c97af00c352e11686d3c85074f45ce7f9d1",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for the spine-gate module's protected output mutation detection.",
+    "responsibilities": [
+      "Sets up temporary test directories and cleans them before and after each test.",
+      "Writes baseline files to simulate protected output states.",
+      "Asserts that the spine-gate correctly detects mutations to protected output files.",
+      "Validates the formatting of mutation warnings."
+    ],
+    "outOfScope": [
+      "Production runtime logic for mutation detection (delegated to spine-gate module).",
+      "Persistence of mutation results beyond the test session.",
+      "Integration testing with external systems."
+    ],
+    "invariants": [
+      "Must import vitest testing utilities (describe, it, expect, beforeEach, afterEach).",
+      "Must import the spine-gate module functions under test.",
+      "Must manage temporary test directories isolated from production data."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Unit testing the core mutation detection safeguard for protected outputs in the ArchSpine system.",
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for the spine-gate module's protected output mutation detection.",
+        "responsibilities": [
+          "Sets up temporary test directories and cleans them before and after each test.",
+          "Writes baseline files to simulate protected output states.",
+          "Asserts that the spine-gate correctly detects mutations to protected output files.",
+          "Validates the formatting of mutation warnings."
+        ],
+        "outOfScope": [
+          "Production runtime logic for mutation detection (delegated to spine-gate module).",
+          "Persistence of mutation results beyond the test session.",
+          "Integration testing with external systems."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/spine-gate.js'",
+        "symbols": [
+          "detectProtectedOutputMutations",
+          "formatProtectedOutputMutationWarning",
+          "writeProtectedOutputBaseline"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/spine-gate.js",
+        "relation": "import",
+        "symbols": [
+          "detectProtectedOutputMutations",
+          "formatProtectedOutputMutationWarning",
+          "writeProtectedOutputBaseline"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:44.435Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

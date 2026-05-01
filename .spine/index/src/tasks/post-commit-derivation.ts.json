@@ -1,0 +1,214 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/post-commit-derivation.ts",
+    "contentHash": "1a1308272f006dd420efe7f0c7bf5a3bcc0d3dc00a2901b513f50ae938fadc95",
+    "skeletonHash": "ad5d691a7dcd6e0f3b99f70dcf9cd16322212c2f179e87054f3fbabdbb733744",
+    "semanticHash": "abc364016c349d015ce6647018dd30a513db424269def4fb874e9493e64ecc4b",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "Pipeline stage task orchestrating post-commit derivation of views, aggregations, and reverse indices.",
+    "responsibilities": [
+      "Orchestrates sequential execution of AggregationTask, ReverseIndexingTask, and ViewDerivationTask via TaskRunner.",
+      "Clears stale view artifacts before derivation using ViewService.clearViewArtifacts.",
+      "Iterates over VIEW_DEFINITIONS to derive per-view artifacts.",
+      "Acts as the post-commit stage in the ArchSpine pipeline, consuming CommitStageOutput and producing void."
+    ],
+    "outOfScope": [
+      "Does not handle CLI command parsing or user input.",
+      "Does not implement individual aggregation, indexing, or view derivation logic.",
+      "Does not manage database connections or schema migrations.",
+      "Does not perform authentication or authorization."
+    ],
+    "invariants": [
+      "Must be executed after the commit stage completes successfully.",
+      "Must clear view artifacts before running derivation tasks to avoid stale state.",
+      "Must run sub-tasks in the defined order: aggregation, reverse indexing, then view derivation."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Introduce a dedicated post-commit derivation stage that orchestrates view, aggregation, and reverse-index tasks after a commit, ensuring derived data is refreshed.",
+      "recentChangeIntent": "Fast iteration to stabilize the post-commit derivation pipeline; likely adding or refining sub-task orchestration and view artifact cleanup."
+    },
+    "publicSurface": [
+      "PostCommitDerivationTask (class, extends SpineTask<CommitStageOutput, void>)",
+      "name (property: 'Post-Commit Derivation')",
+      "checkpointId (property: 'post-commit-derivation')"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Pipeline stage task orchestrating post-commit derivation of views, aggregations, and reverse indices.",
+        "responsibilities": [
+          "Orchestrates sequential execution of AggregationTask, ReverseIndexingTask, and ViewDerivationTask via TaskRunner.",
+          "Clears stale view artifacts before derivation using ViewService.clearViewArtifacts.",
+          "Iterates over VIEW_DEFINITIONS to derive per-view artifacts.",
+          "Acts as the post-commit stage in the ArchSpine pipeline, consuming CommitStageOutput and producing void."
+        ],
+        "outOfScope": [
+          "Does not handle CLI command parsing or user input.",
+          "Does not implement individual aggregation, indexing, or view derivation logic.",
+          "Does not manage database connections or schema migrations.",
+          "Does not perform authentication or authorization."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "管道阶段任务，负责在提交后编排视图、聚合和反向索引的派生工作。",
+        "responsibilities": [
+          "通过 TaskRunner 按顺序编排 AggregationTask、ReverseIndexingTask 和 ViewDerivationTask 的执行。",
+          "在派生之前使用 ViewService.clearViewArtifacts 清除过期的视图工件。",
+          "遍历 VIEW_DEFINITIONS 以派生每个视图的工件。",
+          "作为 ArchSpine 管道的提交后阶段，消费 CommitStageOutput 并产生 void。"
+        ],
+        "outOfScope": [
+          "不处理 CLI 命令解析或用户输入。",
+          "不实现单独的聚合、索引或视图派生逻辑。",
+          "不管理数据库连接或模式迁移。",
+          "不执行身份验证或授权。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/pipeline.js'",
+        "symbols": [
+          "TaskRunner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./aggregate.js'",
+        "symbols": [
+          "AggregationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./reverse-index.js'",
+        "symbols": [
+          "ReverseIndexingTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./view-derivation.js'",
+        "symbols": [
+          "ViewDerivationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../services/view-service.js'",
+        "symbols": [
+          "ViewService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../services/view/view-registry.js'",
+        "symbols": [
+          "VIEW_DEFINITIONS"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "PostCommitDerivationTask",
+        "kind": "class",
+        "signature": "class PostCommitDerivationTask"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "PostCommitDerivationTask",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/tasks/post-commit-derivation.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "../core/pipeline.js",
+        "relation": "import",
+        "symbols": [
+          "TaskRunner"
+        ]
+      },
+      {
+        "targetPath": "./aggregate.js",
+        "relation": "import",
+        "symbols": [
+          "AggregationTask"
+        ]
+      },
+      {
+        "targetPath": "./reverse-index.js",
+        "relation": "import",
+        "symbols": [
+          "ReverseIndexingTask"
+        ]
+      },
+      {
+        "targetPath": "./view-derivation.js",
+        "relation": "import",
+        "symbols": [
+          "ViewDerivationTask"
+        ]
+      },
+      {
+        "targetPath": "../services/view-service.js",
+        "relation": "import",
+        "symbols": [
+          "ViewService"
+        ]
+      },
+      {
+        "targetPath": "../services/view/view-registry.js",
+        "relation": "import",
+        "symbols": [
+          "VIEW_DEFINITIONS"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:41.598Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

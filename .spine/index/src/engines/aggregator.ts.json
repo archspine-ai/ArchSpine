@@ -1,0 +1,212 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/aggregator.ts",
+    "contentHash": "32cf7a08fa4fbc21f6175427f0435fccdaa4442e960cb67c2f1429d1071248b6",
+    "skeletonHash": "7d7bf89dae497d21fcebb9e9a09222462895c887ca10bec8a392576fc5054dad",
+    "semanticHash": "7b6ec05b73cb94971dfa0595188a2bdba14a304782e79ff6ce9dbff307375c6b",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Core engine class for traversing the spine filesystem and aggregating index and atlas data into structured SpineUnit collections for downstream sync and view operations.",
+    "responsibilities": [
+      "Traverses the .spine/index and .spine/atlas directory structures to discover spine units (folders, projects, files).",
+      "Reads and validates spine index documents using the index-reader infrastructure (isCompatibleIndexDocument, readIndexDocument, reportIndexReadIssueOnce).",
+      "Constructs structured collections of SpineUnit objects (SpineFolderUnit, SpineProjectUnit) for downstream processing (e.g., sync, view generation).",
+      "Integrates with an LLM client for potential semantic enrichment or analysis of spine content."
+    ],
+    "outOfScope": [
+      "CLI argument parsing or command-line interface concerns.",
+      "Service-level orchestration or HTTP request handling.",
+      "Direct database or persistent storage operations beyond filesystem traversal.",
+      "User authentication or authorization logic."
+    ],
+    "invariants": [
+      "Engine Independence: Must not import CLI entrypoints or service orchestration modules; must remain a reusable analytical component."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable engine for aggregating spine filesystem data into structured unit collections, decoupled from CLI and service concerns.",
+      "recentChangeIntent": "General maintenance to fix lint warnings and type errors, ensuring code quality and CI compatibility."
+    },
+    "publicSurface": [
+      "Aggregator (class)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core engine class for traversing the spine filesystem and aggregating index and atlas data into structured SpineUnit collections for downstream sync and view operations.",
+        "responsibilities": [
+          "Traverses the .spine/index and .spine/atlas directory structures to discover spine units (folders, projects, files).",
+          "Reads and validates spine index documents using the index-reader infrastructure (isCompatibleIndexDocument, readIndexDocument, reportIndexReadIssueOnce).",
+          "Constructs structured collections of SpineUnit objects (SpineFolderUnit, SpineProjectUnit) for downstream processing (e.g., sync, view generation).",
+          "Integrates with an LLM client for potential semantic enrichment or analysis of spine content."
+        ],
+        "outOfScope": [
+          "CLI argument parsing or command-line interface concerns.",
+          "Service-level orchestration or HTTP request handling.",
+          "Direct database or persistent storage operations beyond filesystem traversal.",
+          "User authentication or authorization logic."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "核心引擎类，负责遍历 spine 文件系统，将索引和图谱数据聚合为结构化的 SpineUnit 集合，供下游同步和视图操作使用。",
+        "responsibilities": [
+          "遍历 .spine/index 和 .spine/atlas 目录结构，发现 spine 单元（文件夹、项目、文件）。",
+          "使用索引读取基础设施（isCompatibleIndexDocument、readIndexDocument、reportIndexReadIssueOnce）读取并验证 spine 索引文档。",
+          "构建结构化的 SpineUnit 对象集合（SpineFolderUnit、SpineProjectUnit），供下游处理（例如同步、视图生成）。",
+          "集成 LLM 客户端，用于对 spine 内容进行潜在的语义增强或分析。"
+        ],
+        "outOfScope": [
+          "CLI 参数解析或命令行接口相关功能。",
+          "服务级编排或 HTTP 请求处理。",
+          "超出文件系统遍历范围的直接数据库或持久化存储操作。",
+          "用户身份验证或授权逻辑。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "GENERATOR_VERSION",
+          "SpineUnit",
+          "SpineFolderUnit",
+          "SpineProjectUnit",
+          "SpineProvenance",
+          "FileKind"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../utils/fs.js'",
+        "symbols": [
+          "FileSystemManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/index-reader.js'",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "Aggregator",
+        "kind": "class",
+        "signature": "class Aggregator"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "Aggregator",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/engines/aggregator.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "GENERATOR_VERSION",
+          "SpineUnit",
+          "SpineFolderUnit",
+          "SpineProjectUnit",
+          "SpineProvenance",
+          "FileKind"
+        ]
+      },
+      {
+        "targetPath": "../utils/fs.js",
+        "relation": "import",
+        "symbols": [
+          "FileSystemManager"
+        ]
+      },
+      {
+        "targetPath": "../infra/index-reader.js",
+        "relation": "import",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:56:58.327Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

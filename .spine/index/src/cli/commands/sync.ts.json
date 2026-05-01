@@ -1,0 +1,215 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/sync.ts",
+    "contentHash": "a31ce59c19f341c1db2b74644afceee5e50a3c0eaec445ef07c0499fc258eb9a",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "d10264df9c4869111c015c18b6259bb58d296fea391fe0163dd285a6a4541182",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command adapter orchestrating the synchronization workflow for the ArchSpine mirror system.",
+    "responsibilities": [
+      "Parses CLI arguments to determine sync mode flags (e.g., --force, --dry-run, --repair) and validates argument combinations.",
+      "Coordinates the sync workflow by delegating to Scanner, Manifest, RuntimeService, and language discovery modules via runSyncWorkflow.",
+      "Enforces spine gate protection by invoking detectProtectedOutputMutations before proceeding with sync.",
+      "Evaluates and applies repair policies via evaluateRepairPolicy when protected outputs are mutated or corrupted.",
+      "Formats sync LLM resolution output for user-facing display."
+    ],
+    "outOfScope": [
+      "Direct file system scanning or traversal logic (delegated to Scanner engine).",
+      "Manifest file reading or writing (delegated to Manifest infra).",
+      "Runtime service execution or LLM invocation (delegated to RuntimeService).",
+      "Language discovery or diff computation (delegated to lang-discovery).",
+      "Protected output mutation detection implementation (delegated to spine-gate).",
+      "Repair policy evaluation logic (delegated to repair-policy).",
+      "Execution checkpoint storage or retrieval (delegated to ExecutionCheckpointStore)."
+    ],
+    "invariants": [
+      "Must remain a thin CLI adapter; must not absorb pipeline or persistence logic that belongs in services, core, engines, or infra (per rule cli-entrypoint-separation).",
+      "Must validate CLI argument combinations before proceeding with sync workflow.",
+      "Must enforce spine gate protection before allowing sync mutations.",
+      "Must delegate all domain logic to appropriate service/engine/infra modules."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a thin CLI command adapter that orchestrates the sync workflow by delegating to engines, services, and infra modules, keeping the CLI entrypoint clean and testable.",
+      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, likely involving argument validation, error handling, or formatting improvements."
+    },
+    "publicSurface": [
+      "formatSyncLLMResolution"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command adapter orchestrating the synchronization workflow for the ArchSpine mirror system.",
+        "responsibilities": [
+          "Parses CLI arguments to determine sync mode flags (e.g., --force, --dry-run, --repair) and validates argument combinations.",
+          "Coordinates the sync workflow by delegating to Scanner, Manifest, RuntimeService, and language discovery modules via runSyncWorkflow.",
+          "Enforces spine gate protection by invoking detectProtectedOutputMutations before proceeding with sync.",
+          "Evaluates and applies repair policies via evaluateRepairPolicy when protected outputs are mutated or corrupted.",
+          "Formats sync LLM resolution output for user-facing display."
+        ],
+        "outOfScope": [
+          "Direct file system scanning or traversal logic (delegated to Scanner engine).",
+          "Manifest file reading or writing (delegated to Manifest infra).",
+          "Runtime service execution or LLM invocation (delegated to RuntimeService).",
+          "Language discovery or diff computation (delegated to lang-discovery).",
+          "Protected output mutation detection implementation (delegated to spine-gate).",
+          "Repair policy evaluation logic (delegated to repair-policy).",
+          "Execution checkpoint storage or retrieval (delegated to ExecutionCheckpointStore)."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 镜像系统的 CLI 命令适配器，负责编排同步工作流。",
+        "responsibilities": [
+          "解析 CLI 参数以确定同步模式标志（如 --force、--dry-run、--repair），并验证参数组合的有效性。",
+          "通过委托 Scanner、Manifest、RuntimeService 和语言发现模块来协调同步工作流。",
+          "在继续同步之前，调用 detectProtectedOutputMutations 强制执行脊柱门保护。",
+          "当受保护输出发生变异或损坏时，通过 evaluateRepairPolicy 评估并应用修复策略。",
+          "格式化同步 LLM 解析输出以供用户界面显示。"
+        ],
+        "outOfScope": [
+          "直接的文件系统扫描或遍历逻辑（委托给 Scanner 引擎）。",
+          "Manifest 文件的读取或写入（委托给 Manifest 基础设施）。",
+          "运行时服务执行或 LLM 调用（委托给 RuntimeService）。",
+          "语言发现或差异计算（委托给 lang-discovery）。",
+          "受保护输出变异检测的实现（委托给 spine-gate）。",
+          "修复策略评估逻辑（委托给 repair-policy）。",
+          "执行检查点的存储或检索（委托给 ExecutionCheckpointStore）。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../engines/scanner.js",
+        "relation": "import",
+        "symbols": [
+          "Scanner"
+        ]
+      },
+      {
+        "targetPath": "../../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../../infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "../../services/runtime-service.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeService"
+        ]
+      },
+      {
+        "targetPath": "../../ast/lang-discovery.js",
+        "relation": "import",
+        "symbols": [
+          "discoverLanguages",
+          "diffLanguages"
+        ]
+      },
+      {
+        "targetPath": "../../utils/confirm.js",
+        "relation": "import",
+        "symbols": [
+          "promptForExplicitConfirmation"
+        ]
+      },
+      {
+        "targetPath": "../../infra/ui.js",
+        "relation": "import",
+        "symbols": [
+          "runWithFoldableOutput"
+        ]
+      },
+      {
+        "targetPath": "../../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes",
+          "toArchSpineError"
+        ]
+      },
+      {
+        "targetPath": "../../infra/writer-boundary.js",
+        "relation": "import",
+        "symbols": [
+          "withProtectedOutputsWriteAccess"
+        ]
+      },
+      {
+        "targetPath": "../../infra/spine-gate.js",
+        "relation": "import",
+        "symbols": [
+          "detectProtectedOutputMutations"
+        ]
+      },
+      {
+        "targetPath": "../../infra/repair-policy.js",
+        "relation": "import",
+        "symbols": [
+          "evaluateRepairPolicy"
+        ]
+      },
+      {
+        "targetPath": "../../infra/execution-checkpoint.js",
+        "relation": "import",
+        "symbols": [
+          "ExecutionCheckpointStore",
+          "deriveSyncFailedCandidateFiles"
+        ]
+      },
+      {
+        "targetPath": "../../infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "LLMRuntimeOverrides"
+        ]
+      },
+      {
+        "targetPath": "../cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "throwCliUsage"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T03:57:56.718Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

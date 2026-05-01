@@ -1,0 +1,283 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/runtime-service.ts",
+    "contentHash": "6fbef8331f21b225768da576deb2de42e9aa14ae95d62cec75ab1b005caef80e",
+    "skeletonHash": "fb368bb2633214e20efef663ba5337a213a3e0d868f2eb003a88837f2bb6f50a",
+    "semanticHash": "68924736732d6a19b5c670208f0a2e7242f27ceaaddd6d6cb15d2b23ff67c3a3",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Service layer facade for runtime orchestration that resolves execution profiles, LLM settings, view configurations, and constructs domain service instances (Check, Fix, Sync) in the ArchSpine system.",
+    "responsibilities": [
+      "Resolves LLM client settings by merging global configuration, secrets, and runtime overrides via resolveLLMSettings and createResolvedLLMClient.",
+      "Constructs a resolved execution profile integrating prompt policies, validation profiles, and generation strategies via resolveExecutionProfileFromSettings.",
+      "Determines enabled and experimental view layers for the runtime environment via resolveEnabledViews and resolveExperimentalViewLayer.",
+      "Provides centralized access to language configurations and scan policies from the global config.",
+      "Builds and exposes CheckService, FixService, and SyncService instances with appropriate options for runtime execution.",
+      "Parses positive integer environment variables for runtime configuration via parsePositiveIntegerEnv."
+    ],
+    "outOfScope": [
+      "Direct database or persistence operations.",
+      "Low-level LLM API calls or token management.",
+      "File system scanning or AST parsing logic.",
+      "User interface rendering or CLI command handling."
+    ],
+    "invariants": [
+      "RuntimeService must be instantiated with a valid root directory path.",
+      "LLM settings resolution depends on Config, Secrets, GlobalLLMConfig, and GlobalLLMSecrets being properly initialized.",
+      "Execution profile resolution requires a valid RuntimeCommand and LLM settings.",
+      "View layer resolution is independent of LLM configuration but depends on Config."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized runtime orchestration facade that decouples service instantiation from CLI or UI layers, enabling consistent dependency injection for Check, Fix, and Sync services.",
+      "recentChangeIntent": "gogogo — likely a rapid iteration commit; the addition of explicit imports for CheckService, FixService, SyncService, and runtime-execution-profile suggests the service is being concretized to wire up actual domain services rather than just resolving settings."
+    },
+    "publicSurface": [
+      "class RuntimeService",
+      "RuntimeService.constructor(rootDir: string)",
+      "RuntimeService.getResolvedLLMSettings(): ResolvedLLMSettings",
+      "RuntimeService.getResolvedExecutionProfile(): ResolvedExecutionProfile",
+      "RuntimeService.getEnabledViews(): string[]",
+      "RuntimeService.getExperimentalViewLayer(): string | null",
+      "RuntimeService.getLanguages(): string[]",
+      "RuntimeService.getScanPolicy(): any",
+      "RuntimeService.createCheckService(options?: CheckServiceOptions): CheckService",
+      "RuntimeService.createFixService(options?: FixServiceOptions): FixService",
+      "RuntimeService.createSyncService(): SyncService"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Service layer facade for runtime orchestration that resolves execution profiles, LLM settings, view configurations, and constructs domain service instances (Check, Fix, Sync) in the ArchSpine system.",
+        "responsibilities": [
+          "Resolves LLM client settings by merging global configuration, secrets, and runtime overrides via resolveLLMSettings and createResolvedLLMClient.",
+          "Constructs a resolved execution profile integrating prompt policies, validation profiles, and generation strategies via resolveExecutionProfileFromSettings.",
+          "Determines enabled and experimental view layers for the runtime environment via resolveEnabledViews and resolveExperimentalViewLayer.",
+          "Provides centralized access to language configurations and scan policies from the global config.",
+          "Builds and exposes CheckService, FixService, and SyncService instances with appropriate options for runtime execution.",
+          "Parses positive integer environment variables for runtime configuration via parsePositiveIntegerEnv."
+        ],
+        "outOfScope": [
+          "Direct database or persistence operations.",
+          "Low-level LLM API calls or token management.",
+          "File system scanning or AST parsing logic.",
+          "User interface rendering or CLI command handling."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 系统中的运行时编排服务层外观，负责解析执行配置文件、LLM 设置、视图配置，并构建领域服务实例（Check、Fix、Sync）。",
+        "responsibilities": [
+          "通过 resolveLLMSettings 和 createResolvedLLMClient 合并全局配置、密钥和运行时覆盖项，解析 LLM 客户端设置。",
+          "通过 resolveExecutionProfileFromSettings 整合提示策略、验证配置文件和生成策略，构建已解析的执行配置文件。",
+          "通过 resolveEnabledViews 和 resolveExperimentalViewLayer 确定运行时环境中启用和实验性的视图层。",
+          "从全局配置中集中提供语言配置和扫描策略的访问。",
+          "构建并公开 CheckService、FixService 和 SyncService 实例，并附带适当的运行时选项。",
+          "通过 parsePositiveIntegerEnv 解析用于运行时配置的正整数环境变量。"
+        ],
+        "outOfScope": [
+          "直接的数据库或持久化操作。",
+          "底层 LLM API 调用或令牌管理。",
+          "文件系统扫描或 AST 解析逻辑。",
+          "用户界面渲染或 CLI 命令处理。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/config/env.js'",
+        "symbols": [
+          "parsePositiveIntegerEnv"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/llm.js'",
+        "symbols": [
+          "createResolvedLLMClient",
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets",
+          "type LLMRuntimeOverrides",
+          "type ResolvedLLMSettings",
+          "resolveLLMSettings"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./view/index.js'",
+        "symbols": [
+          "resolveEnabledViews",
+          "resolveExperimentalViewLayer"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/secrets.js'",
+        "symbols": [
+          "Secrets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./sync-service.js'",
+        "symbols": [
+          "SyncService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./check-service.js'",
+        "symbols": [
+          "CheckService",
+          "type CheckServiceOptions"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./fix-service.js'",
+        "symbols": [
+          "FixService",
+          "type FixServiceOptions"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./runtime-execution-profile.js'",
+        "symbols": [
+          "resolveExecutionProfileFromSettings",
+          "type ResolvedExecutionProfile",
+          "type RuntimeCommand"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "RuntimeService",
+        "kind": "class",
+        "signature": "class RuntimeService"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "RuntimeService",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/services/runtime-service.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../infra/config/env.js",
+        "relation": "import",
+        "symbols": [
+          "parsePositiveIntegerEnv"
+        ]
+      },
+      {
+        "targetPath": "../infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "createResolvedLLMClient",
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets",
+          "LLMRuntimeOverrides",
+          "ResolvedLLMSettings",
+          "resolveLLMSettings"
+        ]
+      },
+      {
+        "targetPath": "./view/index.js",
+        "relation": "import",
+        "symbols": [
+          "resolveEnabledViews",
+          "resolveExperimentalViewLayer"
+        ]
+      },
+      {
+        "targetPath": "../infra/secrets.js",
+        "relation": "import",
+        "symbols": [
+          "Secrets"
+        ]
+      },
+      {
+        "targetPath": "./sync-service.js",
+        "relation": "import",
+        "symbols": [
+          "SyncService"
+        ]
+      },
+      {
+        "targetPath": "./check-service.js",
+        "relation": "import",
+        "symbols": [
+          "CheckService",
+          "CheckServiceOptions"
+        ]
+      },
+      {
+        "targetPath": "./fix-service.js",
+        "relation": "import",
+        "symbols": [
+          "FixService",
+          "FixServiceOptions"
+        ]
+      },
+      {
+        "targetPath": "./runtime-execution-profile.js",
+        "relation": "import",
+        "symbols": [
+          "resolveExecutionProfileFromSettings",
+          "ResolvedExecutionProfile",
+          "RuntimeCommand"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/engines/info.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:40.818Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

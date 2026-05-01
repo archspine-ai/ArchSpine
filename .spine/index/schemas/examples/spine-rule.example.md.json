@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "schemas/examples/spine-rule.example.md",
+    "contentHash": "18231edd62f334e91aab6d1cfcce55a2c77689ca3dbbe959cac476d429713d96",
+    "semanticHash": "df08be48773d6b846600f2853c1cf25761e7bee4ad4908a25e3185480fc7a597",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": "schemas/examples"
+  },
+  "semantic": {
+    "role": "Architecture enforcement rule",
+    "responsibilities": [
+      "Defines a dependency constraint preventing direct database layer imports",
+      "Specifies file patterns and severity for the rule",
+      "Provides rationale for maintaining domain boundaries"
+    ],
+    "outOfScope": [
+      "Implementation details of database adapters",
+      "Specific repository interface designs",
+      "Other architectural rules or policies"
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This document establishes a strict architectural rule that prohibits service and middleware layers from directly importing the underlying database adapter layer. It is part of the ArchSpine governance system to enforce clean domain boundaries.",
+        "context_and_audience": "Intended for developers and architects working on the ArchSpine system who need to understand and comply with dependency constraints. The rule applies to all TypeScript source files except those within the database layer itself.",
+        "key_takeaways": [
+          "Direct imports from src/db/* are forbidden in application services",
+          "Use service abstractions or repository interfaces instead of direct database access",
+          "Violations are treated as errors with high severity",
+          "The rule exists to decouple business logic from storage implementation details"
+        ]
+      },
+      "Simplified Chinese": {
+        "purpose": "本文档定义了一条严格的架构规则，禁止服务层和中间层直接导入底层数据库适配器。它是 ArchSpine 治理体系的一部分，用于强制执行清晰的领域边界。",
+        "context_and_audience": "适用于 ArchSpine 系统的开发者和架构师，他们需要理解并遵守依赖约束。该规则适用于所有 TypeScript 源文件，但数据库层本身的文件除外。",
+        "key_takeaways": [
+          "应用服务中禁止直接从 src/db/* 导入",
+          "应使用服务抽象或仓库接口替代直接数据库访问",
+          "违反规则将被视为高严重性错误",
+          "该规则旨在将业务逻辑与存储实现细节解耦"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:44:34.283Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

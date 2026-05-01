@@ -1,0 +1,193 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/repo-strategy.test.ts",
+    "contentHash": "e2afd34df32bd612cfc12a4e24f05495481b0d6e54ef001a45c6440e3919053d",
+    "skeletonHash": "ef5e1b92e3a6fff2bed7e29c0a9633dc0b18ff22bf1158603aa56d52308460d5",
+    "semanticHash": "1b4c995809da363e0491ae78b2c8298e3d56dfd6fd3a8cbd6299567c38129040",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest test suite validating repository strategy configuration and drift detection.",
+    "responsibilities": [
+      "Sets up temporary directories for isolated test execution of repository strategy checks.",
+      "Mocks console warnings and logs to capture and assert on strategy violation messages.",
+      "Validates that .gitignore and .gitattributes are correctly updated with ArchSpine managed sections.",
+      "Tests the runRepoCheck function's behavior when repository configuration drifts from expected state."
+    ],
+    "outOfScope": [
+      "Direct CLI command execution or user interaction.",
+      "Permanent file system modifications outside temporary test directories.",
+      "Integration with external services or network calls."
+    ],
+    "invariants": [
+      "Test file suffix must be .test.ts or .spec.ts (per rule test-file-suffix).",
+      "Uses Vitest testing framework with describe/it/expect patterns.",
+      "Relies on mocked console methods to avoid polluting test output."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure repository configuration integrity by validating that ArchSpine-managed sections in .gitignore and .gitattributes are present and correct.",
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite validating repository strategy configuration and drift detection.",
+        "responsibilities": [
+          "Sets up temporary directories for isolated test execution of repository strategy checks.",
+          "Mocks console warnings and logs to capture and assert on strategy violation messages.",
+          "Validates that .gitignore and .gitattributes are correctly updated with ArchSpine managed sections.",
+          "Tests the runRepoCheck function's behavior when repository configuration drifts from expected state."
+        ],
+        "outOfScope": [
+          "Direct CLI command execution or user interaction.",
+          "Permanent file system modifications outside temporary test directories.",
+          "Integration with external services or network calls."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/cli/repo/strategy.js'",
+        "symbols": [
+          "runRepoCheck"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../src/cli/repo/strategy.js",
+        "relation": "import",
+        "symbols": [
+          "runRepoCheck"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:44.048Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

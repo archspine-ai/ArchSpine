@@ -1,0 +1,279 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/llm/runtime.ts",
+    "contentHash": "1e188e9c6a24586499f341961a720b7d694f8f4cbfec870d7dab493c7bcf5698",
+    "skeletonHash": "bc539c60a22dc6cb39d94d9fd1dcae488f565c33484bb54d23814edd5bc9c08a",
+    "semanticHash": "ccc8112a59bf7ebc61dadf127a8e145706eadad25da9b16ab32d0aa3b4a61a63",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/llm"
+  },
+  "semantic": {
+    "role": "Infrastructure runtime configuration resolver and LLM provider client factory within the LLM subsystem.",
+    "responsibilities": [
+      "Resolves LLM runtime settings (provider, model, base URL, API key) by merging project configuration, global configuration, and environment variables with defined precedence rules.",
+      "Parses and validates prompt policy tiers (PromptPolicyTier), LLM modes (LLMMode), and validation policies (ValidatePolicy) from resolved configuration using dedicated parser functions.",
+      "Creates LLM provider client instances via the LLMFactory based on the fully resolved settings and overrides.",
+      "Handles legacy configuration fallbacks and environment variable parsing for LLM settings, including boolean flags and string trimming.",
+      "Derives validation policy and generation flow from the resolved LLM mode when explicit policy is not provided."
+    ],
+    "outOfScope": [
+      "Runtime orchestration, task scheduling, or service coordination (explicitly deferred to services/runtime-service.ts by file header comment).",
+      "Direct HTTP request handling or API endpoint logic.",
+      "Persistent storage or database operations for LLM state.",
+      "User-facing CLI command implementation or interactive prompts."
+    ],
+    "invariants": [
+      "Must not import from services, tasks, or engines layers to maintain infra facade isolation (per infra-facade-imports rule).",
+      "Configuration resolution must follow precedence: project config > global config > environment variables.",
+      "Provider client creation must go through LLMFactory, not direct instantiation."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, isolated infrastructure module for resolving LLM runtime configuration and creating provider clients, preventing runtime orchestration concerns from leaking into the infra layer.",
+      "recentChangeIntent": "No specific architectural intent discernible from the vague commit message 'gogogo'. The file appears to be in a stable state with no recent structural changes."
+    },
+    "publicSurface": [
+      "LLMRuntimeOverrides (interface)",
+      "ResolvedLLMSettings (interface)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure runtime configuration resolver and LLM provider client factory within the LLM subsystem.",
+        "responsibilities": [
+          "Resolves LLM runtime settings (provider, model, base URL, API key) by merging project configuration, global configuration, and environment variables with defined precedence rules.",
+          "Parses and validates prompt policy tiers (PromptPolicyTier), LLM modes (LLMMode), and validation policies (ValidatePolicy) from resolved configuration using dedicated parser functions.",
+          "Creates LLM provider client instances via the LLMFactory based on the fully resolved settings and overrides.",
+          "Handles legacy configuration fallbacks and environment variable parsing for LLM settings, including boolean flags and string trimming.",
+          "Derives validation policy and generation flow from the resolved LLM mode when explicit policy is not provided."
+        ],
+        "outOfScope": [
+          "Runtime orchestration, task scheduling, or service coordination (explicitly deferred to services/runtime-service.ts by file header comment).",
+          "Direct HTTP request handling or API endpoint logic.",
+          "Persistent storage or database operations for LLM state.",
+          "User-facing CLI command implementation or interactive prompts."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "LLM 子系统中的基础设施运行时配置解析器和提供商客户端工厂。",
+        "responsibilities": [
+          "通过合并项目配置、全局配置和环境变量，按照定义的优先级规则解析 LLM 运行时设置（提供商、模型、基础 URL、API 密钥）。",
+          "使用专用的解析函数从已解析的配置中解析和验证提示策略层级（PromptPolicyTier）、LLM 模式（LLMMode）和验证策略（ValidatePolicy）。",
+          "基于完全解析的设置和覆盖项，通过 LLMFactory 创建 LLM 提供商客户端实例。",
+          "处理 LLM 设置的旧配置回退和环境变量解析，包括布尔标志和字符串修剪。",
+          "当未提供显式策略时，从已解析的 LLM 模式派生验证策略和生成流程。"
+        ],
+        "outOfScope": [
+          "运行时编排、任务调度或服务协调（根据文件头部注释，明确推迟到 services/runtime-service.ts）。",
+          "直接的 HTTP 请求处理或 API 端点逻辑。",
+          "LLM 状态的持久化存储或数据库操作。",
+          "面向用户的 CLI 命令实现或交互式提示。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../secrets.js'",
+        "symbols": [
+          "Secrets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./global.js'",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./base.js'",
+        "symbols": [
+          "LLMClient",
+          "ProviderConfig"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./factory.js'",
+        "symbols": [
+          "LLMFactory"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../prompt-policy.js'",
+        "symbols": [
+          "parseLLMMode",
+          "parsePromptPolicyTier",
+          "parseValidatePolicy"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "providerRequiresApiKey",
+        "kind": "function",
+        "signature": "providerRequiresApiKey(provider: string | undefined)"
+      },
+      {
+        "name": "assertResolvedLLMUsable",
+        "kind": "function",
+        "signature": "assertResolvedLLMUsable(\n  resolved: ResolvedLLMSettings,\n  context: { command: string },\n)"
+      },
+      {
+        "name": "resolveLLMSettings",
+        "kind": "function",
+        "signature": "resolveLLMSettings(\n  config: Config,\n  secrets: Secrets,\n  globalConfig: GlobalLLMConfig = new GlobalLLMConfig(),\n  globalSecrets: GlobalLLMSecrets = new GlobalLLMSecrets(),\n  overrides: LLMRuntimeOverrides = {},\n)"
+      },
+      {
+        "name": "createResolvedLLMClient",
+        "kind": "function",
+        "signature": "createResolvedLLMClient(\n  config: Config,\n  secrets: Secrets,\n  globalConfig: GlobalLLMConfig = new GlobalLLMConfig(),\n  globalSecrets: GlobalLLMSecrets = new GlobalLLMSecrets(),\n  overrides: LLMRuntimeOverrides = {},\n)"
+      },
+      {
+        "name": "LLMRuntimeOverrides",
+        "kind": "interface",
+        "signature": "interface LLMRuntimeOverrides"
+      },
+      {
+        "name": "ResolvedLLMSettings",
+        "kind": "interface",
+        "signature": "interface ResolvedLLMSettings"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "providerRequiresApiKey",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/llm/runtime.ts#"
+      },
+      {
+        "name": "assertResolvedLLMUsable",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/llm/runtime.ts#"
+      },
+      {
+        "name": "resolveLLMSettings",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/llm/runtime.ts#"
+      },
+      {
+        "name": "createResolvedLLMClient",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/llm/runtime.ts#"
+      },
+      {
+        "name": "LLMRuntimeOverrides",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/llm/runtime.ts#"
+      },
+      {
+        "name": "ResolvedLLMSettings",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/llm/runtime.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 6,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../secrets.js",
+        "relation": "import",
+        "symbols": [
+          "Secrets"
+        ]
+      },
+      {
+        "targetPath": "./global.js",
+        "relation": "import",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets"
+        ]
+      },
+      {
+        "targetPath": "./base.js",
+        "relation": "import",
+        "symbols": [
+          "LLMClient",
+          "ProviderConfig"
+        ]
+      },
+      {
+        "targetPath": "./factory.js",
+        "relation": "import",
+        "symbols": [
+          "LLMFactory"
+        ]
+      },
+      {
+        "targetPath": "../../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ]
+      },
+      {
+        "targetPath": "../prompt-policy.js",
+        "relation": "import",
+        "symbols": [
+          "parseLLMMode",
+          "parsePromptPolicyTier",
+          "parseValidatePolicy"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:39.224Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

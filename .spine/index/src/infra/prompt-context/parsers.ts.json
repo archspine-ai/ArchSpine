@@ -1,0 +1,148 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-context/parsers.ts",
+    "contentHash": "6bc3ff90c686321640781a3e78d9597c8f271c0fb261f2560071b24340c589e9",
+    "skeletonHash": "1d9aba91221704c9f77f3716b180307fcb32a0eba81379f0333dca442e8aa978",
+    "semanticHash": "888397eb434dd5a86bb09bd6f720eb2e290f803e4ff1a32b52122f54cf32ae12",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt-context"
+  },
+  "semantic": {
+    "role": "Infrastructure utility function for parsing and validating the PromptPolicyTier configuration value from raw string input.",
+    "responsibilities": [
+      "Parses a raw string input into a validated PromptPolicyTier enum value ('lite' or 'balanced').",
+      "Provides type-safe normalization by trimming and lowercasing the input string.",
+      "Returns undefined for empty, undefined, or invalid input values, enforcing a clean optional result."
+    ],
+    "outOfScope": [
+      "Does not handle any other configuration parsing or validation.",
+      "Does not interact with file system, network, or external services.",
+      "Does not perform any logging, error reporting, or side effects."
+    ],
+    "invariants": [
+      "The function is pure and deterministic: same input always produces same output.",
+      "The function never throws exceptions; invalid inputs always return undefined.",
+      "The function only accepts string or undefined as input; no other types are handled."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, type-safe utility for normalizing user-provided prompt policy tier strings into the internal enum representation, ensuring consistent configuration parsing across the system.",
+      "recentChangeIntent": "No recent changes detected; the function remains a stable utility for configuration parsing."
+    },
+    "publicSurface": [
+      "parsePromptPolicyTier(value: string | undefined): PromptPolicyTier | undefined"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure utility function for parsing and validating the PromptPolicyTier configuration value from raw string input.",
+        "responsibilities": [
+          "Parses a raw string input into a validated PromptPolicyTier enum value ('lite' or 'balanced').",
+          "Provides type-safe normalization by trimming and lowercasing the input string.",
+          "Returns undefined for empty, undefined, or invalid input values, enforcing a clean optional result."
+        ],
+        "outOfScope": [
+          "Does not handle any other configuration parsing or validation.",
+          "Does not interact with file system, network, or external services.",
+          "Does not perform any logging, error reporting, or side effects."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施工具函数，用于从原始字符串输入中解析和验证 PromptPolicyTier 配置值。",
+        "responsibilities": [
+          "将原始字符串输入解析为经过验证的 PromptPolicyTier 枚举值（'lite' 或 'balanced'）。",
+          "通过修剪和转小写输入字符串，提供类型安全的规范化处理。",
+          "对于空值、未定义值或无效输入值返回 undefined，强制执行清晰的可选结果。"
+        ],
+        "outOfScope": [
+          "不处理任何其他配置的解析或验证。",
+          "不与文件系统、网络或外部服务交互。",
+          "不执行任何日志记录、错误报告或副作用操作。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "parsePromptPolicyTier",
+        "kind": "function",
+        "signature": "parsePromptPolicyTier(value: string | undefined)"
+      },
+      {
+        "name": "parseValidatePolicy",
+        "kind": "function",
+        "signature": "parseValidatePolicy(value: string | undefined)"
+      },
+      {
+        "name": "parseLLMMode",
+        "kind": "function",
+        "signature": "parseLLMMode(value: string | undefined)"
+      },
+      {
+        "name": "parseRelevanceDiagnosticsMode",
+        "kind": "function",
+        "signature": "parseRelevanceDiagnosticsMode(\n  value: string | undefined,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "parsePromptPolicyTier",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/parsers.ts#"
+      },
+      {
+        "name": "parseValidatePolicy",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/parsers.ts#"
+      },
+      {
+        "name": "parseLLMMode",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/parsers.ts#"
+      },
+      {
+        "name": "parseRelevanceDiagnosticsMode",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/parsers.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 4,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "LLMMode",
+          "PromptPolicyTier",
+          "RelevanceDiagnosticsMode",
+          "ValidatePolicy"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:39.828Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

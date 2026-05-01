@@ -1,0 +1,214 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/hook.ts",
+    "contentHash": "0ea38a3e26f30f0dd9331fc9355e6075988e8756ddaf5b0e9cae3f0ad7771022",
+    "skeletonHash": "aa4a95892a46eeb4611f4c69ecbba1e26b7d2040dee97ba1bcfa7aeda54ecd68",
+    "semanticHash": "cba7b2c8b05490dc181ddd0b9e04015b8dffa7e7485ba30232f2e284f4eb0422",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command adapter for managing git hook integration and synchronization within the ArchSpine system.",
+    "responsibilities": [
+      "Parses the hook synchronization mode from string input to enforce valid configuration.",
+      "Enables or disables the pre-commit git hook based on user command arguments via configuration updates.",
+      "Executes the synchronization workflow by delegating to the dedicated sync module when the hook is triggered.",
+      "Provides status feedback about the current hook configuration and synchronization mode to the user."
+    ],
+    "outOfScope": [
+      "Implementing the core synchronization pipeline logic (delegated to sync.js).",
+      "Managing git hook script content (delegated to git-hook.js utilities).",
+      "Persisting configuration state (handled by Config service)."
+    ],
+    "invariants": [
+      "Must remain a thin command adapter; all pipeline logic must be delegated to services/engines.",
+      "Must not contain business logic for scanning, analysis, or repair."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Separate CLI command routing from core pipeline logic to maintain testability and reusability.",
+      "recentChangeIntent": "No direct changes detected in this module from the recent commit; the commit likely affected the sync workflow or view layer."
+    },
+    "publicSurface": [
+      "ExecuteHookCommandOptions interface",
+      "parseHookSyncMode function"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command adapter for managing git hook integration and synchronization within the ArchSpine system.",
+        "responsibilities": [
+          "Parses the hook synchronization mode from string input to enforce valid configuration.",
+          "Enables or disables the pre-commit git hook based on user command arguments via configuration updates.",
+          "Executes the synchronization workflow by delegating to the dedicated sync module when the hook is triggered.",
+          "Provides status feedback about the current hook configuration and synchronization mode to the user."
+        ],
+        "outOfScope": [
+          "Implementing the core synchronization pipeline logic (delegated to sync.js).",
+          "Managing git hook script content (delegated to git-hook.js utilities).",
+          "Persisting configuration state (handled by Config service)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config",
+          "HookSyncMode"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../utils/git-hook.js'",
+        "symbols": [
+          "installGitHook",
+          "uninstallGitHook"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "printStep",
+          "throwCliUsage"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./sync.js'",
+        "symbols": [
+          "runSyncWorkflow"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../services/runtime-service.js'",
+        "symbols": [
+          "RuntimeService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'process'",
+        "symbols": [
+          "* as process"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'process'",
+        "symbols": [
+          "* as process"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "parseHookSyncMode",
+        "kind": "function",
+        "signature": "parseHookSyncMode(value: string | undefined)"
+      },
+      {
+        "name": "executeHookCommand",
+        "kind": "function",
+        "signature": "executeHookCommand(options: ExecuteHookCommandOptions)"
+      },
+      {
+        "name": "ExecuteHookCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteHookCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "parseHookSyncMode",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/hook.ts#"
+      },
+      {
+        "name": "executeHookCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/hook.ts#"
+      },
+      {
+        "name": "ExecuteHookCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/hook.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config",
+          "HookSyncMode"
+        ]
+      },
+      {
+        "targetPath": "../../utils/git-hook.js",
+        "relation": "import",
+        "symbols": [
+          "installGitHook",
+          "uninstallGitHook"
+        ]
+      },
+      {
+        "targetPath": "../cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "printStep",
+          "throwCliUsage"
+        ]
+      },
+      {
+        "targetPath": "./sync.js",
+        "relation": "import",
+        "symbols": [
+          "runSyncWorkflow"
+        ]
+      },
+      {
+        "targetPath": "../../services/runtime-service.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeService"
+        ]
+      },
+      {
+        "targetPath": "process",
+        "relation": "import",
+        "symbols": [
+          "* as process"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:36.360Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

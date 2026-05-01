@@ -1,0 +1,262 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/publish.ts",
+    "contentHash": "53452e47c5aa276fa3a8d5816eef961a106e3d9cffadaa8fec5db50472871a94",
+    "skeletonHash": "c937ea5595c5ffbedbce2b61d0830595c538e41c7a7db1a0563d6ddf21f8a02d",
+    "semanticHash": "8e1229a1025221400f0c59eb154888fccde9bce1631f5b57d5f5ff5f81806caf",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command handler orchestrating the publish workflow for the ArchSpine mirror system, coordinating preflight checks, sync, document backfill, and atlas state management.",
+    "responsibilities": [
+      "Validates publish preconditions via runtime baseline and snapshot readiness assertions.",
+      "Warns if publishing from a local Git strategy to prevent unintended distribution.",
+      "Executes the sync workflow to ensure the atlas is up-to-date before publishing.",
+      "Runs the DocumentBackfillTask to backfill missing documents before publishing.",
+      "Clears stale atlas data via Manifest.open(rootDir).clearAtlasStale() to ensure a clean publish state.",
+      "Coordinates with RuntimeService, Config, and runtime IO to execute the publish command."
+    ],
+    "outOfScope": [
+      "Direct database or persistence layer operations (e.g., raw queries, index management).",
+      "LLM client resolution or model configuration details.",
+      "Language-specific translation or generation logic.",
+      "Snapshot creation or versioning logic."
+    ],
+    "invariants": [
+      "CLI entrypoints must not absorb pipeline or persistence logic; they should delegate to services, core, engines, or infra layers.",
+      "Preflight checks must be performed before any publish operation.",
+      "The sync workflow must complete successfully before publishing."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a CLI entrypoint for the publish workflow that orchestrates preflight checks, sync, document backfill, and atlas state management.",
+      "recentChangeIntent": "iZoy 's great commit - likely introduced or modified the publish command handler, possibly adding document backfill and atlas clearing logic."
+    },
+    "publicSurface": [
+      "ExecutePublishCommandOptions (interface)"
+    ],
+    "ruleViolations": [
+      {
+        "id": "cli-entrypoint-separation",
+        "severity": "error",
+        "reason": "The publish command handler directly imports and invokes DocumentBackfillTask (a task) and Manifest.open(rootDir).clearAtlasStale() (persistence logic). This violates the rule that CLI modules should stay as thin entrypoints and not absorb pipeline or persistence logic. These responsibilities should be delegated to a service or engine layer."
+      }
+    ],
+    "driftDetected": true,
+    "driftReason": "The previous semantic contract did not include responsibilities for running DocumentBackfillTask or clearing stale atlas data via Manifest. The current implementation adds these pipeline/persistence operations, indicating semantic drift.",
+    "localized": {
+      "English": {
+        "role": "CLI command handler orchestrating the publish workflow for the ArchSpine mirror system, coordinating preflight checks, sync, document backfill, and atlas state management.",
+        "responsibilities": [
+          "Validates publish preconditions via runtime baseline and snapshot readiness assertions.",
+          "Warns if publishing from a local Git strategy to prevent unintended distribution.",
+          "Executes the sync workflow to ensure the atlas is up-to-date before publishing.",
+          "Runs the DocumentBackfillTask to backfill missing documents before publishing.",
+          "Clears stale atlas data via Manifest.open(rootDir).clearAtlasStale() to ensure a clean publish state.",
+          "Coordinates with RuntimeService, Config, and runtime IO to execute the publish command."
+        ],
+        "outOfScope": [
+          "Direct database or persistence layer operations (e.g., raw queries, index management).",
+          "LLM client resolution or model configuration details.",
+          "Language-specific translation or generation logic.",
+          "Snapshot creation or versioning logic."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 镜像系统发布工作流的 CLI 命令处理器，协调预检、同步、文档回填和 Atlas 状态管理。",
+        "responsibilities": [
+          "通过运行时基线和快照就绪断言验证发布前置条件。",
+          "如果从本地 Git 策略发布，则发出警告以防止意外分发。",
+          "执行同步工作流以确保 Atlas 在发布前是最新的。",
+          "运行 DocumentBackfillTask 来回填缺失的文档。",
+          "通过 Manifest.open(rootDir).clearAtlasStale() 清除过时的 Atlas 数据以确保干净的发布状态。",
+          "与 RuntimeService、Config 和运行时 IO 协调以执行发布命令。"
+        ],
+        "outOfScope": [
+          "直接的数据库或持久层操作（例如原始查询、索引管理）。",
+          "LLM 客户端解析或模型配置细节。",
+          "特定语言的翻译或生成逻辑。",
+          "快照创建或版本控制逻辑。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../services/runtime-service.js'",
+        "symbols": [
+          "RuntimeService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../services/publish-preflight.js'",
+        "symbols": [
+          "assertPublishRuntimeBaseline",
+          "assertPublishSnapshotReady",
+          "warnIfPublishingFromLocalStrategy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./sync.js'",
+        "symbols": [
+          "runSyncWorkflow"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "throwCliUsage"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../tasks/document-backfill.js'",
+        "symbols": [
+          "DocumentBackfillTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executePublishCommand",
+        "kind": "function",
+        "signature": "executePublishCommand(options: ExecutePublishCommandOptions)"
+      },
+      {
+        "name": "runPublishWorkflow",
+        "kind": "function",
+        "signature": "runPublishWorkflow(options: {\n  rootDir: string;\n  config: Config;\n  runtimeService: RuntimeService;\n})"
+      },
+      {
+        "name": "ExecutePublishCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecutePublishCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executePublishCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/publish.ts#"
+      },
+      {
+        "name": "runPublishWorkflow",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/publish.ts#"
+      },
+      {
+        "name": "ExecutePublishCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/publish.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../services/runtime-service.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeService"
+        ]
+      },
+      {
+        "targetPath": "../../services/publish-preflight.js",
+        "relation": "import",
+        "symbols": [
+          "assertPublishRuntimeBaseline",
+          "assertPublishSnapshotReady",
+          "warnIfPublishingFromLocalStrategy"
+        ]
+      },
+      {
+        "targetPath": "./sync.js",
+        "relation": "import",
+        "symbols": [
+          "runSyncWorkflow"
+        ]
+      },
+      {
+        "targetPath": "../../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "throwCliUsage"
+        ]
+      },
+      {
+        "targetPath": "../../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "../../tasks/document-backfill.js",
+        "relation": "import",
+        "symbols": [
+          "DocumentBackfillTask"
+        ]
+      },
+      {
+        "targetPath": "../../infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:36.577Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

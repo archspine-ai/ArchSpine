@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/document-backfill.ts",
+    "contentHash": "6c940306c2f65aed6148ef067f29370d4e044515348f4d4b1d19b687d9564b3d",
+    "skeletonHash": "2596d5319cee48da628e02421ac95019403b0c96d9c8695066a5a64ebe7bb4ac",
+    "semanticHash": "09a5ed05e899cf32ef3f9c425a78e09736a0828e95f0868144fe840708556013",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "Pipeline task module for backfilling project documentation by generating markdown content from JSON data via LLM prompts, with content hash tracking for idempotency.",
+    "responsibilities": [
+      "Scans the project directory recursively for JSON files to identify documentation targets.",
+      "Generates markdown documentation content using LLM prompts based on parsed JSON data.",
+      "Manages content versioning by reading and writing hash prefixes in markdown files to ensure idempotency.",
+      "Orchestrates the backfill process for documentation, using concurrency control via p-limit."
+    ],
+    "outOfScope": [
+      "CLI command parsing or user interaction.",
+      "Direct orchestration of other pipeline stages or services.",
+      "Database or repository operations beyond file I/O."
+    ],
+    "invariants": [
+      "Task modules must implement stage-local work on top of core contracts and engines.",
+      "Task modules must not take over CLI command parsing or unrelated service orchestration."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a dedicated task module for documentation backfill that integrates with the LLM prompt infrastructure and file system utilities, ensuring idempotent generation via content hash tracking.",
+      "recentChangeIntent": "Initial open source release (v1.0.0) — no functional changes to this module."
+    },
+    "publicSurface": [
+      "DocumentBackfillTask class (exported)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Pipeline task module for backfilling project documentation by generating markdown content from JSON data via LLM prompts, with content hash tracking for idempotency.",
+        "responsibilities": [
+          "Scans the project directory recursively for JSON files to identify documentation targets.",
+          "Generates markdown documentation content using LLM prompts based on parsed JSON data.",
+          "Manages content versioning by reading and writing hash prefixes in markdown files to ensure idempotency.",
+          "Orchestrates the backfill process for documentation, using concurrency control via p-limit."
+        ],
+        "outOfScope": [
+          "CLI command parsing or user interaction.",
+          "Direct orchestration of other pipeline stages or services.",
+          "Database or repository operations beyond file I/O."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "管道任务模块，用于通过 LLM 提示从 JSON 数据生成 Markdown 文档内容，并通过内容哈希追踪实现幂等性，从而回填项目文档。",
+        "responsibilities": [
+          "递归扫描项目目录中的 JSON 文件，以识别文档目标。",
+          "基于解析的 JSON 数据，使用 LLM 提示生成 Markdown 文档内容。",
+          "通过读取和写入 Markdown 文件中的哈希前缀来管理内容版本，确保幂等性。",
+          "编排文档的回填过程，并使用 p-limit 进行并发控制。"
+        ],
+        "outOfScope": [
+          "CLI 命令解析或用户交互。",
+          "直接编排其他管道阶段或服务。",
+          "超出文件 I/O 的数据库或仓库操作。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../infra/prompt.js",
+        "relation": "import",
+        "symbols": [
+          "generateMarkdownPrompt"
+        ]
+      },
+      {
+        "targetPath": "../infra/llm/providers/utils.js",
+        "relation": "import",
+        "symbols": [
+          "parseMarkdownBlocks"
+        ]
+      },
+      {
+        "targetPath": "../utils/fs.js",
+        "relation": "import",
+        "symbols": [
+          "FileSystemManager"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "p-limit",
+        "relation": "import",
+        "symbols": [
+          "pLimit"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:57:07.050Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

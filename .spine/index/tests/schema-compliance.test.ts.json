@@ -1,0 +1,257 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/schema-compliance.test.ts",
+    "contentHash": "d18ed7f0455a9c3997b72f4de7bc8a868465de7277200ba225fbb48586efbb9b",
+    "skeletonHash": "edadf89c96b918b87e00a04873f39e16f8236595504499b15f476425e6db0c95",
+    "semanticHash": "a49d0cf7b9a5f64d73a2c5f2f3e9b56de1241f2b1c6afbae56941bbd002b98da",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite for ArchSpine's JSON schema validation and synchronization service orchestration.",
+    "responsibilities": [
+      "Validates Spine unit and shared JSON schemas using Ajv with allErrors and formats enabled.",
+      "Tests the SyncService integration with a mock LLM client in isolated test environments.",
+      "Manages temporary test directories and files for schema validation and synchronization fixtures.",
+      "Ensures all index files in the .spine/index directory conform to the Spine unit schema."
+    ],
+    "outOfScope": [
+      "Testing UI components or frontend rendering.",
+      "Direct database persistence or ORM layer testing.",
+      "Production API endpoint integration beyond the SyncService.",
+      "Performance or load testing of the ArchSpine system."
+    ],
+    "invariants": [
+      "Must be a Vitest test file (.test.ts suffix).",
+      "Depends on the spine-unit.schema.json and shared.schema.json for validation.",
+      "Uses a mocked LLM client to isolate tests from external AI services.",
+      "Creates and cleans up temporary directories during test execution."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide isolated, deterministic integration tests for core ArchSpine schema validation and synchronization services, ensuring system consistency and contract adherence.",
+      "recentChangeIntent": "Harden risk hotspots with LLM/database decoupling and engine smoke tests (though not directly evidenced in the provided AST header)."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite for ArchSpine's JSON schema validation and synchronization service orchestration.",
+        "responsibilities": [
+          "Validates Spine unit and shared JSON schemas using Ajv with allErrors and formats enabled.",
+          "Tests the SyncService integration with a mock LLM client in isolated test environments.",
+          "Manages temporary test directories and files for schema validation and synchronization fixtures.",
+          "Ensures all index files in the .spine/index directory conform to the Spine unit schema."
+        ],
+        "outOfScope": [
+          "Testing UI components or frontend rendering.",
+          "Direct database persistence or ORM layer testing.",
+          "Production API endpoint integration beyond the SyncService.",
+          "Performance or load testing of the ArchSpine system."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "it",
+          "expect"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/services/sync-service.js'",
+        "symbols": [
+          "SyncService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/__mocks__/llm.js'",
+        "symbols": [
+          "MockClient"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'ajv'",
+        "symbols": [
+          "Ajv"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'ajv-formats'",
+        "symbols": [
+          "addFormats"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../schemas/spine-unit.schema.json'",
+        "symbols": [
+          "spineUnitSchema"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../schemas/shared.schema.json'",
+        "symbols": [
+          "sharedSchema"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 15,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "it",
+          "expect"
+        ]
+      },
+      {
+        "targetPath": "ajv",
+        "relation": "import",
+        "symbols": [
+          "Ajv"
+        ]
+      },
+      {
+        "targetPath": "ajv-formats",
+        "relation": "import",
+        "symbols": [
+          "addFormats"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execFileSync"
+        ]
+      },
+      {
+        "targetPath": "../src/services/sync-service.js",
+        "relation": "import",
+        "symbols": [
+          "SyncService"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/__mocks__/llm.js",
+        "relation": "import",
+        "symbols": [
+          "MockClient"
+        ]
+      },
+      {
+        "targetPath": "../src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION"
+        ]
+      },
+      {
+        "targetPath": "../schemas/spine-unit.schema.json",
+        "relation": "import",
+        "symbols": [
+          "spineUnitSchema"
+        ]
+      },
+      {
+        "targetPath": "../schemas/shared.schema.json",
+        "relation": "import",
+        "symbols": [
+          "sharedSchema"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:44.364Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

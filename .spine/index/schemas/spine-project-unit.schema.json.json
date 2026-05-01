@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "schemas/spine-project-unit.schema.json",
+    "contentHash": "c7274001b0270538fec96a7e7437a48b44e5c3b2c7419d4cd35bd096b6b2367a",
+    "semanticHash": "6b0eb01c79d29f9c9409d5981bf089f418aadb707e8e2b4ce69fb732240b8ba3",
+    "language": "unsupported",
+    "fileKind": "config",
+    "scope": "schemas"
+  },
+  "semantic": {
+    "role": "Defines the structural schema for a SpineProjectUnit, which is the fundamental project unit descriptor in the ArchSpine mirror system.",
+    "responsibilities": [
+      "Project unit metadata validation",
+      "Module hierarchy definition",
+      "Provenance tracking for generation pipelines"
+    ],
+    "outOfScope": [],
+    "invariants": [
+      "schemaVersion, projectName, role, responsibility, modules, and provenance are all required fields",
+      "additionalProperties is false at both root and nested object levels, enforcing strict schema compliance",
+      "childCount must be a non-negative integer (minimum 0)",
+      "All string fields reference nonEmptyString definitions, preventing empty values"
+    ],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Defines the structural schema for a SpineProjectUnit, which is the fundamental project unit descriptor in the ArchSpine mirror system.",
+        "parameter_definitions": {
+          "schemaVersion": "Specifies the version of the schema being used, ensuring compatibility with the ArchSpine system.",
+          "projectName": "A non-empty string uniquely identifying the project within the mirror system.",
+          "role": "A non-empty string describing the functional role of this project unit.",
+          "responsibility": "A non-empty string outlining the primary responsibility or domain of this project unit.",
+          "modules": "An array of module objects, each defining a sub-component with a directory path, role, and child count. This structures the project's internal hierarchy.",
+          "provenance": "An object tracking the origin and generation metadata of this project unit, including indexing timestamp, generator version, and pipeline stages."
+        },
+        "stability_and_risks": "This schema enforces strict structural validation for project units. The invariants prevent malformed or incomplete configurations, which could otherwise lead to cascading failures in the mirror system's dependency resolution or module discovery. The provenance tracking ensures auditability but requires accurate pipeline stage data; missing or incorrect provenance may cause synchronization issues. The non-empty string constraints mitigate risks of silent failures from empty identifiers. Overall, this schema promotes system stability by ensuring all project units are well-formed and traceable."
+      },
+      "Simplified Chinese": {
+        "role": "定义 SpineProjectUnit 的结构化模式，这是 ArchSpine 镜像系统中基本的项目单元描述符。",
+        "parameter_definitions": {
+          "schemaVersion": "指定所使用的模式版本，确保与 ArchSpine 系统的兼容性。",
+          "projectName": "一个非空字符串，用于在镜像系统中唯一标识该项目。",
+          "role": "一个非空字符串，描述此项目单元的功能角色。",
+          "responsibility": "一个非空字符串，概述此项目单元的主要职责或领域。",
+          "modules": "一个模块对象数组，每个对象定义一个子组件，包含目录路径、角色和子项数量。这用于构建项目的内部层次结构。",
+          "provenance": "一个对象，跟踪此项目单元的来源和生成元数据，包括索引时间戳、生成器版本和流水线阶段。"
+        },
+        "stability_and_risks": "此模式对项目单元实施严格的结构验证。不变性约束防止了格式错误或不完整的配置，否则可能导致镜像系统在依赖解析或模块发现时出现级联故障。来源追踪确保了可审计性，但需要准确的流水线阶段数据；缺失或不正确的来源信息可能引发同步问题。非空字符串约束降低了因空标识符导致静默失败的风险。总体而言，此模式通过确保所有项目单元格式正确且可追溯，促进了系统稳定性。"
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:05.829Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/llm.test.ts",
+    "contentHash": "f8078d56709a4f23b4a931125d81a6e7f2f97226f43c7b1a4955a1a302365bcf",
+    "skeletonHash": "a974ec8f6e8ebcc8762a512b21ea811449d513bf22074e114eab72cbf31b8d7f",
+    "semanticHash": "6257230f8801b5bc68a6c86776c5439d59ca560f4c6629363842604d4bad5f41",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite validating the structural integrity and public API surface of the LLM Facade infrastructure module.",
+    "responsibilities": [
+      "Asserts that the LLM Facade module exports the required public symbols (GlobalLLMConfig, GlobalLLMSecrets, getGlobalArchSpineDir, createResolvedLLMClient, resolveLLMSettings).",
+      "Verifies that no exported symbol from the facade is undefined, ensuring a stable API contract for consumers."
+    ],
+    "outOfScope": [
+      "Testing the functional behavior or runtime logic of the LLM Facade.",
+      "Validating integration with external LLM providers or database systems.",
+      "Performance or load testing of the LLM infrastructure."
+    ],
+    "invariants": [
+      "Test file suffix must be .test.ts or .spec.ts (adheres to rule)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure the LLM Facade provides a stable, well-defined public API for other modules to depend upon, decoupling internal implementation details.",
+      "recentChangeIntent": "Part of broader hardening efforts for risk hotspots, though this specific test file shows no direct changes related to LLM/DB decoupling or engine smoke tests."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite validating the structural integrity and public API surface of the LLM Facade infrastructure module.",
+        "responsibilities": [
+          "Asserts that the LLM Facade module exports the required public symbols (GlobalLLMConfig, GlobalLLMSecrets, getGlobalArchSpineDir, createResolvedLLMClient, resolveLLMSettings).",
+          "Verifies that no exported symbol from the facade is undefined, ensuring a stable API contract for consumers."
+        ],
+        "outOfScope": [
+          "Testing the functional behavior or runtime logic of the LLM Facade.",
+          "Validating integration with external LLM providers or database systems.",
+          "Performance or load testing of the LLM infrastructure."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "it",
+          "expect"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/llm.js'",
+        "symbols": [
+          "* as LLMFacade"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/llm.js'",
+        "symbols": [
+          "* as LLMFacade"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "it",
+          "expect"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "* as LLMFacade"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.589Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

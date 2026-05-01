@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/core/scan-policy.ts",
+    "contentHash": "39b0b10f62b997886a2462d9171d0c8f91c81366a826081b9ce0184be586ad17",
+    "skeletonHash": "3d73b948047e407b69568fee591568253726b193c9c58011b97f42df857ffe7c",
+    "semanticHash": "25aaf926ad8348953410f1e9f07d4f0852457e64f3437f43b8cb59d89ca009fc",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/core"
+  },
+  "semantic": {
+    "role": "Core TypeScript type definition module establishing the scanning policy configuration contract for the ArchSpine mirror system.",
+    "responsibilities": [
+      "Defines the FileSource union type specifying permissible file origins for scanning (git-tracked, git-tracked-plus-untracked, filesystem).",
+      "Declares the ScanPolicy interface that structures the scanning configuration, including file source, ignore chain configuration, and protocol inclusion/exclusion lists.",
+      "Provides the PartialScanPolicy interface for optional policy updates, enabling partial configuration overrides."
+    ],
+    "outOfScope": [
+      "Implementing scanning logic or pipeline execution.",
+      "Handling CLI command parsing or invocation.",
+      "Providing runtime validation or default values for policy fields."
+    ],
+    "invariants": [
+      "Defines pure TypeScript types and interfaces without side effects.",
+      "Serves as a stable contract for core scanning pipeline configuration.",
+      "Maintains isolation from CLI entry points and implementation details."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "To provide a centralized, immutable type contract for scanning policies, ensuring configuration consistency across the pipeline.",
+      "recentChangeIntent": null
+    },
+    "publicSurface": [
+      "FileSource",
+      "ScanPolicy",
+      "PartialScanPolicy"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core TypeScript type definition module establishing the scanning policy configuration contract for the ArchSpine mirror system.",
+        "responsibilities": [
+          "Defines the FileSource union type specifying permissible file origins for scanning (git-tracked, git-tracked-plus-untracked, filesystem).",
+          "Declares the ScanPolicy interface that structures the scanning configuration, including file source, ignore chain configuration, and protocol inclusion/exclusion lists.",
+          "Provides the PartialScanPolicy interface for optional policy updates, enabling partial configuration overrides."
+        ],
+        "outOfScope": [
+          "Implementing scanning logic or pipeline execution.",
+          "Handling CLI command parsing or invocation.",
+          "Providing runtime validation or default values for policy fields."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "resolveScanPolicy",
+        "kind": "function",
+        "signature": "resolveScanPolicy(policy?: PartialScanPolicy)"
+      },
+      {
+        "name": "ScanPolicy",
+        "kind": "interface",
+        "signature": "interface ScanPolicy"
+      },
+      {
+        "name": "PartialScanPolicy",
+        "kind": "interface",
+        "signature": "interface PartialScanPolicy"
+      },
+      {
+        "name": "FileSource",
+        "kind": "type",
+        "signature": "type FileSource"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "resolveScanPolicy",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/scan-policy.ts#"
+      },
+      {
+        "name": "ScanPolicy",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/scan-policy.ts#"
+      },
+      {
+        "name": "PartialScanPolicy",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/scan-policy.ts#"
+      },
+      {
+        "name": "FileSource",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/core/scan-policy.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 4,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [
+      {
+        "targetPath": "tests/scan-policy.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:37.245Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

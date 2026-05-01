@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/index.ts",
+    "contentHash": "40203ea1d1f170845902311d486561692c925497b419c59e08f0bf4fdfacc23d",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "c41cfdf7ea4aa64b03659a4cbdec452daee5fb2ce06ab08c3da8f5e1fb7fb852",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "Public facade module for the view subsystem, centralizing exports for view-specific runtime and rendering components within the MCP (Model Context Protocol) resource layer.",
+    "responsibilities": [
+      "Aggregates and re-exports all public modules from the view subsystem to provide a stable import interface for external callers, particularly MCP clients.",
+      "Encapsulates internal module structure, allowing view-specific implementation details within `src/services/view/**` to change without impacting external consumers.",
+      "Serves as the primary entry point for MCP resources related to architecture visualization and analysis views."
+    ],
+    "outOfScope": [
+      "Implementing view-specific business logic or rendering logic (delegated to exported modules).",
+      "Handling HTTP requests or direct user interactions (handled by upstream services or MCP servers).",
+      "Managing data persistence or core domain operations (responsibility of other subsystems)."
+    ],
+    "invariants": [
+      "Must only contain re-exports of public view subsystem modules; no inline implementations.",
+      "Must not depend on internal, non-exported modules of the view subsystem to maintain encapsulation.",
+      "Must remain stable; changes to exports should be considered breaking changes for external consumers."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish a clear public API facade for the view subsystem to decouple external consumers from internal restructuring, aligning with the refactor to resolve layer inversions.",
+      "recentChangeIntent": "Refactor to establish subsystem facades and resolve layer inversions, as indicated by the git commit. This file likely consolidates view exports to provide a stable interface."
+    },
+    "publicSurface": [
+      "arch-diagram-renderer.js",
+      "architecture-diagram-view.js",
+      "common.js",
+      "index-loader.js",
+      "public-surface-view.js",
+      "risk-hotspots-view.js",
+      "types.js"
+    ],
+    "ruleViolations": [
+      {
+        "id": "service-runtime-boundary",
+        "severity": "warning",
+        "reason": "File 'src/infra/mcp/resources.ts' is a view-specific service module (public facade for view subsystem) but is located under `src/infra/mcp/`. According to rule, view-specific service modules should live under `src/services/view/**` to clarify runtime orchestration boundaries."
+      }
+    ],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Public facade module for the view subsystem, centralizing exports for view-specific runtime and rendering components within the MCP (Model Context Protocol) resource layer.",
+        "responsibilities": [
+          "Aggregates and re-exports all public modules from the view subsystem to provide a stable import interface for external callers, particularly MCP clients.",
+          "Encapsulates internal module structure, allowing view-specific implementation details within `src/services/view/**` to change without impacting external consumers.",
+          "Serves as the primary entry point for MCP resources related to architecture visualization and analysis views."
+        ],
+        "outOfScope": [
+          "Implementing view-specific business logic or rendering logic (delegated to exported modules).",
+          "Handling HTTP requests or direct user interactions (handled by upstream services or MCP servers).",
+          "Managing data persistence or core domain operations (responsibility of other subsystems)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./arch-diagram-renderer.js",
+        "relation": "export",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "./architecture-diagram-view.js",
+        "relation": "export",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "./common.js",
+        "relation": "export",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "./index-loader.js",
+        "relation": "export",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "./public-surface-view.js",
+        "relation": "export",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "./risk-hotspots-view.js",
+        "relation": "export",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "./types.js",
+        "relation": "export",
+        "symbols": [
+          "*"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:41.171Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

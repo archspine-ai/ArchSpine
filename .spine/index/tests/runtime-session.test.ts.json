@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/runtime-session.test.ts",
+    "contentHash": "c63ee83d8fb5456f8636d943de941dbe1ca2ea8b86b4625fcadb0c5bc2f90fe5",
+    "skeletonHash": "b05b1a49a5139e1be05325188e7533d1780ed37442921bf45bed8bdaefe5fa1d",
+    "semanticHash": "e8c51c000ad098dba906b5d7c4e59250f4275f34b2cfb9918d3e2a6dbb08d95a",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test for the runtime session helper's error handling, checkpoint management, and lock cleanup.",
+    "responsibilities": [
+      "Tests that warnings are logged when checkpoint loading encounters issues.",
+      "Verifies that the checkpoint is marked as failed when runtime errors occur.",
+      "Ensures that acquired locks are properly released after session execution, even on failure.",
+      "Mocks external dependencies (writer-boundary, spine-gate) to isolate the runtime session helper's behavior."
+    ],
+    "outOfScope": [
+      "Production runtime logic implementation.",
+      "Actual checkpoint persistence or lock management.",
+      "Integration testing with real dependencies."
+    ],
+    "invariants": [
+      "Uses Vitest framework for testing.",
+      "Relies on mocking to isolate the unit under test.",
+      "Follows project test naming convention (.test.ts suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure the runtime session helper robustly handles errors, maintains checkpoint state, and cleans up resources.",
+      "recentChangeIntent": "Validate runtime config and checkpoint state (from git intent)."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test for the runtime session helper's error handling, checkpoint management, and lock cleanup.",
+        "responsibilities": [
+          "Tests that warnings are logged when checkpoint loading encounters issues.",
+          "Verifies that the checkpoint is marked as failed when runtime errors occur.",
+          "Ensures that acquired locks are properly released after session execution, even on failure.",
+          "Mocks external dependencies (writer-boundary, spine-gate) to isolate the runtime session helper's behavior."
+        ],
+        "outOfScope": [
+          "Production runtime logic implementation.",
+          "Actual checkpoint persistence or lock management.",
+          "Integration testing with real dependencies."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:44.259Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

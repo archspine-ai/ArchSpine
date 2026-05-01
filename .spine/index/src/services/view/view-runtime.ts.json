@@ -1,0 +1,156 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/view-runtime.ts",
+    "contentHash": "ba17f44b7a553811de7714023e42b5e74f04e0eda993a4cff8fa1c0265ddb957",
+    "skeletonHash": "32f6c6303ebe17f07e0b11dc3975690ca92185d43b14e32426a7aa66b5e2c279",
+    "semanticHash": "cf8066bc1c9488f2f8a7ad680da62428b92991419d67e8d102e3aba1a40f4a0d",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "Configuration resolution module for the experimental view layer and enabled views within the ArchSpine system.",
+    "responsibilities": [
+      "Defines TypeScript interfaces for resolved view layer configuration (ResolvedExperimentalViewLayer, ResolvedEnabledViews).",
+      "Resolves the experimental view layer flag from project config, environment variable, or default.",
+      "Resolves the list of enabled view IDs from project config or default, normalizing and filtering unknown IDs."
+    ],
+    "outOfScope": [
+      "Runtime orchestration of view services or engines.",
+      "Direct interaction with view rendering or UI components.",
+      "Persistence or storage of configuration data."
+    ],
+    "invariants": [
+      "Pure configuration resolution with no side effects.",
+      "Depends on infra/config for project configuration and view-registry for view ID normalization."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a typed, centralized configuration resolution for the view layer, decoupling config sourcing from runtime logic.",
+      "recentChangeIntent": "Modularize CLI and decouple core infra services (as per git intent). This module likely supports decoupling by providing config resolution independent of runtime services."
+    },
+    "publicSurface": [
+      "ResolvedExperimentalViewLayer",
+      "ResolvedEnabledViews"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Configuration resolution module for the experimental view layer and enabled views within the ArchSpine system.",
+        "responsibilities": [
+          "Defines TypeScript interfaces for resolved view layer configuration (ResolvedExperimentalViewLayer, ResolvedEnabledViews).",
+          "Resolves the experimental view layer flag from project config, environment variable, or default.",
+          "Resolves the list of enabled view IDs from project config or default, normalizing and filtering unknown IDs."
+        ],
+        "outOfScope": [
+          "Runtime orchestration of view services or engines.",
+          "Direct interaction with view rendering or UI components.",
+          "Persistence or storage of configuration data."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./view-registry.js'",
+        "symbols": [
+          "getDefaultEnabledViewIds",
+          "normalizeViewIds"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "resolveExperimentalViewLayer",
+        "kind": "function",
+        "signature": "resolveExperimentalViewLayer(\n  config: Pick<Config, 'getExperimentalViewLayer'>,\n)"
+      },
+      {
+        "name": "resolveEnabledViews",
+        "kind": "function",
+        "signature": "resolveEnabledViews(\n  config: Pick<Config, 'getConfiguredEnabledViews'>,\n)"
+      },
+      {
+        "name": "ResolvedExperimentalViewLayer",
+        "kind": "interface",
+        "signature": "interface ResolvedExperimentalViewLayer"
+      },
+      {
+        "name": "ResolvedEnabledViews",
+        "kind": "interface",
+        "signature": "interface ResolvedEnabledViews"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "resolveExperimentalViewLayer",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/view-runtime.ts#"
+      },
+      {
+        "name": "resolveEnabledViews",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/view-runtime.ts#"
+      },
+      {
+        "name": "ResolvedExperimentalViewLayer",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/view/view-runtime.ts#"
+      },
+      {
+        "name": "ResolvedEnabledViews",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/view/view-runtime.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 4,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "./view-registry.js",
+        "relation": "import",
+        "symbols": [
+          "getDefaultEnabledViewIds",
+          "normalizeViewIds"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:41.383Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

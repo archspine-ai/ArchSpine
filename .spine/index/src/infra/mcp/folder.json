@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/infra/mcp",
+  "role": "MCP infrastructure layer that bridges ArchSpine's internal capabilities with external AI agents through the Model Context Protocol.",
+  "responsibility": "Provides the complete MCP server implementation including context-gated resource access, tool definitions for codebase analysis, and stdio transport for agent communication, enabling external AI systems to query architectural metadata, scan files against rules, and access project context.",
+  "children": [
+    {
+      "filePath": "src/infra/mcp/context.ts",
+      "role": "Infrastructure facade class for gating Model Context Protocol (MCP) context flow based on priming state and operational mode.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/mcp/resources.ts",
+      "role": "Infrastructure facade providing MCP resource templates and handlers for accessing ArchSpine project metadata and files within the .spine directory, with context-aware access control via MCPContextGate.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/mcp/server.ts",
+      "role": "Infrastructure facade implementing the Model Context Protocol (MCP) server to expose ArchSpine's internal resources and tools to external AI agents via stdio transport.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/mcp/tools.ts",
+      "role": "MCP (Model Context Protocol) tool facade exposing ArchSpine system capabilities as queryable tools for external AI agents.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-01T07:20:42.969Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

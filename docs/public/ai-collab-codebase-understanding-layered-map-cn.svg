@@ -1,0 +1,133 @@
+<?xml version="1.0" standalone="no"?>
+<svg viewBox="0 0 1600 1000" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg-glow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#171033" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#0B0D17" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="archspine-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="15" flood-color="#8B5CF6" flood-opacity="0.4"/>
+    </filter>
+    <filter id="card-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1600" height="1000" fill="#0B0D17"/>
+  <rect width="1600" height="1000" fill="url(#bg-glow)"/>
+
+  <!-- Grid lines -->
+  <line x1="100" y1="520" x2="1550" y2="520" stroke="#2B3650" stroke-width="1.5" stroke-dasharray="8 8"/>
+  <line x1="583" y1="120" x2="583" y2="920" stroke="#2B3650" stroke-width="1.5" stroke-dasharray="8 8"/>
+  <line x1="1066" y1="120" x2="1066" y2="920" stroke="#2B3650" stroke-width="1.5" stroke-dasharray="8 8"/>
+
+  <!-- Axes -->
+  <line x1="100" y1="920" x2="1550" y2="920" stroke="#7C8DB5" stroke-width="3"/>
+  <polygon points="1550,914 1562,920 1550,926" fill="#7C8DB5"/>
+  <line x1="80" y1="900" x2="80" y2="130" stroke="#7C8DB5" stroke-width="3"/>
+  <polygon points="74,130 80,118 86,130" fill="#7C8DB5"/>
+
+  <!-- Axis Labels -->
+  <text x="825" y="970" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="700" fill="#B8C4FF" letter-spacing="0.5">结构化代码库表达程度</text>
+  <text x="100" y="955" text-anchor="start" font-family="system-ui" font-size="14" fill="#A7B4D6" font-weight="600">低</text>
+  <text x="1550" y="955" text-anchor="end" font-family="system-ui" font-size="14" fill="#A7B4D6" font-weight="600">高</text>
+
+  <text x="40" y="515" transform="rotate(-90 40 515)" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="700" fill="#B8C4FF" letter-spacing="0.5">对工程工作流的贴合度</text>
+  <text x="65" y="900" text-anchor="end" font-family="system-ui" font-size="14" fill="#A7B4D6" font-weight="600">远</text>
+  <text x="65" y="130" text-anchor="end" font-family="system-ui" font-size="14" fill="#A7B4D6" font-weight="600">近</text>
+
+  <!-- Title & Subtitle -->
+  <text x="800" y="60" text-anchor="middle" font-family="system-ui" font-size="36" font-weight="800" fill="#F8FAFC" letter-spacing="-0.02em">AI 协作中的代码库理解分层图</text>
+  <text x="800" y="92" text-anchor="middle" font-family="system-ui" font-size="17" font-weight="400" fill="#94A3B8">项目说明、仓库上下文、长期记忆与结构层的关系定位</text>
+
+  <!-- Region Labels -->
+  <text x="341" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" letter-spacing="1.2" fill="#AEB9D8" textTransform="uppercase">项目说明 / 行为约束<tspan x="341" dy="20">层</tspan></text>
+  <text x="825" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" letter-spacing="1.2" fill="#AEB9D8" textTransform="uppercase">仓库上下文<tspan x="825" dy="20">层</tspan></text>
+  <text x="1308" y="150" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" letter-spacing="1.2" fill="#AEB9D8" textTransform="uppercase">结构化代码库 /<tspan x="1308" dy="20">架构脊柱层</tspan></text>
+
+  <text x="341" y="555" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" letter-spacing="1.2" fill="#AEB9D8" textTransform="uppercase">通用记忆<tspan x="341" dy="20">基础设施</tspan></text>
+  <text x="825" y="555" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" letter-spacing="1.2" fill="#AEB9D8" textTransform="uppercase">状态化 Agent<tspan x="825" dy="20">Memory</tspan></text>
+  <text x="1308" y="555" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" letter-spacing="1.2" fill="#AEB9D8" textTransform="uppercase">Graph / 高-Structure<tspan x="1308" dy="20">Long-Term Memory</tspan></text>
+
+  <!-- Cards -->
+  <!-- Top Left: 层 -->
+  <g transform="translate(100, 180)">
+    <rect width="270" height="136" rx="12" fill="#111421" stroke="#1E293B" stroke-width="1.5" filter="url(#card-shadow)"/>
+    <text x="24" y="36" font-family="system-ui, -apple-system, sans-serif" font-size="17" font-weight="700" fill="#E2E8F0">Claude Code Memory</text>
+    <text x="24" y="66" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 可编辑文本记忆</text>
+    <text x="24" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 高度贴合开发流程</text>
+    <text x="24" y="114" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 低 structure</text>
+  </g>
+
+  <g transform="translate(395, 330)"> <!-- Moved Windsurf up -->
+    <rect width="270" height="136" rx="12" fill="#111421" stroke="#1E293B" stroke-width="1.5" filter="url(#card-shadow)"/>
+    <text x="24" y="36" font-family="system-ui, -apple-system, sans-serif" font-size="17" font-weight="700" fill="#E2E8F0">Windsurf Memories / Rules</text>
+    <text x="24" y="66" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 工作区记忆</text>
+    <text x="24" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 规则 + 自动记忆</text>
+    <text x="24" y="114" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 中等结构化</text>
+  </g>
+
+  <!-- Top Mid: Repo Persistent -->
+  <g transform="translate(710, 260)">
+    <rect width="270" height="136" rx="12" fill="#111421" stroke="#1E293B" stroke-width="1.5" filter="url(#card-shadow)"/>
+    <text x="24" y="36" font-family="system-ui, -apple-system, sans-serif" font-size="17" font-weight="700" fill="#E2E8F0">GitHub Copilot Memory</text>
+    <text x="24" y="66" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 仓库上下文层</text>
+    <text x="24" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 长期仓库上下文</text>
+    <text x="24" y="114" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 平台能力加持</text>
+  </g>
+
+  <!-- Bottom Left: General Layer -->
+  <g transform="translate(160, 680)">
+    <rect width="270" height="136" rx="12" fill="#111421" stroke="#1E293B" stroke-width="1.5" filter="url(#card-shadow)"/>
+    <text x="24" y="36" font-family="system-ui, -apple-system, sans-serif" font-size="17" font-weight="700" fill="#E2E8F0">Mem0</text>
+    <text x="24" y="66" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 通用基础设施</text>
+    <text x="24" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 语义召回</text>
+    <text x="24" y="114" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 跨会话记忆</text>
+  </g>
+
+  <!-- Bottom Mid: 状态化 Agents -->
+  <g transform="translate(640, 600)">
+    <rect width="270" height="136" rx="12" fill="#111421" stroke="#1E293B" stroke-width="1.5" filter="url(#card-shadow)"/>
+    <text x="24" y="36" font-family="system-ui, -apple-system, sans-serif" font-size="17" font-weight="700" fill="#E2E8F0">Letta / MemGPT</text>
+    <text x="24" y="66" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 状态化 Agent</text>
+    <text x="24" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 分层记忆</text>
+    <text x="24" y="114" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 类操作系统架构</text>
+  </g>
+
+  <g transform="translate(920, 620)"> <!-- Moved Hindsight up and right -->
+    <rect width="270" height="136" rx="12" fill="#111421" stroke="#1E293B" stroke-width="1.5" filter="url(#card-shadow)"/>
+    <text x="24" y="36" font-family="system-ui, -apple-system, sans-serif" font-size="17" font-weight="700" fill="#E2E8F0">Hindsight</text>
+    <text x="24" y="66" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 学习型记忆</text>
+    <text x="24" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 经验蒸馏</text>
+    <text x="24" y="114" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 超越简单召回</text>
+  </g>
+
+  <!-- Bottom Right: Knowledge Graph -->
+  <g transform="translate(1085, 735)"> <!-- Kept left of Graphiti -->
+    <rect width="270" height="136" rx="12" fill="#111421" stroke="#1E293B" stroke-width="1.5" filter="url(#card-shadow)"/>
+    <text x="24" y="36" font-family="system-ui, -apple-system, sans-serif" font-size="17" font-weight="700" fill="#E2E8F0">Cognee</text>
+    <text x="24" y="66" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 图谱 + 向量引擎</text>
+    <text x="24" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 关系建模</text>
+    <text x="24" y="114" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 知识引擎</text>
+  </g>
+
+  <g transform="translate(1320, 590)"> <!-- Moved further right -->
+    <rect width="270" height="136" rx="12" fill="#111421" stroke="#1E293B" stroke-width="1.5" filter="url(#card-shadow)"/>
+    <text x="24" y="36" font-family="system-ui, -apple-system, sans-serif" font-size="17" font-weight="700" fill="#E2E8F0">Graphiti</text>
+    <text x="24" y="66" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 时序图谱</text>
+    <text x="24" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 来源追踪</text>
+    <text x="24" y="114" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#94A3B8">• 高 structure</text>
+  </g>
+
+  <!-- 高light: ArchSpine -->
+  <g transform="translate(1140, 190)">
+    <rect width="300" height="160" rx="12" fill="#171033" stroke="#8B5CF6" stroke-width="2.5" filter="url(#archspine-glow)"/>
+    <rect width="300" height="160" rx="12" fill="none" stroke="#A78BFA" stroke-width="1" opacity="0.2"/>
+    <text x="24" y="36" font-family="system-ui, -apple-system, sans-serif" font-size="17" font-weight="700" fill="#F5F3FF">ArchSpine</text>
+    <text x="24" y="66" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#C4B5FD">• 代码库结构表达</text>
+    <text x="24" y="90" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#C4B5FD">• 架构导航与边界层</text>
+    <text x="24" y="114" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#C4B5FD">• 演化约束与语义一致性</text>
+    <text x="24" y="138" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#C4B5FD">• 人类与 Agent 共读</text>
+  </g>
+</svg>

@@ -1,0 +1,173 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/llm/providers/utils.ts",
+    "contentHash": "5486caab8832c4aae64ec1f16ca05b9f7d50caa2b8a702818ccbfcaeca2ecc4d",
+    "skeletonHash": "671f13c24120d2432ae1b589d1c9535a34cf84f08e07ad4a7f856d8ce9945a91",
+    "semanticHash": "4f90bd28999422fe544d4ade5e4ff6bf95d256104a9b3e01c66236af2417d3d6",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/llm/providers"
+  },
+  "semantic": {
+    "role": "Infrastructure utility module providing content assembly, structured response parsing, and usage merging for the ArchSpine mirror system.",
+    "responsibilities": [
+      "Assembles supporting context strings for source files by conditionally joining content and context data based on file kind.",
+      "Parses a full LLM response string into localized markdown blocks according to the ArchSpine output contract using regex patterns.",
+      "Extracts and sanitizes the JSON block from the response, handling optional code fence markers and fallback logic.",
+      "Merges multiple optional UsageInfo objects into a single aggregated UsageInfo by summing token counts and combining fields.",
+      "Provides a stable public facade for response parsing and usage aggregation, avoiding deep internal imports."
+    ],
+    "outOfScope": [
+      "Does not handle network requests or API calls.",
+      "Does not manage file I/O or disk operations.",
+      "Does not implement orchestration logic or workflow control.",
+      "Does not perform validation of LLM response content beyond structural parsing."
+    ],
+    "invariants": [
+      "Infra modules must expose stable low-level capabilities and facades, not absorb service/task/engine orchestration concerns.",
+      "Callers should prefer public infra facades over reaching into deep private implementation paths when a facade exists."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, reusable infrastructure layer for assembling LLM context and parsing structured responses, ensuring consistent output contract handling across the mirror system.",
+      "recentChangeIntent": "Fix lint warnings and type errors, likely addressing type safety in mergeUsage or parseStructuredResponse, and add CI workflow for automated checks."
+    },
+    "publicSurface": [
+      "buildSupportingContext(fileKind, content, contextData?)",
+      "parseMarkdownBlocks(fullResponse, languages)",
+      "parseStructuredResponse(fullResponse, languages, logContext)",
+      "mergeUsage(...usages)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": true,
+    "driftReason": "Previous semantic contract did not include mergeUsage responsibility or the full scope of parseStructuredResponse's JSON extraction logic.",
+    "localized": {
+      "English": {
+        "role": "Infrastructure utility module providing content assembly, structured response parsing, and usage merging for the ArchSpine mirror system.",
+        "responsibilities": [
+          "Assembles supporting context strings for source files by conditionally joining content and context data based on file kind.",
+          "Parses a full LLM response string into localized markdown blocks according to the ArchSpine output contract using regex patterns.",
+          "Extracts and sanitizes the JSON block from the response, handling optional code fence markers and fallback logic.",
+          "Merges multiple optional UsageInfo objects into a single aggregated UsageInfo by summing token counts and combining fields.",
+          "Provides a stable public facade for response parsing and usage aggregation, avoiding deep internal imports."
+        ],
+        "outOfScope": [
+          "Does not handle network requests or API calls.",
+          "Does not manage file I/O or disk operations.",
+          "Does not implement orchestration logic or workflow control.",
+          "Does not perform validation of LLM response content beyond structural parsing."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施工具模块，为 ArchSpine 镜像系统提供内容组装、结构化响应解析和用量合并功能。",
+        "responsibilities": [
+          "根据文件类型，有条件地拼接内容和上下文数据，为源文件组装支持性上下文字符串。",
+          "使用正则表达式将完整的 LLM 响应字符串解析为符合 ArchSpine 输出合约的本地化 Markdown 块。",
+          "从响应中提取并清理 JSON 块，处理可选的代码围栏标记和回退逻辑。",
+          "将多个可选的 UsageInfo 对象合并为一个聚合的 UsageInfo，通过汇总令牌计数和组合字段实现。",
+          "提供稳定的公共外观接口用于响应解析和用量聚合，避免深层内部导入。"
+        ],
+        "outOfScope": [
+          "不处理网络请求或 API 调用。",
+          "不管理文件 I/O 或磁盘操作。",
+          "不实现编排逻辑或工作流控制。",
+          "不执行超出结构解析范围的 LLM 响应内容验证。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../../types/protocol.js'",
+        "symbols": [
+          "FileKind"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "buildSupportingContext",
+        "kind": "function",
+        "signature": "buildSupportingContext(\n  fileKind: FileKind,\n  content: string,\n  contextData?: string,\n)"
+      },
+      {
+        "name": "parseMarkdownBlocks",
+        "kind": "function",
+        "signature": "parseMarkdownBlocks(\n  fullResponse: string,\n  languages: string[],\n)"
+      },
+      {
+        "name": "parseStructuredResponse",
+        "kind": "function",
+        "signature": "parseStructuredResponse(\n  fullResponse: string,\n  languages: string[],\n  logContext: string,\n)"
+      },
+      {
+        "name": "mergeUsage",
+        "kind": "function",
+        "signature": "mergeUsage(...usages: Array<UsageInfo | undefined>)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "buildSupportingContext",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/llm/providers/utils.ts#"
+      },
+      {
+        "name": "parseMarkdownBlocks",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/llm/providers/utils.ts#"
+      },
+      {
+        "name": "parseStructuredResponse",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/llm/providers/utils.ts#"
+      },
+      {
+        "name": "mergeUsage",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/llm/providers/utils.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 4,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "FileKind"
+        ]
+      },
+      {
+        "targetPath": "../base.js",
+        "relation": "import-type",
+        "symbols": [
+          "UsageInfo"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:57:09.491Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

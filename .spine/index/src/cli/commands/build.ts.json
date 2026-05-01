@@ -1,0 +1,169 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/build.ts",
+    "contentHash": "5e3c51e175495b2020cdc54f608520d7848de5462ea6ca22a5f90b2843b01670",
+    "skeletonHash": "cfc2786a65f610761f653d432e282d0dfbebc9fa1406b4cae2c70efa107b6fa3",
+    "semanticHash": "1a653c9ffbb4e1273ea148a2dade66f59690a941d99ca1569d253d59488ab49e",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command adapter for the 'build' operation, orchestrating the build workflow and delegating to core services.",
+    "responsibilities": [
+      "Defines the structured options interface for the build command.",
+      "Orchestrates the build workflow by delegating to runtime services and sync workflows.",
+      "Validates command-line arguments and provides usage feedback via CLI utilities."
+    ],
+    "outOfScope": [
+      "Implementing core build logic or persistence (delegated to RuntimeService and other services).",
+      "Directly handling low-level file I/O or pipeline execution."
+    ],
+    "invariants": [
+      "Must remain a thin adapter, delegating all business logic to injected services.",
+      "Must not contain domain logic, pipeline orchestration, or data persistence implementations."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Separate CLI command routing from core business logic to ensure testability and reusability.",
+      "recentChangeIntent": "Unknown; no specific evidence from git intent matches this file."
+    },
+    "publicSurface": [
+      "ExecuteBuildCommandOptions",
+      "executeBuildCommand"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command adapter for the 'build' operation, orchestrating the build workflow and delegating to core services.",
+        "responsibilities": [
+          "Defines the structured options interface for the build command.",
+          "Orchestrates the build workflow by delegating to runtime services and sync workflows.",
+          "Validates command-line arguments and provides usage feedback via CLI utilities."
+        ],
+        "outOfScope": [
+          "Implementing core build logic or persistence (delegated to RuntimeService and other services).",
+          "Directly handling low-level file I/O or pipeline execution."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../services/runtime-service.js'",
+        "symbols": [
+          "RuntimeService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "throwCliUsage"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./sync.js'",
+        "symbols": [
+          "runSyncWorkflow"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeBuildCommand",
+        "kind": "function",
+        "signature": "executeBuildCommand(options: ExecuteBuildCommandOptions)"
+      },
+      {
+        "name": "runBuildWorkflow",
+        "kind": "function",
+        "signature": "runBuildWorkflow(options: {\n  rootDir: string;\n  config: Config;\n  runtimeService: RuntimeService;\n})"
+      },
+      {
+        "name": "ExecuteBuildCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteBuildCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeBuildCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/build.ts#"
+      },
+      {
+        "name": "runBuildWorkflow",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/build.ts#"
+      },
+      {
+        "name": "ExecuteBuildCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/build.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../services/runtime-service.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeService"
+        ]
+      },
+      {
+        "targetPath": "../../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "throwCliUsage"
+        ]
+      },
+      {
+        "targetPath": "./sync.js",
+        "relation": "import",
+        "symbols": [
+          "runSyncWorkflow"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:36.131Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

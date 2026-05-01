@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-context/policy.ts",
+    "contentHash": "7ceb4309b7ebd0efb4726aa5f71f9ba720c4ad8e701a7b0e3af60d977ba9bf7b",
+    "skeletonHash": "9f65a02838e6619f1b7ae9cd681c6f5c213a48107a7c234c12e29dd6cc8d6342",
+    "semanticHash": "e0e08ed8a5f8e6be87b08d8655f1921c7f87183ecd80c12dc6470be044f4132a",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt-context"
+  },
+  "semantic": {
+    "role": "Infrastructure policy resolver providing default prompt and validation policies based on task mode.",
+    "responsibilities": [
+      "Determines the default prompt policy tier (e.g., 'balanced') for a given PromptTaskMode.",
+      "Determines the default validation policy (e.g., 'strict', 'default') for a given PromptTaskMode.",
+      "Resolves prompt policy tier with optional override consideration (partial function shown).",
+      "Exposes stable policy decision functions as a facade for other modules."
+    ],
+    "outOfScope": [
+      "Orchestrating task execution or engine workflows.",
+      "Managing runtime state or configuration loading.",
+      "Handling user input or CLI command parsing."
+    ],
+    "invariants": [
+      "Must remain a pure function library with no side effects.",
+      "Must not absorb service orchestration concerns to comply with infra-facade-imports rule.",
+      "Exports must provide a stable facade for policy resolution."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, decoupled policy resolution facade for infrastructure, enabling consistent prompt and validation policy decisions across tasks.",
+      "recentChangeIntent": "Part of broader CLI modularization and core infra decoupling (per git intent), though this specific file may not have changed directly."
+    },
+    "publicSurface": [
+      "defaultPromptTierForTask",
+      "defaultValidatePolicyForTask",
+      "resolvePromptPolicyTier"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure policy resolver providing default prompt and validation policies based on task mode.",
+        "responsibilities": [
+          "Determines the default prompt policy tier (e.g., 'balanced') for a given PromptTaskMode.",
+          "Determines the default validation policy (e.g., 'strict', 'default') for a given PromptTaskMode.",
+          "Resolves prompt policy tier with optional override consideration (partial function shown).",
+          "Exposes stable policy decision functions as a facade for other modules."
+        ],
+        "outOfScope": [
+          "Orchestrating task execution or engine workflows.",
+          "Managing runtime state or configuration loading.",
+          "Handling user input or CLI command parsing."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "defaultPromptTierForTask",
+        "kind": "function",
+        "signature": "defaultPromptTierForTask(taskMode: PromptTaskMode)"
+      },
+      {
+        "name": "defaultValidatePolicyForTask",
+        "kind": "function",
+        "signature": "defaultValidatePolicyForTask(taskMode: PromptTaskMode)"
+      },
+      {
+        "name": "resolvePromptPolicyTier",
+        "kind": "function",
+        "signature": "resolvePromptPolicyTier(\n  taskMode: PromptTaskMode,\n  promptTier?: PromptPolicyTier,\n)"
+      },
+      {
+        "name": "resolveValidatePolicy",
+        "kind": "function",
+        "signature": "resolveValidatePolicy(\n  taskMode: PromptTaskMode,\n  validatePolicy?: ValidatePolicy,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "defaultPromptTierForTask",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/policy.ts#"
+      },
+      {
+        "name": "defaultValidatePolicyForTask",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/policy.ts#"
+      },
+      {
+        "name": "resolvePromptPolicyTier",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/policy.ts#"
+      },
+      {
+        "name": "resolveValidatePolicy",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/policy.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 4,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "PromptPolicyTier",
+          "PromptTaskMode",
+          "ValidatePolicy"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:39.863Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

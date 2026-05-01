@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/fix.ts",
+    "contentHash": "31ba18382e030465e08de1fb2335a59f09428d609f419ea9426e8b7b81196d73",
+    "skeletonHash": "100469579be0729b112cc27d69947f5b1dbb539ebb5f8055dfbd978ca6779815",
+    "semanticHash": "08dc63c5a092e3736332eb465b19e33ea7a3db187431f8e67b2b525a17f1479a",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Public API facade barrel file for the fix service module.",
+    "responsibilities": [
+      "Re-exports the FixService class and runFix function from the underlying service implementation.",
+      "Re-exports the FixRunSummary type for consumers.",
+      "Provides a clean public interface for consumers of the fix functionality."
+    ],
+    "outOfScope": [
+      "Implementing fix logic or business rules.",
+      "Orchestrating service execution.",
+      "Providing CLI entrypoints."
+    ],
+    "invariants": [
+      "Must only contain re-exports from the underlying service module.",
+      "Must not contain any executable logic or state."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "To provide a stable, decoupled public API for the fix service, facilitating modular consumption and dependency management.",
+      "recentChangeIntent": "No changes detected in this file from the provided git context."
+    },
+    "publicSurface": [
+      "FixService",
+      "runFix",
+      "FixRunSummary"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Public API facade barrel file for the fix service module.",
+        "responsibilities": [
+          "Re-exports the FixService class and runFix function from the underlying service implementation.",
+          "Re-exports the FixRunSummary type for consumers.",
+          "Provides a clean public interface for consumers of the fix functionality."
+        ],
+        "outOfScope": [
+          "Implementing fix logic or business rules.",
+          "Orchestrating service execution.",
+          "Providing CLI entrypoints."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "FixService",
+        "kind": "unknown",
+        "signature": "export { FixService }"
+      },
+      {
+        "name": "runFix",
+        "kind": "unknown",
+        "signature": "export { runFix }"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "FixService",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/engines/fix.ts#"
+      },
+      {
+        "name": "runFix",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/engines/fix.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../services/fix-service.js",
+        "relation": "export",
+        "symbols": [
+          "FixService",
+          "runFix",
+          "FixRunSummary"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/demo-governance.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:37.600Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

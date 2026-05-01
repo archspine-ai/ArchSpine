@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/semantic-drift.test.ts",
+    "contentHash": "fcc5cb1d66cc82bc8600be18a14750168e79810d1e891bdef8980212d74f761f",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "4f51578ab9f593b78d118340adca2af1b647b34db38ea96ce5c5ce190d406c7d",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite for semantic drift detection and LLM client behavior in the ArchSpine sync system.",
+    "responsibilities": [
+      "Mocks LLMClient (DriftMockClient) to track PreviousSemanticContext usage across passes.",
+      "Sets up temporary test directories and cleans them up after each test.",
+      "Executes shell commands via execSync to simulate CLI operations in isolated environments.",
+      "Validates that the SyncService correctly handles semantic drift scenarios."
+    ],
+    "outOfScope": [
+      "Unit testing of individual SyncService methods in isolation.",
+      "Testing of production LLM client implementations (e.g., OpenAI, Anthropic).",
+      "Performance or load testing of the sync system."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a test harness for verifying semantic drift detection in the ArchSpine sync pipeline, ensuring the system correctly passes PreviousSemanticContext across multiple passes.",
+      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, aligning with the commit message intent."
+    },
+    "publicSurface": [
+      "DriftMockClient class",
+      "generateSummary method"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite for semantic drift detection and LLM client behavior in the ArchSpine sync system.",
+        "responsibilities": [
+          "Mocks LLMClient (DriftMockClient) to track PreviousSemanticContext usage across passes.",
+          "Sets up temporary test directories and cleans them up after each test.",
+          "Executes shell commands via execSync to simulate CLI operations in isolated environments.",
+          "Validates that the SyncService correctly handles semantic drift scenarios."
+        ],
+        "outOfScope": [
+          "Unit testing of individual SyncService methods in isolation.",
+          "Testing of production LLM client implementations (e.g., OpenAI, Anthropic).",
+          "Performance or load testing of the sync system."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于语义漂移检测和LLM客户端行为的Vitest集成测试套件，属于ArchSpine同步系统。",
+        "responsibilities": [
+          "模拟LLMClient（DriftMockClient）以跟踪多次传递中的PreviousSemanticContext使用情况。",
+          "设置临时测试目录并在每个测试后清理。",
+          "通过execSync执行shell命令，在隔离环境中模拟CLI操作。",
+          "验证SyncService是否正确处理语义漂移场景。"
+        ],
+        "outOfScope": [
+          "单独测试SyncService方法的单元测试。",
+          "测试生产环境中的LLM客户端实现（例如OpenAI、Anthropic）。",
+          "同步系统的性能或负载测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execSync"
+        ]
+      },
+      {
+        "targetPath": "../src/services/sync-service.js",
+        "relation": "import",
+        "symbols": [
+          "SyncService"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "LLMClient",
+          "PreviousSemanticContext"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T03:58:28.285Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

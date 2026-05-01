@@ -1,0 +1,174 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/task-state-guard.test.ts",
+    "contentHash": "de548d7cd6cc829d32bad96a6f0a20fffe2eff89525933481bfad1c8a97a3eeb",
+    "skeletonHash": "734e8d0c6b9bdfa9896dff0dda9b9a5691a530345dd86c3126a709c8e948642d",
+    "semanticHash": "a2f856dcef737a419794efd73f320c74cb8170d9065a4847e96054ff48b6817f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite validating the task-state module and TypeScript file collection utilities.",
+    "responsibilities": [
+      "Validates the createTaskState function returns expected keys for given operational modes.",
+      "Ensures the collectTypeScriptFiles function recursively traverses directories and filters for .ts files.",
+      "Asserts that all TypeScript source files in src/ and tests/ directories are valid (parseable) TypeScript."
+    ],
+    "outOfScope": [
+      "Testing non-TypeScript file handling",
+      "Validating runtime lock guardrails (mentioned in git intent but not in code)",
+      "Performance or integration testing"
+    ],
+    "invariants": [
+      "Must import vitest testing utilities (describe, expect, it).",
+      "Must import the task-state module under test.",
+      "Must use file system and path modules for test setup.",
+      "Test file suffix must be .test.ts or .spec.ts (per rule)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide unit test coverage for core task-state and file collection logic to ensure reliability and correctness.",
+      "recentChangeIntent": "Potential hardening of runtime lock guardrails (from git commit), though not directly evidenced in this file's current responsibilities."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite validating the task-state module and TypeScript file collection utilities.",
+        "responsibilities": [
+          "Validates the createTaskState function returns expected keys for given operational modes.",
+          "Ensures the collectTypeScriptFiles function recursively traverses directories and filters for .ts files.",
+          "Asserts that all TypeScript source files in src/ and tests/ directories are valid (parseable) TypeScript."
+        ],
+        "outOfScope": [
+          "Testing non-TypeScript file handling",
+          "Validating runtime lock guardrails",
+          "Performance or integration testing"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/core/task-state.js'",
+        "symbols": [
+          "createTaskState"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'typescript'",
+        "symbols": [
+          "* as ts"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'typescript'",
+        "symbols": [
+          "* as ts"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "../src/core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "createTaskState"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "typescript",
+        "relation": "import",
+        "symbols": [
+          "* as ts"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:44.614Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

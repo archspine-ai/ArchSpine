@@ -1,0 +1,185 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db/types.ts",
+    "contentHash": "9fc9e62f2bb06e6eef36c15c574e63322c2c430944469eb8473c62749033ece1",
+    "skeletonHash": "709d7ab124b62db41e26f0326c603385b09674da629906bcbe5ec37a23163216",
+    "semanticHash": "94789b61f2a8905b3fb90f792c84102a0fc22c4de905c52d8c3b1389230fc766",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/db"
+  },
+  "semantic": {
+    "role": "Infrastructure Type Definitions module providing stable data contracts for the indexing, audit, and status reporting domains.",
+    "responsibilities": [
+      "Defines TypeScript interfaces representing core data structures for file metadata (FileRecord), file status (FileStatusRecord), commit associations (FileCommitRecord), and audit events (DriftEvent).",
+      "Defines data shapes for system usage analytics (UsageSummaryRow, UsageTotals) and rule violation tracking (ViolationRecord).",
+      "Defines the aggregate system status snapshot interface (GlobalStatus).",
+      "Provides shared type contracts to decouple data producers (e.g., indexers, auditors) from consumers (e.g., CLI, services)."
+    ],
+    "outOfScope": [
+      "Runtime logic, data validation, or business rules.",
+      "Service orchestration, task execution, or engine implementation.",
+      "Direct database access or persistence operations."
+    ],
+    "invariants": [
+      "Exports only TypeScript interfaces and type definitions.",
+      "Serves as a stable contract for cross-cutting data shapes.",
+      "Must not contain executable code or side effects."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Decouple system components by providing a centralized, versioned type contract for core data domains.",
+      "recentChangeIntent": "No recent changes to this specific module indicated by the git context; the recent commit focuses on CLI modularization and infra service decoupling."
+    },
+    "publicSurface": [
+      "FileRecord",
+      "FileStatusRecord",
+      "FileCommitRecord",
+      "DriftEvent",
+      "UsageSummaryRow",
+      "UsageTotals",
+      "ViolationRecord",
+      "GlobalStatus"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure Type Definitions module providing stable data contracts for the indexing, audit, and status reporting domains.",
+        "responsibilities": [
+          "Defines TypeScript interfaces representing core data structures for file metadata (FileRecord), file status (FileStatusRecord), commit associations (FileCommitRecord), and audit events (DriftEvent).",
+          "Defines data shapes for system usage analytics (UsageSummaryRow, UsageTotals) and rule violation tracking (ViolationRecord).",
+          "Defines the aggregate system status snapshot interface (GlobalStatus).",
+          "Provides shared type contracts to decouple data producers (e.g., indexers, auditors) from consumers (e.g., CLI, services)."
+        ],
+        "outOfScope": [
+          "Runtime logic, data validation, or business rules.",
+          "Service orchestration, task execution, or engine implementation.",
+          "Direct database access or persistence operations."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "FileRecord",
+        "kind": "interface",
+        "signature": "interface FileRecord"
+      },
+      {
+        "name": "FileStatusRecord",
+        "kind": "interface",
+        "signature": "interface FileStatusRecord"
+      },
+      {
+        "name": "FileCommitRecord",
+        "kind": "interface",
+        "signature": "interface FileCommitRecord"
+      },
+      {
+        "name": "DriftEvent",
+        "kind": "interface",
+        "signature": "interface DriftEvent"
+      },
+      {
+        "name": "UsageSummaryRow",
+        "kind": "interface",
+        "signature": "interface UsageSummaryRow"
+      },
+      {
+        "name": "UsageTotals",
+        "kind": "interface",
+        "signature": "interface UsageTotals"
+      },
+      {
+        "name": "ViolationRecord",
+        "kind": "interface",
+        "signature": "interface ViolationRecord"
+      },
+      {
+        "name": "GlobalStatus",
+        "kind": "interface",
+        "signature": "interface GlobalStatus"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "FileRecord",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/db/types.ts#"
+      },
+      {
+        "name": "FileStatusRecord",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/db/types.ts#"
+      },
+      {
+        "name": "FileCommitRecord",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/db/types.ts#"
+      },
+      {
+        "name": "DriftEvent",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/db/types.ts#"
+      },
+      {
+        "name": "UsageSummaryRow",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/db/types.ts#"
+      },
+      {
+        "name": "UsageTotals",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/db/types.ts#"
+      },
+      {
+        "name": "ViolationRecord",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/db/types.ts#"
+      },
+      {
+        "name": "GlobalStatus",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/db/types.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 8,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SpineUnit"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:38.732Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

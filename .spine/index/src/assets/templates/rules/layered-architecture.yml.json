@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/assets/templates/rules/layered-architecture.yml",
+    "contentHash": "000856d55e2802e1885736b32e10d68b1c1a98abc4d1f7f1a126262f0ab4cc6a",
+    "semanticHash": "d2f93169429b313c21d5bc19af556bee2807dfa2c6d3e367ad39dcb26868ac37",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": "src/assets/templates/rules"
+  },
+  "semantic": {
+    "role": "Architectural constraint specification for the ArchSpine project's layered architecture",
+    "responsibilities": [
+      "Defining the five-layer model: CLI, services, core, tasks, engines, and infra",
+      "Specifying boundary rules and dependency constraints for each layer",
+      "Enforcing separation of concerns between entrypoints, orchestration, pipeline logic, and infrastructure"
+    ],
+    "outOfScope": [
+      "Implementation details of specific modules or functions",
+      "Configuration or deployment instructions",
+      "User-facing documentation or API references"
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This document establishes and enforces the layered architecture constraints for the ArchSpine repository. It defines clear boundaries between CLI entrypoints, service orchestration, core pipeline contracts, task stages, engines, and infrastructure facades. The goal is to maintain a modular, testable, and reusable codebase where each layer has well-defined responsibilities and dependencies.",
+        "context_and_audience": "This document is intended for all contributors to the ArchSpine project, particularly developers working on CLI commands, service orchestration, pipeline logic, or infrastructure modules. It serves as a reference for understanding the architectural model and ensuring that new code respects the separation of concerns. The rules are enforced via automated linting or review processes.",
+        "key_takeaways": [
+          "CLI modules must remain thin entrypoints and must not absorb pipeline or persistence logic.",
+          "Services orchestrate core, tasks, engines, and infra; view-specific services belong under src/services/view/.",
+          "Core modules define pipeline contracts and must not depend on CLI entry code.",
+          "Task modules implement stage-local work and must not take over CLI parsing or unrelated orchestration.",
+          "Engines provide reusable analysis/transformation logic and must stay decoupled from presentation and orchestration.",
+          "Infra modules expose stable facades; callers should prefer public facades over deep private paths."
+        ]
+      },
+      "Simplified Chinese": {
+        "purpose": "本文档为 ArchSpine 仓库建立并强制执行分层架构约束。它明确定义了 CLI 入口、服务编排、核心流水线契约、任务阶段、引擎和基础设施外观之间的边界。目标是维护一个模块化、可测试且可复用的代码库，其中每一层都有明确的职责和依赖关系。",
+        "context_and_audience": "本文档面向 ArchSpine 项目的所有贡献者，特别是从事 CLI 命令、服务编排、流水线逻辑或基础设施模块开发的开发者。它作为理解架构模型并确保新代码遵循关注点分离原则的参考。相关规则通过自动化 lint 或审查流程强制执行。",
+        "key_takeaways": [
+          "CLI 模块必须保持为薄入口，不得吸收流水线或持久化逻辑。",
+          "服务层负责编排核心、任务、引擎和基础设施；视图相关的服务应位于 src/services/view/ 下。",
+          "核心模块定义流水线契约，不得依赖 CLI 入口代码。",
+          "任务模块实现阶段本地工作，不得接管 CLI 命令解析或不相关的服务编排。",
+          "引擎提供可复用的分析和转换逻辑，必须与表示层和编排层解耦。",
+          "基础设施模块暴露稳定的外观接口；调用者应优先使用公共外观，而非深入私有实现路径。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:35.982Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

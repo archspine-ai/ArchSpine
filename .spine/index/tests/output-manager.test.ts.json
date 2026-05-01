@@ -1,0 +1,202 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/output-manager.test.ts",
+    "contentHash": "241b223bf4b8461af6e2185946f4193a93657ae7315395b3d35e59ca53b50816",
+    "skeletonHash": "7d9c60ee3b96bed155af04e16cbfa42fe780917e6d5360d0ea608148f6ab4627",
+    "semanticHash": "9c6f3db2314b517f28f1368b4799f1f1f0ca2180d74fb60e362f9a9973615439",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Unit test suite for the OutputManager class, specifically testing the pruneAtlasLocales method.",
+    "responsibilities": [
+      "Sets up a temporary directory with a .spine/atlas structure containing locale subdirectories (English, Simplified Chinese) and sample files.",
+      "Instantiates OutputManager with the temporary directory path.",
+      "Calls OutputManager.pruneAtlasLocales with a set containing only 'Simplified Chinese' to test locale pruning logic.",
+      "Asserts that the 'English' locale directory is removed after pruning.",
+      "Asserts that the 'Simplified Chinese' locale directory is preserved after pruning.",
+      "Cleans up the temporary directory after each test via afterEach hook."
+    ],
+    "outOfScope": [
+      "Integration tests with real file systems beyond temporary directories.",
+      "Performance or stress testing of OutputManager.",
+      "Testing other OutputManager methods (e.g., write, read, etc.).",
+      "End-to-end or system-level tests."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts (per rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provides automated regression coverage for the OutputManager's locale pruning functionality, ensuring that the atlas locale directory cleanup works correctly.",
+      "recentChangeIntent": "The git commit message 'fast fast' is too vague to derive a specific intent; no meaningful change intent can be inferred from it."
+    },
+    "publicSurface": [
+      "describe('output manager', ...)",
+      "afterEach(() => { ... })",
+      "it('should prune atlas locales', ...)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Unit test suite for the OutputManager class, specifically testing the pruneAtlasLocales method.",
+        "responsibilities": [
+          "Sets up a temporary directory with a .spine/atlas structure containing locale subdirectories (English, Simplified Chinese) and sample files.",
+          "Instantiates OutputManager with the temporary directory path.",
+          "Calls OutputManager.pruneAtlasLocales with a set containing only 'Simplified Chinese' to test locale pruning logic.",
+          "Asserts that the 'English' locale directory is removed after pruning.",
+          "Asserts that the 'Simplified Chinese' locale directory is preserved after pruning.",
+          "Cleans up the temporary directory after each test via afterEach hook."
+        ],
+        "outOfScope": [
+          "Integration tests with real file systems beyond temporary directories.",
+          "Performance or stress testing of OutputManager.",
+          "Testing other OutputManager methods (e.g., write, read, etc.).",
+          "End-to-end or system-level tests."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "OutputManager 类的单元测试套件，专门测试 pruneAtlasLocales 方法。",
+        "responsibilities": [
+          "创建临时目录，其中包含 .spine/atlas 结构以及语言子目录（English、Simplified Chinese）和示例文件。",
+          "使用临时目录路径实例化 OutputManager。",
+          "调用 OutputManager.pruneAtlasLocales 方法，传入仅包含 'Simplified Chinese' 的集合，以测试语言区域清理逻辑。",
+          "断言 'English' 语言目录在清理后被删除。",
+          "断言 'Simplified Chinese' 语言目录在清理后仍然保留。",
+          "通过 afterEach 钩子在每个测试后清理临时目录。"
+        ],
+        "outOfScope": [
+          "超出临时目录范围的集成测试。",
+          "OutputManager 的性能或压力测试。",
+          "测试 OutputManager 的其他方法（如 write、read 等）。",
+          "端到端或系统级测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/output.js'",
+        "symbols": [
+          "OutputManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/output.js",
+        "relation": "import",
+        "symbols": [
+          "OutputManager"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.695Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

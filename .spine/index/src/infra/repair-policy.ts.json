@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/repair-policy.ts",
+    "contentHash": "d67801102ffba4916d8c809eb82cc1b41133953c23ed378f45fc08e5170b38cc",
+    "skeletonHash": "81b08e91dd232831926729e4a86fdca99e6a20ae731e54917202ec2faf44321d",
+    "semanticHash": "29a24473396f08bb8df4bd620173957e6e01bcba93ab298d087536f1e4ace8d6",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "TypeScript module defining the repair policy decision logic for violation handling in the ArchSpine sync system.",
+    "responsibilities": [
+      "Defines the RepairPolicyAction union type for possible repair strategies (targeted-repair, prompt-full-rebuild, require-full-rebuild).",
+      "Defines the RepairPolicyDecision interface encapsulating the decision outcome with violation metrics and targeted files.",
+      "Implements logic to classify violation paths and determine appropriate repair actions based on path mapping.",
+      "Processes changed, added, and removed paths from violation reports to build targeted repair sets."
+    ],
+    "outOfScope": [
+      "Direct file system I/O or network operations.",
+      "User interface rendering or interaction.",
+      "Low-level infrastructure orchestration or service management."
+    ],
+    "invariants": [
+      "Exports only type definitions and pure decision logic.",
+      "Relies on imported violation report types for input structure.",
+      "Operates on path strings to produce repair decisions without side effects."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Encapsulate repair strategy selection as a configurable policy to enable targeted sync repairs and reduce full rebuild overhead.",
+      "recentChangeIntent": "Addition of repair policy and experimental view layer as part of sync system enhancements."
+    },
+    "publicSurface": [
+      "RepairPolicyAction",
+      "RepairPolicyDecision"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "TypeScript module defining the repair policy decision logic for violation handling in the ArchSpine sync system.",
+        "responsibilities": [
+          "Defines the RepairPolicyAction union type for possible repair strategies such as targeted-repair, prompt-full-rebuild, and require-full-rebuild.",
+          "Defines the RepairPolicyDecision interface that encapsulates the decision outcome, including violation counts and targeted file lists.",
+          "Implements logic to classify violation paths and determine appropriate repair actions based on path mapping.",
+          "Processes changed, added, and removed paths from violation reports to build targeted repair sets."
+        ],
+        "outOfScope": [
+          "Direct file system I/O or network operations.",
+          "User interface rendering or interaction.",
+          "Low-level infrastructure orchestration or service management."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "evaluateRepairPolicy",
+        "kind": "function",
+        "signature": "evaluateRepairPolicy(report: ProtectedOutputMutationReport)"
+      },
+      {
+        "name": "RepairPolicyDecision",
+        "kind": "interface",
+        "signature": "interface RepairPolicyDecision"
+      },
+      {
+        "name": "RepairPolicyAction",
+        "kind": "type",
+        "signature": "type RepairPolicyAction"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "evaluateRepairPolicy",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/repair-policy.ts#"
+      },
+      {
+        "name": "RepairPolicyDecision",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/repair-policy.ts#"
+      },
+      {
+        "name": "RepairPolicyAction",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/repair-policy.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 3,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./spine-gate.js",
+        "relation": "import",
+        "symbols": [
+          "ProtectedOutputMutationReport"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/cli/commands/sync.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:40.321Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/repository-artifacts.ts",
+    "contentHash": "3c984fb88ceabb373085aa613953ca1cc22f015d5d2d38e08fdee95bea338717",
+    "skeletonHash": "a71115c8dde892ac2cd152814e580449192b4aeec123e0f916a6c2dc28139a8b",
+    "semanticHash": "4c7ef19ff0e39824f67c9c1627c3fee75dbc85727d5637d159caee9d5230924e",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure utility module providing low-level file system and Git operations for managed block reading and repository state inspection.",
+    "responsibilities": [
+      "Reads managed file blocks defined by start/end markers from the filesystem using synchronous file operations.",
+      "Executes Git commands synchronously via execFileSync to retrieve repository status and file lists.",
+      "Provides path resolution and existence checks for repository files using path.join and fs.existsSync."
+    ],
+    "outOfScope": [
+      "Service orchestration or task execution logic.",
+      "Engine-level scanning or processing pipelines.",
+      "High-level business logic or domain-specific operations."
+    ],
+    "invariants": [
+      "Must not import or depend on service, task, or engine modules to avoid absorbing orchestration concerns (per rule infra-facade-imports).",
+      "Must expose stable low-level capabilities and facades for callers."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, low-level infrastructure utility for file system and Git operations, isolating these concerns from higher-level service and engine layers.",
+      "recentChangeIntent": "Refactor CLI to extract repository and LLM admin services, which may involve moving or consolidating utility functions like these into dedicated infrastructure modules."
+    },
+    "publicSurface": [
+      "ManagedBlockMarkers (interface)",
+      "readManagedFileBlock (function, inferred)",
+      "Git command execution functions (inferred)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure utility module providing low-level file system and Git operations for managed block reading and repository state inspection.",
+        "responsibilities": [
+          "Reads managed file blocks defined by start/end markers from the filesystem using synchronous file operations.",
+          "Executes Git commands synchronously via execFileSync to retrieve repository status and file lists.",
+          "Provides path resolution and existence checks for repository files using path.join and fs.existsSync."
+        ],
+        "outOfScope": [
+          "Service orchestration or task execution logic.",
+          "Engine-level scanning or processing pipelines.",
+          "High-level business logic or domain-specific operations."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施工具模块，提供底层文件系统和 Git 操作，用于读取受管理的文件块以及检查仓库状态。",
+        "responsibilities": [
+          "通过同步文件操作读取由起始/结束标记定义的受管理文件块。",
+          "通过 execFileSync 同步执行 Git 命令以获取仓库状态和文件列表。",
+          "使用 path.join 和 fs.existsSync 提供仓库文件的路径解析和存在性检查。"
+        ],
+        "outOfScope": [
+          "服务编排或任务执行逻辑。",
+          "引擎级别的扫描或处理流水线。",
+          "高层业务逻辑或领域特定操作。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "readManagedFileBlock",
+        "kind": "function",
+        "signature": "readManagedFileBlock(\n  filePath: string,\n  markers: ManagedBlockMarkers,\n)"
+      },
+      {
+        "name": "managedBlockIncludesAll",
+        "kind": "function",
+        "signature": "managedBlockIncludesAll(block: string | null, requiredEntries: string[])"
+      },
+      {
+        "name": "listTrackedSnapshotFiles",
+        "kind": "function",
+        "signature": "listTrackedSnapshotFiles(rootDir: string)"
+      },
+      {
+        "name": "snapshotOutputsPresent",
+        "kind": "function",
+        "signature": "snapshotOutputsPresent(rootDir: string)"
+      },
+      {
+        "name": "ManagedBlockMarkers",
+        "kind": "interface",
+        "signature": "interface ManagedBlockMarkers"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "readManagedFileBlock",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/repository-artifacts.ts#"
+      },
+      {
+        "name": "managedBlockIncludesAll",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/repository-artifacts.ts#"
+      },
+      {
+        "name": "listTrackedSnapshotFiles",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/repository-artifacts.ts#"
+      },
+      {
+        "name": "snapshotOutputsPresent",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/repository-artifacts.ts#"
+      },
+      {
+        "name": "ManagedBlockMarkers",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/repository-artifacts.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 5,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execFileSync"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:40.357Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

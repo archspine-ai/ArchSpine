@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db/repositories/usage.ts",
+    "contentHash": "4a09021e3a4f46a2ada0d28508baf7a33420b7806a41f7efc9cbdd32dca6979e",
+    "skeletonHash": "cceb818449dcbe3f5da3dc12bd3eb28d054840ee850f85d997313c9069ef7154",
+    "semanticHash": "f9539358a49853d13a05c1ec62a98981bdeb3531c64fbcadd331c3e66d4ebc14",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/db/repositories"
+  },
+  "semantic": {
+    "role": "Infrastructure Data Access Object (DAO) for persisting and querying token usage metrics in the SQLite database.",
+    "responsibilities": [
+      "Inserts token usage records (input, output, total) into the usage_logs table with sync metadata.",
+      "Provides aggregated summary queries for recent usage grouped by date and sync mode.",
+      "Provides total lifetime usage statistics across all recorded sessions."
+    ],
+    "outOfScope": [
+      "Orchestrating service/task/engine workflows",
+      "Exposing high-level infrastructure facades",
+      "Handling authentication or authorization",
+      "Managing database connection pooling or transactions beyond simple queries"
+    ],
+    "invariants": [
+      "Depends on better-sqlite3 Database instance for all operations",
+      "Exports pure functions that accept a database connection as parameter",
+      "Queries are static SQL strings prepared at call time",
+      "Uses ISO date strings for date column storage"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Encapsulate database interactions for usage metrics to separate concerns and enable testability.",
+      "recentChangeIntent": "No recent changes detected in this module; recent commit 'refactor: modularize CLI and decouple core infra services' may affect surrounding infrastructure but not this DAO directly."
+    },
+    "publicSurface": [
+      "recordUsage(db, mode, input, output, total): void",
+      "getRecentUsageSummary(db): UsageSummaryRow[]",
+      "getLifetimeUsageTotals(db): UsageTotals"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure Data Access Object (DAO) for persisting and querying token usage metrics in the SQLite database.",
+        "responsibilities": [
+          "Inserts token usage records (input, output, total) into the usage_logs table with sync metadata.",
+          "Provides aggregated summary queries for recent usage grouped by date and sync mode.",
+          "Provides total lifetime usage statistics across all recorded sessions."
+        ],
+        "outOfScope": [
+          "Orchestrating service/task/engine workflows",
+          "Exposing high-level infrastructure facades",
+          "Handling authentication or authorization",
+          "Managing database connection pooling or transactions beyond simple queries"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "recordUsage",
+        "kind": "function",
+        "signature": "recordUsage(\n  db: Database.Database,\n  mode: string,\n  input: number,\n  output: number,\n  total: number,\n)"
+      },
+      {
+        "name": "getUsageSummary",
+        "kind": "function",
+        "signature": "getUsageSummary(db: Database.Database)"
+      },
+      {
+        "name": "getTotalUsage",
+        "kind": "function",
+        "signature": "getTotalUsage(db: Database.Database)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "recordUsage",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/usage.ts#"
+      },
+      {
+        "name": "getUsageSummary",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/usage.ts#"
+      },
+      {
+        "name": "getTotalUsage",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/usage.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 3,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "better-sqlite3",
+        "relation": "import",
+        "symbols": [
+          "Database"
+        ]
+      },
+      {
+        "targetPath": "../types.js",
+        "relation": "import",
+        "symbols": [
+          "UsageSummaryRow",
+          "UsageTotals"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:38.589Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/usage.ts",
+    "contentHash": "336ea48d7cb3168eec98edf18f78d6d427c3b29064d92c9d788766052ccfe60a",
+    "skeletonHash": "6a03b986ba974171db4b8a0b9a78628be7ca6e1c13637d3174b69e0827fa2894",
+    "semanticHash": "0e1426f1199687714205b576586b7ebdbb019801daa56bc9831457afd6c58336",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command entry point for executing usage reports.",
+    "responsibilities": [
+      "Defines the command-line interface options for the usage command via the ExecuteUsageCommandOptions interface.",
+      "Delegates execution to the usage engine (runUsageReport) with the provided root directory and default runtime I/O."
+    ],
+    "outOfScope": [
+      "Pipeline or persistence logic (belongs in engines, services, core, or infra).",
+      "Business logic for generating usage reports.",
+      "Runtime I/O implementation or configuration."
+    ],
+    "invariants": [
+      "Must remain a thin adapter, delegating all substantive work to the usage engine.",
+      "Must not absorb pipeline, persistence, or business logic from engines or infra."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Separate CLI command routing from core logic to keep runtime behavior reusable and testable outside the CLI.",
+      "recentChangeIntent": "No recent changes detected in this file; unrelated to the commit 'feat: restore llm-authored markdown generation'."
+    },
+    "publicSurface": [
+      "ExecuteUsageCommandOptions interface",
+      "executeUsageCommand function"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command entry point for executing usage reports.",
+        "responsibilities": [
+          "Defines the command-line interface options for the usage command via the ExecuteUsageCommandOptions interface.",
+          "Delegates execution to the usage engine (runUsageReport) with the provided root directory and default runtime I/O."
+        ],
+        "outOfScope": [
+          "Pipeline or persistence logic (belongs in engines, services, core, or infra).",
+          "Business logic for generating usage reports.",
+          "Runtime I/O implementation or configuration."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../engines/usage.js'",
+        "symbols": [
+          "runUsageReport"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeUsageCommand",
+        "kind": "function",
+        "signature": "executeUsageCommand({ rootDir }: ExecuteUsageCommandOptions)"
+      },
+      {
+        "name": "ExecuteUsageCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteUsageCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeUsageCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/usage.ts#"
+      },
+      {
+        "name": "ExecuteUsageCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/usage.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../engines/usage.js",
+        "relation": "import",
+        "symbols": [
+          "runUsageReport"
+        ]
+      },
+      {
+        "targetPath": "../../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:36.823Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

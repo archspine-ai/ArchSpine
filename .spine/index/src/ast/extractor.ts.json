@@ -1,0 +1,251 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/ast/extractor.ts",
+    "contentHash": "29cf9dd98b74605a16434d839299491e1beeb495dd1db768c63a4a66cd715956",
+    "skeletonHash": "29eb9c3dd5263c02d5c4d32daca4e8bc7692e619dee2312f6b0de3fc486d7cd6",
+    "semanticHash": "c6c366caaa502e41f5869c3df17bddbc4ba91f9f7a8af6ce327e21f580578deb",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/ast"
+  },
+  "semantic": {
+    "role": "AST parsing service that extracts structural symbols and imports from source code using language-specific rule sets loaded from YAML configuration files.",
+    "responsibilities": [
+      "Loads and caches language-specific AST extraction rules from YAML configuration files located in a rules directory.",
+      "Resolves the appropriate language grammar for a given file path using LangRegistry.",
+      "Parses source code content using ast-grep with the resolved language grammar.",
+      "Extracts exported symbols (classes, functions, variables, interfaces, types) and their signatures from the AST.",
+      "Extracts import statements and their symbols from the AST.",
+      "Constructs a FileSkeleton object containing the extracted symbols, imports, and structural metadata."
+    ],
+    "outOfScope": [
+      "Does not perform semantic analysis or type checking of the extracted symbols.",
+      "Does not handle non-source code files (e.g., binary, images).",
+      "Does not manage the lifecycle or persistence of extracted skeletons."
+    ],
+    "invariants": [
+      "Each language must have a corresponding YAML rule file in the rules directory.",
+      "The LangRegistry must be initialized before ASTExtractor can resolve languages.",
+      "AST extraction rules must follow the expected RuleSet schema."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable, language-agnostic AST extraction layer for the ArchSpine mirror system to enable structural analysis of source code.",
+      "recentChangeIntent": "Fix lint warnings and type errors, and add CI workflow for code quality assurance."
+    },
+    "publicSurface": [
+      "ASTExtractor class",
+      "ExtractedSymbol interface",
+      "ExtractedImport interface",
+      "FileSkeleton interface"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "AST parsing service that extracts structural symbols and imports from source code using language-specific rule sets loaded from YAML configuration files.",
+        "responsibilities": [
+          "Loads and caches language-specific AST extraction rules from YAML configuration files located in a rules directory.",
+          "Resolves the appropriate language grammar for a given file path using LangRegistry.",
+          "Parses source code content using ast-grep with the resolved language grammar.",
+          "Extracts exported symbols (classes, functions, variables, interfaces, types) and their signatures from the AST.",
+          "Extracts import statements and their symbols from the AST.",
+          "Constructs a FileSkeleton object containing the extracted symbols, imports, and structural metadata."
+        ],
+        "outOfScope": [
+          "Does not perform semantic analysis or type checking of the extracted symbols.",
+          "Does not handle non-source code files (e.g., binary, images).",
+          "Does not manage the lifecycle or persistence of extracted skeletons."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "AST解析服务，通过加载YAML配置文件中的语言特定规则集，从源代码中提取结构符号和导入信息。",
+        "responsibilities": [
+          "从规则目录加载并缓存语言特定的AST提取规则（YAML格式）。",
+          "使用LangRegistry为给定文件路径解析合适的语言语法。",
+          "使用ast-grep和解析后的语言语法解析源代码内容。",
+          "从AST中提取导出的符号（类、函数、变量、接口、类型）及其签名。",
+          "从AST中提取导入语句及其符号。",
+          "构建包含提取的符号、导入信息和结构元数据的FileSkeleton对象。"
+        ],
+        "outOfScope": [
+          "不执行提取符号的语义分析或类型检查。",
+          "不处理非源代码文件（如二进制文件、图片）。",
+          "不管理提取骨架的生命周期或持久化。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'@ast-grep/napi'",
+        "symbols": [
+          "parse"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./lang-registry.js'",
+        "symbols": [
+          "LangRegistry"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'js-yaml'",
+        "symbols": [
+          "yaml"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "ASTExtractor",
+        "kind": "class",
+        "signature": "class ASTExtractor"
+      },
+      {
+        "name": "ExtractedSymbol",
+        "kind": "interface",
+        "signature": "interface ExtractedSymbol"
+      },
+      {
+        "name": "ExtractedImport",
+        "kind": "interface",
+        "signature": "interface ExtractedImport"
+      },
+      {
+        "name": "FileSkeleton",
+        "kind": "interface",
+        "signature": "interface FileSkeleton"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ASTExtractor",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/ast/extractor.ts#"
+      },
+      {
+        "name": "ExtractedSymbol",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/ast/extractor.ts#"
+      },
+      {
+        "name": "ExtractedImport",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/ast/extractor.ts#"
+      },
+      {
+        "name": "FileSkeleton",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/ast/extractor.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 4,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "@ast-grep/napi",
+        "relation": "import",
+        "symbols": [
+          "parse"
+        ]
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "./lang-registry.js",
+        "relation": "import",
+        "symbols": [
+          "LangRegistry"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "js-yaml",
+        "relation": "import",
+        "symbols": [
+          "yaml"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:56:54.890Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

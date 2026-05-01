@@ -1,0 +1,215 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/agent-host-init.test.ts",
+    "contentHash": "c2bc2448444604be4815efe5d08beb3469fd2e748c2f1f92226f2eea6a75a768",
+    "skeletonHash": "1ad85544e2234bd71c972d947d8fe85e1463495ff8833906acbc4b383e5d22a7",
+    "semanticHash": "2b40f030262d393ed07fbbb9071959a27d65a91d4c19f758c4431512337bad19",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for the ArchSpine repository bootstrap and managed file synchronization system.",
+    "responsibilities": [
+      "Tests the synchronization of managed repository files (agent instructions, gitattributes, gitignore, search ignore, spine ignore) via sync* functions.",
+      "Validates the injection and removal of ArchSpine scripts in agent instructions files.",
+      "Verifies the removal of managed files (agent instructions, gitattributes, gitignore, search ignore, spine ignore) during cleanup.",
+      "Tests the full repository bootstrap workflow using runRepositoryBootstrap with a Config instance.",
+      "Isolates test state using temporary directories (os.tmpdir, fs.mkdtempSync) to prevent side effects.",
+      "Asserts correct file content, presence, and absence after synchronization and cleanup operations."
+    ],
+    "outOfScope": [
+      "Does not test error handling or edge cases for invalid configurations.",
+      "Does not cover integration with external systems or real file system permissions.",
+      "Does not test performance or concurrency aspects of the synchronization system."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (Rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide comprehensive test coverage for the repository bootstrap and managed file synchronization subsystem, ensuring idempotent sync operations and clean removal of managed artifacts.",
+      "recentChangeIntent": "feat: tighten schema handling and add try preview — This test suite validates the synchronization logic that may be affected by schema changes, ensuring managed files are correctly written and removed."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for the ArchSpine repository bootstrap and managed file synchronization system.",
+        "responsibilities": [
+          "Tests the synchronization of managed repository files (agent instructions, gitattributes, gitignore, search ignore, spine ignore) via sync* functions.",
+          "Validates the injection and removal of ArchSpine scripts in agent instructions files.",
+          "Verifies the removal of managed files (agent instructions, gitattributes, gitignore, search ignore, spine ignore) during cleanup.",
+          "Tests the full repository bootstrap workflow using runRepositoryBootstrap with a Config instance.",
+          "Isolates test state using temporary directories (os.tmpdir, fs.mkdtempSync) to prevent side effects.",
+          "Asserts correct file content, presence, and absence after synchronization and cleanup operations."
+        ],
+        "outOfScope": [
+          "Does not test error handling or edge cases for invalid configurations.",
+          "Does not cover integration with external systems or real file system permissions.",
+          "Does not test performance or concurrency aspects of the synchronization system."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 仓库引导和托管文件同步系统的 Vitest 单元测试套件。",
+        "responsibilities": [
+          "测试通过 sync* 函数同步托管仓库文件（agent instructions、gitattributes、gitignore、search ignore、spine ignore）的功能。",
+          "验证在 agent instructions 文件中注入和移除 ArchSpine 脚本的操作。",
+          "验证清理过程中托管文件（agent instructions、gitattributes、gitignore、search ignore、spine ignore）的移除操作。",
+          "使用 runRepositoryBootstrap 和 Config 实例测试完整的仓库引导工作流程。",
+          "使用临时目录（os.tmpdir、fs.mkdtempSync）隔离测试状态，防止副作用。",
+          "断言同步和清理操作后文件的正确内容、存在状态和缺失状态。"
+        ],
+        "outOfScope": [
+          "不测试无效配置的错误处理或边界情况。",
+          "不涵盖与外部系统的集成或真实文件系统权限。",
+          "不测试同步系统的性能或并发方面。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "beforeEach",
+          "afterEach"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/utils/agent-instructions.js'",
+        "symbols": [
+          "injectArchSpineScripts",
+          "removeArchSpineScripts",
+          "removeManagedAgentInstructionsFile",
+          "removeManagedGitAttributesFile",
+          "removeManagedGitIgnoreFile",
+          "removeManagedSearchIgnoreFile",
+          "removeManagedSpineIgnoreFile",
+          "syncGitAttributesFile",
+          "syncGitIgnoreFile",
+          "syncAgentInstructionsFile",
+          "syncSearchIgnoreFile",
+          "syncSpineIgnoreFile"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/cli/init/repository-bootstrap.js'",
+        "symbols": [
+          "runRepositoryBootstrap"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../src/utils/agent-instructions.js",
+        "relation": "import",
+        "symbols": [
+          "injectArchSpineScripts",
+          "removeArchSpineScripts",
+          "removeManagedAgentInstructionsFile",
+          "removeManagedGitAttributesFile",
+          "removeManagedGitIgnoreFile",
+          "removeManagedSearchIgnoreFile",
+          "removeManagedSpineIgnoreFile",
+          "syncGitAttributesFile",
+          "syncGitIgnoreFile",
+          "syncAgentInstructionsFile",
+          "syncSearchIgnoreFile",
+          "syncSpineIgnoreFile"
+        ]
+      },
+      {
+        "targetPath": "../src/cli/init/repository-bootstrap.js",
+        "relation": "import",
+        "symbols": [
+          "runRepositoryBootstrap"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:42.557Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

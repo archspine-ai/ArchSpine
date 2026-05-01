@@ -1,0 +1,206 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/god.ts",
+    "contentHash": "185dfccc9ffea55cb9c7b559096bfe9bbca33bcfda76518f41c1124d1b07995d",
+    "skeletonHash": "5cabf5ac02b61ffc161749cd069ecf346fa8fcaef8582e5fdb19a59773a38035",
+    "semanticHash": "fba93f14a788406181e24c250a88c297d9e453c02aae471e65883bfee337b89d",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "CLI command orchestrator for generating a comprehensive architectural dossier (God Mode report) from the .spine/index directory.",
+    "responsibilities": [
+      "Reads and processes SpineFolderUnit and SpineUnit entries from the .spine/index directory using index-reader utilities.",
+      "Transforms file metadata into a structured ledger (FileLedgerEntry) with architectural roles, responsibilities, out-of-scope, invariants, public surface, and dependency information.",
+      "Generates a formatted Markdown report summarizing the entire codebase's architecture, including file counts, role distribution, and per-file details.",
+      "Outputs the report to a designated location using the OutputManager."
+    ],
+    "outOfScope": [
+      "Does not perform actual code analysis or AST parsing of source files.",
+      "Does not execute or validate the architectural rules defined in the repository.",
+      "Does not handle version control or git metadata.",
+      "Does not provide interactive or real-time feedback."
+    ],
+    "invariants": [
+      "Engine modules should provide reusable analysis and transformation logic without importing CLI entrypoints, and should stay decoupled from service-level orchestration where practical."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized command to generate a comprehensive architectural dossier (God Mode report) by reading the .spine/index directory and transforming file metadata into a structured Markdown report.",
+      "recentChangeIntent": "Fix lint warnings, type errors, and add CI workflow (from git commit efb2705). No direct impact on this file's logic."
+    },
+    "publicSurface": [
+      "runGodMode(rootDir: string): { outputPath: string }"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command orchestrator for generating a comprehensive architectural dossier (God Mode report) from the .spine/index directory.",
+        "responsibilities": [
+          "Reads and processes SpineFolderUnit and SpineUnit entries from the .spine/index directory using index-reader utilities.",
+          "Transforms file metadata into a structured ledger (FileLedgerEntry) with architectural roles, responsibilities, out-of-scope, invariants, public surface, and dependency information.",
+          "Generates a formatted Markdown report summarizing the entire codebase's architecture, including file counts, role distribution, and per-file details.",
+          "Outputs the report to a designated location using the OutputManager."
+        ],
+        "outOfScope": [
+          "Does not perform actual code analysis or AST parsing of source files.",
+          "Does not execute or validate the architectural rules defined in the repository.",
+          "Does not handle version control or git metadata.",
+          "Does not provide interactive or real-time feedback."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "CLI 命令编排器，用于从 .spine/index 目录生成全面的架构档案（上帝模式报告）。",
+        "responsibilities": [
+          "使用 index-reader 工具读取并处理 .spine/index 目录中的 SpineFolderUnit 和 SpineUnit 条目。",
+          "将文件元数据转换为结构化账本（FileLedgerEntry），包含架构角色、职责、范围外、不变性、公共表面和依赖信息。",
+          "生成格式化的 Markdown 报告，总结整个代码库的架构，包括文件计数、角色分布和每个文件的详细信息。",
+          "使用 OutputManager 将报告输出到指定位置。"
+        ],
+        "outOfScope": [
+          "不执行源代码的实际分析或 AST 解析。",
+          "不执行或验证仓库中定义的架构规则。",
+          "不处理版本控制或 git 元数据。",
+          "不提供交互式或实时反馈。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../infra/output.js'",
+        "symbols": [
+          "OutputManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "FileKind",
+          "SpineFolderUnit",
+          "SpineProjectUnit",
+          "SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/index-reader.js'",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "runGodMode",
+        "kind": "function",
+        "signature": "runGodMode(rootDir: string)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "runGodMode",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/god.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../infra/output.js",
+        "relation": "import",
+        "symbols": [
+          "OutputManager"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "FileKind",
+          "SpineFolderUnit",
+          "SpineProjectUnit",
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "../infra/index-reader.js",
+        "relation": "import",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:56:57.739Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

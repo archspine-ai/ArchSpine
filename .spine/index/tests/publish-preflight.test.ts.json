@@ -1,0 +1,245 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/publish-preflight.test.ts",
+    "contentHash": "da610b0f4e0798517cacedc60a8bb68354a338e57136a94f40c7f0a3f42ce205",
+    "skeletonHash": "68726b350c6fc47e45e8eba5c1c7593f3506b049a77ba105f5e35eaae9698e17",
+    "semanticHash": "40596187e3da099d52fcf8f85719355c414951ebdb4a0bb8e8192fceec3a8725",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite for the publish-preflight service, validating runtime assertions and lock serialization in isolated project environments.",
+    "responsibilities": [
+      "Creates isolated temporary directories to simulate ArchSpine project root structures.",
+      "Invokes the built CLI executable to test publish runtime baseline assertions end-to-end.",
+      "Validates that assertPublishRuntimeBaseline throws appropriate ArchSpineError instances for missing or malformed spine configurations.",
+      "Tests assertPublishSnapshotReady with mocked manifest and lock files to ensure snapshot readiness checks."
+    ],
+    "outOfScope": [
+      "Unit testing of individual utility functions (e.g., serializeLockPayload) in isolation.",
+      "Testing non-publish related services or CLI commands.",
+      "Production runtime logic; this is a test suite."
+    ],
+    "invariants": [
+      "Relies on Vitest test framework for structure and assertions.",
+      "Assumes the existence of a built CLI at dist/cli/index.js.",
+      "Operates in isolated temporary directories to avoid side effects.",
+      "Follows the test-file-suffix rule (.test.ts)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure publish-preflight service behaves correctly under various project configurations and error conditions before deployment.",
+      "recentChangeIntent": "Unclear from code evidence; the vague commit message 'iZoy's great commit' does not indicate specific test modifications."
+    },
+    "publicSurface": [
+      "makeTempDir()",
+      "makeRuntimeBaseline(rootDir: string): void"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite for the publish-preflight service, validating runtime assertions and lock serialization in isolated project environments.",
+        "responsibilities": [
+          "Creates isolated temporary directories to simulate ArchSpine project root structures.",
+          "Invokes the built CLI executable to test publish runtime baseline assertions end-to-end.",
+          "Validates that assertPublishRuntimeBaseline throws appropriate ArchSpineError instances for missing or malformed spine configurations.",
+          "Tests assertPublishSnapshotReady with mocked manifest and lock files to ensure snapshot readiness checks."
+        ],
+        "outOfScope": [
+          "Unit testing of individual utility functions (e.g., serializeLockPayload) in isolation.",
+          "Testing non-publish related services or CLI commands.",
+          "Production runtime logic; this is a test suite."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/services/publish-preflight.js'",
+        "symbols": [
+          "assertPublishRuntimeBaseline",
+          "assertPublishSnapshotReady"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/utils/lock.js'",
+        "symbols": [
+          "serializeLockPayload"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 12,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execFileSync"
+        ]
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "../src/services/publish-preflight.js",
+        "relation": "import",
+        "symbols": [
+          "assertPublishRuntimeBaseline",
+          "assertPublishSnapshotReady"
+        ]
+      },
+      {
+        "targetPath": "../src/core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ]
+      },
+      {
+        "targetPath": "../src/utils/lock.js",
+        "relation": "import",
+        "symbols": [
+          "serializeLockPayload"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.906Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/utils/footprint.ts",
+    "contentHash": "f66fd38661d5c0d938ee82507d4c7826e27adee49dc956dad99a7ca90664d066",
+    "skeletonHash": "e0793366a5ce771e80c2b06fd7ad1b773711bfe5d34b7b5636040fff375e5cbc",
+    "semanticHash": "2fa86880edaeeca6bd4cd1a87428a1e31bb2a50e78b7d48c1c7073fd289863ff",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/utils"
+  },
+  "semantic": {
+    "role": "Utility module for generating deterministic structural fingerprints of source code files.",
+    "responsibilities": [
+      "Normalizes and deduplicates arrays of strings (e.g., import symbols).",
+      "Computes a stable SHA-256 hash of a JSON-serializable payload.",
+      "Calculates a canonical hash representing the structural footprint of a FileSkeleton object.",
+      "Supports semantic short-circuiting by identifying unchanged file structures."
+    ],
+    "outOfScope": [
+      "Parsing or analyzing source code syntax (relies on provided FileSkeleton).",
+      "Managing or caching fingerprints across runs.",
+      "Handling file I/O or reading from disk."
+    ],
+    "invariants": [
+      "The generated hash is deterministic for identical structural inputs.",
+      "Normalization ensures order and whitespace do not affect the hash."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, content-addressable identifier for file structures to enable efficient change detection and synchronization.",
+      "recentChangeIntent": "Supports json-only sync mode with semantic short-circuiting, likely used to skip processing of unchanged files by comparing structural hashes."
+    },
+    "publicSurface": [
+      "calculateStructuralFootprint"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Utility module for generating deterministic structural fingerprints of source code files.",
+        "responsibilities": [
+          "Normalizes and deduplicates arrays of strings (e.g., import symbols).",
+          "Computes a stable SHA-256 hash of a JSON-serializable payload.",
+          "Calculates a canonical hash representing the structural footprint of a FileSkeleton object.",
+          "Supports semantic short-circuiting by identifying unchanged file structures."
+        ],
+        "outOfScope": [
+          "Parsing or analyzing source code syntax (relies on provided FileSkeleton).",
+          "Managing or caching fingerprints across runs.",
+          "Handling file I/O or reading from disk."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'crypto'",
+        "symbols": [
+          "createHash"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "calculateStructuralFootprint",
+        "kind": "function",
+        "signature": "calculateStructuralFootprint(skeleton: FileSkeleton)"
+      },
+      {
+        "name": "calculateSemanticFootprint",
+        "kind": "function",
+        "signature": "calculateSemanticFootprint(semantic: SpineSemantic)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "calculateStructuralFootprint",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/footprint.ts#"
+      },
+      {
+        "name": "calculateSemanticFootprint",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/footprint.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "crypto",
+        "relation": "import",
+        "symbols": [
+          "createHash"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:42.379Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

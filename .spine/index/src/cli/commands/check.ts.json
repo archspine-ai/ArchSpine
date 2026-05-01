@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/check.ts",
+    "contentHash": "f86c2113efb51160b81db89480cbbe261279b84d42b722e8760e17f1b9fa8116",
+    "skeletonHash": "2752e8279020a731af20e37c5e1fc097f0de9fd1b4af313a803134cc5d2f8a39",
+    "semanticHash": "84a427cebc5d1e1b879842921c6842a26cd5cd8b1d5e6706c0724c699dc00a6f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command adapter for the 'check' operation, providing the entry point that delegates to the RuntimeService's CheckService and signals failures via structured errors.",
+    "responsibilities": [
+      "Exposes the CLI entry point for the 'check' command via the exported `executeCheckCommand` function.",
+      "Delegates core rule checking and validation to the RuntimeService's CheckService, maintaining separation of concerns.",
+      "Throws a structured ArchSpineError if the check summary indicates violations or failed files, ensuring the CLI exits with an appropriate error code."
+    ],
+    "outOfScope": [
+      "Implementing rule checking or validation logic (delegated to CheckService).",
+      "Handling persistence or file I/O for checks.",
+      "Parsing CLI arguments or configuration (assumed to be handled upstream)."
+    ],
+    "invariants": [
+      "Must remain a thin adapter; all business logic must be delegated to RuntimeService or its services.",
+      "Must not contain pipeline, engine, or infrastructure logic."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Serve as a thin CLI entrypoint adapter, ensuring separation between command routing and core runtime services.",
+      "recentChangeIntent": "Part of refactoring to establish subsystem facades and resolve layer inversions, reinforcing this module's role as a thin adapter."
+    },
+    "publicSurface": [
+      "ExecuteCheckCommandOptions interface",
+      "executeCheckCommand function"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command adapter for the 'check' operation, providing the entry point that delegates to the RuntimeService's CheckService and signals failures via structured errors.",
+        "responsibilities": [
+          "Exposes the CLI entry point for the 'check' command via the exported `executeCheckCommand` function.",
+          "Delegates core rule checking and validation to the RuntimeService's CheckService, maintaining separation of concerns.",
+          "Throws a structured ArchSpineError if the check summary indicates violations or failed files, ensuring the CLI exits with an appropriate error code."
+        ],
+        "outOfScope": [
+          "Implementing rule checking or validation logic (delegated to CheckService).",
+          "Handling persistence or file I/O for checks.",
+          "Parsing CLI arguments or configuration (assumed to be handled upstream)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../services/runtime-service.js'",
+        "symbols": [
+          "RuntimeService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeCheckCommand",
+        "kind": "function",
+        "signature": "executeCheckCommand({\n  runtimeService,\n}: ExecuteCheckCommandOptions)"
+      },
+      {
+        "name": "ExecuteCheckCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteCheckCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeCheckCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/check.ts#"
+      },
+      {
+        "name": "ExecuteCheckCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/check.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../services/runtime-service.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeService"
+        ]
+      },
+      {
+        "targetPath": "../../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:36.177Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

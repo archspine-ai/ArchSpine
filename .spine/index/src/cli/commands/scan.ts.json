@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/scan.ts",
+    "contentHash": "fcb4d639328709573bb9c6c3ac83bb4a3b1a7e64f137d7ce47307f3cb42aff28",
+    "skeletonHash": "3dbeb38c4d18e402aa783d6be1f204c18feefd5951a0981bd2099ba60a5c4432",
+    "semanticHash": "538dffa096f56eaf4f33e9f51519c52fc9d3de583451645760fcb8562abb6c23",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command handler for the 'scan' operation, orchestrating source code scanning and dry-run reporting.",
+    "responsibilities": [
+      "Defines the interface for scan command options including root directory and configuration.",
+      "Parses command-line arguments to detect the '--dry-run' flag.",
+      "Invokes the Scanner engine to perform the scanning operation.",
+      "Formats and outputs a dry-run report when the dry-run flag is present (delegating formatting to the Scanner engine)."
+    ],
+    "outOfScope": [
+      "Implementing scanning logic (delegated to Scanner engine)",
+      "Managing configuration loading (delegated to Config infra)",
+      "Persisting scan results",
+      "Handling non-CLI execution paths"
+    ],
+    "invariants": [
+      "Must remain a thin command adapter; scanning and reporting logic belongs in engines."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Separate CLI entrypoint from core scanning logic to keep runtime reusable.",
+      "recentChangeIntent": null
+    },
+    "publicSurface": [
+      "ExecuteScanCommandOptions interface",
+      "executeScanCommand function"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command handler for the 'scan' operation, orchestrating source code scanning and dry-run reporting.",
+        "responsibilities": [
+          "Defines the interface for scan command options including root directory and configuration.",
+          "Parses command-line arguments to detect the '--dry-run' flag.",
+          "Invokes the Scanner engine to perform the scanning operation.",
+          "Formats and outputs a dry-run report when the dry-run flag is present (delegating formatting to the Scanner engine)."
+        ],
+        "outOfScope": [
+          "Implementing scanning logic (delegated to Scanner engine)",
+          "Managing configuration loading (delegated to Config infra)",
+          "Persisting scan results",
+          "Handling non-CLI execution paths"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../engines/scanner.js'",
+        "symbols": [
+          "Scanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "throwCliUsage"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeScanCommand",
+        "kind": "function",
+        "signature": "executeScanCommand({\n  args,\n  rootDir,\n  config,\n}: ExecuteScanCommandOptions)"
+      },
+      {
+        "name": "ExecuteScanCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteScanCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeScanCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/scan.ts#"
+      },
+      {
+        "name": "ExecuteScanCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/scan.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../engines/scanner.js",
+        "relation": "import",
+        "symbols": [
+          "Scanner"
+        ]
+      },
+      {
+        "targetPath": "../../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "throwCliUsage"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:36.682Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

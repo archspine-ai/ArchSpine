@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/infra/llm/retry.test.ts",
+    "contentHash": "1a2a52856c835b1cfc53d95da9a71b4574d543090d7997957ad25dd0ef7e8392",
+    "skeletonHash": "56dc774021a488a0aeec7bc3965d0fb9c2696de2fd13bbb2e5c290957f067926",
+    "semanticHash": "97ad481d9efe22480a921b0a51c7d0fb3a38c4078e0fb9bd26943930c8ec1070",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/infra/llm"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for the LLM retry utility's error classification function.",
+    "responsibilities": [
+      "Validates that `isRetryableError` correctly identifies socket-related errors (e.g., 'socket hang up', ECONNRESET) as retryable.",
+      "Validates that `isRetryableError` correctly identifies 'terminated' errors as retryable.",
+      "Validates that `isRetryableError` correctly identifies HTTP 429 (rate limit) errors as retryable.",
+      "Validates that `isRetryableError` correctly identifies HTTP 400 (bad request) errors as non-retryable."
+    ],
+    "outOfScope": [
+      "Testing the `withRetry` function's retry logic or timing behavior.",
+      "Mocking external LLM API calls or network conditions.",
+      "Validating error messages or formatting beyond retryability classification."
+    ],
+    "invariants": [
+      "Must import the `isRetryableError` function from the LLM retry module.",
+      "Must use Vitest's describe/it/expect assertions for test structure.",
+      "Test file suffix must be .test.ts or .spec.ts (per architectural rule)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure reliable LLM error handling by validating retryability classification logic through unit tests.",
+      "recentChangeIntent": "Add regression suites for index recovery and LLM retries (as per git intent)."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for the LLM retry utility's error classification function.",
+        "responsibilities": [
+          "Validates that `isRetryableError` correctly identifies socket-related errors (e.g., 'socket hang up', ECONNRESET) as retryable.",
+          "Validates that `isRetryableError` correctly identifies 'terminated' errors as retryable.",
+          "Validates that `isRetryableError` correctly identifies HTTP 429 (rate limit) errors as retryable.",
+          "Validates that `isRetryableError` correctly identifies HTTP 400 (bad request) errors as non-retryable."
+        ],
+        "outOfScope": [
+          "Testing the `withRetry` function's retry logic or timing behavior.",
+          "Mocking external LLM API calls or network conditions.",
+          "Validating error messages or formatting beyond retryability classification."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/llm/retry.js'",
+        "symbols": [
+          "withRetry",
+          "isRetryableError"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/llm/retry.js",
+        "relation": "import",
+        "symbols": [
+          "withRetry",
+          "isRetryableError"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.369Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

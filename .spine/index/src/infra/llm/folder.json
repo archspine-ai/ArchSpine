@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/infra/llm",
+  "role": "Core LLM infrastructure layer providing client abstractions, configuration management, and resilient execution for semantic generation.",
+  "responsibility": "Defines provider-agnostic LLM client interfaces and response structures, implements factory and runtime configuration resolution for instantiating provider clients, manages global LLM configuration file I/O and credential storage, and provides retry utilities with exponential backoff for resilient async operations.",
+  "children": [
+    {
+      "filePath": "src/infra/llm/base.ts",
+      "role": "TypeScript interface definitions module for LLM client abstractions, response structures, provider configuration, and semantic context tracking within the infrastructure layer.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/llm/factory.ts",
+      "role": "Infrastructure layer facade factory for instantiating LLM provider clients based on configuration.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/llm/global.ts",
+      "role": "Infrastructure facade for global LLM configuration file I/O and credential store integration.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/llm/providers",
+      "role": "LLM provider implementations and utilities for generating semantic summaries.",
+      "fileKind": "folder"
+    },
+    {
+      "filePath": "src/infra/llm/retry.ts",
+      "role": "Infrastructure utility providing configurable retry logic with exponential backoff for resilient asynchronous operations.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/llm/runtime.ts",
+      "role": "Infrastructure runtime configuration resolver and LLM provider client factory within the LLM subsystem.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-01T04:57:43.784Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

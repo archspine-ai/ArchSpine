@@ -1,0 +1,209 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/scanner.test.ts",
+    "contentHash": "8677caab10a61e0bfb3a9d68ca61dc2d47ab8e0ce8c9d6889cb0c90f68558c95",
+    "skeletonHash": "27c44a85e93f52026ef10c464a80cffb1ad824397e0eddf80bf778266687107a",
+    "semanticHash": "81377bf4510077f02b8a8ddb97698797ae5c2ab2378f72ad3da22dd7b062c19a",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest test suite for the Scanner engine, validating file scanning behavior in isolated temporary directories.",
+    "responsibilities": [
+      "Creates a temporary directory with a .spine subdirectory and .gitignore file for each test run.",
+      "Instantiates a Config object bound to the temporary directory to simulate project configuration.",
+      "Tests the Scanner's file discovery logic against controlled filesystem structures.",
+      "Uses vi.fn to mock and spy on filesystem interactions where needed."
+    ],
+    "outOfScope": [
+      "Testing non-Scanner components like the Config engine in isolation.",
+      "End-to-end integration testing with live external services.",
+      "Performance benchmarking of scanning operations."
+    ],
+    "invariants": [
+      "Each test runs in a fresh temporary directory to ensure isolation.",
+      "Uses the Config class to provide a valid configuration context for the Scanner.",
+      "Relies on Vitest's mocking utilities (vi) for controlled filesystem interactions."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide isolated, deterministic unit tests for the Scanner engine's core file discovery and scanning logic.",
+      "recentChangeIntent": "Harden scan resume validation and fix fallback paths (inferred from git commit, though not directly evidenced in provided snippet)."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite for the Scanner engine, validating file scanning behavior in isolated temporary directories.",
+        "responsibilities": [
+          "Creates a temporary directory with a .spine subdirectory and .gitignore file for each test run.",
+          "Instantiates a Config object bound to the temporary directory to simulate project configuration.",
+          "Tests the Scanner's file discovery logic against controlled filesystem structures.",
+          "Uses vi.fn to mock and spy on filesystem interactions where needed."
+        ],
+        "outOfScope": [
+          "Testing non-Scanner components like the Config engine in isolation.",
+          "End-to-end integration testing with live external services.",
+          "Performance benchmarking of scanning operations."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "beforeEach",
+          "afterEach",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/engines/scanner.js'",
+        "symbols": [
+          "Scanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "devDependency",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "beforeEach",
+          "afterEach",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "../src/engines/scanner.js",
+        "relation": "import",
+        "symbols": [
+          "Scanner"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "builtin",
+        "symbols": [
+          "execSync"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "builtin",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "builtin",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "builtin",
+        "symbols": [
+          "*"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:44.329Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

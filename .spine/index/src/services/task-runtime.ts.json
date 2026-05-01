@@ -1,0 +1,328 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/task-runtime.ts",
+    "contentHash": "cda10745da4a9c656554eeb708a94598cca5cc07e359abb43952657610f6d96e",
+    "skeletonHash": "fdd9dd835ead97532fec90ca6f49b15b5b1b1e581ad56a6bacca58387c31b4b2",
+    "semanticHash": "4499a7a992c90160a5736a20f2bcfce61a500b35fb5669e70ca0acf09c6e418c",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Core service orchestrator that prepares and coordinates task execution engines and infrastructure for the ArchSpine system.",
+    "responsibilities": [
+      "Resolves prompt policy tiers and validation policies from configuration and environment.",
+      "Creates and initializes task state and artifact state for execution pipelines.",
+      "Orchestrates scanner, aggregator, rule engine, context engine, and LLM client for coordinated analysis.",
+      "Manages locks and scan policies to ensure thread-safe and policy-compliant operations."
+    ],
+    "outOfScope": [
+      "View-specific rendering or UI logic",
+      "Direct low-level file I/O operations",
+      "Implementation of individual analysis engines"
+    ],
+    "invariants": [
+      "Must orchestrate core, engines, and infra modules without implementing their internal logic.",
+      "Must resolve configuration policies (prompt, validation, scan) from environment and infra.",
+      "Must produce a PreparedTaskContext for downstream execution."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized service layer for preparing and coordinating all analysis engines and infrastructure, ensuring policy compliance and state management.",
+      "recentChangeIntent": "No direct evidence from header; recent commit suggests enhancements to sync modes and backfill, possibly affecting orchestration logic."
+    },
+    "publicSurface": [
+      "ServiceOptions interface",
+      "PreparedTaskContext interface"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core service orchestrator that prepares and coordinates task execution engines and infrastructure for the ArchSpine system.",
+        "responsibilities": [
+          "Resolves prompt policy tiers and validation policies from configuration and environment.",
+          "Creates and initializes task state and artifact state for execution pipelines.",
+          "Orchestrates scanner, aggregator, rule engine, context engine, and LLM client for coordinated analysis.",
+          "Manages locks and scan policies to ensure thread-safe and policy-compliant operations."
+        ],
+        "outOfScope": [
+          "View-specific rendering or UI logic",
+          "Direct low-level file I/O operations",
+          "Implementation of individual analysis engines"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../engines/scanner.js'",
+        "symbols": [
+          "Scanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../engines/aggregator.js'",
+        "symbols": [
+          "Aggregator"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/extractor.js'",
+        "symbols": [
+          "ASTExtractor"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../engines/rules.js'",
+        "symbols": [
+          "RuleEngine"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/output.js'",
+        "symbols": [
+          "OutputManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../engines/context.js'",
+        "symbols": [
+          "ContextEngine"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/task-state.js'",
+        "symbols": [
+          "createTaskArtifactsState",
+          "createTaskState"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../utils/lock.js'",
+        "symbols": [
+          "LockManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/scan-policy.js'",
+        "symbols": [
+          "ScanPolicy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/prompt-policy.js'",
+        "symbols": [
+          "parseRelevanceDiagnosticsMode",
+          "resolvePromptPolicyTier",
+          "resolveValidatePolicy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/runtime-io.js'",
+        "symbols": [
+          "RuntimeIO",
+          "defaultRuntimeIO"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "createTaskContext",
+        "kind": "function",
+        "signature": "createTaskContext(options: TaskContextOptions)"
+      },
+      {
+        "name": "ServiceOptions",
+        "kind": "interface",
+        "signature": "interface ServiceOptions"
+      },
+      {
+        "name": "PreparedTaskContext",
+        "kind": "interface",
+        "signature": "interface PreparedTaskContext"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "createTaskContext",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/task-runtime.ts#"
+      },
+      {
+        "name": "ServiceOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/task-runtime.ts#"
+      },
+      {
+        "name": "PreparedTaskContext",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/task-runtime.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 13,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../engines/scanner.js",
+        "relation": "import",
+        "symbols": [
+          "Scanner"
+        ]
+      },
+      {
+        "targetPath": "../infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "../engines/aggregator.js",
+        "relation": "import",
+        "symbols": [
+          "Aggregator"
+        ]
+      },
+      {
+        "targetPath": "../ast/extractor.js",
+        "relation": "import",
+        "symbols": [
+          "ASTExtractor"
+        ]
+      },
+      {
+        "targetPath": "../engines/rules.js",
+        "relation": "import",
+        "symbols": [
+          "RuleEngine"
+        ]
+      },
+      {
+        "targetPath": "../infra/output.js",
+        "relation": "import",
+        "symbols": [
+          "OutputManager"
+        ]
+      },
+      {
+        "targetPath": "../engines/context.js",
+        "relation": "import",
+        "symbols": [
+          "ContextEngine"
+        ]
+      },
+      {
+        "targetPath": "../core/task.js",
+        "relation": "import",
+        "symbols": [
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "../core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "createTaskArtifactsState",
+          "createTaskState"
+        ]
+      },
+      {
+        "targetPath": "../utils/lock.js",
+        "relation": "import",
+        "symbols": [
+          "LockManager"
+        ]
+      },
+      {
+        "targetPath": "../core/scan-policy.js",
+        "relation": "import",
+        "symbols": [
+          "ScanPolicy"
+        ]
+      },
+      {
+        "targetPath": "../infra/prompt-policy.js",
+        "relation": "import",
+        "symbols": [
+          "parseRelevanceDiagnosticsMode",
+          "resolvePromptPolicyTier",
+          "resolveValidatePolicy"
+        ]
+      },
+      {
+        "targetPath": "../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeIO",
+          "defaultRuntimeIO"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/check-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "src/services/fix-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "src/services/sync-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:40.960Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

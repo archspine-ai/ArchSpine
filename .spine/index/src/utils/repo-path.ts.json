@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/utils/repo-path.ts",
+    "contentHash": "972952ddfcb9ae4edd9f866718f7f850ae75d1bcc1a2d668a48cc47d73586e5a",
+    "skeletonHash": "5cb1b7cf9751f5e72cd05a96e747ee4e09e7b94a5afbf2c4af22f59dcd48a7c5",
+    "semanticHash": "dee92b6f0b5c058ab0a891496dfaa850ed67265e5d68253ca2343f77c20827ea",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/utils"
+  },
+  "semantic": {
+    "role": "Internal utility function providing cross-platform repository path normalization for consistent database key representation.",
+    "responsibilities": [
+      "Normalizes raw file system paths to repository-relative logical paths.",
+      "Converts Windows backslashes to POSIX forward slashes for cross-platform compatibility.",
+      "Strips leading './' and '/' prefixes to ensure paths are relative to the repository root.",
+      "Provides a single source of truth for path representation in database lookups and writes."
+    ],
+    "outOfScope": [
+      "Path validation or existence checking.",
+      "Handling of absolute paths outside the repository.",
+      "URL or URI path normalization."
+    ],
+    "invariants": [
+      "Output is always a POSIX-style string with forward slashes.",
+      "Output is always relative to the repository root (no leading slash or './')."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish a canonical path representation for the ArchSpine system to ensure consistent data indexing and retrieval across platforms.",
+      "recentChangeIntent": "Implement atomic transactional sync and cross-platform RepoPath normalization."
+    },
+    "publicSurface": [
+      "normalizeRepoPath"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Internal utility function providing cross-platform repository path normalization for consistent database key representation.",
+        "responsibilities": [
+          "Normalizes raw file system paths to repository-relative logical paths.",
+          "Converts Windows backslashes to POSIX forward slashes for cross-platform compatibility.",
+          "Strips leading './' and '/' prefixes to ensure paths are relative to the repository root.",
+          "Provides a single source of truth for path representation in database lookups and writes."
+        ],
+        "outOfScope": [
+          "Path validation or existence checking.",
+          "Handling of absolute paths outside the repository.",
+          "URL or URI path normalization."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "normalizeRepoPath",
+        "kind": "function",
+        "signature": "normalizeRepoPath(rawPath: string)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "normalizeRepoPath",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/repo-path.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:42.521Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

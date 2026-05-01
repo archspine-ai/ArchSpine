@@ -1,0 +1,282 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/lite-summarize.ts",
+    "contentHash": "ddfcec642fb8336dc8045887a380a2dca7a572452cb8b780fe779b94d40cbec2",
+    "skeletonHash": "d73966c75a707c9c45b3f4e16d46a4c1d8e69e432f19bc103219be412c0f137c",
+    "semanticHash": "6fe090e976877a39129783c442fb764248e4662864882009b710d2879c5bcc7a",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "Pipeline task for lightweight source code summarization, processing filtered files from the extraction stage and delegating to a dedicated summarization method.",
+    "responsibilities": [
+      "Processes filtered source files from the extraction stage output.",
+      "Identifies unsupported files and skeleton files to skip processing.",
+      "Uses LangRegistry to determine if a file is a source file eligible for summarization.",
+      "Reads file content and delegates summarization to a dedicated summarizeFile method.",
+      "Tracks task usage, skipped files, failed files, and processed files via task-state functions.",
+      "Manages concurrency with pLimit for parallel file processing."
+    ],
+    "outOfScope": [
+      "CLI command parsing or argument handling.",
+      "Orchestration of services unrelated to the summarization pipeline stage.",
+      "Direct interaction with external APIs or databases beyond file system reads."
+    ],
+    "invariants": [
+      "Task modules should implement stage-local work on top of core contracts and engines.",
+      "Task modules should not take over CLI command parsing or unrelated service orchestration."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a lightweight, concurrency-controlled summarization task that operates strictly within the pipeline stage boundary, processing only files from the extraction stage and delegating summarization to a dedicated method.",
+      "recentChangeIntent": "Fix lint warnings and type errors, and add CI workflow support."
+    },
+    "publicSurface": [
+      "LiteSummarizationTask class (exported)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Pipeline task for lightweight source code summarization, processing filtered files from the extraction stage and delegating to a dedicated summarization method.",
+        "responsibilities": [
+          "Processes filtered source files from the extraction stage output.",
+          "Identifies unsupported files and skeleton files to skip processing.",
+          "Uses LangRegistry to determine if a file is a source file eligible for summarization.",
+          "Reads file content and delegates summarization to a dedicated summarizeFile method.",
+          "Tracks task usage, skipped files, failed files, and processed files via task-state functions.",
+          "Manages concurrency with pLimit for parallel file processing."
+        ],
+        "outOfScope": [
+          "CLI command parsing or argument handling.",
+          "Orchestration of services unrelated to the summarization pipeline stage.",
+          "Direct interaction with external APIs or databases beyond file system reads."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "轻量级源代码摘要的流水线任务，处理来自提取阶段的过滤文件，并将摘要工作委托给专门的摘要方法。",
+        "responsibilities": [
+          "处理提取阶段输出的已过滤源文件。",
+          "识别不支持的文件和骨架文件，跳过处理。",
+          "使用 LangRegistry 判断文件是否为可进行摘要的源文件。",
+          "读取文件内容并将摘要工作委托给专门的 summarizeFile 方法。",
+          "通过任务状态函数跟踪任务使用情况、跳过的文件、失败的文件和已处理的文件。",
+          "使用 pLimit 管理并发，实现并行文件处理。"
+        ],
+        "outOfScope": [
+          "CLI 命令解析或参数处理。",
+          "与摘要流水线阶段无关的服务编排。",
+          "超出文件系统读取范围的直接外部 API 或数据库交互。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "FileKind",
+          "SpineUnit",
+          "CURRENT_SCHEMA_VERSION",
+          "GENERATOR_VERSION",
+          "SpineSemantic"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/lang-registry.js'",
+        "symbols": [
+          "LangRegistry"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/task-state.js'",
+        "symbols": [
+          "addTaskUsage",
+          "incrementTaskFailed",
+          "incrementTaskSkipped",
+          "markTaskProcessedFile",
+          "queueTaskCommit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'p-limit'",
+        "symbols": [
+          "pLimit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "LiteSummarizationTask",
+        "kind": "class",
+        "signature": "class LiteSummarizationTask"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "LiteSummarizationTask",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/tasks/lite-summarize.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "FileKind",
+          "SpineUnit",
+          "CURRENT_SCHEMA_VERSION",
+          "GENERATOR_VERSION",
+          "SpineSemantic"
+        ]
+      },
+      {
+        "targetPath": "../ast/lang-registry.js",
+        "relation": "import",
+        "symbols": [
+          "LangRegistry"
+        ]
+      },
+      {
+        "targetPath": "../core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "addTaskUsage",
+          "incrementTaskFailed",
+          "incrementTaskSkipped",
+          "markTaskProcessedFile",
+          "queueTaskCommit"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "p-limit",
+        "relation": "import",
+        "symbols": [
+          "pLimit"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/tasks/lite-summarize.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/incrementTaskSkipped#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/lite-summarize.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/markTaskProcessedFile#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/lite-summarize.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/incrementTaskFailed#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/lite-summarize.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/addTaskUsage#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/lite-summarize.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/queueTaskCommit#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:57:21.610Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

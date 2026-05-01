@@ -1,0 +1,207 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/llm-config.test.ts",
+    "contentHash": "27b2ce56721dcb13536b641c90cc57f4105a75b1763374ffe891785a0e47ab73",
+    "skeletonHash": "3c260acdc4ee2004f19be13cd0af0bf05c3e3b9768ab51b1061262a755500e8c",
+    "semanticHash": "adbec1f0235638c4569d0685867c9611296203a231e10050c1cc2123f5222cbf",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite for credential backend availability and LLM configuration resolution.",
+    "responsibilities": [
+      "Mocks an unavailable CredentialBackend implementation to simulate missing backend scenarios.",
+      "Tests the integration between Config, Secrets, and LLM runtime resolution under different credential backend states.",
+      "Validates that LLM settings resolve correctly when credential backends are available or unavailable.",
+      "Manages temporary test directories for isolated test execution and ensures proper cleanup."
+    ],
+    "outOfScope": [
+      "Unit testing of individual CredentialBackend implementations.",
+      "Testing of LLM provider-specific API calls or network behavior.",
+      "Performance or load testing of the credential system."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure the LLM configuration resolution system correctly handles scenarios where credential backends are unavailable, maintaining robustness in the credential resolution pipeline.",
+      "recentChangeIntent": "gogogo"
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite for credential backend availability and LLM configuration resolution.",
+        "responsibilities": [
+          "Mocks an unavailable CredentialBackend implementation to simulate missing backend scenarios.",
+          "Tests the integration between Config, Secrets, and LLM runtime resolution under different credential backend states.",
+          "Validates that LLM settings resolve correctly when credential backends are available or unavailable.",
+          "Manages temporary test directories for isolated test execution and ensures proper cleanup."
+        ],
+        "outOfScope": [
+          "Unit testing of individual CredentialBackend implementations.",
+          "Testing of LLM provider-specific API calls or network behavior.",
+          "Performance or load testing of the credential system."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于凭证后端可用性和LLM配置解析的Vitest集成测试套件。",
+        "responsibilities": [
+          "模拟一个不可用的CredentialBackend实现，以模拟后端不可用的场景。",
+          "测试在不同凭证后端状态下，Config、Secrets和LLM运行时解析之间的集成。",
+          "验证当凭证后端可用或不可用时，LLM设置是否正确解析。",
+          "管理临时测试目录以实现隔离的测试执行，并确保测试后的清理工作。"
+        ],
+        "outOfScope": [
+          "对单个CredentialBackend实现的单元测试。",
+          "对LLM提供商特定API调用或网络行为的测试。",
+          "凭证系统的性能或负载测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it",
+          "beforeEach",
+          "afterEach"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/credentials/backend.js'",
+        "symbols": [
+          "CredentialBackend",
+          "MemoryCredentialBackend"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/secrets.js'",
+        "symbols": [
+          "Secrets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/llm.js'",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets",
+          "resolveLLMSettings"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 11,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../src/infra/credentials/backend.js",
+        "relation": "import",
+        "symbols": [
+          "CredentialBackend",
+          "MemoryCredentialBackend"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/secrets.js",
+        "relation": "import",
+        "symbols": [
+          "Secrets"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets",
+          "resolveLLMSettings"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.519Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-context/diagnostics.ts",
+    "contentHash": "4de69744d263b70566c54463d86ae93cbdf8a4f9e4fbf78c4d8d29b70fd3e4df",
+    "skeletonHash": "55d8f9d980362b9f9985cf3e284c24a2c9b651aa3a90721b5d287cb3ddf1e3aa",
+    "semanticHash": "66883e54bc47920efa0a68801cedd80d391ef88c30c438f4edc559dff0ea8132",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt-context"
+  },
+  "semantic": {
+    "role": "Core diagnostic utility for analyzing rule block retention and filtering in prompt relevance processing.",
+    "responsibilities": [
+      "Extracts rule IDs from raw rule block text using regex pattern matching.",
+      "Builds diagnostics comparing raw and final rule data to identify retained and dropped rule blocks.",
+      "Integrates with dependency diagnostics to filter retained candidates based on context inclusion."
+    ],
+    "outOfScope": [
+      "Orchestrating service or engine workflows",
+      "Providing low-level infrastructure capabilities",
+      "Handling HTTP requests or external API calls"
+    ],
+    "invariants": [
+      "Operates purely on string data representing rule blocks",
+      "Depends on local utility functions for rule block splitting",
+      "Exports a single diagnostic builder function"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide diagnostic insights into rule processing pipeline to ensure relevance and retention accuracy.",
+      "recentChangeIntent": "Part of broader refactoring to modularize CLI and decouple core infra services, though no direct changes evident in this snippet."
+    },
+    "publicSurface": [
+      "buildRuleBlockDiagnostics"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core diagnostic utility for analyzing rule block retention and filtering in prompt relevance processing.",
+        "responsibilities": [
+          "Extracts rule IDs from raw rule block text using regex pattern matching.",
+          "Builds diagnostics comparing raw and final rule data to identify retained and dropped rule blocks.",
+          "Integrates with dependency diagnostics to filter retained candidates based on context inclusion."
+        ],
+        "outOfScope": [
+          "Orchestrating service or engine workflows",
+          "Providing low-level infrastructure capabilities",
+          "Handling HTTP requests or external API calls"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./trim.js'",
+        "symbols": [
+          "splitRuleBlocks"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "buildRuleBlockDiagnostics",
+        "kind": "function",
+        "signature": "buildRuleBlockDiagnostics(\n  rawRuleData: string,\n  finalRuleData: string,\n)"
+      },
+      {
+        "name": "buildDependencySelectionDiagnostics",
+        "kind": "function",
+        "signature": "buildDependencySelectionDiagnostics(\n  dependencyDiagnostics: ContextResolutionDiagnostics | undefined,\n  finalContextData: string,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "buildRuleBlockDiagnostics",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/diagnostics.ts#"
+      },
+      {
+        "name": "buildDependencySelectionDiagnostics",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/diagnostics.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./trim.js",
+        "relation": "import",
+        "symbols": [
+          "splitRuleBlocks"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:39.793Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

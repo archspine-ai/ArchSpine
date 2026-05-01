@@ -1,0 +1,21 @@
+<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"schemas","role":"This directory contains the JSON schema definitions that validate all metadata units, manifests, and rule documents in the ArchSpine mirror system.","responsibility":"Collectively, these schema files define and enforce the structural integrity, data validation rules, and type constraints for every component of the ArchSpine semantic indexing and architecture enforcement system, including project units, folder units, file units, manifests, and governance rules.","children":[{"filePath":"schemas/examples","role":"This directory contains the core configuration and rule definitions for the ArchSpine semantic indexing and architecture enforcement system.","fileKind":"folder"},{"filePath":"schemas/shared.schema.json","role":"Defines reusable type definitions and validation schemas shared across the ArchSpine system.","fileKind":"config"},{"filePath":"schemas/spine-folder-unit.schema.json","role":"Defines the schema for a SpineFolderUnit, a structural node in the ArchSpine mirror system that represents a directory with a specific role and responsibility.","fileKind":"config"},{"filePath":"schemas/spine-manifest.schema.json","role":"Defines the schema for the ArchSpine SpineManifest, a metadata manifest that tracks the synchronization state and indexed file inventory of a mirror repository.","fileKind":"config"},{"filePath":"schemas/spine-project-unit.schema.json","role":"Defines the structural schema for a SpineProjectUnit, which is the fundamental project unit descriptor in the ArchSpine mirror system.","fileKind":"config"},{"filePath":"schemas/spine-rules.schema.json","role":"Defines the schema for individual SpineRule documents within the ArchSpine mirror system, specifying the structure and validation constraints for governance rules.","fileKind":"config"},{"filePath":"schemas/spine-unit.schema.json","role":"Defines the schema for a SpineUnit, the core metadata unit in the ArchSpine mirror system that captures the identity, semantics, structure, and provenance of a source file.","fileKind":"config"}],"provenance":{"indexedAt":"2026-05-01T03:58:57.841Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
+# `schemas/` — ArchSpine Schema Definitions
+
+This directory contains the JSON schema files that define and enforce the structural integrity, data validation rules, and type constraints for every component of the ArchSpine mirror system. These schemas are the authoritative source of truth for all metadata units, manifests, and rule documents.
+
+## Notable Children
+
+- **`schemas/examples/`** — A subdirectory holding core configuration and rule definitions used for semantic indexing and architecture enforcement.
+- **`schemas/shared.schema.json`** — Reusable type definitions and validation schemas shared across the entire system.
+- **`schemas/spine-unit.schema.json`** — Defines the core metadata unit (`SpineUnit`) that captures identity, semantics, structure, and provenance of a source file.
+- **`schemas/spine-folder-unit.schema.json`** — Defines the structural node (`SpineFolderUnit`) representing a directory with a specific role and responsibility.
+- **`schemas/spine-project-unit.schema.json`** — Defines the fundamental project unit descriptor (`SpineProjectUnit`).
+- **`schemas/spine-manifest.schema.json`** — Defines the metadata manifest (`SpineManifest`) that tracks synchronization state and indexed file inventory of a mirror repository.
+- **`schemas/spine-rules.schema.json`** — Defines individual governance rule documents (`SpineRule`) with their structure and validation constraints.
+
+## Key Implementation Areas
+
+- **Validation & Enforcement** — All schemas collectively ensure that every metadata unit, manifest, and rule conforms to the ArchSpine data model.
+- **Type Safety** — Shared definitions in `shared.schema.json` provide reusable types that reduce duplication and enforce consistency.
+- **Structural Integrity** — Folder and project unit schemas define how directories and projects are represented in the mirror system.
+- **Governance** — The rules schema enables the definition and validation of architecture enforcement policies.

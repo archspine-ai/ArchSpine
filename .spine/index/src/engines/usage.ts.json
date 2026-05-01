@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/usage.ts",
+    "contentHash": "b163b8384e9f069b1a4dc2dd826586356c50e3a7894599286655832381245925",
+    "skeletonHash": "afcb9569c30171a4b9bdfcd42a9282e9d239e1ec52977ee7d5ebcbad9effeb50",
+    "semanticHash": "98ad6115b119cd691ffe13ebf4991dc9c1bbdfc8f97ce56f859755926ce0f173",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "ArchSpine CLI utility function generating formatted usage and audit reports from the manifest database.",
+    "responsibilities": [
+      "Retrieves total usage statistics, summary breakdown, and active violations from the Manifest.",
+      "Formats and outputs a human-readable report to the runtime IO channel.",
+      "Handles empty data scenarios gracefully with appropriate messages.",
+      "Calculates and displays token counts and estimated costs."
+    ],
+    "outOfScope": [
+      "Data persistence or modification of the manifest database.",
+      "User authentication or authorization.",
+      "Interactive command-line argument parsing.",
+      "Graphical user interface (GUI) rendering."
+    ],
+    "invariants": [
+      "Depends on the Manifest interface for data retrieval.",
+      "Depends on the RuntimeIO interface for output formatting.",
+      "Assumes the manifest database is accessible at the provided root directory."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a decoupled, reusable reporting function for CLI and other services to display usage and audit data.",
+      "recentChangeIntent": "Part of a broader refactor to modularize CLI and decouple core infrastructure services, as indicated by the git commit."
+    },
+    "publicSurface": [
+      "runUsageReport"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "ArchSpine CLI utility function generating formatted usage and audit reports from the manifest database.",
+        "responsibilities": [
+          "Retrieves total usage statistics, summary breakdown, and active violations from the Manifest.",
+          "Formats and outputs a human-readable report to the runtime IO channel.",
+          "Handles empty data scenarios gracefully with appropriate messages.",
+          "Calculates and displays token counts and estimated costs."
+        ],
+        "outOfScope": [
+          "Data persistence or modification of the manifest database.",
+          "User authentication or authorization.",
+          "Interactive command-line argument parsing.",
+          "Graphical user interface (GUI) rendering."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "runUsageReport",
+        "kind": "function",
+        "signature": "runUsageReport(\n  rootDir: string,\n  runtimeIO: RuntimeIO = defaultRuntimeIO,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "runUsageReport",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/usage.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:37.847Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

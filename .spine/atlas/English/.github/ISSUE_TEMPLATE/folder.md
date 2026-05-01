@@ -1,0 +1,10 @@
+<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":".github/ISSUE_TEMPLATE","role":"Issue and feature request templates for the ArchSpine project.","responsibility":"Provides standardized templates for bug reports, documentation improvements, and feature requests to ensure consistent and structured community contributions.","children":[{"filePath":".github/ISSUE_TEMPLATE/bug_report.yml","role":"Bug report template for the ArchSpine project","fileKind":"document"},{"filePath":".github/ISSUE_TEMPLATE/docs_improvement.yml","role":"Issue template for suggesting documentation improvements","fileKind":"document"},{"filePath":".github/ISSUE_TEMPLATE/feature_request.yml","role":"Feature request template for the ArchSpine project","fileKind":"document"}],"provenance":{"indexedAt":"2026-05-01T02:47:44.513Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
+# `.github/ISSUE_TEMPLATE` — Contribution Templates
+
+This directory contains three YAML-based issue templates that standardize how the community submits feedback and requests to the ArchSpine project. Each template enforces a structured format to reduce ambiguity and speed up triage.
+
+- **`bug_report.yml`** — For reporting defects. Collects environment details, reproduction steps, and expected vs. actual behavior.
+- **`docs_improvement.yml`** — For suggesting enhancements to project documentation. Captures the specific document, the nature of the improvement, and any supporting references.
+- **`feature_request.yml`** — For proposing new features. Asks for a clear description, use cases, and potential implementation notes.
+
+These templates live under the `.github` convention, so they are automatically offered by GitHub when a contributor opens a new issue. The most critical implementation area is the `bug_report.yml` template, as it directly impacts the quality of bug triage and resolution.

@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/cli-utils.ts",
+    "contentHash": "41a669693d805c0df730adf6a730009250e749ec5eaf05b9702c239630a6511b",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "f24792c0700336d201002186ce30d1ff5a2382d5d450b43d14697d895a889641",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli"
+  },
+  "semantic": {
+    "role": "CLI UI presentation utility for formatting language discovery results, conditional banner rendering, and configuration value parsing.",
+    "responsibilities": [
+      "Formats a list of language names into a comma-separated string for display.",
+      "Determines whether to show the full ArchSpine banner based on the command (help, init, build) or mini banner (sync).",
+      "Parses raw string configuration values into typed JavaScript primitives (booleans, numbers, null, undefined, JSON objects/arrays).",
+      "Provides conditional banner display logic to suppress output during internal hooks."
+    ],
+    "outOfScope": [
+      "Pipeline or persistence logic (e.g., database access, file I/O, build orchestration).",
+      "Command routing or argument parsing beyond banner display decisions.",
+      "Core error handling or error code definitions."
+    ],
+    "invariants": [
+      "CLI modules must remain thin entrypoints and command adapters, avoiding absorption of pipeline or persistence logic."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain a thin CLI presentation layer that formats output and controls banner visibility, keeping pipeline and persistence logic in services, core, engines, or infra.",
+      "recentChangeIntent": "Updated displayUIBanner to use the renamed _argsArr parameter, aligning with recent CLI argument handling changes."
+    },
+    "publicSurface": [
+      "formatLanguageList(languages: string[]): string",
+      "shouldShowFullBanner(cmd?: string, _argsArr?: string[]): boolean",
+      "shouldShowMiniBanner(cmd?: string): boolean",
+      "parseConfigValue(raw: string): unknown"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI UI presentation utility for formatting language discovery results, conditional banner rendering, and configuration value parsing.",
+        "responsibilities": [
+          "Formats a list of language names into a comma-separated string for display.",
+          "Determines whether to show the full ArchSpine banner based on the command (help, init, build) or mini banner (sync).",
+          "Parses raw string configuration values into typed JavaScript primitives (booleans, numbers, null, undefined, JSON objects/arrays).",
+          "Provides conditional banner display logic to suppress output during internal hooks."
+        ],
+        "outOfScope": [
+          "Pipeline or persistence logic (e.g., database access, file I/O, build orchestration).",
+          "Command routing or argument parsing beyond banner display decisions.",
+          "Core error handling or error code definitions."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "CLI 用户界面展示工具，用于格式化语言发现结果、条件性渲染横幅以及解析配置值。",
+        "responsibilities": [
+          "将语言名称列表格式化为逗号分隔的字符串以供显示。",
+          "根据命令（help、init、build）决定是否显示完整 ArchSpine 横幅，或为 sync 命令显示迷你横幅。",
+          "将原始字符串配置值解析为类型化的 JavaScript 原始值（布尔值、数字、null、undefined、JSON 对象/数组）。",
+          "提供条件性横幅显示逻辑，以在内部钩子执行期间抑制输出。"
+        ],
+        "outOfScope": [
+          "管道或持久化逻辑（例如数据库访问、文件 I/O、构建编排）。",
+          "超出横幅显示决策的命令路由或参数解析。",
+          "核心错误处理或错误代码定义。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "LanguageSnapshot"
+        ]
+      },
+      {
+        "targetPath": "../utils/banner.js",
+        "relation": "import",
+        "symbols": [
+          "printFullBanner",
+          "printMiniBanner"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T03:57:38.988Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

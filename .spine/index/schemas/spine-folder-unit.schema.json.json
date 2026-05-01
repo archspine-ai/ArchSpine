@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "schemas/spine-folder-unit.schema.json",
+    "contentHash": "f0d70ca6d346612da6e4c70f044934103521cc1582fb5c4209daffe8f2fa6e63",
+    "semanticHash": "e145fdc73618e62acdc3f02585dda60f474096d5b41eed43dc82bd240631e3c4",
+    "language": "unsupported",
+    "fileKind": "config",
+    "scope": "schemas"
+  },
+  "semantic": {
+    "role": "Defines the schema for a SpineFolderUnit, a structural node in the ArchSpine mirror system that represents a directory with a specific role and responsibility.",
+    "responsibilities": [
+      "Validating the structure of folder-level units in the ArchSpine project tree",
+      "Enforcing required metadata fields (schemaVersion, directory, role, responsibility, children, provenance)",
+      "Defining the shape and constraints for child file entries within a folder unit",
+      "Tracking provenance metadata including indexing timestamp, generator version, and pipeline stages"
+    ],
+    "outOfScope": [],
+    "invariants": [
+      "The object must not contain additional properties beyond those explicitly defined",
+      "All six required fields must be present: schemaVersion, directory, role, responsibility, children, provenance",
+      "Each child entry must include filePath, role, and fileKind",
+      "Provenance must include indexedAt, generatorVersion, and pipelineStages"
+    ],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Defines the schema for a SpineFolderUnit, a structural node in the ArchSpine mirror system that represents a directory with a specific role and responsibility.",
+        "parameter_definitions": {
+          "schemaVersion": "Specifies the version of the schema used for validation, ensuring compatibility across different releases.",
+          "directory": "The relative path of the directory within the project scope that this unit represents.",
+          "role": "A non-empty string describing the functional role of this folder unit within the system.",
+          "responsibility": "A non-empty string describing the responsibility or purpose of this folder unit.",
+          "children": "An array of child file entries, each containing a filePath, role, and fileKind to define the files belonging to this folder unit.",
+          "provenance": "An object containing metadata about when and how this unit was indexed, including indexedAt timestamp, generatorVersion, and pipelineStages array."
+        },
+        "stability_and_risks": "This schema enforces strict structural validation for folder units. If a folder unit fails validation (e.g., missing required fields or extra properties), the entire unit may be rejected, potentially breaking the mirror tree. The provenance tracking ensures auditability but adds a dependency on accurate timestamp and version data. Misconfigured child entries could lead to orphaned or misclassified files in the system."
+      },
+      "Simplified Chinese": {
+        "role": "定义 SpineFolderUnit 的架构，SpineFolderUnit 是 ArchSpine 镜像系统中的一个结构节点，代表具有特定角色和职责的目录。",
+        "parameter_definitions": {
+          "schemaVersion": "指定用于验证的架构版本，确保不同版本之间的兼容性。",
+          "directory": "该单元所代表的目录在项目范围内的相对路径。",
+          "role": "描述此文件夹单元在系统中功能角色的非空字符串。",
+          "responsibility": "描述此文件夹单元职责或目的的非空字符串。",
+          "children": "子文件条目数组，每个条目包含 filePath、role 和 fileKind，用于定义属于此文件夹单元的文件。",
+          "provenance": "包含关于此单元何时以及如何被索引的元数据对象，包括 indexedAt 时间戳、generatorVersion 和 pipelineStages 数组。"
+        },
+        "stability_and_risks": "此架构对文件夹单元实施严格的结构验证。如果文件夹单元验证失败（例如缺少必填字段或包含额外属性），整个单元可能被拒绝，从而可能破坏镜像树。溯源追踪确保了可审计性，但增加了对准确时间戳和版本数据的依赖。配置错误的子条目可能导致系统中出现孤立或错误分类的文件。"
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:44:58.376Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

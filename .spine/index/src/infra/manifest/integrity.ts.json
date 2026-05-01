@@ -1,0 +1,165 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/manifest/integrity.ts",
+    "contentHash": "41893fab664aca7d03e99d990e6aeb06627f27b4a4982bb48a057fc5f7f0ecf2",
+    "skeletonHash": "9b75cca045fb6e64cc6b241b40e98867bc2786a4f02e3ea449fdcd25d13ffbeb",
+    "semanticHash": "714ff667f824a6838ad38c3d52e08698c00c2d6eedb20ba15e75a90b9496b993",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/manifest"
+  },
+  "semantic": {
+    "role": "Utility function for generating SHA-256 file hashes with metadata validation and database integration.",
+    "responsibilities": [
+      "Validates file existence and retrieves filesystem metadata (size, modification time).",
+      "Normalizes file paths using the repository path utility.",
+      "Queries the SpineDB for the current file status.",
+      "Computes a SHA-256 hash of the file content."
+    ],
+    "outOfScope": [
+      "Orchestrating service or engine workflows",
+      "Providing a stable infrastructure facade",
+      "Handling file content parsing or transformation beyond hashing"
+    ],
+    "invariants": [
+      "Depends on SpineDB for file status lookup",
+      "Uses Node.js crypto and fs modules for hash computation and file system operations",
+      "Path normalization must be applied before database queries"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a deterministic, database-aware file hashing utility for the ArchSpine mirror system to track file integrity and changes.",
+      "recentChangeIntent": "No direct changes indicated; recent commit 'tighten schema handling and add try preview' appears unrelated to this utility."
+    },
+    "publicSurface": [
+      "calculateHash(db: SpineDB, filePath: string): string"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Utility function for generating SHA-256 file hashes with metadata validation and database integration.",
+        "responsibilities": [
+          "Validates file existence and retrieves filesystem metadata (size, modification time).",
+          "Normalizes file paths using the repository path utility.",
+          "Queries the SpineDB for the current file status.",
+          "Computes a SHA-256 hash of the file content."
+        ],
+        "outOfScope": [
+          "Orchestrating service or engine workflows",
+          "Providing a stable infrastructure facade",
+          "Handling file content parsing or transformation beyond hashing"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../utils/repo-path.js'",
+        "symbols": [
+          "normalizeRepoPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../db.js'",
+        "symbols": [
+          "SpineDB"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'crypto'",
+        "symbols": [
+          "* as crypto"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'crypto'",
+        "symbols": [
+          "* as crypto"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "calculateHash",
+        "kind": "function",
+        "signature": "calculateHash(db: SpineDB, filePath: string)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "calculateHash",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/manifest/integrity.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../utils/repo-path.js",
+        "relation": "import",
+        "symbols": [
+          "normalizeRepoPath"
+        ]
+      },
+      {
+        "targetPath": "../db.js",
+        "relation": "import",
+        "symbols": [
+          "SpineDB"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "crypto",
+        "relation": "import",
+        "symbols": [
+          "* as crypto"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:39.329Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

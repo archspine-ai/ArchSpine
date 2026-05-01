@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db/batch.ts",
+    "contentHash": "a93d40e2272f1996b79a3b0e315bce173065f12c9ed56c74b9a844741af07006",
+    "skeletonHash": "44323a43ccaba7f90f20fce6e76221698cd37d7ca1caa58fa1c7b2a3bcd710ae",
+    "semanticHash": "c9cdf40dddd807584c07c4e127ad225c9ef4cc755dc0027583386e268787ee7e",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/db"
+  },
+  "semantic": {
+    "role": "Infrastructure-layer batch commit function for atomic file metadata synchronization to the SQLite index database.",
+    "responsibilities": [
+      "Executes atomic batch insertion and updates of FileCommitRecord objects into the SQLite files table.",
+      "Records semantic drift events via the drift repository for changes in file role or responsibilities."
+    ],
+    "outOfScope": [
+      "Orchestrating high-level scanning or indexing workflows",
+      "Providing public API facades for other infrastructure services",
+      "Handling file I/O or filesystem operations directly"
+    ],
+    "invariants": [
+      "Must maintain atomicity of batch commits via SQLite transactions",
+      "Must not absorb business logic or orchestration responsibilities beyond data persistence and drift recording"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, atomic batch commit mechanism for file metadata persistence, decoupling database operations from higher-level scanning engines.",
+      "recentChangeIntent": "Modularize CLI and decouple core infra services (aligns with refactoring to isolate infrastructure batch commit logic)."
+    },
+    "publicSurface": [
+      "commitBatch(db: Database.Database, commits: FileCommitRecord[]): void"
+    ],
+    "ruleViolations": [
+      {
+        "id": "infra-facade-imports",
+        "severity": "warning",
+        "reason": "Module imports './repositories/drift.js' to record semantic drift events, which may be a service/orchestration concern rather than a low-level infrastructure capability. This could violate the rule that infra modules should not absorb service/task/engine orchestration concerns."
+      }
+    ],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure-layer batch commit function for atomic file metadata synchronization to the SQLite index database.",
+        "responsibilities": [
+          "Executes atomic batch insertion and updates of FileCommitRecord objects into the SQLite files table.",
+          "Records semantic drift events via the drift repository for changes in file role or responsibilities."
+        ],
+        "outOfScope": [
+          "Orchestrating high-level scanning or indexing workflows",
+          "Providing public API facades for other infrastructure services",
+          "Handling file I/O or filesystem operations directly"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./repositories/drift.js'",
+        "symbols": [
+          "recordDriftEvent"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "commitBatch",
+        "kind": "function",
+        "signature": "commitBatch(db: Database.Database, commits: FileCommitRecord[])"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "commitBatch",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/batch.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./repositories/drift.js",
+        "relation": "import",
+        "symbols": [
+          "recordDriftEvent"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:38.412Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

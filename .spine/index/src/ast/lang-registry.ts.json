@@ -1,0 +1,199 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/ast/lang-registry.ts",
+    "contentHash": "f9f344f04a61dfd6bf73b396473ed3f18321063f2928eacb2f3fae84d4855efc",
+    "skeletonHash": "164ad3e302494ce0fbec8dcd5770d68a0ca482b77d4179423b9f844e4bf69dbd",
+    "semanticHash": "50087e7b582ac1bf543df90481fd5515bb97da0c3fa72d8d9eed19e44aa02bef",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/ast"
+  },
+  "semantic": {
+    "role": "Stateful language configuration registry and dynamic language loader for the ArchSpine code analysis pipeline, managing AST-grep language bindings and file-to-language resolution.",
+    "responsibilities": [
+      "Manages a registry of language configurations (LangConfig) mapping AST-grep language keys to ArchSpine's internal SourceLanguage type.",
+      "Provides dynamic language registration via registerDynamicLanguage, with deduplication and promise-based caching to avoid redundant registrations.",
+      "Resolves file paths to language configurations using file extension matching, with support for unavailable package tracking and user notification.",
+      "Exposes getSourceExtensions to retrieve all registered source file extensions for a given language.",
+      "Maintains internal state for dynamic registration status, unavailable packages, and announced warnings to prevent duplicate notifications."
+    ],
+    "outOfScope": [
+      "Direct AST-grep query execution or pattern matching.",
+      "File system traversal or project scanning.",
+      "Configuration file parsing or validation beyond language mapping."
+    ],
+    "invariants": [
+      "Dynamic languages are registered at most once per process lifecycle.",
+      "Each file extension maps to exactly one language configuration.",
+      "Unavailable packages are tracked and only announced once to the user."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized, stateful registry for managing AST-grep language configurations with support for dynamic language loading and file-to-language resolution.",
+      "recentChangeIntent": "Fix lint warnings and type errors, likely related to the class implementation and dynamic registration logic."
+    },
+    "publicSurface": [
+      "LangRegistry class",
+      "LangConfig interface",
+      "InternalLangConfig type"
+    ],
+    "ruleViolations": [],
+    "driftDetected": true,
+    "driftReason": "Previous semantic contract described a simpler interface/loader pattern (LangConfig, InternalLangConfig, createLoader, dynamicImport), but the actual implementation is a full class (LangRegistry) with state management, caching, and dynamic registration logic. The previous contract did not capture the class's responsibilities or internal state.",
+    "localized": {
+      "English": {
+        "role": "Stateful language configuration registry and dynamic language loader for the ArchSpine code analysis pipeline, managing AST-grep language bindings and file-to-language resolution.",
+        "responsibilities": [
+          "Manages a registry of language configurations (LangConfig) mapping AST-grep language keys to ArchSpine's internal SourceLanguage type.",
+          "Provides dynamic language registration via registerDynamicLanguage, with deduplication and promise-based caching to avoid redundant registrations.",
+          "Resolves file paths to language configurations using file extension matching, with support for unavailable package tracking and user notification.",
+          "Exposes getSourceExtensions to retrieve all registered source file extensions for a given language.",
+          "Maintains internal state for dynamic registration status, unavailable packages, and announced warnings to prevent duplicate notifications."
+        ],
+        "outOfScope": [
+          "Direct AST-grep query execution or pattern matching.",
+          "File system traversal or project scanning.",
+          "Configuration file parsing or validation beyond language mapping."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 代码分析管道中的有状态语言配置注册表和动态语言加载器，管理 AST-grep 语言绑定和文件到语言的解析。",
+        "responsibilities": [
+          "管理语言配置（LangConfig）的注册表，将 AST-grep 语言键映射到 ArchSpine 内部的 SourceLanguage 类型。",
+          "通过 registerDynamicLanguage 提供动态语言注册，具有去重和基于 Promise 的缓存机制，避免冗余注册。",
+          "使用文件扩展名匹配将文件路径解析为语言配置，支持不可用包跟踪和用户通知。",
+          "暴露 getSourceExtensions 方法，用于检索指定语言的所有已注册源文件扩展名。",
+          "维护动态注册状态、不可用包和已宣布警告的内部状态，防止重复通知。"
+        ],
+        "outOfScope": [
+          "直接的 AST-grep 查询执行或模式匹配。",
+          "文件系统遍历或项目扫描。",
+          "超出语言映射范围的配置文件解析或验证。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'@ast-grep/napi'",
+        "symbols": [
+          "Lang",
+          "registerDynamicLanguage",
+          "type DynamicLangRegistrations"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "LangRegistry",
+        "kind": "class",
+        "signature": "class LangRegistry"
+      },
+      {
+        "name": "LangConfig",
+        "kind": "interface",
+        "signature": "interface LangConfig"
+      },
+      {
+        "name": "InternalLangConfig",
+        "kind": "type",
+        "signature": "type InternalLangConfig"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "LangRegistry",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/ast/lang-registry.ts#"
+      },
+      {
+        "name": "LangConfig",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/ast/lang-registry.ts#"
+      },
+      {
+        "name": "InternalLangConfig",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/ast/lang-registry.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "@ast-grep/napi",
+        "relation": "import",
+        "symbols": [
+          "Lang",
+          "registerDynamicLanguage",
+          "DynamicLangRegistrations"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SourceLanguage"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/ast/lang-registry.ts/_file_#",
+        "targetSymbol": "eslint.config.js/default#",
+        "targetPath": "eslint.config.js",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/ast/lang-registry.ts/_file_#",
+        "targetSymbol": "vitest.config.ts/default#",
+        "targetPath": "vitest.config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:56:56.128Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

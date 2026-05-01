@@ -1,0 +1,373 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/fix-service.ts",
+    "contentHash": "99ed34c4f9bf9d7b786c12f9dd119990791549aa0af1a003805bdca66359ddde",
+    "skeletonHash": "28ea38dfc7f362c86260f0728e754068ffa2ae03114ba09b6d826cd1c3947f22",
+    "semanticHash": "9ceb084d5fb05804bc804973dd52f7dfd85d7492f826e9e5c3f575156cb0d8d2",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Service-layer orchestrator for the ArchSpine architectural fix pipeline, managing the sequential execution of scanning, AST extraction, LLM-driven correction, and validation tasks with runtime session integration.",
+    "responsibilities": [
+      "Orchestrates the multi-stage fix pipeline including scanning, AST extraction, LLM-driven correction, and validation via a TaskRunner.",
+      "Manages fix retry logic with a configurable maximum attempts (MAX_FIX_RETRIES = 2).",
+      "Integrates with the runtime session and checkpoint system to track fix execution state.",
+      "Records usage metrics of the fix operation within the manifest.",
+      "Resolves LLM settings and execution profiles from configuration and secrets.",
+      "Handles error recovery by converting generic errors to ArchSpineError with appropriate error codes."
+    ],
+    "outOfScope": [
+      "Direct LLM invocation or prompt construction (delegated to FixTask and ASTExtractionTask).",
+      "Low-level file I/O or database operations (handled by infra modules).",
+      "User interface or CLI command handling."
+    ],
+    "invariants": [
+      "FixService must be instantiated with a valid FixServiceOptions including Config, Secrets, and RuntimeIO.",
+      "The fix pipeline always runs within a runtime session (runWithRuntimeSession).",
+      "Retry logic is bounded by MAX_FIX_RETRIES (2).",
+      "All errors are normalized to ArchSpineError before propagation."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized service for executing the automated fix pipeline, ensuring consistent orchestration of scanning, AST extraction, LLM correction, and validation steps with proper error handling and session management.",
+      "recentChangeIntent": "General update to the fix service implementation (commit message 'gogogo' indicates a broad, unspecified change)."
+    },
+    "publicSurface": [
+      "FixService class (exported)",
+      "FixRunSummary interface (exported)",
+      "FixServiceOptions interface (exported)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Service-layer orchestrator for the ArchSpine architectural fix pipeline, managing the sequential execution of scanning, AST extraction, LLM-driven correction, and validation tasks with runtime session integration.",
+        "responsibilities": [
+          "Orchestrates the multi-stage fix pipeline including scanning, AST extraction, LLM-driven correction, and validation via a TaskRunner.",
+          "Manages fix retry logic with a configurable maximum attempts (MAX_FIX_RETRIES = 2).",
+          "Integrates with the runtime session and checkpoint system to track fix execution state.",
+          "Records usage metrics of the fix operation within the manifest.",
+          "Resolves LLM settings and execution profiles from configuration and secrets.",
+          "Handles error recovery by converting generic errors to ArchSpineError with appropriate error codes."
+        ],
+        "outOfScope": [
+          "Direct LLM invocation or prompt construction (delegated to FixTask and ASTExtractionTask).",
+          "Low-level file I/O or database operations (handled by infra modules).",
+          "User interface or CLI command handling."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 架构修复管道的服务层编排器，负责管理扫描、AST 提取、LLM 驱动的修正和验证任务的顺序执行，并与运行时会话集成。",
+        "responsibilities": [
+          "通过 TaskRunner 编排多阶段修复管道，包括扫描、AST 提取、LLM 驱动的修正和验证。",
+          "管理修复重试逻辑，具有可配置的最大尝试次数（MAX_FIX_RETRIES = 2）。",
+          "与运行时会话和检查点系统集成，以跟踪修复执行状态。",
+          "在清单中记录修复操作的使用指标。",
+          "从配置和密钥中解析 LLM 设置和执行配置文件。",
+          "通过将通用错误转换为带有适当错误代码的 ArchSpineError 来处理错误恢复。"
+        ],
+        "outOfScope": [
+          "直接调用 LLM 或构建提示词（委托给 FixTask 和 ASTExtractionTask）。",
+          "底层文件 I/O 或数据库操作（由 infra 模块处理）。",
+          "用户界面或 CLI 命令处理。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/pipeline.js'",
+        "symbols": [
+          "TaskRunner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../tasks/fix.js'",
+        "symbols": [
+          "FixTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../tasks/scan-cleanup.js'",
+        "symbols": [
+          "ScanAndCleanupTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../tasks/ast-extra.js'",
+        "symbols": [
+          "ASTExtractionTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../tasks/validate.js'",
+        "symbols": [
+          "ValidationSummary",
+          "ValidationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/scan-policy.js'",
+        "symbols": [
+          "ScanPolicy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./task-runtime.js'",
+        "symbols": [
+          "createTaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/task-state.js'",
+        "symbols": [
+          "resetTaskState"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/llm.js'",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets",
+          "resolveLLMSettings"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/secrets.js'",
+        "symbols": [
+          "Secrets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./runtime-execution-profile.js'",
+        "symbols": [
+          "resolveExecutionProfileFromSettings"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes",
+          "toArchSpineError"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./runtime-session.js'",
+        "symbols": [
+          "runWithRuntimeSession"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "runFix",
+        "kind": "function",
+        "signature": "runFix(\n  rootDir: string,\n  llmClient?: LLMClient,\n  scanPolicy?: ScanPolicy,\n)"
+      },
+      {
+        "name": "FixService",
+        "kind": "class",
+        "signature": "class FixService"
+      },
+      {
+        "name": "FixRunSummary",
+        "kind": "interface",
+        "signature": "interface FixRunSummary"
+      },
+      {
+        "name": "FixServiceOptions",
+        "kind": "interface",
+        "signature": "interface FixServiceOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "runFix",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/fix-service.ts#"
+      },
+      {
+        "name": "FixService",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/services/fix-service.ts#"
+      },
+      {
+        "name": "FixRunSummary",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/fix-service.ts#"
+      },
+      {
+        "name": "FixServiceOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/fix-service.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 15,
+      "exportCount": 4,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/pipeline.js",
+        "relation": "import",
+        "symbols": [
+          "TaskRunner"
+        ]
+      },
+      {
+        "targetPath": "../tasks/fix.js",
+        "relation": "import",
+        "symbols": [
+          "FixTask"
+        ]
+      },
+      {
+        "targetPath": "../tasks/scan-cleanup.js",
+        "relation": "import",
+        "symbols": [
+          "ScanAndCleanupTask"
+        ]
+      },
+      {
+        "targetPath": "../tasks/ast-extra.js",
+        "relation": "import",
+        "symbols": [
+          "ASTExtractionTask"
+        ]
+      },
+      {
+        "targetPath": "../tasks/validate.js",
+        "relation": "import",
+        "symbols": [
+          "ValidationSummary",
+          "ValidationTask"
+        ]
+      },
+      {
+        "targetPath": "../core/scan-policy.js",
+        "relation": "import",
+        "symbols": [
+          "ScanPolicy"
+        ]
+      },
+      {
+        "targetPath": "../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "./task-runtime.js",
+        "relation": "import",
+        "symbols": [
+          "createTaskContext"
+        ]
+      },
+      {
+        "targetPath": "../core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "resetTaskState"
+        ]
+      },
+      {
+        "targetPath": "../infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets",
+          "resolveLLMSettings"
+        ]
+      },
+      {
+        "targetPath": "../infra/secrets.js",
+        "relation": "import",
+        "symbols": [
+          "Secrets"
+        ]
+      },
+      {
+        "targetPath": "./runtime-execution-profile.js",
+        "relation": "import",
+        "symbols": [
+          "resolveExecutionProfileFromSettings"
+        ]
+      },
+      {
+        "targetPath": "../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes",
+          "toArchSpineError"
+        ]
+      },
+      {
+        "targetPath": "../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "./runtime-session.js",
+        "relation": "import",
+        "symbols": [
+          "runWithRuntimeSession"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:40.643Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

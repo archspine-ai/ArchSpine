@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/help-boundary-contract.test.ts",
+    "contentHash": "b41bd8f3f430e84ab909d1a7d2c58666eb3f891a18d1454a958df35434063e6b",
+    "skeletonHash": "1315319c2a1b5be884caf752b02c50578366b71fb2996abb3ae31468355b3151",
+    "semanticHash": "8a4191b75ac6cea135cd5fefb80bcdf3a12dc92fff73c18d80aafac2acfd84ef",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for CLI help command boundary contracts.",
+    "responsibilities": [
+      "Verifies that printCommandHelp for 'sync' command outputs correct usage syntax and redirects heavy work to 'build'.",
+      "Verifies that printGeneralHelp outputs general usage and does not include deprecated '--full' flag."
+    ],
+    "outOfScope": [
+      "Implementing CLI help logic (delegated to src/cli/help.ts).",
+      "Testing non-CLI components.",
+      "Providing runtime help to users."
+    ],
+    "invariants": [
+      "Must import vitest testing utilities.",
+      "Must mock console.log to capture output.",
+      "Must assert specific string containment and exclusion in help text."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure CLI help messages maintain clear boundaries between incremental sync and full rebuild, preventing user confusion.",
+      "recentChangeIntent": "Likely minor test adjustments or documentation updates (per git commit 'easy one')."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for CLI help command boundary contracts.",
+        "responsibilities": [
+          "Verifies that printCommandHelp for 'sync' command outputs correct usage syntax and redirects heavy work to 'build'.",
+          "Verifies that printGeneralHelp outputs general usage and does not include deprecated '--full' flag."
+        ],
+        "outOfScope": [
+          "Implementing CLI help logic (delegated to src/cli/help.ts).",
+          "Testing non-CLI components.",
+          "Providing runtime help to users."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/cli/help.js'",
+        "symbols": [
+          "printCommandHelp",
+          "printGeneralHelp"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "../src/cli/help.js",
+        "relation": "import",
+        "symbols": [
+          "printCommandHelp",
+          "printGeneralHelp"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.187Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

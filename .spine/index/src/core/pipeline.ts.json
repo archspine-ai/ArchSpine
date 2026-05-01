@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/core/pipeline.ts",
+    "contentHash": "13f96e255117c7a870b56158cb9dff521317d44336252b66cb847d99080e9102",
+    "skeletonHash": "5a297c1a0f26bc7b6090e2c17d16a0bf819b61eae46d0b6365edab66399c492e",
+    "semanticHash": "7f75429c96874f7c283a62657d36ac7510b7b402d59934a96545730abaa1f712",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/core"
+  },
+  "semantic": {
+    "role": "Core runtime orchestrator for executing SpineTask instances with lifecycle management and performance telemetry.",
+    "responsibilities": [
+      "Instantiates with a TaskContext to provide execution environment for tasks.",
+      "Executes generic SpineTask instances using their .execute method with provided input.",
+      "Records task stage start, completion, and failure checkpoints via the executionCheckpoint interface.",
+      "Logs task execution progress and errors through the runtimeIO interface.",
+      "Captures performance metrics (duration, memory usage) and records them via recordTaskStageMetric."
+    ],
+    "outOfScope": [
+      "CLI command parsing or argument handling",
+      "Task definition or implementation",
+      "Persistence of task state beyond checkpoint recording",
+      "External service integration beyond provided context interfaces"
+    ],
+    "invariants": [
+      "Depends only on core pipeline contracts (SpineTask, TaskContext) and internal metric utilities.",
+      "Must remain decoupled from CLI entry points or UI layers.",
+      "Lifecycle events (start, complete, fail) are checkpointed and logged consistently."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Encapsulate task execution lifecycle with telemetry, enabling reuse across different invocation contexts (CLI, service, tests).",
+      "recentChangeIntent": "Modularize CLI and decouple core infra services, reinforcing pipeline isolation by ensuring TaskRunner depends only on core contracts."
+    },
+    "publicSurface": [
+      "TaskRunner class",
+      "constructor(context: TaskContext)",
+      "run<I, O>(task: SpineTask<I, O>, input: I): Promise<O>"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core runtime orchestrator for executing SpineTask instances with lifecycle management and performance telemetry.",
+        "responsibilities": [
+          "Instantiates with a TaskContext to provide execution environment for tasks.",
+          "Executes generic SpineTask instances using their .execute method with provided input.",
+          "Records task stage start, completion, and failure checkpoints via the executionCheckpoint interface.",
+          "Logs task execution progress and errors through the runtimeIO interface.",
+          "Captures performance metrics (duration, memory usage) and records them via recordTaskStageMetric."
+        ],
+        "outOfScope": [
+          "CLI command parsing or argument handling",
+          "Task definition or implementation",
+          "Persistence of task state beyond checkpoint recording",
+          "External service integration beyond provided context interfaces"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./task-state.js'",
+        "symbols": [
+          "recordTaskStageMetric"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "TaskRunner",
+        "kind": "class",
+        "signature": "class TaskRunner"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "TaskRunner",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/core/pipeline.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "./task-state.js",
+        "relation": "import",
+        "symbols": [
+          "recordTaskStageMetric"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/check-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "src/services/fix-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "src/services/sync-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:37.209Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

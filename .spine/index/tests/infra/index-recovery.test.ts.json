@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/infra/index-recovery.test.ts",
+    "contentHash": "ced0ca63ada461d98f464b1d2b23e2530fcd26c2288d6e60d2e2235dd2a54ecf",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "8309531a8e2210f1e3e95fa454b9b86a06e43e299f48aba69f79d4ec83074fe1",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/infra"
+  },
+  "semantic": {
+    "role": "Vitest test suite for validating index-based resume recovery and LLM retry mechanisms in the ArchSpine system.",
+    "responsibilities": [
+      "Creates isolated temporary directories for each test case to avoid side effects.",
+      "Mocks LLM summarization task failures to simulate retry scenarios.",
+      "Verifies the system correctly recovers from partial or corrupted index states.",
+      "Cleans up test artifacts after each test run to maintain a pristine environment."
+    ],
+    "outOfScope": [
+      "Production logic for summarization or index recovery.",
+      "Integration tests with external LLM services.",
+      "Performance or load testing of the recovery mechanism."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure robust index-based resume recovery and LLM retry logic through isolated, deterministic test scenarios.",
+      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, aligning test structure with project conventions."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite for validating index-based resume recovery and LLM retry mechanisms in the ArchSpine system.",
+        "responsibilities": [
+          "Creates isolated temporary directories for each test case to avoid side effects.",
+          "Mocks LLM summarization task failures to simulate retry scenarios.",
+          "Verifies the system correctly recovers from partial or corrupted index states.",
+          "Cleans up test artifacts after each test run to maintain a pristine environment."
+        ],
+        "outOfScope": [
+          "Production logic for summarization or index recovery.",
+          "Integration tests with external LLM services.",
+          "Performance or load testing of the recovery mechanism."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于验证 ArchSpine 系统中基于索引的恢复和 LLM 重试机制的 Vitest 测试套件。",
+        "responsibilities": [
+          "为每个测试用例创建隔离的临时目录，避免副作用。",
+          "模拟 LLM 摘要任务失败，以测试重试场景。",
+          "验证系统能够从部分或损坏的索引状态中正确恢复。",
+          "每次测试运行后清理测试工件，保持环境整洁。"
+        ],
+        "outOfScope": [
+          "摘要或索引恢复的生产逻辑。",
+          "与外部 LLM 服务的集成测试。",
+          "恢复机制的性能或负载测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "../../src/tasks/summarize.js",
+        "relation": "import",
+        "symbols": [
+          "SummarizationTask"
+        ]
+      },
+      {
+        "targetPath": "../../src/core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "createTaskTelemetryState",
+          "createTaskState"
+        ]
+      },
+      {
+        "targetPath": "../../src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SpineUnit"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T03:58:25.808Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

@@ -1,0 +1,248 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/fix.ts",
+    "contentHash": "666de6c593535145ddf00b0665a7638c9f205a37f99e3f52cf370bbe91d86477",
+    "skeletonHash": "9f341688243f7f68af5031dd3f6aa15d86fb18de5108e08410f5c7acea74ee01",
+    "semanticHash": "dbea16102e734f2828869c7b6e4ddb8e16578948d56e71cb342155432901d4b5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "SpineTask implementation for the automated LLM-driven architectural violation fixing stage.",
+    "responsibilities": [
+      "Groups architectural rule violations by source file for batch processing.",
+      "Generates LLM prompts to produce fix patches for each violated file using AST analysis.",
+      "Applies generated patches to source files after validation using diff utilities.",
+      "Rechecks fixed files to ensure violations are resolved by re-evaluating rules."
+    ],
+    "outOfScope": [
+      "CLI command parsing or argument handling.",
+      "Orchestration of unrelated pipeline stages or services.",
+      "Direct LLM API calls; relies on the fix-prompt engine for prompt generation.",
+      "Persistence of task state beyond the provided TaskContext."
+    ],
+    "invariants": [
+      "Must implement the SpineTask contract for the fix stage.",
+      "Must operate on stage-local data (violations) provided via TaskContext.",
+      "Must delegate LLM prompt construction to the fix-prompt engine.",
+      "Must not assume control flow outside its stage boundary."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Automated remediation of architectural rule violations using LLM-generated code patches, integrated as a discrete stage in the Spine pipeline.",
+      "recentChangeIntent": "Harden risk hotspots with LLM/db decoupling and engine smoke test (per git intent)."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "SpineTask implementation for the automated LLM-driven architectural violation fixing stage.",
+        "responsibilities": [
+          "Groups architectural rule violations by source file for batch processing.",
+          "Generates LLM prompts to produce fix patches for each violated file using AST analysis.",
+          "Applies generated patches to source files after validation using diff utilities.",
+          "Rechecks fixed files to ensure violations are resolved by re-evaluating rules."
+        ],
+        "outOfScope": [
+          "CLI command parsing or argument handling.",
+          "Orchestration of unrelated pipeline stages or services.",
+          "Direct LLM API calls; relies on the fix-prompt engine for prompt generation.",
+          "Persistence of task state beyond the provided TaskContext."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'diff'",
+        "symbols": [
+          "createTwoFilesPatch"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'@ast-grep/napi'",
+        "symbols": [
+          "parse"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/task-state.js'",
+        "symbols": [
+          "addTaskUsage"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../engines/fix-prompt.js'",
+        "symbols": [
+          "generateFixPrompt",
+          "type FixViolationContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../utils/fs.js'",
+        "symbols": [
+          "FileSystemManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/lang-registry.js'",
+        "symbols": [
+          "LangRegistry"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "FixTask",
+        "kind": "class",
+        "signature": "class FixTask"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "FixTask",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/tasks/fix.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 11,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "diff",
+        "relation": "import",
+        "symbols": [
+          "createTwoFilesPatch"
+        ]
+      },
+      {
+        "targetPath": "@ast-grep/napi",
+        "relation": "import",
+        "symbols": [
+          "parse"
+        ]
+      },
+      {
+        "targetPath": "../core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "../core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "addTaskUsage"
+        ]
+      },
+      {
+        "targetPath": "../engines/fix-prompt.js",
+        "relation": "import",
+        "symbols": [
+          "generateFixPrompt",
+          "type FixViolationContext"
+        ]
+      },
+      {
+        "targetPath": "../utils/fs.js",
+        "relation": "import",
+        "symbols": [
+          "FileSystemManager"
+        ]
+      },
+      {
+        "targetPath": "../ast/lang-registry.js",
+        "relation": "import",
+        "symbols": [
+          "LangRegistry"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/fix-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:41.527Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

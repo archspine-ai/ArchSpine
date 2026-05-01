@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/mcp/context.ts",
+    "contentHash": "c4f1ebbafdc201b1e433d9f80658dffd82a50040c4d4663c95d1392b1ee8013c",
+    "skeletonHash": "493271f7d8046adac2593aa0d5a7b30d08a8dbc388bfdf316546a30971fb383d",
+    "semanticHash": "ab5c42436ede575d09c10d57d7749e999765924863f451c6476cd27c10e034ca",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/mcp"
+  },
+  "semantic": {
+    "role": "Infrastructure facade class for gating Model Context Protocol (MCP) context flow based on priming state and operational mode.",
+    "responsibilities": [
+      "Defines the MCPContextMode type enumerating context provisioning strategies ('off', 'project-first', 'search-first').",
+      "Manages internal boolean state tracking for project and search priming.",
+      "Provides logic to determine if context should be emitted based on the current mode and priming state.",
+      "Updates the search priming state when specific search-oriented tools are used via the SEARCH_PRIMING_TOOLS set."
+    ],
+    "outOfScope": [
+      "Orchestrating service or engine workflows",
+      "Direct integration with external MCP servers or network calls",
+      "Persisting priming state across sessions"
+    ],
+    "invariants": [
+      "Exports a stable public facade (MCPContextGate) for context gating logic",
+      "Encapsulates priming state as private class properties",
+      "Defines a fixed set of search-priming tools"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a configurable gate to control MCP context emission based on priming and mode, decoupling context flow from runtime orchestration.",
+      "recentChangeIntent": "Add MCP context gating and init-only bootstrap (as per git commit)."
+    },
+    "publicSurface": [
+      "MCPContextMode type",
+      "MCPContextGate class"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure facade class for gating Model Context Protocol (MCP) context flow based on priming state and operational mode.",
+        "responsibilities": [
+          "Defines the MCPContextMode type enumerating context provisioning strategies ('off', 'project-first', 'search-first').",
+          "Manages internal boolean state tracking for project and search priming.",
+          "Provides logic to determine if context should be emitted based on the current mode and priming state.",
+          "Updates the search priming state when specific search-oriented tools are used via the SEARCH_PRIMING_TOOLS set."
+        ],
+        "outOfScope": [
+          "Orchestrating service or engine workflows",
+          "Direct integration with external MCP servers or network calls",
+          "Persisting priming state across sessions"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "MCPContextGate",
+        "kind": "class",
+        "signature": "class MCPContextGate"
+      },
+      {
+        "name": "MCPContextMode",
+        "kind": "type",
+        "signature": "type MCPContextMode"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "MCPContextGate",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/mcp/context.ts#"
+      },
+      {
+        "name": "MCPContextMode",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/mcp/context.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [
+      {
+        "targetPath": "tests/mcp-context-mode.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:39.470Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

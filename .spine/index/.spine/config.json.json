@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": ".spine/config.json",
+    "contentHash": "ab521e4ea6b96d6baae6c5d153f73f33715847aa23b8fd72a9e914d5f3ed8e76",
+    "semanticHash": "893b33c81e1caa89cdca5a3134d518c961838a721958f63de56df350a181e06b",
+    "language": "unsupported",
+    "fileKind": "config",
+    "scope": ".spine"
+  },
+  "semantic": {
+    "role": "Central configuration file for the ArchSpine project mirror system, defining project metadata, LLM/MCP settings, hook behavior, artifact strategy, scan policy, and initialization state.",
+    "responsibilities": [
+      "Project metadata and locale registration",
+      "LLM and MCP context mode control",
+      "Pre-commit hook and sync mode configuration",
+      "Artifact generation strategy and view layer enablement",
+      "File scanning policy with ignore chain and protocol exclusions/inclusions",
+      "Initialization state management for agent instructions, ignore files, and git attributes"
+    ],
+    "outOfScope": [],
+    "invariants": [
+      "schemaVersion must be '1.0.0' for compatibility",
+      "project.locales must include at least 'English' and 'Simplified Chinese'",
+      "mcp.contextMode must be 'off' to avoid context interference",
+      "hooks.preCommit must be false to prevent automatic commits",
+      "artifacts.strategy must be 'distributable'",
+      "scanPolicy.fileSource must be 'git-tracked'",
+      "scanPolicy.ignoreChain.inheritGitIgnore must be true",
+      "scanPolicy.protocolExclusions must include '.spine/'",
+      "scanPolicy.protocolInclusions must include '.spine/rules/' and '.spine/config.json'",
+      "initState.artifactStrategy must match artifacts.strategy"
+    ],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Central configuration file for the ArchSpine project mirror system, defining project metadata, LLM/MCP settings, hook behavior, artifact strategy, scan policy, and initialization state.",
+        "parameter_definitions": {
+          "schemaVersion": "Version identifier for configuration schema compatibility; must be '1.0.0'.",
+          "project.name": "Name of the project, set to 'archspine'.",
+          "project.locales": "List of supported locales for the project; must include 'English' and 'Simplified Chinese'.",
+          "llm": "Empty object placeholder for future LLM configuration; currently unused.",
+          "mcp.contextMode": "MCP context mode; set to 'off' to disable context injection and prevent interference.",
+          "hooks.preCommit": "Boolean flag to enable or disable pre-commit hooks; set to false to avoid automatic commits.",
+          "hooks.syncMode": "Synchronization mode for hooks; set to 'hook' to trigger on git hooks.",
+          "artifacts.strategy": "Strategy for artifact generation; set to 'distributable' for portable outputs.",
+          "artifacts.experimentalViewLayer": "Boolean flag enabling experimental view layer for enhanced artifact visualization.",
+          "artifacts.enabledViews": "List of enabled artifact views: 'public-surface', 'risk-hotspots', 'architecture-diagram'.",
+          "scanPolicy.fileSource": "Source of files to scan; set to 'git-tracked' to only scan files tracked by git.",
+          "scanPolicy.ignoreChain.inheritGitIgnore": "Boolean flag to inherit .gitignore rules; set to true.",
+          "scanPolicy.ignoreChain.projectIgnore": "Project-level ignore file; set to '.spineignore'.",
+          "scanPolicy.ignoreChain.localIgnore": "Local ignore file; set to '.spineignore.local'.",
+          "scanPolicy.protocolExclusions": "List of paths excluded from scanning; includes '.spine/'.",
+          "scanPolicy.protocolInclusions": "List of paths included in scanning; includes '.spine/rules/' and '.spine/config.json'.",
+          "initState.artifactStrategy": "Initial artifact strategy; must match artifacts.strategy ('distributable').",
+          "initState.agentInstructionsFile": "File name for agent instructions; set to 'AGENTS.md'.",
+          "initState.agentInstructionsCreatedByArchSpine": "Boolean flag indicating if AGENTS.md was created by ArchSpine; set to false.",
+          "initState.spineIgnoreManaged": "Boolean flag indicating if .spineignore is managed; set to true.",
+          "initState.spineIgnoreCreatedByArchSpine": "Boolean flag indicating if .spineignore was created by ArchSpine; set to false.",
+          "initState.searchIgnoreManaged": "Boolean flag indicating if search ignore file is managed; set to true.",
+          "initState.searchIgnoreCreatedByArchSpine": "Boolean flag indicating if search ignore file was created by ArchSpine; set to false.",
+          "initState.gitIgnoreManaged": "Boolean flag indicating if .gitignore is managed; set to true.",
+          "initState.gitIgnoreCreatedByArchSpine": "Boolean flag indicating if .gitignore was created by ArchSpine; set to false.",
+          "initState.gitAttributesManaged": "Boolean flag indicating if .gitattributes is managed; set to true.",
+          "initState.gitAttributesCreatedByArchSpine": "Boolean flag indicating if .gitattributes was created by ArchSpine; set to false."
+        },
+        "stability_and_risks": "This configuration file is critical for system stability. The scan policy ensures only git-tracked files are scanned, with a robust ignore chain that inherits .gitignore and adds project/local ignores. Protocol exclusions prevent scanning of the .spine/ directory itself, while inclusions ensure key configuration files are always scanned. The artifact strategy is set to 'distributable', which is safe for sharing. The MCP context mode is disabled, reducing risk of unintended context injection. Pre-commit hooks are disabled, preventing automatic commits that could destabilize the repository. The initialization state carefully manages which files are created by ArchSpine versus the user, avoiding overwrites. Overall, this configuration promotes a stable, predictable mirror system with minimal risk of data loss or corruption."
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 项目镜像系统的核心配置文件，定义项目元数据、LLM/MCP 设置、钩子行为、产物策略、扫描策略和初始化状态。",
+        "parameter_definitions": {
+          "schemaVersion": "配置模式版本标识符；必须为 '1.0.0' 以确保兼容性。",
+          "project.name": "项目名称，设置为 'archspine'。",
+          "project.locales": "项目支持的语言列表；必须包含 'English' 和 'Simplified Chinese'。",
+          "llm": "预留的 LLM 配置占位对象；当前未使用。",
+          "mcp.contextMode": "MCP 上下文模式；设置为 'off' 以禁用上下文注入，防止干扰。",
+          "hooks.preCommit": "布尔标志，启用或禁用预提交钩子；设置为 false 以避免自动提交。",
+          "hooks.syncMode": "钩子的同步模式；设置为 'hook' 以在 git 钩子触发时同步。",
+          "artifacts.strategy": "产物生成策略；设置为 'distributable' 以生成可移植的输出。",
+          "artifacts.experimentalViewLayer": "布尔标志，启用实验性视图层以增强产物可视化。",
+          "artifacts.enabledViews": "启用的产物视图列表：'public-surface'（公共表面）、'risk-hotspots'（风险热点）、'architecture-diagram'（架构图）。",
+          "scanPolicy.fileSource": "扫描文件来源；设置为 'git-tracked' 以仅扫描 git 跟踪的文件。",
+          "scanPolicy.ignoreChain.inheritGitIgnore": "布尔标志，是否继承 .gitignore 规则；设置为 true。",
+          "scanPolicy.ignoreChain.projectIgnore": "项目级忽略文件；设置为 '.spineignore'。",
+          "scanPolicy.ignoreChain.localIgnore": "本地忽略文件；设置为 '.spineignore.local'。",
+          "scanPolicy.protocolExclusions": "从扫描中排除的路径列表；包含 '.spine/'。",
+          "scanPolicy.protocolInclusions": "包含在扫描中的路径列表；包含 '.spine/rules/' 和 '.spine/config.json'。",
+          "initState.artifactStrategy": "初始产物策略；必须与 artifacts.strategy 一致（'distributable'）。",
+          "initState.agentInstructionsFile": "代理指令文件名；设置为 'AGENTS.md'。",
+          "initState.agentInstructionsCreatedByArchSpine": "布尔标志，指示 AGENTS.md 是否由 ArchSpine 创建；设置为 false。",
+          "initState.spineIgnoreManaged": "布尔标志，指示 .spineignore 是否被管理；设置为 true。",
+          "initState.spineIgnoreCreatedByArchSpine": "布尔标志，指示 .spineignore 是否由 ArchSpine 创建；设置为 false。",
+          "initState.searchIgnoreManaged": "布尔标志，指示搜索忽略文件是否被管理；设置为 true。",
+          "initState.searchIgnoreCreatedByArchSpine": "布尔标志，指示搜索忽略文件是否由 ArchSpine 创建；设置为 false。",
+          "initState.gitIgnoreManaged": "布尔标志，指示 .gitignore 是否被管理；设置为 true。",
+          "initState.gitIgnoreCreatedByArchSpine": "布尔标志，指示 .gitignore 是否由 ArchSpine 创建；设置为 false。",
+          "initState.gitAttributesManaged": "布尔标志，指示 .gitattributes 是否被管理；设置为 true。",
+          "initState.gitAttributesCreatedByArchSpine": "布尔标志，指示 .gitattributes 是否由 ArchSpine 创建；设置为 false。"
+        },
+        "stability_and_risks": "此配置文件对系统稳定性至关重要。扫描策略确保仅扫描 git 跟踪的文件，并采用强大的忽略链，继承 .gitignore 并添加项目级和本地忽略。协议排除规则防止扫描 .spine/ 目录本身，而包含规则确保始终扫描关键配置文件。产物策略设置为 'distributable'，适合安全共享。MCP 上下文模式已禁用，降低了意外上下文注入的风险。预提交钩子已禁用，防止自动提交可能导致的仓库不稳定。初始化状态仔细管理哪些文件由 ArchSpine 创建，哪些由用户创建，避免覆盖。总体而言，此配置促进了稳定、可预测的镜像系统，数据丢失或损坏的风险极低。"
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:43:00.074Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db/wal-recovery.ts",
+    "contentHash": "dce8021ed8f2738ac312b0e952d381279f7a36e2d40de2b7871903e132dda1bf",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "b8b6de0fb2ae54273f7172b78b495c62221693d96551697d5ff48426442989ea",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/db"
+  },
+  "semantic": {
+    "role": "Infrastructure utility module for SQLite Write-Ahead Log (WAL) stale file detection and cleanup.",
+    "responsibilities": [
+      "Defines a byte threshold (512KB) to identify stale WAL files that may indicate a killed process.",
+      "Exposes a recovery function that removes stale WAL and shared-memory (SHM) files to prevent empty reconciliations and subsequent LLM rate limit overload."
+    ],
+    "outOfScope": [
+      "Database connection management or query execution.",
+      "Orchestration of reconciliation or sync tasks.",
+      "Any higher-level business logic or service coordination."
+    ],
+    "invariants": [
+      "The STALE_WAL_THRESHOLD_BYTES constant must remain at 512KB to match the heuristic for detecting killed processes.",
+      "The recoverStaleWal function must only operate on WAL and SHM files derived from the given dbPath.",
+      "The module must not import or depend on service, task, or engine modules to comply with the infra-facade-imports rule."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, low-level infrastructure facade for detecting and cleaning up stale SQLite WAL files, preventing data loss and LLM rate limit issues.",
+      "recentChangeIntent": "No recent changes detected; the module appears stable and aligned with the pipeline fixes before v1.0."
+    },
+    "publicSurface": [
+      "STALE_WAL_THRESHOLD_BYTES (constant)",
+      "recoverStaleWal(dbPath: string): void"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure utility module for SQLite Write-Ahead Log (WAL) stale file detection and cleanup.",
+        "responsibilities": [
+          "Defines a byte threshold (512KB) to identify stale WAL files that may indicate a killed process.",
+          "Exposes a recovery function that removes stale WAL and shared-memory (SHM) files to prevent empty reconciliations and subsequent LLM rate limit overload."
+        ],
+        "outOfScope": [
+          "Database connection management or query execution.",
+          "Orchestration of reconciliation or sync tasks.",
+          "Any higher-level business logic or service coordination."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于 SQLite 预写日志（WAL）过期文件检测与清理的基础设施工具模块。",
+        "responsibilities": [
+          "定义字节阈值（512KB），用于识别可能因进程被杀死而残留的过期 WAL 文件。",
+          "提供恢复函数，删除过期的 WAL 和共享内存（SHM）文件，防止空数据恢复导致后续 LLM 速率限制过载。"
+        ],
+        "outOfScope": [
+          "数据库连接管理或查询执行。",
+          "协调或同步任务的编排。",
+          "任何更高级别的业务逻辑或服务协调。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T03:57:58.402Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "schemas/examples/spine-unit.example.json",
+    "contentHash": "dd0170bd06ba517ac9c85a319a4d09be661885daf052ce0c619bb02b28d20fd2",
+    "semanticHash": "c2588bbb54a092941a3973147fb5a2e65439922b09b456301f08d2645897e969",
+    "language": "unsupported",
+    "fileKind": "config",
+    "scope": "schemas/examples"
+  },
+  "semantic": {
+    "role": "Authentication entry module for login and logout operations.",
+    "responsibilities": [
+      "Expose login and logout functions.",
+      "Provide a minimal AuthService singleton entry point."
+    ],
+    "outOfScope": [],
+    "invariants": [
+      {
+        "id": "no-direct-db-access",
+        "description": "This module must not import database adapters directly.",
+        "enforceable": true
+      }
+    ],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Authentication entry module for login and logout operations.",
+        "parameter_definitions": {
+          "login": "Starts a login flow for a caller-supplied user identity. Accepts user and pass parameters.",
+          "logout": "Terminates an active session from the caller side.",
+          "AuthService": "Singleton class providing the authentication service entry point.",
+          "no-direct-db-access": "Critical invariant: This module must not import database adapters directly to maintain separation of concerns."
+        },
+        "stability_and_risks": "This file defines the authentication entry point for the system. Its lightweight design and prohibition on direct database access reduce coupling and improve testability. The primary risk is that any changes to the login/logout signatures or AuthService interface could break all consumers. The invariant against database imports prevents accidental state persistence or data leaks from this layer."
+      },
+      "Simplified Chinese": {
+        "role": "用于登录和注销操作的认证入口模块。",
+        "parameter_definitions": {
+          "login": "为调用方提供的用户身份启动登录流程。接受用户名和密码参数。",
+          "logout": "从调用方终止当前活动会话。",
+          "AuthService": "提供认证服务入口的单例类。",
+          "no-direct-db-access": "关键不变约束：此模块不得直接导入数据库适配器，以保持关注点分离。"
+        },
+        "stability_and_risks": "此文件定义了系统的认证入口点。其轻量级设计以及禁止直接访问数据库的约束降低了耦合度，提高了可测试性。主要风险在于，对login/logout签名或AuthService接口的任何更改都可能破坏所有消费者。禁止数据库导入的不变约束防止了从该层意外持久化状态或泄露数据。"
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:44:38.867Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

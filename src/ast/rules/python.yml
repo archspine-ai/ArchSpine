@@ -1,0 +1,26 @@
+imports:
+  - id: from_import
+    pattern: 'from $SOURCE import $$$SYMBOLS'
+  - id: simple_import
+    pattern: 'import $$$SYMBOLS'
+exports:
+  - id: list
+    pattern: '__all__ = [$$$SYMBOLS]'
+    kind: Unknown
+  - id: function
+    pattern: 'def $NAME($$$ARGS) $$$: $$$BODY'
+    kind: Function
+  - id: class
+    pattern: 'class $NAME($$$ARGS): $$$BODY'
+    kind: Class
+  - id: async_function
+    pattern: 'async def $NAME($$$ARGS) $$$: $$$BODY'
+    kind: Function
+  - id: variable
+    pattern: '$NAME = $VAL'
+    kind: Variable
+usages:
+  - id: call
+    pattern: '$NAME($$$ARGS)'
+  - id: property
+    pattern: '$OBJ.$NAME'

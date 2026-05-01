@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/runtime-execution-profile.ts",
+    "contentHash": "ad91bf44cc9a53739e84ef99cc938badf9dfe9770c1c568f2b30221d3d384eda",
+    "skeletonHash": "6af040a6f35bcbbab29e6b012aad8c09316e0cad038994ba6db3e7d1f5752166",
+    "semanticHash": "9c89fd510eac8768311de22a40a7d5c4ee4ea0cbfc58ff3d2a760c51d01654bc",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Type definition module for resolved runtime execution profiles and commands within the service layer.",
+    "responsibilities": [
+      "Defines the `ResolvedExecutionProfile` interface aggregating resolved LLM settings, mode, prompt tier, validation policy, and generation flow.",
+      "Defines the `RuntimeCommand` type alias for representing runtime commands.",
+      "Imports and reuses types from the infra layer (`ResolvedLLMSettings`, `GenerationFlow`, `GenerationStrategy`, `LLMMode`, `PromptPolicyTier`, `PromptProfile`, `ValidatePolicy`, `ValidationProfile`) to ensure type consistency across the service boundary."
+    ],
+    "outOfScope": [
+      "Runtime orchestration or execution logic.",
+      "Service implementation or business logic.",
+      "Direct interaction with infra modules beyond type imports."
+    ],
+    "invariants": [
+      "All fields in `ResolvedExecutionProfile` are resolved (non-optional) values derived from configuration or defaults.",
+      "The module depends only on infra type definitions, not on runtime infra modules."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish a typed contract for resolved execution profiles that the runtime service uses to drive LLM interactions, separating configuration resolution from execution.",
+      "recentChangeIntent": "Initial commit for open source release (v1.0.0) — establishes the foundational type definitions for the service runtime."
+    },
+    "publicSurface": [
+      "ResolvedExecutionProfile",
+      "RuntimeCommand"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Type definition module for resolved runtime execution profiles and commands within the service layer.",
+        "responsibilities": [
+          "Defines the `ResolvedExecutionProfile` interface aggregating resolved LLM settings, mode, prompt tier, validation policy, and generation flow.",
+          "Defines the `RuntimeCommand` type alias for representing runtime commands.",
+          "Imports and reuses types from the infra layer to ensure type consistency across the service boundary."
+        ],
+        "outOfScope": [
+          "Runtime orchestration or execution logic.",
+          "Service implementation or business logic.",
+          "Direct interaction with infra modules beyond type imports."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "服务层中已解析运行时执行配置和命令的类型定义模块。",
+        "responsibilities": [
+          "定义 `ResolvedExecutionProfile` 接口，聚合已解析的 LLM 设置、模式、提示策略层级、验证策略和生成流程。",
+          "定义 `RuntimeCommand` 类型别名，用于表示运行时命令。",
+          "从基础设施层导入并复用类型，确保服务边界上的类型一致性。"
+        ],
+        "outOfScope": [
+          "运行时编排或执行逻辑。",
+          "服务实现或业务逻辑。",
+          "超出类型导入范围的基础设施模块直接交互。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "resolveExecutionProfileFromSettings",
+        "kind": "function",
+        "signature": "resolveExecutionProfileFromSettings(\n  resolved: ResolvedLLMSettings,\n  command: RuntimeCommand,\n)"
+      },
+      {
+        "name": "ResolvedExecutionProfile",
+        "kind": "interface",
+        "signature": "interface ResolvedExecutionProfile"
+      },
+      {
+        "name": "RuntimeCommand",
+        "kind": "type",
+        "signature": "type RuntimeCommand"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "resolveExecutionProfileFromSettings",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/runtime-execution-profile.ts#"
+      },
+      {
+        "name": "ResolvedExecutionProfile",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/runtime-execution-profile.ts#"
+      },
+      {
+        "name": "RuntimeCommand",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/services/runtime-execution-profile.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 3,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "ResolvedLLMSettings"
+        ]
+      },
+      {
+        "targetPath": "../infra/prompt-policy.js",
+        "relation": "import",
+        "symbols": [
+          "GenerationFlow",
+          "GenerationStrategy",
+          "LLMMode",
+          "PromptPolicyTier",
+          "PromptProfile",
+          "ValidatePolicy",
+          "ValidationProfile"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:40.784Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

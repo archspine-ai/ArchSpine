@@ -1,0 +1,156 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt/source.ts",
+    "contentHash": "a8236d9098b3225013026e312c394a1ee1937e64a1f09d2acfea1f11062abfe4",
+    "skeletonHash": "5e7d413c8104793f0d139e90d18f600b05a6ed4c85ff04df5d7dfa1667faffc3",
+    "semanticHash": "3a5361cbbe74d4b17162c6a739d6e9f640b46e9ab0fc1aa226705e0bf80d25a2",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt"
+  },
+  "semantic": {
+    "role": "Infrastructure facade function that generates structured LLM prompts for source code analysis tasks within the ArchSpine system.",
+    "responsibilities": [
+      "Assembles a PromptBuilder with identity, instructions, examples, and environmental context (branch, status).",
+      "Integrates localized language instructions and output contract rendering for multilingual support.",
+      "Injects architectural rules, git intent, dependency context, and previous semantic data into the prompt.",
+      "Applies a JSON schema (sourceFileSchema) to enforce output structure.",
+      "Supports configurable task modes (e.g., 'summarize', 'audit') and prompt policy tiers (e.g., 'balanced')."
+    ],
+    "outOfScope": [
+      "Orchestrating the actual LLM inference or API calls.",
+      "Parsing or analyzing source code AST beyond the provided content.",
+      "Enforcing architectural rules beyond injecting them into the prompt.",
+      "Managing prompt templates or schema definitions (delegated to assets)."
+    ],
+    "invariants": [
+      "Must remain a pure prompt assembly function with no side effects.",
+      "Must delegate all prompt rendering logic to the PromptBuilder and shared utilities.",
+      "Must not absorb service/task/engine orchestration concerns (per infra-facade-imports rule)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, configurable facade for generating prompts that adhere to architectural policies and output contracts, enabling consistent source code analysis across the system.",
+      "recentChangeIntent": "Refactor to establish subsystem facades and resolve layer inversions, likely consolidating prompt generation logic into a dedicated infra facade."
+    },
+    "publicSurface": [
+      "generateSourcePrompt"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure facade function that generates structured LLM prompts for source code analysis tasks within the ArchSpine system.",
+        "responsibilities": [
+          "Assembles a PromptBuilder with identity, instructions, examples, and environmental context (branch, status).",
+          "Integrates localized language instructions and output contract rendering for multilingual support.",
+          "Injects architectural rules, git intent, dependency context, and previous semantic data into the prompt.",
+          "Applies a JSON schema (sourceFileSchema) to enforce output structure.",
+          "Supports configurable task modes (e.g., 'summarize', 'audit') and prompt policy tiers (e.g., 'balanced')."
+        ],
+        "outOfScope": [
+          "Orchestrating the actual LLM inference or API calls.",
+          "Parsing or analyzing source code AST beyond the provided content.",
+          "Enforcing architectural rules beyond injecting them into the prompt.",
+          "Managing prompt templates or schema definitions (delegated to assets)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../assets/templates/prompts/index.js'",
+        "symbols": [
+          "sourceFileSchema",
+          "sourceRoleExamples"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./builder.js'",
+        "symbols": [
+          "PromptBuilder"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./shared.js'",
+        "symbols": [
+          "buildLocalizedLanguageInstructions",
+          "renderOutputContract"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "generateSourcePrompt",
+        "kind": "function",
+        "signature": "generateSourcePrompt(\n  filePath: string,\n  content: string,\n  contextData: string = '',\n  ruleData: string = '',\n  gitIntent: string = '',\n  languages: string[] = ['English'],\n  branch: string = '',\n  status: string = '',\n  previousSemantic?: { role: string; responsibilities: string[] },\n  taskMode: PromptTaskMode = 'summarize',\n  promptTier: PromptPolicyTier = 'balanced',\n  validatePolicy: ValidatePolicy = taskMode === 'validate' ? 'strict' : 'default',\n  responseMode: PromptResponseMode = 'json-only',\n)"
+      },
+      {
+        "name": "generateSourceValidationJsonPrompt",
+        "kind": "function",
+        "signature": "generateSourceValidationJsonPrompt(\n  filePath: string,\n  content: string,\n  contextData: string = '',\n  ruleData: string = '',\n  gitIntent: string = '',\n  branch: string = '',\n  status: string = '',\n  previousSemantic?: { role: string; responsibilities: string[] },\n  promptTier: PromptPolicyTier = 'balanced',\n  validatePolicy: ValidatePolicy = 'strict',\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "generateSourcePrompt",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt/source.ts#"
+      },
+      {
+        "name": "generateSourceValidationJsonPrompt",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt/source.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../assets/templates/prompts/index.js",
+        "relation": "import",
+        "symbols": [
+          "sourceFileSchema",
+          "sourceRoleExamples"
+        ]
+      },
+      {
+        "targetPath": "./builder.js",
+        "relation": "import",
+        "symbols": [
+          "PromptBuilder"
+        ]
+      },
+      {
+        "targetPath": "./shared.js",
+        "relation": "import",
+        "symbols": [
+          "buildLocalizedLanguageInstructions",
+          "renderOutputContract"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:40.217Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

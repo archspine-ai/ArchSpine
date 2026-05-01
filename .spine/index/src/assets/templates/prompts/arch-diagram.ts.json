@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/assets/templates/prompts/arch-diagram.ts",
+    "contentHash": "e995858793c70d1bbe156f91dad757c1a2450db6f34a2967cda4e27caddd14c3",
+    "skeletonHash": "32dcc65ed2baa26614b071f3902905a1c808d062a6819d90e1db63aaca0a9cf4",
+    "semanticHash": "a8a82a25c29c1dcd392348fcef0d203c2522c0774e60238e2260e56c7ed083d2",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/assets/templates/prompts"
+  },
+  "semantic": {
+    "role": "LLM prompt template for generating structured JSON architecture diagram specifications from project and folder summaries.",
+    "responsibilities": [
+      "Defines the JSON schema structure for architecture diagram specifications",
+      "Constructs LLM prompt instructions for generating architecture diagrams",
+      "Formats project and folder summary context for diagram generation",
+      "Enforces constraints on node types, edge references, and summary card structure"
+    ],
+    "outOfScope": [
+      "Rendering visual diagrams (SVG, Mermaid, etc.)",
+      "Executing LLM calls or managing AI model interactions",
+      "Storing or persisting generated diagram specifications"
+    ],
+    "invariants": [
+      "Output must be strict JSON without Markdown, HTML, SVG, or code fences",
+      "Node types are restricted to: frontend, backend, database, cloud, security, messagebus, external",
+      "Every edge must reference an existing node id",
+      "Exactly three summaryCards with headings: Core Modules, Key Dependencies, System Boundaries"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a deterministic template for generating architecture view assets (diagram specs) from structured project data.",
+      "recentChangeIntent": "Add deterministic rendering assets for view generation (aligned with commit 'feat(view): add deterministic rendering assets')."
+    },
+    "publicSurface": [
+      "archDiagramSchema (constant string)",
+      "Imported functions: renderContextBlock, renderInstructionsBlock, renderJSONSchemaBlock"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "LLM prompt template for generating structured JSON architecture diagram specifications from project and folder summaries.",
+        "responsibilities": [
+          "Defines the JSON schema structure for architecture diagram specifications",
+          "Constructs LLM prompt instructions for generating architecture diagrams",
+          "Formats project and folder summary context for diagram generation",
+          "Enforces constraints on node types, edge references, and summary card structure"
+        ],
+        "outOfScope": [
+          "Rendering visual diagrams (SVG, Mermaid, etc.)",
+          "Executing LLM calls or managing AI model interactions",
+          "Storing or persisting generated diagram specifications"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./index.js'",
+        "symbols": [
+          "renderContextBlock",
+          "renderInstructionsBlock",
+          "renderJSONSchemaBlock"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "generateArchitectureDiagramPrompt",
+        "kind": "function",
+        "signature": "generateArchitectureDiagramPrompt(\n  project: SpineProjectUnit,\n  folders: SpineFolderUnit[],\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "generateArchitectureDiagramPrompt",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/assets/templates/prompts/arch-diagram.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./index.js",
+        "relation": "import",
+        "symbols": [
+          "renderContextBlock",
+          "renderInstructionsBlock",
+          "renderJSONSchemaBlock"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:12.735Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

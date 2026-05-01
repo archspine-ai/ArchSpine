@@ -1,0 +1,193 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-context/trim.ts",
+    "contentHash": "4bdec71f382e487fcfe963f9682f9674bac417db16fa3136a005001d175169e4",
+    "skeletonHash": "dec9188677b6bd2afd550a728e5738e5fea26454977d72caab800b947fa8a998",
+    "semanticHash": "91ae58f56c965f81e2587497da1f15d0f7df00da054d68a0009056388b8d6153",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt-context"
+  },
+  "semantic": {
+    "role": "Core utility module providing text trimming and formatting functions for the ArchSpine system.",
+    "responsibilities": [
+      "Trims a string to a specified maximum number of lines, adding an ellipsis if truncated.",
+      "Trims a string to a specified maximum character count while attempting to preserve line boundaries.",
+      "Provides text manipulation utilities used by other modules (e.g., for formatting rule blocks, context data)."
+    ],
+    "outOfScope": [
+      "Does not handle file I/O or data persistence.",
+      "Does not implement business logic or orchestration workflows.",
+      "Does not interact with external services or APIs."
+    ],
+    "invariants": [
+      "All functions are pure and side-effect free.",
+      "Functions operate only on string inputs and return string outputs.",
+      "No dependencies on infra, service, task, or engine modules."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide reusable, pure text manipulation utilities for formatting and truncating strings across the system.",
+      "recentChangeIntent": "No recent changes detected; module remains stable."
+    },
+    "publicSurface": [
+      "trimLines(value: string, maxLines: number): string",
+      "trimTextByChars(value: string, maxChars: number): string"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core utility module providing text trimming and formatting functions for the ArchSpine system.",
+        "responsibilities": [
+          "Trims a string to a specified maximum number of lines, adding an ellipsis if truncated.",
+          "Trims a string to a specified maximum character count while attempting to preserve line boundaries.",
+          "Provides text manipulation utilities used by other modules (e.g., for formatting rule blocks, context data)."
+        ],
+        "outOfScope": [
+          "Does not handle file I/O or data persistence.",
+          "Does not implement business logic or orchestration workflows.",
+          "Does not interact with external services or APIs."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 系统的核心工具模块，提供文本修剪和格式化功能。",
+        "responsibilities": [
+          "将字符串修剪到指定的最大行数，如果被截断则添加省略号。",
+          "将字符串修剪到指定的最大字符数，同时尽量保留行边界。",
+          "提供文本操作工具，供其他模块使用（例如，用于格式化规则块、上下文数据）。"
+        ],
+        "outOfScope": [
+          "不处理文件 I/O 或数据持久化。",
+          "不实现业务逻辑或编排工作流。",
+          "不与外部服务或 API 交互。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "trimLines",
+        "kind": "function",
+        "signature": "trimLines(value: string, maxLines: number)"
+      },
+      {
+        "name": "trimTextByChars",
+        "kind": "function",
+        "signature": "trimTextByChars(value: string, maxChars: number)"
+      },
+      {
+        "name": "splitRuleBlocks",
+        "kind": "function",
+        "signature": "splitRuleBlocks(ruleData: string)"
+      },
+      {
+        "name": "trimRuleBlocks",
+        "kind": "function",
+        "signature": "trimRuleBlocks(ruleData: string, maxChars: number)"
+      },
+      {
+        "name": "trimSectionedContext",
+        "kind": "function",
+        "signature": "trimSectionedContext(contextData: string, maxChars: number)"
+      },
+      {
+        "name": "compactSkeletonForPrompt",
+        "kind": "function",
+        "signature": "compactSkeletonForPrompt(\n  skeleton: FileSkeleton,\n  budgets: PromptBudgets,\n)"
+      },
+      {
+        "name": "trimPreviousSemantic",
+        "kind": "function",
+        "signature": "trimPreviousSemantic(\n  previousSemantic: PreviousSemanticContext | undefined,\n  maxResponsibilities: number,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "trimLines",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/trim.ts#"
+      },
+      {
+        "name": "trimTextByChars",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/trim.ts#"
+      },
+      {
+        "name": "splitRuleBlocks",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/trim.ts#"
+      },
+      {
+        "name": "trimRuleBlocks",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/trim.ts#"
+      },
+      {
+        "name": "trimSectionedContext",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/trim.ts#"
+      },
+      {
+        "name": "compactSkeletonForPrompt",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/trim.ts#"
+      },
+      {
+        "name": "trimPreviousSemantic",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/trim.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 7,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../ast/extractor.js",
+        "relation": "import",
+        "symbols": [
+          "FileSkeleton"
+        ]
+      },
+      {
+        "targetPath": "../llm/base.js",
+        "relation": "import",
+        "symbols": [
+          "PreviousSemanticContext"
+        ]
+      },
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "PromptBudgets"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:39.898Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

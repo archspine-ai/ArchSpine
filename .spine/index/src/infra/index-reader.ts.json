@@ -1,0 +1,211 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/index-reader.ts",
+    "contentHash": "73d47759423d27e77e9fb815aa0b09454f450b6c471e0665569a5f27f8534ed1",
+    "skeletonHash": "8144f1629469448c5e15b011c5dcb9975322a3c3efcf5c358e989caa962dec36",
+    "semanticHash": "5488639a8e15995e86a81c45016d90192f29d38f9e5d455c354d831d2ea5b174",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure facade module providing stable, low-level index document reading and validation utilities with schema compatibility checking.",
+    "responsibilities": [
+      "Reads and parses index document files from the filesystem with schema version validation.",
+      "Validates index document compatibility against current schema version and content integrity.",
+      "Provides type-safe IndexReadResult union for successful reads, missing files, and incompatible documents.",
+      "Implements deduplicated error reporting for index read issues to avoid log spam."
+    ],
+    "outOfScope": [
+      "Orchestrating service or engine workflows",
+      "High-level business logic or domain operations",
+      "Direct mutation of index data",
+      "Network or external API communication"
+    ],
+    "invariants": [
+      "Exposes stable low-level file reading and validation capabilities",
+      "Maintains schema compatibility checks as a facade",
+      "Avoids absorbing service/task/engine orchestration concerns"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a dedicated infrastructure facade for index document access, ensuring stable imports and separation from orchestration layers.",
+      "recentChangeIntent": "No significant change detected from git intent; likely minor updates or fixes."
+    },
+    "publicSurface": [
+      "IndexReadResult type export",
+      "Function(s) for reading index documents (implied from usage)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure facade module providing stable, low-level index document reading and validation utilities with schema compatibility checking.",
+        "responsibilities": [
+          "Reads and parses index document files from the filesystem with schema version validation.",
+          "Validates index document compatibility against current schema version and content integrity.",
+          "Provides type-safe IndexReadResult union for successful reads, missing files, and incompatible documents.",
+          "Implements deduplicated error reporting for index read issues to avoid log spam."
+        ],
+        "outOfScope": [
+          "Orchestrating service or engine workflows",
+          "High-level business logic or domain operations",
+          "Direct mutation of index data",
+          "Network or external API communication"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/errors.js'",
+        "symbols": [
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "type SchemaVersion"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "readIndexDocument",
+        "kind": "function",
+        "signature": "readIndexDocument(\n  rootDir: string,\n  fullPath: string,\n)"
+      },
+      {
+        "name": "reportIndexReadIssueOnce",
+        "kind": "function",
+        "signature": "reportIndexReadIssueOnce(\n  logger: (message: string) => void,\n  result: Exclude<IndexReadResult<unknown>, { status: 'ok' | 'missing' }>,\n)"
+      },
+      {
+        "name": "isIndexReadFailure",
+        "kind": "function",
+        "signature": "isIndexReadFailure(\n  result: IndexReadResult<T>,\n)"
+      },
+      {
+        "name": "isCompatibleIndexDocument",
+        "kind": "function",
+        "signature": "isCompatibleIndexDocument(\n  result: IndexReadResult<T>,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "readIndexDocument",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/index-reader.ts#"
+      },
+      {
+        "name": "reportIndexReadIssueOnce",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/index-reader.ts#"
+      },
+      {
+        "name": "isIndexReadFailure",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/index-reader.ts#"
+      },
+      {
+        "name": "isCompatibleIndexDocument",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/index-reader.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 4,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ErrorCodes"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SchemaVersion"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/mcp/tools.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:38.837Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

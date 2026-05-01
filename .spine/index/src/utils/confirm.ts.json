@@ -1,0 +1,165 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/utils/confirm.ts",
+    "contentHash": "0732860fb39181958aee031003d49985f7539dcb219587945a0b2b9434064efa",
+    "skeletonHash": "1e9b63ef627ba4f5e6e70abd3dac181b395729f51ab0dba56feae56bfeca7d12",
+    "semanticHash": "614c80d9993071c13941f1ca898518756a862e3ee6cf918e70915b9f9bdfa523",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/utils"
+  },
+  "semantic": {
+    "role": "CLI utility module for interactive user confirmation prompts and terminal input handling.",
+    "responsibilities": [
+      "Parses user confirmation input from various formats (string, boolean) into a boolean result.",
+      "Prompts for explicit confirmation with a customizable message and handles raw terminal mode for single-key input.",
+      "Manages terminal state (raw mode, event listeners) to ensure proper cleanup after confirmation.",
+      "Provides colored output (green/red) for confirmation prompts using kleur."
+    ],
+    "outOfScope": [
+      "General command-line argument parsing",
+      "File system operations",
+      "Network communication",
+      "Data persistence"
+    ],
+    "invariants": [
+      "Must handle both programmatic boolean input and interactive string input.",
+      "Must restore terminal to a clean state after interactive prompts."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable, robust CLI interaction primitive for confirmation dialogs across the ArchSpine toolchain.",
+      "recentChangeIntent": "No recent changes to this module indicated by the git intent."
+    },
+    "publicSurface": [
+      "parseConfirmation",
+      "promptForExplicitConfirmation"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI utility module for interactive user confirmation prompts and terminal input handling.",
+        "responsibilities": [
+          "Parses user confirmation input from various formats (string, boolean) into a boolean result.",
+          "Prompts for explicit confirmation with a customizable message and handles raw terminal mode for single-key input.",
+          "Manages terminal state (raw mode, event listeners) to ensure proper cleanup after confirmation.",
+          "Provides colored output (green/red) for confirmation prompts using kleur."
+        ],
+        "outOfScope": [
+          "General command-line argument parsing",
+          "File system operations",
+          "Network communication",
+          "Data persistence"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'prompts'",
+        "symbols": [
+          "prompts"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'readline'",
+        "symbols": [
+          "* as readline"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'kleur'",
+        "symbols": [
+          "kleur"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'readline'",
+        "symbols": [
+          "* as readline"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "promptForExplicitConfirmation",
+        "kind": "function",
+        "signature": "promptForExplicitConfirmation(message: string)"
+      },
+      {
+        "name": "promptForImmediateConfirmation",
+        "kind": "function",
+        "signature": "promptForImmediateConfirmation(\n  message: string,\n  options: { skipNewline?: boolean } = {},\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "promptForExplicitConfirmation",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/confirm.ts#"
+      },
+      {
+        "name": "promptForImmediateConfirmation",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/confirm.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "prompts",
+        "relation": "import",
+        "symbols": [
+          "prompts"
+        ]
+      },
+      {
+        "targetPath": "readline",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "kleur",
+        "relation": "import",
+        "symbols": [
+          "kleur"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/cli/commands/sync.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:42.344Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

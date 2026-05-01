@@ -1,0 +1,167 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-context/artifacts.ts",
+    "contentHash": "652eab9d47907b6814cce2cf6184de32132f4e74bc292b0ad7d58df78898d35a",
+    "skeletonHash": "5f884483dbf87a37d6d2e3593fa64ff98328610f6d4cf3c0a25f2654f30535ac",
+    "semanticHash": "bbddbbd8e290488ccbe0a5c42e940483dfd11fb0a20e3c44bfb28934fd2ac1a5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt-context"
+  },
+  "semantic": {
+    "role": "Core orchestration service that assembles source prompt artifacts by coordinating policy resolution, budget calculation, content trimming, and diagnostic generation.",
+    "responsibilities": [
+      "Resolves prompt policy tier and validation policy based on task mode and input.",
+      "Calculates token/line budgets for various prompt sections using input parameters.",
+      "Compacts the structural skeleton of the source file to fit within calculated budgets.",
+      "Extracts file header lines from source content.",
+      "Trims dependency context and rule blocks to fit within character budgets.",
+      "Generates diagnostics for dependency selection and rule blocks."
+    ],
+    "outOfScope": [
+      "Direct file I/O or network operations.",
+      "Low-level tokenization or parsing of source code.",
+      "CLI command handling or user interface rendering.",
+      "Persistent storage or caching of artifacts."
+    ],
+    "invariants": [
+      "Orchestrates multiple specialized modules (policy, budgets, trim, diagnostics) without implementing their logic.",
+      "Outputs a structured SourcePromptArtifacts object for downstream consumption.",
+      "Depends solely on imported pure functions and input data."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Encapsulate the assembly of source prompt artifacts behind a single function facade, promoting separation of concerns and testability.",
+      "recentChangeIntent": "Modularize CLI and decouple core infra services (likely refactored to isolate this orchestration service from CLI-specific concerns)."
+    },
+    "publicSurface": [
+      "buildSourcePromptArtifacts"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core orchestration service that assembles source prompt artifacts by coordinating policy resolution, budget calculation, content trimming, and diagnostic generation.",
+        "responsibilities": [
+          "Resolves prompt policy tier and validation policy based on task mode and input.",
+          "Calculates token/line budgets for various prompt sections using input parameters.",
+          "Compacts the structural skeleton of the source file to fit within calculated budgets.",
+          "Extracts file header lines from source content.",
+          "Trims dependency context and rule blocks to fit within character budgets.",
+          "Generates diagnostics for dependency selection and rule blocks."
+        ],
+        "outOfScope": [
+          "Direct file I/O or network operations.",
+          "Low-level tokenization or parsing of source code.",
+          "CLI command handling or user interface rendering.",
+          "Persistent storage or caching of artifacts."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./diagnostics.js'",
+        "symbols": [
+          "buildDependencySelectionDiagnostics",
+          "buildRuleBlockDiagnostics"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./budgets.js'",
+        "symbols": [
+          "calculateSourcePromptBudgets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./policy.js'",
+        "symbols": [
+          "resolvePromptPolicyTier",
+          "resolveValidatePolicy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./trim.js'",
+        "symbols": [
+          "compactSkeletonForPrompt",
+          "trimPreviousSemantic",
+          "trimRuleBlocks",
+          "trimSectionedContext"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "buildSourcePromptArtifacts",
+        "kind": "function",
+        "signature": "buildSourcePromptArtifacts(\n  input: SourcePromptArtifactsInput,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "buildSourcePromptArtifacts",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/artifacts.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./diagnostics.js",
+        "relation": "import",
+        "symbols": [
+          "buildDependencySelectionDiagnostics",
+          "buildRuleBlockDiagnostics"
+        ]
+      },
+      {
+        "targetPath": "./budgets.js",
+        "relation": "import",
+        "symbols": [
+          "calculateSourcePromptBudgets"
+        ]
+      },
+      {
+        "targetPath": "./policy.js",
+        "relation": "import",
+        "symbols": [
+          "resolvePromptPolicyTier",
+          "resolveValidatePolicy"
+        ]
+      },
+      {
+        "targetPath": "./trim.js",
+        "relation": "import",
+        "symbols": [
+          "compactSkeletonForPrompt",
+          "trimPreviousSemantic",
+          "trimRuleBlocks",
+          "trimSectionedContext"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:39.685Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

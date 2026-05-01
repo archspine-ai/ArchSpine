@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/core/errors.ts",
+    "contentHash": "65869dd886d90e752d043f6bfaa138bbab86703fbbaa2c8d326020801165d549",
+    "skeletonHash": "81d640836d799fdaf41506a82432802879233d8a2593aa76070473bd65972837",
+    "semanticHash": "8c3b19787b86125c628e84cea312baab9e809fe3eb78dc7f038ddd768af0230d",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/core"
+  },
+  "semantic": {
+    "role": "Core infrastructure module providing centralized error code constants and error option type definitions for the ArchSpine system.",
+    "responsibilities": [
+      "Defines a canonical set of string error codes for various failure domains (CLI, runtime, publish, config).",
+      "Exports the ArchSpineErrorCode type, a union of all defined error code strings, for type-safe error handling.",
+      "Exports the ArchSpineErrorOptions interface specifying the structure for constructing structured errors."
+    ],
+    "outOfScope": [
+      "Error instantiation or throwing logic",
+      "CLI command execution or parsing",
+      "Runtime service orchestration",
+      "Pipeline stage implementation"
+    ],
+    "invariants": [
+      "Must remain a pure TypeScript declaration file with no side effects",
+      "Must not depend on CLI entry points or runtime modules",
+      "Error codes must be string constants usable across the codebase"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Centralize error code definitions and error option typing to ensure consistent error handling across the system.",
+      "recentChangeIntent": null
+    },
+    "publicSurface": [
+      "ErrorCodes",
+      "ArchSpineErrorCode",
+      "ArchSpineErrorOptions"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core infrastructure module providing centralized error code constants and error option type definitions for the ArchSpine system.",
+        "responsibilities": [
+          "Defines a canonical set of string error codes for various failure domains (CLI, runtime, publish, config).",
+          "Exports the ArchSpineErrorCode type, a union of all defined error code strings, for type-safe error handling.",
+          "Exports the ArchSpineErrorOptions interface specifying the structure for constructing structured errors."
+        ],
+        "outOfScope": [
+          "Error instantiation or throwing logic",
+          "CLI command execution or parsing",
+          "Runtime service orchestration",
+          "Pipeline stage implementation"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "toArchSpineError",
+        "kind": "function",
+        "signature": "toArchSpineError(\n  error: unknown,\n  fallbackCode: ArchSpineErrorCode,\n  fallbackMessage: string,\n  options: ArchSpineErrorOptions = {},\n)"
+      },
+      {
+        "name": "ArchSpineError",
+        "kind": "class",
+        "signature": "class ArchSpineError"
+      },
+      {
+        "name": "ArchSpineErrorOptions",
+        "kind": "interface",
+        "signature": "interface ArchSpineErrorOptions"
+      },
+      {
+        "name": "ArchSpineErrorCode",
+        "kind": "type",
+        "signature": "type ArchSpineErrorCode"
+      },
+      {
+        "name": "ErrorCodes",
+        "kind": "variable",
+        "signature": "const ErrorCodes"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "toArchSpineError",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/errors.ts#"
+      },
+      {
+        "name": "ArchSpineError",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/core/errors.ts#"
+      },
+      {
+        "name": "ArchSpineErrorOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/errors.ts#"
+      },
+      {
+        "name": "ArchSpineErrorCode",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/core/errors.ts#"
+      },
+      {
+        "name": "ErrorCodes",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/core/errors.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 5,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/mcp/tools.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:37.173Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

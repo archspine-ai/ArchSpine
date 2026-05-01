@@ -1,0 +1,168 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/execution-checkpoint.test.ts",
+    "contentHash": "4c6ca96b65be3ad7b0a4d02cccdfc332d3720b072b32ff0a77be6b4c817c7f2d",
+    "skeletonHash": "d104f060847492f3a0ab4cc8a0f7a3fe6a173f0304fc211c9ab4a30ac16f4943",
+    "semanticHash": "76bda01d9ded7408c9c964c2a926ab0388b07079cebc47cd085491832439f01a",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest test suite for validating execution checkpoint resume candidate derivation logic during sync and check operations.",
+    "responsibilities": [
+      "Tests the deriveSyncResumeCandidateFiles function for correct file candidate generation during sync operations.",
+      "Tests the deriveCheckResumeCandidateFiles function for checkpoint resume logic during check operations.",
+      "Validates ExecutionCheckpointStore state handling and schema compliance.",
+      "Ensures resume candidate derivation handles different command states and run identifiers appropriately."
+    ],
+    "outOfScope": [
+      "Integration testing of actual file system operations beyond temporary directories.",
+      "Performance or load testing of resume candidate derivation.",
+      "Testing of other execution checkpoint store methods not related to resume candidate derivation."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide comprehensive test coverage for resume candidate derivation functions used in the ArchSpine mirror system's execution checkpoint recovery mechanism.",
+      "recentChangeIntent": "Harden scan resume validation and fix fallback paths in resume candidate derivation logic."
+    },
+    "publicSurface": [
+      "describe('resume-services')",
+      "it('deriveSyncResumeCandidateFiles')",
+      "it('deriveCheckResumeCandidateFiles')"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite for validating execution checkpoint resume candidate derivation logic during sync and check operations.",
+        "responsibilities": [
+          "Tests the deriveSyncResumeCandidateFiles function for correct file candidate generation during sync operations.",
+          "Tests the deriveCheckResumeCandidateFiles function for checkpoint resume logic during check operations.",
+          "Validates ExecutionCheckpointStore state handling and schema compliance.",
+          "Ensures resume candidate derivation handles different command states and run identifiers appropriately."
+        ],
+        "outOfScope": [
+          "Integration testing of actual file system operations beyond temporary directories.",
+          "Performance or load testing of resume candidate derivation.",
+          "Testing of other execution checkpoint store methods not related to resume candidate derivation."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于验证执行检查点恢复候选派生逻辑的 Vitest 测试套件，涵盖同步和检查操作。",
+        "responsibilities": [
+          "测试 deriveSyncResumeCandidateFiles 函数在同步操作期间生成正确的文件候选。",
+          "测试 deriveCheckResumeCandidateFiles 函数在检查操作期间的检查点恢复逻辑。",
+          "验证 ExecutionCheckpointStore 状态处理和模式合规性。",
+          "确保恢复候选派生能够正确处理不同的命令状态和运行标识符。"
+        ],
+        "outOfScope": [
+          "超出临时目录范围的实际文件系统操作集成测试。",
+          "恢复候选派生的性能或负载测试。",
+          "与恢复候选派生无关的其他执行检查点存储方法的测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/execution-checkpoint.js'",
+        "symbols": [
+          "ExecutionCheckpointStore",
+          "deriveCheckResumeCandidateFiles",
+          "deriveSyncResumeCandidateFiles",
+          "type ExecutionCheckpointState"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../src/infra/execution-checkpoint.js",
+        "relation": "import",
+        "symbols": [
+          "ExecutionCheckpointStore",
+          "deriveCheckResumeCandidateFiles",
+          "deriveSyncResumeCandidateFiles",
+          "ExecutionCheckpointState"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.083Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

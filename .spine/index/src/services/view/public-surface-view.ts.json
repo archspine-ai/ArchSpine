@@ -1,0 +1,169 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/public-surface-view.ts",
+    "contentHash": "6b18338d76ef52249ce12731072fcacbac600b3b4dbf3583dcca7a3884eebec6",
+    "skeletonHash": "902310dae81c88a22bd2b86787aba03ea7db549f82594c730343cf90bff5c543",
+    "semanticHash": "083638512bfb475fa84556d51ba4cf8145ac73bf3dd6477ab15d23103f7ac1db",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "View generation scoring engine that ranks source files by their likelihood of being public API surface.",
+    "responsibilities": [
+      "Applies a multi-factor scoring algorithm to classify and rank files as public surface candidates.",
+      "Filters out suppressed paths and low-scoring candidates based on configurable thresholds.",
+      "Computes scores based on semantic public surface declarations, export counts, internal consumers, and re-export amplification.",
+      "Applies bonuses for specific surface kinds (CLI, MCP, config, route) and penalties for type-only files.",
+      "Limits the ranked output to a maximum number of items (MAX_PUBLIC_SURFACE_ITEMS)."
+    ],
+    "outOfScope": [
+      "Direct HTTP or network communication",
+      "User interface rendering",
+      "Persistence or database operations",
+      "Runtime service orchestration (it is a pure scoring engine)"
+    ],
+    "invariants": [
+      "Operates on loaded SpineUnit data structures.",
+      "Output is a sorted, filtered list of ScoredCandidate objects.",
+      "Scoring is deterministic based on configurable factors and thresholds."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a configurable, multi-factor scoring system to identify public API surface candidates for view generation, ensuring high-confidence ranking.",
+      "recentChangeIntent": "Tighten schema handling and add try preview (general intent from commit, but not directly evidenced in provided code snippet)."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "View generation scoring engine that ranks source files by their likelihood of being public API surface.",
+        "responsibilities": [
+          "Applies a multi-factor scoring algorithm to classify and rank files as public surface candidates.",
+          "Filters out suppressed paths and low-scoring candidates based on configurable thresholds.",
+          "Computes scores based on semantic public surface declarations, export counts, internal consumers, and re-export amplification.",
+          "Applies bonuses for specific surface kinds (CLI, MCP, config, route) and penalties for type-only files.",
+          "Limits the ranked output to a maximum number of items (MAX_PUBLIC_SURFACE_ITEMS)."
+        ],
+        "outOfScope": [
+          "Direct HTTP or network communication",
+          "User interface rendering",
+          "Persistence or database operations",
+          "Runtime service orchestration (it is a pure scoring engine)"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "type SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./common.js'",
+        "symbols": [
+          "isSuppressedPath",
+          "sumScores",
+          "toConfidence"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "buildPublicSurfaceView",
+        "kind": "function",
+        "signature": "buildPublicSurfaceView(\n  units: LoadedUnit[],\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "buildPublicSurfaceView",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/public-surface-view.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "../../types/view.js",
+        "relation": "import",
+        "symbols": [
+          "PublicSurfaceKind",
+          "PublicSurfaceViewItem",
+          "ViewArtifactEnvelope",
+          "ViewScoreContribution"
+        ]
+      },
+      {
+        "targetPath": "./common.js",
+        "relation": "import",
+        "symbols": [
+          "isSuppressedPath",
+          "sumScores",
+          "toConfidence"
+        ]
+      },
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "LoadedUnit"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:41.206Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

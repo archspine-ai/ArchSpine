@@ -1,0 +1,179 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/view-service.test.ts",
+    "contentHash": "075ddae93eaec8a2ae7e4850e8b8deea0beccef189a284394efed5b6868918df",
+    "skeletonHash": "90ee9b2f291dddd5b4311e86de885673ae7e6cf664eb3a4f82c3bb73e0eb2bbe",
+    "semanticHash": "7ade1c0f71b6e865e9babf705632e60094f85523a4c1f08c4112f564cd8f2f7f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite for the ViewService module, validating its behavior with mocked LLM clients and file system fixtures.",
+    "responsibilities": [
+      "Creates temporary test directories and file system fixtures for isolated ViewService testing.",
+      "Mocks LLM client responses to simulate view generation without external API calls.",
+      "Asserts that ViewService correctly processes Spine units and produces expected view outputs.",
+      "Verifies error handling and edge cases in the view generation pipeline."
+    ],
+    "outOfScope": [
+      "Production deployment or runtime service hosting.",
+      "Direct interaction with external LLM APIs.",
+      "Persistence of test artifacts beyond the test session.",
+      "User interface rendering or web server functionality."
+    ],
+    "invariants": [
+      "Must remain a pure test file with no side effects on production systems.",
+      "Must mock all external dependencies (LLM, file system) to ensure deterministic tests.",
+      "Must clean up temporary directories after each test to avoid resource leaks."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure the ViewService correctly generates architectural views from Spine units in a controlled, reproducible test environment.",
+      "recentChangeIntent": "Minor updates or maintenance; the vague commit message 'iZOy's easy commit. 'haha/' suggests non-functional changes like formatting or comments, but no specific intent is discernible from code evidence."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite for the ViewService module, validating its behavior with mocked LLM clients and file system fixtures.",
+        "responsibilities": [
+          "Creates temporary test directories and file system fixtures for isolated ViewService testing.",
+          "Mocks LLM client responses to simulate view generation without external API calls.",
+          "Asserts that ViewService correctly processes Spine units and produces expected view outputs.",
+          "Verifies error handling and edge cases in the view generation pipeline."
+        ],
+        "outOfScope": [
+          "Production deployment or runtime service hosting.",
+          "Direct interaction with external LLM APIs.",
+          "Persistence of test artifacts beyond the test session.",
+          "User interface rendering or web server functionality."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/services/view-service.js'",
+        "symbols": [
+          "ViewService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "GENERATOR_VERSION",
+          "type SpineFolderUnit",
+          "type SpineProjectUnit",
+          "type SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/services/view-service.ts",
+        "relation": "import",
+        "symbols": [
+          "ViewService"
+        ]
+      },
+      {
+        "targetPath": "src/types/protocol.ts",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "GENERATOR_VERSION",
+          "SpineFolderUnit",
+          "SpineProjectUnit",
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "src/infra/llm.ts",
+        "relation": "import",
+        "symbols": [
+          "LLMClient"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:44.863Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

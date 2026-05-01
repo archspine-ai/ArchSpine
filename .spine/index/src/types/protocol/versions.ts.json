@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/types/protocol/versions.ts",
+    "contentHash": "40fe341ae5617716f77939a367b9086b4446d4e1f893c908f380cac40ba65bf1",
+    "skeletonHash": "80cb5abb41c98400c94b9aee7669e7aa947a305ab75780d3a38a522ed3b7fce7",
+    "semanticHash": "29fcf5445a48c6cf1aa7e3cb3d7f462b42a1eccb53cafbcd9d9e776d9b19b0b1",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/types/protocol"
+  },
+  "semantic": {
+    "role": "Centralized version definition module for ArchSpine schema and package versioning.",
+    "responsibilities": [
+      "Defines the SchemaVersion type alias as a semantic version string template.",
+      "Exports constants for the current package, schema, and config schema versions.",
+      "Exports a generator version string identifying the ArchSpine toolchain.",
+      "Provides a type guard function to validate config schema version compatibility."
+    ],
+    "outOfScope": [
+      "Runtime version management or dynamic version resolution.",
+      "Interface definitions (no interfaces present).",
+      "Schema validation beyond version string equality."
+    ],
+    "invariants": [
+      "All exported version constants are string literals or template literals.",
+      "SchemaVersion type is a semantic version string template literal.",
+      "isSupportedConfigSchemaVersion is a pure type guard."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide immutable version constants and type safety for schema versioning across the ArchSpine system.",
+      "recentChangeIntent": null
+    },
+    "publicSurface": [
+      "SchemaVersion",
+      "CURRENT_PACKAGE_VERSION",
+      "CURRENT_SCHEMA_VERSION",
+      "CURRENT_CONFIG_SCHEMA_VERSION",
+      "GENERATOR_VERSION",
+      "isSupportedConfigSchemaVersion"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Centralized version definition module for ArchSpine schema and package versioning.",
+        "responsibilities": [
+          "Defines the SchemaVersion type alias as a semantic version string template.",
+          "Exports constants for the current package, schema, and config schema versions.",
+          "Exports a generator version string identifying the ArchSpine toolchain.",
+          "Provides a type guard function to validate config schema version compatibility."
+        ],
+        "outOfScope": [
+          "Runtime version management or dynamic version resolution.",
+          "Interface definitions (no interfaces present).",
+          "Schema validation beyond version string equality."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "isSupportedConfigSchemaVersion",
+        "kind": "function",
+        "signature": "isSupportedConfigSchemaVersion(value: unknown)"
+      },
+      {
+        "name": "SchemaVersion",
+        "kind": "type",
+        "signature": "type SchemaVersion"
+      },
+      {
+        "name": "CURRENT_PACKAGE_VERSION",
+        "kind": "variable",
+        "signature": "const CURRENT_PACKAGE_VERSION"
+      },
+      {
+        "name": "GENERATOR_VERSION",
+        "kind": "variable",
+        "signature": "const GENERATOR_VERSION"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "isSupportedConfigSchemaVersion",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/types/protocol/versions.ts#"
+      },
+      {
+        "name": "SchemaVersion",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/types/protocol/versions.ts#"
+      },
+      {
+        "name": "CURRENT_PACKAGE_VERSION",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/types/protocol/versions.ts#"
+      },
+      {
+        "name": "GENERATOR_VERSION",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/types/protocol/versions.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 4,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:42.129Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

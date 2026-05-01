@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/context-relevance.ts",
+    "contentHash": "6ea99dc98e44c48f923d807588b2a84c1789d42a31324e3631722c4ade4202df",
+    "skeletonHash": "628bc2de038c7c5e492ace61851d1d0a6fd90b5573f9100005cca842df27a758",
+    "semanticHash": "60b1848a1d1496633f9b1daa98951601f33e162e2e4aaf245c00581165c8701d",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Engine utility function for extracting and filtering keywords from architectural rule text.",
+    "responsibilities": [
+      "Tokenizes rule content into search tokens using an external extractSearchTokens function.",
+      "Filters out predefined rule-related stopwords to isolate meaningful keywords.",
+      "Limits the keyword list to a maximum of 16 unique tokens for efficiency."
+    ],
+    "outOfScope": [
+      "Parsing or validating rule structure.",
+      "Scoring or ranking rule relevance.",
+      "Direct interaction with CLI or service orchestration."
+    ],
+    "invariants": [
+      "Must not depend on CLI entrypoints or service orchestration modules.",
+      "Must be a pure function focused on text tokenization and filtering."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provides a reusable text processing utility for rule analysis, supporting search and categorization.",
+      "recentChangeIntent": "No direct evidence of the scanner/context split in this file."
+    },
+    "publicSurface": [
+      "extractRuleKeywords"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Engine utility function for extracting and filtering keywords from architectural rule text.",
+        "responsibilities": [
+          "Tokenizes rule content into search tokens using an external extractSearchTokens function.",
+          "Filters out predefined rule-related stopwords to isolate meaningful keywords.",
+          "Limits the keyword list to a maximum of 16 unique tokens for efficiency."
+        ],
+        "outOfScope": [
+          "Parsing or validating rule structure.",
+          "Scoring or ranking rule relevance.",
+          "Direct interaction with CLI or service orchestration."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "PublicSurfaceEntry",
+          "SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "extractRuleKeywords",
+        "kind": "function",
+        "signature": "extractRuleKeywords(ruleData: string)"
+      },
+      {
+        "name": "scoreDependencyCandidate",
+        "kind": "function",
+        "signature": "scoreDependencyCandidate(\n  relativeFilePath: string,\n  targetPath: string,\n  importedSymbols: string[],\n  doc: IndexedDoc,\n  ruleKeywords: string[],\n)"
+      },
+      {
+        "name": "scoreTargetPath",
+        "kind": "function",
+        "signature": "scoreTargetPath(\n  relativeFilePath: string,\n  usage: string,\n  targetPath: string,\n  importTargets: Set<string>,\n  importedSymbolMap: Map<string, string>,\n  doc: IndexedDoc,\n  ruleKeywords: string[],\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "extractRuleKeywords",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/context-relevance.ts#"
+      },
+      {
+        "name": "scoreDependencyCandidate",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/context-relevance.ts#"
+      },
+      {
+        "name": "scoreTargetPath",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/context-relevance.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "PublicSurfaceEntry",
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:37.493Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

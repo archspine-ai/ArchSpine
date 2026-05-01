@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "examples/demo-project/.spine/index/.spine/config.json.json",
+    "contentHash": "84ddb46c7452a4ec025f9ae4add4430d08f28819e192cb3f475619bd306048f4",
+    "semanticHash": "4aaa601c83acf76b273c8464e1afc7371d39966252aa0d466865cccd04923d32",
+    "language": "unsupported",
+    "fileKind": "config",
+    "scope": "examples/demo-project/.spine/index/.spine"
+  },
+  "semantic": {
+    "role": "Root configuration metadata for the ArchSpine mirror system",
+    "responsibilities": [
+      "System identity and file tracking",
+      "Semantic analysis and drift detection",
+      "Dependency graph management",
+      "Change intent recording"
+    ],
+    "outOfScope": [],
+    "invariants": [
+      "schemaVersion must be exactly '1.0.0'",
+      "identity.contentHash and identity.semanticHash must be non-empty SHA-256 strings",
+      "identity.filePath must be '.spine/config.json'",
+      "identity.fileKind must be 'config'",
+      "identity.scope must be '.spine'",
+      "provenance.indexedAt must be a valid ISO 8601 timestamp",
+      "provenance.generatorVersion must be 'archspine/1.0.0'"
+    ],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Root configuration metadata for the ArchSpine mirror system",
+        "parameter_definitions": {
+          "schemaVersion": "Defines the version of the configuration schema; must be '1.0.0' for compatibility.",
+          "identity.filePath": "Absolute or relative path to this configuration file within the repository.",
+          "identity.contentHash": "SHA-256 hash of the file contents for integrity verification.",
+          "identity.semanticHash": "SHA-256 hash representing the semantic meaning of the configuration for change detection.",
+          "identity.language": "Language tag for the file; currently set to 'unsupported' indicating no language-specific processing.",
+          "identity.fileKind": "Classification of the file; must be 'config' for configuration files.",
+          "identity.scope": "Scope identifier; must be '.spine' for spine-level configurations.",
+          "semantic.role": "Human-readable description of the file's functional purpose.",
+          "semantic.responsibilities": "List of subsystems or concerns this configuration governs.",
+          "semantic.outOfScope": "Explicit list of concerns not covered by this configuration.",
+          "semantic.invariants": "Mandatory constraints or safety limits enforced by this configuration.",
+          "semantic.changeIntent.architecturalIntent": "Optional field capturing the long-term architectural goal of changes.",
+          "semantic.changeIntent.recentChangeIntent": "Optional field describing the purpose of the most recent modification.",
+          "semantic.publicSurface": "List of publicly exposed symbols or interfaces defined by this configuration.",
+          "semantic.ruleViolations": "List of detected rule violations; empty indicates compliance.",
+          "semantic.driftDetected": "Boolean flag indicating whether the configuration has drifted from its expected state.",
+          "semantic.driftReason": "Explanation of drift if detected; null if no drift.",
+          "skeleton.imports": "List of imported dependencies from this configuration.",
+          "skeleton.exports": "List of exported symbols from this configuration.",
+          "skeleton.declaredSymbols": "Symbols declared within this configuration file.",
+          "skeleton.structuralHints.importCount": "Number of imports for structural analysis.",
+          "skeleton.structuralHints.exportCount": "Number of exports for structural analysis.",
+          "skeleton.structuralHints.isBarrel": "Boolean indicating if this file acts as a barrel (re-export) module.",
+          "skeleton.structuralHints.isTypeOnly": "Boolean indicating if exports are type-only.",
+          "graph.dependsOn": "List of files this configuration depends on.",
+          "graph.dependedBy": "List of files that depend on this configuration.",
+          "graph.reverseIndexComplete": "Boolean indicating whether the reverse dependency index has been fully built.",
+          "graph.symbolEdges": "Detailed symbol-level dependency edges.",
+          "provenance.indexedAt": "Timestamp of when this configuration was last indexed.",
+          "provenance.generatorVersion": "Version of the ArchSpine tool that generated this metadata.",
+          "provenance.pipelineStages": "List of processing stages applied (e.g., 'ast', 'llm')."
+        },
+        "stability_and_risks": "This file serves as the authoritative metadata anchor for the entire ArchSpine mirror system. Its primary risk is that an incorrect or stale contentHash or semanticHash can cause false drift detection or missed integrity violations, leading to cascading failures in dependency resolution and change tracking. The invariants enforce strict schema compliance; any deviation will cause the system to reject the configuration. The driftDetected flag is a critical safety mechanism—if set to true without a corresponding driftReason, operators should treat the system state as potentially inconsistent. The reverseIndexComplete flag in the graph section indicates whether the dependency graph is fully resolved; an incomplete index may lead to missing dependency edges and incorrect build or analysis results. Overall, this file is low-risk for runtime failures but high-impact for system integrity and auditability."
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 镜像系统的根配置元数据",
+        "parameter_definitions": {
+          "schemaVersion": "定义配置模式的版本；必须为 '1.0.0' 以确保兼容性。",
+          "identity.filePath": "此配置文件在仓库中的绝对或相对路径。",
+          "identity.contentHash": "文件内容的 SHA-256 哈希值，用于完整性验证。",
+          "identity.semanticHash": "代表配置语义含义的 SHA-256 哈希值，用于变更检测。",
+          "identity.language": "文件的语言标签；当前设为 'unsupported'，表示不进行语言特定处理。",
+          "identity.fileKind": "文件分类；配置文件必须为 'config'。",
+          "identity.scope": "作用域标识符；脊柱级配置必须为 '.spine'。",
+          "semantic.role": "文件功能用途的人类可读描述。",
+          "semantic.responsibilities": "此配置所管理的子系统或关注点列表。",
+          "semantic.outOfScope": "明确列出此配置不涵盖的关注点。",
+          "semantic.invariants": "此配置强制执行的强制性约束或安全限制。",
+          "semantic.changeIntent.architecturalIntent": "可选字段，记录变更的长期架构目标。",
+          "semantic.changeIntent.recentChangeIntent": "可选字段，描述最近一次修改的目的。",
+          "semantic.publicSurface": "此配置定义的公开符号或接口列表。",
+          "semantic.ruleViolations": "检测到的规则违规列表；空列表表示合规。",
+          "semantic.driftDetected": "布尔标志，指示配置是否已偏离其预期状态。",
+          "semantic.driftReason": "如果检测到漂移，则提供解释；无漂移时为 null。",
+          "skeleton.imports": "此配置导入的依赖项列表。",
+          "skeleton.exports": "此配置导出的符号列表。",
+          "skeleton.declaredSymbols": "此配置文件中声明的符号。",
+          "skeleton.structuralHints.importCount": "用于结构分析的导入数量。",
+          "skeleton.structuralHints.exportCount": "用于结构分析的导出数量。",
+          "skeleton.structuralHints.isBarrel": "布尔值，指示此文件是否充当桶模块（重新导出）。",
+          "skeleton.structuralHints.isTypeOnly": "布尔值，指示导出是否仅为类型。",
+          "graph.dependsOn": "此配置所依赖的文件列表。",
+          "graph.dependedBy": "依赖此配置的文件列表。",
+          "graph.reverseIndexComplete": "布尔值，指示反向依赖索引是否已完全构建。",
+          "graph.symbolEdges": "详细的符号级依赖关系边。",
+          "provenance.indexedAt": "此配置上次被索引的时间戳。",
+          "provenance.generatorVersion": "生成此元数据的 ArchSpine 工具版本。",
+          "provenance.pipelineStages": "已应用的处理阶段列表（例如 'ast'、'llm'）。"
+        },
+        "stability_and_risks": "此文件是整个 ArchSpine 镜像系统的权威元数据锚点。其主要风险在于，如果 contentHash 或 semanticHash 不正确或过期，可能导致错误的漂移检测或遗漏完整性违规，进而引发依赖解析和变更跟踪的级联故障。不变量强制要求严格遵循模式；任何偏离都会导致系统拒绝该配置。driftDetected 标志是一个关键的安全机制——如果设置为 true 但没有相应的 driftReason，操作员应将系统状态视为潜在不一致。graph 部分中的 reverseIndexComplete 标志指示依赖图是否已完全解析；不完整的索引可能导致缺失依赖边，进而导致错误的构建或分析结果。总体而言，此文件运行时故障风险较低，但对系统完整性和可审计性影响较大。"
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:43:47.118Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

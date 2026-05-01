@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/llm/providers/mock.ts",
+    "contentHash": "cfbfbcb89c3acf3452b2b3bab10de2b34a721b1d1514b14ae22a41c08cd01eaa",
+    "skeletonHash": "78850bda7dba85ae5c5a5ce5250f5481c331a94a7d53f30765e74d0d6f998f20",
+    "semanticHash": "b023e7059d4315da13e0a5c33e173156d2567e0247c51e186d9e01d69154fa40",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/llm/providers"
+  },
+  "semantic": {
+    "role": "Test infrastructure mock LLM client simulating LLM provider responses for unit and integration testing.",
+    "responsibilities": [
+      "Implements the LLMClient interface with mock behavior for deterministic testing scenarios",
+      "Parses rule block data from mock LLM responses to simulate architectural rule validation",
+      "Detects simulated architectural violations in mock responses for testing the rule engine",
+      "Provides configurable mock responses for testing prompt processing and validation pipelines"
+    ],
+    "outOfScope": [
+      "Real LLM provider integration or network communication",
+      "Production-grade prompt processing or rule enforcement",
+      "Persistent state management or caching of responses"
+    ],
+    "invariants": [
+      "Must implement the LLMClient interface from '../base.js'",
+      "Must not introduce real network calls or external dependencies",
+      "Must support deterministic mock response generation for test reproducibility"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a mock implementation of the LLMClient interface to enable deterministic testing of prompt processing and rule validation logic without external LLM dependencies.",
+      "recentChangeIntent": "Fix lint warnings and type errors in the mock client implementation as part of broader CI workflow improvements."
+    },
+    "publicSurface": [
+      "MockClient class (exported)",
+      "constructor(_config: ProviderConfig)",
+      "extractRuleBlocks(ruleData?: string): Array<{ id: string; severity: string; body: string }>",
+      "detectMockViolations(ruleData: string): Array<{ id: string; severity: string; reason: string }>"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Test infrastructure mock LLM client simulating LLM provider responses for unit and integration testing.",
+        "responsibilities": [
+          "Implements the LLMClient interface with mock behavior for deterministic testing scenarios",
+          "Parses rule block data from mock LLM responses to simulate architectural rule validation",
+          "Detects simulated architectural violations in mock responses for testing the rule engine",
+          "Provides configurable mock responses for testing prompt processing and validation pipelines"
+        ],
+        "outOfScope": [
+          "Real LLM provider integration or network communication",
+          "Production-grade prompt processing or rule enforcement",
+          "Persistent state management or caching of responses"
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "测试基础设施中的模拟 LLM 客户端，用于在单元测试和集成测试中模拟 LLM 提供商的响应。",
+        "responsibilities": [
+          "实现 LLMClient 接口，提供确定性测试场景下的模拟行为",
+          "从模拟 LLM 响应中解析规则块数据，以模拟架构规则验证",
+          "在模拟响应中检测模拟的架构违规，用于测试规则引擎",
+          "提供可配置的模拟响应，用于测试提示处理和验证管道"
+        ],
+        "outOfScope": [
+          "真实的 LLM 提供商集成或网络通信",
+          "生产级别的提示处理或规则执行",
+          "持久化状态管理或响应缓存"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../base.js'",
+        "symbols": [
+          "LLMClient",
+          "LLMResponse",
+          "PreviousSemanticContext",
+          "ProviderConfig"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "MockClient",
+        "kind": "class",
+        "signature": "class MockClient"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "MockClient",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/llm/providers/mock.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../base.js",
+        "relation": "import",
+        "symbols": [
+          "LLMClient",
+          "LLMResponse",
+          "PreviousSemanticContext",
+          "ProviderConfig"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:57:04.966Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/cli.test.ts",
+    "contentHash": "94c4303239e7a22fed06d906d126a87c9fee01aa5541211c33da69d31a3ff205",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "caaac06a9de854ca8cbf7702f12e7067ff6b46a13f978921758253d19f99d874",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest end-to-end integration test suite for ArchSpine's CLI command workflow and service orchestration, validating real command-line behavior and engine interactions.",
+    "responsibilities": [
+      "Sets up isolated temporary directories for each test case to avoid side effects.",
+      "Mocks the LLM client via a custom E2EMockClient to simulate both successful and failing scenarios for testing robustness.",
+      "Executes ArchSpine CLI commands via child_process.execSync to validate real command-line behavior.",
+      "Verifies the interaction between core engines (check, fix, usage) and the synchronization workflow."
+    ],
+    "outOfScope": [
+      "Unit testing of individual functions or modules in isolation.",
+      "Testing of non-CLI interfaces or API endpoints.",
+      "Performance or load testing of the system."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a comprehensive end-to-end test suite that validates the full CLI workflow, ensuring that the check, fix, usage, and sync engines work correctly together in a real command-line environment.",
+      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, ensuring the test suite is clean and reliable."
+    },
+    "publicSurface": [
+      "E2EMockClient class (implements LLMClient)",
+      "Test cases for CLI commands and engine interactions"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest end-to-end integration test suite for ArchSpine's CLI command workflow and service orchestration, validating real command-line behavior and engine interactions.",
+        "responsibilities": [
+          "Sets up isolated temporary directories for each test case to avoid side effects.",
+          "Mocks the LLM client via a custom E2EMockClient to simulate both successful and failing scenarios for testing robustness.",
+          "Executes ArchSpine CLI commands via child_process.execSync to validate real command-line behavior.",
+          "Verifies the interaction between core engines (check, fix, usage) and the synchronization workflow."
+        ],
+        "outOfScope": [
+          "Unit testing of individual functions or modules in isolation.",
+          "Testing of non-CLI interfaces or API endpoints.",
+          "Performance or load testing of the system."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine CLI 命令工作流和服务编排的 Vitest 端到端集成测试套件，验证真实的命令行行为和引擎交互。",
+        "responsibilities": [
+          "为每个测试用例设置隔离的临时目录，避免副作用。",
+          "通过自定义的 E2EMockClient 模拟 LLM 客户端，以模拟成功和失败场景，测试鲁棒性。",
+          "通过 child_process.execSync 执行 ArchSpine CLI 命令，验证真实的命令行行为。",
+          "验证核心引擎（check、fix、usage）与同步工作流之间的交互。"
+        ],
+        "outOfScope": [
+          "对单个函数或模块的单元测试。",
+          "对非 CLI 接口或 API 端点的测试。",
+          "系统的性能或负载测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../src/engines/check.js",
+        "relation": "import",
+        "symbols": [
+          "runCheck"
+        ]
+      },
+      {
+        "targetPath": "../src/engines/fix.js",
+        "relation": "import",
+        "symbols": [
+          "runFix"
+        ]
+      },
+      {
+        "targetPath": "../src/engines/usage.js",
+        "relation": "import",
+        "symbols": [
+          "runUsageReport"
+        ]
+      },
+      {
+        "targetPath": "../src/services/sync-service.js",
+        "relation": "import",
+        "symbols": [
+          "SyncService"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/llm/base.js",
+        "relation": "import",
+        "symbols": [
+          "LLMClient"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/llm/providers/mock.js",
+        "relation": "import",
+        "symbols": [
+          "MockClient"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../src/services/runtime-service.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeService"
+        ]
+      },
+      {
+        "targetPath": "../src/cli/commands/sync.js",
+        "relation": "import",
+        "symbols": [
+          "runSyncWorkflow"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T03:58:26.008Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

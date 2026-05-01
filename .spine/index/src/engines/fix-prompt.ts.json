@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/fix-prompt.ts",
+    "contentHash": "a543bd17f4a1c00f1a90026d6114c9ca788bcfc86afd4e457fa9bdc55c0e6dab",
+    "skeletonHash": "644ce283a294e9bf7f45136cc7f9ce22f7a4a8173fabd13467be8a90d8c11efc",
+    "semanticHash": "3d9dd6c05990b99c7b326829c69321cbb7b343a20addf19c7f7ace5caf62f5b9",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "LLM prompt template generator for architectural violation fixes.",
+    "responsibilities": [
+      "Defines the data structure (FixViolationContext) for violation context needed to generate a fix prompt.",
+      "Formats violation details and file context into a structured instructional prompt for an LLM assistant."
+    ],
+    "outOfScope": [
+      "Directly fixing violations (only generates prompts for an LLM to do so)",
+      "Orchestrating the fix application process",
+      "Importing CLI entrypoints or service-level modules"
+    ],
+    "invariants": [
+      "Must export the FixViolationContext interface for type safety.",
+      "Must export the generateFixPrompt function as the primary public API.",
+      "Must remain decoupled from CLI entrypoints and service orchestration per engine-independence rule."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable, type-safe prompt generation utility for automated architectural violation remediation via LLM.",
+      "recentChangeIntent": "Part of broader hardening of risk hotspots with LLM/DB decoupling; this module supports LLM-based fix generation."
+    },
+    "publicSurface": [
+      "FixViolationContext interface",
+      "generateFixPrompt function"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "LLM prompt template generator for architectural violation fixes.",
+        "responsibilities": [
+          "Defines the data structure (FixViolationContext) for violation context needed to generate a fix prompt.",
+          "Formats violation details and file context into a structured instructional prompt for an LLM assistant."
+        ],
+        "outOfScope": [
+          "Directly fixing violations (only generates prompts for an LLM to do so)",
+          "Orchestrating the fix application process",
+          "Importing CLI entrypoints or service-level modules"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "generateFixPrompt",
+        "kind": "function",
+        "signature": "generateFixPrompt(ctx: FixViolationContext)"
+      },
+      {
+        "name": "FixViolationContext",
+        "kind": "interface",
+        "signature": "interface FixViolationContext"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "generateFixPrompt",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/fix-prompt.ts#"
+      },
+      {
+        "name": "FixViolationContext",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/fix-prompt.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:37.564Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

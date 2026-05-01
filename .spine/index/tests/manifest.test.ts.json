@@ -1,0 +1,179 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/manifest.test.ts",
+    "contentHash": "ba14ad9b995911688b1496d2144cc9bbc3b88affd00fc845104ba823688ba605",
+    "skeletonHash": "6923009cb6e2867c679a06e98a4d6367cf74082d2b3ca54713ea1ef77fc05bda",
+    "semanticHash": "da6566780dfe870a8d5bc45adc1612798dc945037f0ec768f722432777297217",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for the Manifest infrastructure component, isolating database interactions via mocked SpineDB.",
+    "responsibilities": [
+      "Provides a mock implementation of SpineDB to simulate database operations without a real SQLite connection.",
+      "Sets up and tears down test environment for Manifest instance testing.",
+      "Validates Manifest's behavior for file status tracking, drift detection, and batch operations."
+    ],
+    "outOfScope": [
+      "Production database connectivity or real SQLite operations.",
+      "End-to-end integration testing with external services.",
+      "UI or CLI layer interactions."
+    ],
+    "invariants": [
+      "Uses Vitest as the test framework.",
+      "Relies on mocked SpineDB methods for isolation.",
+      "Follows the project's test file naming convention (assumed .test.ts)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Isolate and unit test the Manifest component's core logic by mocking its database dependency.",
+      "recentChangeIntent": "No recent change intent directly evidenced in the provided snippet; the git intent 'tighten schema handling and add try preview' is not reflected in this test file's header."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for the Manifest infrastructure component, isolating database interactions via mocked SpineDB.",
+        "responsibilities": [
+          "Provides a mock implementation of SpineDB to simulate database operations without a real SQLite connection.",
+          "Sets up and tears down test environment for Manifest instance testing.",
+          "Validates Manifest's behavior for file status tracking, drift detection, and batch operations."
+        ],
+        "outOfScope": [
+          "Production database connectivity or real SQLite operations.",
+          "End-to-end integration testing with external services.",
+          "UI or CLI layer interactions."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "beforeEach",
+          "afterEach",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "beforeEach",
+          "afterEach",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.625Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

@@ -1,0 +1,185 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/config/facade.ts",
+    "contentHash": "5618ec2cd7d4aadcaf616c3f7873b797f31dcc4a9c4525bb6797a7a8d669aecb",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "18029c4b87b9ac062a1d1733052a75e386fcd9f528fe97ffde94b7ce39f3272f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/config"
+  },
+  "semantic": {
+    "role": "Infrastructure configuration manager providing centralized access and mutation for the ArchSpine project's runtime settings.",
+    "responsibilities": [
+      "Loads and validates configuration data from the filesystem using the config loader.",
+      "Resolves scan policies by delegating to the core scan-policy resolver.",
+      "Manages LLM configuration values including setting, clearing, and persisting changes.",
+      "Handles artifact and initialization state configuration sections.",
+      "Parses boolean environment variables for configuration resolution.",
+      "Resolves pre-commit hook settings via dedicated resolver."
+    ],
+    "outOfScope": [
+      "Direct filesystem I/O operations (delegated to FileSystemManager).",
+      "Core scan policy logic (delegated to core/scan-policy).",
+      "Low-level environment variable parsing (delegated to env.ts).",
+      "Pre-commit hook implementation details (delegated to precommit.ts)."
+    ],
+    "invariants": [
+      "Configuration data must be loaded and validated before any access.",
+      "Scan policies must be resolved through the core scan-policy resolver.",
+      "LLM configuration changes must be persisted to the filesystem.",
+      "All configuration access must go through the public facade methods."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable infrastructure facade for configuration management, isolating runtime settings from core orchestration logic.",
+      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, ensuring configuration manager adheres to project standards."
+    },
+    "publicSurface": [
+      "loadConfigData",
+      "resolveScanPolicy",
+      "parseBooleanEnv",
+      "resolvePreCommitSetting",
+      "SpineConfig",
+      "BooleanSettingResolution",
+      "HookSyncMode",
+      "ArtifactStrategy",
+      "SupportedConfigKey",
+      "PromptPolicyTier",
+      "LLMMode",
+      "ValidatePolicy"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure configuration manager providing centralized access and mutation for the ArchSpine project's runtime settings.",
+        "responsibilities": [
+          "Loads and validates configuration data from the filesystem using the config loader.",
+          "Resolves scan policies by delegating to the core scan-policy resolver.",
+          "Manages LLM configuration values including setting, clearing, and persisting changes.",
+          "Handles artifact and initialization state configuration sections.",
+          "Parses boolean environment variables for configuration resolution.",
+          "Resolves pre-commit hook settings via dedicated resolver."
+        ],
+        "outOfScope": [
+          "Direct filesystem I/O operations (delegated to FileSystemManager).",
+          "Core scan policy logic (delegated to core/scan-policy).",
+          "Low-level environment variable parsing (delegated to env.ts).",
+          "Pre-commit hook implementation details (delegated to precommit.ts)."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施配置管理器，为 ArchSpine 项目的运行时设置提供集中访问和变更能力。",
+        "responsibilities": [
+          "通过配置加载器从文件系统加载并验证配置数据。",
+          "通过委托给核心扫描策略解析器来解析扫描策略。",
+          "管理 LLM 配置值，包括设置、清除和持久化变更。",
+          "处理工件和初始化状态配置部分。",
+          "解析布尔环境变量以进行配置解析。",
+          "通过专用解析器解析预提交钩子设置。"
+        ],
+        "outOfScope": [
+          "直接的文件系统 I/O 操作（委托给 FileSystemManager）。",
+          "核心扫描策略逻辑（委托给 core/scan-policy）。",
+          "低级环境变量解析（委托给 env.ts）。",
+          "预提交钩子实现细节（委托给 precommit.ts）。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "../../utils/fs.js",
+        "relation": "import",
+        "symbols": [
+          "FileSystemManager"
+        ]
+      },
+      {
+        "targetPath": "../../core/scan-policy.js",
+        "relation": "import",
+        "symbols": [
+          "resolveScanPolicy",
+          "ScanPolicy"
+        ]
+      },
+      {
+        "targetPath": "../../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "MCPContextMode"
+        ]
+      },
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "SpineConfig",
+          "BooleanSettingResolution",
+          "HookSyncMode",
+          "ArtifactStrategy",
+          "SupportedConfigKey",
+          "PromptPolicyTier",
+          "LLMMode",
+          "ValidatePolicy"
+        ]
+      },
+      {
+        "targetPath": "./loader.js",
+        "relation": "import",
+        "symbols": [
+          "loadConfigData"
+        ]
+      },
+      {
+        "targetPath": "./env.js",
+        "relation": "import",
+        "symbols": [
+          "parseBooleanEnv"
+        ]
+      },
+      {
+        "targetPath": "./precommit.js",
+        "relation": "import",
+        "symbols": [
+          "resolvePreCommitSetting"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T03:57:57.047Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/mcp-context-mode.test.ts",
+    "contentHash": "39637b04fd19f6be2ab3acb82b0ca29fa589f1019937949a56c6c2bfa043f8a6",
+    "skeletonHash": "d591ec7c44ba4db11676ba79f3aeb96dbf83caac9b46c4ae74f945b9a2337aba",
+    "semanticHash": "8102d78c56414be33bed3d17f3047f213188d1d43e23fdfa6c1ba33f021626e5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite for MCP context modes, validating resource and tool access control under different initialization states.",
+    "responsibilities": [
+      "Sets up isolated temporary directories for each test case to simulate project environments.",
+      "Tests MCPContextGate behavior for restricting resource and tool access based on initialization state.",
+      "Validates that SpineResources and SpineTools respect context gating policies.",
+      "Provides test lifecycle management (beforeEach/afterEach) for clean environment setup and teardown."
+    ],
+    "outOfScope": [
+      "Production runtime logic for MCP context gating.",
+      "Implementation of the MCP protocol server or client.",
+      "User interface or command-line interaction."
+    ],
+    "invariants": [
+      "Must be a Vitest test file (.test.ts suffix).",
+      "Must import and test MCPContextGate, SpineResources, and SpineTools.",
+      "Must manage temporary test directories to avoid side effects."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure MCP context gating is rigorously tested to prevent unauthorized resource or tool access in the ArchSpine system.",
+      "recentChangeIntent": "Part of final release preparation (v1.0.0), likely ensuring test suite stability and coverage."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite for MCP context modes, validating resource and tool access control under different initialization states.",
+        "responsibilities": [
+          "Sets up isolated temporary directories for each test case to simulate project environments.",
+          "Tests MCPContextGate behavior for restricting resource and tool access based on initialization state.",
+          "Validates that SpineResources and SpineTools respect context gating policies.",
+          "Provides test lifecycle management (beforeEach/afterEach) for clean environment setup and teardown."
+        ],
+        "outOfScope": [
+          "Production runtime logic for MCP context gating.",
+          "Implementation of the MCP protocol server or client.",
+          "User interface or command-line interaction."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/mcp/resources.js'",
+        "symbols": [
+          "SpineResources"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/mcp/tools.js'",
+        "symbols": [
+          "SpineTools"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/mcp/context.js'",
+        "symbols": [
+          "MCPContextGate"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "GENERATOR_VERSION"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 11,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/mcp/resources.ts",
+        "relation": "import",
+        "symbols": [
+          "SpineResources"
+        ]
+      },
+      {
+        "targetPath": "src/infra/mcp/tools.ts",
+        "relation": "import",
+        "symbols": [
+          "SpineTools"
+        ]
+      },
+      {
+        "targetPath": "src/infra/mcp/context.ts",
+        "relation": "import",
+        "symbols": [
+          "MCPContextGate"
+        ]
+      },
+      {
+        "targetPath": "src/types/protocol.ts",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "GENERATOR_VERSION"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.660Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

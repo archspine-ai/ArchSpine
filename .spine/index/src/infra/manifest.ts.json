@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/manifest.ts",
+    "contentHash": "f69e3cd6a70d8acd0e476a9c38f2df23a0bcb69dd348a319395275cfab90512f",
+    "skeletonHash": "d6c62eec9fd2da76c4c9cb9dc44e589ad2fd5acce386e21836e48285a450b12c",
+    "semanticHash": "fabfd936deca423d7c6670633c68ee509cf24b2ad08369d3d4cecee802b050f2",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Public API entry point (facade) for the Spine manifest subsystem, aggregating and re-exporting core manifest types and queries.",
+    "responsibilities": [
+      "Provides a stable, public import path for the Manifest class and the hasManifestBaseline query function.",
+      "Decouples consumers from the internal file structure of the manifest implementation module."
+    ],
+    "outOfScope": [
+      "Implementing manifest logic or business rules.",
+      "Orchestrating services, tasks, or engines.",
+      "Providing direct access to private implementation modules beyond the designated facade."
+    ],
+    "invariants": [
+      "Must only re-export stable symbols from the underlying facade implementation.",
+      "Must not contain any inline logic or stateful behavior."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish a stable public API boundary for the manifest subsystem to reduce churn and isolate consumers from internal refactoring.",
+      "recentChangeIntent": "Refactoring of the infra layer, potentially splitting manifest facade state, as indicated by the git commit. This file's role as a stable export point supports that refactor."
+    },
+    "publicSurface": [
+      "Manifest",
+      "hasManifestBaseline"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Public API entry point (facade) for the Spine manifest subsystem, aggregating and re-exporting core manifest types and queries.",
+        "responsibilities": [
+          "Provides a stable, public import path for the Manifest class and the hasManifestBaseline query function.",
+          "Decouples consumers from the internal file structure of the manifest implementation module."
+        ],
+        "outOfScope": [
+          "Implementing manifest logic or business rules.",
+          "Orchestrating services, tasks, or engines.",
+          "Providing direct access to private implementation modules beyond the designated facade."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "Manifest",
+        "kind": "unknown",
+        "signature": "export { Manifest }"
+      },
+      {
+        "name": "hasManifestBaseline",
+        "kind": "unknown",
+        "signature": "export { hasManifestBaseline }"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "Manifest",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/manifest.ts#"
+      },
+      {
+        "name": "hasManifestBaseline",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/manifest.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./manifest/facade.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest",
+          "hasManifestBaseline"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/engines/info.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:39.259Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/infra/prompt","role":"This directory contains the prompt construction and assembly infrastructure for the ArchSpine system.","responsibility":"Provides a comprehensive set of utilities and factories for building structured, localized prompts for AI agents, including prompt builders, template renderers, output contract generators, and specialized prompt constructors for documents, configuration files, directories, source code, and project units.","children":[{"filePath":"src/infra/prompt/aggregate.ts","role":"Prompt construction factory for ArchSpine semantic synthesis, producing structured prompt strings for documents, configuration files, directories, and project units via a PromptBuilder pipeline.","fileKind":"source"},{"filePath":"src/infra/prompt/builder.ts","role":"Prompt assembly utility class that orchestrates the rendering of structured prompt blocks for AI agent interactions.","fileKind":"source"},{"filePath":"src/infra/prompt/markdown.ts","role":"Infrastructure utility for constructing localized markdown-only prompt strings from semantic JSON input.","fileKind":"source"},{"filePath":"src/infra/prompt/shared.ts","role":"Utility function generating formatted output contract strings for the ArchSpine prompt response system.","fileKind":"source"},{"filePath":"src/infra/prompt/source.ts","role":"Infrastructure facade function that generates structured LLM prompts for source code analysis tasks within the ArchSpine system.","fileKind":"source"},{"filePath":"src/infra/prompt/types.ts","role":"TypeScript type definition module for ArchSpine's prompt generation and response formatting protocol.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T03:58:47.726Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
+# ArchSpine 提示词基础设施（`src/infra/prompt`）
+
+此目录承载 ArchSpine 系统的提示词构建与组装层。其核心职责是提供一套全面的工具集，用于构建结构化、本地化的提示词，以驱动 AI 代理交互。基础设施围绕以下几个关键模块组织：
+
+- **`aggregate.ts`** – 语义合成工厂，通过 `PromptBuilder` 管道为文档、配置文件、目录和项目单元生成结构化的提示词字符串。
+- **`builder.ts`** – 核心编排类，负责组装用于 AI 代理对话的结构化提示词块。
+- **`markdown.ts`** – 一个实用工具，用于从语义 JSON 输入构建仅包含 Markdown 的本地化提示词字符串。
+- **`shared.ts`** – 生成格式化的输出合约字符串，定义提示词系统预期的响应格式。
+- **`source.ts`** – 一个外观函数，专门为源代码分析任务创建结构化的 LLM 提示词。
+- **`types.ts`** – 定义提示词生成和响应格式化协议的 TypeScript 类型系统。
+
+最重要的实现区域是 `aggregate.ts` 中的 `PromptBuilder` 管道和 `shared.ts` 中的输出合约生成，因为它们直接控制提示词的结构方式以及响应的验证方式。

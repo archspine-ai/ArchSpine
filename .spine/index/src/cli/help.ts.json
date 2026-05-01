@@ -1,0 +1,118 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/help.ts",
+    "contentHash": "e3643077b264960090ae0924fadc376938235c1668c16951131a4faf79917e84",
+    "skeletonHash": "8eb05dc2edc80298f7c013aa66117d007fb06626308ee4501d676bde63c4e01e",
+    "semanticHash": "b254a17c0a5eeefbcc5a9da40b4c82077ff73daadd9a6fd343fa45e16262109b",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli"
+  },
+  "semantic": {
+    "role": "CLI help text renderer for the ArchSpine command-line interface.",
+    "responsibilities": [
+      "Formats and prints the general help message listing all available commands and their categories (Setup & Config, Core Workflows, etc.).",
+      "Formats and prints detailed help for specific commands (init, try, sync, etc.) via a switch-based command help function.",
+      "Maintains up-to-date command descriptions including experimental features like the 'view' command runtime."
+    ],
+    "outOfScope": [
+      "Command execution or business logic for any CLI command.",
+      "Pipeline orchestration, persistence, or core domain logic.",
+      "Configuration reading or writing (delegated to config module).",
+      "Git hook management logic (delegated to hook module)."
+    ],
+    "invariants": [
+      "Must not import or invoke any pipeline, persistence, or core domain logic (enforced by cli-entrypoint-separation rule).",
+      "Must remain a pure presentation layer for CLI help text, with no side effects beyond console output."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a thin CLI adapter for rendering help text, keeping command routing separate from business logic.",
+      "recentChangeIntent": "No recent changes detected in this file; the git status shows no modifications to this file."
+    },
+    "publicSurface": [
+      "printGeneralHelp()",
+      "printCommandHelp(cmd: string)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI help text renderer for the ArchSpine command-line interface.",
+        "responsibilities": [
+          "Formats and prints the general help message listing all available commands and their categories.",
+          "Formats and prints detailed help for specific commands via a switch-based command help function.",
+          "Maintains up-to-date command descriptions including experimental features like the 'view' command runtime."
+        ],
+        "outOfScope": [
+          "Command execution or business logic for any CLI command.",
+          "Pipeline orchestration, persistence, or core domain logic.",
+          "Configuration reading or writing.",
+          "Git hook management logic."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 命令行界面的帮助文本渲染器。",
+        "responsibilities": [
+          "格式化并打印通用帮助信息，列出所有可用命令及其分类。",
+          "通过基于 switch 的命令帮助函数，格式化并打印特定命令的详细帮助信息。",
+          "维护最新的命令描述，包括实验性功能（如 'view' 命令运行时）。"
+        ],
+        "outOfScope": [
+          "任何 CLI 命令的执行或业务逻辑。",
+          "管道编排、持久化或核心领域逻辑。",
+          "配置的读取或写入。",
+          "Git 钩子管理逻辑。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "printGeneralHelp",
+        "kind": "function",
+        "signature": "printGeneralHelp()"
+      },
+      {
+        "name": "printCommandHelp",
+        "kind": "function",
+        "signature": "printCommandHelp(cmd: string)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "printGeneralHelp",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/help.ts#"
+      },
+      {
+        "name": "printCommandHelp",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/help.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:36.929Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

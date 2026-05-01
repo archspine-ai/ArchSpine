@@ -1,0 +1,295 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/utils/agent-instructions.templates.ts",
+    "contentHash": "1c2e89e674a4600c77e598edb5a37268c18e0cefb66ccb2067e0899b77a74a63",
+    "skeletonHash": "da982b072318f051b146d9414673c50bb24ac9ba6949becced020acb9885b27a",
+    "semanticHash": "7918d1773083258888bd473cf968fb393cf4af58b38c2e2c79ada46c0db0e15e",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/utils"
+  },
+  "semantic": {
+    "role": "Static configuration module providing agent instruction blocks and repository ignore patterns for the ArchSpine system.",
+    "responsibilities": [
+      "Defines the start and end markers for ArchSpine agent instruction blocks in documentation.",
+      "Provides the full ArchSpine agent instruction block content for insertion into AI agent prompts.",
+      "Defines paths and content for search ignore patterns to exclude generated ArchSpine outputs.",
+      "Defines recommended lines for .spineignore, .gitignore, and .gitattributes files to manage repository noise and generated content."
+    ],
+    "outOfScope": [
+      "Dynamic generation or validation of ignore files.",
+      "Parsing or interpreting the content of the instruction blocks.",
+      "Enforcing the usage of these constants in other parts of the system."
+    ],
+    "invariants": [
+      "Exported constants are immutable strings or arrays.",
+      "The AGENT_BLOCK_START and AGENT_BLOCK_END markers must be present in the ARCHSPINE_AGENT_BLOCK content."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Centralize static configuration strings for agent instructions and repository file management to ensure consistency and ease of updates.",
+      "recentChangeIntent": "Updated the ARCHSPINE_AGENT_BLOCK to include the 'npx --yes archspine@latest try' command for a read-only preview, aligning with the 'tighten schema handling and add try preview' commit."
+    },
+    "publicSurface": [
+      "AGENT_BLOCK_START",
+      "AGENT_BLOCK_END",
+      "ARCHSPINE_AGENT_BLOCK",
+      "SEARCH_IGNORE_PATH",
+      "SPINEIGNORE_PATH",
+      "SEARCH_IGNORE_LINES",
+      "SEARCH_IGNORE_CONTENT",
+      "SPINEIGNORE_BLOCK_START",
+      "SPINEIGNORE_BLOCK_END",
+      "SPINEIGNORE_RECOMMENDED_LINES",
+      "GITIGNORE_BLOCK_START",
+      "GITIGNORE_BLOCK_END",
+      "GITATTRIBUTES_BLOCK_START",
+      "GITATTRIBUTES_BLOCK_END",
+      "LOCAL_GITIGNORE_LINES",
+      "DISTRIBUTABLE_GITIGNORE_LINES",
+      "DISTRIBUTABLE_GITATTRIBUTES_LINES"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Static configuration module providing agent instruction blocks and repository ignore patterns for the ArchSpine system.",
+        "responsibilities": [
+          "Defines the start and end markers for ArchSpine agent instruction blocks in documentation.",
+          "Provides the full ArchSpine agent instruction block content for insertion into AI agent prompts.",
+          "Defines paths and content for search ignore patterns to exclude generated ArchSpine outputs.",
+          "Defines recommended lines for .spineignore, .gitignore, and .gitattributes files to manage repository noise and generated content."
+        ],
+        "outOfScope": [
+          "Dynamic generation or validation of ignore files.",
+          "Parsing or interpreting the content of the instruction blocks.",
+          "Enforcing the usage of these constants in other parts of the system."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "ArtifactStrategy",
+        "kind": "type",
+        "signature": "type ArtifactStrategy"
+      },
+      {
+        "name": "AGENT_BLOCK_START",
+        "kind": "variable",
+        "signature": "const AGENT_BLOCK_START"
+      },
+      {
+        "name": "AGENT_BLOCK_END",
+        "kind": "variable",
+        "signature": "const AGENT_BLOCK_END"
+      },
+      {
+        "name": "ARCHSPINE_AGENT_BLOCK",
+        "kind": "variable",
+        "signature": "const ARCHSPINE_AGENT_BLOCK"
+      },
+      {
+        "name": "SEARCH_IGNORE_PATH",
+        "kind": "variable",
+        "signature": "const SEARCH_IGNORE_PATH"
+      },
+      {
+        "name": "SPINEIGNORE_PATH",
+        "kind": "variable",
+        "signature": "const SPINEIGNORE_PATH"
+      },
+      {
+        "name": "SEARCH_IGNORE_LINES",
+        "kind": "variable",
+        "signature": "const SEARCH_IGNORE_LINES"
+      },
+      {
+        "name": "SEARCH_IGNORE_CONTENT",
+        "kind": "variable",
+        "signature": "const SEARCH_IGNORE_CONTENT"
+      },
+      {
+        "name": "SPINEIGNORE_BLOCK_START",
+        "kind": "variable",
+        "signature": "const SPINEIGNORE_BLOCK_START"
+      },
+      {
+        "name": "SPINEIGNORE_BLOCK_END",
+        "kind": "variable",
+        "signature": "const SPINEIGNORE_BLOCK_END"
+      },
+      {
+        "name": "SPINEIGNORE_RECOMMENDED_LINES",
+        "kind": "variable",
+        "signature": "const SPINEIGNORE_RECOMMENDED_LINES"
+      },
+      {
+        "name": "GITIGNORE_BLOCK_START",
+        "kind": "variable",
+        "signature": "const GITIGNORE_BLOCK_START"
+      },
+      {
+        "name": "GITIGNORE_BLOCK_END",
+        "kind": "variable",
+        "signature": "const GITIGNORE_BLOCK_END"
+      },
+      {
+        "name": "GITATTRIBUTES_BLOCK_START",
+        "kind": "variable",
+        "signature": "const GITATTRIBUTES_BLOCK_START"
+      },
+      {
+        "name": "GITATTRIBUTES_BLOCK_END",
+        "kind": "variable",
+        "signature": "const GITATTRIBUTES_BLOCK_END"
+      },
+      {
+        "name": "LOCAL_GITIGNORE_LINES",
+        "kind": "variable",
+        "signature": "const LOCAL_GITIGNORE_LINES"
+      },
+      {
+        "name": "DISTRIBUTABLE_GITIGNORE_LINES",
+        "kind": "variable",
+        "signature": "const DISTRIBUTABLE_GITIGNORE_LINES"
+      },
+      {
+        "name": "DISTRIBUTABLE_GITATTRIBUTES_LINES",
+        "kind": "variable",
+        "signature": "const DISTRIBUTABLE_GITATTRIBUTES_LINES"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ArtifactStrategy",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "AGENT_BLOCK_START",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "AGENT_BLOCK_END",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "ARCHSPINE_AGENT_BLOCK",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "SEARCH_IGNORE_PATH",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "SPINEIGNORE_PATH",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "SEARCH_IGNORE_LINES",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "SEARCH_IGNORE_CONTENT",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "SPINEIGNORE_BLOCK_START",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "SPINEIGNORE_BLOCK_END",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "SPINEIGNORE_RECOMMENDED_LINES",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "GITIGNORE_BLOCK_START",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "GITIGNORE_BLOCK_END",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "GITATTRIBUTES_BLOCK_START",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "GITATTRIBUTES_BLOCK_END",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "LOCAL_GITIGNORE_LINES",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "DISTRIBUTABLE_GITIGNORE_LINES",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "DISTRIBUTABLE_GITATTRIBUTES_LINES",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 18,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:42.236Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

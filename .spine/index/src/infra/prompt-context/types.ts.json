@@ -1,0 +1,320 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-context/types.ts",
+    "contentHash": "7a26230413d14f1d32ee82da693c35f1d2525fff22d37bb04305fb47f88a0a8d",
+    "skeletonHash": "3ce153ce5a2f8f11077906310145f85616f0c2ed1408fd8a743f56443261c708",
+    "semanticHash": "411e25f0301e7275edfba0202c73a2c13a33fe1391b9a9379a06ea4f56a9a97b",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt-context"
+  },
+  "semantic": {
+    "role": "Central TypeScript type definition module for prompt generation, validation, diagnostic configuration, and generation strategy within the ArchSpine LLM orchestration system.",
+    "responsibilities": [
+      "Defines the type schema for prompt task modes (e.g., 'summarize', 'validate'), policy tiers, LLM operational modes, and generation strategies (including 'json-only').",
+      "Provides interface definitions for prompt budget profiles, specifying line count constraints for header, body, and footer sections.",
+      "Exports diagnostic interface structures for tracking prompt context, rule blocks, relevance, and source file snapshots.",
+      "Serves as the authoritative type contract for cross-module communication between the AST extractor, context resolution engines, and LLM base layers."
+    ],
+    "outOfScope": [
+      "Runtime implementation of prompt generation or validation logic.",
+      "Orchestration of LLM calls or task execution.",
+      "Direct interaction with infrastructure or external services."
+    ],
+    "invariants": [
+      "Contains only TypeScript type aliases and interface declarations.",
+      "No executable code or runtime dependencies.",
+      "Imports are strictly for type references from other modules."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, centralized type contract for the LLM prompt orchestration system, enabling type-safe communication between modules and clear configuration boundaries.",
+      "recentChangeIntent": "Extended the GenerationStrategy type to include 'json-only' mode, supporting a new JSON-only synchronization feature with semantic short-circuit and publish backfill."
+    },
+    "publicSurface": [
+      "PromptTaskMode",
+      "PromptPolicyTier",
+      "ValidatePolicy",
+      "LLMMode",
+      "GenerationFlow",
+      "PromptProfile",
+      "ValidationProfile",
+      "GenerationStrategy",
+      "RelevanceDiagnosticsMode",
+      "PromptBudgetProfile",
+      "PromptBudgets",
+      "SourcePromptArtifactsInput",
+      "SourcePromptArtifacts",
+      "PromptContextDiagnostics",
+      "PromptRuleBlockDiagnostics",
+      "PromptRelevanceDiagnostics",
+      "SourceFileDiagnosticsSnapshot",
+      "RelevanceDiagnosticsSnapshot"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Central TypeScript type definition module for prompt generation, validation, diagnostic configuration, and generation strategy within the ArchSpine LLM orchestration system.",
+        "responsibilities": [
+          "Defines the type schema for prompt task modes (e.g., 'summarize', 'validate'), policy tiers, LLM operational modes, and generation strategies (including 'json-only').",
+          "Provides interface definitions for prompt budget profiles, specifying line count constraints for header, body, and footer sections.",
+          "Exports diagnostic interface structures for tracking prompt context, rule blocks, relevance, and source file snapshots.",
+          "Serves as the authoritative type contract for cross-module communication between the AST extractor, context resolution engines, and LLM base layers."
+        ],
+        "outOfScope": [
+          "Runtime implementation of prompt generation or validation logic.",
+          "Orchestration of LLM calls or task execution.",
+          "Direct interaction with infrastructure or external services."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "PromptBudgetProfile",
+        "kind": "interface",
+        "signature": "interface PromptBudgetProfile"
+      },
+      {
+        "name": "PromptBudgets",
+        "kind": "interface",
+        "signature": "interface PromptBudgets"
+      },
+      {
+        "name": "SourcePromptArtifactsInput",
+        "kind": "interface",
+        "signature": "interface SourcePromptArtifactsInput"
+      },
+      {
+        "name": "SourcePromptArtifacts",
+        "kind": "interface",
+        "signature": "interface SourcePromptArtifacts"
+      },
+      {
+        "name": "PromptContextDiagnostics",
+        "kind": "interface",
+        "signature": "interface PromptContextDiagnostics"
+      },
+      {
+        "name": "PromptRuleBlockDiagnostics",
+        "kind": "interface",
+        "signature": "interface PromptRuleBlockDiagnostics"
+      },
+      {
+        "name": "PromptRelevanceDiagnostics",
+        "kind": "interface",
+        "signature": "interface PromptRelevanceDiagnostics"
+      },
+      {
+        "name": "SourceFileDiagnosticsSnapshot",
+        "kind": "interface",
+        "signature": "interface SourceFileDiagnosticsSnapshot"
+      },
+      {
+        "name": "RelevanceDiagnosticsSnapshot",
+        "kind": "interface",
+        "signature": "interface RelevanceDiagnosticsSnapshot"
+      },
+      {
+        "name": "PromptTaskMode",
+        "kind": "type",
+        "signature": "type PromptTaskMode"
+      },
+      {
+        "name": "PromptPolicyTier",
+        "kind": "type",
+        "signature": "type PromptPolicyTier"
+      },
+      {
+        "name": "ValidatePolicy",
+        "kind": "type",
+        "signature": "type ValidatePolicy"
+      },
+      {
+        "name": "LLMMode",
+        "kind": "type",
+        "signature": "type LLMMode"
+      },
+      {
+        "name": "GenerationFlow",
+        "kind": "type",
+        "signature": "type GenerationFlow"
+      },
+      {
+        "name": "PromptProfile",
+        "kind": "type",
+        "signature": "type PromptProfile"
+      },
+      {
+        "name": "ValidationProfile",
+        "kind": "type",
+        "signature": "type ValidationProfile"
+      },
+      {
+        "name": "GenerationStrategy",
+        "kind": "type",
+        "signature": "type GenerationStrategy"
+      },
+      {
+        "name": "RelevanceDiagnosticsMode",
+        "kind": "type",
+        "signature": "type RelevanceDiagnosticsMode"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "PromptBudgetProfile",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "PromptBudgets",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "SourcePromptArtifactsInput",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "SourcePromptArtifacts",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "PromptContextDiagnostics",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "PromptRuleBlockDiagnostics",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "PromptRelevanceDiagnostics",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "SourceFileDiagnosticsSnapshot",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "RelevanceDiagnosticsSnapshot",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "PromptTaskMode",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "PromptPolicyTier",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "ValidatePolicy",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "LLMMode",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "GenerationFlow",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "PromptProfile",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "ValidationProfile",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "GenerationStrategy",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "RelevanceDiagnosticsMode",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 18,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../ast/extractor.js",
+        "relation": "import",
+        "symbols": [
+          "FileSkeleton"
+        ]
+      },
+      {
+        "targetPath": "../../engines/context.js",
+        "relation": "import",
+        "symbols": [
+          "ContextResolutionDiagnostics",
+          "DependencyCandidateDiagnostics"
+        ]
+      },
+      {
+        "targetPath": "../llm/base.js",
+        "relation": "import",
+        "symbols": [
+          "PreviousSemanticContext"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:39.934Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

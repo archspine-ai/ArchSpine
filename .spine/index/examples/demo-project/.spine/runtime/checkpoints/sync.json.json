@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "examples/demo-project/.spine/runtime/checkpoints/sync.json",
+    "contentHash": "003960ae6498f00bd529e285183c402b1ae9adf3699433f6f0c54c57de41e0e2",
+    "semanticHash": "693dc130f7ea17a6addb02cb3954387cd069ecb8a62a87861e4eb60312371ef9",
+    "language": "unsupported",
+    "fileKind": "config",
+    "scope": "examples/demo-project/.spine/runtime/checkpoints"
+  },
+  "semantic": {
+    "role": "Execution record for a synchronization run in the ArchSpine mirror system",
+    "responsibilities": [
+      "Tracking the lifecycle and status of a sync operation",
+      "Recording metadata about the sync run (full vs. incremental, hook mode, resume state)",
+      "Logging per-stage progress and completion timestamps",
+      "Capturing filtered file paths and affected directories during scan-cleanup",
+      "Recording AST extraction results per source file",
+      "Recording summarization results per configuration or documentation file"
+    ],
+    "outOfScope": [],
+    "invariants": [
+      "The 'status' field must be one of: 'pending', 'running', 'completed', 'failed'",
+      "The 'runId' must be unique per execution",
+      "All stage entries must have a 'status' and timestamps consistent with the run lifecycle",
+      "The 'metadata.full' flag determines whether the sync is a full or incremental run",
+      "The 'metadata.hookMode' flag must be false for normal runs; true indicates a hook-triggered run"
+    ],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Execution record for a synchronization run in the ArchSpine mirror system",
+        "parameter_definitions": {
+          "schemaVersion": "Version of the run record schema, used for backward compatibility",
+          "command": "The command that initiated this run (e.g., 'sync')",
+          "runId": "Unique identifier for this run, typically a timestamp-based ID",
+          "status": "Current status of the run: pending, running, completed, or failed",
+          "startedAt": "ISO timestamp when the run started",
+          "updatedAt": "ISO timestamp of the last status update",
+          "metadata.full": "Boolean flag indicating whether this is a full sync (true) or incremental (false)",
+          "metadata.hookMode": "Boolean flag indicating if the run was triggered by a hook (true) or manually (false)",
+          "metadata.resumedFromRunId": "If this run was resumed from a previous run, the previous run's ID",
+          "metadata.resumeCandidateCount": "Number of candidate runs that could be resumed from",
+          "stages": "Map of stage names to their execution details, including status and timestamps",
+          "stages.Reconcile State & Cache": "Stage that reconciles the current state with the cache; completes quickly if no changes",
+          "stages.scan-cleanup": "Stage that scans the workspace and filters files for processing; records filteredFiles and affectedDirs",
+          "stages.ast-extraction": "Stage that extracts AST (Abstract Syntax Tree) from source files; per-file status tracked in items",
+          "stages.summarization": "Stage that generates summaries for configuration and documentation files; per-file status tracked in items"
+        },
+        "stability_and_risks": "This run record is a diagnostic artifact, not a configuration file. It does not directly affect system behavior. However, if the run record is corrupted or missing, the system may lose the ability to resume interrupted syncs or audit past operations. The 'resumedFromRunId' and 'resumeCandidateCount' fields are critical for recovery; if they are incorrect, the system may attempt to resume from an invalid state. The 'filteredFiles' list in scan-cleanup determines which files are processed; if it is empty or incorrect, critical files may be skipped. The per-file statuses in ast-extraction and summarization allow the system to detect partial failures; if a file is marked 'failed', the system should retry or alert."
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 镜像系统中同步运行的执行记录",
+        "parameter_definitions": {
+          "schemaVersion": "运行记录模式的版本号，用于向后兼容",
+          "command": "启动本次运行的命令（例如 'sync'）",
+          "runId": "本次运行的唯一标识符，通常基于时间戳生成",
+          "status": "运行的当前状态：pending（待处理）、running（运行中）、completed（已完成）或 failed（失败）",
+          "startedAt": "运行开始的 ISO 时间戳",
+          "updatedAt": "最后一次状态更新的 ISO 时间戳",
+          "metadata.full": "布尔标志，指示这是完整同步（true）还是增量同步（false）",
+          "metadata.hookMode": "布尔标志，指示运行是否由钩子触发（true）还是手动触发（false）",
+          "metadata.resumedFromRunId": "如果本次运行是从之前的运行恢复的，则记录之前运行的 ID",
+          "metadata.resumeCandidateCount": "可恢复的候选运行数量",
+          "stages": "阶段名称到执行细节的映射，包括状态和时间戳",
+          "stages.Reconcile State & Cache": "将当前状态与缓存进行协调的阶段；如果没有更改则快速完成",
+          "stages.scan-cleanup": "扫描工作区并过滤待处理文件的阶段；记录 filteredFiles 和 affectedDirs",
+          "stages.ast-extraction": "从源文件中提取抽象语法树（AST）的阶段；每个文件的状态记录在 items 中",
+          "stages.summarization": "为配置文件和文档文件生成摘要的阶段；每个文件的状态记录在 items 中"
+        },
+        "stability_and_risks": "此运行记录是诊断性工件，而非配置文件。它不会直接影响系统行为。但是，如果运行记录损坏或丢失，系统可能无法恢复中断的同步或审计过去的操作。'resumedFromRunId' 和 'resumeCandidateCount' 字段对恢复至关重要；如果它们不正确，系统可能尝试从无效状态恢复。scan-cleanup 中的 'filteredFiles' 列表决定了哪些文件会被处理；如果列表为空或不正确，关键文件可能被跳过。ast-extraction 和 summarization 中的每个文件状态允许系统检测部分失败；如果某个文件标记为 'failed'，系统应重试或发出警报。"
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:44:35.098Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

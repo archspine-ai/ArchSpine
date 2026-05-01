@@ -1,0 +1,201 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/config/validation.ts",
+    "contentHash": "5bd0d2245014d581cfabba9e42c446bfa62509f66e9283d91698d5a506dd1b3e",
+    "skeletonHash": "d44e9ece7fffb18b9852d34af8eaa7ec425a50c23d88f3b7ee2b5125430cb226",
+    "semanticHash": "f75484853bf621efef0dde9e7d6edde68124d349ada067d08a5650f834fc8462",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/config"
+  },
+  "semantic": {
+    "role": "Infrastructure validation facade for Spine configuration payloads.",
+    "responsibilities": [
+      "Validates an unknown payload against the Spine configuration schema using the core config-schema resolver.",
+      "Returns a typed SpineConfig object on successful validation, or null on failure.",
+      "Produces a structured warning message to the console when validation fails, detailing the config path and issues.",
+      "Provides helper functions to build formatted warning strings for validation and parse failures using ErrorCodes.ConfigParseFailed."
+    ],
+    "outOfScope": [
+      "Parsing or reading configuration files from disk.",
+      "Loading or resolving configuration from external sources.",
+      "Orchestrating service or task initialization.",
+      "Handling runtime configuration reload or hot-reload logic."
+    ],
+    "invariants": [
+      "Infra modules must expose stable low-level capabilities and facades, not absorb service/task/engine orchestration concerns (Rule: infra-facade-imports).",
+      "Callers should prefer public infra facades over reaching into deep private implementation paths when a facade exists (Rule: infra-facade-imports)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, low-level validation facade for Spine configuration payloads that decouples config validation from higher-level orchestration logic.",
+      "recentChangeIntent": "Fix lint warnings and type errors, and add CI workflow (no direct impact on this file's logic)."
+    },
+    "publicSurface": [
+      "validateConfigPayload(configPath: string, payload: unknown): SpineConfig | null",
+      "buildConfigValidationWarning(configPath: string, issues: string[]): string",
+      "buildConfigParseWarning(configPath: string, reason: string): string"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure validation facade for Spine configuration payloads.",
+        "responsibilities": [
+          "Validates an unknown payload against the Spine configuration schema using the core config-schema resolver.",
+          "Returns a typed SpineConfig object on successful validation, or null on failure.",
+          "Produces a structured warning message to the console when validation fails, detailing the config path and issues.",
+          "Provides helper functions to build formatted warning strings for validation and parse failures using ErrorCodes.ConfigParseFailed."
+        ],
+        "outOfScope": [
+          "Parsing or reading configuration files from disk.",
+          "Loading or resolving configuration from external sources.",
+          "Orchestrating service or task initialization.",
+          "Handling runtime configuration reload or hot-reload logic."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "Spine 配置负载的基础设施验证外观模块。",
+        "responsibilities": [
+          "使用核心配置模式解析器验证未知负载是否符合 Spine 配置模式。",
+          "验证成功时返回类型化的 SpineConfig 对象，失败时返回 null。",
+          "验证失败时向控制台输出结构化的警告信息，包含配置路径和问题详情。",
+          "提供辅助函数，使用 ErrorCodes.ConfigParseFailed 构建验证和解析失败的格式化警告字符串。"
+        ],
+        "outOfScope": [
+          "从磁盘解析或读取配置文件。",
+          "从外部来源加载或解析配置。",
+          "编排服务或任务初始化。",
+          "处理运行时配置重载或热重载逻辑。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../types/protocol.js'",
+        "symbols": [
+          "CURRENT_CONFIG_SCHEMA_VERSION"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../core/errors.js'",
+        "symbols": [
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../core/config-schema.js'",
+        "symbols": [
+          "resolveSpineConfig"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./types.js'",
+        "symbols": [
+          "SpineConfig"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "validateConfigPayload",
+        "kind": "function",
+        "signature": "validateConfigPayload(configPath: string, payload: unknown)"
+      },
+      {
+        "name": "buildConfigValidationWarning",
+        "kind": "function",
+        "signature": "buildConfigValidationWarning(configPath: string, issues: string[])"
+      },
+      {
+        "name": "buildConfigParseWarning",
+        "kind": "function",
+        "signature": "buildConfigParseWarning(configPath: string, reason: string)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "validateConfigPayload",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/config/validation.ts#"
+      },
+      {
+        "name": "buildConfigValidationWarning",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/config/validation.ts#"
+      },
+      {
+        "name": "buildConfigParseWarning",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/config/validation.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_CONFIG_SCHEMA_VERSION"
+        ]
+      },
+      {
+        "targetPath": "../../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ErrorCodes"
+        ]
+      },
+      {
+        "targetPath": "../../core/config-schema.js",
+        "relation": "import",
+        "symbols": [
+          "resolveSpineConfig"
+        ]
+      },
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "SpineConfig"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/config/validation.ts/_file_#",
+        "targetSymbol": "src/infra/config-validation.ts/resolveSpineConfig#",
+        "targetPath": "src/infra/config-validation.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:56:54.576Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

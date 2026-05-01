@@ -1,0 +1,78 @@
+{
+  "$id": "https://archspine.dev/schema/v1.0.0/shared.schema.json",
+  "title": "ArchSpine Shared Definitions",
+  "$defs": {
+    "schemaVersion": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "isoTimestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "repoRelativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?!\\./)(?!\\.\\./)(?!.*\\\\)(?!.*//).+$"
+    },
+    "scopePath": {
+      "type": "string",
+      "pattern": "^(|(?!(?:/|\\./|\\.\\./))(?!.+\\\\)(?!.*//).+)$"
+    },
+    "contentHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "locale": {
+      "type": "string",
+      "pattern": "^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$"
+    },
+    "languageSelectionKey": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sourceLanguage": {
+      "type": "string",
+      "enum": ["typescript", "javascript", "python", "unsupported"]
+    },
+    "fileKind": {
+      "type": "string",
+      "enum": ["source", "config", "document", "other"]
+    },
+    "symbolKind": {
+      "type": "string",
+      "enum": ["class", "function", "variable", "interface", "type", "enum", "unknown"]
+    },
+    "dependencyRelation": {
+      "type": "string",
+      "enum": ["import", "reexport", "type-import"]
+    },
+    "edgeProvenance": {
+      "type": "string",
+      "enum": ["ast", "inferred"]
+    },
+    "pipelineStage": {
+      "type": "string",
+      "enum": ["ast", "llm", "lite-ast", "lite-llm", "fallback"]
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "localizedContentMap": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/$defs/languageSelectionKey"
+      },
+      "additionalProperties": {
+        "type": "object"
+      }
+    }
+  }
+}

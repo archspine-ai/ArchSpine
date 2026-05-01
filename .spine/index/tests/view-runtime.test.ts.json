@@ -1,0 +1,175 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/view-runtime.test.ts",
+    "contentHash": "d7775eb9c6f8a1f8e32bb409319bd609d045204e3b100d76ef3b588d48340d32",
+    "skeletonHash": "f1c5cb984faf49b5eb09f63ebd872a8d00a7a2b435aeb9ea415e45f01c4ca131",
+    "semanticHash": "a18d359431c73d35875c74af8e9261c4da6daf876d5706700da58526b95907b5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite for experimental view layer configuration resolution.",
+    "responsibilities": [
+      "Validates the resolveExperimentalViewLayer function's behavior under different configuration scenarios.",
+      "Tests environment variable SPINE_EXPERIMENTAL_VIEW_LAYER override mechanics.",
+      "Verifies Config.setExperimentalViewLayer persistence and its effect on resolution.",
+      "Ensures temporary test directories are created and cleaned up properly."
+    ],
+    "outOfScope": [
+      "Unit testing of individual view layer components in isolation.",
+      "Testing of view derivation or post-commit derivation logic.",
+      "Performance or stress testing of the view layer resolution."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (Rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish integration tests for the experimental view layer resolution mechanism, ensuring configuration overrides and persistence work correctly.",
+      "recentChangeIntent": "refactor(arch): establish subsystem facades and resolve layer inversions"
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite for experimental view layer configuration resolution.",
+        "responsibilities": [
+          "Validates the resolveExperimentalViewLayer function's behavior under different configuration scenarios.",
+          "Tests environment variable SPINE_EXPERIMENTAL_VIEW_LAYER override mechanics.",
+          "Verifies Config.setExperimentalViewLayer persistence and its effect on resolution.",
+          "Ensures temporary test directories are created and cleaned up properly."
+        ],
+        "outOfScope": [
+          "Unit testing of individual view layer components in isolation.",
+          "Testing of view derivation or post-commit derivation logic.",
+          "Performance or stress testing of the view layer resolution."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于实验性视图层配置解析的 Vitest 集成测试套件。",
+        "responsibilities": [
+          "验证 resolveExperimentalViewLayer 函数在不同配置场景下的行为。",
+          "测试环境变量 SPINE_EXPERIMENTAL_VIEW_LAYER 的覆盖机制。",
+          "验证 Config.setExperimentalViewLayer 的持久性及其对解析结果的影响。",
+          "确保临时测试目录被正确创建和清理。"
+        ],
+        "outOfScope": [
+          "对单个视图层组件的单元测试。",
+          "视图派生或提交后派生逻辑的测试。",
+          "视图层解析的性能或压力测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/services/view/index.js'",
+        "symbols": [
+          "resolveEnabledViews",
+          "resolveExperimentalViewLayer"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../src/services/view/index.js",
+        "relation": "import",
+        "symbols": [
+          "resolveEnabledViews",
+          "resolveExperimentalViewLayer"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:44.828Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

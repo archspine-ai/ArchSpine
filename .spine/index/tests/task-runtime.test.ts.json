@@ -1,0 +1,233 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/task-runtime.test.ts",
+    "contentHash": "741ad1a0fca2030fd6caa3c5eeab135f62d359202ab6f0ebb31894abad9e66fd",
+    "skeletonHash": "dbd3a70b2962394df7da4471e0c1cc32802a35529b28551b5712210401894f9f",
+    "semanticHash": "7e49e77f9a8856c578e60e4c651a0e9884955c0ce2e46bd372d24c374ea38dfb",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for ArchSpine's core task state management, runtime cache, and telemetry statistics.",
+    "responsibilities": [
+      "Tests the creation, reset, and artifact state of task state objects (createTaskState, resetTaskState, createTaskArtifactsState).",
+      "Validates telemetry statistics accumulation and stage metrics recording (recordTaskStageMetric, incrementTaskFailed, incrementTaskSkipped).",
+      "Verifies runtime cache behavior for skeletons, unsupported files, and pending commits.",
+      "Ensures task usage tracking and commit queuing functions operate correctly (addTaskUsage, queueTaskCommit)."
+    ],
+    "outOfScope": [
+      "Integration testing of the full pipeline execution.",
+      "End-to-end testing of CLI commands.",
+      "Performance or load testing of task state operations."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide comprehensive unit test coverage for the core task state management module, ensuring correctness of state transitions, telemetry recording, and runtime cache operations.",
+      "recentChangeIntent": "No specific recent change intent discernible from the vague commit message 'fast fast'."
+    },
+    "publicSurface": [
+      "describe('task-state')",
+      "beforeEach",
+      "afterEach",
+      "it('should create task state')",
+      "it('should reset task state')",
+      "it('should create task artifacts state')",
+      "it('should record stage metrics')",
+      "it('should increment failed tasks')",
+      "it('should increment skipped tasks')",
+      "it('should handle runtime cache')",
+      "it('should track task usage')",
+      "it('should queue task commits')"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for ArchSpine's core task state management, runtime cache, and telemetry statistics.",
+        "responsibilities": [
+          "Tests the creation, reset, and artifact state of task state objects (createTaskState, resetTaskState, createTaskArtifactsState).",
+          "Validates telemetry statistics accumulation and stage metrics recording (recordTaskStageMetric, incrementTaskFailed, incrementTaskSkipped).",
+          "Verifies runtime cache behavior for skeletons, unsupported files, and pending commits.",
+          "Ensures task usage tracking and commit queuing functions operate correctly (addTaskUsage, queueTaskCommit)."
+        ],
+        "outOfScope": [
+          "Integration testing of the full pipeline execution.",
+          "End-to-end testing of CLI commands.",
+          "Performance or load testing of task state operations."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 核心任务状态管理、运行时缓存和遥测统计的 Vitest 单元测试套件。",
+        "responsibilities": [
+          "测试任务状态对象的创建、重置和工件状态（createTaskState、resetTaskState、createTaskArtifactsState）。",
+          "验证遥测统计累积和阶段指标记录（recordTaskStageMetric、incrementTaskFailed、incrementTaskSkipped）。",
+          "验证运行时缓存在骨架、不支持文件和待提交提交方面的行为。",
+          "确保任务使用跟踪和提交排队功能正确运行（addTaskUsage、queueTaskCommit）。"
+        ],
+        "outOfScope": [
+          "完整流水线执行的集成测试。",
+          "CLI 命令的端到端测试。",
+          "任务状态操作的性能或负载测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/core/task-state.js'",
+        "symbols": [
+          "addTaskUsage",
+          "createTaskArtifactsState",
+          "createTaskState",
+          "incrementTaskFailed",
+          "incrementTaskSkipped",
+          "markTaskProcessedFile",
+          "queueTaskCommit",
+          "recordTaskStageMetric",
+          "resetTaskState"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/core/pipeline.js'",
+        "symbols": [
+          "TaskRunner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/services/task-runtime.js'",
+        "symbols": [
+          "createTaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 11,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../src/core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "addTaskUsage",
+          "createTaskArtifactsState",
+          "createTaskState",
+          "incrementTaskFailed",
+          "incrementTaskSkipped",
+          "markTaskProcessedFile",
+          "queueTaskCommit",
+          "recordTaskStageMetric",
+          "resetTaskState"
+        ]
+      },
+      {
+        "targetPath": "../src/core/pipeline.js",
+        "relation": "import",
+        "symbols": [
+          "TaskRunner"
+        ]
+      },
+      {
+        "targetPath": "../src/core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "../src/services/task-runtime.js",
+        "relation": "import",
+        "symbols": [
+          "createTaskContext"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:44.578Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

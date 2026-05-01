@@ -1,0 +1,153 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/llm/factory.ts",
+    "contentHash": "0820fe2c4cd4a6f9a3b32ade24424451b0d5a7f686acb9fa029fe882f006a609",
+    "skeletonHash": "8a37a5574eece097962687424ef7b11cce16e74149419ee72f0db412f0ed321d",
+    "semanticHash": "156f8edbcc322bc89e395377191e12037609996df8b8aec52861814215171f45",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/llm"
+  },
+  "semantic": {
+    "role": "Infrastructure layer facade factory for instantiating LLM provider clients based on configuration.",
+    "responsibilities": [
+      "Provides a static factory method to create LLM client instances for supported providers (OpenAI, DeepSeek, OpenRouter, Groq, Gemini, Mock).",
+      "Encapsulates provider-specific client instantiation logic behind a unified interface.",
+      "Handles provider name normalization (case-insensitive matching) to select appropriate client implementation.",
+      "Throws descriptive errors for unsupported provider names."
+    ],
+    "outOfScope": [
+      "Orchestrating LLM calls or managing conversation state.",
+      "Implementing provider-specific client logic (delegated to provider modules).",
+      "Managing configuration loading or validation beyond instantiation parameters."
+    ],
+    "invariants": [
+      "Must expose a stable factory interface for LLM client creation.",
+      "Must not absorb service/task/engine orchestration concerns (pure instantiation)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized facade for LLM client instantiation, decoupling client creation from usage across the infrastructure layer.",
+      "recentChangeIntent": "feat(assets): project templates, rules & derived semantic index (v1.0-RC) - likely extends or refines the factory's configuration handling or provider support."
+    },
+    "publicSurface": [
+      "LLMFactory",
+      "LLMFactory.createClient"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure layer facade factory for instantiating LLM provider clients based on configuration.",
+        "responsibilities": [
+          "Provides a static factory method to create LLM client instances for supported providers (OpenAI, DeepSeek, OpenRouter, Groq, Gemini, Mock).",
+          "Encapsulates provider-specific client instantiation logic behind a unified interface.",
+          "Handles provider name normalization (case-insensitive matching) to select appropriate client implementation.",
+          "Throws descriptive errors for unsupported provider names."
+        ],
+        "outOfScope": [
+          "Orchestrating LLM calls or managing conversation state.",
+          "Implementing provider-specific client logic (delegated to provider modules).",
+          "Managing configuration loading or validation beyond instantiation parameters."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./base.js'",
+        "symbols": [
+          "LLMClient",
+          "ProviderConfig"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./providers/openai.js'",
+        "symbols": [
+          "OpenAICompatibleClient"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./providers/gemini.js'",
+        "symbols": [
+          "GeminiClient"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./providers/mock.js'",
+        "symbols": [
+          "MockClient"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "LLMFactory",
+        "kind": "class",
+        "signature": "class LLMFactory"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "LLMFactory",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/llm/factory.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./base.js",
+        "relation": "import",
+        "symbols": [
+          "LLMClient",
+          "ProviderConfig"
+        ]
+      },
+      {
+        "targetPath": "./providers/openai.js",
+        "relation": "import",
+        "symbols": [
+          "OpenAICompatibleClient"
+        ]
+      },
+      {
+        "targetPath": "./providers/gemini.js",
+        "relation": "import",
+        "symbols": [
+          "GeminiClient"
+        ]
+      },
+      {
+        "targetPath": "./providers/mock.js",
+        "relation": "import",
+        "symbols": [
+          "MockClient"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:38.976Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

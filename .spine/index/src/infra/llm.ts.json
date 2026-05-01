@@ -1,0 +1,210 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/llm.ts",
+    "contentHash": "af9241b9e57c28db064f6b18909ab366e162efd5c683972e6c2feebca7425d05",
+    "skeletonHash": "b3a7488ae22d0195ba1801802dd922d85e22b940335e056dea57e440b8b17501",
+    "semanticHash": "7bdee1d01cb62b76eff29a6a871a59760231cfb1df80394bc01d466f11a3da73",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure facade module providing a stable public interface for LLM configuration, client creation, and provider utility functions.",
+    "responsibilities": [
+      "Exposes a unified import surface for LLM infrastructure to higher application layers, preventing direct imports into `src/infra/llm/**`.",
+      "Provides LLM client factory (`createResolvedLLMClient`) and configuration resolution (`resolveLLMSettings`) utilities.",
+      "Exports global configuration and secrets types (`GlobalLLMConfig`, `GlobalLLMSecrets`) and directory utility (`getGlobalArchSpineDir`).",
+      "Exports `providerRequiresApiKey` utility to check if a given LLM provider requires an API key, supporting decoupled provider logic."
+    ],
+    "outOfScope": [
+      "Direct LLM provider implementations (e.g., OpenAI, Gemini).",
+      "LLM request/response handling or streaming logic.",
+      "Database or repository access.",
+      "Service or task orchestration logic."
+    ],
+    "invariants": [
+      "Must not import or re-export from service, task, or engine modules.",
+      "Must remain a thin re-export facade; should not contain implementation logic beyond re-exports.",
+      "All re-exports must originate from `./llm/global.js` or other stable infra submodules."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, versioned public surface for LLM infrastructure to decouple higher layers from internal implementation details.",
+      "recentChangeIntent": "Added `providerRequiresApiKey` export to support LLM provider decoupling and harden risk hotspot detection."
+    },
+    "publicSurface": [
+      "GlobalLLMConfig",
+      "GlobalLLMSecrets",
+      "getGlobalArchSpineDir",
+      "assertResolvedLLMUsable",
+      "createResolvedLLMClient",
+      "providerRequiresApiKey",
+      "resolveLLMSettings"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure facade module providing a stable public interface for LLM configuration, client creation, and provider utility functions.",
+        "responsibilities": [
+          "Exposes a unified import surface for LLM infrastructure to higher application layers, preventing direct imports into `src/infra/llm/**`.",
+          "Provides LLM client factory (`createResolvedLLMClient`) and configuration resolution (`resolveLLMSettings`) utilities.",
+          "Exports global configuration and secrets types (`GlobalLLMConfig`, `GlobalLLMSecrets`) and directory utility (`getGlobalArchSpineDir`).",
+          "Exports `providerRequiresApiKey` utility to check if a given LLM provider requires an API key, supporting decoupled provider logic."
+        ],
+        "outOfScope": [
+          "Direct LLM provider implementations (e.g., OpenAI, Gemini).",
+          "LLM request/response handling or streaming logic.",
+          "Database or repository access.",
+          "Service or task orchestration logic."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施外观模块，为LLM配置、客户端创建和提供者工具函数提供稳定的公共接口。",
+        "responsibilities": [
+          "为上层应用层提供统一的LLM基础设施导入表面，防止直接导入 `src/infra/llm/**` 内部模块。",
+          "提供LLM客户端工厂函数（`createResolvedLLMClient`）和配置解析工具（`resolveLLMSettings`）。",
+          "导出全局配置和密钥类型（`GlobalLLMConfig`、`GlobalLLMSecrets`）以及目录工具函数（`getGlobalArchSpineDir`）。",
+          "导出 `providerRequiresApiKey` 工具函数，用于检查指定LLM提供者是否需要API密钥，支持提供者逻辑的解耦。"
+        ],
+        "outOfScope": [
+          "直接的LLM提供者实现（例如OpenAI、Gemini）。",
+          "LLM请求/响应处理或流式逻辑。",
+          "数据库或仓库访问。",
+          "服务或任务编排逻辑。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "GlobalLLMConfig",
+        "kind": "unknown",
+        "signature": "export { GlobalLLMConfig }"
+      },
+      {
+        "name": "GlobalLLMSecrets",
+        "kind": "unknown",
+        "signature": "export { GlobalLLMSecrets }"
+      },
+      {
+        "name": "getGlobalArchSpineDir",
+        "kind": "unknown",
+        "signature": "export { getGlobalArchSpineDir }"
+      },
+      {
+        "name": "assertResolvedLLMUsable",
+        "kind": "unknown",
+        "signature": "export { assertResolvedLLMUsable }"
+      },
+      {
+        "name": "createResolvedLLMClient",
+        "kind": "unknown",
+        "signature": "export { createResolvedLLMClient }"
+      },
+      {
+        "name": "providerRequiresApiKey",
+        "kind": "unknown",
+        "signature": "export { providerRequiresApiKey }"
+      },
+      {
+        "name": "resolveLLMSettings",
+        "kind": "unknown",
+        "signature": "export { resolveLLMSettings }"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "GlobalLLMConfig",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/llm.ts#"
+      },
+      {
+        "name": "GlobalLLMSecrets",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/llm.ts#"
+      },
+      {
+        "name": "getGlobalArchSpineDir",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/llm.ts#"
+      },
+      {
+        "name": "assertResolvedLLMUsable",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/llm.ts#"
+      },
+      {
+        "name": "createResolvedLLMClient",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/llm.ts#"
+      },
+      {
+        "name": "providerRequiresApiKey",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/llm.ts#"
+      },
+      {
+        "name": "resolveLLMSettings",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/llm.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 7,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./llm/global.js",
+        "relation": "import",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets",
+          "getGlobalArchSpineDir",
+          "assertResolvedLLMUsable",
+          "createResolvedLLMClient",
+          "providerRequiresApiKey",
+          "resolveLLMSettings"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/engines/info.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/view-service.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:38.905Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

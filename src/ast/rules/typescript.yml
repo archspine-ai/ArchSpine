@@ -1,0 +1,57 @@
+imports:
+  - id: named
+    pattern: 'import { $$$SYMBOLS } from $SOURCE'
+  - id: default
+    pattern: 'import $SYMBOL from $SOURCE'
+  - id: namespace
+    pattern: 'import * as $SYMBOL from $SOURCE'
+exports:
+  - id: function
+    pattern:
+      rule:
+        kind: export_statement
+        all:
+          - has:
+              kind: function_declaration
+              all:
+                - has:
+                    kind: identifier
+                    pattern: $NAME
+                - has:
+                    kind: formal_parameters
+                    pattern: $ARGS
+    kind: Function
+  - id: class
+    pattern: 'export class $NAME $$$ { $$$BODY }'
+    kind: Class
+  - id: default_class
+    pattern: 'export default class $NAME $$$ { $$$BODY }'
+    kind: Class
+  - id: interface
+    pattern: 'export interface $NAME { $$$BODY }'
+    kind: Interface
+  - id: type
+    pattern: 'export type $NAME = $VAL'
+    kind: Type
+  - id: const
+    pattern: 'export const $NAME = $VAL'
+    kind: Variable
+  - id: let
+    pattern: 'export let $NAME = $VAL'
+    kind: Variable
+  - id: var
+    pattern: 'export var $NAME = $VAL'
+    kind: Variable
+  - id: default
+    pattern: 'export default $VAL'
+    kind: Unknown
+  - id: list
+    pattern: 'export { $$$SYMBOLS }'
+    kind: Unknown
+usages:
+  - id: call
+    pattern: '$NAME($$$ARGS)'
+  - id: new
+    pattern: 'new $NAME($$$ARGS)'
+  - id: property
+    pattern: '$OBJ.$NAME'

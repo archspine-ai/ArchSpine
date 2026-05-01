@@ -1,0 +1,182 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/view-command.test.ts",
+    "contentHash": "80034e453f2b496de73c16c5bd005ce55ca7f517a52ae4b7fd91bd27410f5b4c",
+    "skeletonHash": "381287163b58449b77bfc192781c3308e99d68cbbbb381f960e12c9f3ed953fa",
+    "semanticHash": "f0a7208e4a01821bbde55c932701b58011b20bf61f35f8997a52982e26213e5f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for the view command CLI functionality.",
+    "responsibilities": [
+      "Sets up temporary test directories for isolated view command testing.",
+      "Mocks console output to capture and verify CLI command logging.",
+      "Validates experimental view layer configuration through Config.setExperimentalViewLayer.",
+      "Tests the executeViewCommand function's behavior under different configurations."
+    ],
+    "outOfScope": [
+      "Testing other CLI commands (e.g., scan, init).",
+      "Implementing the view command logic (that's in the CLI module).",
+      "Providing production runtime services."
+    ],
+    "invariants": [
+      "Uses Vitest testing framework with describe/it/beforeEach/afterEach structure.",
+      "Isolates test state using temporary directories created in os.tmpdir.",
+      "Mocks console.log to assert command output.",
+      "Depends on Config infrastructure for experimental feature toggles."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure CLI view command behaves correctly under config changes and logs appropriately.",
+      "recentChangeIntent": "Part of refactoring to modularize CLI and decouple core infra services, likely updating tests to match new modular structure."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for the view command CLI functionality.",
+        "responsibilities": [
+          "Sets up temporary test directories for isolated view command testing.",
+          "Mocks console output to capture and verify CLI command logging.",
+          "Validates experimental view layer configuration through Config.setExperimentalViewLayer.",
+          "Tests the executeViewCommand function's behavior under different configurations."
+        ],
+        "outOfScope": [
+          "Testing other CLI commands such as scan or init.",
+          "Implementing the view command logic itself.",
+          "Providing production runtime services."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "devDependency",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "builtin",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "builtin",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "builtin",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:44.721Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

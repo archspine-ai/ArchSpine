@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db/repositories/drift.ts",
+    "contentHash": "67f7212bfd6100321ed2a93c5e033628e4dbce2bca4665dc285caa3e649d08cb",
+    "skeletonHash": "9773c88ec588ca0c78fe5294e003fb2039377c68fb9997e7c267caedd04dc0cc",
+    "semanticHash": "2263b8a0714ad567ca610cf1a3dd5a4aebc4dc3ea7aecc0cdc1130cf53f1cd44",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/db/repositories"
+  },
+  "semantic": {
+    "role": "Infrastructure data access function for persisting and retrieving semantic drift audit events in SQLite.",
+    "responsibilities": [
+      "Inserts a drift event record into the SQLite database with file path, timestamp, previous role, responsibilities, and reason.",
+      "Queries the most recent drift events for a given file path, parsing stored JSON responsibilities back into arrays."
+    ],
+    "outOfScope": [
+      "Orchestrating higher-level audit workflows or business logic.",
+      "Providing a public API facade for drift event management (callers interact directly with the database statements)."
+    ],
+    "invariants": [
+      "Exposes low-level SQLite operations for drift event persistence and retrieval.",
+      "Relies on prepared statements and JSON serialization for responsibilities array storage."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, low-level data access layer for semantic drift audit events, isolating SQLite interactions from higher-level services.",
+      "recentChangeIntent": "Part of modularization and decoupling of core infra services, as indicated by the recent git refactor."
+    },
+    "publicSurface": [
+      "recordDriftEvent function (inferred from usage patterns and previous contract)",
+      "Query function for retrieving drift events (inferred from usage patterns)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure data access function for persisting and retrieving semantic drift audit events in SQLite.",
+        "responsibilities": [
+          "Inserts a drift event record into the SQLite database with file path, timestamp, previous role, responsibilities, and reason.",
+          "Queries the most recent drift events for a given file path, parsing stored JSON responsibilities back into arrays."
+        ],
+        "outOfScope": [
+          "Orchestrating higher-level audit workflows or business logic.",
+          "Providing a public API facade for drift event management (callers interact directly with the database statements)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "recordDriftEvent",
+        "kind": "function",
+        "signature": "recordDriftEvent(\n  stmt: Database.Statement,\n  filePath: string,\n  previousRole: string,\n  previousResponsibilities: string[],\n  driftReason: string,\n  detectedAt: string,\n)"
+      },
+      {
+        "name": "getDriftHistory",
+        "kind": "function",
+        "signature": "getDriftHistory(\n  db: Database.Database,\n  filePath: string,\n  limit: number,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "recordDriftEvent",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/drift.ts#"
+      },
+      {
+        "name": "getDriftHistory",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/drift.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "better-sqlite3",
+        "relation": "import",
+        "symbols": [
+          "Database"
+        ]
+      },
+      {
+        "targetPath": "../types.js",
+        "relation": "import",
+        "symbols": [
+          "DriftEvent"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:38.482Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

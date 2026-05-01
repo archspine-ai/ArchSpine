@@ -1,0 +1,22 @@
+<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/tasks","role":"Pipeline task implementations for the ArchSpine mirror system's core processing stages.","responsibility":"Collectively implements the core processing pipeline of ArchSpine, including file scanning, AST extraction, LLM summarization, documentation backfilling, architectural validation and fixing, reverse indexing, view derivation, and state commitment to the database.","children":[{"filePath":"src/tasks/aggregate.ts","role":"Core pipeline task for hierarchical content aggregation across directories and projects.","fileKind":"source"},{"filePath":"src/tasks/ast-extra.ts","role":"Core pipeline task for AST extraction and symbol registration within the ArchSpine mirror system.","fileKind":"source"},{"filePath":"src/tasks/document-backfill.ts","role":"Pipeline task module for backfilling project documentation by generating markdown content from JSON data via LLM prompts, with content hash tracking for idempotency.","fileKind":"source"},{"filePath":"src/tasks/fix.ts","role":"SpineTask implementation for the automated LLM-driven architectural violation fixing stage.","fileKind":"source"},{"filePath":"src/tasks/lite-summarize.ts","role":"Pipeline task for lightweight source code summarization, processing filtered files from the extraction stage and delegating to a dedicated summarization method.","fileKind":"source"},{"filePath":"src/tasks/post-commit-derivation.ts","role":"Pipeline stage task orchestrating post-commit derivation of views, aggregations, and reverse indices.","fileKind":"source"},{"filePath":"src/tasks/reconcile.ts","role":"ArchSpine reconciliation task that synchronizes the manifest's file status with the actual repository state, validates index document compatibility, and updates cache metadata.","fileKind":"source"},{"filePath":"src/tasks/reverse-index.ts","role":"Core pipeline task for constructing reverse dependency edges from forward dependency index files.","fileKind":"source"},{"filePath":"src/tasks/scan-cleanup.ts","role":"Pipeline stage task for scanning the file system and cleaning up orphaned or stale files within the ArchSpine tracked state.","fileKind":"source"},{"filePath":"src/tasks/state-commit.ts","role":"Pipeline stage task for committing synchronized file state (hashes and metadata) to the SQLite database after AST extraction and LLM summarization.","fileKind":"source"},{"filePath":"src/tasks/summarize.ts","role":"ArchSpine summarization pipeline task module that orchestrates LLM-based semantic summary generation from source code extraction outputs.","fileKind":"source"},{"filePath":"src/tasks/validate.ts","role":"ArchSpine validation task orchestrator for LLM-powered architectural rule compliance checking.","fileKind":"source"},{"filePath":"src/tasks/view-derivation.ts","role":"Pipeline task stage that orchestrates the derivation of multiple architectural views (public surface, risk hotspots, architecture diagram) from committed changes using the ViewService facade.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T04:57:47.826Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
+# `src/tasks` — 管道任务实现
+
+`src/tasks` 目录是 ArchSpine 镜像系统的运行核心。此目录中的每个文件都实现了核心处理管道的一个独立阶段，从初始文件扫描到数据库提交和视图派生。这些任务被设计为可组合成顺序或部分并行的工作流，将原始源代码转换为一个文档丰富、经过架构验证且已建立索引的镜像。
+
+## 主要子模块与分组
+
+这些任务可以按逻辑阶段分组：
+
+- **扫描与同步：** `scan-cleanup.ts` 和 `reconcile.ts` 负责文件系统发现、清理孤立文件以及清单同步。
+- **AST 提取与摘要：** `ast-extra.ts` 提取 AST 符号，而 `lite-summarize.ts` 和 `summarize.ts` 分别生成轻量级和完整的基于 LLM 的语义摘要。
+- **文档与验证：** `document-backfill.ts` 通过 LLM 提示从 JSON 生成 Markdown 文档，`validate.ts` 检查架构规则合规性。
+- **修复与索引：** `fix.ts` 应用自动化的 LLM 驱动修复来解决违规问题，`reverse-index.ts` 构建反向依赖边。
+- **提交与派生：** `state-commit.ts` 将文件状态持久化到 SQLite 数据库，`aggregate.ts` 执行分层内容聚合，`post-commit-derivation.ts` 协调视图、聚合和反向索引的派生。`view-derivation.ts` 专门派生公共接口、风险热点和架构图。
+
+## 关键实现领域
+
+最重要的实现领域包括：
+
+- **LLM 集成：** `summarize.ts`、`lite-summarize.ts`、`document-backfill.ts`、`validate.ts` 和 `fix.ts` 都依赖 LLM 调用来实现语义理解、文档生成、验证和自动修复。
+- **状态管理：** `state-commit.ts` 和 `reconcile.ts` 确保文件系统、清单和 SQLite 数据库之间的数据完整性。
+- **视图派生：** `view-derivation.ts` 和 `post-commit-derivation.ts` 生成高级架构视图，使镜像系统对人类和 AI 使用都很有价值。

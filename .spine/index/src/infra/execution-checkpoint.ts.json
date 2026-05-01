@@ -1,0 +1,303 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/execution-checkpoint.ts",
+    "contentHash": "71c124bd778b30b95c5622ad508792c41c9f8354830eb488a386ffa530bb038d",
+    "skeletonHash": "0a9fba44f4065db3d5709dfa08832c9ef33004d20f723e2f58db272369d973b1",
+    "semanticHash": "3b9aaad8045132a799c5f489362e61b13fed9976aba7fae646f0e0d181eab937",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure layer persistence store for execution checkpoint state management, validation, and filesystem I/O.",
+    "responsibilities": [
+      "Defines TypeScript types and interfaces for execution checkpoint state (run, stage, item statuses and states).",
+      "Provides a store class (ExecutionCheckpointStore) to load, save, and validate checkpoint state from/to filesystem.",
+      "Validates checkpoint state integrity against expected status enums and structural schemas.",
+      "Manages checkpoint state lifecycle (initialization, updates, serialization) with filesystem I/O."
+    ],
+    "outOfScope": [
+      "Orchestrating execution workflows or business logic.",
+      "Directly invoking scanner or engine runtime processes.",
+      "Providing high-level API facades for external consumers (remains a low-level store)."
+    ],
+    "invariants": [
+      "Must remain a pure persistence and validation layer for checkpoint state.",
+      "Must not absorb service/task/engine orchestration concerns.",
+      "Should expose stable low-level capabilities and facades."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reliable, validated persistence mechanism for execution checkpoint state within the infrastructure layer.",
+      "recentChangeIntent": "Potential hardening of validation and fallback path handling for scan resume operations, as suggested by git commit."
+    },
+    "publicSurface": [
+      "ExecutionCheckpointStore",
+      "ExecutionCheckpointItemState",
+      "ExecutionCheckpointStageState",
+      "ExecutionCheckpointState",
+      "ExecutionCheckpointRunStatus",
+      "ExecutionCheckpointStageStatus",
+      "ExecutionCheckpointItemStatus"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure layer persistence store for execution checkpoint state management, validation, and filesystem I/O.",
+        "responsibilities": [
+          "Defines TypeScript types and interfaces for execution checkpoint state (run, stage, item statuses and states).",
+          "Provides a store class (ExecutionCheckpointStore) to load, save, and validate checkpoint state from/to filesystem.",
+          "Validates checkpoint state integrity against expected status enums and structural schemas.",
+          "Manages checkpoint state lifecycle (initialization, updates, serialization) with filesystem I/O."
+        ],
+        "outOfScope": [
+          "Orchestrating execution workflows or business logic.",
+          "Directly invoking scanner or engine runtime processes.",
+          "Providing high-level API facades for external consumers (remains a low-level store)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../utils/fs.js'",
+        "symbols": [
+          "FileSystemManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "isResumableCheckpoint",
+        "kind": "function",
+        "signature": "isResumableCheckpoint(\n  state: ExecutionCheckpointState | null | undefined,\n)"
+      },
+      {
+        "name": "getStageData",
+        "kind": "function",
+        "signature": "getStageData(\n  state: ExecutionCheckpointState | null | undefined,\n  stageId: string,\n)"
+      },
+      {
+        "name": "getStageItemsByStatus",
+        "kind": "function",
+        "signature": "getStageItemsByStatus(\n  state: ExecutionCheckpointState | null | undefined,\n  stageId: string,\n  statuses: ExecutionCheckpointItemStatus[],\n)"
+      },
+      {
+        "name": "deriveSyncResumeCandidateFiles",
+        "kind": "function",
+        "signature": "deriveSyncResumeCandidateFiles(\n  state: ExecutionCheckpointState | null | undefined,\n)"
+      },
+      {
+        "name": "deriveSyncFailedCandidateFiles",
+        "kind": "function",
+        "signature": "deriveSyncFailedCandidateFiles(\n  state: ExecutionCheckpointState | null | undefined,\n)"
+      },
+      {
+        "name": "deriveCheckResumeCandidateFiles",
+        "kind": "function",
+        "signature": "deriveCheckResumeCandidateFiles(\n  state: ExecutionCheckpointState | null | undefined,\n)"
+      },
+      {
+        "name": "ExecutionCheckpointStore",
+        "kind": "class",
+        "signature": "class ExecutionCheckpointStore"
+      },
+      {
+        "name": "ExecutionCheckpointItemState",
+        "kind": "interface",
+        "signature": "interface ExecutionCheckpointItemState"
+      },
+      {
+        "name": "ExecutionCheckpointStageState",
+        "kind": "interface",
+        "signature": "interface ExecutionCheckpointStageState"
+      },
+      {
+        "name": "ExecutionCheckpointState",
+        "kind": "interface",
+        "signature": "interface ExecutionCheckpointState"
+      },
+      {
+        "name": "ExecutionCheckpointRunStatus",
+        "kind": "type",
+        "signature": "type ExecutionCheckpointRunStatus"
+      },
+      {
+        "name": "ExecutionCheckpointStageStatus",
+        "kind": "type",
+        "signature": "type ExecutionCheckpointStageStatus"
+      },
+      {
+        "name": "ExecutionCheckpointItemStatus",
+        "kind": "type",
+        "signature": "type ExecutionCheckpointItemStatus"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "isResumableCheckpoint",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "getStageData",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "getStageItemsByStatus",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "deriveSyncResumeCandidateFiles",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "deriveSyncFailedCandidateFiles",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "deriveCheckResumeCandidateFiles",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "ExecutionCheckpointStore",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "ExecutionCheckpointItemState",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "ExecutionCheckpointStageState",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "ExecutionCheckpointState",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "ExecutionCheckpointRunStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "ExecutionCheckpointStageStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "ExecutionCheckpointItemStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 13,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../utils/fs.js",
+        "relation": "import",
+        "symbols": [
+          "FileSystemManager"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/check-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "src/services/sync-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:38.803Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/config/precommit.ts",
+    "contentHash": "8bc02a17858bd9e9c6f1997c4f5523987503a520f1f8c8aacede07388a0f7eec",
+    "skeletonHash": "a9eea3b569ed92f4f8234d3a0b742a1a43676f1046724aa63efef0227d88db5b",
+    "semanticHash": "26a50ce6ea9034d36592ea9dd9a3e176083b3c83060f31e32fd409c320b9cb4b",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/config"
+  },
+  "semantic": {
+    "role": "Configuration resolution utility for the pre-commit setting, determining its boolean value from environment variables or explicit parameters.",
+    "responsibilities": [
+      "Resolves the pre-commit boolean setting by checking the environment variable defined by PRE_COMMIT_ENV_VAR using parseBooleanEnv.",
+      "Returns a structured BooleanSettingResolution object indicating the resolved value, source ('env'), and the environment variable name.",
+      "Provides a fallback pattern where an explicit preCommit parameter could be used (though not fully shown in snippet, implied by function signature)."
+    ],
+    "outOfScope": [
+      "Orchestrating services, tasks, or engines",
+      "Providing infrastructure facades or low-level capabilities",
+      "Handling runtime business logic beyond configuration resolution"
+    ],
+    "invariants": [
+      "Pure function with no side effects",
+      "Depends only on environment utilities and type definitions",
+      "Exports a single resolution function"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Encapsulate environment-based configuration resolution to promote consistency and testability across the codebase.",
+      "recentChangeIntent": null
+    },
+    "publicSurface": [
+      "resolvePreCommitSetting"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Configuration resolution utility for the pre-commit setting, determining its boolean value from environment variables or explicit parameters.",
+        "responsibilities": [
+          "Resolves the pre-commit boolean setting by checking the environment variable defined by PRE_COMMIT_ENV_VAR using parseBooleanEnv.",
+          "Returns a structured BooleanSettingResolution object indicating the resolved value, source ('env'), and the environment variable name.",
+          "Provides a fallback pattern where an explicit preCommit parameter could be used (though not fully shown in snippet, implied by function signature)."
+        ],
+        "outOfScope": [
+          "Orchestrating services, tasks, or engines",
+          "Providing infrastructure facades or low-level capabilities",
+          "Handling runtime business logic beyond configuration resolution"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./types.js'",
+        "symbols": [
+          "BooleanSettingResolution"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./env.js'",
+        "symbols": [
+          "PRE_COMMIT_ENV_VAR",
+          "parseBooleanEnv"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "resolvePreCommitSetting",
+        "kind": "function",
+        "signature": "resolvePreCommitSetting(preCommit: boolean | undefined)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "resolvePreCommitSetting",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/config/precommit.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "BooleanSettingResolution"
+        ]
+      },
+      {
+        "targetPath": "./env.js",
+        "relation": "import",
+        "symbols": [
+          "PRE_COMMIT_ENV_VAR",
+          "parseBooleanEnv"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:38.165Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

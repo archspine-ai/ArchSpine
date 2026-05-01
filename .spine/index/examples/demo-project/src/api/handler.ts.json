@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "examples/demo-project/src/api/handler.ts",
+    "contentHash": "c5a14a5505bff0d05ade8b54362dab8084656003e1b646b4103cd8b1b21ac0e6",
+    "skeletonHash": "31dbcffa8936ef83b17166aa03df02e5927233ade034215aa966593fb8424076",
+    "semanticHash": "144d8a9ea4334f9713db56d09816b76d080575be251fe00524fa49f424268b5d",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "examples/demo-project/src/api"
+  },
+  "semantic": {
+    "role": "API Handler serving as the HTTP entry point for user creation operations.",
+    "responsibilities": [
+      "Receives incoming HTTP requests for user creation.",
+      "Delegates user creation logic to the UserService domain service.",
+      "Directly manages Database connection lifecycle (violating layered architecture)."
+    ],
+    "outOfScope": [
+      "Business logic for user validation or creation (handled by UserService).",
+      "Persistence implementation details (handled by Database infrastructure)."
+    ],
+    "invariants": [
+      "Must import UserService from domain layer.",
+      "Exports a class CreateUserHandler as the public API."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Serve as the HTTP entry point for user creation, delegating to domain services.",
+      "recentChangeIntent": "No recent changes detected in this file from provided context."
+    },
+    "publicSurface": [
+      "CreateUserHandler class"
+    ],
+    "ruleViolations": [
+      {
+        "id": "rule-id",
+        "severity": "high",
+        "reason": ""
+      }
+    ],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "API Handler serving as the HTTP entry point for user creation operations.",
+        "responsibilities": [
+          "Receives incoming HTTP requests for user creation.",
+          "Delegates user creation logic to the UserService domain service.",
+          "Directly manages Database connection lifecycle (violating layered architecture)."
+        ],
+        "outOfScope": [
+          "Business logic for user validation or creation (handled by UserService).",
+          "Persistence implementation details (handled by Database infrastructure)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../domain/user-service.js'",
+        "symbols": [
+          "UserService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/database.js'",
+        "symbols": [
+          "Database"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "CreateUserHandler",
+        "kind": "class",
+        "signature": "class CreateUserHandler"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "CreateUserHandler",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "examples/demo-project/src/api/handler.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../domain/user-service.js",
+        "relation": "import",
+        "symbols": [
+          "UserService"
+        ]
+      },
+      {
+        "targetPath": "../infra/database.js",
+        "relation": "import",
+        "symbols": [
+          "Database"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:43:58.822Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

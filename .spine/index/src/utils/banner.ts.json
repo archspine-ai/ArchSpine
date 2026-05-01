@@ -1,0 +1,189 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/utils/banner.ts",
+    "contentHash": "c1684d50b413689028c9b14b5c9480fb16a9f5f59e8e355cc414f18c4ad3ce6b",
+    "skeletonHash": "94f3e534433c407fea40f714b1abd7a2db14f4c4265dd4bde583227539e1121b",
+    "semanticHash": "5c4680a3441dae24c0e78ce07c4896c9969be644bf1c8773fd2979d9798aa098",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/utils"
+  },
+  "semantic": {
+    "role": "CLI presentation utility for rendering branded banners and version information.",
+    "responsibilities": [
+      "Reads and caches the project version from package.json.",
+      "Renders a full multi-line ASCII art banner with version and subtitle using chalk theming.",
+      "Renders a compact mini banner with stylized 'ArchSpine' branding using chalk theming."
+    ],
+    "outOfScope": [
+      "Logging non-banner messages to the console.",
+      "Parsing or validating CLI arguments.",
+      "Managing application lifecycle or configuration."
+    ],
+    "invariants": [
+      "The version string is cached after first read to avoid repeated file I/O.",
+      "All console output uses chalk for consistent branding colors."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide reusable, visually consistent banner rendering for CLI entry points.",
+      "recentChangeIntent": "Fix lint warnings and type errors, likely related to the eslint-disable comment and import handling."
+    },
+    "publicSurface": [
+      "printFullBanner()",
+      "printMiniBanner()"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI presentation utility for rendering branded banners and version information.",
+        "responsibilities": [
+          "Reads and caches the project version from package.json.",
+          "Renders a full multi-line ASCII art banner with version and subtitle using chalk theming.",
+          "Renders a compact mini banner with stylized 'ArchSpine' branding using chalk theming."
+        ],
+        "outOfScope": [
+          "Logging non-banner messages to the console.",
+          "Parsing or validating CLI arguments.",
+          "Managing application lifecycle or configuration."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "CLI 展示工具，用于渲染品牌横幅和版本信息。",
+        "responsibilities": [
+          "从 package.json 读取并缓存项目版本号。",
+          "使用 chalk 主题渲染包含版本和副标题的完整多行 ASCII 艺术横幅。",
+          "使用 chalk 主题渲染带有风格化 'ArchSpine' 品牌的紧凑迷你横幅。"
+        ],
+        "outOfScope": [
+          "向控制台输出非横幅消息。",
+          "解析或验证 CLI 参数。",
+          "管理应用程序生命周期或配置。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'chalk'",
+        "symbols": [
+          "chalk"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "printFullBanner",
+        "kind": "function",
+        "signature": "printFullBanner()"
+      },
+      {
+        "name": "printMiniBanner",
+        "kind": "function",
+        "signature": "printMiniBanner()"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "printFullBanner",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/banner.ts#"
+      },
+      {
+        "name": "printMiniBanner",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/banner.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "chalk",
+        "relation": "import",
+        "symbols": [
+          "chalk"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T04:57:19.776Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

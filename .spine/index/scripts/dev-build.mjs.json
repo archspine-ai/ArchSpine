@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "scripts/dev-build.mjs",
+    "contentHash": "3556aade1deb02ae67ce4badc916245c1da1afdd9b980d08b85eab2500283953",
+    "semanticHash": "636a1367ecf8cc829d9debb2702392f6b0895f6cb0697831264613a7a82d4c64",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": "scripts"
+  },
+  "semantic": {
+    "role": "Development build automation script",
+    "responsibilities": [
+      "Polling source directories and configuration files for changes",
+      "Triggering incremental rebuilds via npm run build",
+      "Managing build queue to avoid concurrent builds"
+    ],
+    "outOfScope": [
+      "Application runtime logic",
+      "User-facing documentation",
+      "Deployment or release workflows"
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This document implements a file-watching build loop for the ArchSpine project. It continuously monitors source files, TypeScript configuration, and package metadata, then automatically re-runs the build script whenever a change is detected.",
+        "context_and_audience": "Intended for developers working on the ArchSpine build pipeline. The script runs in a development environment to provide fast feedback on code changes without manual rebuilds.",
+        "key_takeaways": [
+          "Watches src/, build.mjs, tsconfig.json, and package.json for modifications",
+          "Polls file modification timestamps every 1000ms",
+          "Queues rebuild requests if a build is already in progress",
+          "Logs build start, completion, and failure events to the console"
+        ]
+      },
+      "Simplified Chinese": {
+        "purpose": "本文档实现了一个用于 ArchSpine 项目的文件监控构建循环。它会持续监视源文件、TypeScript 配置和包元数据，一旦检测到变化，就会自动重新运行构建脚本。",
+        "context_and_audience": "面向参与 ArchSpine 构建管线的开发人员。该脚本在开发环境中运行，旨在无需手动重建的情况下，为代码变更提供快速反馈。",
+        "key_takeaways": [
+          "监控 src/、build.mjs、tsconfig.json 和 package.json 的修改",
+          "每 1000 毫秒轮询一次文件修改时间戳",
+          "如果构建正在进行中，则将重建请求加入队列",
+          "在控制台输出构建开始、完成和失败事件"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:44:58.287Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

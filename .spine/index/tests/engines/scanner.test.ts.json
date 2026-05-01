@@ -1,0 +1,172 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/engines/scanner.test.ts",
+    "contentHash": "0fabba4b153351db1e9604c2ea2b5bd7a20d178680f2ffd674492eb6388b3746",
+    "skeletonHash": "9179efab4ba245d22daeb49e88fefeeeac6d9c779db3ddc91e1f5dfa6220c7eb",
+    "semanticHash": "b4b4b487ec86f6904e31920438ef97b58f6eca1054ecc7f135c461d423891aca",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/engines"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite for the Scanner engine's smoke and file discovery behavior.",
+    "responsibilities": [
+      "Creates and manages temporary directories for isolated test execution.",
+      "Generates synthetic file system fixtures (directories and files) to simulate scanning targets.",
+      "Invokes the Scanner engine with a resolved scan policy to perform file discovery.",
+      "Asserts that the Scanner correctly includes expected files and excludes ignored patterns."
+    ],
+    "outOfScope": [
+      "Unit testing of individual Scanner methods in isolation.",
+      "Performance or stress testing of the Scanner engine.",
+      "Testing of other engines or core components beyond Scanner."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (Rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a smoke test to validate the Scanner engine's basic file discovery and policy application in a controlled temporary environment.",
+      "recentChangeIntent": "No recent change intent detected from git history that directly matches this file's content."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite for the Scanner engine's smoke and file discovery behavior.",
+        "responsibilities": [
+          "Creates and manages temporary directories for isolated test execution.",
+          "Generates synthetic file system fixtures (directories and files) to simulate scanning targets.",
+          "Invokes the Scanner engine with a resolved scan policy to perform file discovery.",
+          "Asserts that the Scanner correctly includes expected files and excludes ignored patterns."
+        ],
+        "outOfScope": [
+          "Unit testing of individual Scanner methods in isolation.",
+          "Performance or stress testing of the Scanner engine.",
+          "Testing of other engines or core components beyond Scanner."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "针对 Scanner 引擎的冒烟测试和文件发现行为的 Vitest 集成测试套件。",
+        "responsibilities": [
+          "创建并管理临时目录，用于隔离的测试执行。",
+          "生成模拟扫描目标的合成文件系统夹具（目录和文件）。",
+          "使用已解析的扫描策略调用 Scanner 引擎执行文件发现。",
+          "断言 Scanner 正确包含预期文件并排除被忽略的模式。"
+        ],
+        "outOfScope": [
+          "对单个 Scanner 方法的单元测试。",
+          "Scanner 引擎的性能或压力测试。",
+          "测试 Scanner 之外的其他引擎或核心组件。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../src/engines/scanner.js'",
+        "symbols": [
+          "Scanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../src/core/scan-policy.js'",
+        "symbols": [
+          "resolveScanPolicy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../src/engines/scanner.js",
+        "relation": "import",
+        "symbols": [
+          "Scanner"
+        ]
+      },
+      {
+        "targetPath": "../../src/core/scan-policy.js",
+        "relation": "import",
+        "symbols": [
+          "resolveScanPolicy"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.014Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

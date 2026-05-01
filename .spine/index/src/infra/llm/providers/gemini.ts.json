@@ -1,0 +1,198 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/llm/providers/gemini.ts",
+    "contentHash": "14ea2fb427d9d05ed2c4c88281e16eaf35384bde93e7ce55df5b622d7b517fe2",
+    "skeletonHash": "f78bfef653e51023f3be57542008cc5de4506517c78ac578420d701e65ae0e76",
+    "semanticHash": "26bc9a1b581357603c066d664aef35e0a12c08353c898051240f984a85569374",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/llm/providers"
+  },
+  "semantic": {
+    "role": "Concrete LLM provider implementation for Google's Gemini API, handling structured summary generation for ArchSpine's mirror system.",
+    "responsibilities": [
+      "Implements the LLMClient interface to generate semantic summaries for config, document, source, folder, and project file kinds.",
+      "Formats prompts using the ArchSpine prompt engine (generateConfigPrompt, generateDocumentPrompt, etc.) tailored to each FileKind.",
+      "Executes requests to the Gemini API with configurable model, generation strategy, and timeout.",
+      "Applies retry logic via the withRetry utility for robustness (implied by previous contract and recent change intent).",
+      "Parses and structures LLM responses using utility functions (parseMarkdownBlocks, parseStructuredResponse)."
+    ],
+    "outOfScope": [
+      "Orchestrating high-level tasks or engine workflows (delegated to services).",
+      "Managing API key storage or rotation (handled by configuration).",
+      "Implementing custom prompt templates outside the provided prompt utilities."
+    ],
+    "invariants": [
+      "Must adhere to the LLMClient interface contract for all file kinds.",
+      "Must use the provided prompt utilities from infra for consistency.",
+      "Must not absorb service/task orchestration concerns (infra-facade-imports rule)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, configurable LLM provider facade for Gemini API integration, isolating vendor-specific details from the core summary generation logic.",
+      "recentChangeIntent": "Harden LLM client stability, possibly through retry logic or error handling improvements (aligned with git intent)."
+    },
+    "publicSurface": [
+      "GeminiClient class (implements LLMClient)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Concrete LLM provider implementation for Google's Gemini API, handling structured summary generation for ArchSpine's mirror system.",
+        "responsibilities": [
+          "Implements the LLMClient interface to generate semantic summaries for config, document, source, folder, and project file kinds.",
+          "Formats prompts using the ArchSpine prompt engine (generateConfigPrompt, generateDocumentPrompt, etc.) tailored to each FileKind.",
+          "Executes requests to the Gemini API with configurable model, generation strategy, and timeout.",
+          "Applies retry logic via the withRetry utility for robustness.",
+          "Parses and structures LLM responses using utility functions (parseMarkdownBlocks, parseStructuredResponse)."
+        ],
+        "outOfScope": [
+          "Orchestrating high-level tasks or engine workflows (delegated to services).",
+          "Managing API key storage or rotation (handled by configuration).",
+          "Implementing custom prompt templates outside the provided prompt utilities."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'@google/generative-ai'",
+        "symbols": [
+          "GoogleGenerativeAI"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../base.js'",
+        "symbols": [
+          "LLMClient",
+          "LLMResponse",
+          "PreviousSemanticContext",
+          "ProviderConfig",
+          "UsageInfo"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../prompt.js'",
+        "symbols": [
+          "generateConfigPrompt",
+          "generateDocumentPrompt",
+          "generateFolderPrompt",
+          "generateMarkdownPrompt",
+          "generateProjectPrompt",
+          "generateSourcePrompt"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../lite-prompt.js'",
+        "symbols": [
+          "generateLitePrompt"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../types/protocol.js'",
+        "symbols": [
+          "FileKind"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./utils.js'",
+        "symbols": [
+          "buildSupportingContext",
+          "mergeUsage",
+          "parseMarkdownBlocks",
+          "parseStructuredResponse"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "GeminiClient",
+        "kind": "class",
+        "signature": "class GeminiClient"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "GeminiClient",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/llm/providers/gemini.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../base.js",
+        "relation": "import",
+        "symbols": [
+          "LLMClient",
+          "LLMResponse",
+          "PreviousSemanticContext",
+          "ProviderConfig",
+          "UsageInfo"
+        ]
+      },
+      {
+        "targetPath": "../../prompt.js",
+        "relation": "import",
+        "symbols": [
+          "generateConfigPrompt",
+          "generateDocumentPrompt",
+          "generateFolderPrompt",
+          "generateMarkdownPrompt",
+          "generateProjectPrompt",
+          "generateSourcePrompt"
+        ]
+      },
+      {
+        "targetPath": "../../lite-prompt.js",
+        "relation": "import",
+        "symbols": [
+          "generateLitePrompt"
+        ]
+      },
+      {
+        "targetPath": "../../../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "FileKind"
+        ]
+      },
+      {
+        "targetPath": "./utils.js",
+        "relation": "import",
+        "symbols": [
+          "buildSupportingContext",
+          "mergeUsage",
+          "parseMarkdownBlocks",
+          "parseStructuredResponse"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:39.048Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

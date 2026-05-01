@@ -1,0 +1,205 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/config.test.ts",
+    "contentHash": "9c32aa6493ebf4de07d814d80e48f1dd0b8ad8894fd20c304047124b507e29e5",
+    "skeletonHash": "381287163b58449b77bfc192781c3308e99d68cbbbb381f960e12c9f3ed953fa",
+    "semanticHash": "f5bce5b9e1eb639e75f32456d60f0408b2befa1d7534b26b04c32232baabe626",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for the Config infrastructure class, validating configuration persistence and LLM provider/model settings.",
+    "responsibilities": [
+      "Sets up a temporary directory with a .spine/config.json path for isolated config file testing.",
+      "Tears down the temporary directory and unstubs environment variables after each test.",
+      "Tests that hasPersistedConfig() returns false when no config file exists.",
+      "Tests that hasPersistedConfig() returns true after setting LLM provider and model values.",
+      "Validates that setLLMProvider and setLLMModel persist values correctly.",
+      "Validates that getLLMProvider and getLLMModel return the expected values after setting."
+    ],
+    "outOfScope": [
+      "Testing of other Config methods not related to LLM provider/model or persistence.",
+      "Integration testing with actual file system outside temporary directories.",
+      "Testing of error handling or edge cases for Config operations."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a comprehensive test suite for the Config infrastructure class to ensure configuration persistence and LLM settings work correctly in isolation.",
+      "recentChangeIntent": "No direct relation to the recent commit 'tighten schema handling and add try preview'."
+    },
+    "publicSurface": [
+      "describe('Config')",
+      "beforeEach",
+      "afterEach",
+      "it('should return false when no config file exists')",
+      "it('should persist and retrieve LLM provider and model')"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for the Config infrastructure class, validating configuration persistence and LLM provider/model settings.",
+        "responsibilities": [
+          "Sets up a temporary directory with a .spine/config.json path for isolated config file testing.",
+          "Tears down the temporary directory and unstubs environment variables after each test.",
+          "Tests that hasPersistedConfig() returns false when no config file exists.",
+          "Tests that hasPersistedConfig() returns true after setting LLM provider and model values.",
+          "Validates that setLLMProvider and setLLMModel persist values correctly.",
+          "Validates that getLLMProvider and getLLMModel return the expected values after setting."
+        ],
+        "outOfScope": [
+          "Testing of other Config methods not related to LLM provider/model or persistence.",
+          "Integration testing with actual file system outside temporary directories.",
+          "Testing of error handling or edge cases for Config operations."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "针对 Config 基础设施类的 Vitest 单元测试套件，验证配置持久化及 LLM 提供商/模型设置。",
+        "responsibilities": [
+          "创建临时目录并设置 .spine/config.json 路径，用于隔离的配置文件测试。",
+          "在每个测试后清理临时目录并取消模拟环境变量。",
+          "测试当没有配置文件时 hasPersistedConfig() 返回 false。",
+          "测试设置 LLM 提供商和模型值后 hasPersistedConfig() 返回 true。",
+          "验证 setLLMProvider 和 setLLMModel 能正确持久化值。",
+          "验证 getLLMProvider 和 getLLMModel 返回设置后的预期值。"
+        ],
+        "outOfScope": [
+          "测试与 LLM 提供商/模型或持久化无关的其他 Config 方法。",
+          "在临时目录之外与实际文件系统进行集成测试。",
+          "测试 Config 操作的错误处理或边界情况。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "beforeEach",
+          "afterEach",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "beforeEach",
+          "afterEach",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:42.769Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/config.ts",
+    "contentHash": "fb594c0100abbac121d2d405fd710cb8d0a38334c7ae0cfde2b00d34b8a888c3",
+    "skeletonHash": "8662135237e011b183d2b3d0a00ab3622ec4b233915bf837e33bde2ca77899ad",
+    "semanticHash": "bb5da3147868c099ef9392c83575a1be249da97fa8bf89671c71da0bec7469f8",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command adapter for configuration management within the ArchSpine system.",
+    "responsibilities": [
+      "Defines the command interface for configuration operations via ExecuteConfigCommandOptions interface.",
+      "Parses and validates configuration keys against the supported schema (e.g., 'llm.provider', 'llm.model').",
+      "Delegates configuration retrieval and mutation to the Config service (getPreCommitResolution, getHookSyncMode, getSupportedValue, setSupportedValue).",
+      "Formats and outputs configuration values to the console for user feedback using CLI utilities."
+    ],
+    "outOfScope": [
+      "Implementing configuration storage or business logic (delegated to Config service).",
+      "Directly managing pipeline execution or persistence operations.",
+      "Providing interactive user interfaces beyond console output."
+    ],
+    "invariants": [
+      "Must remain a thin adapter, only handling command-line argument parsing, validation, and output formatting.",
+      "Must delegate all configuration state operations to the Config service.",
+      "Must not contain business logic for configuration resolution or persistence."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Separation of concerns: CLI modules serve as entrypoints and adapters, keeping core logic in services.",
+      "recentChangeIntent": "Modularize CLI and decouple core infra services, aligning with keeping CLI thin."
+    },
+    "publicSurface": [
+      "ExecuteConfigCommandOptions interface"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command adapter for configuration management within the ArchSpine system.",
+        "responsibilities": [
+          "Defines the command interface for configuration operations via the ExecuteConfigCommandOptions interface.",
+          "Parses and validates configuration keys against the supported schema (e.g., 'llm.provider', 'llm.model').",
+          "Delegates configuration retrieval and mutation to the Config service (getPreCommitResolution, getHookSyncMode, getSupportedValue, setSupportedValue).",
+          "Formats and outputs configuration values to the console for user feedback using CLI utilities."
+        ],
+        "outOfScope": [
+          "Implementing configuration storage or business logic (delegated to Config service).",
+          "Directly managing pipeline execution or persistence operations.",
+          "Providing interactive user interfaces beyond console output."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config",
+          "SupportedConfigKey"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "throwCliUsage",
+          "parseConfigValue",
+          "formatConfigValue"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeConfigCommand",
+        "kind": "function",
+        "signature": "executeConfigCommand({\n  args,\n  config,\n}: ExecuteConfigCommandOptions)"
+      },
+      {
+        "name": "ExecuteConfigCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteConfigCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeConfigCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/config.ts#"
+      },
+      {
+        "name": "ExecuteConfigCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/config.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config",
+          "SupportedConfigKey"
+        ]
+      },
+      {
+        "targetPath": "../cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "throwCliUsage",
+          "parseConfigValue",
+          "formatConfigValue"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:36.216Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

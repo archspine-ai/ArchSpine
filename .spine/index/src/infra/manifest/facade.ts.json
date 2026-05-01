@@ -1,0 +1,262 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/manifest/facade.ts",
+    "contentHash": "a2caa3c3cb3fc788edda2e67e4ba99d0d4ccc1e45e0c486c063205e54d77877d",
+    "skeletonHash": "9ca547889a19959bcd0e08b10da9537ef3b22edfa8f17f7fffc04cc2f2bb0ffa",
+    "semanticHash": "17b59cb0c9d8d8fd1aa69a4746fdaa9e0c8b7826267e52e1bd8a5022cd354ca9",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/manifest"
+  },
+  "semantic": {
+    "role": "Infrastructure facade for manifest state persistence, file status tracking, and drift history management.",
+    "responsibilities": [
+      "Encapsulates SpineDB operations for file status snapshots and document storage.",
+      "Manages manifest baseline detection and virgin state checks.",
+      "Persists and loads language snapshots for localization.",
+      "Tracks file drift history and updates file records.",
+      "Provides batch commit operations for file status updates."
+    ],
+    "outOfScope": [
+      "Orchestrating high-level business logic or engine workflows.",
+      "Direct file I/O beyond status snapshot acquisition.",
+      "Authentication or user session management."
+    ],
+    "invariants": [
+      "Must remain a stable facade over lower-level infrastructure modules (SpineDB, state).",
+      "Must not absorb service/task/engine orchestration concerns."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a unified interface for manifest and file state operations, abstracting database and storage details.",
+      "recentChangeIntent": "No direct evidence of the 'json-only sync mode' feature in this file; the recent commit intent likely affects other components (e.g., scanners or sync engines)."
+    },
+    "publicSurface": [
+      "Manifest class",
+      "hasManifestBaseline export"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure facade for manifest state persistence, file status tracking, and drift history management.",
+        "responsibilities": [
+          "Encapsulates SpineDB operations for file status snapshots and document storage.",
+          "Manages manifest baseline detection and virgin state checks.",
+          "Persists and loads language snapshots for localization.",
+          "Tracks file drift history and updates file records.",
+          "Provides batch commit operations for file status updates."
+        ],
+        "outOfScope": [
+          "Orchestrating high-level business logic or engine workflows.",
+          "Direct file I/O beyond status snapshot acquisition.",
+          "Authentication or user session management."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../db.js'",
+        "symbols": [
+          "DriftEvent",
+          "SpineDB",
+          "UsageSummaryRow",
+          "UsageTotals",
+          "ViolationRecord"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../types/protocol.js'",
+        "symbols": [
+          "SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../utils/repo-path.js'",
+        "symbols": [
+          "normalizeRepoPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../types/protocol.js'",
+        "symbols": [
+          "LanguageSnapshot"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./io.js'",
+        "symbols": [
+          "getFileStatusSnapshot"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./integrity.js'",
+        "symbols": [
+          "calculateHash"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./state.js'",
+        "symbols": [
+          "hasManifestBaseline",
+          "isVirginManifestState",
+          "loadLanguageSnapshot as loadPersistedLanguageSnapshot",
+          "loadManifestState",
+          "persistReverseIndexState",
+          "saveLanguageSnapshot as savePersistedLanguageSnapshot",
+          "saveManifestState"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "Manifest",
+        "kind": "class",
+        "signature": "class Manifest"
+      },
+      {
+        "name": "hasManifestBaseline",
+        "kind": "unknown",
+        "signature": "export { hasManifestBaseline }"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "Manifest",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/manifest/facade.ts#"
+      },
+      {
+        "name": "hasManifestBaseline",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/manifest/facade.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 11,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../db.js",
+        "relation": "import",
+        "symbols": [
+          "DriftEvent",
+          "SpineDB",
+          "UsageSummaryRow",
+          "UsageTotals",
+          "ViolationRecord"
+        ]
+      },
+      {
+        "targetPath": "../../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SpineUnit",
+          "LanguageSnapshot"
+        ]
+      },
+      {
+        "targetPath": "../../utils/repo-path.js",
+        "relation": "import",
+        "symbols": [
+          "normalizeRepoPath"
+        ]
+      },
+      {
+        "targetPath": "./io.js",
+        "relation": "import",
+        "symbols": [
+          "getFileStatusSnapshot"
+        ]
+      },
+      {
+        "targetPath": "./integrity.js",
+        "relation": "import",
+        "symbols": [
+          "calculateHash"
+        ]
+      },
+      {
+        "targetPath": "./state.js",
+        "relation": "import",
+        "symbols": [
+          "hasManifestBaseline",
+          "isVirginManifestState",
+          "loadLanguageSnapshot as loadPersistedLanguageSnapshot",
+          "loadManifestState",
+          "persistReverseIndexState",
+          "saveLanguageSnapshot as savePersistedLanguageSnapshot",
+          "saveManifestState"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:39.294Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

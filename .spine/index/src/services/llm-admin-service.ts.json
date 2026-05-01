@@ -1,0 +1,252 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/llm-admin-service.ts",
+    "contentHash": "68a93a9fd747aeddd627ba43048e0a64f007748407a2a239a2eb4386097bff06",
+    "skeletonHash": "687cdf0a156218cbdb842aa54c95b0a93d266f9bb7ae8e134e4ce98e018cedb9",
+    "semanticHash": "d4f03f4eb304fcfb5b39d7b7f1803ea3afbcde271630103859ff6dc297d067b4",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "TypeScript type definition module for LLM configuration command structures and view models within the view service layer.",
+    "responsibilities": [
+      "Defines interfaces for LLM command targets, setup values, and status view models used by CLI commands and runtime services.",
+      "Provides type aliases for LLM configuration and secrets store subsets to enforce type safety across the LLM configuration boundary.",
+      "Encapsulates type definitions that facilitate communication between view services and infrastructure modules for LLM settings."
+    ],
+    "outOfScope": [
+      "Orchestrating runtime LLM operations or service logic.",
+      "Direct interaction with LLM APIs or secret management.",
+      "Rendering UI components or handling HTTP requests."
+    ],
+    "invariants": [
+      "Pure type definitions with no executable code.",
+      "Depends on infrastructure types (Config, Secrets, GlobalLLMConfig) and runtime service types.",
+      "Exclusively used by view services and CLI for LLM configuration typing."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a strongly-typed contract for LLM configuration commands and view models, decoupling view service logic from infrastructure details.",
+      "recentChangeIntent": "Part of refactoring to slim LLM and service boundary, likely consolidating type definitions for clearer separation."
+    },
+    "publicSurface": [
+      "LLMCommandTarget",
+      "LLMSetupValues",
+      "LLMStatusViewModel",
+      "LLMScope"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "TypeScript type definition module for LLM configuration command structures and view models within the view service layer.",
+        "responsibilities": [
+          "Defines interfaces for LLM command targets, setup values, and status view models used by CLI commands and runtime services.",
+          "Provides type aliases for LLM configuration and secrets store subsets to enforce type safety across the LLM configuration boundary.",
+          "Encapsulates type definitions that facilitate communication between view services and infrastructure modules for LLM settings."
+        ],
+        "outOfScope": [
+          "Orchestrating runtime LLM operations or service logic.",
+          "Direct interaction with LLM APIs or secret management.",
+          "Rendering UI components or handling HTTP requests."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/secrets.js'",
+        "symbols": [
+          "Secrets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/llm.js'",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets",
+          "getGlobalArchSpineDir"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./runtime-service.js'",
+        "symbols": [
+          "RuntimeService"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "resolveLLMTarget",
+        "kind": "function",
+        "signature": "resolveLLMTarget(options: {\n  scope: LLMScope;\n  rootDir: string;\n  config: Config;\n  secrets: Secrets;\n  globalLLMConfig: GlobalLLMConfig;\n  globalLLMSecrets: GlobalLLMSecrets;\n})"
+      },
+      {
+        "name": "setPersistedLLMValue",
+        "kind": "function",
+        "signature": "setPersistedLLMValue(\n  target: LLMCommandTarget,\n  key: 'provider' | 'model' | 'base-url' | 'api-key' | 'mode',\n  value: string | LLMMode,\n)"
+      },
+      {
+        "name": "clearPersistedLLMApiKey",
+        "kind": "function",
+        "signature": "clearPersistedLLMApiKey(\n  target: Pick<LLMCommandTarget, 'secretsStore' | 'label'>,\n)"
+      },
+      {
+        "name": "saveLLMSetup",
+        "kind": "function",
+        "signature": "saveLLMSetup(\n  target: LLMCommandTarget,\n  values: LLMSetupValues,\n)"
+      },
+      {
+        "name": "buildLLMStatusViewModel",
+        "kind": "function",
+        "signature": "buildLLMStatusViewModel(options: {\n  runtimeService: RuntimeService;\n  globalLLMConfig: GlobalLLMConfig;\n  globalLLMSecrets: GlobalLLMSecrets;\n  config: Config;\n  secrets: Secrets;\n  rootDir: string;\n})"
+      },
+      {
+        "name": "LLMCommandTarget",
+        "kind": "interface",
+        "signature": "interface LLMCommandTarget"
+      },
+      {
+        "name": "LLMSetupValues",
+        "kind": "interface",
+        "signature": "interface LLMSetupValues"
+      },
+      {
+        "name": "LLMStatusViewModel",
+        "kind": "interface",
+        "signature": "interface LLMStatusViewModel"
+      },
+      {
+        "name": "LLMScope",
+        "kind": "type",
+        "signature": "type LLMScope"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "resolveLLMTarget",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/llm-admin-service.ts#"
+      },
+      {
+        "name": "setPersistedLLMValue",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/llm-admin-service.ts#"
+      },
+      {
+        "name": "clearPersistedLLMApiKey",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/llm-admin-service.ts#"
+      },
+      {
+        "name": "saveLLMSetup",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/llm-admin-service.ts#"
+      },
+      {
+        "name": "buildLLMStatusViewModel",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/llm-admin-service.ts#"
+      },
+      {
+        "name": "LLMCommandTarget",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/llm-admin-service.ts#"
+      },
+      {
+        "name": "LLMSetupValues",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/llm-admin-service.ts#"
+      },
+      {
+        "name": "LLMStatusViewModel",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/llm-admin-service.ts#"
+      },
+      {
+        "name": "LLMScope",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/services/llm-admin-service.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 9,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../infra/secrets.js",
+        "relation": "import",
+        "symbols": [
+          "Secrets"
+        ]
+      },
+      {
+        "targetPath": "../infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets",
+          "getGlobalArchSpineDir"
+        ]
+      },
+      {
+        "targetPath": "./runtime-service.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeService"
+        ]
+      },
+      {
+        "targetPath": "../infra/prompt-policy.js",
+        "relation": "import",
+        "symbols": [
+          "LLMMode",
+          "PromptPolicyTier"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:40.678Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

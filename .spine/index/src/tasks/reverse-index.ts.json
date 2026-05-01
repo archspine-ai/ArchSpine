@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/reverse-index.ts",
+    "contentHash": "79d2295362c3ad8b3b19cd2fee511c09c39b19211cde3aa955568f771490fd9f",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "5cb9635bd31a8e8e910935b38094d2be99573d03ac2f2f4aa195cccbe8e6cbc8",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "Core pipeline task for constructing reverse dependency edges from forward dependency index files.",
+    "responsibilities": [
+      "Checks if reverse indexing is already complete and skips when no new commits exist.",
+      "Iterates over all tracked files to read cached forward dependency index documents.",
+      "Validates index document compatibility and reports read issues via infrastructure utilities.",
+      "Constructs reverse edge mappings from target to dependent source files."
+    ],
+    "outOfScope": [
+      "CLI command parsing or argument handling.",
+      "Unrelated service orchestration or cross-stage coordination.",
+      "Direct file system mutation beyond index reading and reverse edge construction."
+    ],
+    "invariants": [
+      "Task must only perform stage-local work on top of core contracts and engines.",
+      "Task must not take over CLI command parsing or unrelated service orchestration."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a dedicated pipeline stage for building reverse dependency edges to support dependency graph traversal and impact analysis.",
+      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, ensuring the reverse indexing task integrates cleanly with the commit stage output and checkpoint system."
+    },
+    "publicSurface": [
+      "ReverseIndexingTask class (extends SpineTask<CommitStageOutput, void>)",
+      "name property: 'Reverse Dependency Indexing'",
+      "checkpointId property: 'reverse-index'",
+      "execute(ctx: TaskContext, input: CommitStageOutput): Promise<void>"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core pipeline task for constructing reverse dependency edges from forward dependency index files.",
+        "responsibilities": [
+          "Checks if reverse indexing is already complete and skips when no new commits exist.",
+          "Iterates over all tracked files to read cached forward dependency index documents.",
+          "Validates index document compatibility and reports read issues via infrastructure utilities.",
+          "Constructs reverse edge mappings from target to dependent source files."
+        ],
+        "outOfScope": [
+          "CLI command parsing or argument handling.",
+          "Unrelated service orchestration or cross-stage coordination.",
+          "Direct file system mutation beyond index reading and reverse edge construction."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "核心管道任务，用于从正向依赖索引文件构建反向依赖边。",
+        "responsibilities": [
+          "检查反向索引是否已完成，并在没有新提交时跳过。",
+          "遍历所有跟踪的文件，读取缓存的正向依赖索引文档。",
+          "验证索引文档的兼容性，并通过基础设施工具报告读取问题。",
+          "从目标文件到依赖源文件构建反向边映射。"
+        ],
+        "outOfScope": [
+          "CLI 命令解析或参数处理。",
+          "无关的服务编排或跨阶段协调。",
+          "超出索引读取和反向边构建的直接文件系统变更。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "../core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "../core/task-types.js",
+        "relation": "import-type",
+        "symbols": [
+          "CommitStageOutput"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "../infra/index-reader.js",
+        "relation": "import",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T03:58:14.909Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

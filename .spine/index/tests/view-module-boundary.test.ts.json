@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/view-module-boundary.test.ts",
+    "contentHash": "a19cbd7c7609ad0870236c4520bc679077d34f5e1c949bbf7f55446cf965579b",
+    "skeletonHash": "62fb68889f055ca24930047326f0af5096f4c10c23defb0f8cf37a321f4e3618",
+    "semanticHash": "e51c9c9ade5cc167e1dbd6a2ea84f4519d69abb70b3a9c3100c03f298bf02910",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test enforcing architectural module boundaries for the view service layer.",
+    "responsibilities": [
+      "Validates that view runtime and rendering modules are correctly placed under src/services/view directory.",
+      "Asserts existence of specific view module files: view-renderer.ts, arch-diagram-renderer.ts, view-registry.ts, view-runtime.ts.",
+      "Ensures that view-renderer.ts is not incorrectly placed in src/infra directory, enforcing layer separation."
+    ],
+    "outOfScope": [
+      "Testing the functionality of the view modules themselves.",
+      "Validating the content or correctness of the module files.",
+      "Enforcing naming conventions other than file location."
+    ],
+    "invariants": [
+      "Must be a test file (uses Vitest framework).",
+      "Must rely on Node.js fs and path modules for file system assertions.",
+      "Must assert on the physical file structure of the repository."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Enforce clean separation between service layer (view) and infrastructure layer by validating file placement.",
+      "recentChangeIntent": "Refactoring to modularize CLI and decouple core infra services (from git intent). This test likely supports that refactor by guarding against incorrect module placement."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test enforcing architectural module boundaries for the view service layer.",
+        "responsibilities": [
+          "Validates that view runtime and rendering modules are correctly placed under the src/services/view directory.",
+          "Asserts the existence of specific view module files: view-renderer.ts, arch-diagram-renderer.ts, view-registry.ts, and view-runtime.ts.",
+          "Ensures that view-renderer.ts is not incorrectly placed in the src/infra directory, enforcing layer separation."
+        ],
+        "outOfScope": [
+          "Testing the functionality of the view modules themselves.",
+          "Validating the content or correctness of the module files.",
+          "Enforcing naming conventions other than file location."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "node:fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "node:path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:44.757Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

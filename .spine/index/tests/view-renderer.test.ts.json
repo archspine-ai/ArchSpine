@@ -1,0 +1,133 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/view-renderer.test.ts",
+    "contentHash": "63c4c5a2ae3383e9bd251bbffb55bbd8f9e045e0bcff65e4ffdadfe307b323de",
+    "skeletonHash": "e388cdcaf5f8333257679da069a8f8cc3996116ab6f135f071234841dc084c90",
+    "semanticHash": "090d6e22b35484ed0d3b5309ef12249baa9eabc83f64ff438a22c3f15f270833",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for the ViewRenderer service's deterministic rendering of architectural view artifacts for risk-hotspots and public-surface.",
+    "responsibilities": [
+      "Tests the ViewRenderer.renderRiskHotspots method with mock ViewArtifactEnvelope data containing RiskHotspotViewItem entries.",
+      "Tests the ViewRenderer.renderPublicSurface method with mock ViewArtifactEnvelope data containing PublicSurfaceViewItem entries.",
+      "Validates that rendered markdown output contains expected summary text and table headers.",
+      "Ensures deterministic table structure by asserting specific regex patterns for row counts and formatting."
+    ],
+    "outOfScope": [
+      "Testing other view types beyond risk-hotspots and public-surface.",
+      "Testing the underlying data generation or collection processes.",
+      "Integration testing with external systems or live data sources."
+    ],
+    "invariants": [
+      "Uses the Vitest testing framework.",
+      "Relies on the CURRENT_SCHEMA_VERSION constant from the protocol types.",
+      "Tests must produce deterministic markdown output."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure the ViewRenderer service correctly and deterministically transforms architectural view data into formatted markdown reports.",
+      "recentChangeIntent": "No specific change intent for this file is discernible from the provided git commit message."
+    },
+    "publicSurface": [
+      "describe",
+      "it",
+      "expect",
+      "ViewRenderer.renderRiskHotspots",
+      "ViewRenderer.renderPublicSurface",
+      "createEnvelope (helper function)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for the ViewRenderer service's deterministic rendering of architectural view artifacts for risk-hotspots and public-surface.",
+        "responsibilities": [
+          "Tests the ViewRenderer.renderRiskHotspots method with mock ViewArtifactEnvelope data containing RiskHotspotViewItem entries.",
+          "Tests the ViewRenderer.renderPublicSurface method with mock ViewArtifactEnvelope data containing PublicSurfaceViewItem entries.",
+          "Validates that rendered markdown output contains expected summary text and table headers.",
+          "Ensures deterministic table structure by asserting specific regex patterns for row counts and formatting."
+        ],
+        "outOfScope": [
+          "Testing other view types beyond risk-hotspots and public-surface.",
+          "Testing the underlying data generation or collection processes.",
+          "Integration testing with external systems or live data sources."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/services/view/index.js'",
+        "symbols": [
+          "ViewRenderer"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "../src/services/view/index.js",
+        "relation": "import",
+        "symbols": [
+          "ViewRenderer"
+        ]
+      },
+      {
+        "targetPath": "../src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:44.793Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}

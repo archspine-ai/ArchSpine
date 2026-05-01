@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/demo-governance.test.ts",
+    "contentHash": "eeb2acb68544c963938be12864f64a62efbb17a0068e1f0093efe135ca7df566",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "66925f12aee58da2f1b51f59b475c89ba6760be5dbb87a8e4e5440e72b614326",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest acceptance test suite for validating the end-to-end demo governance workflow of the ArchSpine system.",
+    "responsibilities": [
+      "Creates a temporary isolated test directory that replicates the demo project structure.",
+      "Copies necessary demo project source files and configuration into the test environment.",
+      "Executes the built ArchSpine CLI commands (sync, check, fix) using the test directory as the target.",
+      "Verifies the correctness of synchronization, architectural rule checking, and automated fix mechanisms."
+    ],
+    "outOfScope": [
+      "Unit testing of individual services or engines.",
+      "Integration testing with external LLM APIs (uses MockClient).",
+      "Performance or load testing."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts per the test-file-suffix rule."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a comprehensive acceptance test for the demo governance workflow to ensure CLI commands (sync, check, fix) work correctly end-to-end.",
+      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, ensuring the acceptance tests are stable and reliable."
+    },
+    "publicSurface": [
+      "describe('demo governance acceptance')",
+      "runBuiltCli(command, args)"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest acceptance test suite for validating the end-to-end demo governance workflow of the ArchSpine system.",
+        "responsibilities": [
+          "Creates a temporary isolated test directory that replicates the demo project structure.",
+          "Copies necessary demo project source files and configuration into the test environment.",
+          "Executes the built ArchSpine CLI commands (sync, check, fix) using the test directory as the target.",
+          "Verifies the correctness of synchronization, architectural rule checking, and automated fix mechanisms."
+        ],
+        "outOfScope": [
+          "Unit testing of individual services or engines.",
+          "Integration testing with external LLM APIs (uses MockClient).",
+          "Performance or load testing."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于验证 ArchSpine 系统端到端演示治理工作流的 Vitest 验收测试套件。",
+        "responsibilities": [
+          "创建一个临时隔离的测试目录，复制演示项目结构。",
+          "将必要的演示项目源文件和配置复制到测试环境中。",
+          "使用测试目录作为目标，执行构建后的 ArchSpine CLI 命令（sync、check、fix）。",
+          "验证同步、架构规则检查和自动修复机制的正确性。"
+        ],
+        "outOfScope": [
+          "单个服务或引擎的单元测试。",
+          "与外部 LLM API 的集成测试（使用 MockClient）。",
+          "性能或负载测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../src/services/sync-service.js",
+        "relation": "import",
+        "symbols": [
+          "SyncService"
+        ]
+      },
+      {
+        "targetPath": "../src/engines/check.js",
+        "relation": "import",
+        "symbols": [
+          "runCheck"
+        ]
+      },
+      {
+        "targetPath": "../src/engines/fix.js",
+        "relation": "import",
+        "symbols": [
+          "runFix"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/__mocks__/llm.js",
+        "relation": "import",
+        "symbols": [
+          "MockClient"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T03:58:24.182Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

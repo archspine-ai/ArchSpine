@@ -1,0 +1,298 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/error-system.test.ts",
+    "contentHash": "226e303f29752e0dfc0758671db62e6abe56539a5db59ef0de867f58683792eb",
+    "skeletonHash": "b031d5832f76835efe84a22faf04d8475000189f3aa9167c3d53b0825a6537f8",
+    "semanticHash": "3532996d8055b578a05a20ae3d4b1329d652eebbc8385d8161d629e84102493f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite validating error handling consistency and convergence across ArchSpine's service and infrastructure facade modules.",
+    "responsibilities": [
+      "Sets up isolated temporary directories for each test case to ensure test isolation and clean state.",
+      "Validates error propagation and handling consistency across CheckService, FixService, SpineResources, SpineTools, and MCPContextGate facade modules.",
+      "Tests that specific error codes (e.g., from ErrorCodes) are thrown with expected structure and properties by various subsystems.",
+      "Verifies lock payload serialization behavior in error contexts to ensure proper error reporting across module boundaries."
+    ],
+    "outOfScope": [
+      "Unit testing of individual internal functions or utilities not directly related to error convergence.",
+      "Performance or load testing of the error handling system.",
+      "Integration testing of non-error code paths or successful operation flows."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure that error handling across the ArchSpine system is consistent, predictable, and properly propagates error codes and payloads across module boundaries.",
+      "recentChangeIntent": "No specific intent derived from commit message 'gogogo'."
+    },
+    "publicSurface": [
+      "describe('error system convergence (round 1)')",
+      "beforeEach hook",
+      "afterEach hook",
+      "it('should propagate errors from CheckService with correct error codes')",
+      "it('should propagate errors from FixService with correct error codes')",
+      "it('should propagate errors from SpineResources with correct error codes')",
+      "it('should propagate errors from SpineTools with correct error codes')",
+      "it('should propagate errors from MCPContextGate with correct error codes')",
+      "it('should serialize lock payload correctly in error contexts')"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite validating error handling consistency and convergence across ArchSpine's service and infrastructure facade modules.",
+        "responsibilities": [
+          "Sets up isolated temporary directories for each test case to ensure test isolation and clean state.",
+          "Validates error propagation and handling consistency across CheckService, FixService, SpineResources, SpineTools, and MCPContextGate facade modules.",
+          "Tests that specific error codes (e.g., from ErrorCodes) are thrown with expected structure and properties by various subsystems.",
+          "Verifies lock payload serialization behavior in error contexts to ensure proper error reporting across module boundaries."
+        ],
+        "outOfScope": [
+          "Unit testing of individual internal functions or utilities not directly related to error convergence.",
+          "Performance or load testing of the error handling system.",
+          "Integration testing of non-error code paths or successful operation flows."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "Vitest 集成测试套件，用于验证 ArchSpine 服务和基础设施外观模块的错误处理一致性和收敛性。",
+        "responsibilities": [
+          "为每个测试用例设置隔离的临时目录，确保测试隔离和干净状态。",
+          "验证 CheckService、FixService、SpineResources、SpineTools 和 MCPContextGate 外观模块的错误传播和处理一致性。",
+          "测试各个子系统是否以预期的结构和属性抛出特定的错误码（例如来自 ErrorCodes）。",
+          "验证错误上下文中的锁负载序列化行为，确保跨模块边界的错误报告正确。"
+        ],
+        "outOfScope": [
+          "对与错误收敛不直接相关的单个内部函数或工具进行单元测试。",
+          "对错误处理系统进行性能或负载测试。",
+          "对非错误代码路径或成功操作流程进行集成测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/services/check-service.js'",
+        "symbols": [
+          "CheckService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/services/fix-service.js'",
+        "symbols": [
+          "FixService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/mcp/resources.js'",
+        "symbols": [
+          "SpineResources"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/mcp/tools.js'",
+        "symbols": [
+          "SpineTools"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/mcp/context.js'",
+        "symbols": [
+          "MCPContextGate"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/db.js'",
+        "symbols": [
+          "SpineDB"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/utils/lock.js'",
+        "symbols": [
+          "serializeLockPayload"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 17,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../src/services/check-service.js",
+        "relation": "import",
+        "symbols": [
+          "CheckService"
+        ]
+      },
+      {
+        "targetPath": "../src/services/fix-service.js",
+        "relation": "import",
+        "symbols": [
+          "FixService"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/mcp/resources.js",
+        "relation": "import",
+        "symbols": [
+          "SpineResources"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/mcp/tools.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTools"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/mcp/context.js",
+        "relation": "import",
+        "symbols": [
+          "MCPContextGate"
+        ]
+      },
+      {
+        "targetPath": "../src/core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/db.js",
+        "relation": "import",
+        "symbols": [
+          "SpineDB"
+        ]
+      },
+      {
+        "targetPath": "../src/utils/lock.js",
+        "relation": "import",
+        "symbols": [
+          "serializeLockPayload"
+        ]
+      }
+    ],
+    "reverseIndexComplete": false
+  },
+  "provenance": {
+    "indexedAt": "2026-05-01T02:45:43.049Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  }
+}
