@@ -1,14 +1,10 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/infra/db/repositories","role":"Persistence layer for the ArchSpine indexing system, providing SQLite-based data access objects for all core entities.","responsibility":"Provides a unified data access layer that handles CRUD operations for file metadata, symbol tables, semantic drift events, token usage metrics, and architectural violation records, ensuring reliable persistence and retrieval of all system state in SQLite.","children":[{"filePath":"src/infra/db/repositories/drift.ts","role":"Infrastructure data access function for persisting and retrieving semantic drift audit events in SQLite.","fileKind":"source"},{"filePath":"src/infra/db/repositories/files.ts","role":"Data Access Object (DAO) providing SQLite persistence operations for file metadata in the ArchSpine indexing system.","fileKind":"source"},{"filePath":"src/infra/db/repositories/symbols.ts","role":"Infrastructure Data Access Object (DAO) for SQLite symbol table persistence.","fileKind":"source"},{"filePath":"src/infra/db/repositories/usage.ts","role":"Infrastructure Data Access Object (DAO) for persisting and querying token usage metrics in the SQLite database.","fileKind":"source"},{"filePath":"src/infra/db/repositories/violations.ts","role":"Infrastructure Data Access Object (DAO) for persisting and querying architectural rule violation records in SQLite.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T03:58:43.330Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# ArchSpine Repository Layer — `src/infra/db/repositories`
+The `src/infra/db/repositories` directory implements the persistence layer for the ArchSpine indexing system, providing SQLite-based data access objects (DAOs) for all core entities. It contains five source files, each dedicated to a specific domain:
 
-This directory implements the persistence layer for the ArchSpine indexing system. It provides SQLite-based Data Access Objects (DAOs) that encapsulate all CRUD operations for the core entities tracked by the system. Each file in this directory corresponds to a single domain concept and exposes a focused set of functions for reading and writing that entity's data.
+- `files.ts` – Manages file metadata CRUD operations.
+- `symbols.ts` – Handles symbol table persistence.
+- `drift.ts` – Persists and retrieves semantic drift audit events.
+- `usage.ts` – Stores and queries token usage metrics.
+- `violations.ts` – Records and queries architectural rule violations.
 
-The repository layer is organized by entity type, with five concrete modules:
-
-- **`files.ts`** — DAO for file metadata. Handles storage and retrieval of information about each indexed file, including paths, hashes, and indexing timestamps.
-- **`symbols.ts`** — DAO for the symbol table. Manages persistence of all extracted symbols (classes, functions, variables, etc.) and their relationships within the codebase.
-- **`drift.ts`** — Data access for semantic drift audit events. Records when the system detects that a symbol's meaning or usage has shifted over time, enabling drift analysis.
-- **`usage.ts`** — DAO for token usage metrics. Persists and queries consumption data for LLM tokens, supporting cost tracking and usage analytics.
-- **`violations.ts`** — DAO for architectural rule violation records. Stores detected breaches of defined architectural constraints, enabling enforcement and reporting.
-
-The most critical implementation areas are the symbol table DAO (`symbols.ts`) and the drift event DAO (`drift.ts`), as they directly support ArchSpine's core value proposition of tracking semantic evolution across codebase versions. The violation DAO (`violations.ts`) is also important for governance workflows.
+These repositories form a unified data access layer that ensures reliable storage and retrieval of system state, with clear separation by entity type. The most critical implementation areas are the symbol and violation repositories, as they directly support the indexing and consistency-checking features of ArchSpine.

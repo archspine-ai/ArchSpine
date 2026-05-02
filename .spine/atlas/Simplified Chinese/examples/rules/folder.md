@@ -1,9 +1,2 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/rules","role":"This directory contains architectural governance and naming convention rule definitions for the ArchSpine project.","responsibility":"Collectively, these files define and enforce the structural constraints and naming standards that ensure consistency, maintainability, and proper dependency isolation across the entire ArchSpine monorepo.","children":[{"filePath":"examples/rules/layered-architecture.yml","role":"Architectural governance rule definition","fileKind":"document"},{"filePath":"examples/rules/naming-conventions.yml","role":"Defines naming conventions to ensure codebase consistency across a large monorepo.","fileKind":"document"}],"provenance":{"indexedAt":"2026-05-01T03:58:51.870Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# `examples/rules` — 架构治理与命名规范规则
-
-此目录定义了整个 ArchSpine 单体仓库的结构约束和命名标准，以确保一致性、可维护性和正确的依赖隔离。它包含两个具体的规则定义文件：
-
-- **`layered-architecture.yml`** — 定义架构治理规则，规定各层之间的交互方式，确保依赖隔离，防止循环依赖或禁止的依赖关系。
-- **`naming-conventions.yml`** — 建立命名规范，以维护大型单体仓库中代码库的一致性，涵盖文件名、模块名及其他标识符。
-
-这些规则是项目架构标准的权威来源，用于自动化验证和执行。
+`examples/rules` 目录是 ArchSpine 项目的架构治理核心，它包含了强制整个单体仓库结构完整性和命名一致性的约束规则。两个具体的规则文件定义了核心约束：`layered-architecture.yml` 规定了架构层（如领域层、应用层、基础设施层）之间的严格依赖隔离，而 `naming-conventions.yml` 则统一了文件、模块和符号的命名方式，防止大型代码库中出现命名偏差。这两个文件共同实现了项目的“规则即代码”策略，使得在开发和持续集成过程中能够自动进行验证。该目录是定义 ArchSpine 模块应如何组织与命名的权威来源，直接支撑了项目的可维护性和规模化协作。

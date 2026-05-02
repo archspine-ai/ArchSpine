@@ -1,20 +1,17 @@
-<!-- spine-content-hash:b904b3030e078cc225bf302ebb34929ef8beda9280ea818f024e48a037cde46b -->
-# ArchSpine Changelog Summary
+<!-- spine-content-hash:b7ccbb32619495ad9654d634e257c6cbbf1e2e906654654fb43e36f936ef9439 -->
+# ArchSpine Changelog – Summary
 
-## Purpose
-This document serves as the official changelog for ArchSpine, recording all significant changes made in each public release version. It is intended to help developers, contributors, and users quickly understand what has been added, improved, or fixed between versions.
+**Role:** Release changelog for the ArchSpine mirror system. It records versioned changes for every public release, providing a chronological history from version 1.0.0 onward.
 
-## Context and Audience
-The primary audience includes developers using or contributing to ArchSpine, system integrators, and anyone tracking the evolution of the project. The changelog focuses on public releases only, starting from version 1.0.0, and excludes internal pre-release history.
+**Key responsibilities:**
+- Documenting new features, enhancements, documentation updates, refactoring, and tests for each released version.
+- Serving as a reference for developers and users to understand what has been added, improved, fixed, or removed across versions.
 
-## Key Takeaways
-- First public release (1.0.0) introduces core workflows: init, sync, check, fix, and MCP server.
-- New features include artifact strategy selection for Git integration and retry-failed sync.
-- Security and reliability improvements include atomic writes, runtime locks, and strict schema version enforcement.
-- Documentation now includes bilingual README and a documentation site entry.
-- Refactoring includes modularized CLI init flow and symmetric rollback for managed files.
-- Old schema versions (0.4.0) are no longer supported; rebuild required.
+**Notable invariants & negative scope:**
+- Excludes all internal pre-release development history and uncommitted changes.
+- Does not cover changes prior to version 1.0.0.
+- Proprietary or unreleased features not yet published are omitted.
+- No drift detected; the document accurately reflects the public release history.
 
-## Scope and Boundaries
-- **In scope**: Tracking new features, security enhancements, documentation updates, refactoring, and test changes for each public release. Maintaining a record of versioned changes from 1.0.0 onward. Providing a clear, structured history for developers and users.
-- **Out of scope**: Internal development history prior to the first public release. Detailed bug reports or issue tracking. Future roadmap or planned features beyond the current release.
+**Externally visible behavior:**
+The changelog is written in Chinese (the primary project language) and presents a structured overview of each public release. Users and developers can consult it to track milestones such as the initial 1.0.0 release with core workflows (`spine init`, `sync`, `check`, `fix`, `mcp start`) and subsequent improvements like metadata cleanup (1.0.2). The file ensures that only stable, public changes are documented, maintaining a clean history suitable for both human readers and automated tooling.

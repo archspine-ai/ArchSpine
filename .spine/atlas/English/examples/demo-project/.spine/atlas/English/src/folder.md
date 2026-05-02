@@ -1,21 +1,9 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/atlas/English/src","role":"This directory aggregates the public API, domain logic, and infrastructure layers of the ArchSpine mirror system.","responsibility":"Collectively, the components in this directory provide a complete backend architecture: they expose external API endpoints, enforce business rules and domain entities, and implement concrete data persistence and infrastructure services to support system operations.","children":[{"filePath":"examples/demo-project/.spine/atlas/English/src/api","role":"Public API and interface layer for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"examples/demo-project/.spine/atlas/English/src/domain","role":"Domain layer containing core business logic and entities for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"examples/demo-project/.spine/atlas/English/src/folder.md","role":"Mock Folder Summary for src in English","fileKind":"document"},{"filePath":"examples/demo-project/.spine/atlas/English/src/infra","role":"Infrastructure layer providing concrete implementations for data persistence and external system interactions.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T03:58:34.993Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# ArchSpine Mirror System — `src` Directory
+The `src` directory is the core collection of the ArchSpine mirror system's backend architecture, located under `examples/demo-project/.spine/atlas/English/src`. It aggregates the public API layer, domain logic, and infrastructure components necessary for system operations. The directory contains three key subdirectories and one document:
 
-This directory represents the core backend architecture of the ArchSpine mirror system. It aggregates the public API, domain logic, and infrastructure layers into a cohesive structure that supports system operations.
+- **`api`**: Houses the public API and interface definitions, exposing external endpoints for the mirror system.
+- **`domain`**: Contains the domain layer with core business logic and entities that enforce business rules.
+- **`infra`**: Provides concrete implementations for data persistence and interactions with external systems.
+- **`folder.md`**: A mock folder summary document for this directory in English.
 
-## Notable Children
-
-- **`api/`** — Public API and interface layer. Contains endpoint definitions and contracts for external communication.
-- **`domain/`** — Core business logic and entities. Enforces business rules and defines the domain model.
-- **`infra/`** — Infrastructure layer. Provides concrete implementations for data persistence and external system interactions.
-- **`folder.md`** — Mock folder summary document for the `src` directory in English.
-
-## Key Implementation Areas
-
-The most important implementation areas are:
-
-1. **API Layer (`api/`)** — Defines how external clients interact with the system.
-2. **Domain Layer (`domain/`)** — Contains the core business rules and entities that drive system behavior.
-3. **Infrastructure Layer (`infra/`)** — Implements data persistence and integration with external services.
-
-These three layers together form a complete backend architecture that exposes external endpoints, enforces business logic, and provides concrete infrastructure support.
+The implementation areas of greatest significance are the domain layer, where business rules are enforced, and the infrastructure layer, which handles data persistence and integration with external services. Together, these components form a complete backend architecture that exposes API endpoints, enforces domain entities, and supports system operations through concrete service implementations.

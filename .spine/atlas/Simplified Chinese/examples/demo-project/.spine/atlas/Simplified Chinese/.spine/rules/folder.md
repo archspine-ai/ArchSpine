@@ -1,16 +1,2 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/atlas/Simplified Chinese/.spine/rules","role":"Defines the architectural rules and conventions for the ArchSpine mirror system.","responsibility":"Establishes structural guidelines for the .spine directory and defines the purpose and maintenance boundaries of the .spine/rules directory, collectively ensuring consistent rule enforcement and project mirroring.","children":[{"filePath":"examples/demo-project/.spine/atlas/Simplified Chinese/.spine/rules/arch.yml.md","role":"Defines the architectural rules and conventions for the ArchSpine mirror system.","fileKind":"document"},{"filePath":"examples/demo-project/.spine/atlas/Simplified Chinese/.spine/rules/folder.md","role":"Define the purpose and maintenance boundaries of the .spine/rules directory within the ArchSpine project.","fileKind":"document"}],"provenance":{"indexedAt":"2026-05-01T03:58:31.415Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# ArchSpine 规则目录
-
-此目录定义了 ArchSpine 镜像系统的架构规则和约定。它确立了 `.spine` 目录的结构指南，并明确了 `.spine/rules` 目录的用途和维护边界，共同确保规则的一致执行和项目镜像的规范性。
-
-## 主要子文件
-
-- **arch.yml.md** – 定义 ArchSpine 镜像系统的架构规则和约定。
-- **folder.md** – 定义 ArchSpine 项目中 `.spine/rules` 目录的用途和维护边界。
-
-## 关键实现领域
-
-- 镜像系统中规则执行的一致性
-- `.spine` 目录的结构指南
-- 规则目录的维护边界
-- 项目镜像的约定规范
+`rules`目录位于`.spine/atlas/Simplified Chinese/.spine/`下，是ArchSpine镜像系统中架构约定的核心所在。它包含两份关键文档：`arch.yml.md`定义了整体架构规则与约定，而`folder.md`则说明了`rules`目录本身的目的和维护边界。这两份文件协同工作，确保在项目（尤其是简体中文镜像）中一致地执行规则。该目录属于深层`.spine`层级的一部分，支持本地化路由与镜像逻辑；其子模块未进一步嵌套，而是代表不同的规则域——一个负责系统级架构，另一个负责目录治理。最重要的实现领域在于这些规则定义与镜像管道的交互，特别是它们如何指导简体中文本地化内容的验证与生成。

@@ -1,29 +1,27 @@
-<!-- spine-content-hash:99ed34c4f9bf9d7b786c12f9dd119990791549aa0af1a003805bdca66359ddde -->
-# ArchSpine FixService
+<!-- spine-content-hash:eeb0dc6b5e5ab29fd2812926b4437e12ca1ac91fb7218e1568c7833ef5b41ce4 -->
+# ArchSpine 修复服务（`FixService`）
 
-## 角色
-ArchSpine 架构修复管道的服务层编排器，负责管理扫描、AST 提取、LLM 驱动的修正和验证任务的顺序执行，并与运行时会话集成。
+`FixService` 是 ArchSpine 架构修复管道的服务层编排器。它负责顺序执行四个阶段：扫描清理、AST 提取、LLM 驱动的校正和验证。该服务集成了运行时会话和检查点系统，以实现持久的执行状态跟踪，并支持可配置的重试逻辑（最多 `MAX_FIX_RETRIES = 2` 次尝试）。
 
 ## 主要职责
-- 通过 TaskRunner 编排多阶段修复管道，包括扫描、AST 提取、LLM 驱动的修正和验证。
-- 管理修复重试逻辑，具有可配置的最大尝试次数（`MAX_FIX_RETRIES = 2`）。
-- 与运行时会话和检查点系统集成，以跟踪修复执行状态。
-- 在清单中记录修复操作的使用指标。
-- 从配置和密钥中解析 LLM 设置和执行配置文件。
-- 通过将通用错误转换为带有适当错误代码的 `ArchSpineError` 来处理错误恢复。
 
-## 不涉及范围
-- 直接调用 LLM 或构建提示词（委托给 `FixTask` 和 `ASTExtractionTask`）。
-- 底层文件 I/O 或数据库操作（由 infra 模块处理）。
-- 用户界面或 CLI 命令处理。
+- **管道编排：** 使用 `TaskRunner` 运行多阶段修复管道。
+- **重试管理：** 通过 `resetTaskState` 重置任务状态，并在达到最大重试次数前重新执行管道。
+- **会话与检查点集成：** 使用 `executionCheckpoint.startRun` 跟踪和恢复执行状态。
+- **上下文准备：** 为每次运行和重新检查创建任务上下文（`createTaskContext`）。
+- **指标记录：** 在清单中记录修复操作的使用指标。
+- **LLM 和执行配置解析：** 解析 LLM 设置（`GlobalLLMConfig`、`resolveLLMSettings`）和执行配置文件（`resolveExecutionProfileFromSettings`）。
+- **错误规范化：** 通过 `toArchSpineError` 将错误转换为 `ArchSpineError`，以实现一致的错误报告。
 
-## 不变约束
-- `FixService` 必须使用有效的 `FixServiceOptions`（包含 `Config`、`Secrets` 和 `RuntimeIO`）进行实例化。
-- 修复管道始终在运行时会话（`runWithRuntimeSession`）内执行。
-- 重试逻辑受限于 `MAX_FIX_RETRIES`（2）。
-- 所有错误在传播前都会被规范化为 `ArchSpineError`。
+## 关键不变量与职责范围
 
-## 公开接口
-- `FixService` 类（已导出）
-- `FixRunSummary` 接口（已导出）
-- `FixServiceOptions` 接口（已导出）
+- **不变量：** 管道必须在 `MAX_FIX_RETRIES` 次重试后中止。必须始终使用运行时会话和检查点系统。该服务位于 `src/services/` 下，而非 `src/infra/`。
+- **不负责：** 实现各个任务（`FixTask`、`ScanAndCleanupTask`、`ASTExtractionTask`、`ValidationTask`）、底层 LLM 客户端处理、文件系统扫描策略定义或配置加载。
+
+## 导出的公共 API
+
+主要的公开接口包括：
+- `runFix` – 执行修复管道的入口点。
+- `FixService` – 服务类。
+- `FixRunSummary` – 修复运行结果摘要的返回类型。
+- `FixServiceOptions` – 配置选项。

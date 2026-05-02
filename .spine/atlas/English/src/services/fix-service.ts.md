@@ -1,29 +1,27 @@
-<!-- spine-content-hash:99ed34c4f9bf9d7b786c12f9dd119990791549aa0af1a003805bdca66359ddde -->
-# ArchSpine FixService
+<!-- spine-content-hash:eeb0dc6b5e5ab29fd2812926b4437e12ca1ac91fb7218e1568c7833ef5b41ce4 -->
+# ArchSpine Fix Service (`FixService`)
 
-## Role
-Service-layer orchestrator for the ArchSpine architectural fix pipeline, managing the sequential execution of scanning, AST extraction, LLM-driven correction, and validation tasks with runtime session integration.
+The `FixService` is the service-layer orchestrator for the ArchSpine architectural fix pipeline. It manages the sequential execution of four stages: scanning & cleanup, AST extraction, LLM-driven correction, and validation. The service integrates with the runtime session and checkpoint system for durable execution tracking, and supports configurable retry logic (up to `MAX_FIX_RETRIES = 2` attempts).
 
 ## Key Responsibilities
-- Orchestrates the multi-stage fix pipeline including scanning, AST extraction, LLM-driven correction, and validation via a TaskRunner.
-- Manages fix retry logic with a configurable maximum attempts (`MAX_FIX_RETRIES = 2`).
-- Integrates with the runtime session and checkpoint system to track fix execution state.
-- Records usage metrics of the fix operation within the manifest.
-- Resolves LLM settings and execution profiles from configuration and secrets.
-- Handles error recovery by converting generic errors to `ArchSpineError` with appropriate error codes.
 
-## Out of Scope
-- Direct LLM invocation or prompt construction (delegated to `FixTask` and `ASTExtractionTask`).
-- Low-level file I/O or database operations (handled by infra modules).
-- User interface or CLI command handling.
+- **Pipeline orchestration:** Uses `TaskRunner` to run the multi-stage fix pipeline.
+- **Retry management:** Resets task state via `resetTaskState` and re-runs the pipeline up to the configured maximum retries.
+- **Session & checkpoint integration:** Tracks and resumes execution state using `executionCheckpoint.startRun`.
+- **Context preparation:** Creates task context (`createTaskContext`) for each run and recheck.
+- **Metrics recording:** Logs usage metrics of the fix operation within the manifest.
+- **LLM & execution profile resolution:** Resolves LLM settings (`GlobalLLMConfig`, `resolveLLMSettings`) and execution profile (`resolveExecutionProfileFromSettings`).
+- **Error normalization:** Converts errors to `ArchSpineError` via `toArchSpineError` for consistent reporting.
 
-## Invariants
-- `FixService` must be instantiated with a valid `FixServiceOptions` including `Config`, `Secrets`, and `RuntimeIO`.
-- The fix pipeline always runs within a runtime session (`runWithRuntimeSession`).
-- Retry logic is bounded by `MAX_FIX_RETRIES` (2).
-- All errors are normalized to `ArchSpineError` before propagation.
+## Notable Invariants & Out-of-Scope
 
-## Public Surface
-- `FixService` class (exported)
-- `FixRunSummary` interface (exported)
-- `FixServiceOptions` interface (exported)
+- **Invariants:** The pipeline must abort after `MAX_FIX_RETRIES` retries. It must always use the runtime session and checkpoint system. The service lives under `src/services/`, not `src/infra/`.
+- **Not responsible for:** Implementing individual tasks (`FixTask`, `ScanAndCleanupTask`, `ASTExtractionTask`, `ValidationTask`), low-level LLM client handling, file system scan policies, or configuration loading.
+
+## Exported Surface
+
+The main public API includes:
+- `runFix` – entry point to execute the fix pipeline.
+- `FixService` – the service class.
+- `FixRunSummary` – return type summarizing the fix run.
+- `FixServiceOptions` – configuration options.

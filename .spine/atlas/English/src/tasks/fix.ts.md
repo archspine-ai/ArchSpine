@@ -1,26 +1,34 @@
-<!-- spine-content-hash:666de6c593535145ddf00b0665a7638c9f205a37f99e3f52cf370bbe91d86477 -->
-# ArchSpine – FixStageTask
+<!-- spine-content-hash:cf13e45975a8d33f0dc6427f9088b023e2327f786a2ab128011f9805347cccd5 -->
+## FixTask – Architectural Auto-fix Stage
 
-## Role
-SpineTask implementation for the automated LLM-driven architectural violation fixing stage.
+The `FixTask` class (extending `SpineTask<FixStageInput, FixStageOutput>`) implements the automated LLM-driven architectural violation fixing stage in the pipeline. Its primary role is to automatically repair source files that break architectural rules by generating and applying patches produced by a language model.
 
-## Key Responsibilities
-- Groups architectural rule violations by source file for batch processing.
-- Generates LLM prompts to produce fix patches for each violated file using AST analysis.
-- Applies generated patches to source files after validation using diff utilities.
-- Rechecks fixed files to ensure violations are resolved by re-evaluating rules.
+### Key Responsibilities
+- Groups architectural rule violations by source file to enable batch processing.
+- Generates LLM prompts tailored to each violated file, using AST analysis via `@ast-grep/napi`, to produce fix patches.
+- Validates generated patches using `createTwoFilesPatch` (diff utility) before applying them to source files.
+- Rechecks fixed files by re-evaluating the rules through the rule engine to confirm violations are resolved.
+- Manages a checkpoint lifecycle for each file fix (states: started, completed, skipped, failed).
+- Aggregates results into `FixStageOutput`, listing both patched violations and those that remain unfixable.
 
-## Notable Invariants
-- Must implement the SpineTask contract for the fix stage.
-- Must operate on stage-local data (violations) provided via TaskContext.
-- Must delegate LLM prompt construction to the fix-prompt engine.
-- Must not assume control flow outside its stage boundary.
+### Out of Scope
+- CLI command parsing and argument handling.
+- Service orchestration outside of this fix stage.
+- UI or terminal rendering beyond basic logging via `ctx.runtimeIO`.
+- Direct rule loading or engine instantiation (uses `ctx.ruleEngine` instead).
 
-## Negative Scope (Out of Scope)
-- CLI command parsing or argument handling.
-- Orchestration of unrelated pipeline stages or services.
-- Direct LLM API calls; relies on the fix-prompt engine for prompt generation.
-- Persistence of task state beyond the provided TaskContext.
+### Invariants & Notable Behavior
+- Violations **must** be grouped by source file before generating any fix prompts.
+- Patches **must** be validated before application to prevent file corruption.
+- After applying a patch, the fixed file **must** be rechecked to ensure all violations are resolved.
+- The stage respects task-stage boundary rules: it does not take over unrelated CLI or orchestration tasks.
 
-## Most Important Exported / Externally Visible Behavior
-This task is a discrete stage in the Spine pipeline that automatically remediates architectural rule violations by generating and applying LLM-produced code patches. It does not expose a public API surface beyond its SpineTask contract.
+### Change Intent
+- **Architectural intent:** Automatically fix architectural rule violations using LLM-generated patches within a confined pipeline stage.
+- **Recent fixes:** Resolved TTY hang in FixTask, checkpoint retry crash, `--yes` propagation, and Windows compatibility issues.
+
+### Public Surface
+- `FixTask` class: `SpineTask<FixStageInput, FixStageOutput>`
+- `name = 'Architectural Auto-fix'`
+- `checkpointId = 'fix'`
+- Constants: `MAX_SCANS`, `MAX_FILE_SIZE_BYTES`

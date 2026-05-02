@@ -1,31 +1,30 @@
-<!-- spine-content-hash:cda10745da4a9c656554eeb708a94598cca5cc07e359abb43952657610f6d96e -->
-# ArchSpine – Core Service Orchestrator
+<!-- spine-content-hash:2931b913ac23c3e4d78d0127a74e4bdccb27ce315fe31b495739d21e2304578f -->
+# ArchSpine – TaskContextFactory
 
-## Role
-This module acts as the central service orchestrator for the ArchSpine system. It prepares and coordinates all task execution engines and supporting infrastructure, ensuring that analysis pipelines run in a policy-compliant, thread-safe manner.
+**Role:**  
+Service-level factory and orchestrator that prepares a fully configured task context for analysis pipelines.
 
-## Key Responsibilities
-- Resolves prompt policy tiers and validation policies from configuration and environment settings.
-- Creates and initializes task state and artifact state for execution pipelines.
-- Orchestrates the scanner, aggregator, rule engine, context engine, and LLM client to perform coordinated analysis.
-- Manages locks and scan policies to guarantee thread-safe, policy-compliant operations.
+**Responsibilities:**  
+- Resolves prompt policy tier and validation policy from options and environment.  
+- Creates and initializes task state and artifact state for execution pipelines.  
+- Instantiates and coordinates Scanner, Aggregator, ASTExtractor, RuleEngine, ContextEngine, and OutputManager.  
+- Manages LockManager and ScanPolicy for thread-safe and policy‑compliant operations.  
+- Constructs and returns a `PreparedTaskContext` encapsulating all initialized components.
 
-## Out of Scope
-- View-specific rendering or UI logic.
-- Direct low-level file I/O operations.
-- Implementation of individual analysis engines (e.g., scanner, aggregator, rule engine internals).
+**Out of Scope:**  
+- Direct interaction with an LLM client (only the `LLMClient` type is imported).  
+- Execution of scanning, analysis, or output – this file only prepares context.  
+- View‑specific service logic (which belongs under `src/services/view/`).
 
-## Invariants
-- Must orchestrate core, engines, and infrastructure modules without implementing their internal logic.
-- Must resolve configuration policies (prompt, validation, scan) from environment and infrastructure.
-- Must produce a `PreparedTaskContext` for downstream execution.
+**Invariants:**  
+- The resolved prompt policy tier must match the derived task mode (`validate` or `summarize`).  
+- Task state and artifact state are created *before* any engine is instantiated.  
+- The manifest is opened using `rootDir` and `scanPolicy` before use.  
+- `LockManager` ensures exclusive access during initialization.
 
-## Public Surface
-- `ServiceOptions` interface
-- `PreparedTaskContext` interface
+**Public Surface (most important exports):**  
+- `createTaskContext(...)` – the primary entry point.  
+- `ServiceOptions` – the configuration type consumed by the factory.  
+- `PreparedTaskContext` – the result object bundling all components.
 
-## Change Intent
-The architectural intent is to provide a centralized service layer for preparing and coordinating all analysis engines and infrastructure, ensuring policy compliance and state management. Recent changes suggest enhancements to sync modes and backfill, which may affect orchestration logic.
-
-## Drift Detection
-No drift detected. No rule violations found.
+This module is the central factory that ensures all required analysis components and policies are correctly wired before any pipeline begins its work. It does not execute any analysis itself, but it guarantees that every dependency is initialized and consistent.

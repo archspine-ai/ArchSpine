@@ -1,22 +1,25 @@
-<!-- spine-content-hash:71c124bd778b30b95c5622ad508792c41c9f8354830eb488a386ffa530bb038d -->
-# ArchSpine – Execution Checkpoint Store
+<!-- spine-content-hash:243b7c73c82f6983045b4b1ec981df6ff21d9e05facbee216128e1a9a00b5bde -->
+# ArchSpine Execution Checkpoint State Manager
 
-## Role
-Infrastructure layer persistence store for execution checkpoint state management, validation, and filesystem I/O.
+**Role:** Infrastructure layer execution checkpoint state manager, providing type definitions, validation, filesystem persistence, and resume candidate derivation for the ArchSpine checkpoint retry system.
 
-## Key Responsibilities
-- Defines TypeScript types and interfaces for execution checkpoint state (run, stage, item statuses and states).
-- Provides a store class (`ExecutionCheckpointStore`) to load, save, and validate checkpoint state from/to filesystem.
-- Validates checkpoint state integrity against expected status enums and structural schemas.
-- Manages checkpoint state lifecycle (initialization, updates, serialization) with filesystem I/O.
+**Key Responsibilities:**
+- Defines TypeScript union types for run, stage, and item statuses (e.g., `ExecutionCheckpointRunStatus`).
+- Defines interfaces for checkpoint item, stage, and full state (`ExecutionCheckpointState`).
+- Exports a class `ExecutionCheckpointStore` that loads, saves, validates, and manages checkpoint state via filesystem I/O.
+- Provides utility functions to query state: `isResumableCheckpoint`, `getStageData`, `getStageItemsByStatus`.
+- Provides derivative functions to compute resume/failed/check-resume candidate file lists from state.
+- Validates checkpoint state integrity against status enums and structural schemas (inferred from usage of `isRecord`, `ITEM_STATUSES.has`).
 
-## Notable Invariants & Negative Scope
-- Must remain a pure persistence and validation layer for checkpoint state.
-- Must not absorb service/task/engine orchestration concerns.
-- Should expose stable low-level capabilities and facades.
-- **Out of scope:** Orchestrating execution workflows or business logic; directly invoking scanner or engine runtime processes; providing high-level API facades for external consumers (remains a low-level store).
+**Out of Scope:**
+- Orchestration of task execution or service logic.
+- User interface or CLI interaction.
+- System dependency injection or configuration loading.
 
-## Most Important Exported / Externally Visible Behavior
-- `ExecutionCheckpointStore` – the primary class for loading, saving, and validating checkpoint state.
-- `ExecutionCheckpointItemState`, `ExecutionCheckpointStageState`, `ExecutionCheckpointState` – core state interfaces.
-- `ExecutionCheckpointRunStatus`, `ExecutionCheckpointStageStatus`, `ExecutionCheckpointItemStatus` – status enums used for validation.
+**Invariants:**
+- Checkpoint state must be validated before use; invalid state should produce warnings or errors.
+- Filesystem operations must handle I/O errors gracefully and not crash the process.
+- Resume candidate derivation must be deterministic based solely on the checkpoint state.
+
+**Most Important Exported Behavior:**
+The module's public surface includes the types `ExecutionCheckpointRunStatus`, `ExecutionCheckpointStageStatus`, `ExecutionCheckpointItemStatus`, and interfaces `ExecutionCheckpointItemState`, `ExecutionCheckpointStageState`, `ExecutionCheckpointState`. Key functions are `isResumableCheckpoint(state)`, `getStageData(state, stageId)`, `getStageItemsByStatus(state, stageId, statuses)`, and the three resume candidate derivation functions: `deriveSyncResumeCandidateFiles`, `deriveSyncFailedCandidateFiles`, `deriveCheckResumeCandidateFiles`. The `ExecutionCheckpointStore` class is the primary persistence manager.

@@ -1,18 +1,10 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/atlas/Simplified Chinese","role":"This directory serves as the root configuration and structural definition hub for the ArchSpine mirror system.","responsibility":"It collectively defines foundational configuration, architectural rules, and structural roles for the .spine directory, provides demonstration assets and project overview documentation, and aggregates core source code layers including API, domain, and infrastructure components to deliver a complete application logic stack.","children":[{"filePath":"examples/demo-project/.spine/atlas/Simplified Chinese/.spine","role":"Root configuration and structural definition directory for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"examples/demo-project/.spine/atlas/Simplified Chinese/demo.gif.md","role":"Demonstration asset summary for the ArchSpine mirror system","fileKind":"document"},{"filePath":"examples/demo-project/.spine/atlas/Simplified Chinese/project.md","role":"Project overview and architecture demonstration document","fileKind":"document"},{"filePath":"examples/demo-project/.spine/atlas/Simplified Chinese/src","role":"This directory aggregates the core source code layers of the ArchSpine system, including API, domain, and infrastructure components.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T03:58:38.637Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# ArchSpine Atlas: Simplified Chinese
+This directory is the root configuration and structural definition hub for the ArchSpine mirror system, specifically serving as the Simplified Chinese localization atlas. It defines foundational configuration and architectural rules for the `.spine` directory and aggregates core source code layers including API, domain, and infrastructure components to deliver a complete application logic stack.
 
-This directory serves as the root configuration and structural definition hub for the ArchSpine mirror system. It collectively defines foundational configuration, architectural rules, and structural roles for the `.spine` directory, provides demonstration assets and project overview documentation, and aggregates core source code layers including API, domain, and infrastructure components to deliver a complete application logic stack.
+The directory contains four notable children:
+- `.spine/` – the root configuration and structural definition directory for the ArchSpine mirror system.
+- `demo.gif.md` – a demonstration asset summary (GIF description) for the ArchSpine mirror system.
+- `project.md` – a project overview and architecture demonstration document.
+- `src/` – aggregates the core source code layers (API, domain, infrastructure).
 
-## Notable Children
-
-- **`.spine/`** – Root configuration and structural definition directory for the ArchSpine mirror system.
-- **`demo.gif.md`** – Demonstration asset summary for the ArchSpine mirror system.
-- **`project.md`** – Project overview and architecture demonstration document.
-- **`src/`** – Aggregates the core source code layers of the ArchSpine system, including API, domain, and infrastructure components.
-
-## Key Implementation Areas
-
-- **Configuration & Rules** – The `.spine` subdirectory holds foundational configuration and architectural rules that govern the mirror system.
-- **Demonstration Assets** – `demo.gif.md` provides a visual summary of the system in action.
-- **Project Documentation** – `project.md` offers a high-level overview and architecture demonstration.
-- **Source Code Layers** – The `src` folder contains the complete application logic stack, organized into API, domain, and infrastructure layers.
+The primary implementation areas are the architectural configuration defined in `.spine/`, the project documentation and demo assets (`project.md`, `demo.gif.md`), and the full source code stack in `src/`. Together they provide a localized (Simplified Chinese) view of the ArchSpine mirror system's structure and purpose.

@@ -1,22 +1,2 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/types/protocol","role":"Defines the core data contracts and configuration schema for the ArchSpine mirror system.","responsibility":"Provides the foundational type definitions, configuration interfaces, and versioning constants that establish the data model and public API contract for the entire ArchSpine infrastructure layer, enabling consistent representation of mirrored code units, dependency graphs, language metadata, synchronization manifests, and rule documents.","children":[{"filePath":"src/types/protocol/config.ts","role":"TypeScript interface defining the central configuration schema for the ArchSpine mirror system.","fileKind":"source"},{"filePath":"src/types/protocol/index-documents.ts","role":"Core TypeScript type definitions module for the ArchSpine mirror system's data model, defining all interfaces and types for the complete mirror data structure including unit, identity, semantic, skeleton, graph, provenance, folder, and project representations.","fileKind":"source"},{"filePath":"src/types/protocol/index.ts","role":"Public API facade (barrel export) for the infrastructure subsystem, aggregating and re-exporting all infra-layer modules.","fileKind":"source"},{"filePath":"src/types/protocol/languages.ts","role":"TypeScript type definition module defining the data contracts for language support metadata within the ArchSpine mirror system.","fileKind":"source"},{"filePath":"src/types/protocol/manifest.ts","role":"Core TypeScript module defining shared data transfer object (DTO) interfaces for the ArchSpine synchronization and manifest system.","fileKind":"source"},{"filePath":"src/types/protocol/rules.ts","role":"TypeScript interface defining the canonical data structure for an ArchSpine rule document within the rule engine's domain model.","fileKind":"source"},{"filePath":"src/types/protocol/versions.ts","role":"Centralized version definition module for ArchSpine schema and package versioning.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T04:57:43.564Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# `src/types/protocol` — ArchSpine 核心数据契约
-
-此目录定义了整个 ArchSpine 镜像系统的基础数据契约和配置模式。它建立了每个其他子系统所依赖的类型级 API，确保镜像代码单元、依赖图、语言元数据、同步清单和规则文档的一致表示。
-
-## 重要子模块
-
-- **`config.ts`** — 镜像系统的中央配置模式接口。
-- **`index-documents.ts`** — 核心类型定义模块，涵盖完整的镜像数据结构：单元、身份、语义、骨架、图、来源、文件夹和项目表示。
-- **`index.ts`** — 公共 API 桶导出，聚合并重新导出所有基础设施层模块。
-- **`languages.ts`** — 语言支持元数据的数据契约。
-- **`manifest.ts`** — 同步和清单系统的共享 DTO 接口。
-- **`rules.ts`** — ArchSpine 规则文档的规范数据结构。
-- **`versions.ts`** — 集中式模式和包版本定义。
-
-## 关键实现领域
-
-- **数据模型基础** — `index-documents.ts` 是最关键的文件，定义了支撑所有镜像操作的完整类型层次结构。
-- **配置模式** — `config.ts` 提供了系统配置的单一真实来源。
-- **同步契约** — `manifest.ts` 和 `versions.ts` 共同定义了镜像如何版本化和同步。
-- **规则引擎集成** — `rules.ts` 将类型系统与规则评估引擎连接起来。
-- **语言支持** — `languages.ts` 通过定义语言元数据契约实现多语言镜像。
+本目录定义了 ArchSpine 镜像系统的核心数据契约与配置模式。其子文件按职责组织：`config.ts` 提供全局配置接口；`index-documents.ts` 定义了完整的镜像数据模型，涵盖单元、身份、语义、骨架、图、溯源、文件夹与项目等表示；`index.ts` 作为公开的聚合导出入口；`languages.ts` 建立语言支持元数据的契约；`manifest.ts` 提供同步清单的传输对象接口；`rules.ts` 定义规则文档的标准结构；`versions.ts` 集中管理模式版本和包版本常量。最关键的实现领域包括：核心数据模型接口（单元、依赖图、溯源）、配置模式、版本常量、语言支持元数据、以及清单与规则文档契约——这些共同构成了整个基础设施层的基础 API 契约。

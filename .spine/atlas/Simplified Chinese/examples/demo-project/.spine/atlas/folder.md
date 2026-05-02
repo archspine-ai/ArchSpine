@@ -1,17 +1,8 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/atlas","role":"This directory aggregates the core configuration and rule definitions that govern the ArchSpine mirror system's behavior and structure.","responsibility":"Collectively, the components in this directory define system-level configuration parameters, establish structural guidelines for the .spine directory, enforce architectural rules and conventions for the mirror system, manage synchronization, indexing, validation, routing, and access control of mirrored data across distributed nodes, and define logical and functional layers including configuration management and interface abstraction to ensure consistency, fault tolerance, and a cohesive, extensible system architecture.","children":[{"filePath":"examples/demo-project/.spine/atlas/English","role":"This directory aggregates the core configuration and rule definitions that govern the ArchSpine mirror system's behavior and structure.","fileKind":"folder"},{"filePath":"examples/demo-project/.spine/atlas/Simplified Chinese","role":"This directory serves as the root configuration and structural definition hub for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"examples/demo-project/.spine/atlas/en-US","role":"This directory aggregates the second-level components of the ArchSpine mirror system, providing a consolidated view of subsystem interactions and data flow.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T04:01:40.872Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# ArchSpine 图谱目录
+`atlas` 目录是 ArchSpine 镜像系统的配置与规则定义核心。它集中管理着决定系统行为、结构和交互的关键设定。该目录下包含三个按语言区分的子模块：
 
-`atlas` 目录是 ArchSpine 镜像系统的核心配置与规则定义中心。它负责管理系统级行为、`.spine` 目录的结构规范、架构约定，以及跨分布式节点的同步、索引、验证、路由和访问控制。
+- **`English`** – 聚合了核心配置与规则定义，为镜像系统的行为和结构奠定基础。
+- **`Simplified Chinese`** – 作为镜像系统的根配置和结构定义枢纽，提供了另一套本地化的规则体系。
+- **`en-US`** – 专注于子系统间的交互与数据流，以整合视图展示组件间通信与同步方式。
 
-## 主要子目录
-
-- **`English/`** – 包含驱动镜像系统行为和结构的核心配置与规则定义。
-- **`Simplified Chinese/`** – 提供 ArchSpine 镜像系统的根配置和结构定义中心。
-- **`en-US/`** – 聚合二级组件，提供子系统交互和数据流的统一视图。
-
-## 关键实现领域
-
-- **配置管理** – 定义系统级参数和结构规范。
-- **接口抽象** – 确保系统的一致性和可扩展性。
-- **分布式操作** – 管理镜像数据的同步、索引、验证、路由和访问控制。
-- **容错机制** – 维护跨节点的系统完整性和一致性。
+这些子模块共同定义了系统级参数、`.spine` 目录的结构规范、架构约定，以及跨分布式节点的同步、索引、验证、路由和访问控制机制。`atlas` 实际上承担了配置管理与接口抽象的职责，确保了一致性、容错能力以及可扩展的系统架构的连贯性。

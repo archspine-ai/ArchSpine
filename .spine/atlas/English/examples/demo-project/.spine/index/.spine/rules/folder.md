@@ -1,16 +1,2 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/index/.spine/rules","role":"Defines the architectural rules and directory structure for the ArchSpine mirror system's rule engine.","responsibility":"Collectively establishes the schema, metadata, and organizational framework for rule files within the .spine/rules directory, enabling rule indexing, drift detection, and configuration management.","children":[{"filePath":"examples/demo-project/.spine/index/.spine/rules/arch.yml.json","role":"Architecture rule definition for the ArchSpine mirror system","fileKind":"config"},{"filePath":"examples/demo-project/.spine/index/.spine/rules/folder.json","role":"Defines the directory structure and metadata for a rules folder within the ArchSpine project, serving as a container for configuration documents.","fileKind":"config"}],"provenance":{"indexedAt":"2026-05-01T03:58:34.692Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# ArchSpine Rules Directory
-
-This directory (`examples/demo-project/.spine/index/.spine/rules`) defines the architectural rules and directory structure for the ArchSpine mirror system's rule engine. It collectively establishes the schema, metadata, and organizational framework for rule files within the `.spine/rules` directory, enabling rule indexing, drift detection, and configuration management.
-
-## Notable Children
-
-- **`arch.yml.json`** – Architecture rule definition for the ArchSpine mirror system. This file serves as a configuration document that defines the core architectural rules.
-- **`folder.json`** – Defines the directory structure and metadata for a rules folder within the ArchSpine project, acting as a container for configuration documents.
-
-## Implementation Areas
-
-The most critical implementation areas in this directory are:
-- **Rule Indexing**: The schema and metadata structures that allow rules to be indexed and queried efficiently.
-- **Drift Detection**: The rules and configurations that enable detection of deviations from the defined architecture.
-- **Configuration Management**: The organizational framework that manages rule files and their relationships.
+The `examples/demo-project/.spine/index/.spine/rules` directory is the rule engine core of the ArchSpine mirror system. It contains two configuration files that together define the schema, metadata, and organizational framework for architectural rules: **`arch.yml.json`** specifies the architecture rule definitions, and **`folder.json`** declares the directory structure and serves as a container for rule documents. This directory enables critical operations such as rule indexing, drift detection, and configuration management. The two files work in tandem to establish a self-contained rule governance layer within the `.spine/rules` subtree, making it the authority for architectural compliance and structural metadata.

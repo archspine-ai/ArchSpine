@@ -1,21 +1,14 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/ast","role":"AST parsing and language discovery layer for the ArchSpine mirror system.","responsibility":"Provides a unified pipeline for parsing source code into structured symbols and imports using language-specific AST rules, managing language registrations, and discovering language composition across file collections.","children":[{"filePath":"src/ast/extractor.ts","role":"AST parsing service that extracts structural symbols and imports from source code using language-specific rule sets loaded from YAML configuration files.","fileKind":"source"},{"filePath":"src/ast/lang-discovery.ts","role":"AST language discovery and lifecycle module that scans file collections, resolves programming languages via extension mapping, computes deltas between snapshots, and validates language support.","fileKind":"source"},{"filePath":"src/ast/lang-registry.ts","role":"Stateful language configuration registry and dynamic language loader for the ArchSpine code analysis pipeline, managing AST-grep language bindings and file-to-language resolution.","fileKind":"source"},{"filePath":"src/ast/rules","role":"Language-specific grammar definitions for parsing source code into structured symbols.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T04:57:47.579Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# `src/ast` — AST Parsing & Language Discovery Layer
+The `src/ast` directory serves as the core AST parsing and language discovery layer for the ArchSpine mirror system. It provides a unified pipeline that transforms source code into structured symbols and import declarations using language-specific AST rules, manages the lifecycle of language registrations, and discovers how languages compose across a collection of files.
 
-This directory is the **parsing and language discovery core** of the ArchSpine mirror system. It provides a unified pipeline that transforms raw source code into structured symbols and import relationships using language-specific AST rules.
+The directory contains three key source modules and one subfolder:
 
-## Key Components
+- **extractor.ts** – An AST parsing service that extracts structural symbols and import references from source code. It relies on language-specific rule sets loaded from YAML configuration files.
 
-- **`extractor.ts`** — The central AST parsing service. It loads language-specific rule sets from YAML configuration files and extracts structural symbols (classes, functions, variables) and import statements from source code.
+- **lang-discovery.ts** – A language discovery and lifecycle module that scans a set of files, resolves programming languages by their file extensions, computes deltas between snapshots, and validates whether the encountered languages are supported.
 
-- **`lang-discovery.ts`** — The language discovery and lifecycle module. It scans file collections, resolves programming languages via file extension mapping, computes deltas between snapshots, and validates that all detected languages are supported.
+- **lang-registry.ts** – A stateful language configuration registry and dynamic language loader. It manages the bindings between AST-grep rules and the analysis pipeline and resolves a file’s programming language from its path or content.
 
-- **`lang-registry.ts`** — A stateful registry that manages language configurations and dynamically loads AST-grep language bindings. It handles file-to-language resolution and ensures the analysis pipeline has access to the correct grammar definitions.
+- **rules/** – A folder containing language-specific grammar definitions that the extractor uses to parse source code into structured symbols.
 
-- **`rules/`** — A folder containing language-specific grammar definitions (YAML files) that define how each programming language's source code is parsed into structured symbols.
-
-## Implementation Areas
-
-The most critical implementation areas are:
-1. **Language rule loading** — How YAML grammar definitions are discovered, validated, and applied during extraction.
-2. **Snapshot delta computation** — How `lang-discovery.ts` tracks changes between file collection snapshots.
-3. **Dynamic language binding** — How `lang-registry.ts` resolves and caches AST-grep bindings for each supported language.
+The most important implementation concerns are the parsing pipeline (extractor), the snapshot-based language discovery (lang-discovery), and the dynamic registry that enables pluggable language support.

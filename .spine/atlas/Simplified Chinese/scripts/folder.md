@@ -1,12 +1,10 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"scripts","role":"Scripts and automation tools for the ArchSpine project's build, test, release, and demonstration workflows.","responsibility":"Provides build automation, development watch mode, end-to-end verification, benchmarking, release gating, database schema migration, and CLI demonstration scripts to support the full lifecycle of the ArchSpine project.","children":[{"filePath":"scripts/build.mjs","role":"Build script for the ArchSpine project — orchestrates compilation, asset copying, and cleanup for distribution.","fileKind":"document"},{"filePath":"scripts/demo.tape","role":"Demonstration script for the ArchSpine project's CLI workflow","fileKind":"document"},{"filePath":"scripts/dev-build.mjs","role":"Development build automation script","fileKind":"document"},{"filePath":"scripts/final-verify.mjs","role":"End-to-end verification script for ASTExtractor multi-language export extraction","fileKind":"document"},{"filePath":"scripts/phase5-live-bench.mjs","role":"Live benchmark runner for ArchSpine's AST-based semantic extraction pipeline","fileKind":"document"},{"filePath":"scripts/project-demo.tape","role":"Demonstration script for generating a visual preview of the ArchSpine CLI workflow","fileKind":"document"},{"filePath":"scripts/publish-placeholder.mjs","role":"Operational script documentation for placeholder package publishing","fileKind":"document"},{"filePath":"scripts/release-gate.mjs","role":"Release gate automation script for the ArchSpine project","fileKind":"document"},{"filePath":"scripts/update-db-schema.cjs","role":"Database schema migration script for the ArchSpine cache system","fileKind":"document"}],"provenance":{"indexedAt":"2026-05-01T03:58:57.406Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# `scripts/` — 构建、测试、发布与演示自动化
+`scripts/` 目录存放了 ArchSpine 项目的所有自动化与工具脚本，涵盖从构建、测试、基准测试到发布管理的完整开发生命周期。这些脚本按功能分为以下几个关键组：
 
-该目录包含支持 ArchSpine 项目全生命周期的所有自动化脚本，涵盖开发、测试、发布及演示环节。脚本按用途分组如下：
+- **构建自动化** – `build.mjs` 统筹编译、资源复制和清理以生成分发版本；`dev-build.mjs` 提供监视模式，便于开发阶段的快速迭代。
+- **验证与基准测试** – `final-verify.mjs` 对 ASTExtractor 的多语言导出流水线执行端到端检查；`phase5-live-bench.mjs` 在真实条件下对语义提取核心进行实时性能分析。
+- **发布门控** – `release-gate.mjs` 在发布前强制执行质量检查；`publish-placeholder.mjs` 处理 CI/CD 工作流中的占位包发布。
+- **数据库维护** – `update-db-schema.cjs` 管理 ArchSpine 缓存系统的数据库模式迁移，采用 CommonJS 格式以保持与旧环境的兼容。
+- **演示** – `demo.tape` 和 `project-demo.tape` 是终端录制脚本（tape 格式），用于生成 CLI 工作流的可视化演示。
 
-- **构建与开发** — `build.mjs` 负责编译、资源复制及分发前的清理工作；`dev-build.mjs` 提供监视模式的开发构建。
-- **验证与基准测试** — `final-verify.mjs` 对 ASTExtractor 多语言导出提取进行端到端验证；`phase5-live-bench.mjs` 对基于 AST 的语义提取管线进行基准测试。
-- **发布与打包** — `release-gate.mjs` 执行发布就绪检查；`publish-placeholder.mjs` 处理占位符包的发布。
-- **数据库** — `update-db-schema.cjs` 管理 ArchSpine 缓存系统的数据库模式迁移。
-- **演示** — `demo.tape` 和 `project-demo.tape` 是终端录制脚本，用于展示 CLI 工作流程并生成可视化预览。
-
-关键实现领域包括：构建编排、端到端验证、实时基准测试、发布门控以及数据库模式迁移。
+这些脚本构成了项目的运行基石，为流水线每个阶段提供可重现的自动化支持。

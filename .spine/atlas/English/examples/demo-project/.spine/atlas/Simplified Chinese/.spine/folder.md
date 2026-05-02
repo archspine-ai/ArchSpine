@@ -1,9 +1,13 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/atlas/Simplified Chinese/.spine","role":"Root configuration and structural definition directory for the ArchSpine mirror system.","responsibility":"Defines the foundational configuration, structural roles, and architectural rules for the .spine directory, ensuring consistent project mirroring and rule enforcement across the ArchSpine system.","children":[{"filePath":"examples/demo-project/.spine/atlas/Simplified Chinese/.spine/config.json.md","role":"Configuration entry point for the ArchSpine mirror system","fileKind":"document"},{"filePath":"examples/demo-project/.spine/atlas/Simplified Chinese/.spine/folder.md","role":"Define the structural and narrative role of the .spine directory within the ArchSpine project.","fileKind":"document"},{"filePath":"examples/demo-project/.spine/atlas/Simplified Chinese/.spine/rules","role":"Defines the architectural rules and conventions for the ArchSpine mirror system.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T03:58:34.646Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-The `.spine` directory at `examples/demo-project/.spine/atlas/Simplified Chinese/.spine` serves as the root configuration and structural definition directory for the ArchSpine mirror system. It defines the foundational configuration, structural roles, and architectural rules that ensure consistent project mirroring and rule enforcement across the entire ArchSpine system.
+The `.spine` directory at `examples/demo-project/.spine/atlas/Simplified Chinese/.spine` serves as the root configuration and structural definition directory for the ArchSpine mirror system. It establishes the foundational settings, role definitions, and architectural rules that govern the entire `.spine` directory tree, ensuring consistent project mirroring and rule enforcement.
 
-Notable children include:
-- **config.json.md** – The configuration entry point for the ArchSpine mirror system.
-- **folder.md** – Defines the structural and narrative role of the `.spine` directory within the ArchSpine project.
-- **rules/** – A folder that defines the architectural rules and conventions for the ArchSpine mirror system.
+**Notable children and their grouping:**
 
-The most important implementation areas are the configuration entry point (`config.json.md`) and the rules folder (`rules/`), as they establish the core behavior and constraints for the mirror system.
+- **`config.json.md`** – The main configuration entry point for the ArchSpine mirror system. It defines overarching parameters and connections to other components.
+- **`folder.md`** – A structural document that explains the narrative role of the `.spine` directory within the larger ArchSpine project, setting expectations for how the directory interacts with mirrored project files.
+- **`rules` (folder)** – Contains architectural rules and conventions that all mirror operations must follow. This submodule is critical for enforcing consistency across the project.
+
+**Key implementation concerns:**
+- Centralized configuration management via `config.json.md`
+- Clear role descriptions in `folder.md` to guide both human readers and automated agents
+- The `rules` folder forms the backbone of rule-based mirroring, including naming conventions, boundary definitions, and permission logic.

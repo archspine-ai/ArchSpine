@@ -1,20 +1,19 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"research","role":"This directory aggregates the second-level components of the ArchSpine mirror system, providing a consolidated view of its core structural modules.","responsibility":"The components in this directory collectively define and manage the hierarchical organization, data flow, and operational logic of the ArchSpine mirror system, ensuring coherent integration between its subsystems.","children":[{"filePath":"research/bench","role":"This directory aggregates the second-level components of the ArchSpine mirror system, providing a consolidated view of its core structural modules.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-04-30T17:34:03.185Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# ArchSpine Research Directory
+# `research/` Directory
 
-This directory serves as the central aggregation point for the second-level structural components of the ArchSpine mirror system. It provides a consolidated view of the core modules that define the system's hierarchical organization, data flow, and operational logic.
+The `research` directory serves as the aggregation point for the second-level components of the ArchSpine mirror system, offering a consolidated view of its core structural modules. This directory is responsible for defining and managing the hierarchical organization, data flow, and operational logic that ensure coherent integration between the system's subsystems.
 
-## Structure
+## Notable Children
 
-The directory contains one primary submodule:
+- **`research/bench`** – A folder that acts as the primary submodule for benchmarking and evaluation. It contains tools and configurations necessary for validating the performance and correctness of the ArchSpine mirror system.
 
-- **bench** – This folder aggregates the second-level components of the ArchSpine mirror system, offering a unified perspective on its core structural modules. It is responsible for defining and managing the hierarchical organization, data flow, and operational logic that ensure coherent integration between subsystems.
+## Implementation Areas
 
-## Key Implementation Areas
+Key implementation areas within this directory include:
+- Hierarchical component organisation
+- Data flow orchestration
+- Operational logic for subsystem integration
 
-The most critical implementation areas within this directory focus on:
+## Concrete Submodules
 
-- **Hierarchical Organization** – How the mirror system's components are structured and related.
-- **Data Flow Management** – The pathways and mechanisms for data movement between subsystems.
-- **Operational Logic** – The core rules and processes that govern system behavior.
-
-The bench submodule is the primary concrete component here, serving as the foundation for the system's structural integrity and subsystem coordination.
+- **`research/bench`** – Focused on performance measurement, regression testing, and system validation. This submodule is directly responsible for generating benchmarks and reporting results that feed back into the development cycle.

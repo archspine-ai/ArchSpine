@@ -1,14 +1,6 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine","role":"This directory aggregates the core configuration and rule definitions that govern the ArchSpine mirror system's behavior and structure.","responsibility":"Collectively, the components in this directory define system-level configuration parameters, establish structural guidelines for the .spine directory, enforce architectural rules and conventions for the mirror system, manage synchronization, indexing, validation, routing, and access control of mirrored data across distributed nodes, and define logical and functional layers including configuration management and interface abstraction to ensure consistency, fault tolerance, and a cohesive, extensible system architecture.","children":[{"filePath":"examples/demo-project/.spine/atlas","role":"This directory aggregates the core configuration and rule definitions that govern the ArchSpine mirror system's behavior and structure.","fileKind":"folder"},{"filePath":"examples/demo-project/.spine/config.json","role":"Project-level configuration for the ArchSpine mirror system, defining localization, LLM provider, MCP context mode, hooks, artifact storage, and file scanning policy.","fileKind":"config"},{"filePath":"examples/demo-project/.spine/index","role":"Root configuration and structural index for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"examples/demo-project/.spine/languages.json","role":"Language and extension registry for the ArchSpine mirror system","fileKind":"config"},{"filePath":"examples/demo-project/.spine/manifest.json","role":"Health-check and sync-state snapshot for the ArchSpine mirror system","fileKind":"config"},{"filePath":"examples/demo-project/.spine/rules","role":"Architectural governance specification for the ArchSpine project.","fileKind":"folder"},{"filePath":"examples/demo-project/.spine/runtime","role":"Execution checkpoint records for synchronization runs in the ArchSpine mirror system.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T04:57:44.303Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# ArchSpine 镜像系统 – `.spine` 目录摘要
+`examples/demo-project/.spine` 目录是 ArchSpine 镜像系统的核心枢纽，集中存放了所有配置、结构索引和架构规则，这些内容共同定义了系统如何运行以及如何确保镜像数据的一致性。该目录划分为多个子文件夹和配置文件，每个模块都有明确的治理或操作职责。
 
-`.spine` 目录是 ArchSpine 镜像系统的核心配置与规则中心。它定义了系统级参数、结构指南、架构规则、同步策略、索引、验证、路由以及跨分布式节点的镜像数据访问控制。该目录组织为以下几个关键子模块：
+值得注意的子组件包括 **atlas** 文件夹（汇聚核心配置与规则定义）、**index** 文件夹（提供根配置与结构索引）、**rules** 文件夹（包含架构治理规范）以及 **runtime** 文件夹（记录同步运行的执行检查点）。关键配置文件有 `config.json`（项目级设置，涵盖本地化、LLM 提供商、MCP 上下文模式、钩子、工件存储和文件扫描策略）、`languages.json`（语言与扩展注册表）和 `manifest.json`（健康检查与同步状态快照）。
 
-- **`atlas/`** – 汇集了控制镜像系统行为和结构的核心配置与规则定义。
-- **`config.json`** – 项目级配置，涵盖本地化、LLM 提供商、MCP 上下文模式、钩子、工件存储和文件扫描策略。
-- **`index/`** – 镜像系统的根配置和结构索引。
-- **`languages.json`** – 镜像系统的语言和扩展注册表。
-- **`manifest.json`** – 镜像系统的健康检查和同步状态快照。
-- **`rules/`** – ArchSpine 项目的架构治理规范。
-- **`runtime/`** – 同步运行的执行检查点记录。
-
-最重要的实现领域包括配置管理（通过 `config.json` 和 `languages.json`）、架构治理（通过 `rules/`）以及同步状态跟踪（通过 `manifest.json` 和 `runtime/`）。`atlas/` 和 `index/` 目录提供基础结构和索引，而 `rules/` 则确保系统的一致性和可扩展性。
+最重要的实现领域是配置管理、规则执行、同步追踪以及接口抽象。具体的子模块如 atlas 模式、规则引擎和运行时检查点系统，是镜像系统实现容错性和可扩展性的关键基础。
