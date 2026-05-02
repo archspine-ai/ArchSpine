@@ -22,6 +22,18 @@ export interface GlobalLLMConfigShape {
 }
 
 export function getGlobalArchSpineDir(): string {
+  // Windows: use %APPDATA% (roaming) for global config — the standard location
+  // for cross-platform CLI tools on Windows.
+  if (process.platform === 'win32') {
+    const appData = process.env.APPDATA;
+    if (appData && appData.trim() !== '') {
+      return path.join(appData, 'archspine');
+    }
+    // Fallback: construct from homedir (non-standard but safe)
+    return path.join(os.homedir(), 'AppData', 'Roaming', 'archspine');
+  }
+
+  // macOS / Linux: XDG Base Directory compliant
   const xdgConfigHome = process.env.XDG_CONFIG_HOME;
   if (xdgConfigHome && xdgConfigHome.trim() !== '') {
     return path.join(xdgConfigHome, 'archspine');

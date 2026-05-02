@@ -119,7 +119,7 @@ async function main() {
       break;
 
     case 'fix':
-      await executeFixCommand({ runtimeService });
+      await executeFixCommand({ args, runtimeService });
       break;
 
     case 'scan':

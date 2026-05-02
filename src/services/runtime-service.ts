@@ -152,7 +152,11 @@ export class RuntimeService {
     return new CheckService(this.createCheckServiceOptions(overrides));
   }
 
-  public getFixService(overrides: LLMRuntimeOverrides = {}): FixService {
-    return new FixService(this.createFixServiceOptions(overrides));
+  public getFixService(
+    overrides: LLMRuntimeOverrides = {},
+    skipConfirmation = false,
+    dryRun = false,
+  ): FixService {
+    return new FixService({ ...this.createFixServiceOptions(overrides), skipConfirmation, dryRun });
   }
 }

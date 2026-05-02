@@ -36,6 +36,8 @@ export interface FixServiceOptions {
   validatePolicy?: ValidatePolicy;
   generationFlow?: GenerationFlow;
   runtimeIO?: RuntimeIO;
+  skipConfirmation?: boolean;
+  dryRun?: boolean;
 }
 
 export class FixService {
@@ -68,6 +70,8 @@ export class FixService {
           promptTier: this.options.promptTier || 'balanced',
           validatePolicy: this.options.validatePolicy || 'strict',
           executionCheckpoint,
+          skipConfirmation: this.options.skipConfirmation ?? false,
+          dryRun: this.options.dryRun ?? false,
         });
       },
       execute: async ({ context, executionCheckpoint, previousCheckpoint, runtimeIO }) => {
@@ -86,7 +90,9 @@ export class FixService {
           const violations = context.manifest.getActiveViolations();
           if (violations.length === 0) {
             if (attempt === 0) {
-              runtimeIO.info('[Fix] No active violations found.');
+              runtimeIO.info(
+                '[Fix] No active violations found. Run `spine check` first to detect violations, then re-run `spine fix`.',
+              );
             } else {
               runtimeIO.info(`[Fix] All violations resolved after ${attempt} fix pass(es).`);
             }

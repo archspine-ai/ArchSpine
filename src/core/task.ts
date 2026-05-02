@@ -49,6 +49,10 @@ export interface TaskContext {
   executionCheckpoint?: ExecutionCheckpointStore;
   runtimeCache: TaskArtifactsState;
   state: TaskState;
+  /** When true, tasks that normally prompt for confirmation should auto-confirm. */
+  skipConfirmation: boolean;
+  /** When true, FixTask displays diffs but does not write changes to disk. */
+  dryRun: boolean;
 }
 
 export type TaskContextFor<Keys extends keyof TaskContext> = Pick<TaskContext, Keys>;

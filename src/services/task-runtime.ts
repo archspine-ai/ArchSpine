@@ -37,6 +37,10 @@ export interface ServiceOptions {
   invalidEnabledViews?: string[];
   runtimeIO?: RuntimeIO;
   executionCheckpoint?: ExecutionCheckpointStore;
+  /** When true, tasks that normally prompt for confirmation should auto-confirm. */
+  skipConfirmation?: boolean;
+  /** When true, FixTask displays diffs but does not write changes to disk. */
+  dryRun?: boolean;
 }
 
 export interface TaskContextOptions extends ServiceOptions {
@@ -102,6 +106,8 @@ export function createTaskContext(options: TaskContextOptions): PreparedTaskCont
       executionCheckpoint: options.executionCheckpoint,
       runtimeCache: createTaskArtifactsState(),
       state: createTaskState(diagnosticsMode),
+      skipConfirmation: options.skipConfirmation ?? false,
+      dryRun: options.dryRun ?? false,
     },
     lockManager,
   };

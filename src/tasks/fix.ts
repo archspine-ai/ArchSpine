@@ -171,10 +171,24 @@ export class FixTask extends SpineTask<FixStageInput, FixStageOutput> {
     ctx.runtimeIO.info(diff);
     ctx.runtimeIO.info(`--- End of Diff ---\n`);
 
-    const confirm = await ctx.runtimeIO.confirm(`Apply fix to ${group.filePath}?`);
+    // Auto-confirm when: --yes flag is set, or running in non-interactive mode (CI/piped).
+    // In interactive TTY mode without --yes, prompt the user to review the diff.
+    const isInteractive = process.stdin.isTTY && process.stdout.isTTY;
+    const confirm =
+      ctx.skipConfirmation || !isInteractive
+        ? true
+        : await ctx.runtimeIO.confirm(`Apply fix to ${group.filePath}?`);
 
     if (!confirm) {
       ctx.runtimeIO.info(`[Task: Fix] Skipped ${group.filePath}.`);
+      return 'skipped';
+    }
+
+    // Dry-run mode: display the diff but do not write to disk.
+    if (ctx.dryRun) {
+      ctx.runtimeIO.info(
+        `[Task: Fix] [DRY-RUN] Would apply fix to ${group.filePath}, but --dry-run is active. No files were modified.`,
+      );
       return 'skipped';
     }
 

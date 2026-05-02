@@ -34,7 +34,19 @@ export function generateFixPrompt(ctx: FixViolationContext): string {
     `### Original File Content:\n${ctx.fileContent}`,
     skeletonSection,
     `### Violations to Fix:\n${violationsBlock}`,
-    `### Instructions:\n1. Analyze the original file content and the violations listed above.\n2. Produce a corrected version of the ENTIRE file that resolves ALL listed violations.\n3. Output ONLY the corrected file content, with no explanations, no markdown fences, and no surrounding text.\n4. Preserve all existing functionality that is NOT related to the violation.\n5. Do not remove imports, exports, or change the public API unless required by the fix.\n6. The output must be valid, compilable source code.`,
+    `### Instructions:`,
+    `1. Analyze the original file content and the violations listed above.`,
+    `2. Produce a corrected version of the ENTIRE file that resolves ALL listed violations.`,
+    `3. Output ONLY the corrected file content, with no explanations, no markdown fences, and no surrounding text.`,
+    `4. Preserve all existing functionality that is NOT related to the violation.`,
+    `5. Do not remove imports, exports, or change the public API unless required by the fix.`,
+    `6. The output must be valid, compilable source code.`,
+    ``,
+    `### Critical patterns for architectural fixes:`,
+    `- Prefer importing and calling a single, well-named function from the correct layer (e.g. \`import { getUsers } from '../services/userService.js'\`) rather than instantiating service classes or calling connect/initialize methods.`,
+    `- Keep the fixed module as thin as possible — it should delegate work, not orchestrate lifecycle.`,
+    `- Preserve all log messages, string literals, and comments exactly as they appear in the original.`,
+    `- For naming convention violations, only rename the identifier — do not change any other part of the declaration.`,
   ]
     .filter(Boolean)
     .join('\n\n');

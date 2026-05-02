@@ -78,6 +78,10 @@ function canTransitionItemStatus(
   if (from === 'running') {
     return true;
   }
+  // Allow retry/resume to restart items with any terminal status.
+  if (to === 'running' && (from === 'skipped' || from === 'failed' || from === 'completed')) {
+    return true;
+  }
   return from === to;
 }
 

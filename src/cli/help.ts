@@ -29,7 +29,7 @@ Analysis:
 
 Governance:
   check          Audit project against architecture rules
-  fix            Interactive auto-fix for rule violations
+  fix            Auto-fix for rule violations (add --yes to skip prompts, --dry-run to preview)
   repo           Repository-level lifecycle management
                  Use 'spine repo check' to detect drift between config and managed Git files
                  Use 'spine repo strategy set <local|distributable>' to migrate artifact strategy
@@ -140,9 +140,11 @@ Audits the project against architecture rules defined in .spine/rules/.
     case 'fix':
       console.log(`
 Usage:
-  spine fix
+  spine fix [--yes] [--dry-run]
 
-(Experimental) Interactive auto-fix for the currently active rule violations.
+(Experimental) Auto-fix for the currently active rule violations.
+Add --yes to skip confirmation prompts. Add --dry-run to preview proposed diffs without applying them.
+Run 'spine check' first to detect violations before running 'spine fix'.
       `);
       break;
     case 'usage':
