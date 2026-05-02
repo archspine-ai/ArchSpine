@@ -1,0 +1,214 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/e2e/cli-pipeline-mock.test.ts",
+    "contentHash": "843d3a497d5db72464bc311858c946bb4494ff20614486dfa9dc340092375e55",
+    "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
+    "semanticHash": "cd1509207342daef447c3a0ccf92d85d3490965dcee82f2344ea3b4a39d4ba4f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/e2e"
+  },
+  "semantic": {
+    "role": "Vitest integration test for the ArchSpine CLI pipeline end-to-end flow.",
+    "responsibilities": [
+      "Create temporary directories as isolated test environments using fs.mkdtempSync.",
+      "Initialize a Git repository with a fixed branch name and user configuration using execFileSync.",
+      "Write wrapper scripts to intercept or mock prompts module behavior during CLI execution.",
+      "Execute the built CLI binary (dist/cli/index.js) with various arguments and validate its expected output."
+    ],
+    "outOfScope": [
+      "Unit tests for individual modules or functions.",
+      "Testing of CLI commands outside the core pipeline flow.",
+      "Test environment setup or teardown beyond temporary directory and git init."
+    ],
+    "invariants": [
+      "Test files must adhere to the project's naming convention: end with .test.ts or .spec.ts.",
+      "Each test run must use a fresh temporary directory to ensure isolation.",
+      "Git must be available in the system PATH for git operations."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "This file provides an end-to-end test harness for validating the CLI pipeline's behavior in a controlled, isolated environment, ensuring core workflow correctness.",
+      "recentChangeIntent": "Incorporates testing for Windows platform compatibility and addresses test fixes referenced in commit CHK-02 and FIX-02, matching the git intent provided."
+    },
+    "publicSurface": [
+      "makeTempDir",
+      "initGitRepo"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test for the ArchSpine CLI pipeline end-to-end flow.",
+        "responsibilities": [
+          "Create temporary directories as isolated test environments using fs.mkdtempSync.",
+          "Initialize a Git repository with a fixed branch name and user configuration using execFileSync.",
+          "Write wrapper scripts to intercept or mock prompts module behavior during CLI execution.",
+          "Execute the built CLI binary (dist/cli/index.js) with various arguments and validate its expected output."
+        ],
+        "outOfScope": [
+          "Unit tests for individual modules or functions.",
+          "Testing of CLI commands outside the core pipeline flow.",
+          "Test environment setup or teardown beyond temporary directory and git init."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "使用 Vitest 对 ArchSpine CLI 流水线进行端到端集成的测试文件。",
+        "responsibilities": [
+          "使用 fs.mkdtempSync 创建临时目录作为隔离的测试环境。",
+          "使用 execFileSync 初始化带有固定分支名称和用户配置的 Git 仓库。",
+          "编写包装脚本以在 CLI 执行期间拦截或模拟 prompts 模块的行为。",
+          "使用各种参数运行构建后的 CLI 二进制文件 (dist/cli/index.js) 并验证其预期输出。"
+        ],
+        "outOfScope": [
+          "针对单个模块或函数的单元测试。",
+          "核心流水线流程之外的 CLI 命令测试。",
+          "超出临时目录和 git init 范围的测试环境搭建或清理。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ]
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-02T07:41:12.573Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

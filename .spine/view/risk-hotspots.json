@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-05-01T07:21:00.256Z",
+  "generatedAt": "2026-05-02T07:42:21.602Z",
   "experimental": true,
   "viewType": "risk-hotspots",
   "summary": "Top 12 risk hotspots ranked by a transparent additive score model.",
@@ -427,42 +427,6 @@
     },
     {
       "id": "hotspot-11",
-      "hotspotPath": "src/services/task-runtime.ts",
-      "riskFactors": [
-        "fan-out",
-        "fan-in",
-        "surface-exposure",
-        "missing-adjacent-tests"
-      ],
-      "summary": "Core service orchestrator that prepares and coordinates task execution engines and infrastructure for the ArchSpine system; ranked due to fan-out, fan-in.",
-      "impactRadiusHint": "Likely medium impact beyond the local directory.",
-      "confidence": 0.66,
-      "totalScore": 47,
-      "scoreBreakdown": [
-        {
-          "factor": "fan-in",
-          "score": 12,
-          "reason": "File is depended on by 3 indexed file(s)."
-        },
-        {
-          "factor": "fan-out",
-          "score": 18,
-          "reason": "File depends on 13 indexed file(s)."
-        },
-        {
-          "factor": "surface-exposure",
-          "score": 11,
-          "reason": "File exposes 2 public-surface item(s) and 3 export(s)."
-        },
-        {
-          "factor": "missing-adjacent-tests",
-          "score": 6,
-          "reason": "No adjacent test file was detected near a shared or exposed module."
-        }
-      ]
-    },
-    {
-      "id": "hotspot-12",
       "hotspotPath": "src/engines/context.ts",
       "riskFactors": [
         "fan-out",
@@ -499,6 +463,47 @@
           "factor": "large-file",
           "score": 8,
           "reason": "File has 288 line(s), increasing change surface area."
+        },
+        {
+          "factor": "missing-adjacent-tests",
+          "score": 6,
+          "reason": "No adjacent test file was detected near a shared or exposed module."
+        }
+      ]
+    },
+    {
+      "id": "hotspot-12",
+      "hotspotPath": "src/tasks/validate.ts",
+      "riskFactors": [
+        "fan-out",
+        "surface-exposure",
+        "fan-in",
+        "large-file"
+      ],
+      "summary": "ArchSpine validation task orchestrator for LLM-powered architectural rule compliance checking; ranked due to fan-out, surface-exposure.",
+      "impactRadiusHint": "Likely localized impact with a few downstream touch points.",
+      "confidence": 0.65,
+      "totalScore": 45,
+      "scoreBreakdown": [
+        {
+          "factor": "fan-in",
+          "score": 8,
+          "reason": "File is depended on by 2 indexed file(s)."
+        },
+        {
+          "factor": "fan-out",
+          "score": 12,
+          "reason": "File depends on 6 indexed file(s)."
+        },
+        {
+          "factor": "surface-exposure",
+          "score": 11,
+          "reason": "File exposes 2 public-surface item(s) and 3 export(s)."
+        },
+        {
+          "factor": "large-file",
+          "score": 8,
+          "reason": "File has 379 line(s), increasing change surface area."
         },
         {
           "factor": "missing-adjacent-tests",

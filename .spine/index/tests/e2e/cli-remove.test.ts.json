@@ -1,0 +1,221 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/e2e/cli-remove.test.ts",
+    "contentHash": "0e670d8386f29a58a1b336bc1a6a632fbc6259151056f7c8c1576e81d43c699c",
+    "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
+    "semanticHash": "a39df28a12c5bbbbce3059f4e8c542c8282a679aa1b02ce4952095e5282fa619",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/e2e"
+  },
+  "semantic": {
+    "role": "Integration test suite for ArchSpine CLI commands using vitest, spawning the built CLI and mocking user prompts.",
+    "responsibilities": [
+      "Provide the `runCli` helper that spawns the built CLI with arguments and captures stdout, stderr, and exit code.",
+      "Set up ephemeral temporary working directories per test to isolate file system side effects.",
+      "Mock the `prompts` module by writing a wrapper script allowing automated input injection.",
+      "Execute comprehensive end-to-end tests covering CLI commands (init, generate, configuration) via `describe` and `it` blocks.",
+      "Integrate with `git` commands through `execFileSync` to validate scaffolding and commit workflows.",
+      "Clean up temporary directories using `afterEach` to prevent disk pollution."
+    ],
+    "outOfScope": [
+      "Unit testing of internal modules or utilities.",
+      "UI or browser-based testing.",
+      "Performance or load testing.",
+      "Cross-platform compatibility testing beyond the test environment."
+    ],
+    "invariants": [
+      "The test file must follow the naming convention `<name>.test.ts` or `<name>.spec.ts` (rule: test-file-suffix).",
+      "Temporary directories must be created and cleaned up deterministically.",
+      "CLI tests must target the built CLI binary at `dist/cli/index.js`.",
+      "All test cases must use vitest life cycle hooks for proper isolation."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Validate CLI command behavior end-to-end to ensure correctness of scaffolding, prompting, and git integration before releases.",
+      "recentChangeIntent": "Added 37 E2E tests across 7 files for CLI commands (init, generate, config), covering spawned processes, user input simulation, and file system assertions."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Integration test suite for ArchSpine CLI commands using vitest, spawning the built CLI and mocking user prompts.",
+        "responsibilities": [
+          "Provide the `runCli` helper that spawns the built CLI with arguments and captures stdout, stderr, and exit code.",
+          "Set up ephemeral temporary working directories per test to isolate file system side effects.",
+          "Mock the `prompts` module by writing a wrapper script allowing automated input injection.",
+          "Execute comprehensive end-to-end tests covering CLI commands (init, generate, configuration) via `describe` and `it` blocks.",
+          "Integrate with `git` commands through `execFileSync` to validate scaffolding and commit workflows.",
+          "Clean up temporary directories using `afterEach` to prevent disk pollution."
+        ],
+        "outOfScope": [
+          "Unit testing of internal modules or utilities.",
+          "UI or browser-based testing.",
+          "Performance or load testing.",
+          "Cross-platform compatibility testing beyond the test environment."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "使用 vitest 的 ArchSpine CLI 命令集成测试套件，启动编译后的 CLI 并模拟用户提示。",
+        "responsibilities": [
+          "提供 `runCli` 辅助函数，用于启动编译后的 CLI 并捕获标准输出、标准错误和退出码。",
+          "在每个测试中设置临时工作目录，以隔离文件系统副作用。",
+          "通过编写包装脚本模拟 `prompts` 模块，实现自动输入注入。",
+          "通过 `describe` 和 `it` 块执行覆盖 CLI 命令（init、generate、配置）的全面端到端测试。",
+          "通过 `execFileSync` 集成 git 命令，验证脚手架和提交工作流。",
+          "使用 `afterEach` 清理临时目录，避免磁盘污染。"
+        ],
+        "outOfScope": [
+          "内部模块或工具函数的单元测试。",
+          "UI 或浏览器测试。",
+          "性能或负载测试。",
+          "超出此测试环境的跨平台兼容性测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ]
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-02T07:41:29.327Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

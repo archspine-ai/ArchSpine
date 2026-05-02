@@ -2,9 +2,9 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/cli/commands/fix.ts",
-    "contentHash": "c94b0f63a8aec23960a4b9aa23b327da190b0065e7f58db99ed754e65862f010",
-    "skeletonHash": "09f494f72ea7d82856aae68e091344b16efec00ae6143636c929d376e4296d44",
-    "semanticHash": "71ec5ef62590ff11db48579757ff1fdeced72aee77192a3ed6aa5a4141dbdf33",
+    "contentHash": "5463c8025269c0a38b5c17ddad379077ad69a33a6bfce1ff5cdafef5b15ce5b9",
+    "skeletonHash": "9db375f551837bf2441b5c42b5f949ab272c846b694d7245c79b8fe2ddd76ed7",
+    "semanticHash": "7221b8d431b3c7765d6c228d9ab776a15c45e5592215a5fe77c8ded9d70e7f1c",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli/commands"
@@ -12,27 +12,27 @@
   "semantic": {
     "role": "CLI command adapter for the 'fix' operation, providing a thin interface to delegate execution to the runtime service's fix subsystem facade.",
     "responsibilities": [
-      "Defines the ExecuteFixCommandOptions interface, requiring a RuntimeService instance for dependency injection.",
-      "Logs experimental warnings to the console about the generative nature of the fix feature.",
-      "Executes the fix command by invoking runtimeService.getFixService().run() and awaits the result.",
-      "Throws an ArchSpineError with code CliCommandFailed if the fix operation reports any remaining architectural violations."
+      "Defines the ExecuteFixCommandOptions interface for dependency injection of RuntimeService.",
+      "Logs experimental warnings about the generative nature of the 'spine fix' feature.",
+      "Parses command-line arguments to determine skipConfirmation and dryRun flags.",
+      "Invokes runtimeService.getFixService() with the parsed configuration and triggers the fix run.",
+      "Throws an ArchSpineError with code CliCommandFailed if the fix run reports remaining architectural violations."
     ],
     "outOfScope": [
-      "Implementing the fix logic or pipeline (delegated to runtime service).",
-      "Handling persistence or data access.",
-      "Providing user input parsing or CLI argument validation (assumed upstream)."
+      "Pipeline or persistence logic that belongs in services, core, engines, or infra.",
+      "Direct fix algorithm implementation or orchestration; these are delegated to RuntimeService."
     ],
     "invariants": [
-      "Must remain a thin adapter, delegating all business logic to the runtime service.",
-      "Must not absorb pipeline, engine, or persistence responsibilities."
+      "Must remain a thin command adapter without absorbing pipeline or persistence logic.",
+      "Must delegate all fix execution logic to RuntimeService."
     ],
     "changeIntent": {
-      "architecturalIntent": "Separate CLI command routing from core fix logic to maintain testability and reuse.",
-      "recentChangeIntent": "Tighten schema handling and add try preview (based on git intent, though not directly evidenced in this file's current code)."
+      "architecturalIntent": "Preserve a thin CLI adapter pattern for the fix command, ensuring all domain and pipeline logic resides in the service layer.",
+      "recentChangeIntent": "Based on git intent, recent changes likely refined argument parsing for --yes and --dry-run propagation to improve reliability, but the architectural adapter pattern remains unchanged."
     },
     "publicSurface": [
-      "ExecuteFixCommandOptions interface",
-      "executeFixCommand function"
+      "executeFixCommand",
+      "ExecuteFixCommandOptions"
     ],
     "ruleViolations": [],
     "driftDetected": false,
@@ -41,15 +41,29 @@
       "English": {
         "role": "CLI command adapter for the 'fix' operation, providing a thin interface to delegate execution to the runtime service's fix subsystem facade.",
         "responsibilities": [
-          "Defines the ExecuteFixCommandOptions interface, requiring a RuntimeService instance for dependency injection.",
-          "Logs experimental warnings to the console about the generative nature of the fix feature.",
-          "Executes the fix command by invoking runtimeService.getFixService().run() and awaits the result.",
-          "Throws an ArchSpineError with code CliCommandFailed if the fix operation reports any remaining architectural violations."
+          "Defines the ExecuteFixCommandOptions interface for dependency injection of RuntimeService.",
+          "Logs experimental warnings about the generative nature of the 'spine fix' feature.",
+          "Parses command-line arguments to determine skipConfirmation and dryRun flags.",
+          "Invokes runtimeService.getFixService() with the parsed configuration and triggers the fix run.",
+          "Throws an ArchSpineError with code CliCommandFailed if the fix run reports remaining architectural violations."
         ],
         "outOfScope": [
-          "Implementing the fix logic or pipeline (delegated to runtime service).",
-          "Handling persistence or data access.",
-          "Providing user input parsing or CLI argument validation (assumed upstream)."
+          "Pipeline or persistence logic that belongs in services, core, engines, or infra.",
+          "Direct fix algorithm implementation or orchestration; these are delegated to RuntimeService."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "为 'fix' 操作提供 CLI 命令适配器，通过薄接口将执行委托给运行时服务的修复子系统门面。",
+        "responsibilities": [
+          "定义 ExecuteFixCommandOptions 接口，用于依赖注入 RuntimeService。",
+          "记录关于 'spine fix' 功能生成性质的实验性警告。",
+          "解析命令行参数以确定 skipConfirmation 和 dryRun 标志。",
+          "使用解析的配置调用 runtimeService.getFixService() 并触发修复运行。",
+          "如果修复运行报告残留架构违规，则抛出带有 CliCommandFailed 代码的 ArchSpineError。"
+        ],
+        "outOfScope": [
+          "属于服务、核心、引擎或基础设施层的流水线或持久化逻辑。",
+          "直接修复算法实现或编排；这些被委托给 RuntimeService。"
         ]
       }
     }
@@ -76,7 +90,7 @@
       {
         "name": "executeFixCommand",
         "kind": "function",
-        "signature": "executeFixCommand({\n  runtimeService,\n}: ExecuteFixCommandOptions)"
+        "signature": "executeFixCommand({\n  args,\n  runtimeService,\n}: ExecuteFixCommandOptions)"
       },
       {
         "name": "ExecuteFixCommandOptions",
@@ -123,14 +137,16 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:36.253Z",
+    "indexedAt": "2026-05-02T07:41:06.579Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "fallback"
+      "llm"
     ]
   }
 }

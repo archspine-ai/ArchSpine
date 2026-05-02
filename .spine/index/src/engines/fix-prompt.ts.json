@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/engines/fix-prompt.ts",
-    "contentHash": "a543bd17f4a1c00f1a90026d6114c9ca788bcfc86afd4e457fa9bdc55c0e6dab",
+    "contentHash": "700607e12527ae0de73264057f54e027b04e5e1c02e3e4d85b7727d04f63663f",
     "skeletonHash": "644ce283a294e9bf7f45136cc7f9ce22f7a4a8173fabd13467be8a90d8c11efc",
     "semanticHash": "3d9dd6c05990b99c7b326829c69321cbb7b343a20addf19c7f7ace5caf62f5b9",
     "language": "typescript",
@@ -16,22 +16,21 @@
       "Formats violation details and file context into a structured instructional prompt for an LLM assistant."
     ],
     "outOfScope": [
-      "Directly fixing violations (only generates prompts for an LLM to do so)",
-      "Orchestrating the fix application process",
-      "Importing CLI entrypoints or service-level modules"
+      "Does not execute or run the fix; only generates the prompt.",
+      "Does not parse or validate source code beyond formatting the provided context.",
+      "Does not communicate with external services or persist data."
     ],
     "invariants": [
-      "Must export the FixViolationContext interface for type safety.",
-      "Must export the generateFixPrompt function as the primary public API.",
-      "Must remain decoupled from CLI entrypoints and service orchestration per engine-independence rule."
+      "Must not import CLI entrypoints or service-level orchestration modules (engine-independence rule).",
+      "Must remain decoupled from presentation and orchestration concerns."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a reusable, type-safe prompt generation utility for automated architectural violation remediation via LLM.",
-      "recentChangeIntent": "Part of broader hardening of risk hotspots with LLM/DB decoupling; this module supports LLM-based fix generation."
+      "architecturalIntent": "Provide a reusable engine function to generate LLM prompts for fixing architectural violations, keeping the module thin and independent.",
+      "recentChangeIntent": "Not directly related; this file unchanged in recent commit (commit about fixing TTY hang, retry crash, Windows compat)."
     },
     "publicSurface": [
-      "FixViolationContext interface",
-      "generateFixPrompt function"
+      "FixViolationContext",
+      "generateFixPrompt"
     ],
     "ruleViolations": [],
     "driftDetected": false,
@@ -44,9 +43,21 @@
           "Formats violation details and file context into a structured instructional prompt for an LLM assistant."
         ],
         "outOfScope": [
-          "Directly fixing violations (only generates prompts for an LLM to do so)",
-          "Orchestrating the fix application process",
-          "Importing CLI entrypoints or service-level modules"
+          "Does not execute or run the fix; only generates the prompt.",
+          "Does not parse or validate source code beyond formatting the provided context.",
+          "Does not communicate with external services or persist data."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于架构违规修复的 LLM 提示模板生成器。",
+        "responsibilities": [
+          "定义 FixViolationContext 数据结构，以封装生成修复提示所需的违规上下文。",
+          "将违规详情和文件上下文格式化为结构化的指令性提示，供 LLM 助手使用。"
+        ],
+        "outOfScope": [
+          "不执行或运行修复，仅生成提示。",
+          "不解析或验证源代码，仅格式化提供的上下文。",
+          "不与外部服务通信或持久化数据。"
         ]
       }
     }
@@ -88,14 +99,16 @@
   },
   "graph": {
     "dependsOn": [],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:37.564Z",
+    "indexedAt": "2026-05-02T07:40:45.971Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "fallback"
+      "llm"
     ]
   }
 }

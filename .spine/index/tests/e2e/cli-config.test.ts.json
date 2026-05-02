@@ -1,0 +1,216 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/e2e/cli-config.test.ts",
+    "contentHash": "b84344199f6b16f75f24d338e8d7d157e2918ce370599d34797c5864d2513181",
+    "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
+    "semanticHash": "b76fbae21adf756ef5f73a6cb953c9660b8d299a8978284dcbf1b8a75049914e",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/e2e"
+  },
+  "semantic": {
+    "role": "End-to-end test suite for CLI commands, using vitest and child_process to automate integration testing.",
+    "responsibilities": [
+      "Creates isolated temporary directories for test execution using fs.mkdtempSync and os.tmpdir.",
+      "Defines a runCli helper that spawns the built CLI binary with given arguments and captures stdout, stderr, and exit code.",
+      "Writes wrapper scripts for prompts simulation to enable non-interactive CLI testing.",
+      "Executes a comprehensive set of test cases (37 tests across 7 files) validating CLI output, error handling, and command behavior.",
+      "Cleans up temporary directories after each test case using afterEach and fs operations.",
+      "Uses beforeAll to set up the test environment, including building wrapper scripts."
+    ],
+    "outOfScope": [
+      "Unit testing of internal CLI logic.",
+      "Testing of graphical user interfaces.",
+      "Network-dependent features requiring external services."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts per the test-file-suffix rule.",
+      "All test processes must be spawned synchronously to ensure deterministic test execution."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide comprehensive automated E2E coverage for CLI commands to catch regressions before release.",
+      "recentChangeIntent": "Add E2E test suite for CLI commands with 37 tests across 7 files, as per commit 171f7b4."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "End-to-end test suite for CLI commands, using vitest and child_process to automate integration testing.",
+        "responsibilities": [
+          "Creates isolated temporary directories for test execution using fs.mkdtempSync and os.tmpdir.",
+          "Defines a runCli helper that spawns the built CLI binary with given arguments and captures stdout, stderr, and exit code.",
+          "Writes wrapper scripts for prompts simulation to enable non-interactive CLI testing.",
+          "Executes a comprehensive set of test cases (37 tests across 7 files) validating CLI output, error handling, and command behavior.",
+          "Cleans up temporary directories after each test case using afterEach and fs operations.",
+          "Uses beforeAll to set up the test environment, including building wrapper scripts."
+        ],
+        "outOfScope": [
+          "Unit testing of internal CLI logic.",
+          "Testing of graphical user interfaces.",
+          "Network-dependent features requiring external services."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "CLI 命令的端到端测试套件，使用 vitest 和 child_process 自动化集成测试。",
+        "responsibilities": [
+          "使用 fs.mkdtempSync 和 os.tmpdir 创建隔离的临时目录用于测试执行。",
+          "定义 runCli 辅助函数，通过生成构建的 CLI 二进制文件并传入参数，捕获标准输出、标准错误和退出码。",
+          "编写用于模拟 prompts 的包装脚本，支持非交互式 CLI 测试。",
+          "执行全面的测试用例（7 个文件中包含 37 个测试），验证 CLI 输出、错误处理及命令行为。",
+          "在每个测试用例后使用 afterEach 和文件系统操作清理临时目录。",
+          "使用 beforeAll 设置测试环境，包括构建包装脚本。"
+        ],
+        "outOfScope": [
+          "内部 CLI 逻辑的单元测试。",
+          "图形用户界面的测试。",
+          "依赖外部服务的网络功能测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "'vitest'",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "'child_process'",
+        "relation": "import",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ]
+      },
+      {
+        "targetPath": "'url'",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "'fs'",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "'os'",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "'path'",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-02T07:40:50.248Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

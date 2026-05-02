@@ -1,0 +1,220 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/e2e/cli-real-llm.test.ts",
+    "contentHash": "a8eb8c3b93becb32bcaf2cc4383938435bd3149b30672f2305827d99592d4e1f",
+    "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
+    "semanticHash": "30f06180597f1925d9d6af5621dcf631ee69596a201f5917d54f8035a2da65f5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/e2e"
+  },
+  "semantic": {
+    "role": "End-to-end test suite for the ArchSpine CLI, verifying correct behavior in a real temporary repository environment.",
+    "responsibilities": [
+      "Sets up a temporary directory with an initialized Git repository for testing.",
+      "Executes the built ArchSpine CLI binary via child_process (spawnSync, execFileSync) with various arguments.",
+      "Asserts expected CLI outputs, exit codes, and side effects (e.g., file creation).",
+      "Provides test hook utilities (e.g., afterEach cleanup) via vitest lifecycle methods.",
+      "Validates the CLI's prompts module interaction by potentially wrapping or intercepting prompts."
+    ],
+    "outOfScope": [
+      "Unit tests for internal functions or modules.",
+      "Integration tests that require a database or external services.",
+      "Testing of the prompts module itself (it is mocked or wrapped).",
+      "Performance or load testing of the CLI."
+    ],
+    "invariants": [
+      "Requires a Node.js runtime to run vitest and execute the CLI.",
+      "Assumes the CLI has been built beforehand (dist/cli/index.js must exist).",
+      "Relies on the `prompts` npm module being installed at node_modules/prompts/index.js.",
+      "Executes git commands and assumes git is installed and available on PATH.",
+      "Uses temporary directories in os.tmpdir() and cleans up after each test.",
+      "The test file must be named with `.test.ts` or `.spec.ts` suffix to be discovered by the test runner (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a robust end-to-end test suite that validates the CLI behavior in an isolated, reproducible environment, ensuring commands work as expected before releases.",
+      "recentChangeIntent": "Added a comprehensive E2E test suite covering 37 test cases across 7 files, focusing on CLI command execution and output validation."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "End-to-end test suite for the ArchSpine CLI, verifying correct behavior in a real temporary repository environment.",
+        "responsibilities": [
+          "Sets up a temporary directory with an initialized Git repository for testing.",
+          "Executes the built ArchSpine CLI binary via child_process (spawnSync, execFileSync) with various arguments.",
+          "Asserts expected CLI outputs, exit codes, and side effects (e.g., file creation).",
+          "Provides test hook utilities (e.g., afterEach cleanup) via vitest lifecycle methods.",
+          "Validates the CLI's prompts module interaction by potentially wrapping or intercepting prompts."
+        ],
+        "outOfScope": [
+          "Unit tests for internal functions or modules.",
+          "Integration tests that require a database or external services.",
+          "Testing of the prompts module itself (it is mocked or wrapped).",
+          "Performance or load testing of the CLI."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine CLI 的端到端测试套件，在真实临时仓库环境中验证 CLI 的正确行为。",
+        "responsibilities": [
+          "设置临时目录并初始化 Git 仓库用于测试。",
+          "通过 child_process（spawnSync、execFileSync）执行已构建的 ArchSpine CLI 二进制文件，传入不同参数。",
+          "断言预期的 CLI 输出、退出码及副作用（例如文件创建）。",
+          "通过 vitest 生命周期方法提供测试钩子工具（如 afterEach 清理）。",
+          "通过包装或拦截 prompts 模块来验证 CLI 的 prompts 交互。"
+        ],
+        "outOfScope": [
+          "内部函数或模块的单元测试。",
+          "需要数据库或外部服务的集成测试。",
+          "对 prompts 模块本身的测试（它被模拟或包装）。",
+          "CLI 的性能或负载测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ]
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-02T07:41:35.459Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

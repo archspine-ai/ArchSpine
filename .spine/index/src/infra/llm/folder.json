@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/infra/llm",
-  "role": "Core LLM infrastructure layer providing client abstractions, configuration management, and resilient execution for semantic generation.",
-  "responsibility": "Defines provider-agnostic LLM client interfaces and response structures, implements factory and runtime configuration resolution for instantiating provider clients, manages global LLM configuration file I/O and credential storage, and provides retry utilities with exponential backoff for resilient async operations.",
+  "role": "Core LLM abstraction layer for ArchSpine's mirror system, providing provider-agnostic interfaces, configuration management, and retry logic.",
+  "responsibility": "Defines base interfaces (LLMResponse, LLMClient, etc.), implements a factory for provider instantiation, manages global LLM configuration and secrets, provides retry with exponential backoff, resolves runtime settings from multiple sources, and contains concrete provider implementations (Gemini, OpenAI, mock) for generating semantic summaries.",
   "children": [
     {
       "filePath": "src/infra/llm/base.ts",
@@ -36,7 +36,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-01T04:57:43.784Z",
+    "indexedAt": "2026-05-02T07:41:45.798Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

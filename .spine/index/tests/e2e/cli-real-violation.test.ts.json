@@ -1,0 +1,218 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/e2e/cli-real-violation.test.ts",
+    "contentHash": "382f8edf82648bc32a3b580a078840fb7aef0e25acbed77da9c0d01ef3cb9b04",
+    "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
+    "semanticHash": "38d1e1f36a79cb35dfe03c61d1a83c65970074f787fae7d68df133704f247afd",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/e2e"
+  },
+  "semantic": {
+    "role": "End-to-end (E2E) integration test for the ArchSpine CLI binary using Vitest, verifying CLI execution and rule violation detection in isolated git repositories.",
+    "responsibilities": [
+      "Set up temporary directories for isolated test environments with fs.mkdtempSync.",
+      "Initialize bare git repositories and configure user identity for test scaffolding.",
+      "Write project configuration files (e.g., archspine.json) programmatically using fs.writeFileSync.",
+      "Execute the built CLI binary (dist/cli/index.js) via child_process.execFileSync or spawnSync.",
+      "Assert CLI output and exit codes against expected behavior using vitest expectations.",
+      "Clean up temporary directories implicitly after each test (via OS temp cleanup or vitest lifecycle hooks).",
+      "Simulate user input by preparing prompts module path (implied by promptsModulePath)."
+    ],
+    "outOfScope": [
+      "Unit testing of individual functions or modules inside the source code.",
+      "Direct file system interactions outside of temporary test directories.",
+      "Cross-platform compatibility testing (though the git intent mentions Windows platform tests, the code itself is platform-agnostic)."
+    ],
+    "invariants": [
+      "All test files must end with .test.ts or .spec.ts (assumed compliant based on file naming conventions)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Add E2E tests for CLI behavior and rule violation detection to ensure correctness of the command-line interface.",
+      "recentChangeIntent": "test: add Windows platform tests, CHK-02, FIX-02, and real LLM E2E tests (incorporates platform and real LLM E2E coverage)."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "End-to-end (E2E) integration test for the ArchSpine CLI binary using Vitest, verifying CLI execution and rule violation detection in isolated git repositories.",
+        "responsibilities": [
+          "Set up temporary directories for isolated test environments.",
+          "Initialize bare git repositories and configure user identity.",
+          "Write project configuration files programmatically.",
+          "Execute the built CLI binary via child_process.",
+          "Assert CLI output and exit codes against expectations.",
+          "Clean up temporary directories after each test.",
+          "Simulate user input via prompts module path."
+        ],
+        "outOfScope": [
+          "Unit testing of individual functions or modules.",
+          "Direct file system interactions outside of temporary directories.",
+          "Cross-platform compatibility testing (though intended in broader scope)."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基于Vitest的ArchSpine CLI端到端集成测试，在隔离的git仓库中验证CLI执行和规则违规检测。",
+        "responsibilities": [
+          "使用fs.mkdtempSync设置临时目录作为隔离的测试环境。",
+          "初始化裸git仓库并配置用户身份信息用于测试搭建。",
+          "通过fs.writeFileSync程序化地写入项目配置文件（如archspine.json）。",
+          "通过child_process.execFileSync或spawnSync执行构建后的CLI二进制文件。",
+          "使用vitest断言验证CLI输出和退出码是否符合预期行为。",
+          "在每次测试后清理临时目录。",
+          "通过prompts模块路径模拟用户输入。"
+        ],
+        "outOfScope": [
+          "对源码中单个函数或模块的单元测试。",
+          "在临时测试目录之外直接操作文件系统。",
+          "跨平台兼容性测试（尽管整体测试意图包含，但该代码本身是平台无关的）。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ]
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-02T07:41:24.334Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

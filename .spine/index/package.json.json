@@ -2,27 +2,29 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "package.json",
-    "contentHash": "60e67016cb0b195cc8963835d3eff1875046190753a005f9569a025144bc3418",
-    "semanticHash": "b9b4e63b8cca04a6499181b9346ed44fe94cf78b6a881abceb25433108183ba4",
+    "contentHash": "778005c61f74f6d797b0129c2d47d567e333708e9b047a8ec7feafa2284634c4",
+    "semanticHash": "b9d587eb1e7e9374ec1894f5e7580dcb182ab42f21749132ec9f1f014650dc94",
     "language": "unsupported",
     "fileKind": "config",
     "scope": ""
   },
   "semantic": {
-    "role": "Package manifest for the ArchSpine CLI tool, defining metadata, entry points, dependencies, and scripts for building, testing, and publishing the project.",
+    "role": "Package definition and metadata for the ArchSpine CLI tool, enabling architectural governance and semantic layer capabilities.",
     "responsibilities": [
-      "CLI binary registration and entry point resolution",
-      "Build, test, and release pipeline orchestration",
-      "Dependency management for runtime and development",
-      "Repository metadata and licensing",
-      "File inclusion/exclusion for distribution"
+      "Declares package identity, version, and licensing (Apache-2.0).",
+      "Defines executable entry points (`spine` and `archspine` commands).",
+      "Configures build, test, documentation, and release automation scripts.",
+      "Sets Node.js runtime engine requirement (>=20).",
+      "Lists runtime dependencies and dev tooling needed for development and testing.",
+      "Specifies distribution files including compiled output, schemas, and documentation assets."
     ],
     "outOfScope": [],
     "invariants": [
-      "Node.js engine must be >=20",
-      "TypeScript compilation must succeed before CLI execution",
-      "All test suites must pass before release",
-      "Schema compliance tests are mandatory in CI"
+      "Node.js engine must be version 20 or higher to run scripts and installed dependencies.",
+      "The `main` field must point to an existing compiled entry point at `dist/cli/index.js`.",
+      "The `type` field must remain `module` to ensure ES module resolution.",
+      "The `files` array must exclude `__mocks__` directories and source maps from the published package.",
+      "All scripts in the `scripts` block must be executable without manual intervention (e.g., via `npm run`)."
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -33,40 +35,24 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Package manifest for the ArchSpine CLI tool, defining metadata, entry points, dependencies, and scripts for building, testing, and publishing the project.",
+        "role": "This file serves as the central configuration for the ArchSpine npm package. It determines how the tool is installed, executed, built, tested, and published. All metadata, dependencies, and automation pipelines are declared here, making it a critical component of the project's lifecycle management.",
         "parameter_definitions": {
-          "name": "Project identifier used for npm registry and internal references.",
-          "version": "Semantic versioning string that controls release lifecycle and compatibility.",
-          "description": "Human-readable summary of the project's purpose.",
-          "main": "Primary entry point for the module; resolved by Node.js when importing the package.",
-          "bin": "Maps CLI commands ('spine', 'archspine') to executable scripts; critical for user-facing tool invocation.",
-          "type": "Module type ('module' enables ES module syntax); affects import/export behavior.",
-          "engines": "Declares minimum Node.js version (>=20); prevents runtime failures on unsupported platforms.",
-          "files": "Whitelist of files/directories included in npm publish; excludes mocks, source maps, and unnecessary artifacts.",
-          "scripts": "Defines automation commands for build, test, lint, docs, and release; orchestrates CI/CD pipeline.",
-          "license": "Apache-2.0 license governs usage, modification, and distribution rights.",
-          "dependencies": "Runtime packages required for CLI execution; includes AST-grep language parsers.",
-          "devDependencies": "Build-time and test-time tools (TypeScript, ESLint, Vitest, etc.); not shipped to end users."
+          "version": "Specifies the current release version (1.0.2). Used for semantic versioning and dependency resolution; mismatches can cause installation conflicts.",
+          "engines": "Requires Node.js >=20. This constraint ensures compatibility with modern JavaScript features used in the codebase. Violation leads to runtime errors on older Node versions.",
+          "scripts": "Defines automation commands for building (`build`), testing (`test`, `test:ci`), documentation (`docs:dev`), and release validation (`release:gate`). Each script is a potential security surface if arbitrary code is injected; the build scripts (`scripts/build.mjs`) should be audited to prevent supply-chain attacks.",
+          "dependencies": "Lists runtime packages such as `@ast-grep/lang-c` and `@ast-grep/lang-cpp`. Version ranges may introduce unintended updates; pinning to exact versions is recommended for stability in production deployments."
         },
-        "stability_and_risks": "This file is the foundation of the project's build and release pipeline. Misconfiguration (e.g., incorrect 'main' or 'bin' paths) can break CLI invocation. Engine constraints prevent deployment on incompatible Node versions. The 'files' whitelist reduces distribution size but may accidentally exclude necessary assets. Scripts define critical gates (test, schema validation) that enforce quality; skipping them increases risk of shipping broken code. Dependency versions should be pinned or locked to avoid supply-chain issues."
+        "stability_and_risks": "The configuration directly impacts system stability by controlling the build output and dependency tree. The `engines` field enforces a minimum Node version, preventing failures from unsupported APIs. The `scripts` block, especially `build`, `release:gate`, and `validate`, are gatekeepers for quality; misconfiguration could release broken packages. The `files` field reduces package size by omitting tests and source maps, lowering the risk of accidental exposure of internal code. However, the inclusion of dynamic script paths (e.g., `node scripts/release-gate.mjs`) introduces a dependency on external script integrity; compromise of those scripts could affect the full CI/CD pipeline."
       },
       "Simplified Chinese": {
-        "role": "ArchSpine CLI 工具的包清单，定义了元数据、入口点、依赖关系以及构建、测试和发布的脚本。",
+        "role": "此文件是 ArchSpine npm 包的核心配置，决定了工具的安装、运行、构建、测试和发布方式。所有元数据、依赖关系和自动化流水线都在此声明，是项目生命周期管理的关键组成部分。",
         "parameter_definitions": {
-          "name": "项目标识符，用于 npm 注册表和内部引用。",
-          "version": "语义化版本号，控制发布生命周期和兼容性。",
-          "description": "项目用途的简要说明。",
-          "main": "模块的主入口文件，Node.js 导入包时解析此路径。",
-          "bin": "将 CLI 命令（'spine'、'archspine'）映射到可执行脚本；对用户调用工具至关重要。",
-          "type": "模块类型（'module' 启用 ES 模块语法），影响导入/导出行为。",
-          "engines": "声明最低 Node.js 版本（>=20），防止在不支持的平台上运行时出错。",
-          "files": "npm 发布时包含的文件/目录白名单，排除模拟文件、源码映射和不必要的工件。",
-          "scripts": "定义构建、测试、代码检查、文档和发布的自动化命令，编排 CI/CD 流程。",
-          "license": "Apache-2.0 许可证规定了使用、修改和分发权限。",
-          "dependencies": "CLI 执行所需的运行时包，包括 AST-grep 语言解析器。",
-          "devDependencies": "构建和测试阶段的工具（TypeScript、ESLint、Vitest 等），不随最终用户版本发布。"
+          "version": "指定当前发布版本（1.0.2）。用于语义化版本控制和依赖解析；版本不匹配可能导致安装冲突。",
+          "engines": "要求 Node.js 版本 >=20。此约束确保代码库中使用的现代 JavaScript 特性得到支持。违反此要求将在旧版 Node 上导致运行时错误。",
+          "scripts": "定义了构建（`build`）、测试（`test`、`test:ci`）、文档（`docs:dev`）和发布验证（`release:gate`）等自动化命令。每个脚本都是一个潜在的安全面；若注入任意代码可能造成供应链攻击，应审计构建脚本（`scripts/build.mjs`）以确保安全。",
+          "dependencies": "列出运行时包，如 `@ast-grep/lang-c` 和 `@ast-grep/lang-cpp`。版本范围可能引入意外更新，建议在生产部署中锁定精确版本以保持稳定性。"
         },
-        "stability_and_risks": "此文件是项目构建和发布流程的基础。配置错误（例如 'main' 或 'bin' 路径不正确）可能导致 CLI 无法调用。引擎约束可防止在不兼容的 Node 版本上部署。'files' 白名单减少了分发体积，但可能意外排除必要资源。脚本定义了关键的质量门禁（测试、模式验证），跳过它们会增加发布有缺陷代码的风险。应锁定依赖版本以避免供应链问题。"
+        "stability_and_risks": "该配置通过控制构建输出和依赖树直接影响系统稳定性。`engines` 字段强制最低 Node 版本，防止因不支持的 API 导致失败。`scripts` 块，特别是 `build`、`release:gate` 和 `validate`，是质量把关者；配置错误可能导致发布有缺陷的包。`files` 字段通过排除测试和源映射文件来减小包体积，降低内部代码意外暴露的风险。然而，包含动态脚本路径（如 `node scripts/release-gate.mjs`）引入了对外部脚本完整性的依赖；这些脚本一旦被入侵，可能影响整个 CI/CD 管道。"
       }
     }
   },
@@ -88,7 +74,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T07:20:38.891Z",
+    "indexedAt": "2026-05-02T07:40:56.294Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

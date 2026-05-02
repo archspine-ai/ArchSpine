@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "tests",
-  "role": "Test suite directory for the ArchSpine system, containing unit, integration, and end-to-end tests for all core components.",
-  "responsibility": "Provides comprehensive test coverage for ArchSpine's CLI, configuration, credential management, database operations, LLM integration, synchronization, scanning, repair, view rendering, and infrastructure modules, ensuring system reliability and correctness through isolated test environments.",
+  "role": "Test suites and testing infrastructure for the ArchSpine system, covering unit, integration, and end-to-end validation of all core components.",
+  "responsibility": "Collectively, these tests validate the correctness, robustness, and architectural integrity of the ArchSpine system, including configuration, CLI commands, synchronization, repository management, credential storage, view services, execution pipelines, and error handling, ensuring reliable operation across supported platforms.",
   "children": [
     {
       "filePath": "tests/agent-host-init.test.ts",
@@ -68,6 +68,11 @@
       "filePath": "tests/document-languages.test.ts",
       "role": "Vitest unit test suite for validating the document language selection and ordering logic.",
       "fileKind": "source"
+    },
+    {
+      "filePath": "tests/e2e",
+      "role": "End-to-end integration test suites for the ArchSpine CLI binary, covering commands like init, generate, validation, and pipeline execution.",
+      "fileKind": "folder"
     },
     {
       "filePath": "tests/engines",
@@ -330,13 +335,18 @@
       "fileKind": "source"
     },
     {
+      "filePath": "tests/windows-platform.test.ts",
+      "role": "Vitest unit test suite for the `getGlobalArchSpineDir` function that resolves the platform-specific global ArchSpine directory path.",
+      "fileKind": "source"
+    },
+    {
       "filePath": "tests/writer-boundary.test.ts",
       "role": "Vitest integration test suite for the SpineWriterBoundary component's write protection and file system interaction.",
       "fileKind": "source"
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-01T03:58:58.016Z",
+    "indexedAt": "2026-05-02T07:42:08.683Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

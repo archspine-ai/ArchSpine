@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "projectName": "archspine",
-  "role": "ArchSpine is a semantic mirror system that creates and maintains a structured, AI-readable reflection of a software project's architecture, enabling automated analysis, governance, and documentation.",
-  "responsibility": "ArchSpine orchestrates a multi-stage pipeline to scan source code, extract structural metadata (AST symbols, imports), generate semantic summaries via LLMs, enforce architectural rules (layer isolation, naming conventions), and persist all artifacts in a mirrored `.spine` directory. The system comprises: a CLI layer for user interaction; scanning engines for file discovery; AST parsers for language-specific code analysis; an LLM infrastructure for semantic generation; a database layer for indexing and state persistence; a service orchestration layer for coordinating check, fix, sync, and publish workflows; and a rule engine for enforcing coding standards. It also includes CI/CD integration, community health templates, and a comprehensive test suite to ensure reliability.",
+  "role": "ArchSpine is a semantic mirror system that transforms source code repositories into structured, indexable, and AI-accessible architectural knowledge bases. It enables automated documentation generation, architectural rule enforcement, and intelligent codebase analysis through a standardized mirror protocol.",
+  "responsibility": "The ArchSpine system orchestrates a complete pipeline for scanning, indexing, summarizing, and validating codebases. Its CLI layer handles user commands and initialization. The AST layer parses source code across multiple languages into structured symbols. Core engine modules perform file scanning, aggregation, and architectural rule enforcement. Infrastructure services provide configuration management, SQLite persistence, LLM integration with provider abstraction, MCP server capabilities, and prompt engineering. Service layers coordinate check, fix, sync, and view generation workflows. Task pipelines define sequential and parallel stages for reconciliation, AST extraction, summarization, validation, fixing, and committing. The system includes comprehensive CI/CD workflows, JSON schema validation, and test suites to ensure reliability. All components are governed by a layered architecture with strict import boundaries and naming conventions enforced by the .spine rule system.",
   "modules": [
     {
       "directory": ".github",
@@ -31,7 +31,7 @@
     },
     {
       "directory": "examples",
-      "role": "This directory aggregates the localized configuration and rule definitions for the ArchSpine mirror system.",
+      "role": "Aggregates example project configurations and architectural governance rules for the ArchSpine mirror system.",
       "childCount": 2
     },
     {
@@ -276,7 +276,7 @@
     },
     {
       "directory": "src",
-      "role": "The main source code directory containing all functional modules of the ArchSpine mirror system.",
+      "role": "Root source code directory for the ArchSpine mirror system.",
       "childCount": 10
     },
     {
@@ -321,12 +321,12 @@
     },
     {
       "directory": "src/cli",
-      "role": "CLI layer providing user-facing commands, utilities, and initialization logic for the ArchSpine system.",
+      "role": "Entry point and command-line interface layer for the ArchSpine system, handling user commands, argument parsing, help presentation, and runtime bootstrapping.",
       "childCount": 7
     },
     {
       "directory": "src/cli/commands",
-      "role": "CLI command adapters that provide the user-facing interface for all ArchSpine operations.",
+      "role": "CLI command adapters for the ArchSpine system, each handling a specific subcommand's argument parsing, validation, and delegation to core services.",
       "childCount": 21
     },
     {
@@ -341,7 +341,7 @@
     },
     {
       "directory": "src/core",
-      "role": "Core L2 aggregation logic and pipeline orchestration for the ArchSpine mirror system.",
+      "role": "This directory implements the core L2 aggregation logic for the ArchSpine mirror system.",
       "childCount": 8
     },
     {
@@ -351,12 +351,12 @@
     },
     {
       "directory": "src/engines",
-      "role": "Core engine and CLI command modules for scanning, aggregating, analyzing, and reporting on architectural data within the ArchSpine mirror system.",
+      "role": "Core engine modules for file scanning, aggregation, architectural rule enforcement, dependency analysis, and system diagnostics in the ArchSpine mirror system.",
       "childCount": 14
     },
     {
       "directory": "src/infra",
-      "role": "Infrastructure layer providing core services, utilities, and persistence for the ArchSpine mirror system.",
+      "role": "Infrastructure layer providing configuration, persistence, LLM abstraction, prompt engineering, and security services for the ArchSpine mirror system.",
       "childCount": 32
     },
     {
@@ -386,7 +386,7 @@
     },
     {
       "directory": "src/infra/llm",
-      "role": "Core LLM infrastructure layer providing client abstractions, configuration management, and resilient execution for semantic generation.",
+      "role": "Core LLM abstraction layer for ArchSpine's mirror system, providing provider-agnostic interfaces, configuration management, and retry logic.",
       "childCount": 6
     },
     {
@@ -401,7 +401,7 @@
     },
     {
       "directory": "src/infra/mcp",
-      "role": "MCP infrastructure layer that bridges ArchSpine's internal capabilities with external AI agents through the Model Context Protocol.",
+      "role": "Implements the Model Context Protocol (MCP) infrastructure layer for exposing ArchSpine resources and tools to external AI agents.",
       "childCount": 4
     },
     {
@@ -416,7 +416,7 @@
     },
     {
       "directory": "src/services",
-      "role": "Service orchestration layer that coordinates the core ArchSpine pipelines (check, fix, sync, publish) and runtime session management.",
+      "role": "Coordinated service orchestration layer for ArchSpine runtime command pipelines, including check, fix, sync, and view generation, with runtime session management and LLM integration.",
       "childCount": 13
     },
     {
@@ -426,12 +426,12 @@
     },
     {
       "directory": "src/tasks",
-      "role": "Pipeline task implementations for the ArchSpine mirror system's core processing stages.",
+      "role": "Core pipeline tasks and stages for the ArchSpine mirror system's automated workflows.",
       "childCount": 13
     },
     {
       "directory": "src/types",
-      "role": "Defines the core data contracts, configuration schema, and public API types for the ArchSpine mirror system.",
+      "role": "Core type definitions and configuration contracts for the ArchSpine mirror system's protocol layer.",
       "childCount": 3
     },
     {
@@ -446,8 +446,13 @@
     },
     {
       "directory": "tests",
-      "role": "Test suite directory for the ArchSpine system, containing unit, integration, and end-to-end tests for all core components.",
-      "childCount": 66
+      "role": "Test suites and testing infrastructure for the ArchSpine system, covering unit, integration, and end-to-end validation of all core components.",
+      "childCount": 68
+    },
+    {
+      "directory": "tests/e2e",
+      "role": "End-to-end integration test suites for the ArchSpine CLI binary, covering commands like init, generate, validation, and pipeline execution.",
+      "childCount": 8
     },
     {
       "directory": "tests/engines",
@@ -471,7 +476,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-01T07:21:00.157Z",
+    "indexedAt": "2026-05-02T07:42:21.521Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

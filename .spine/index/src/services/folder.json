@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/services",
-  "role": "Service orchestration layer that coordinates the core ArchSpine pipelines (check, fix, sync, publish) and runtime session management.",
-  "responsibility": "Provides the central orchestration for all major ArchSpine operations including architectural checking, automated fixing, repository synchronization, and publish preflight validation. Manages runtime sessions with checkpoint-based resumability, resolves LLM execution profiles, coordinates multi-stage task pipelines (scanning, AST extraction, validation, LLM correction), and generates architectural views. Handles error recovery, usage metrics recording, and lock management for thread-safe operations.",
+  "role": "Coordinated service orchestration layer for ArchSpine runtime command pipelines, including check, fix, sync, and view generation, with runtime session management and LLM integration.",
+  "responsibility": "Combined orchestration of the ArchSpine mirror system's core operations: check (scan, AST, validate, record usage), fix (multi-retry pipeline with LLM correction), sync (reconciliation, AST, summarization, commit), and view generation (architecture diagrams, risk hotspots, public surface). It manages runtime sessions with checkpoint resumability and lock protection, resolves execution profiles and LLM settings, prepares task contexts with scanning and policy enforcement, and provides administrative services for repository initialization, publishing preflight validation, and LLM configuration types. The layer ensures consistent error handling, metric recording, and lifecycle management across all command pipelines.",
   "children": [
     {
       "filePath": "src/services/check-service.ts",
@@ -11,7 +11,7 @@
     },
     {
       "filePath": "src/services/fix-service.ts",
-      "role": "Service-layer orchestrator for the ArchSpine architectural fix pipeline, managing the sequential execution of scanning, AST extraction, LLM-driven correction, and validation tasks with runtime session integration.",
+      "role": "Service-layer orchestrator for the ArchSpine architectural fix pipeline, managing the sequential execution of scanning, AST extraction, LLM-driven correction, and validation tasks, with retry support and runtime session integration.",
       "fileKind": "source"
     },
     {
@@ -56,7 +56,7 @@
     },
     {
       "filePath": "src/services/task-runtime.ts",
-      "role": "Core service orchestrator that prepares and coordinates task execution engines and infrastructure for the ArchSpine system.",
+      "role": "Service-level factory and orchestrator that prepares a fully configured task context for analysis pipelines.",
       "fileKind": "source"
     },
     {
@@ -71,7 +71,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-01T07:20:48.492Z",
+    "indexedAt": "2026-05-02T07:41:59.387Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

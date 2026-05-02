@@ -1,0 +1,194 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/windows-platform.test.ts",
+    "contentHash": "0bbe6a2a1bab776da14434fc1739455bfed5e390b7b035d0a8e875e543fb14f2",
+    "skeletonHash": "13d63bdca6c7e7ef0f207c74bcb36b1d28133eac3e282aedd9e69cc007e81bcf",
+    "semanticHash": "f2f67ff0a1574633c3196cc903332e6300f827a5ea0a80a8d2aee318303b352c",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for the `getGlobalArchSpineDir` function that resolves the platform-specific global ArchSpine directory path.",
+    "responsibilities": [
+      "Tests the `getGlobalArchSpineDir` function's behavior on non-Windows platforms (e.g., Linux/macOS) using the `ARCHSPINE_DIR` environment variable override.",
+      "Tests the `getGlobalArchSpineDir` function's behavior on Windows with environment variable override.",
+      "Tests the default fallback path on non-Windows platforms when no environment variable is set (uses `path.join(os.homedir(), '.archspine')`).",
+      "Restores `process.platform` and `process.env` after each test via `afterEach` to prevent cross-test contamination.",
+      "Indirectly validates the internal logic of the LLM infrastructure module for global directory resolution."
+    ],
+    "outOfScope": [
+      "Integration or end-to-end tests of the ArchSpine system.",
+      "Testing of other functions or modules beyond `getGlobalArchSpineDir`.",
+      "Performance or stress testing."
+    ],
+    "invariants": [
+      "The test must restore `process.platform` and `process.env` after each test case."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Verify the correctness of the global ArchSpine directory resolution across different platforms and environment variable configurations.",
+      "recentChangeIntent": "Add Windows platform tests and coverage for fix CHK-02 / FIX-02, aligning with the commit message 'test: add Windows platform tests, CHK-02, FIX-02, and real LLM E2E tests'."
+    },
+    "publicSurface": [
+      "getGlobalArchSpineDir",
+      "describe",
+      "afterEach",
+      "it",
+      "expect"
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for the `getGlobalArchSpineDir` function that resolves the platform-specific global ArchSpine directory path.",
+        "responsibilities": [
+          "Tests non-Windows platform behavior with `ARCHSPINE_DIR` environment variable override.",
+          "Tests Windows platform behavior with `ARCHSPINE_DIR` environment variable override.",
+          "Tests default fallback on non-Windows when no environment variable is set.",
+          "Restores platform and environment after each test.",
+          "Indirectly validates the internal logic for global directory resolution."
+        ],
+        "outOfScope": [
+          "Integration or end-to-end tests.",
+          "Testing other modules or functions.",
+          "Performance or stress testing."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "针对 `getGlobalArchSpineDir` 函数的 Vitest 单元测试套件，该函数解析特定平台的全局 ArchSpine 目录路径。",
+        "responsibilities": [
+          "测试在非 Windows 平台（如 Linux/macOS）上使用 `ARCHSPINE_DIR` 环境变量覆盖时的行为。",
+          "测试在 Windows 平台上的环境变量覆盖行为。",
+          "测试未设置环境变量时在非 Windows 平台上的默认回退路径（使用 `path.join(os.homedir(), '.archspine')`）。",
+          "在每个测试后通过 `afterEach` 恢复 `process.platform` 和 `process.env`，防止测试间污染。",
+          "间接验证 LLM 基础设施模块中全局目录解析的内部逻辑。"
+        ],
+        "outOfScope": [
+          "集成测试或端到端测试。",
+          "测试其他模块或函数。",
+          "性能测试或压力测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/llm/global.js'",
+        "symbols": [
+          "getGlobalArchSpineDir"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../src/infra/llm/global.js",
+        "relation": "import",
+        "symbols": [
+          "getGlobalArchSpineDir"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/windows-platform.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/getGlobalArchSpineDir#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/windows-platform.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/getGlobalArchSpineDir#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-02T07:41:32.724Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

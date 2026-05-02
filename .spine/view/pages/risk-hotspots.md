@@ -1,6 +1,6 @@
 # Risk Hotspots Report
 
-> Generated: 2026-05-01T07:21:00.256Z
+> Generated: 2026-05-02T07:42:21.602Z
 > Top 12 risk hotspots ranked by a transparent additive score model.
 
 ## Top Risk Files
@@ -18,8 +18,8 @@
 | 8 | `src/infra/credentials/backend.ts` | `semantic-change`, `fan-out`, `surface-exposure`, `large-file` | Likely localized impact with a few downstream touch points. | 48 |
 | 9 | `src/infra/mcp/server.ts` | `fan-out`, `cross-boundary-density`, `surface-exposure`, `missing-adjacent-tests` | Likely medium impact beyond the local directory. | 48 |
 | 10 | `src/tasks/summarize.ts` | `fan-out`, `surface-exposure`, `large-file`, `missing-adjacent-tests` | Likely localized impact with a few downstream touch points. | 48 |
-| 11 | `src/services/task-runtime.ts` | `fan-out`, `fan-in`, `surface-exposure`, `missing-adjacent-tests` | Likely medium impact beyond the local directory. | 47 |
-| 12 | `src/engines/context.ts` | `fan-out`, `surface-exposure`, `large-file`, `missing-adjacent-tests` | Likely localized impact with a few downstream touch points. | 46 |
+| 11 | `src/engines/context.ts` | `fan-out`, `surface-exposure`, `large-file`, `missing-adjacent-tests` | Likely localized impact with a few downstream touch points. | 46 |
+| 12 | `src/tasks/validate.ts` | `fan-out`, `surface-exposure`, `fan-in`, `large-file` | Likely localized impact with a few downstream touch points. | 45 |
 
 ## Detailed Analysis
 
@@ -145,18 +145,7 @@ Score: 48
 - `large-file` (12): File has 668 line(s), increasing change surface area.
 - `missing-adjacent-tests` (6): No adjacent test file was detected near a shared or exposed module.
 
-### 11. `src/services/task-runtime.ts`
-Core service orchestrator that prepares and coordinates task execution engines and infrastructure for the ArchSpine system; ranked due to fan-out, fan-in.
-Impact Radius: Likely medium impact beyond the local directory.
-Confidence: 0.66
-Score: 47
-
-- `fan-in` (12): File is depended on by 3 indexed file(s).
-- `fan-out` (18): File depends on 13 indexed file(s).
-- `surface-exposure` (11): File exposes 2 public-surface item(s) and 3 export(s).
-- `missing-adjacent-tests` (6): No adjacent test file was detected near a shared or exposed module.
-
-### 12. `src/engines/context.ts`
+### 11. `src/engines/context.ts`
 Architectural context resolution engine for dependency analysis and relevance scoring in the ArchSpine mirror system; ranked due to fan-out, surface-exposure.
 Impact Radius: Likely localized impact with a few downstream touch points.
 Confidence: 0.66
@@ -167,6 +156,18 @@ Score: 46
 - `cross-boundary-density` (4): File crosses 1 directory-boundary edge(s).
 - `surface-exposure` (12): File exposes 8 public-surface item(s) and 8 export(s).
 - `large-file` (8): File has 288 line(s), increasing change surface area.
+- `missing-adjacent-tests` (6): No adjacent test file was detected near a shared or exposed module.
+
+### 12. `src/tasks/validate.ts`
+ArchSpine validation task orchestrator for LLM-powered architectural rule compliance checking; ranked due to fan-out, surface-exposure.
+Impact Radius: Likely localized impact with a few downstream touch points.
+Confidence: 0.65
+Score: 45
+
+- `fan-in` (8): File is depended on by 2 indexed file(s).
+- `fan-out` (12): File depends on 6 indexed file(s).
+- `surface-exposure` (11): File exposes 2 public-surface item(s) and 3 export(s).
+- `large-file` (8): File has 379 line(s), increasing change surface area.
 - `missing-adjacent-tests` (6): No adjacent test file was detected near a shared or exposed module.
 
 ---

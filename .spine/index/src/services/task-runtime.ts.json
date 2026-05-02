@@ -2,55 +2,74 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/services/task-runtime.ts",
-    "contentHash": "cda10745da4a9c656554eeb708a94598cca5cc07e359abb43952657610f6d96e",
+    "contentHash": "2931b913ac23c3e4d78d0127a74e4bdccb27ce315fe31b495739d21e2304578f",
     "skeletonHash": "fdd9dd835ead97532fec90ca6f49b15b5b1b1e581ad56a6bacca58387c31b4b2",
-    "semanticHash": "4499a7a992c90160a5736a20f2bcfce61a500b35fb5669e70ca0acf09c6e418c",
+    "semanticHash": "4bbf0369171ef40942a37b465d98647bd909c00854b5ff5df02a8672065dd0dc",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/services"
   },
   "semantic": {
-    "role": "Core service orchestrator that prepares and coordinates task execution engines and infrastructure for the ArchSpine system.",
+    "role": "Service-level factory and orchestrator that prepares a fully configured task context for analysis pipelines.",
     "responsibilities": [
-      "Resolves prompt policy tiers and validation policies from configuration and environment.",
+      "Resolves prompt policy tier and validation policy from options and environment.",
       "Creates and initializes task state and artifact state for execution pipelines.",
-      "Orchestrates scanner, aggregator, rule engine, context engine, and LLM client for coordinated analysis.",
-      "Manages locks and scan policies to ensure thread-safe and policy-compliant operations."
+      "Instantiates and coordinates Scanner, Aggregator, ASTExtractor, RuleEngine, ContextEngine, and OutputManager.",
+      "Manages LockManager and ScanPolicy for thread-safe and policy-compliant operations.",
+      "Constructs and returns a PreparedTaskContext encapsulating all initialized components."
     ],
     "outOfScope": [
-      "View-specific rendering or UI logic",
-      "Direct low-level file I/O operations",
-      "Implementation of individual analysis engines"
+      "Direct interaction with LLM client; only imports type LLMClient.",
+      "Execution of scanning, analysis, or output; only prepares context.",
+      "Handling of view-specific service logic (belongs under src/services/view/)."
     ],
     "invariants": [
-      "Must orchestrate core, engines, and infra modules without implementing their internal logic.",
-      "Must resolve configuration policies (prompt, validation, scan) from environment and infra.",
-      "Must produce a PreparedTaskContext for downstream execution."
+      "Resolved prompt policy tier must match the derived task mode (validate or summarize).",
+      "Task state and artifact state are created before engine instantiation.",
+      "Manifest is opened using rootDir and scanPolicy before use.",
+      "LockManager ensures exclusive access during initialization."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a centralized service layer for preparing and coordinating all analysis engines and infrastructure, ensuring policy compliance and state management.",
-      "recentChangeIntent": "No direct evidence from header; recent commit suggests enhancements to sync modes and backfill, possibly affecting orchestration logic."
+      "architecturalIntent": "Serve as the central factory for creating a prepared task context that bundles all required analysis components and policies.",
+      "recentChangeIntent": "No direct evidence of recent change in this file; the fix resolved TTY hang, checkpoint retry crash, --yes propagation, and Windows compatibility elsewhere in the system."
     },
     "publicSurface": [
-      "ServiceOptions interface",
-      "PreparedTaskContext interface"
+      "createTaskContext",
+      "ServiceOptions",
+      "PreparedTaskContext"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Core service orchestrator that prepares and coordinates task execution engines and infrastructure for the ArchSpine system.",
+        "role": "Service-level factory and orchestrator that prepares a fully configured task context for analysis pipelines.",
         "responsibilities": [
-          "Resolves prompt policy tiers and validation policies from configuration and environment.",
+          "Resolves prompt policy tier and validation policy from options and environment.",
           "Creates and initializes task state and artifact state for execution pipelines.",
-          "Orchestrates scanner, aggregator, rule engine, context engine, and LLM client for coordinated analysis.",
-          "Manages locks and scan policies to ensure thread-safe and policy-compliant operations."
+          "Instantiates and coordinates Scanner, Aggregator, ASTExtractor, RuleEngine, ContextEngine, and OutputManager.",
+          "Manages LockManager and ScanPolicy for thread-safe and policy-compliant operations.",
+          "Constructs and returns a PreparedTaskContext encapsulating all initialized components."
         ],
         "outOfScope": [
-          "View-specific rendering or UI logic",
-          "Direct low-level file I/O operations",
-          "Implementation of individual analysis engines"
+          "Direct interaction with LLM client; only imports type LLMClient.",
+          "Execution of scanning, analysis, or output; only prepares context.",
+          "Handling of view-specific service logic (belongs under src/services/view/)."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "服务级别的工厂和编排器，为分析管道准备完全配置的任务上下文。",
+        "responsibilities": [
+          "从选项和环境解析提示策略层级和验证策略。",
+          "创建和初始化任务状态及工件状态，用于执行管道。",
+          "实例化并协调扫描器、聚合器、AST提取器、规则引擎、上下文引擎和输出管理器。",
+          "管理锁管理器和扫描策略，确保线程安全和策略合规的操作。",
+          "构造并返回封装所有已初始化组件的 PreparedTaskContext。"
+        ],
+        "outOfScope": [
+          "直接与 LLM 客户端交互；仅导入类型 LLMClient。",
+          "执行扫描、分析或输出；仅负责上下文准备。",
+          "处理视图特定的服务逻辑（应位于 src/services/view/ 下）。"
         ]
       }
     }
@@ -295,34 +314,101 @@
         ]
       }
     ],
-    "dependedBy": [
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
       {
-        "targetPath": "src/services/check-service.ts",
-        "relation": "import",
-        "edgeProvenance": "ast",
-        "symbols": []
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/resolvePromptPolicyTier#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
       },
       {
-        "targetPath": "src/services/fix-service.ts",
-        "relation": "import",
-        "edgeProvenance": "ast",
-        "symbols": []
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-policy.ts/resolvePromptPolicyTier#",
+        "targetPath": "src/infra/prompt-policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
       },
       {
-        "targetPath": "src/services/sync-service.ts",
-        "relation": "import",
-        "edgeProvenance": "ast",
-        "symbols": []
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/resolveValidatePolicy#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-policy.ts/resolveValidatePolicy#",
+        "targetPath": "src/infra/prompt-policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/parseRelevanceDiagnosticsMode#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-policy.ts/parseRelevanceDiagnosticsMode#",
+        "targetPath": "src/infra/prompt-policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/createTaskArtifactsState#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/createTaskState#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/engines/aggregator.ts/Aggregator#",
+        "targetPath": "src/engines/aggregator.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/ast/extractor.ts/ASTExtractor#",
+        "targetPath": "src/ast/extractor.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/engines/context.ts/ContextEngine#",
+        "targetPath": "src/engines/context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/utils/lock.ts/LockManager#",
+        "targetPath": "src/utils/lock.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
       }
-    ],
-    "reverseIndexComplete": true
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:40.960Z",
+    "indexedAt": "2026-05-02T07:40:58.767Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "fallback"
+      "llm"
     ]
   }
 }

@@ -1,0 +1,218 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/e2e/cli-repo.test.ts",
+    "contentHash": "b03a3983271a45378b313ef9f137da07b1972af277b580ca0495a3a68c459529",
+    "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
+    "semanticHash": "c3cb46a2f6376677f57b872c2f137d8c06c152c7158257746a1b705b4531bb42",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/e2e"
+  },
+  "semantic": {
+    "role": "Vitest end-to-end test suite for the ArchSpine CLI commands.",
+    "responsibilities": [
+      "Runs ArchSpine CLI commands in a child process using spawnSync.",
+      "Sets up temporary directories and configures CLI execution environment (e.g., temp workspace).",
+      "Executes integration tests for specific CLI subcommands (init, build, etc.) with assertions.",
+      "Cleans up test artifacts (e.g., temporary directories) after each test via afterEach.",
+      "Uses Vitest's describe/it blocks to organize test scenarios and assertions.",
+      "Writes wrapper scripts (e.g., for prompts) to handle interactive CLI input."
+    ],
+    "outOfScope": [
+      "Unit tests for individual functions or modules within ArchSpine.",
+      "Production code of the ArchSpine CLI or library.",
+      "Non-CLI features or GUI/browser testing.",
+      "Cross-platform or performance testing."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provides automated regression testing for the CLI interface to ensure stability and behavior across commands.",
+      "recentChangeIntent": "Add E2E test suite for CLI commands (37 tests across 7 files)"
+    },
+    "publicSurface": [
+      "No public exports; this file is a self-executing test suite."
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest end-to-end test suite for the ArchSpine CLI commands.",
+        "responsibilities": [
+          "Runs ArchSpine CLI commands in a child process using spawnSync.",
+          "Sets up temporary directories and configures CLI execution environment.",
+          "Executes integration tests for specific CLI subcommands with assertions.",
+          "Cleans up temporary artifacts after each test.",
+          "Organizes test scenarios using describe/it blocks and Vitest matchers.",
+          "Writes wrapper scripts to simulate interactive CLI input."
+        ],
+        "outOfScope": [
+          "Unit tests for individual modules.",
+          "Production code of ArchSpine.",
+          "Non-CLI features or GUI testing."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于 ArchSpine CLI 命令的 Vitest 端到端测试套件。",
+        "responsibilities": [
+          "使用 spawnSync 在子进程中运行 ArchSpine CLI 命令。",
+          "创建临时目录并配置 CLI 执行环境（例如临时工作区）。",
+          "执行特定 CLI 子命令（如 init、build 等）的集成测试并断言结果。",
+          "每个测试后清理临时工件。",
+          "使用 describe/it 块组织测试场景并使用 Vitest 匹配器进行验证。",
+          "编写包装脚本来模拟交互式 CLI 输入。"
+        ],
+        "outOfScope": [
+          "单个函数或模块的单元测试。",
+          "ArchSpine 的生产代码。",
+          "非 CLI 功能或 GUI 测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ]
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-02T07:41:36.785Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

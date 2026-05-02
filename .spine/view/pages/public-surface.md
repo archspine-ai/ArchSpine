@@ -1,6 +1,6 @@
 # Public Surface Map
 
-> Generated: 2026-05-01T07:21:00.248Z
+> Generated: 2026-05-02T07:42:21.597Z
 > Top 24 high-confidence public entry surfaces derived from index and graph signals.
 
 ## CLI Entry Points
@@ -40,6 +40,12 @@ Kind: CLI
 Symbols: `init`
 Confidence: 0.68
 CLI-facing entry: CLI command orchestrator for initializing the ArchSpine environment, configuration, and repository structure.
+
+### `src/cli/index.ts`
+Kind: CLI
+Symbols: _None_
+Confidence: 0.68
+CLI-facing entry: Primary CLI entrypoint and command router for the ArchSpine semantic mirror system.
 
 ### `src/cli/commands/languages.ts`
 Kind: CLI
@@ -140,12 +146,6 @@ Confidence: 0.69
 MCP-facing entry: Infrastructure facade class for gating Model Context Protocol (MCP) context flow based on priming state and operational mode.
 
 ## Exported Modules
-
-### `src/infra/execution-checkpoint.ts`
-Kind: Public Module
-Symbols: `isResumableCheckpoint`, `getStageData`, `getStageItemsByStatus`, `deriveSyncResumeCandidateFiles`, `deriveSyncFailedCandidateFiles`, `deriveCheckResumeCandidateFiles`, `ExecutionCheckpointStore`, `ExecutionCheckpointItemState`
-Confidence: 0.71
-Exported module surface: Infrastructure layer persistence store for execution checkpoint state management, validation, and filesystem I/O.
 
 ### `src/engines/context.ts`
 Kind: Public Module

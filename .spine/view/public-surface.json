@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-05-01T07:21:00.248Z",
+  "generatedAt": "2026-05-02T07:42:21.597Z",
   "experimental": true,
   "viewType": "public-surface",
   "summary": "Top 24 high-confidence public entry surfaces derived from index and graph signals.",
@@ -217,40 +217,21 @@
     },
     {
       "id": "entry-8",
-      "entrypoint": "src/infra/execution-checkpoint.ts",
-      "kind": "public-module",
-      "symbols": [
-        "isResumableCheckpoint",
-        "getStageData",
-        "getStageItemsByStatus",
-        "deriveSyncResumeCandidateFiles",
-        "deriveSyncFailedCandidateFiles",
-        "deriveCheckResumeCandidateFiles",
-        "ExecutionCheckpointStore",
-        "ExecutionCheckpointItemState"
-      ],
-      "summary": "Exported module surface: Infrastructure layer persistence store for execution checkpoint state management, validation, and filesystem I/O.",
-      "confidence": 0.71,
+      "entrypoint": "src/cli/index.ts",
+      "kind": "cli",
+      "symbols": [],
+      "summary": "CLI-facing entry: Primary CLI entrypoint and command router for the ArchSpine semantic mirror system.",
+      "confidence": 0.68,
       "scoreBreakdown": [
         {
           "factor": "semantic-public-surface",
           "score": 32,
-          "reason": "File declares 7 semantically exposed symbol(s)."
+          "reason": "File declares 4 semantically exposed symbol(s)."
         },
         {
-          "factor": "exported-symbols",
-          "score": 12,
-          "reason": "File exports 13 symbol(s)."
-        },
-        {
-          "factor": "internal-consumers",
-          "score": 6,
-          "reason": "File is consumed by 2 indexed file(s)."
-        },
-        {
-          "factor": "barrel-shape",
-          "score": 6,
-          "reason": "Barrel files often form a public aggregation surface."
+          "factor": "explicit-cli-entry",
+          "score": 26,
+          "reason": "Path pattern indicates a CLI entry surface."
         }
       ]
     },
