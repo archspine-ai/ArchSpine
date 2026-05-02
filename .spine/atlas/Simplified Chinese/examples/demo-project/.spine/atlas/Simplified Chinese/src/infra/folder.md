@@ -1,9 +1,9 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/atlas/Simplified Chinese/src/infra","role":"Infrastructure layer providing concrete implementations for data persistence and external system integration.","responsibility":"Implements the Database class for managing connection lifecycle and executing queries, and defines the infrastructure layer's role in handling external integrations, third-party libraries, and low-level technical services that support the domain layer.","children":[{"filePath":"examples/demo-project/.spine/atlas/Simplified Chinese/src/infra/database.ts.md","role":"Database infrastructure and persistence layer implementation","fileKind":"document"},{"filePath":"examples/demo-project/.spine/atlas/Simplified Chinese/src/infra/folder.md","role":"Define the infrastructure layer's role in the ArchSpine system, focusing on external integrations and data access.","fileKind":"document"}],"provenance":{"indexedAt":"2026-05-01T03:58:31.631Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`infra` 目录位于 `src/` 之下，是 ArchSpine 示例项目的基础设施层。它提供了数据持久化和外部系统集成的具体实现。该层实现了用于管理连接生命周期和执行查询的 `Database` 类，并定义了基础设施层在应对外部集成、第三方库及支撑领域层的底层技术服务中的整体角色。
+`Simplified Chinese/src/infra` 目录代表了 ArchSpine 系统在本本地化项目中的基础设施层。该层的职责是提供数据持久化和外部系统集成的具体实现，作为连接领域层与底层技术服务的桥梁。
 
-目录中包含两个值得关注的文件：
+此目录包含两个关键文档：
 
-- `database.ts.md` – 描述数据库实现的文档，涵盖持久化机制和 `Database` 类。
-- `folder.md` – 定义基础设施层在 ArchSpine 系统中的职责，重点关注外部集成和数据访问。
+- **folder.md**：一个定义性文档，明确描述了基础设施层在 ArchSpine 系统中的角色，侧重于外部集成和数据访问。
+- **database.ts.md**：一个具体实现文档，针对 `Database` 类，管理连接生命周期并执行查询，构成持久化支持的核心。
 
-关键实现领域包括数据库连接管理、查询执行以及基础设施职责的界定。具体子模块 `database.ts.md` 是主要的实现构件，而 `folder.md` 则作为整个层的边界定义。
+这两个文件将概念定义（folder.md）与技术实现（database.ts.md）分离开来，便于清晰地扩展或修改基础设施逻辑。最重要的实现区域是 `database.ts.md` 文件，它直接处理数据库交互。整个目录属于简体中文的本地化图集的一部分，表明该基础设施层可能包含针对特定区域语言环境的配置或文档。

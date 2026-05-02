@@ -1,4 +1,2 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/atlas/en-US/src/infra","role":"This directory aggregates the second-level components of the ArchSpine mirror system, providing a consolidated view of its core structural modules.","responsibility":"The components in this directory collectively define the logical and functional layers of the ArchSpine mirror, including data synchronization, configuration management, and interface abstraction, ensuring a cohesive and extensible system architecture.","children":[],"provenance":{"indexedAt":"2026-04-30T17:33:35.361Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# 目录摘要：infra
-
-`infra` 目录位于 ArchSpine 镜像系统 `src` 目录下，代表该项目镜像的基础设施层。它汇聚了构成 ArchSpine 镜像系统骨架的二级组件，为核心结构模块提供了一个整合视图。虽然该目录当前不包含直接的子目录，但其定义的职责涵盖了确保系统架构内聚且可扩展的逻辑与功能层面。关键实现领域包括数据同步、配置管理和接口抽象。作为一个独立的节点，它充当了未来基础设施子模块的占位符，这些子模块将实现上述横切关注点，从而维护镜像项目结构的模块化完整性。
+`infra` 目录是 ArchSpine 镜像系统中次级组件的聚合点，用于定义镜像的核心结构模块。虽然当前该目录下暂无直接子项，但其设计初衷是汇总支撑系统的逻辑与功能层。关键实现领域包括数据同步、配置管理和接口抽象。该目录通过提供这些基础构建模块的统一视图，确保镜像系统保持内聚且可扩展的架构。随着项目演进，预计此处将容纳诸如同步引擎、配置注册表以及适配器抽象层等具体子模块。

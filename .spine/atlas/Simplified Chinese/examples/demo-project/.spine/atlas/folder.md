@@ -1,8 +1,9 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/atlas","role":"This directory aggregates the core configuration and rule definitions that govern the ArchSpine mirror system's behavior and structure.","responsibility":"Collectively, the components in this directory define system-level configuration parameters, establish structural guidelines for the .spine directory, enforce architectural rules and conventions for the mirror system, manage synchronization, indexing, validation, routing, and access control of mirrored data across distributed nodes, and define logical and functional layers including configuration management and interface abstraction to ensure consistency, fault tolerance, and a cohesive, extensible system architecture.","children":[{"filePath":"examples/demo-project/.spine/atlas/English","role":"This directory aggregates the core configuration and rule definitions that govern the ArchSpine mirror system's behavior and structure.","fileKind":"folder"},{"filePath":"examples/demo-project/.spine/atlas/Simplified Chinese","role":"This directory serves as the root configuration and structural definition hub for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"examples/demo-project/.spine/atlas/en-US","role":"This directory aggregates the second-level components of the ArchSpine mirror system, providing a consolidated view of subsystem interactions and data flow.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T04:01:40.872Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`atlas` 目录是 ArchSpine 镜像系统的配置与规则定义核心。它集中管理着决定系统行为、结构和交互的关键设定。该目录下包含三个按语言区分的子模块：
+`atlas` 目录位于演示项目的 `.spine` 下，是 ArchSpine 镜像系统的核心配置与规则仓库。它定义了系统级参数、`.spine` 目录的结构规范，并强制执行关于同步、索引、验证、路由和跨分布式节点访问控制的架构规则。  
 
-- **`English`** – 聚合了核心配置与规则定义，为镜像系统的行为和结构奠定基础。
-- **`Simplified Chinese`** – 作为镜像系统的根配置和结构定义枢纽，提供了另一套本地化的规则体系。
-- **`en-US`** – 专注于子系统间的交互与数据流，以整合视图展示组件间通信与同步方式。
+其子目录按语言环境进行组织：  
+- **English** – 通用英文配置和规则定义。  
+- **Simplified Chinese** – 面向中文环境的本地化等效项。  
+- **en-US** – 更细粒度的美式英语变体。  
 
-这些子模块共同定义了系统级参数、`.spine` 目录的结构规范、架构约定，以及跨分布式节点的同步、索引、验证、路由和访问控制机制。`atlas` 实际上承担了配置管理与接口抽象的职责，确保了一致性、容错能力以及可扩展的系统架构的连贯性。
+每个语言文件夹都包含一组独立的配置文件和规则模块，共同确保系统行为在不同语言下的一致性。关键实现领域包括配置管理（如参数文件）、接口抽象，以及为容错和可扩展性设计的模块化规则执行。这些语言文件夹内的具体子模块通常定义了按语言区域定制的路由表、验证模式和索引策略。

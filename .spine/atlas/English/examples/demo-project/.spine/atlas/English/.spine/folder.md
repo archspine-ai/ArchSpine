@@ -1,7 +1,8 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/atlas/English/.spine","role":"This directory aggregates the core configuration and rule definitions that govern the ArchSpine mirror system's behavior and structure.","responsibility":"Collectively, the components in this directory define system-level configuration parameters, establish structural guidelines for the .spine directory, and enforce architectural rules and conventions for the mirror system.","children":[{"filePath":"examples/demo-project/.spine/atlas/English/.spine/config.json.md","role":"Configuration definition for the ArchSpine mirror system","fileKind":"document"},{"filePath":"examples/demo-project/.spine/atlas/English/.spine/folder.md","role":"Mock Folder Summary for .spine in English","fileKind":"document"},{"filePath":"examples/demo-project/.spine/atlas/English/.spine/rules","role":"This directory defines the architectural rules and conventions for the ArchSpine mirror system.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T03:58:34.648Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-This directory, located at `examples/demo-project/.spine/atlas/English/.spine`, is the core configuration and rule hub for the ArchSpine mirror system. It contains three key children:  
-- `config.json.md`: defines system-level configuration parameters.  
-- `folder.md`: provides a mock folder summary for the `.spine` directory in English.  
-- The `rules` subdirectory: defines architectural rules and conventions for the mirror system.  
+This directory (`examples/demo-project/.spine/atlas/English/.spine`) is the central repository for core configuration and rule definitions that govern the behavior and structure of the ArchSpine mirror system. It contains three notable children:
 
-Together, these components govern system behavior, establish structural guidelines for the `.spine` directory, and enforce architectural constraints. The most important implementation areas are configuration management and rule enforcement, with the `rules` submodule being the primary focus for understanding system architecture.
+- `config.json.md`: Defines system-level configuration parameters for the mirror system.
+- `folder.md`: Provides a mock folder summary for the `.spine` directory itself, useful for documentation.
+- `rules/`: A subdirectory that establishes the architectural rules and conventions, enforcing structural guidelines for the `.spine` directory hierarchy.
+
+The rules subdirectory is particularly important as it defines the exact conventions that the mirror system follows. Key implementation areas include configuration management, rule enforcement, and folder documentation.

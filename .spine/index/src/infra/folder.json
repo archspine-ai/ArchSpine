@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/infra",
-  "role": "Infrastructure layer providing configuration, persistence, LLM abstraction, prompt engineering, and security services for the ArchSpine mirror system.",
-  "responsibility": "The infra directory furnishes the foundational building blocks for the ArchSpine system, including centralized configuration management (config), SQLite-based data persistence (db), credential and secret storage (credentials, secrets), LLM provider abstraction with a factory and retry logic (llm), prompt construction and policy orchestration (prompt, prompt-context, prompt-policy, prompt-rendering), manifest state management (manifest), MCP server integration (mcp), file output utilities (output), rule loading and validation (rules-loader, config-validation), execution checkpointing (execution-checkpoint), and runtime I/O, UI, and write protection (runtime-io, ui, writer-boundary). It also provides mock infrastructure (__mocks__) and reference implementations (auth) to support testing and development.",
+  "role": "The infrastructure layer of the ArchSpine mirror system, providing low-level services and utilities such as configuration management, database persistence, LLM client abstraction, prompt construction, credential storage, manifest tracking, and output I/O.",
+  "responsibility": "Collectively, the components in this directory establish a robust and modular foundation for the system's core operations: they manage configuration loading and validation, handle SQLite database lifecycle and data access, abstract LLM provider interactions with retry and client factory logic, construct structured and localized prompts for AI agents, secure API keys via platform-specific credential stores, maintain file integrity and manifest state, expose system data through MCP protocol, and enforce write protection on generated output directories. This layer ensures that all infrastructure concerns are isolated, testable, and consistently available to higher application layers.",
   "children": [
     {
       "filePath": "src/infra/__mocks__",
@@ -61,7 +61,7 @@
     },
     {
       "filePath": "src/infra/llm",
-      "role": "Core LLM abstraction layer for ArchSpine's mirror system, providing provider-agnostic interfaces, configuration management, and retry logic.",
+      "role": "LLM infrastructure layer providing abstracted client interfaces, configuration management, and provider adapters.",
       "fileKind": "folder"
     },
     {
@@ -81,7 +81,7 @@
     },
     {
       "filePath": "src/infra/mcp",
-      "role": "Implements the Model Context Protocol (MCP) infrastructure layer for exposing ArchSpine resources and tools to external AI agents.",
+      "role": "Implements the Model Context Protocol (MCP) infrastructure for external AI agent interaction and data access.",
       "fileKind": "folder"
     },
     {
@@ -166,7 +166,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-02T07:41:57.104Z",
+    "indexedAt": "2026-05-02T10:11:08.871Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -1,18 +1,24 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/ast/rules","role":"Language-specific grammar definitions for parsing source code into structured symbols.","responsibility":"Provides pattern-based extraction rules for imports, exports, and usages across multiple programming languages (C, C++, Go, Java, Python, Rust, TypeScript/JavaScript), enabling the ArchSpine mirror system to analyze and index code structures uniformly.","children":[{"filePath":"src/ast/rules/c.yml","role":"Defines the structural grammar and pattern-matching rules for parsing C/C++ source code within the ArchSpine mirror system.","fileKind":"document"},{"filePath":"src/ast/rules/cpp.yml","role":"Defines the syntax and rules for extracting structural metadata from C/C++ source code within the ArchSpine mirror system.","fileKind":"document"},{"filePath":"src/ast/rules/go.yml","role":"Define the syntax patterns for parsing Go source code into a structured symbol index","fileKind":"document"},{"filePath":"src/ast/rules/java.yml","role":"Defines the syntax patterns for parsing Java-like source code within the ArchSpine mirror system.","fileKind":"document"},{"filePath":"src/ast/rules/python.yml","role":"Defines the pattern-based extraction rules for parsing Python source code symbols (imports, exports, and usages) within the ArchSpine mirror system.","fileKind":"document"},{"filePath":"src/ast/rules/rust.yml","role":"Defines the syntax and pattern-matching rules for extracting code structures from Rust source files within the ArchSpine mirror system.","fileKind":"document"},{"filePath":"src/ast/rules/typescript.yml","role":"Defines the pattern-based extraction rules for parsing TypeScript/JavaScript source code into structured symbols (imports, exports, usages).","fileKind":"document"}],"provenance":{"indexedAt":"2026-05-01T03:58:48.079Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# src/ast/rules — Language Grammar Definitions
+## `src/ast/rules` — Language-Specific Grammar Definitions
 
-This directory houses the language-specific grammar and pattern-matching rules that power the ArchSpine mirror system. Its purpose is to define how imports, exports, and usage references are extracted from source code across multiple programming languages, enabling the system to build a uniform symbol index.
+This directory serves as the **grammar definition hub** for the ArchSpine mirror system. It contains a collection of YAML files, each dedicated to a single programming language, that define pattern-based extraction rules for identifying and structuring **imports**, **exports**, and **usages** within source code.
 
-The directory is organized by language, with one YAML file per supported language:
+### Notable Children
 
-- **c.yml** — Rules for parsing C code.
-- **cpp.yml** — Rules for parsing C++ code (handles C-specific constructs plus C++ features).
-- **go.yml** — Patterns for Go import/export and symbol extraction.
-- **java.yml** — Rules for Java‑like languages (Java, Kotlin, etc.).
-- **python.yml** — Extraction logic for Python imports, exports, and usage.
-- **rust.yml** — Rules covering Rust modules, traits, and use statements.
-- **typescript.yml** — Patterns for TypeScript/JavaScript imports, exports, and usage.
+The directory holds the following per-language rule files:
 
-The most critical implementation area is the AST (abstract syntax tree) layer: each rule file defines the structural grammar that the parser uses to walk source files and produce a language‑agnostic symbolic representation. The `go.yml` and `rust.yml` files are especially important because their module systems differ significantly from the C‑family languages.
+- **`c.yml`** — parsing rules for C language structures.
+- **`cpp.yml`** — rules for C++ syntax and structural metadata.
+- **`go.yml`** — patterns for extracting Go symbol indices.
+- **`java.yml`** — grammar for Java-like source code.
+- **`python.yml`** — rules for Python imports, exports, and usages.
+- **`rust.yml`** — syntax definitions for Rust code structures.
+- **`typescript.yml`** — rules for TypeScript/JavaScript symbol extraction.
 
-For AI agents, these rules are the core knowledge base for generating code analysis queries and retrieving cross‑language symbol dependencies. Human developers working on parser accuracy or adding a new language should start here.
+### Implementation Significance
+
+These rule files are the **foundation of ArchSpine's multi-language support**. By providing a uniform grammar layer for each supported language, the system can parse heterogeneous codebases into a consistent symbol graph. The most critical implementation areas are:
+
+1.  **Pattern coverage** — ensuring each language's import/export/usages patterns are comprehensive and correct.
+2.  **Extensibility** — adding a new language requires only a new YAML file in this directory.
+3.  **Performance** — efficient matching against these rules is essential for real-time indexing.

@@ -1,7 +1,11 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/atlas/English/src/infra","role":"Infrastructure layer providing concrete implementations for data persistence and external system interactions.","responsibility":"Implements the Database class for connection management and query execution, defines the infrastructure layer's boundaries, and provides low-level technical services that support the domain layer, including concrete data access and storage mechanisms.","children":[{"filePath":"examples/demo-project/.spine/atlas/English/src/infra/database.ts.md","role":"Database infrastructure and persistence layer documentation","fileKind":"document"},{"filePath":"examples/demo-project/.spine/atlas/English/src/infra/folder.md","role":"Defines the infrastructure layer's purpose and boundaries within the ArchSpine system architecture.","fileKind":"document"}],"provenance":{"indexedAt":"2026-05-01T03:58:31.431Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`infra` 目录是 ArchSpine 系统的具体实现层，提供所有支持领域层的底层技术服务。该目录包含两个关键文档：
+# 基础设施层 — `infra/`
 
-- **`database.ts.md`** – 完整记录 `Database` 类的文档，详细说明连接管理、查询执行和持久化逻辑。这是数据访问的主要具体子模块。
-- **`folder.md`** – 定义基础设施层的用途和边界，解释如何与外部系统交互以及实现的组织方式。
+该目录包含 ArchSpine 示例项目的基础设施层，主要负责提供数据持久化和外部系统交互的具体实现，以低层技术支持领域层。
 
-该目录范围紧凑，仅包含 Database 实现和边界定义文档。最重要的实现区域是 Database 类本身，负责所有关系型或文档型存储操作。`folder.md` 提供架构指导，确保未来的基础设施组件（如消息队列、缓存、外部 API 客户端）遵循相同的层次分离规则。这两个文档共同使基础设施层变得明确且可测试，是项目中所有持久化和外部系统交互的基础。
+目录结构围绕两个关键文档组织：
+
+- **`folder.md`** — 定义了基础设施层在整个架构中的边界与用途，是该层的正式契约，明确了其与系统其他部分的交互方式。
+- **`database.ts.md`** — 记录了 `Database` 类，负责连接管理与查询执行，是示例项目中数据访问与存储的核心实现。
+
+最重要的实现区域是数据库模块，因为它直接使领域层能够持久化和检索数据。同时，`folder.md` 中定义的层边界同样关键，它建立了基础设施与领域关注点的分离，有助于保持架构的清晰性与可测试性。

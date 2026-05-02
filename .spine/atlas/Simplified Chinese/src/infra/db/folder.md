@@ -1,13 +1,11 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/infra/db","role":"Infrastructure persistence layer providing SQLite database lifecycle management, schema evolution, and data access for the ArchSpine indexing system.","responsibility":"Manages the SQLite database lifecycle including file preparation, WAL recovery, schema migration, and error mapping, while providing a unified data access layer for CRUD operations on file metadata, symbol tables, drift events, usage metrics, and violation records.","children":[{"filePath":"src/infra/db/batch.ts","role":"Infrastructure-layer batch commit function for atomic file metadata synchronization to the SQLite index database.","fileKind":"source"},{"filePath":"src/infra/db/errors.ts","role":"Database runtime error mapping utility in the infrastructure layer.","fileKind":"source"},{"filePath":"src/infra/db/repositories","role":"Persistence layer for the ArchSpine indexing system, providing SQLite-based data access objects for all core entities.","fileKind":"folder"},{"filePath":"src/infra/db/runtime.ts","role":"Infrastructure facade module providing low-level runtime SQLite database lifecycle management, including filesystem preparation, stale WAL file detection/recovery, and error handling.","fileKind":"source"},{"filePath":"src/infra/db/schema.ts","role":"Database infrastructure utility for SQLite schema migration error handling and safe column addition.","fileKind":"source"},{"filePath":"src/infra/db/types.ts","role":"Infrastructure Type Definitions module providing stable data contracts for the indexing, audit, and status reporting domains.","fileKind":"source"},{"filePath":"src/infra/db/wal-recovery.ts","role":"Infrastructure utility module for SQLite Write-Ahead Log (WAL) stale file detection and cleanup.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T03:58:48.572Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src/infra/db` 目录为 ArchSpine 索引系统提供了完整的 SQLite 持久化层。它负责数据库的完整生命周期管理——包括文件系统准备、WAL 恢复、schema 演进以及错误处理，同时为所有核心实体提供统一的数据访问接口。
+`src/infra/db` 目录是 ArchSpine 索引系统的基础设施持久化层。它负责 SQLite 数据库的完整生命周期管理，包括文件系统准备、预写式日志 (WAL) 恢复、模式迁移、错误映射，并为所有核心实体提供统一的数据访问层。
 
-该目录下的子模块按职责分组：
+值得注意的子项分为两类：**运行时与生命周期模块**（位于根目录下的文件）以及专用的 **repositories 子文件夹**。关键的实现领域包括：
 
-- **生命周期与恢复**：`runtime.ts` 管理底层数据库的打开/关闭以及陈旧 WAL 文件的检测；`wal-recovery.ts` 专门处理孤立 WAL 文件的发现与清理。
-- **Schema 管理**：`schema.ts` 提供安全的迁移工具（例如安全添加列）以及 DDL 操作的错误处理。
-- **数据访问**：`repositories/` 文件夹包含基于 SQLite 的数据访问对象，覆盖文件元数据、符号表、漂移事件、使用度量以及违规记录。
-- **原子操作**：`batch.ts` 实现了提交封装，用于在单一事务中同步文件元数据。
-- **错误映射**：`errors.ts` 将 SQLite 错误转换为领域层的异常。
-- **类型契约**：`types.ts` 定义了在索引、审计和状态报告领域间共享的稳定 TypeScript 接口。
-
-实现中最关键的领域是运行时生命周期管理（`runtime.ts` 和 `wal-recovery.ts`）以及 `repositories/` 中的存储库层，后者直接支撑系统的所有 CRUD 流程。
+- **数据库生命周期** – `runtime.ts` 协调底层操作，例如创建数据库文件、检测并恢复过期的 WAL 文件（由 `wal-recovery.ts` 处理）以及初始化连接。
+- **模式演进** – `schema.ts` 提供安全添加列和迁移错误的处理工具。
+- **错误映射** – `errors.ts` 将运行时数据库错误转换为类型化的应用程序级错误码。
+- **批量操作** – `batch.ts` 提供原子提交函数，用于批量同步文件元数据。
+- **数据契约** – `types.ts` 为系统中的索引、审计和状态报告定义了稳定的 TypeScript 接口。
+- **数据仓库（Repositories）** – `repositories/` 文件夹包含基于 SQLite 的数据访问对象，分别用于文件元数据、符号表、漂移事件、使用度量、违规记录等实体的 CRUD 操作，每个实体都由独立的模块实现。

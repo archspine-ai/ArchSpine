@@ -1,10 +1,2 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/infra/db/repositories","role":"Persistence layer for the ArchSpine indexing system, providing SQLite-based data access objects for all core entities.","responsibility":"Provides a unified data access layer that handles CRUD operations for file metadata, symbol tables, semantic drift events, token usage metrics, and architectural violation records, ensuring reliable persistence and retrieval of all system state in SQLite.","children":[{"filePath":"src/infra/db/repositories/drift.ts","role":"Infrastructure data access function for persisting and retrieving semantic drift audit events in SQLite.","fileKind":"source"},{"filePath":"src/infra/db/repositories/files.ts","role":"Data Access Object (DAO) providing SQLite persistence operations for file metadata in the ArchSpine indexing system.","fileKind":"source"},{"filePath":"src/infra/db/repositories/symbols.ts","role":"Infrastructure Data Access Object (DAO) for SQLite symbol table persistence.","fileKind":"source"},{"filePath":"src/infra/db/repositories/usage.ts","role":"Infrastructure Data Access Object (DAO) for persisting and querying token usage metrics in the SQLite database.","fileKind":"source"},{"filePath":"src/infra/db/repositories/violations.ts","role":"Infrastructure Data Access Object (DAO) for persisting and querying architectural rule violation records in SQLite.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T03:58:43.330Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src/infra/db/repositories` 目录实现了 ArchSpine 索引系统的持久化层，基于 SQLite 为所有核心实体提供数据访问对象（DAO）。该目录包含五个源文件，每个文件专注于一个特定领域：
-
-- `files.ts` – 管理文件元数据的增删改查操作。
-- `symbols.ts` – 处理符号表的持久化。
-- `drift.ts` – 持久化和检索语义漂移审计事件。
-- `usage.ts` – 存储和查询令牌使用指标。
-- `violations.ts` – 记录和查询架构规则违规记录。
-
-这些仓库形成了一个统一的数据访问层，确保系统状态的可靠存储和检索，并按实体类型清晰分离。最重要的实现领域是符号和违规仓库，因为它们直接支持 ArchSpine 的索引和一致性检查功能。
+`src/infra/db/repositories` 目录是 ArchSpine 索引系统的持久层核心，提供了五个基于 SQLite 的数据访问对象（DAO），分别对应架构中的核心实体：文件元数据（`files.ts`）、符号表（`symbols.ts`）、语义漂移审计事件（`drift.ts`）、令牌用量指标（`usage.ts`）以及架构违规记录（`violations.ts`）。该统一数据访问层为所有系统状态提供可靠的增删改查操作，支持高效的索引构建与检索，同时维护引用完整性。其中最重要的实现区域是符号表操作（作为交叉引用解析的基础）和漂移事件仓库（驱动语义变更追踪流水线）。这些仓库按实体类型扁平分组，每个模块封装了其领域内完整的 SQLite 查询与模式交互逻辑。

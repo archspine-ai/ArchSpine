@@ -1,9 +1,2 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/atlas/English/src","role":"This directory aggregates the public API, domain logic, and infrastructure layers of the ArchSpine mirror system.","responsibility":"Collectively, the components in this directory provide a complete backend architecture: they expose external API endpoints, enforce business rules and domain entities, and implement concrete data persistence and infrastructure services to support system operations.","children":[{"filePath":"examples/demo-project/.spine/atlas/English/src/api","role":"Public API and interface layer for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"examples/demo-project/.spine/atlas/English/src/domain","role":"Domain layer containing core business logic and entities for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"examples/demo-project/.spine/atlas/English/src/folder.md","role":"Mock Folder Summary for src in English","fileKind":"document"},{"filePath":"examples/demo-project/.spine/atlas/English/src/infra","role":"Infrastructure layer providing concrete implementations for data persistence and external system interactions.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T03:58:34.993Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src` 目录是 ArchSpine 镜像系统后端架构的核心集合，位于 `examples/demo-project/.spine/atlas/English/src` 下。它聚合了架构中的公共 API 层、领域逻辑和基础设施组件，为系统运行提供完整支持。该目录包含三个关键子目录和一个文档：
-
-- **`api`**：存放公共 API 和接口定义，对外暴露镜像系统的端点。
-- **`domain`**：包含领域层，涵盖核心业务逻辑和实体，用于执行业务规则。
-- **`infra`**：提供数据持久化和外部系统交互的具体实现。
-- **`folder.md`**：该目录的英文版模拟文件夹摘要文档。
-
-最关键的实现区域是领域层（执行业务规则）和基础设施层（处理数据持久化和外部服务集成）。这些组件共同构成完整的后端架构：对外暴露 API 端点，确保领域实体一致性，并通过具体服务实现支持系统所有操作。
+`atlas/English/src` 目录汇集了 ArchSpine 镜像系统的完整后端架构。该目录下包含三个具体子模块和一个摘要文档：**api** 子模块负责暴露供外部客户端调用的公共端点层；**domain** 子模块承载核心业务逻辑、实体及规则，确保系统不变量的执行；**infra** 子模块提供数据持久化和外部服务集成的具体实现。此外，`folder.md` 文件作为英文版 `src` 文件夹的概要说明。这些组件共同构建了将接口、逻辑与基础设施分离的分层架构。

@@ -1,0 +1,217 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/security.test.ts",
+    "contentHash": "543559c6fed6032c3dd1b3fd0a8d4003b7fb2d33dbe5cf38f99fb36984a16772",
+    "skeletonHash": "935fb72f618a55c3136606040981d651e6dabb5264613035ee98072d1231a812",
+    "semanticHash": "b4a1b2548cda8ffcd2f7e8eb859b31a38b9751d5ef4951acde62f9982cc22095",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite for ArchSpine CLI security and prompt-flow behavior.",
+    "responsibilities": [
+      "Creates isolated temporary directories for each test scenario.",
+      "Writes a wrapper script to override the prompts module, simulating user input for confirm and choice prompts.",
+      "Executes the built ArchSpine CLI binary via execFileSync with specified arguments inside the temp directory.",
+      "Cleans up all created temporary directories after each test via afterEach hook.",
+      "Verifies that the dry-run flag prevents the confirm prompt from being shown.",
+      "Validates that confirm prompt answers are correctly respected when dry-run is not enabled.",
+      "Tests that security-sensitive CLI workflows behave as expected under controlled prompt injection."
+    ],
+    "outOfScope": [
+      "Unit testing of individual modules or functions.",
+      "End-to-end tests that involve a real LLM or external network calls.",
+      "Performance or load testing of the CLI.",
+      "Testing of CLI features unrelated to prompt security or dry-run behavior."
+    ],
+    "invariants": [
+      "All test files must end with .test.ts or .spec.ts (architectural rule 'test-file-suffix')."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide security-focused integration tests that validate the CLI's prompt orchestration, particularly the correct handling of dry-run and confirm prompts to prevent accidental destructive actions.",
+      "recentChangeIntent": "Move the dry-run check before the confirm prompt in FixTask and add corresponding security tests to ensure the fix is properly validated."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite for ArchSpine CLI security and prompt-flow behavior.",
+        "responsibilities": [
+          "Creates isolated temporary directories for each test scenario.",
+          "Writes a wrapper script to override the prompts module, simulating user input for confirm and choice prompts.",
+          "Executes the built ArchSpine CLI binary via execFileSync with specified arguments inside the temp directory.",
+          "Cleans up all created temporary directories after each test via afterEach hook.",
+          "Verifies that the dry-run flag prevents the confirm prompt from being shown.",
+          "Validates that confirm prompt answers are correctly respected when dry-run is not enabled.",
+          "Tests that security-sensitive CLI workflows behave as expected under controlled prompt injection."
+        ],
+        "outOfScope": [
+          "Unit testing of individual modules or functions.",
+          "End-to-end tests that involve a real LLM or external network calls.",
+          "Performance or load testing of the CLI.",
+          "Testing of CLI features unrelated to prompt security or dry-run behavior."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "提供 ArchSpine CLI 安全性与提示流程行为的 Vitest 集成测试套件。",
+        "responsibilities": [
+          "为每个测试场景创建独立的临时目录。",
+          "编写包装脚本覆盖 prompts 模块，模拟用户对确认和选择提示的输入。",
+          "通过 execFileSync 在临时目录内运行已编译的 ArchSpine CLI 二进制文件。",
+          "在每个测试后通过 afterEach 钩子清理所有创建的临时目录。",
+          "验证 dry-run 标志能够阻止确认提示的显示。",
+          "确认在未启用 dry-run 时，确认提示的回答会被正确执行。",
+          "测试在受控的提示注入下，安全敏感的 CLI 工作流是否按预期运行。"
+        ],
+        "outOfScope": [
+          "各个模块或函数的单元测试。",
+          "涉及真实 LLM 或外部网络调用的端到端测试。",
+          "CLI 的性能或负载测试。",
+          "与提示安全性或 dry-run 行为无关的 CLI 功能测试。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execFileSync"
+        ]
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-02T10:10:30.653Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

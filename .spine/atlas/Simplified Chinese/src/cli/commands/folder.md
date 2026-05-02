@@ -1,32 +1,22 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/cli/commands","role":"CLI command adapters for the ArchSpine system, each handling a specific subcommand's argument parsing, validation, and delegation to core services.","responsibility":"Collectively, these adapters define the complete command-line interface for ArchSpine, orchestrating workflows for initialization, configuration, scanning, synchronization, publishing, fixing, and other operations, while ensuring consistent error handling and user feedback.","children":[{"filePath":"src/cli/commands/build.ts","role":"CLI command adapter for the 'build' operation, orchestrating the build workflow and delegating to core services.","fileKind":"source"},{"filePath":"src/cli/commands/check.ts","role":"CLI command adapter for the 'check' operation, providing the entry point that delegates to the RuntimeService's CheckService and signals failures via structured errors.","fileKind":"source"},{"filePath":"src/cli/commands/config.ts","role":"CLI command adapter for configuration management within the ArchSpine system.","fileKind":"source"},{"filePath":"src/cli/commands/fix.ts","role":"CLI command adapter for the 'fix' operation, providing a thin interface to delegate execution to the runtime service's fix subsystem facade.","fileKind":"source"},{"filePath":"src/cli/commands/god.ts","role":"CLI command handler for the God Mode feature, providing user warnings and confirmation before delegating to the God engine.","fileKind":"source"},{"filePath":"src/cli/commands/history.ts","role":"CLI command adapter for the `spine history` subcommand, responsible for parsing arguments, delegating to the Manifest infrastructure for drift history and file documentation retrieval, and formatting the output for terminal display.","fileKind":"source"},{"filePath":"src/cli/commands/hook.ts","role":"CLI command adapter for managing git hook integration and synchronization within the ArchSpine system.","fileKind":"source"},{"filePath":"src/cli/commands/info.ts","role":"CLI command handler for the 'info' command, acting as a thin adapter that orchestrates the execution of the info report engine.","fileKind":"source"},{"filePath":"src/cli/commands/init.ts","role":"CLI command orchestrator for initializing the ArchSpine environment, configuration, and repository structure.","fileKind":"source"},{"filePath":"src/cli/commands/languages.ts","role":"CLI command adapter for interactive documentation language configuration management in the ArchSpine system.","fileKind":"source"},{"filePath":"src/cli/commands/llm.ts","role":"CLI command adapter for interactive LLM provider, model, and runtime configuration.","fileKind":"source"},{"filePath":"src/cli/commands/mcp.ts","role":"CLI command adapter for starting the ArchSpine Model Context Protocol (MCP) server.","fileKind":"source"},{"filePath":"src/cli/commands/publish.ts","role":"CLI command handler orchestrating the publish workflow for the ArchSpine mirror system, coordinating preflight checks, sync, document backfill, and atlas state management.","fileKind":"source"},{"filePath":"src/cli/commands/remove.ts","role":"CLI command adapter for the 'remove' operation, orchestrating the cleanup of ArchSpine-managed artifacts from a repository.","fileKind":"source"},{"filePath":"src/cli/commands/repo.ts","role":"CLI command router for repository-level operations in the ArchSpine system.","fileKind":"source"},{"filePath":"src/cli/commands/scan.ts","role":"CLI command handler for the 'scan' operation, orchestrating source code scanning and dry-run reporting.","fileKind":"source"},{"filePath":"src/cli/commands/status.ts","role":"CLI command adapter for displaying the synchronization status of the ArchSpine mirror system.","fileKind":"source"},{"filePath":"src/cli/commands/sync.ts","role":"CLI command adapter orchestrating the synchronization workflow for the ArchSpine mirror system.","fileKind":"source"},{"filePath":"src/cli/commands/try.ts","role":"CLI command adapter for the 'try' preview command, handling filesystem validation, configuration parsing, and user feedback.","fileKind":"source"},{"filePath":"src/cli/commands/usage.ts","role":"CLI command entry point for executing usage reports.","fileKind":"source"},{"filePath":"src/cli/commands/view.ts","role":"CLI command adapter for the 'view' subcommand, handling view selection, validation, and orchestration of protected output writes within the ArchSpine system.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-02T07:41:45.300Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# `src/cli/commands` — ArchSpine CLI 命令适配器
+`src/cli/commands` 目录存放了 ArchSpine 镜像系统的 CLI 命令适配器，它们构成了完整的命令行界面。每个适配器只负责一个子命令，包括参数解析、合法性校验，以及将任务委托给相应的核心服务。
 
-该目录包含 ArchSpine “镜像”系统的所有 CLI 命令适配器模块。每个文件实现对应子命令的参数解析、校验以及向核心服务的委托调用。它们共同构成了系统的完整命令行界面。
+这些适配器可按功能划分成几个集群：  
+- **初始化与配置**——`init.ts`、`config.ts`、`languages.ts`、`llm.ts`、`hook.ts` 负责环境初始化、设置管理、文档语言和 LLM 提供商的配置，以及 Git 钩子的集成。  
+- **代码分析与文档**——`scan.ts`、`build.ts`、`check.ts`、`fix.ts` 协调源码扫描、文档生成、一致性检查和自动修复。  
+- **同步与发布**——`sync.ts`、`publish.ts`、`status.ts`、`info.ts` 管理镜像同步、发布前的预检查与文档回填、同步状态报告以及系统信息输出。  
+- **仓库与生命周期操作**——`repo.ts`、`remove.ts` 处理仓库级别的路由和 ArchSpine 管理工件的清理。  
+- **其他工具**——`history.ts` 委托 drift 历史和文件文档检索；`view.ts`、`try.ts`、`usage.ts` 管理受保护的输出写入、预览工作流和用量报告；`god.ts` 提供守卫接口以调用 God Mode 引擎；`mcp.ts` 启动模型上下文协议（MCP）服务器。  
 
-## 按功能区域分组
+最值得关注的实现领域：  
+- **统一的错误处理与用户反馈**——每个适配器都以一致的方式构造错误并通知失败。  
+- **薄委托模式**——适配器保持轻量，仅将控制权转交给运行时服务（如 `CheckService`、修复子系统和 Manifest 基础设施），不嵌入业务逻辑。  
+- **可扩展性**——遵循现有适配器模式即可轻松添加新的子命令。  
 
-- **初始化与配置** — `init.ts`、`config.ts`、`languages.ts`、`llm.ts`、`hook.ts`、`repo.ts`  
-  搭建仓库结构、管理设置、选择文档语言、配置 LLM 提供商、设置 Git 钩子，以及执行仓库级别操作。
+需注意的具体子模块：  
+- `scan.ts`——协调源码扫描，支持 dry-run 报告。  
+- `publish.ts`——组合预检查、同步、文档回填和 atlas 状态管理。  
+- `mcp.ts`——启动 MCP 服务器以支持外部 LLM/智能体集成。  
+- `god.ts`——在委托给 God Mode 引擎之前向用户发出警告。  
 
-- **扫描与分析** — `scan.ts`、`check.ts`、`fix.ts`、`try.ts`、`info.ts`  
-  扫描源代码、运行一致性检查、尝试自动修复、预览预运行结果，以及生成系统信息报告。
-
-- **同步与发布** — `sync.ts`、`publish.ts`、`status.ts`、`history.ts`  
-  将内容镜像到文档图谱、协调预检与回填、报告同步状态，以及获取变更历史。
-
-- **构建与输出** — `build.ts`、`view.ts`  
-  编排完整构建流程，并展示所选文档视图。
-
-- **特殊命令** — `god.ts`（上帝模式，含警告）、`mcp.ts`（模型上下文协议服务器）、`remove.ts`（清理托管工件）、`usage.ts`（使用报告）。
-
-## 关键实现区域
-
-- `init.ts` 是引导 ArchSpine 环境的入口，负责设置仓库结构和初始配置。
-- `scan.ts` 执行源代码扫描，可选干运行模式。
-- `sync.ts` 编排核心镜像同步工作流。
-- `publish.ts` 在同步之上增加预检、文档回填和图谱状态管理功能。
-- `check.ts` 通过运行时服务触发 `CheckService`，并以结构化错误报告失败。
-- `fix.ts` 暴露修复子系统的外观接口。
-- `god.ts` 在委托给上帝引擎之前向用户发出警告。
-
-每个适配器遵循“薄外观”模式：先校验输入，再调用相应的核心服务或子系统。所有命令的错误处理和用户反馈保持一致性。
+每个文件都扮演特定角色，共同构成 ArchSpine 所有 CLI 操作面向人类和 AI 的入口点。

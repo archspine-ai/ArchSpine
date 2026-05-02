@@ -1,7 +1,8 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/atlas/English/.spine","role":"This directory aggregates the core configuration and rule definitions that govern the ArchSpine mirror system's behavior and structure.","responsibility":"Collectively, the components in this directory define system-level configuration parameters, establish structural guidelines for the .spine directory, and enforce architectural rules and conventions for the mirror system.","children":[{"filePath":"examples/demo-project/.spine/atlas/English/.spine/config.json.md","role":"Configuration definition for the ArchSpine mirror system","fileKind":"document"},{"filePath":"examples/demo-project/.spine/atlas/English/.spine/folder.md","role":"Mock Folder Summary for .spine in English","fileKind":"document"},{"filePath":"examples/demo-project/.spine/atlas/English/.spine/rules","role":"This directory defines the architectural rules and conventions for the ArchSpine mirror system.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T03:58:34.648Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-该目录位于 `examples/demo-project/.spine/atlas/English/.spine`，是 ArchSpine 镜像系统的核心配置与规则中心。它包含三个主要部分：  
-- `config.json.md`：定义系统级配置参数。  
-- `folder.md`：提供英文版 `.spine` 目录的模拟文件夹摘要。  
-- `rules` 子目录：定义镜像系统的架构规则和约定。  
+此目录（`examples/demo-project/.spine/atlas/English/.spine`）是 ArchSpine 镜像系统的核心配置与规则定义汇聚处，决定了系统的行为与结构。它包含三个主要子项：
 
-这些组件共同管理系统的行为，建立 `.spine` 目录的结构规范，并强制执行架构约束。最重要的实施领域是配置管理和规则执行，其中 `rules` 子模块是理解系统架构的重点。
+- `config.json.md`：定义镜像系统的系统级配置参数。
+- `folder.md`：提供 `.spine` 目录本身的模拟文件夹摘要，用于文档说明。
+- `rules/`：一个子目录，制定架构规则和约定，强制 `.spine` 目录结构遵循规范。
+
+其中 `rules/` 子目录至关重要，它规定了镜像系统必须遵守的具体约定。主要实现领域包括配置管理、规则执行和文件夹文档化。

@@ -1,15 +1,11 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"schemas/examples","role":"This directory contains the core configuration and rule definitions for the ArchSpine semantic indexing and architecture enforcement system.","responsibility":"Collectively, these files define the project identity, module structure, documentation synchronization state, and architectural dependency rules that govern the ArchSpine system, ensuring consistent indexing, integrity verification, and layer isolation.","children":[{"filePath":"schemas/examples/spine-folder-unit.example.json","role":"Defines the core application module container for the repository indexing pipeline.","fileKind":"config"},{"filePath":"schemas/examples/spine-manifest.example.json","role":"Language index manifest for the ArchSpine documentation atlas","fileKind":"config"},{"filePath":"schemas/examples/spine-project-unit.example.json","role":"Defines the project identity, module structure, and provenance metadata for the ArchSpine semantic indexing system.","fileKind":"config"},{"filePath":"schemas/examples/spine-rule-document.example.json","role":"Architectural dependency rule enforcing layer isolation in the ArchSpine system","fileKind":"config"},{"filePath":"schemas/examples/spine-rule.example.md","role":"Architecture enforcement rule","fileKind":"document"},{"filePath":"schemas/examples/spine-unit.example.json","role":"Authentication entry module for login and logout operations.","fileKind":"config"}],"provenance":{"indexedAt":"2026-05-01T03:58:52.136Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# `schemas/examples` – ArchSpine Configuration and Rule Examples
+---MARKDOWN:Simplified Chinese---
+`schemas/examples` 目录包含 ArchSpine 语义索引与架构强制系统的核心配置示例及一个文档样例。这些文件展示了如何配置项目身份、模块结构、文档同步状态以及架构依赖规则。
 
-This directory contains the core configuration and rule definition examples for the ArchSpine semantic indexing and architecture enforcement system. Together, these files demonstrate how to define project identity, module structure, documentation synchronization state, and architectural dependency rules that ensure consistent indexing, integrity verification, and layer isolation.
+文件分为两类：
+- **JSON 配置示例**（共五个 `.json` 文件）：每个对应 ArchSpine 管线中的一个特定 schema 单元。`spine-folder-unit.example.json` 定义了仓库索引管线的模块容器。`spine-project-unit.example.json` 设定了项目身份、模块结构及来源元数据。`spine-manifest.example.json` 用作 ArchSpine 文档图谱的语言索引清单。`spine-rule-document.example.json` 通过架构依赖规则强制实现层隔离。`spine-unit.example.json` 建模了用于登录和注销操作的身份验证入口模块。
+- **Markdown 文档**（一个 `.md` 文件）：`spine-rule.example.md` 是架构强制规则文档。
 
-## Notable Children
+这些示例所体现的关键实现领域包括语义索引管线配置、完整性验证、层隔离强制以及多语言文档图谱管理。根据来源元数据记录，这些文件经过 AST 和 LLM 两个管线阶段的处理。
 
-- **`spine-folder-unit.example.json`** – Defines the core application module container for the repository indexing pipeline.
-- **`spine-manifest.example.json`** – Language index manifest for the ArchSpine documentation atlas.
-- **`spine-project-unit.example.json`** – Project identity, module structure, and provenance metadata for the indexing system.
-- **`spine-rule-document.example.json`** – Architectural dependency rule enforcing layer isolation.
-- **`spine-rule.example.md`** – Architecture enforcement rule (markdown document).
-- **`spine-unit.example.json`** – Authentication entry module for login/logout operations.
-
-These examples are grouped by function: module containers (`folder-unit`, `unit`), project metadata (`project-unit`), language atlas (`manifest`), and architectural rules (`rule-document`, `rule`). The most critical implementation areas are the indexing pipeline (folder-unit), provenance tracking (project-unit), and layer isolation enforcement (rule-document).
+显式涉及的子模块包括文件夹单元（索引容器）、项目单元（身份与模块）、清单（语言索引）、规则文档（依赖约束）以及一个具体的身份验证单元。这些模块共同使 ArchSpine 系统能够一致地进行索引、验证并强制架构边界。

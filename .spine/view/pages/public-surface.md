@@ -1,6 +1,6 @@
 # Public Surface Map
 
-> Generated: 2026-05-02T07:42:21.597Z
+> Generated: 2026-05-02T10:11:32.546Z
 > Top 24 high-confidence public entry surfaces derived from index and graph signals.
 
 ## CLI Entry Points

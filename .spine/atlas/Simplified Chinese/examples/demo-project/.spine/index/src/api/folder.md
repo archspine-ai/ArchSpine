@@ -1,8 +1,7 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/index/src/api","role":"This directory contains metadata definitions for indexing and analyzing source code files within the ArchSpine mirror system.","responsibility":"Collectively, the components in this directory define the structural metadata schema for source code directories and files, including indexing provenance, dependency graphs, and architectural rule enforcement.","children":[{"filePath":"examples/demo-project/.spine/index/src/api/folder.json","role":"Defines the structural metadata and indexing provenance for a source code directory within the ArchSpine mirror system.","fileKind":"config"},{"filePath":"examples/demo-project/.spine/index/src/api/handler.ts.json","role":"Defines the semantic metadata, dependency graph, and structural skeleton for a single source file within the ArchSpine mirror system.","fileKind":"config"}],"provenance":{"indexedAt":"2026-05-01T03:58:34.797Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-该目录 `/api` 是 ArchSpine 镜像系统索引层中元数据模式的核心。它定义了如何从结构和语义上记录目录及单个源文件，包括溯源、依赖关系图和架构规则执行。
+`src/api` 目录在 ArchSpine 索引系统中负责定义源代码分析的核心元数据 schema。它描述了目录和文件的结构化元数据，包括索引来源、依赖关系和架构规则执行。该目录包含两个具体子模块：
 
-该目录包含两个重要的配置文件：
-- `folder.json` — 定义整个目录的结构元数据和索引溯源。
-- `handler.ts.json` — 定义单个源文件的语义元数据、依赖关系图和结构骨架。
+- **folder.json**：定义源代码目录的结构元数据及索引来源，作为镜像项目中文件夹描述的 schema。
+- **handler.ts.json**：为单个源文件（本例中为 `handler.ts`）定义完整的语义元数据、依赖关系和结构骨架，支持精细化的代码分析。
 
-这两个文件共同构成了 ArchSpine 索引模式的核心。其中最重要的实现领域包括元数据模式的设计、与 AST 和 LLM 管道阶段的集成（如溯源信息所示），以及基于所定义关系来执行架构规则。涉及的具体子模块有元数据模式验证器、依赖关系图构建器（它会消费此处定义的结构），以及记录索引管道阶段（ast、llm）的溯源记录器。
+该目录对索引流水线（AST + LLM 阶段）至关重要，并为 ArchSpine 其他部分理解项目结构与意图提供了契约。

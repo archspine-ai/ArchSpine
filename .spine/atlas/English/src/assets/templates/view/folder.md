@@ -1,13 +1,9 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/assets/templates/view","role":"This directory contains analysis and documentation files that describe the public surface and risk profile of the ArchSpine project.","responsibility":"Collectively, these files provide a machine-readable and human-readable inventory of all CLI commands, MCP endpoints, and exported module interfaces, alongside a ranked risk analysis of the most critical files in the codebase to support maintenance and review prioritization.","children":[{"filePath":"src/assets/templates/view/public-surface.md","role":"Public API surface inventory and entry point registry","fileKind":"document"},{"filePath":"src/assets/templates/view/risk-hotspots.md","role":"Risk analysis report for the ArchSpine project","fileKind":"document"}],"provenance":{"indexedAt":"2026-05-01T03:58:43.419Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# ArchSpine View Templates
+The `src/assets/templates/view` directory is the central documentation hub for the ArchSpine project's public interface and risk profile. It contains two key documents that together form a comprehensive inventory and assessment: `public-surface.md` and `risk-hotspots.md`.
 
-This directory, `src/assets/templates/view`, holds the documentation and analysis files that define the public profile and risk landscape of the ArchSpine project. It serves as both a human-readable and machine-readable reference for understanding the system's exposed surface and identifying areas that require the most attention during maintenance and review.
+- **`public-surface.md`** is the authoritative registry of all exported CLI commands, MCP endpoints, and module interfaces. It serves as the machine- and human-readable entry point for understanding the project's API surface.
+- **`risk-hotspots.md`** is a ranked risk analysis report highlighting the most critical files in the codebase, enabling maintenance and review prioritization.
 
-The two primary documents work as a complementary pair:
+These two documents are the only children in this directory, grouped by their complementary roles: one defines what is exposed, the other evaluates what is at risk. The most important implementation areas covered are the public-facing command-line interface, the MCP protocol layer, the exported module boundaries, and the file-level risk scoring methodology.
 
-- **public-surface.md** – A comprehensive inventory of the project's public API surface, listing all CLI commands, MCP endpoints, and exported module interfaces. It acts as an entry point registry for anyone using or extending ArchSpine.
-- **risk-hotspots.md** – A ranked risk analysis report that identifies the most critical files in the codebase, based on factors such as complexity, coupling, and change frequency. This report helps prioritize code review and refactoring efforts.
-
-From an implementation perspective, the most important areas covered here are the CLI command definitions and the MCP server endpoints, as they form the primary interaction channels for users and external agents. The risk analysis specifically calls out high-risk modules like the core orchestration engine and the AST processor, which should be reviewed with extra care.
-
-This directory fulfills the project's need for transparency and maintainability by making the public surface and risk profile immediately available to both developers and automated analysis tools.
+Concrete submodules referenced include CLI subcommands, MCP route handlers, and module export statements, all of which are cataloged and assessed within these two files.

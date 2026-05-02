@@ -1,58 +1,12 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-05-02T07:42:21.602Z",
+  "generatedAt": "2026-05-02T10:11:32.551Z",
   "experimental": true,
   "viewType": "risk-hotspots",
   "summary": "Top 12 risk hotspots ranked by a transparent additive score model.",
   "items": [
     {
       "id": "hotspot-1",
-      "hotspotPath": "src/infra/llm/providers/openai.ts",
-      "riskFactors": [
-        "semantic-change",
-        "fan-out",
-        "surface-exposure",
-        "large-file"
-      ],
-      "summary": "OpenAI-compatible LLM provider client implementing the LLMClient interface, with embedded prompt generation orchestration for ArchSpine's semantic analysis pipeline; ranked due to semantic-change, fan-out.",
-      "impactRadiusHint": "Likely localized impact with a few downstream touch points.",
-      "confidence": 0.72,
-      "totalScore": 59,
-      "scoreBreakdown": [
-        {
-          "factor": "fan-out",
-          "score": 12,
-          "reason": "File depends on 6 indexed file(s)."
-        },
-        {
-          "factor": "surface-exposure",
-          "score": 12,
-          "reason": "File exposes 3 public-surface item(s) and 1 export(s)."
-        },
-        {
-          "factor": "semantic-change",
-          "score": 16,
-          "reason": "The previous semantic contract described this as a pure LLM provider client, but the actual code shows it also orchestrates prompt generation by importing and using prompt generators directly, which is a broader responsibility than just providing LLM client capabilities."
-        },
-        {
-          "factor": "rule-violations",
-          "score": 5,
-          "reason": "File carries 1 active rule violation(s)."
-        },
-        {
-          "factor": "large-file",
-          "score": 8,
-          "reason": "File has 272 line(s), increasing change surface area."
-        },
-        {
-          "factor": "missing-adjacent-tests",
-          "score": 6,
-          "reason": "No adjacent test file was detected near a shared or exposed module."
-        }
-      ]
-    },
-    {
-      "id": "hotspot-2",
       "hotspotPath": "src/cli/commands/publish.ts",
       "riskFactors": [
         "fan-out",
@@ -93,7 +47,7 @@
       ]
     },
     {
-      "id": "hotspot-3",
+      "id": "hotspot-2",
       "hotspotPath": "src/ast/lang-registry.ts",
       "riskFactors": [
         "semantic-change",
@@ -130,6 +84,52 @@
           "factor": "large-file",
           "score": 8,
           "reason": "File has 257 line(s), increasing change surface area."
+        },
+        {
+          "factor": "missing-adjacent-tests",
+          "score": 6,
+          "reason": "No adjacent test file was detected near a shared or exposed module."
+        }
+      ]
+    },
+    {
+      "id": "hotspot-3",
+      "hotspotPath": "src/infra/llm/providers/openai.ts",
+      "riskFactors": [
+        "semantic-change",
+        "fan-out",
+        "large-file",
+        "missing-adjacent-tests"
+      ],
+      "summary": "OpenAI-compatible LLM provider client with embedded prompt generation and response parsing orchestration, contrary to the Infra Facade design rule; ranked due to semantic-change, fan-out.",
+      "impactRadiusHint": "Likely localized impact with a few downstream touch points.",
+      "confidence": 0.69,
+      "totalScore": 52,
+      "scoreBreakdown": [
+        {
+          "factor": "fan-out",
+          "score": 12,
+          "reason": "File depends on 6 indexed file(s)."
+        },
+        {
+          "factor": "surface-exposure",
+          "score": 5,
+          "reason": "File exposes 1 public-surface item(s) and 1 export(s)."
+        },
+        {
+          "factor": "semantic-change",
+          "score": 16,
+          "reason": "The file header explicitly states it has drifted beyond a pure LLM client interface by absorbing prompt generation, strategy orchestration, and response parsing. The previous semantic contract also identified this pattern."
+        },
+        {
+          "factor": "rule-violations",
+          "score": 5,
+          "reason": "File carries 1 active rule violation(s)."
+        },
+        {
+          "factor": "large-file",
+          "score": 8,
+          "reason": "File has 281 line(s), increasing change surface area."
         },
         {
           "factor": "missing-adjacent-tests",

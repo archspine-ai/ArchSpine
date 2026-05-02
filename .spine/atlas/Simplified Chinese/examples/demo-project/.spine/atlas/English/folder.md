@@ -1,2 +1,10 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/atlas/English","role":"This directory aggregates the core configuration and rule definitions that govern the ArchSpine mirror system's behavior and structure.","responsibility":"Collectively, the components in this directory define system-level configuration parameters, establish structural guidelines for the .spine directory, and enforce architectural rules and conventions for the mirror system.","children":[{"filePath":"examples/demo-project/.spine/atlas/English/.spine","role":"This directory aggregates the core configuration and rule definitions that govern the ArchSpine mirror system's behavior and structure.","fileKind":"folder"},{"filePath":"examples/demo-project/.spine/atlas/English/demo.gif.md","role":"Visual demonstration of the ArchSpine mirror system","fileKind":"document"},{"filePath":"examples/demo-project/.spine/atlas/English/project.md","role":"Demonstration and validation document for the ArchSpine protocol","fileKind":"document"},{"filePath":"examples/demo-project/.spine/atlas/English/src","role":"This directory aggregates the public API, domain logic, and infrastructure layers of the ArchSpine mirror system.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T03:58:38.631Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`atlas/English` 目录是 ArchSpine 镜像系统的核心配置与规则中心。它包含顶层 `.spine` 文件夹，该文件夹定义了系统范围的参数和结构约定，同时存放关键文档。`demo.gif.md` 提供了镜像系统运作的可视化演示，而 `project.md` 则是 ArchSpine 协议的验证文档。`src/` 子文件夹组织公共 API、领域逻辑和基础设施层，是 API 定义、核心算法及系统运行时支持等实现关注点的主要区域。这些组件共同构成了权威蓝图，约束镜像系统的行为、结构以及扩展方式。
+此目录 `examples/demo-project/.spine/atlas/English` 是 ArchSpine 镜像系统演示项目中的英文图册，负责整合系统核心配置与规则定义，以控制镜像系统的整体结构与行为。  
+
+其重要子项包括：  
+- **`.spine`** – 子文件夹，包含系统级配置参数以及 `.spine` 目录的结构规范。  
+- **`demo.gif.md`** – 展示 ArchSpine 镜像系统运行效果的视觉演示文档。  
+- **`project.md`** – 用于验证和演示 ArchSpine 协议的文档。  
+- **`src`** – 聚合了公开 API、领域逻辑与基础设施层的文件夹。  
+
+关键实施领域集中在 `.spine` 子文件夹中的配置定义，以及 `src` 文件夹所强制的分层架构规则。`project.md` 文档对协议验证至关重要，而 `demo.gif.md` 则为系统行为提供了具体的视觉示例。

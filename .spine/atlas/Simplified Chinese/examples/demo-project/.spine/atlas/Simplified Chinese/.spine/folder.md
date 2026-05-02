@@ -1,13 +1,14 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/atlas/Simplified Chinese/.spine","role":"Root configuration and structural definition directory for the ArchSpine mirror system.","responsibility":"Defines the foundational configuration, structural roles, and architectural rules for the .spine directory, ensuring consistent project mirroring and rule enforcement across the ArchSpine system.","children":[{"filePath":"examples/demo-project/.spine/atlas/Simplified Chinese/.spine/config.json.md","role":"Configuration entry point for the ArchSpine mirror system","fileKind":"document"},{"filePath":"examples/demo-project/.spine/atlas/Simplified Chinese/.spine/folder.md","role":"Define the structural and narrative role of the .spine directory within the ArchSpine project.","fileKind":"document"},{"filePath":"examples/demo-project/.spine/atlas/Simplified Chinese/.spine/rules","role":"Defines the architectural rules and conventions for the ArchSpine mirror system.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T03:58:34.646Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`examples/demo-project/.spine/atlas/Simplified Chinese/.spine` 路径下的 `.spine` 目录是 ArchSpine 镜像系统的根配置与结构定义目录。它规定了整个 `.spine` 目录树的基础设置、角色定义以及架构规则，从而确保项目镜像的一致性并执行镜像规则。
+# ArchSpine 根配置目录（`.spine`）
 
-**重要子项及分组方式：**
+此目录是 ArchSpine 镜像系统的根本配置与结构定义目录，位于简体中文图册 `examples/demo-project/.spine/atlas/Simplified Chinese/.spine` 中。其核心职责是定义整个 `.spine` 镜像的配置、结构角色以及架构规则，确保整个 ArchSpine 系统的项目镜像一致且规则得到强制施行。
 
-- **`config.json.md`** – ArchSpine 镜像系统的主配置入口，定义全局参数及与其他组件的连接方式。
-- **`folder.md`** – 结构说明文档，阐述 `.spine` 目录在 ArchSpine 项目中的叙事角色，帮助理解该目录如何与镜像文件交互。
-- **`rules`（文件夹）** – 包含所有镜像操作必须遵循的架构规则与约定。该子模块是确保跨项目一致性的关键。
+## 主要子项
 
-**关键实现区域：**
-- 通过 `config.json.md` 实现集中配置管理
-- `folder.md` 提供清晰的角色描述，同时服务于人类读者和自动化代理
-- `rules` 文件夹构成基于规则的镜像机制的核心，涵盖命名规范、边界定义及权限逻辑。
+- **`config.json.md`** – ArchSpine 镜像系统的配置入口，包含控制镜像行为的核心设置。
+- **`folder.md`** – 定义 `.spine` 目录在项目中的结构与叙事角色，阐述其用途以及如何组织镜像。
+- **`rules/`** – 子文件夹，封装 ArchSpine 镜像系统所有架构规则与约定，是镜像策略与结构约束的定义所在。
+
+## 关键实施区域
+
+最重要的实施区域包括配置架构（`config.json.md`）、`.spine` 文件夹的自我描述（`folder.md`）以及 `rules/` 子模块内的规则定义。这些组件共同构成了整个 ArchSpine 系统的治理模型。

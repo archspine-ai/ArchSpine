@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/tasks",
-  "role": "Core pipeline tasks and stages for the ArchSpine mirror system's automated workflows.",
-  "responsibility": "This directory contains all sequential and parallel pipeline tasks that drive the ArchSpine system: scanning and reconciling files, extracting AST symbols, generating summaries (both lightweight and semantic), validating against architectural rules, fixing violations, aggregating content, committing state, deriving views and reverse indices, and handling post-commit operations. Together they form the complete processing pipeline that transforms source code into a structured mirror with documentation, insights, and compliance checks.",
+  "role": "Pipeline task orchestration and execution layer for the ArchSpine mirror system.",
+  "responsibility": "Implements and coordinates all pipeline stages including scanning, AST extraction, lightweight and full summarization, architectural validation, automated fixing, documentation backfill, reverse indexing, view derivation, and state commitment. Each task module encapsulates a specific stage, manages its lifecycle (checkpoints, concurrency, caching), and produces structured output for downstream stages.",
   "children": [
     {
       "filePath": "src/tasks/aggregate.ts",
@@ -71,7 +71,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-02T07:41:57.993Z",
+    "indexedAt": "2026-05-02T10:11:08.494Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -1,27 +1,26 @@
-<!-- spine-content-hash:e24d3e25f9cef0e11b46e8684a4ea56674072b80cbc6e40fdd8477757ce66709 -->
-# ArchSpine OpenAI 兼容 LLM 客户端
+<!-- spine-content-hash:92e8d378bb0d2ed1663f84a423962d192b7822771ca56f60cae220ffb012056d -->
+# OpenAICompatibleClient
 
-## 角色
-该文件实现了 `LLMClient` 接口，作为一个 OpenAI 兼容的提供者客户端。它还内嵌了提示生成编排功能，用于 ArchSpine 的语义分析流水线。
+该文件实现了 `LLMClient` 接口，作为 OpenAI 兼容的提供者客户端。其主要职责是通过可配置的参数（API 端点、模型、API 密钥、超时等，来自 ProviderConfig）初始化 OpenAI SDK 客户端，并为每种文件类型（源代码、文档、配置、文件夹、项目、Markdown）生成语义摘要。然而，它违反了**基础架构门面**设计规则，吸收了本应由专门编排层处理的编排逻辑（提示生成、响应解析、策略编排）。
 
-## 主要职责
-- 根据 `ProviderConfig` 配置 API 端点、API 密钥、模型和超时时间，初始化 OpenAI SDK 客户端。
-- 实现 `LLMClient` 接口的所有方法，为所有 `FileKind` 类型（source、document、config、folder、project、markdown）生成语义摘要。
-- 通过导入并使用提示生成器（来自 `../../prompt.js` 和 `../../lite-prompt.js` 的 `generateConfigPrompt`、`generateDocumentPrompt` 等）执行结构化提示。
-- 使用工具函数将 LLM 响应解析为结构化 JSON 和 Markdown 块。
-- 在单个摘要生成过程中，跨多次 LLM 调用累积并合并使用信息。
+**主要职责：**
+- 根据 `ProviderConfig` 初始化 OpenAI 客户端。
+- 使用导入的提示生成器（如 `generateSourcePrompt`、`generateConfigPrompt` 等）构建每种文件类型的结构化提示。
+- 调用聊天完成 API，并将响应通过工具函数解析为结构化的 JSON 和 Markdown 块。
+- 合并多次调用的令牌使用信息，用于聚合报告。
+- 使用导入的 `buildSupportingContext` 工具构建辅助上下文（如先前的语义信息）。
 
-## 重要不变项与范围外事项
-- **必须**实现来自 `../base.js` 的 `LLMClient` 接口。
-- **必须**使用 OpenAI SDK 进行所有 API 通信。
-- **必须**支持所有 `FileKind` 类型的提示生成。
-- **必须**将 LLM 响应解析为结构化格式。
-- **范围外：** 直接访问数据库或文件系统、用户认证或授权、超出 OpenAI API 调用的网络请求处理、LLM 响应的缓存或持久化。
+**重要不变性及负面范围：**
+- 大模型提供者客户端应为轻量传输门面，仅暴露单一的 `generate(prompt)` 方法。该文件导入了提示生成和响应解析工具，这些应属于编排层。
+- 文件类型特定的内容准备（将文件类型映射到提示）和策略编排不在该模块的范围内。
+- 应优先使用公开的基础架关门面，而非直接从深层私有实现路径导入。
 
-## 最重要的导出行为
-- **类：** `OpenAICompatibleClient`
-- **构造函数：** `constructor(config: ProviderConfig)`
-- **公开方法：** `generateSource`、`generateDocument`、`generateConfig`、`generateFolder`、`generateProject`、`generateMarkdown` — 每个方法对应一个 `FileKind` 类型。
+**检测到漂移：** 是。文件头明确指出该文件已超越纯大模型客户端的接口，嵌入了编排关注点。语义分析确认了此模式。
 
-## 架构说明
-该客户端已偏离其原始纯 LLM 提供者的契约。它现在通过直接导入提示生成器来编排提示生成，这超出了其原始职责范围。这违反了基础设施模块不应吸收服务/任务/引擎编排关注点的规则。理想情况下，该客户端应接收预构建的提示，或将提示生成委托给独立的编排层。
+**公开表面：**
+- `class OpenAICompatibleClient implements LLMClient`
+
+**规则违例：**
+- `infra-facade-imports`（警告）：从编排域导入，违反了基础架构模块不得吸收编排关注点的规则。
+
+**架构意图：** 目标架构为清晰的分层设计，提供者为传输门面，提示生成和响应解析提取到共享编排层。该文件当前违反了这一意图。

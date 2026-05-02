@@ -2,83 +2,80 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/infra/llm/providers/openai.ts",
-    "contentHash": "e24d3e25f9cef0e11b46e8684a4ea56674072b80cbc6e40fdd8477757ce66709",
+    "contentHash": "92e8d378bb0d2ed1663f84a423962d192b7822771ca56f60cae220ffb012056d",
     "skeletonHash": "738940c6eabb8a7fb88fb570efc76f020750a4ef0de3a2cf1104d814fa5d9fab",
-    "semanticHash": "ded0a51122ea0c0b15332d187e6f434cc1435d98ca3612681dc4fb121efe06fa",
+    "semanticHash": "9db51000fd1599fd7d935a1292ac628b0f0e66543f4385dd11352f7d654d4cbc",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/llm/providers"
   },
   "semantic": {
-    "role": "OpenAI-compatible LLM provider client implementing the LLMClient interface, with embedded prompt generation orchestration for ArchSpine's semantic analysis pipeline.",
+    "role": "OpenAI-compatible LLM provider client with embedded prompt generation and response parsing orchestration, contrary to the Infra Facade design rule.",
     "responsibilities": [
-      "Initializes OpenAI SDK client with configurable API endpoint, API key, model, and timeout from ProviderConfig.",
-      "Implements LLMClient interface methods for generating semantic summaries across FileKind types (source, document, config, folder, project, markdown).",
-      "Executes structured prompts using the configured generation strategy and prompt policy tier via imported prompt generators.",
-      "Parses LLM responses into structured JSON and markdown blocks using utility functions.",
-      "Accumulates and merges usage information across multiple LLM calls within a single summary generation."
+      "Initializes the OpenAI SDK client with configurable API endpoint, model, API key, and timeout from ProviderConfig.",
+      "Implements the LLMClient interface to generate semantic summaries for each FileKind (source, document, config, folder, project, markdown).",
+      "Uses imported prompt generators (generateSourcePrompt, generateConfigPrompt, etc.) to create structured prompts for each file type.",
+      "Calls the OpenAI chat completions API with constructed prompts and parses the response into structured JSON and markdown blocks via utility functions.",
+      "Merges token usage information across sequential calls for aggregated reporting.",
+      "Builds supporting context (e.g., previous semantics) using the imported buildSupportingContext utility."
     ],
     "outOfScope": [
-      "Direct database or filesystem access.",
-      "User authentication or authorization.",
-      "Network request handling beyond OpenAI API calls.",
-      "Caching or persistence of LLM responses."
+      "Prompt generation and strategy orchestration should be handled by a dedicated orchestration layer, not by a low-level LLM provider client.",
+      "Response parsing into domain-specific structures should be performed by an orchestrator, not by the transport-level client.",
+      "FileKind-specific content preparation (e.g., mapping file types to prompts) belongs outside the provider."
     ],
     "invariants": [
-      "Must implement the LLMClient interface from '../base.js'.",
-      "Must use OpenAI SDK for API communication.",
-      "Must support all FileKind types for prompt generation.",
-      "Must parse LLM responses into structured formats."
+      "LLM provider clients must not import prompt generation or response parsing utilities that belong in a higher-level orchestration layer.",
+      "LLM provider clients should expose a single generate(prompt) method and remain transport-focused facades.",
+      "Public infra facades should be preferred over direct imports from deep private implementation paths."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a reusable, configurable LLM provider client that integrates with ArchSpine's prompt generation system to produce semantic summaries for various file types.",
-      "recentChangeIntent": "infra: harden runtime database and llm client stability - likely includes stability improvements to this LLM client, such as timeout handling or error recovery."
+      "architecturalIntent": "Establish a clean layered architecture where LLM providers are thin transport facades, and prompt generation/response parsing is extracted into a shared orchestration layer.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era; the current provider violates this intent by containing embedded orchestration logic."
     },
     "publicSurface": [
-      "OpenAICompatibleClient class",
-      "constructor(config: ProviderConfig)",
-      "LLMClient interface methods (generateSource, generateDocument, generateConfig, generateFolder, generateProject, generateMarkdown)"
+      "class OpenAICompatibleClient implements LLMClient"
     ],
     "ruleViolations": [
       {
         "id": "infra-facade-imports",
         "severity": "warning",
-        "reason": "The file imports prompt generators (generateConfigPrompt, generateDocumentPrompt, etc.) from '../../prompt.js' and '../../lite-prompt.js', which are orchestration concerns. This violates the rule that infra modules should not absorb service/task/engine orchestration concerns. The client should receive pre-built prompts or delegate prompt generation to a separate orchestration layer."
+        "reason": "The OpenAICompatibleClient imports prompt generation functions and response parsing utilities, absorbing orchestration concerns that should reside in a dedicated orchestration layer. This violates the rule that infra modules must not absorb service/task/engine orchestration concerns."
       }
     ],
     "driftDetected": true,
-    "driftReason": "The previous semantic contract described this as a pure LLM provider client, but the actual code shows it also orchestrates prompt generation by importing and using prompt generators directly, which is a broader responsibility than just providing LLM client capabilities.",
+    "driftReason": "The file header explicitly states it has drifted beyond a pure LLM client interface by absorbing prompt generation, strategy orchestration, and response parsing. The previous semantic contract also identified this pattern.",
     "localized": {
       "English": {
-        "role": "OpenAI-compatible LLM provider client implementing the LLMClient interface, with embedded prompt generation orchestration for ArchSpine's semantic analysis pipeline.",
+        "role": "OpenAI-compatible LLM provider client with embedded prompt generation and response parsing orchestration, contrary to the Infra Facade design rule.",
         "responsibilities": [
-          "Initializes OpenAI SDK client with configurable API endpoint, API key, model, and timeout from ProviderConfig.",
-          "Implements LLMClient interface methods for generating semantic summaries across FileKind types (source, document, config, folder, project, markdown).",
-          "Executes structured prompts using the configured generation strategy and prompt policy tier via imported prompt generators.",
-          "Parses LLM responses into structured JSON and markdown blocks using utility functions.",
-          "Accumulates and merges usage information across multiple LLM calls within a single summary generation."
+          "Initializes the OpenAI SDK client with configurable API endpoint, model, API key, and timeout from ProviderConfig.",
+          "Implements the LLMClient interface to generate semantic summaries for each FileKind (source, document, config, folder, project, markdown).",
+          "Uses imported prompt generators (generateSourcePrompt, generateConfigPrompt, etc.) to create structured prompts for each file type.",
+          "Calls the OpenAI chat completions API with constructed prompts and parses the response into structured JSON and markdown blocks via utility functions.",
+          "Merges token usage information across sequential calls for aggregated reporting.",
+          "Builds supporting context (e.g., previous semantics) using the imported buildSupportingContext utility."
         ],
         "outOfScope": [
-          "Direct database or filesystem access.",
-          "User authentication or authorization.",
-          "Network request handling beyond OpenAI API calls.",
-          "Caching or persistence of LLM responses."
+          "Prompt generation and strategy orchestration should be handled by a dedicated orchestration layer, not by a low-level LLM provider client.",
+          "Response parsing into domain-specific structures should be performed by an orchestrator, not by the transport-level client.",
+          "FileKind-specific content preparation (e.g., mapping file types to prompts) belongs outside the provider."
         ]
       },
       "Simplified Chinese": {
-        "role": "实现 LLMClient 接口的 OpenAI 兼容 LLM 提供者客户端，内嵌提示生成编排功能，用于 ArchSpine 的语义分析流水线。",
+        "role": "OpenAI 兼容的大语言模型提供者客户端，内嵌了提示生成和响应解析编排功能，违反了基础架构门面设计规则。",
         "responsibilities": [
-          "根据 ProviderConfig 配置 API 端点、API 密钥、模型和超时时间，初始化 OpenAI SDK 客户端。",
-          "实现 LLMClient 接口方法，为 FileKind 类型（source、document、config、folder、project、markdown）生成语义摘要。",
-          "通过导入的提示生成器，使用配置的生成策略和提示策略层级执行结构化提示。",
-          "使用工具函数将 LLM 响应解析为结构化 JSON 和 Markdown 块。",
-          "在单个摘要生成过程中，跨多次 LLM 调用累积并合并使用信息。"
+          "通过 ProviderConfig 配置的 API 端点、模型、API 密钥和超时参数初始化 OpenAI SDK 客户端。",
+          "实现 LLMClient 接口，为每种文件类型（源代码、文档、配置、文件夹、项目、Markdown）生成语义摘要。",
+          "使用导入的提示生成器（如 generateSourcePrompt、generateConfigPrompt 等）构建每种文件类型的结构化提示。",
+          "调用 OpenAI 聊天完成 API，并将响应通过工具函数解析为结构化的 JSON 和 Markdown 块。",
+          "合并多次调用的令牌使用信息，用于聚合报告。",
+          "使用导入的 buildSupportingContext 工具构建辅助上下文（如先前的语义信息）。"
         ],
         "outOfScope": [
-          "直接访问数据库或文件系统。",
-          "用户认证或授权。",
-          "超出 OpenAI API 调用的网络请求处理。",
-          "LLM 响应的缓存或持久化。"
+          "提示生成和策略编排应由专门的编排层处理，而非低层的大模型提供者客户端。",
+          "将响应解析为领域特定结构应由编排器执行，而非传输层客户端。",
+          "文件类型特定的内容准备（如将文件类型映射到提示）应位于提供者之外。"
         ]
       }
     }
@@ -219,14 +216,178 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/lite-prompt.ts/generateLitePrompt#",
+        "targetPath": "src/infra/lite-prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/generateDocumentPrompt#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/generateDocumentPrompt#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/aggregate.ts/generateDocumentPrompt#",
+        "targetPath": "src/infra/prompt/aggregate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/generateConfigPrompt#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/generateConfigPrompt#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/aggregate.ts/generateConfigPrompt#",
+        "targetPath": "src/infra/prompt/aggregate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/generateSourcePrompt#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/generateSourcePrompt#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/source.ts/generateSourcePrompt#",
+        "targetPath": "src/infra/prompt/source.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/utils.ts/buildSupportingContext#",
+        "targetPath": "src/infra/llm/providers/utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/utils.ts/mergeUsage#",
+        "targetPath": "src/infra/llm/providers/utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/generateFolderPrompt#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/generateFolderPrompt#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/aggregate.ts/generateFolderPrompt#",
+        "targetPath": "src/infra/prompt/aggregate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/generateProjectPrompt#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/generateProjectPrompt#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/aggregate.ts/generateProjectPrompt#",
+        "targetPath": "src/infra/prompt/aggregate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/generateMarkdownPrompt#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/generateMarkdownPrompt#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/markdown.ts/generateMarkdownPrompt#",
+        "targetPath": "src/infra/prompt/markdown.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/utils.ts/parseMarkdownBlocks#",
+        "targetPath": "src/infra/llm/providers/utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/openai.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/utils.ts/parseStructuredResponse#",
+        "targetPath": "src/infra/llm/providers/utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:39.119Z",
+    "indexedAt": "2026-05-02T10:10:40.192Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "fallback"
+      "llm"
     ]
   }
 }

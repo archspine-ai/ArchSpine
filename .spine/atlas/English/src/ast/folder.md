@@ -1,14 +1,8 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/ast","role":"AST parsing and language discovery layer for the ArchSpine mirror system.","responsibility":"Provides a unified pipeline for parsing source code into structured symbols and imports using language-specific AST rules, managing language registrations, and discovering language composition across file collections.","children":[{"filePath":"src/ast/extractor.ts","role":"AST parsing service that extracts structural symbols and imports from source code using language-specific rule sets loaded from YAML configuration files.","fileKind":"source"},{"filePath":"src/ast/lang-discovery.ts","role":"AST language discovery and lifecycle module that scans file collections, resolves programming languages via extension mapping, computes deltas between snapshots, and validates language support.","fileKind":"source"},{"filePath":"src/ast/lang-registry.ts","role":"Stateful language configuration registry and dynamic language loader for the ArchSpine code analysis pipeline, managing AST-grep language bindings and file-to-language resolution.","fileKind":"source"},{"filePath":"src/ast/rules","role":"Language-specific grammar definitions for parsing source code into structured symbols.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T04:57:47.579Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-The `src/ast` directory serves as the core AST parsing and language discovery layer for the ArchSpine mirror system. It provides a unified pipeline that transforms source code into structured symbols and import declarations using language-specific AST rules, manages the lifecycle of language registrations, and discovers how languages compose across a collection of files.
+The `src/ast` directory is the heart of ArchSpine's code analysis — a unified AST parsing and language discovery layer. It converts source files into structured symbols and import graphs using language-specific rule sets. The directory contains four notable children:
+- **`extractor.ts`** — the parsing workhorse that loads YAML-based rules to extract symbols and imports from source code.
+- **`lang-discovery.ts`** — handles scanning file collections, mapping extensions to languages, computing deltas between snapshots, and validating language support.
+- **`lang-registry.ts`** — a stateful registry that manages dynamic loading of language bindings and resolves file-to-language mappings.
+- **`rules/`** — a folder holding actual grammar definitions for each supported language.
 
-The directory contains three key source modules and one subfolder:
-
-- **extractor.ts** – An AST parsing service that extracts structural symbols and import references from source code. It relies on language-specific rule sets loaded from YAML configuration files.
-
-- **lang-discovery.ts** – A language discovery and lifecycle module that scans a set of files, resolves programming languages by their file extensions, computes deltas between snapshots, and validates whether the encountered languages are supported.
-
-- **lang-registry.ts** – A stateful language configuration registry and dynamic language loader. It manages the bindings between AST-grep rules and the analysis pipeline and resolves a file’s programming language from its path or content.
-
-- **rules/** – A folder containing language-specific grammar definitions that the extractor uses to parse source code into structured symbols.
-
-The most important implementation concerns are the parsing pipeline (extractor), the snapshot-based language discovery (lang-discovery), and the dynamic registry that enables pluggable language support.
+Key implementation areas include the **extraction pipeline** (rule loading, symbol extraction), **language lifecycle** (registration, discovery, delta computation), and **rule management** (defining per-language AST-grep patterns). The architecture cleanly separates per-language rules from core orchestration, making it easy to add new languages by dropping rule files into `rules/`.

@@ -1,27 +1,26 @@
-<!-- spine-content-hash:e24d3e25f9cef0e11b46e8684a4ea56674072b80cbc6e40fdd8477757ce66709 -->
-# ArchSpine OpenAI-Compatible LLM Client
+<!-- spine-content-hash:92e8d378bb0d2ed1663f84a423962d192b7822771ca56f60cae220ffb012056d -->
+# OpenAICompatibleClient
 
-## Role
-This file implements the `LLMClient` interface as an OpenAI-compatible provider client. It also embeds prompt generation orchestration for ArchSpine's semantic analysis pipeline.
+This file implements the `LLMClient` interface as an OpenAI-compatible provider. Its primary role is to initialize the OpenAI SDK client with configurable parameters (endpoint, model, API key, timeout from ProviderConfig) and generate semantic summaries for each FileKind (source, document, config, folder, project, markdown). However, it violates the **Infra Facade** design rule by absorbing orchestration logic (prompt generation, response parsing, strategy orchestration) that should reside in a dedicated orchestration layer.
 
-## Key Responsibilities
-- Initializes the OpenAI SDK client using a `ProviderConfig` that specifies API endpoint, API key, model, and timeout.
-- Implements all `LLMClient` interface methods for generating semantic summaries across all `FileKind` types: source, document, config, folder, project, and markdown.
-- Executes structured prompts by importing and using prompt generators (`generateConfigPrompt`, `generateDocumentPrompt`, etc.) from `../../prompt.js` and `../../lite-prompt.js`.
-- Parses LLM responses into structured JSON and markdown blocks using utility functions.
-- Accumulates and merges usage information across multiple LLM calls within a single summary generation.
+**Key Responsibilities:**
+- Initialize the OpenAI client from `ProviderConfig`.
+- Generate structured prompts for each file type using imported generators (`generateSourcePrompt`, `generateConfigPrompt`, etc.).
+- Call the chat completions API and parse responses into structured JSON and markdown blocks via utility functions.
+- Merge token usage across sequential calls for aggregated reporting.
+- Build supporting context using the imported `buildSupportingContext` utility.
 
-## Notable Invariants & Negative Scope
-- **Must** implement the `LLMClient` interface from `../base.js`.
-- **Must** use the OpenAI SDK for all API communication.
-- **Must** support all `FileKind` types for prompt generation.
-- **Must** parse LLM responses into structured formats.
-- **Out of scope:** Direct database or filesystem access, user authentication/authorization, network request handling beyond OpenAI API calls, caching or persistence of LLM responses.
+**Notable Invariants & Negative Scope:**
+- LLM provider clients should be thin transport facades exposing only a single `generate(prompt)` method. This file imports prompt generation and response parsing utilities, which belong in an orchestration layer.
+- FileKind-specific content preparation (mapping file types to prompts) and strategy orchestration are out of scope for this module.
+- Public infra facades should be preferred over direct imports from deep private implementation paths.
 
-## Most Important Exported Behavior
-- **Class:** `OpenAICompatibleClient`
-- **Constructor:** `constructor(config: ProviderConfig)`
-- **Public methods:** `generateSource`, `generateDocument`, `generateConfig`, `generateFolder`, `generateProject`, `generateMarkdown` — each corresponding to a `FileKind` type.
+**Drift Detected:** Yes. The file header explicitly states it has drifted beyond a pure LLM client interface by absorbing orchestration concerns. Semantic analysis confirms this pattern.
 
-## Architectural Note
-This client has drifted from its original contract as a pure LLM provider. It now also orchestrates prompt generation by importing prompt generators directly, which is a broader responsibility. This violates the rule that infra modules should not absorb service/task/engine orchestration concerns. The client should ideally receive pre-built prompts or delegate prompt generation to a separate orchestration layer.
+**Public Surface:**
+- `class OpenAICompatibleClient implements LLMClient`
+
+**Rule Violations:**
+- `infra-facade-imports` (warning): Imports from orchestration domain, violating the rule that infra modules must not absorb orchestration concerns.
+
+**Architectural Intent:** The intended architecture is a clean layered design where providers are transport facades, with prompt generation and response parsing extracted into a shared orchestration layer. This file currently violates that intent.

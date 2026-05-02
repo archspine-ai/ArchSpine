@@ -1,2 +1,12 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/assets/templates/atlas","role":"This directory contains the core template definitions for documenting components, documents, folders, projects, and sources within the ArchSpine mirror system.","responsibility":"Collectively, these templates provide a standardized and extensible documentation framework that ensures consistency, clarity, and completeness across all architectural artifacts in the ArchSpine mirror system, serving both human readers and AI agents.","children":[{"filePath":"src/assets/templates/atlas/config.md","role":"Template for documenting a component or module within the ArchSpine mirror system, providing a standardized structure for describing its purpose, parameters, stability, and risks.","fileKind":"document"},{"filePath":"src/assets/templates/atlas/document.md","role":"Template for documenting the narrative purpose, audience, and key insights of a project document within the ArchSpine mirror system","fileKind":"document"},{"filePath":"src/assets/templates/atlas/folder.md","role":"To define the architectural role, responsibilities, and boundaries of a specific component or subsystem within the ArchSpine mirror system.","fileKind":"document"},{"filePath":"src/assets/templates/atlas/project.md","role":"System vision and module orchestration document for the ArchSpine mirror architecture","fileKind":"document"},{"filePath":"src/assets/templates/atlas/source.md","role":"Defines the narrative purpose and architectural role of a document within the ArchSpine mirror system.","fileKind":"document"}],"provenance":{"indexedAt":"2026-05-01T03:58:43.171Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src/assets/templates/atlas` 目录是 ArchSpine 文档模板系统的核心。它包含五个标准模板文件，为镜像系统中的每种架构制品定义了统一结构：组件（`config.md`）、文档（`document.md`）、文件夹（`folder.md`）、项目（`project.md`）和源文件（`source.md`）。每个模板都规定了用途、参数、稳定性、风险、受众和叙事洞察等元数据字段，确保所有制品在面向人类读者和 AI 代理时都能被一致地描述。这些模板按制品类型分组，但共享一个可扩展的公共模式，支持统一的索引和机器可读解析。重要的实现领域包括模板元数据校验、交叉引用链接以及基于填充模板自动生成架构上下文。
+`src/assets/templates/atlas` 目录包含了 ArchSpine 镜像系统的核心模板定义。该目录的职责是规范组件、文档、文件夹、项目和源等各类架构制品的记录方式，从而在整个系统中确保一致性、清晰性和完整性，同时服务于人类读者和 AI 代理。
+
+该目录包含五个不同的模板文件，每个文件承担特定的文档角色：
+
+- **`config.md`** – 用于记录组件或模块的模板，说明其用途、参数、稳定性和风险。
+- **`document.md`** – 用于捕捉项目文档的叙事目的、受众及关键洞察的模板。
+- **`folder.md`** – 定义特定组件或子系统的架构角色、职责和边界。
+- **`project.md`** – 提供整个镜像架构的系统愿景与模块编排文档。
+- **`source.md`** – 定义系统内文档的叙事目的和架构角色。
+
+这些模板共同构成了一个标准化且可扩展的文档框架，支撑着整个 ArchSpine 镜像系统。其中最重要的实现领域是配置模板和文件夹模板，因为它们直接定义了组件和子系统的描述方式与边界。

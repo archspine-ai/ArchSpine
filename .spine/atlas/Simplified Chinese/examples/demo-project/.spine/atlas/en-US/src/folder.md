@@ -1,8 +1,8 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/atlas/en-US/src","role":"This directory aggregates the second-level components of the ArchSpine mirror system, providing a consolidated view of subsystem interactions and data flow.","responsibility":"The components in this directory collectively manage the synchronization, indexing, validation, routing, and access control of mirrored data across distributed nodes, while defining logical and functional layers including configuration management and interface abstraction, ensuring consistency, fault tolerance, and a cohesive, extensible system architecture.","children":[{"filePath":"examples/demo-project/.spine/atlas/en-US/src/api","role":"This directory aggregates the second-level components of the ArchSpine mirror system, providing a consolidated view of subsystem interactions.","fileKind":"folder"},{"filePath":"examples/demo-project/.spine/atlas/en-US/src/domain","role":"This directory aggregates the second-level components of the ArchSpine mirror system, providing a consolidated view of subsystem interactions and data flow.","fileKind":"folder"},{"filePath":"examples/demo-project/.spine/atlas/en-US/src/infra","role":"This directory aggregates the second-level components of the ArchSpine mirror system, providing a consolidated view of its core structural modules.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-04-30T17:33:39.559Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src/` 目录是 ArchSpine 镜像系统 atlas 的核心实现层，包含了定义系统逻辑与功能架构的主要组件文件夹。该目录按三个子模块组织：
+`src` 目录位于 ArchSpine 的 en-US 语言图谱中，是镜像系统第二层组件的核心枢纽。它提供了子系统交互与数据流的整合视图。该目录主要包含三个子模块：
 
-- **api/**：包含接口抽象和 API 定义，负责子系统间的通信与交互。
-- **domain/**：包含领域逻辑，涵盖跨分布式节点的同步、索引、验证和路由等核心业务规则。
-- **infra/**：提供基础设施层，包括配置管理、访问控制以及其他支持领域层和 API 层的基础服务。
+- **api** – 管理子系统间的交互，定义外部通信的公共接口。
+- **domain** – 处理核心业务逻辑与数据流，包括数据同步、索引及验证。
+- **infra** – 包含基础结构与实现细节，如路由、访问控制、配置管理及接口抽象，确保分布式节点间的一致性及容错性。
 
-这些组件共同工作，确保系统的一致性、容错性和可扩展性，并通过清晰的架构分层（api、domain、infra）实现模块化和可维护性。
+这些组件共同构成了一个内聚且可扩展的架构，维护了镜像系统的完整性与可靠性。

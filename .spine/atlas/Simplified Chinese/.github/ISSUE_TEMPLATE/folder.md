@@ -1,10 +1,2 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":".github/ISSUE_TEMPLATE","role":"Issue and feature request templates for the ArchSpine project.","responsibility":"Provides standardized templates for bug reports, documentation improvements, and feature requests to ensure consistent and structured community contributions.","children":[{"filePath":".github/ISSUE_TEMPLATE/bug_report.yml","role":"Bug report template for the ArchSpine project","fileKind":"document"},{"filePath":".github/ISSUE_TEMPLATE/docs_improvement.yml","role":"Issue template for suggesting documentation improvements","fileKind":"document"},{"filePath":".github/ISSUE_TEMPLATE/feature_request.yml","role":"Feature request template for the ArchSpine project","fileKind":"document"}],"provenance":{"indexedAt":"2026-05-01T02:47:44.513Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-此目录包含 ArchSpine 项目的标准化议题模板，用于确保社区提交的错误报告、文档改进建议以及功能请求遵循统一的格式，方便维护人员分类与处理。  
-
-三个模板分别以独立的 YAML 文件组织：  
-
-- **bug_report.yml** – 错误报告模板，要求提供清晰的复现步骤。  
-- **docs_improvement.yml** – 文档改进模板，用于提交文档优化建议。  
-- **feature_request.yml** – 功能请求模板，用于提议新特性或增强功能。  
-
-这些模板强制规定了必填字段、标签以及编写指引，从而简化了贡献流程。该目录最重要的价值在于维护高质量、可操作的用户反馈，这对 ArchSpine 问题跟踪器的长期健康发展至关重要。
+`.github/ISSUE_TEMPLATE` 目录包含了 ArchSpine 项目标准化的议题与功能请求模板，旨在确保社区贡献的一致性和结构化。该目录提供三个专用模板：**缺陷报告模板**（`bug_report.yml`）用于记录错误，**文档改进模板**（`docs_improvement.yml`）用于建议更新指南或参考资料，以及**功能请求模板**（`feature_request.yml`）用于提出新能力。这些模板作为独立的 YAML 文件组织在同一目录下，每一个对应一个明确的贡献类别。最重要的实现领域是清晰划分缺陷、文档和功能之间的关注点，以及使用结构化的 YAML 字段来保证完整性。具体子模块包括上述三个 YAML 文件，每个文件都作为 GitHub Issues 中一个自包含的表单。

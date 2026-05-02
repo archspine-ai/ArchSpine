@@ -1,9 +1,8 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/index/.spine","role":"This directory serves as the root configuration and structural index for the ArchSpine mirror system, defining system identity, file tracking, and rule engine organization.","responsibility":"Collectively, the components in this directory establish the foundational metadata, indexing, and rule framework for the ArchSpine mirror system, enabling configuration management, semantic analysis, drift detection, dependency graph management, change intent recording, and rule engine organization.","children":[{"filePath":"examples/demo-project/.spine/index/.spine/config.json.json","role":"Root configuration metadata for the ArchSpine mirror system","fileKind":"config"},{"filePath":"examples/demo-project/.spine/index/.spine/folder.json","role":"Defines the structural index and metadata for the .spine directory, serving as a manifest for configuration and rule files within the ArchSpine mirror system.","fileKind":"config"},{"filePath":"examples/demo-project/.spine/index/.spine/rules","role":"Defines the architectural rules and directory structure for the ArchSpine mirror system's rule engine.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T03:58:38.965Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`examples/demo-project/.spine/index/.spine` 目录是 ArchSpine 镜像系统的根配置与结构索引，承载了系统的基础元数据、索引及规则框架。这些组件共同支持配置管理、语义分析、漂移检测、依赖图追踪、变更意图记录以及规则引擎的组织。
+此目录是 ArchSpine 镜像系统的根配置与结构索引，负责定义系统标识、文件追踪和规则引擎的组织。其中的组件共同构成了基础元数据、索引和规则框架，支持配置管理、语义分析、漂移检测、依赖关系图管理、变更意图记录以及规则引擎的运作。
 
-该目录包含三个主要子项：
-- **config.json.json** – 根配置文件，定义系统级别的元数据与设置。
-- **folder.json** – 结构索引清单，详细描述 `.spine` 目录的整体布局，作为配置和规则文件的清单。
-- **rules/** – 子目录，专门用于组织 ArchSpine 规则引擎的架构规则和目录结构。
+子项按以下两组划分：
+- **配置文件**：`config.json.json` 包含根配置元数据（如系统版本与标识）；`folder.json` 为 `.spine` 目录本身的结构索引和元数据清单。
+- **规则文件夹**：`rules/` 子目录存储架构规则及目录结构记录，驱动 ArchSpine 的规则引擎。
 
-关键实现领域包括：配置管理（通过根配置）、结构索引（通过 folder.json）以及规则引擎组织（通过 rules 子目录）。溯源信息表明，索引过程结合了 AST 和 LLM 两个流水线阶段，确保深层的语义理解。
+关键实现区域包括：`config.json.json` 中对系统标识的精确定义，`folder.json` 中的目录清单，以及 `rules/` 下的规则引擎规则定义。这些对于实施架构约束和支持变更意图追踪至关重要。

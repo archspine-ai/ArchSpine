@@ -1,2 +1,11 @@
 <!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/atlas/en-US/.spine/rules","role":"This directory aggregates the second-level components of the ArchSpine mirror system, providing a consolidated view of subsystem interactions.","responsibility":"The components in this directory collectively manage the synchronization, validation, and routing of data across mirrored nodes, ensuring consistency and fault tolerance in the ArchSpine architecture.","children":[],"provenance":{"indexedAt":"2026-04-30T17:33:34.788Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-目录 `examples/demo-project/.spine/atlas/en-US/.spine/rules` 是 ArchSpine 镜像系统中第二层组件的聚合点，提供子系统交互的统一视图。其核心职责是管理跨镜像节点的同步、验证和数据路由，以确保系统的一致性和容错能力。该规则目录位于 atlas 本地化层（en-US）内，属于脊柱内部结构的一部分。目前，此目录没有子项，这可能表明规则是动态定义或在运行时填充的。关键实现领域包括同步引擎、验证管道以及管理跨节点数据流的路由机制。尽管此级别没有明确列出子模块，但值得关注的组件是那些定义这些过程的规则及其配置。
+## ArchSpine 规则目录（二级镜像组件）
+
+此目录位于 `examples/demo-project/.spine/atlas/en-US/.spine/rules`，是 ArchSpine 镜像系统中二级组件的汇集点。其主要职责是整合各子系统交互，以确保在镜像节点间完成数据同步、验证和路由。
+
+在此规则目录中，系统维护着保障 ArchSpine 架构一致性和容错性的逻辑与配置。当前尚未包含具体的子模块（子目录或规则文件），表明该规则层定义在更高层级或尚未填充。此分组基于本地化上下文（`en-US`）组织，意味着这些规则专门应用于镜像系统的英语（美国）区域。
+
+关键实施领域包括：
+- 同步策略：规定节点间数据镜像方式的规则。
+- 验证契约：确保副本间数据完整性。
+- 路由架构：决定请求和更新如何在镜像网络中传播。

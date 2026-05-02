@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/infra/llm/providers",
-  "role": "LLM provider implementations and utilities for generating semantic summaries.",
-  "responsibility": "Provides concrete LLM client implementations (Gemini, OpenAI, mock) and supporting utilities for assembling prompts, parsing structured responses, and merging usage data, enabling the ArchSpine mirror system to generate semantic summaries for various file kinds.",
+  "role": "Concrete LLM provider clients and utilities for generating structured semantic summaries.",
+  "responsibility": "Provides implementations for multiple LLM providers (Gemini, OpenAI), a mock client for testing, and utility functions for prompt assembly, response parsing, and usage aggregation used in the ArchSpine mirror system's semantic summary generation pipeline.",
   "children": [
     {
       "filePath": "src/infra/llm/providers/gemini.ts",
@@ -16,7 +16,7 @@
     },
     {
       "filePath": "src/infra/llm/providers/openai.ts",
-      "role": "OpenAI-compatible LLM provider client implementing the LLMClient interface, with embedded prompt generation orchestration for ArchSpine's semantic analysis pipeline.",
+      "role": "OpenAI-compatible LLM provider client with embedded prompt generation and response parsing orchestration, contrary to the Infra Facade design rule.",
       "fileKind": "source"
     },
     {
@@ -26,7 +26,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-01T04:57:39.744Z",
+    "indexedAt": "2026-05-02T10:10:47.469Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
