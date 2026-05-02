@@ -201,7 +201,7 @@ describe('execution checkpoint loading', () => {
     expect(store.getLastLoadWarning()).toBeNull();
   });
 
-  it('rejects illegal item status transitions once an item is completed', () => {
+  it('rejects illegal item status transitions (terminal → terminal without running)', () => {
     const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), 'archspine-checkpoint-transitions-'));
     createdDirs.push(rootDir);
     const store = new ExecutionCheckpointStore(rootDir, 'sync');
@@ -209,8 +209,31 @@ describe('execution checkpoint loading', () => {
     store.markItemStarted('validation', 'src/demo.ts');
     store.markItemCompleted('validation', 'src/demo.ts');
 
-    expect(() => store.markItemStarted('validation', 'src/demo.ts')).toThrow(
+    // Direct completed → failed is illegal (must go through running first for retry)
+    expect(() => store.markItemFailed('validation', 'src/demo.ts', new Error('boom'))).toThrow(
       /Invalid checkpoint item transition/,
     );
+  });
+
+  it('allows retry transitions from terminal states back to running', () => {
+    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), 'archspine-checkpoint-transitions-'));
+    createdDirs.push(rootDir);
+    const store = new ExecutionCheckpointStore(rootDir, 'sync');
+    store.startRun();
+
+    // completed → running (retry)
+    store.markItemStarted('validation', 'src/a.ts');
+    store.markItemCompleted('validation', 'src/a.ts');
+    expect(() => store.markItemStarted('validation', 'src/a.ts')).not.toThrow();
+
+    // failed → running (retry)
+    store.markItemStarted('state-commit', 'src/b.ts');
+    store.markItemFailed('state-commit', 'src/b.ts', new Error('boom'));
+    expect(() => store.markItemStarted('state-commit', 'src/b.ts')).not.toThrow();
+
+    // skipped → running (retry)
+    store.markItemStarted('summarization', 'src/c.ts');
+    store.markItemSkipped('summarization', 'src/c.ts');
+    expect(() => store.markItemStarted('summarization', 'src/c.ts')).not.toThrow();
   });
 });

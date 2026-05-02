@@ -210,6 +210,42 @@ describe('E2E: Pipeline with mock LLM', () => {
       expect(status).toBe(0);
       expect(output).toMatch(/0 violations|no violation|clean|pass/i);
     }, 120_000);
+
+    it('CHK-02: check catches deliberate naming violations', () => {
+      const dir = setupInitializedProject();
+      createdDirs.push(dir);
+
+      // Add a layered-architecture rule that the mock client CAN detect.
+      // The mock detects rules containing "infra" + "api" + "must not" patterns
+      // and files importing from ../infra/ or src/infra/ paths.
+      fs.mkdirSync(path.join(dir, '.spine', 'rules'), { recursive: true });
+      fs.writeFileSync(
+        path.join(dir, '.spine', 'rules', 'layer-isolation.yml'),
+        [
+          '- [Rule: API Layer Isolation]',
+          '  - Scope: src/api/**',
+          '  - Constraint: API modules must not import infra code directly.',
+          '  - Severity: Error',
+          '  - Reason: Keep API surface decoupled from infrastructure.',
+        ].join('\n'),
+      );
+
+      // Create a file that violates: API code importing from infra
+      fs.mkdirSync(path.join(dir, 'src', 'api'), { recursive: true });
+      fs.writeFileSync(
+        path.join(dir, 'src', 'api', 'handler.ts'),
+        'import { Database } from "../../infra/database.js";\n\nexport function handle() { return Database.query(); }\n',
+      );
+
+      runCliOk(['build'], dir);
+
+      const { stdout, stderr, status } = runCli(['check'], dir);
+      const output = `${stdout}${stderr}`;
+
+      // Should find violations (API importing infra)
+      expect(status).toBe(1);
+      expect(output).toMatch(/violation|API Layer|infra/i);
+    }, 120_000);
   });
 
   describe('spine publish', () => {
@@ -272,5 +308,48 @@ describe('E2E: Pipeline with mock LLM', () => {
       expect(status).toBe(0);
       expect(output).toMatch(/no|nothing|none|experimental|violation/i);
     }, 60_000);
+
+    it('FIX-02: --yes flag skips confirmation prompt in non-TTY mode', () => {
+      const dir = setupInitializedProject();
+      createdDirs.push(dir);
+
+      // Create a layer isolation violation the mock client CAN detect
+      fs.mkdirSync(path.join(dir, '.spine', 'rules'), { recursive: true });
+      fs.writeFileSync(
+        path.join(dir, '.spine', 'rules', 'layer-isolation.yml'),
+        [
+          '- [Rule: API Layer Isolation]',
+          '  - Scope: src/api/**',
+          '  - Constraint: API modules must not import infra code directly.',
+          '  - Severity: Error',
+          '  - Reason: Keep API surface decoupled from infrastructure.',
+        ].join('\n'),
+      );
+
+      fs.mkdirSync(path.join(dir, 'src', 'api'), { recursive: true });
+      fs.writeFileSync(
+        path.join(dir, 'src', 'api', 'handler.ts'),
+        'import { Database } from "../../infra/database.js";\n\nexport function handle() { return Database.query(); }\n',
+      );
+
+      runCliOk(['build'], dir);
+
+      // Run check first to populate violations
+      runCli(['check'], dir);
+
+      // Run fix --yes with piped stdio (non-TTY) — should NOT hang
+      const result = spawnSync('node', [builtCliPath, 'fix', '--yes'], {
+        cwd: dir,
+        encoding: 'utf-8',
+        stdio: 'pipe',
+        timeout: 60_000,
+      });
+
+      const output = `${result.stdout || ''}${result.stderr || ''}`;
+
+      // Should complete (not timeout), without prompting
+      expect(result.status).not.toBe(null);
+      expect(output).toMatch(/fix|experimental|violation|DRY-RUN/i);
+    }, 90_000);
   });
 });
