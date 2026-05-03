@@ -1,3 +1,12 @@
+/**
+ * TECH DEBT (V1.0): This provider has drifted beyond a pure LLM client interface.
+ * It currently absorbs prompt generation, strategy orchestration, and response parsing
+ * that belong in a higher-level orchestration layer. The same pattern exists in gemini.ts.
+ *
+ * Planned for V1.1: Extract shared orchestration logic into a single non-provider location,
+ * leaving providers as thin transport layers with a single `generate(prompt)` contract.
+ * See .spine/rules/layered-architecture.yml Infra Facade Imports rule.
+ */
 import OpenAI from 'openai';
 import {
   LLMClient,

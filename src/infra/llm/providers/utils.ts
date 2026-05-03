@@ -34,8 +34,14 @@ export function parseMarkdownBlocks(
   const fallbackBlock = fullResponse.match(/---MARKDOWN---\s*([\s\S]*?)$/);
   if (fallbackBlock?.[1]) {
     const content = fallbackBlock[1].trim();
-    for (const locale of languages) {
-      markdown[locale] = content;
+    if (languages.length === 1) {
+      // If only one language is requested, it's safe to assume this block is for it.
+      markdown[languages[0]] = content;
+    } else {
+      // If multiple languages are requested, an untagged block is ambiguous.
+      // We only assign it to the FIRST language. The parity check in the task
+      // will then fail because the second language will be missing.
+      markdown[languages[0]] = content;
     }
   }
 

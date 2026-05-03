@@ -28,8 +28,8 @@ Analysis:
   scan --dry-run Preview the effective scan boundary and ignore chain
 
 Governance:
-  check          Audit project against architecture rules
-  fix            Auto-fix for rule violations (add --yes to skip prompts, --dry-run to preview)
+  check          [实验性] Audit project against architecture rules
+  fix            [实验性] Auto-fix for rule violations (add --yes to skip prompts, --dry-run to preview)
   repo           Repository-level lifecycle management
                  Use 'spine repo check' to detect drift between config and managed Git files
                  Use 'spine repo strategy set <local|distributable>' to migrate artifact strategy
@@ -134,7 +134,8 @@ Preview the effective scan boundary and ignore chain without persisting anything
 Usage:
   spine check
 
-Audits the project against architecture rules defined in .spine/rules/.
+[实验性] Audit the project against architecture rules defined in .spine/rules/.
+推荐让 AI 编码 agent（Cursor、Claude Code）通过 MCP 直接阅读 .spine/ 控制面数据进行架构治理。
       `);
       break;
     case 'fix':
@@ -142,9 +143,10 @@ Audits the project against architecture rules defined in .spine/rules/.
 Usage:
   spine fix [--yes] [--dry-run]
 
-(Experimental) Auto-fix for the currently active rule violations.
+[实验性] Auto-fix for the currently active rule violations.
 Add --yes to skip confirmation prompts. Add --dry-run to preview proposed diffs without applying them.
 Run 'spine check' first to detect violations before running 'spine fix'.
+推荐让 AI 编码 agent（Cursor、Claude Code）通过 MCP 直接阅读 .spine/ 控制面数据进行治理和修复。
       `);
       break;
     case 'usage':

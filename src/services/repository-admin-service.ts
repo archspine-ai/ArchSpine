@@ -104,12 +104,6 @@ export function checkRepositoryStrategy(
         '.gitignore managed block does not ignore .spine/index/ and .spine/atlas/ (expected for local strategy).',
       );
     }
-    if (!managedBlockIncludesAll(gitignoreBlock, ['.spine/secrets.json', 'secrets.json'])) {
-      issues.push(
-        '.gitignore managed block does not ignore fallback credential files (.spine/secrets.json, secrets.json). ' +
-          'Run "spine repo strategy set local" to repair.',
-      );
-    }
     if (gitattributesBlock !== null && gitattributesBlock.includes('linguist-generated')) {
       issues.push(
         '.gitattributes managed block contains linguist-generated markers, which are only expected in distributable strategy.',
@@ -131,12 +125,6 @@ export function checkRepositoryStrategy(
     ) {
       issues.push(
         '.gitattributes is missing linguist-generated markers for .spine snapshot paths (expected for distributable strategy). ' +
-          'Run "spine repo strategy set distributable" to repair.',
-      );
-    }
-    if (!managedBlockIncludesAll(gitignoreBlock, ['.spine/secrets.json', 'secrets.json'])) {
-      issues.push(
-        '.gitignore managed block does not ignore fallback credential files (.spine/secrets.json, secrets.json). ' +
           'Run "spine repo strategy set distributable" to repair.',
       );
     }

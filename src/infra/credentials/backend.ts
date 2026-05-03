@@ -22,6 +22,8 @@ export class MacOSKeychainBackend implements CredentialBackend {
 
     try {
       execFileSync('security', ['help'], { stdio: 'ignore' });
+      // We also need swift to perform 'set' operations via the stdin script.
+      execFileSync('swift', ['--version'], { stdio: 'ignore' });
       return true;
     } catch {
       return false;
@@ -44,11 +46,40 @@ export class MacOSKeychainBackend implements CredentialBackend {
 
   public set(secretName: string, account: string, secret: string): void {
     this.delete(secretName, account);
-    execFileSync(
-      'security',
-      ['add-generic-password', '-U', '-s', secretName, '-a', account, '-w', secret],
-      { stdio: ['ignore', 'ignore', 'ignore'] },
-    );
+    // The secret is passed via an environment variable, NOT as a CLI argument.
+    // CLI arguments are visible to `ps aux`; env vars of a process are not.
+    // The Swift script reads the env var and calls SecItemAdd via the native
+    // Security framework so the plaintext never appears in the process arg table.
+    const swiftScript = [
+      'import Foundation',
+      'import Security',
+      'let env = ProcessInfo.processInfo.environment',
+      'guard let serviceName = env["ARCHSPINE_SECRET_NAME"],',
+      '      let accountName = env["ARCHSPINE_SECRET_ACCOUNT"],',
+      '      let secretStr  = env["ARCHSPINE_KEYCHAIN_SECRET"],',
+      '      let secretData = secretStr.data(using: .utf8) else { exit(1) }',
+      'let query: [String: Any] = [',
+      '  kSecClass as String: kSecClassGenericPassword,',
+      '  kSecAttrService as String: serviceName,',
+      '  kSecAttrAccount as String: accountName,',
+      '  kSecValueData as String: secretData,',
+      '  kSecAttrLabel as String: "ArchSpine",',
+      ']',
+      'let status = SecItemAdd(query as CFDictionary, nil)',
+      'if status != errSecSuccess && status != errSecDuplicateItem { exit(1) }',
+    ].join('\n');
+
+    execFileSync('swift', ['-'], {
+      input: swiftScript,
+      encoding: 'utf-8',
+      stdio: ['pipe', 'ignore', 'ignore'],
+      env: {
+        ...process.env,
+        ARCHSPINE_SECRET_NAME: secretName,
+        ARCHSPINE_SECRET_ACCOUNT: account,
+        ARCHSPINE_KEYCHAIN_SECRET: secret,
+      },
+    });
   }
 
   public delete(secretName: string, account: string): void {

@@ -1,24 +1,5 @@
 import type Database from 'better-sqlite3';
 
-function isDuplicateColumnError(error: unknown, columnName: string): boolean {
-  if (!(error instanceof Error)) {
-    return false;
-  }
-
-  const message = error.message.toLowerCase();
-  return message.includes(`duplicate column name: ${columnName.toLowerCase()}`);
-}
-
-function addColumnIfMissing(db: Database.Database, sql: string, columnName: string): void {
-  try {
-    db.exec(sql);
-  } catch (error) {
-    if (!isDuplicateColumnError(error, columnName)) {
-      throw error;
-    }
-  }
-}
-
 export function initializeRuntimeSchema(db: Database.Database): void {
   db.pragma('journal_mode = WAL');
   db.exec(`
@@ -28,7 +9,9 @@ export function initializeRuntimeSchema(db: Database.Database): void {
       kind TEXT NOT NULL,
       lastIndexedAt TEXT NOT NULL,
       docs JSON,
-      is_authoritative INTEGER DEFAULT 1
+      is_authoritative INTEGER DEFAULT 1,
+      mtime INTEGER DEFAULT 0,
+      size INTEGER DEFAULT 0
     );
     CREATE TABLE IF NOT EXISTS symbols (
       name TEXT NOT NULL,
@@ -67,7 +50,4 @@ export function initializeRuntimeSchema(db: Database.Database): void {
     CREATE INDEX IF NOT EXISTS idx_violations_file ON violations(file_path);
     CREATE INDEX IF NOT EXISTS idx_drift_path ON drift_events(file_path, detected_at DESC);
   `);
-
-  addColumnIfMissing(db, 'ALTER TABLE files ADD COLUMN mtime INTEGER DEFAULT 0;', 'mtime');
-  addColumnIfMissing(db, 'ALTER TABLE files ADD COLUMN size INTEGER DEFAULT 0;', 'size');
 }

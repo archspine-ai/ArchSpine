@@ -60,28 +60,21 @@
         "invariants": {
           "type": "array",
           "items": {
-            "oneOf": [
-              {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "description", "enforceable"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "description": {
                 "$ref": "./shared.schema.json#/$defs/nonEmptyString"
               },
-              {
-                "type": "object",
-                "additionalProperties": false,
-                "required": ["id", "description", "enforceable"],
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-                  },
-                  "description": {
-                    "$ref": "./shared.schema.json#/$defs/nonEmptyString"
-                  },
-                  "enforceable": {
-                    "type": "boolean"
-                  }
-                }
+              "enforceable": {
+                "type": "boolean"
               }
-            ]
+            }
           }
         },
         "changeIntent": {

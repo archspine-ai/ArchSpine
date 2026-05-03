@@ -179,7 +179,7 @@ function shouldPropagateDirChange(
   return previousUnit.identity.semanticHash !== nextUnit.identity.semanticHash;
 }
 
-function hasRequestedMarkdown(
+function hasAllRequestedMarkdown(
   markdown: Record<string, string> | undefined,
   targetLocales: string[],
 ): boolean {
@@ -187,7 +187,7 @@ function hasRequestedMarkdown(
     return false;
   }
 
-  return targetLocales.some((locale) => {
+  return targetLocales.every((locale) => {
     const content = markdown[locale];
     return typeof content === 'string' && content.trim().length > 0;
   });
@@ -432,6 +432,14 @@ export class SummarizationTask extends SpineTask<ExtractionStageOutput, Summariz
     branch: string,
     status: string,
   ): Promise<boolean> {
+    const stat = fs.statSync(fullPath);
+    const MAX_SUMMARIZE_SIZE = 2 * 1024 * 1024; // 2MB
+    if (stat.size > MAX_SUMMARIZE_SIZE) {
+      throw new Error(
+        `File is too large for LLM summarization (${(stat.size / 1024).toFixed(1)} KB). ` +
+          `ArchSpine has a 2MB safety limit per file. You MUST add this file to .spineignore or .gitignore to proceed cleanly.`,
+      );
+    }
     const content = fs.readFileSync(fullPath, 'utf-8');
     const gitIntent = ctx.scanner.getFileLastCommit(relativeFilePath);
     const rules = ctx.ruleEngine.getRulesForFile(relativeFilePath);
@@ -560,7 +568,7 @@ export class SummarizationTask extends SpineTask<ExtractionStageOutput, Summariz
     if (
       ctx.writeAtlasDocs &&
       ctx.targetLocales.length > 0 &&
-      !hasRequestedMarkdown(rawSummary.markdown, ctx.targetLocales)
+      !hasAllRequestedMarkdown(rawSummary.markdown, ctx.targetLocales)
     ) {
       throw new Error(
         `LLM response did not include markdown blocks for requested locales: ${ctx.targetLocales.join(', ')}`,

@@ -38,7 +38,6 @@ export function runRepoCheck(repoRoot: string, cfg: Config): void {
   }
   console.warn('');
   console.warn('[Repo Check] Run "spine repo strategy set <mode>" to realign managed blocks.');
-  console.warn('[Repo Check] Transitional fallback: "spine init --artifact-strategy <mode>".');
   throw new ArchSpineError(
     ErrorCodes.CliCommandFailed,
     '[Repo Check] Repository Git file drift detected.',

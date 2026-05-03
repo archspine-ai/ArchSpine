@@ -10,14 +10,9 @@ export async function executeFixCommand({
   args,
   runtimeService,
 }: ExecuteFixCommandOptions): Promise<void> {
-  console.log('\x1b[33m%s\x1b[0m', '⚠️  [EXPERIMENTAL] "spine fix" is a generative feature.');
   console.log(
     '\x1b[33m%s\x1b[0m',
-    '   It may produce syntactically correct but logically unexpected code.',
-  );
-  console.log(
-    '\x1b[33m%s\x1b[0m',
-    '   Always review the proposed diff and ensure tests pass after applying.\n',
+    '⚠️  [实验性] spine fix 为实验性功能。推荐让 AI 编码 agent（Cursor、Claude Code）通过 MCP 直接阅读 .spine/ 控制面数据进行治理和修复。\n',
   );
 
   const skipConfirmation = args.includes('--yes');

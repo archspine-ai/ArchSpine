@@ -100,8 +100,6 @@ export const LOCAL_GITIGNORE_LINES = [
   '.spine/runtime/',
   '.spine/protected-output-baseline.json',
   '.spineignore.local',
-  '.spine/secrets.json',
-  'secrets.json',
   '.spine/index/',
   '.spine/atlas/',
   '.spine/manifest.json',
@@ -115,8 +113,6 @@ export const DISTRIBUTABLE_GITIGNORE_LINES = [
   '.spine/runtime/',
   '.spine/protected-output-baseline.json',
   '.spineignore.local',
-  '.spine/secrets.json',
-  'secrets.json',
 ];
 
 export const DISTRIBUTABLE_GITATTRIBUTES_LINES = [

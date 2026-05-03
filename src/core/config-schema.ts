@@ -64,12 +64,7 @@ function validateLLM(llm: unknown, issues: string[]): void {
     issues.push('llm must be an object');
     return;
   }
-  if ('liteMode' in llm) {
-    issues.push('llm.liteMode is no longer supported');
-  }
-  if ('validateExperimentalSplitStage' in llm) {
-    issues.push('llm.validateExperimentalSplitStage is no longer supported');
-  }
+
   expectString(issues, 'llm.provider', llm.provider);
   expectString(issues, 'llm.model', llm.model);
   expectString(issues, 'llm.baseURL', llm.baseURL);

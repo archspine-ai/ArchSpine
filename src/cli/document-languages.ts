@@ -57,10 +57,7 @@ function buildChoice(value: string, selectedLanguages: Set<string>): DocumentLan
   return {
     title: LANGUAGE_TITLES[value] || value,
     value,
-    selected:
-      selectedLanguages.has(value) ||
-      (value === 'English' && selectedLanguages.has('en-US')) ||
-      (value === 'Portuguese (Brazil)' && selectedLanguages.has('pt-BR')),
+    selected: selectedLanguages.has(value),
   };
 }
 

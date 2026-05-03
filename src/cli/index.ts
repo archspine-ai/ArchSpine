@@ -248,5 +248,5 @@ main().catch((err) => {
   } else {
     console.error(`❌ [${wrapped.code}] ${wrapped.message}`);
   }
-  process.exitCode = wrapped.exitCode;
+  process.exit(wrapped.exitCode);
 });

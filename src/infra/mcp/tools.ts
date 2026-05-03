@@ -3,21 +3,25 @@ import * as path from 'path';
 import { Manifest } from '../manifest.js';
 import { Config } from '../config.js';
 import { Scanner } from '../../engines/scanner.js';
+import { RuleEngine } from '../../engines/rules.js';
 import { loadRulesFromDir } from '../rules-loader.js';
 import { MCPContextGate } from './context.js';
 import { ArchSpineError, ErrorCodes, toArchSpineError } from '../../core/errors.js';
 import { isCompatibleIndexDocument, readIndexDocument } from '../index-reader.js';
+import type { SpineUnit } from '../../types/protocol.js';
 
 export class SpineTools {
   private rootDir: string;
   private spineDir: string;
   private manifest: Manifest;
+  private ruleEngine: RuleEngine;
   private contextGate?: MCPContextGate;
 
   constructor(rootDir: string, manifest?: Manifest, contextGate?: MCPContextGate) {
     this.rootDir = rootDir;
     this.spineDir = path.join(rootDir, '.spine');
     this.manifest = manifest || Manifest.open(rootDir);
+    this.ruleEngine = new RuleEngine(rootDir);
     this.contextGate = contextGate;
   }
 
@@ -34,6 +38,11 @@ export class SpineTools {
               type: 'string',
               description:
                 'Optional ID of a specific invariant. If omitted, returns an overview of all active invariants from .spine/rules/.',
+            },
+            filePath: {
+              type: 'string',
+              description:
+                'Optional relative file path. When provided, returns only the rules whose glob patterns match this file.',
             },
           },
         },
@@ -82,6 +91,68 @@ export class SpineTools {
         },
       },
       {
+        name: 'spine_get_file_context',
+        description:
+          '获取单个文件的完整治理上下文：匹配的架构规则、语义角色与职责、依赖关系、公共接口、导出符号、漂移信息。外部 agent 据此自行判断违规并执行修复。Use this before modifying any file to understand its architectural constraints.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            filePath: {
+              type: 'string',
+              description: '仓库相对路径，例如 src/infra/db.ts',
+            },
+          },
+          required: ['filePath'],
+        },
+      },
+      {
+        name: 'spine_get_view_data',
+        description:
+          '读取视图数据（风险热点或公共入口面），帮助 agent 确定治理优先级。风险热点基于 fan-in/fan-out/跨边界依赖/违规等信号加权计算。',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            viewType: {
+              type: 'string',
+              enum: ['risk-hotspots', 'public-surface'],
+              description: '视图类型：risk-hotspots（风险热点）或 public-surface（公共入口面）',
+            },
+            limit: {
+              type: 'number',
+              description: '返回条数上限，默认返回全部',
+            },
+          },
+          required: ['viewType'],
+        },
+      },
+      {
+        name: 'spine_get_sync_status',
+        description:
+          'Check whether the local .spine index is current. Returns how many files have changed since the last sync and whether the Atlas distribution snapshot is stale. Call this before trusting file context reads in a long session.',
+        inputSchema: {
+          type: 'object',
+          properties: {},
+        },
+      },
+      {
+        name: 'spine_get_baseline_status',
+        description:
+          'Get the health status of the local .spine semantic baseline and distribution snapshot. Shows whether the baseline exists, whether the Atlas is stale, when the last sync ran, and what action (if any) the maintainer should take. Call this at the start of a session to verify the .spine data is trustworthy before reading architecture context.',
+        inputSchema: {
+          type: 'object',
+          properties: {},
+        },
+      },
+      {
+        name: 'spine_get_violations_summary',
+        description:
+          'Get a summary of all active architectural rule violations tracked in the .spine runtime. Returns violation counts grouped by rule ID and the top offending files. Use this at the start of a governance or refactoring session to prioritize which files to inspect.',
+        inputSchema: {
+          type: 'object',
+          properties: {},
+        },
+      },
+      {
         name: 'spine_list_resource_templates',
         description:
           'List the discoverable Spine URI templates exposed by the MCP server. Use this to find folder and file resource patterns before reading them.',
@@ -94,6 +165,12 @@ export class SpineTools {
   }
 
   public async executeTool(name: string, args: Record<string, unknown>): Promise<string> {
+    // Meta tools that don't strictly require .spine to exist (or they handle the check themselves)
+    if (name === 'spine_get_baseline_status' || name === 'spine_get_sync_status') {
+      this.contextGate?.noteToolCall(name);
+      return name === 'spine_get_baseline_status' ? this.getBaselineStatus() : this.getSyncStatus();
+    }
+
     if (!fs.existsSync(this.spineDir)) {
       throw new ArchSpineError(
         ErrorCodes.McpRuntimeMissing,
@@ -106,13 +183,22 @@ export class SpineTools {
       this.contextGate?.noteToolCall(name);
       switch (name) {
         case 'spine_query_invariants':
-          return this.queryInvariants(args.invariantId as string | undefined);
+          return this.queryInvariants(
+            args.invariantId as string | undefined,
+            args.filePath as string | undefined,
+          );
         case 'spine_query_responsibilities':
           return this.queryResponsibilities(args.keyword as string);
         case 'spine_preview_scan':
           return this.previewScan();
         case 'spine_get_drift_history':
           return this.getDriftHistory(args.filePath as string, args.limit as number | undefined);
+        case 'spine_get_file_context':
+          return this.getFileContext(args.filePath as string);
+        case 'spine_get_view_data':
+          return this.getViewData(args.viewType as string, args.limit as number | undefined);
+        case 'spine_get_violations_summary':
+          return this.getViolationsSummary();
         case 'spine_list_resource_templates':
           return this.listResourceTemplates();
         default:
@@ -132,7 +218,7 @@ export class SpineTools {
     }
   }
 
-  private queryInvariants(invariantId?: string): string {
+  private queryInvariants(invariantId?: string, filePath?: string): string {
     const rulesDir = path.join(this.spineDir, 'rules');
     if (!fs.existsSync(rulesDir)) {
       return 'No architectural rules defined in .spine/rules/.';
@@ -143,8 +229,21 @@ export class SpineTools {
       return 'No rule files found.';
     }
 
+    let filteredRules = loadedRules;
+
+    if (filePath) {
+      const matchedRules = this.ruleEngine.getRulesForFile(filePath);
+      const matchedIds = new Set(
+        matchedRules.map((block) => {
+          const match = block.match(/\[Rule:\s*([^\]]+)\]/);
+          return match ? match[1] : '';
+        }),
+      );
+      filteredRules = loadedRules.filter(({ rule }) => matchedIds.has(rule.ruleId));
+    }
+
     if (invariantId) {
-      const exactRule = loadedRules.find(({ rule }) => rule.ruleId === invariantId);
+      const exactRule = filteredRules.find(({ rule }) => rule.ruleId === invariantId);
       if (exactRule) {
         return `Rule: ${exactRule.rule.title}
 Rule ID: ${exactRule.rule.ruleId}
@@ -155,15 +254,22 @@ Rationale: ${exactRule.rule.rationale || 'n/a'}
 
 ${exactRule.rule.bodyMarkdown}`.trim();
       }
-      return `[WARN] Invariant '${invariantId}' not found.`;
+      return `[WARN] Invariant '${invariantId}' not found${filePath ? ` for file ${filePath}` : ''}.`;
     }
 
-    const summaries = loadedRules.map(({ filePath, rule }) => {
-      const sourceName = path.basename(filePath);
+    if (filePath && filteredRules.length === 0) {
+      return `No architectural rules matched for file ${filePath}.`;
+    }
+
+    const summaries = filteredRules.map(({ filePath: sourcePath, rule }) => {
+      const sourceName = path.basename(sourcePath);
       return `- ${rule.ruleId} (${sourceName}) [${rule.severity}]: ${rule.summary}`;
     });
 
-    return `Active Architectural Invariants:\n${summaries.join('\n')}\nType an invariant ID into spine_query_invariants to see detailed rules.`;
+    const header = filePath
+      ? `Architectural Invariants matching ${filePath}:`
+      : `Active Architectural Invariants:`;
+    return `${header}\n${summaries.join('\n')}\nType an invariant ID into spine_query_invariants to see detailed rules.`;
   }
 
   private queryResponsibilities(keyword: string): string {
@@ -338,6 +444,286 @@ ${exactRule.rule.bodyMarkdown}`.trim();
     const normalizedLimit = limit !== undefined ? Math.floor(limit) : 5;
     const events = this.manifest.getDriftHistory(filePath, normalizedLimit);
     return JSON.stringify(events, null, 2);
+  }
+
+  private getFileContext(filePath: string): string {
+    if (typeof filePath !== 'string' || filePath.trim().length === 0) {
+      throw new ArchSpineError(
+        ErrorCodes.McpToolInvalidArguments,
+        `Tool 'spine_get_file_context' requires a non-empty 'filePath' argument.`,
+        { context: { toolName: 'spine_get_file_context', filePath } },
+      );
+    }
+
+    const indexPath = path.join(this.spineDir, 'index', `${filePath}.json`);
+
+    const readResult = readIndexDocument<SpineUnit>(this.rootDir, indexPath);
+    if (!isCompatibleIndexDocument(readResult)) {
+      if (readResult.status === 'missing') {
+        return JSON.stringify(
+          {
+            filePath,
+            error: `No index data found for ${filePath}. Run 'spine build' or 'spine sync' first.`,
+          },
+          null,
+          2,
+        );
+      }
+      return JSON.stringify(
+        {
+          filePath,
+          error: `Index data for ${filePath} is invalid (${readResult.status}). Run 'spine build' to rebuild.`,
+        },
+        null,
+        2,
+      );
+    }
+
+    const unit = readResult.data;
+
+    const matchedRules = this.ruleEngine.getRulesForFile(filePath);
+
+    const semantic = unit.semantic
+      ? {
+          role: unit.semantic.role,
+          responsibilities: unit.semantic.responsibilities || [],
+          publicSurface: unit.semantic.publicSurface || [],
+          driftDetected: unit.semantic.driftDetected || false,
+          driftReason: unit.semantic.driftReason || null,
+          ruleViolations: unit.semantic.ruleViolations || [],
+        }
+      : null;
+
+    const dependencies = unit.graph
+      ? {
+          dependsOn: (unit.graph.dependsOn || []).map((e) => ({
+            targetPath: e.targetPath,
+            relation: e.relation,
+          })),
+          dependedBy: (unit.graph.dependedBy || []).map((e) => ({
+            targetPath: e.targetPath,
+            relation: e.relation,
+          })),
+          fanIn: (unit.graph.dependedBy || []).length,
+          fanOut: (unit.graph.dependsOn || []).length,
+        }
+      : null;
+
+    const skeleton = unit.skeleton
+      ? {
+          exports: (unit.skeleton.exports || []).map((e) => e.name),
+          structuralHints: unit.skeleton.structuralHints,
+        }
+      : null;
+
+    const context = {
+      filePath,
+      identity: unit.identity
+        ? {
+            language: unit.identity.language,
+            fileKind: unit.identity.fileKind,
+          }
+        : null,
+      rules: matchedRules,
+      semantic,
+      dependencies,
+      skeleton,
+    };
+
+    return JSON.stringify(context, null, 2);
+  }
+
+  private getViewData(viewType: string, limit?: number): string {
+    const validTypes = ['risk-hotspots', 'public-surface'];
+    if (!validTypes.includes(viewType)) {
+      throw new ArchSpineError(
+        ErrorCodes.McpToolInvalidArguments,
+        `Tool 'spine_get_view_data' requires 'viewType' to be one of: ${validTypes.join(', ')}.`,
+        { context: { toolName: 'spine_get_view_data', viewType } },
+      );
+    }
+
+    const viewPath = path.join(this.spineDir, 'view', `${viewType}.json`);
+    if (!fs.existsSync(viewPath)) {
+      return JSON.stringify(
+        {
+          viewType,
+          error: `View data not found at ${viewPath}. Run 'spine build' or 'spine view generate' first.`,
+        },
+        null,
+        2,
+      );
+    }
+
+    try {
+      const raw = JSON.parse(fs.readFileSync(viewPath, 'utf-8'));
+      const items = raw.items || [];
+      const sliced =
+        limit !== undefined && Number.isFinite(limit) && limit > 0 ? items.slice(0, limit) : items;
+
+      return JSON.stringify(
+        {
+          viewType: raw.viewType,
+          generatedAt: raw.generatedAt,
+          summary: raw.summary,
+          itemCount: sliced.length,
+          items: sliced,
+        },
+        null,
+        2,
+      );
+    } catch (e) {
+      return JSON.stringify(
+        {
+          viewType,
+          error: `Failed to read view data: ${e instanceof Error ? e.message : String(e)}`,
+        },
+        null,
+        2,
+      );
+    }
+  }
+
+  private async getSyncStatus(): Promise<string> {
+    const { SyncService } = await import('../../services/sync-service.js');
+    const syncService = new SyncService({
+      rootDir: this.rootDir,
+    });
+
+    let status: { total: number; needingSync: number } = { total: 0, needingSync: 0 };
+    if (fs.existsSync(this.spineDir)) {
+      status = await syncService.status();
+    }
+
+    const atlasStale = this.manifest.isAtlasStale();
+    const isFresh = status.needingSync === 0 && !atlasStale && fs.existsSync(this.spineDir);
+
+    const recommendation = isFresh
+      ? 'Index data is current. File context reads are reliable.'
+      : [
+          !fs.existsSync(this.spineDir) ? "Semantic baseline missing → run 'spine build'." : null,
+          status.needingSync > 0
+            ? `${status.needingSync} file(s) changed since last sync → run 'spine sync'.`
+            : null,
+          atlasStale
+            ? "Atlas is stale (.spine/.stale present) → run 'spine publish' or 'spine build'."
+            : null,
+        ]
+          .filter(Boolean)
+          .join(' ');
+
+    return JSON.stringify(
+      {
+        totalTracked: status.total,
+        needingSync: status.needingSync,
+        isAtlasStale: atlasStale,
+        isFresh,
+        recommendation,
+      },
+      null,
+      2,
+    );
+  }
+
+  private getBaselineStatus(): string {
+    const manifestPath = path.join(this.spineDir, 'manifest.json');
+    const indexDir = path.join(this.spineDir, 'index');
+    const atlasDir = path.join(this.spineDir, 'atlas');
+    const projectIndex = path.join(indexDir, 'project.json');
+
+    const baselineExists = fs.existsSync(manifestPath);
+    const isVirginState = this.manifest.isVirginState();
+    const isAtlasStale = this.manifest.isAtlasStale();
+
+    let lastSyncAt: string | null = null;
+    let lastSyncMode: string | null = null;
+    let indexedUnitCount: number | null = null;
+    let activeViolations: number | null = null;
+
+    if (baselineExists) {
+      try {
+        const raw = JSON.parse(fs.readFileSync(manifestPath, 'utf-8')) as {
+          sync?: { lastSyncAt?: string; lastSyncMode?: string; indexedUnitCount?: number };
+          health?: { activeViolations?: number };
+        };
+        lastSyncAt = raw.sync?.lastSyncAt ?? null;
+        lastSyncMode = raw.sync?.lastSyncMode ?? null;
+        indexedUnitCount = raw.sync?.indexedUnitCount ?? null;
+        activeViolations = raw.health?.activeViolations ?? null;
+      } catch {
+        // manifest exists but unreadable
+      }
+    }
+
+    const publishSnapshotReady =
+      fs.existsSync(indexDir) && fs.existsSync(atlasDir) && fs.existsSync(projectIndex);
+
+    let pendingAction: string | null = null;
+    if (!baselineExists || isVirginState) {
+      pendingAction = "Run 'spine build' to create the initial semantic baseline.";
+    } else if (isAtlasStale && !publishSnapshotReady) {
+      pendingAction = "Run 'spine build' to rebuild the full distributable snapshot.";
+    } else if (isAtlasStale) {
+      pendingAction = "Run 'spine publish' to refresh the Atlas distribution snapshot.";
+    }
+
+    return JSON.stringify(
+      {
+        baselineExists,
+        isVirginState,
+        isAtlasStale,
+        publishSnapshotReady,
+        lastSyncAt,
+        lastSyncMode,
+        indexedUnitCount,
+        activeViolations,
+        pendingAction,
+      },
+      null,
+      2,
+    );
+  }
+
+  private getViolationsSummary(): string {
+    const violations = this.manifest.getActiveViolations();
+
+    if (violations.length === 0) {
+      return JSON.stringify(
+        { totalViolations: 0, message: 'No active rule violations found.' },
+        null,
+        2,
+      );
+    }
+
+    const byRuleId: Record<string, { count: number; severity: string }> = {};
+    for (const v of violations) {
+      if (!byRuleId[v.rule_id]) {
+        byRuleId[v.rule_id] = { count: 0, severity: v.severity };
+      }
+      byRuleId[v.rule_id].count++;
+    }
+
+    const fileViolationCount: Record<string, number> = {};
+    for (const v of violations) {
+      fileViolationCount[v.file_path] = (fileViolationCount[v.file_path] ?? 0) + 1;
+    }
+    const topFiles = Object.entries(fileViolationCount)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([filePath, count]) => ({ filePath, count }));
+
+    return JSON.stringify(
+      {
+        totalViolations: violations.length,
+        byRuleId,
+        topFiles,
+        recommendation:
+          `${violations.length} active violation(s). ` +
+          `Call spine_get_file_context on top files for details, or run 'spine check' for the full report.`,
+      },
+      null,
+      2,
+    );
   }
 
   private listResourceTemplates(): string {

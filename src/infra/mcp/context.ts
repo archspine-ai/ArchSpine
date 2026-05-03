@@ -4,6 +4,9 @@ const SEARCH_PRIMING_TOOLS = new Set([
   'spine_query_invariants',
   'spine_query_responsibilities',
   'spine_preview_scan',
+  'spine_get_sync_status',
+  'spine_get_baseline_status',
+  'spine_get_violations_summary',
 ]);
 
 export class MCPContextGate {
