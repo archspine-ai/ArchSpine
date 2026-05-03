@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/infra/mcp",
-  "role": "MCP infrastructure layer that gates context, exposes resources, and provides tools for external AI agent integration.",
-  "responsibility": "Provides a Model Context Protocol server that manages context-aware access control, exposes ArchSpine project metadata and files as MCP resources, and wraps core system components into MCP tools for external agent interaction.",
+  "role": "Infrastructure layer for exposing ArchSpine's internal resources and tools to external AI agents via the Model Context Protocol (MCP) over stdio transport, with context-aware access control.",
+  "responsibility": "Defines MCP server initialization and stdio transport, registers resource and tool handlers by delegating to SpineResources and SpineTools, provides context-gated access control via MCPContextGate for resource reads and tool execution, and exposes URI templates for project metadata, files, and index within the .spine directory.",
   "children": [
     {
       "filePath": "src/infra/mcp/context.ts",
@@ -26,7 +26,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-02T13:37:20.823Z",
+    "indexedAt": "2026-05-03T03:55:00.673Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
