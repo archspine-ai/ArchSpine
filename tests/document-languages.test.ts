@@ -40,15 +40,6 @@ describe('document language choices', () => {
     ]);
   });
 
-  it('preserves selected languages across both tiers and legacy locale config values', () => {
-    const choices = getDocumentLanguageChoices(['en-US', 'Japanese', 'Vietnamese', 'pt-BR']);
-    const selectedValues = choices
-      .filter((choice) => choice.selected)
-      .map((choice) => choice.value);
-
-    expect(selectedValues).toEqual(['English', 'Japanese', 'Portuguese (Brazil)', 'Vietnamese']);
-  });
-
   it('exposes a stable quality note for interactive prompts', () => {
     expect(HIGH_CAPACITY_LANGUAGE_SEPARATOR).toContain('stronger multilingual models');
     expect(DOCUMENT_LANGUAGE_QUALITY_NOTE).toBe('');

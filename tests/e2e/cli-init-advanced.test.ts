@@ -78,7 +78,7 @@ describe('E2E: Init advanced scenarios', () => {
     fs.mkdirSync(path.join(dir, 'src'), { recursive: true });
     fs.writeFileSync(path.join(dir, 'src', 'index.ts'), 'export const x = 1;\n');
 
-    const { stdout: initOut, stderr: initErr } = runInitWithPrompts(
+    runInitWithPrompts(
       dir,
       [['English'], false, false, true, false, false],
       ['--agent-file', 'CLAUDE.md', '--artifact-strategy', 'local', '--no-inject-package-scripts'],

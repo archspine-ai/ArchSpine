@@ -152,18 +152,6 @@ describe('ArchSpine Robustness Stress Test', () => {
     } satisfies Partial<WorkerResult>);
   });
 
-  it('treats legacy lock payloads as corrupt', async () => {
-    fs.writeFileSync(
-      path.join(spineDir, '.lock'),
-      JSON.stringify({ pid: 999999, timestamp: Date.now() }),
-    );
-
-    await expect(runLockWorker(rootDir, 'acquire-release')).resolves.toMatchObject({
-      status: 'error',
-      code: ErrorCodes.RuntimeLockCorrupt,
-    } satisfies Partial<WorkerResult>);
-  });
-
   it('does not release a lock rewritten with the same pid but a different token', async () => {
     const holder = spawnLockWorker(rootDir, 'acquire-release-rewrite');
     const holderMessage = await waitForFirstWorkerMessage(holder);

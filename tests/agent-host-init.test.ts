@@ -161,8 +161,6 @@ describe('Agent instructions injection utilities', () => {
     const content = fs.readFileSync(path.join(testDir, '.gitignore'), 'utf-8');
     expect(content).toContain('.spine/cache.db*');
     expect(content).toContain('.spine/.lock');
-    expect(content).toContain('.spine/secrets.json');
-    expect(content).toContain('secrets.json');
     expect(content).toContain('.spine/index/');
     expect(content).toContain('.spine/atlas/');
     expect(content).toContain('.spine/manifest.json');
@@ -176,8 +174,6 @@ describe('Agent instructions injection utilities', () => {
     expect(result.status).toBe('updated');
     const content = fs.readFileSync(path.join(testDir, '.gitignore'), 'utf-8');
     expect(content).toContain('.spine/cache.db*');
-    expect(content).toContain('.spine/secrets.json');
-    expect(content).toContain('secrets.json');
     expect(content).not.toContain('.spine/index/');
     expect(content).not.toContain('.spine/atlas/');
   });

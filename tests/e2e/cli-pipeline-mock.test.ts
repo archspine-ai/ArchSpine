@@ -174,7 +174,9 @@ describe('E2E: Pipeline with mock LLM', () => {
 
       // Delete an atlas file to check if it's regenerated
       const atlasPath = path.join(dir, '.spine', 'atlas', 'English', 'project.md');
-      if (fs.existsSync(atlasPath)) fs.unlinkSync(atlasPath);
+      if (fs.existsSync(atlasPath)) {
+        fs.unlinkSync(atlasPath);
+      }
 
       const { stdout, stderr, status } = runCli(['sync', '--hook'], dir);
       const output = `${stdout}${stderr}`;

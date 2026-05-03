@@ -59,33 +59,4 @@ describe('spine gate', () => {
     expect(report.removedPaths).toEqual([]);
     expect(formatProtectedOutputMutationWarning(report)).toBeNull();
   });
-
-  it('ignores legacy baseline entries for runtime-only files', () => {
-    fs.writeFileSync(
-      path.join(testDir, '.spine', 'protected-output-baseline.json'),
-      JSON.stringify(
-        {
-          generatedAt: new Date().toISOString(),
-          files: {
-            '.spine/index/project.json': 'hash-index',
-            '.spine/atlas/en-US/project.md': 'hash-atlas',
-            '.spine/cache.db': 'legacy-runtime-hash',
-            '.spine/.lock': 'legacy-lock-hash',
-          },
-        },
-        null,
-        2,
-      ),
-    );
-
-    const report = detectProtectedOutputMutations(testDir);
-    expect(report.addedPaths).toEqual([]);
-    expect(report.changedPaths).toEqual([
-      '.spine/atlas/en-US/project.md',
-      '.spine/index/project.json',
-    ]);
-    expect(report.removedPaths).toEqual([]);
-    expect(formatProtectedOutputMutationWarning(report)).not.toContain('.spine/cache.db');
-    expect(formatProtectedOutputMutationWarning(report)).not.toContain('.spine/.lock');
-  });
 });

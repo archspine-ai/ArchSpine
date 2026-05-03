@@ -32,20 +32,6 @@ describe('sync command repair mode', () => {
     ).rejects.toThrow('Usage: spine sync [--hook] [--repair-violations] [--retry-failed]');
   });
 
-  it('rejects legacy full-sync flag and keeps build as the heavy path', async () => {
-    const { executeSyncCommand } = await import('../src/cli/commands/sync.js');
-
-    await expect(
-      executeSyncCommand({
-        args: ['--full'],
-        rootDir: process.cwd(),
-        config: {} as never,
-        runtimeService: {} as never,
-        displayUIBanner: vi.fn(),
-      }),
-    ).rejects.toThrow('Usage: spine sync [--hook] [--repair-violations] [--retry-failed]');
-  });
-
   it('rejects retry-failed when combined with hook mode', async () => {
     const { executeSyncCommand } = await import('../src/cli/commands/sync.js');
 

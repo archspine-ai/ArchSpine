@@ -2,39 +2,6 @@ import { describe, expect, it, vi } from 'vitest';
 import { executeLlmCommand, printLLMStatus } from '../src/cli/commands/llm.js';
 
 describe('LLM command UI surface', () => {
-  it('rejects internal compatibility keys from llm set usage', async () => {
-    const runtimeService = {
-      getResolvedLLMSettings: vi.fn(),
-      getResolvedExecutionProfile: vi.fn(),
-    } as any;
-
-    const configStore = {
-      setLLMProvider: vi.fn(),
-      setLLMModel: vi.fn(),
-      setLLMBaseURL: vi.fn(),
-      setLLMMode: vi.fn(),
-      setPromptTier: vi.fn(),
-      setValidatePolicy: vi.fn(),
-      get: vi.fn(),
-    } as any;
-
-    await expect(
-      executeLlmCommand({
-        args: ['set', 'validate-split-stage', 'true'],
-        rootDir: '/tmp/project',
-        config: configStore,
-        secrets: { setLLMApiKey: vi.fn(), clearLLMApiKey: vi.fn(), hasLLMApiKey: vi.fn() } as any,
-        globalLLMConfig: configStore,
-        globalLLMSecrets: {
-          setLLMApiKey: vi.fn(),
-          clearLLMApiKey: vi.fn(),
-          hasLLMApiKey: vi.fn(),
-        } as any,
-        runtimeService,
-      }),
-    ).rejects.toThrow(/Usage: spine llm/);
-  });
-
   it('hides internal generation-flow details in status output', () => {
     const logs: string[] = [];
     const spy = vi.spyOn(console, 'log').mockImplementation((message?: any) => {

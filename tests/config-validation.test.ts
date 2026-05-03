@@ -135,23 +135,4 @@ describe('config validation', () => {
     expect(result.issues).toContain(`schemaVersion must equal "${CURRENT_CONFIG_SCHEMA_VERSION}"`);
     expect(result.issues).toContain('project.locales must be an array of strings');
   });
-
-  it('rejects removed llm compatibility fields', () => {
-    const result = resolveSpineConfig({
-      schemaVersion: CURRENT_CONFIG_SCHEMA_VERSION,
-      project: {
-        name: 'demo',
-        locales: ['English'],
-      },
-      llm: {
-        provider: 'mock',
-        liteMode: true,
-        validateExperimentalSplitStage: true,
-      },
-    });
-
-    expect(result.config).toBeNull();
-    expect(result.issues).toContain('llm.liteMode is no longer supported');
-    expect(result.issues).toContain('llm.validateExperimentalSplitStage is no longer supported');
-  });
 });

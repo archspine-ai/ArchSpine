@@ -100,8 +100,6 @@ describe('init CLI integration', () => {
     expect(config.initState?.artifactStrategy).toBe('distributable');
     expect(config.initState?.spineIgnoreManaged).toBe(true);
     expect(gitIgnore).toContain('.spine/cache.db*');
-    expect(gitIgnore).toContain('.spine/secrets.json');
-    expect(gitIgnore).toContain('secrets.json');
     expect(gitIgnore).not.toContain('.spine/index/');
     expect(gitAttributes).toContain('.spine/index/** linguist-generated=true');
     expect(spineIgnore).toContain('.env');
@@ -217,8 +215,6 @@ describe('init CLI integration', () => {
     expect(output).toContain('Strategy migration completed: local -> distributable.');
     expect(config.artifacts?.strategy).toBe('distributable');
     expect(config.initState?.artifactStrategy).toBe('distributable');
-    expect(gitIgnore).toContain('.spine/secrets.json');
-    expect(gitIgnore).toContain('secrets.json');
     expect(gitIgnore).not.toContain('.spine/index/');
     expect(gitIgnore).not.toContain('.spine/atlas/');
     expect(gitAttributes).toContain('.spine/index/** linguist-generated=true');

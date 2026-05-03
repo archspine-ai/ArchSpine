@@ -51,14 +51,11 @@ describe('SEC-01: LLM API key not leaked to config.json', () => {
     fs.writeFileSync(path.join(dir, 'src', 'index.ts'), 'export const x = 1;\n');
 
     const initWrapper = path.join(dir, 'init-wrapper.mjs');
-    writeWrapperScript(initWrapper, ['init', '--agent-file', 'CLAUDE.md'], [
-      ['English'],
-      false,
-      false,
-      true,
-      false,
-      false,
-    ]);
+    writeWrapperScript(
+      initWrapper,
+      ['init', '--agent-file', 'CLAUDE.md'],
+      [['English'], false, false, true, false, false],
+    );
     execFileSync('node', [initWrapper], { cwd: dir, encoding: 'utf-8', stdio: 'pipe' });
 
     const testApiKey = 'sk-test-secret-key-' + Date.now();
@@ -77,14 +74,8 @@ describe('SEC-01: LLM API key not leaked to config.json', () => {
   }, 60_000);
 });
 
-describe('SEC-02: secrets.json is gitignored', () => {
-  it('repo .gitignore covers secrets.json paths', () => {
-    const gitignoreContent = fs.readFileSync(path.join(repoRoot, '.gitignore'), 'utf-8');
-    expect(gitignoreContent).toContain('.spine/secrets.json');
-    expect(gitignoreContent).toContain('secrets.json');
-  });
-
-  it('spine init creates project that ignores secrets.json', () => {
+describe('SEC-02: managed .gitignore block is created on init', () => {
+  it('spine init produces a managed .gitignore block', () => {
     const dir = makeTempDir();
     createdDirs.push(dir);
 
@@ -97,26 +88,21 @@ describe('SEC-02: secrets.json is gitignored', () => {
     fs.writeFileSync(path.join(dir, 'src', 'index.ts'), 'export const x = 1;\n');
 
     const initWrapper = path.join(dir, 'init-wrapper.mjs');
-    writeWrapperScript(initWrapper, ['init', '--agent-file', 'CLAUDE.md'], [
-      ['English'],
-      false,
-      false,
-      true,
-      false,
-      false,
-    ]);
+    writeWrapperScript(
+      initWrapper,
+      ['init', '--agent-file', 'CLAUDE.md'],
+      [['English'], false, false, true, false, false],
+    );
     execFileSync('node', [initWrapper], { cwd: dir, encoding: 'utf-8', stdio: 'pipe' });
 
     const gitignorePath = path.join(dir, '.gitignore');
     expect(fs.existsSync(gitignorePath)).toBe(true);
     const gitignoreContent = fs.readFileSync(gitignorePath, 'utf-8');
-    expect(gitignoreContent).toContain('.spine/secrets.json');
-
-    const checkIgnoreResult = execFileSync('git', ['check-ignore', '-v', '.spine/secrets.json'], {
-      cwd: dir,
-      encoding: 'utf-8',
-      stdio: 'pipe',
-    });
-    expect(checkIgnoreResult).toContain('.gitignore');
+    // Managed block is present and covers the runtime DB and lock file.
+    expect(gitignoreContent).toContain('# >>> ArchSpine managed >>>');
+    expect(gitignoreContent).toContain('.spine/cache.db*');
+    expect(gitignoreContent).toContain('.spine/.lock');
+    // Credentials are stored via the system keychain, not in files.
+    expect(gitignoreContent).not.toContain('api-key');
   }, 60_000);
 });

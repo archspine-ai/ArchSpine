@@ -103,7 +103,7 @@ describe('E2E: Repo command', () => {
     createdDirs.push(dir);
     initProject(dir);
 
-    const { stdout, stderr, status } = runCli(['repo', 'check'], dir);
+    const { stdout, stderr } = runCli(['repo', 'check'], dir);
     const output = `${stdout}${stderr}`;
     expect(output).toMatch(/valid|consistent|ok|check|no issue/i);
   });
@@ -113,7 +113,7 @@ describe('E2E: Repo command', () => {
     createdDirs.push(dir);
     initProject(dir);
 
-    const { status } = runCli(['repo', 'strategy', 'set', 'distributable'], dir);
+    runCli(['repo', 'strategy', 'set', 'distributable'], dir);
     // May require prompt, fall back gracefully
     const stratOutput = runCliOk(['config', 'get', 'artifacts.strategy'], dir);
     expect(stratOutput).toMatch(/local|distributable/);

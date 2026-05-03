@@ -72,7 +72,13 @@ function runCliOk(args: string[], cwd: string, env?: Record<string, string>): st
 let _llmConfigured: boolean | null = null;
 
 function hasRealLLMConfig(): boolean {
-  if (_llmConfigured !== null) return _llmConfigured;
+  if (_llmConfigured !== null) {
+    return _llmConfigured;
+  }
+  if (process.env.SPINE_E2E_REAL_LLM !== '1') {
+    _llmConfigured = false;
+    return false;
+  }
   if (process.env.SPINE_PROVIDER && process.env.SPINE_API_KEY) {
     _llmConfigured = true;
     return true;
@@ -163,7 +169,9 @@ function runTscWithReconciliation(
       return { status: r.status, output: `${r.stdout}${r.stderr}` };
     })();
 
-    if (lastResult.status === 0) break; // Clean compile
+    if (lastResult.status === 0) {
+      break;
+    } // Clean compile
 
     let fixedSomething = false;
 
@@ -173,7 +181,9 @@ function runTscWithReconciliation(
       const exportPattern = /has no exported member named '(\w+)'/g;
       const fileMatches: string[] = [];
       for (const fm of lastResult.output.matchAll(/src\/services\/(\w+)\.ts/g)) {
-        if (!fileMatches.includes(fm[1])) fileMatches.push(fm[1]);
+        if (!fileMatches.includes(fm[1])) {
+          fileMatches.push(fm[1]);
+        }
       }
       let m: RegExpExecArray | null;
       while ((m = exportPattern.exec(lastResult.output)) !== null) {
@@ -181,8 +191,12 @@ function runTscWithReconciliation(
         const context = lastResult.output.substring(contextStart, m.index + 100);
         const fm = /src\/services\/(\w+)\.ts/.exec(context);
         const mod = fm ? fm[1] : fileMatches[0] || 'unknown';
-        if (!missingExports.has(mod)) missingExports.set(mod, []);
-        if (!missingExports.get(mod)!.includes(m[1])) missingExports.get(mod)!.push(m[1]);
+        if (!missingExports.has(mod)) {
+          missingExports.set(mod, []);
+        }
+        if (!missingExports.get(mod)!.includes(m[1])) {
+          missingExports.get(mod)!.push(m[1]);
+        }
       }
       for (const [mod, exports] of missingExports) {
         const stubPath = path.join(dir, 'src', 'services', `${mod}.ts`);
@@ -217,7 +231,9 @@ function runTscWithReconciliation(
       while ((m = staticPropPattern.exec(lastResult.output)) !== null) {
         const methodName = m[1];
         const className = m[2];
-        if (!extraStaticMethods.has(className)) extraStaticMethods.set(className, []);
+        if (!extraStaticMethods.has(className)) {
+          extraStaticMethods.set(className, []);
+        }
         if (!extraStaticMethods.get(className)!.includes(methodName)) {
           extraStaticMethods.get(className)!.push(methodName);
         }
@@ -228,7 +244,9 @@ function runTscWithReconciliation(
         if (fs.existsSync(servicesDir)) {
           for (const entry of fs.readdirSync(servicesDir)) {
             const stubPath = path.join(servicesDir, entry);
-            if (!entry.endsWith('.ts')) continue;
+            if (!entry.endsWith('.ts')) {
+              continue;
+            }
             const content = fs.readFileSync(stubPath, 'utf-8');
             if (content.includes(`class ${className}`)) {
               const existingSymbols = new Set<string>();
@@ -262,7 +280,9 @@ function runTscWithReconciliation(
       }
     }
 
-    if (!fixedSomething) break; // Can't fix, stop retrying
+    if (!fixedSomething) {
+      break;
+    } // Can't fix, stop retrying
   }
 
   return lastResult;
@@ -520,8 +540,12 @@ describe('E2E: Real LLM violation detection & fix', () => {
 
         console.log(`[FIX-02] log dir: ${logDir}`);
         console.log(`[FIX-02] fix status: ${status}`);
-        if (cliMainBefore !== cliMainAfter) console.log(`[FIX-02] src/cli/main.ts was MODIFIED`);
-        if (typesBefore !== typesAfter) console.log(`[FIX-02] src/types/models.ts was MODIFIED`);
+        if (cliMainBefore !== cliMainAfter) {
+          console.log(`[FIX-02] src/cli/main.ts was MODIFIED`);
+        }
+        if (typesBefore !== typesAfter) {
+          console.log(`[FIX-02] src/types/models.ts was MODIFIED`);
+        }
 
         // === RECONCILE: Create stub for LLM-generated import, then run tsc with retries ===
         if (cliMainAfter !== '(file removed)' && cliMainAfter !== cliMainBefore) {
@@ -533,9 +557,13 @@ describe('E2E: Real LLM violation detection & fix', () => {
               // Extract all imported symbols
               const symbols: string[] = [];
               const namedMatch = cliMainAfter.match(/import\s+\{([^}]+)\}\s+from/);
-              if (namedMatch) symbols.push(...namedMatch[1].split(',').map((s) => s.trim()));
+              if (namedMatch) {
+                symbols.push(...namedMatch[1].split(',').map((s) => s.trim()));
+              }
               const defaultMatch = cliMainAfter.match(/import\s+(\w+)\s+from/);
-              if (defaultMatch && !symbols.includes(defaultMatch[1])) symbols.push(defaultMatch[1]);
+              if (defaultMatch && !symbols.includes(defaultMatch[1])) {
+                symbols.push(defaultMatch[1]);
+              }
               // Also extract method calls on the imported object
               const methodCalls = cliMainAfter.matchAll(/\.(\w+)\(/g);
               for (const mc of methodCalls) {
@@ -638,7 +666,9 @@ describe('E2E: Real LLM violation detection & fix', () => {
 });
 
 function generateDiff(filePath: string, before: string, after: string): string {
-  if (before === after) return `# No changes in ${filePath}\n`;
+  if (before === after) {
+    return `# No changes in ${filePath}\n`;
+  }
   const beforeLines = before.split('\n');
   const afterLines = after.split('\n');
   const diff: string[] = [`# Diff for ${filePath}`, ''];
@@ -647,8 +677,12 @@ function generateDiff(filePath: string, before: string, after: string): string {
     const bl = i < beforeLines.length ? beforeLines[i] : null;
     const al = i < afterLines.length ? afterLines[i] : null;
     if (bl !== al) {
-      if (bl !== null) diff.push(`- ${bl}`);
-      if (al !== null) diff.push(`+ ${al}`);
+      if (bl !== null) {
+        diff.push(`- ${bl}`);
+      }
+      if (al !== null) {
+        diff.push(`+ ${al}`);
+      }
     }
   }
   return diff.join('\n');

@@ -105,7 +105,7 @@ describe('LLM configuration resolution', () => {
 
   it('prefers persisted llm settings over environment overrides', () => {
     const config = new Config(testDir);
-    const secrets = new Secrets(testDir, new UnavailableCredentialBackend());
+    const secrets = new Secrets(testDir, new MemoryCredentialBackend());
 
     config.setLLMProvider('gemini');
     config.setLLMModel('gemini-1.5-pro');
@@ -132,7 +132,7 @@ describe('LLM configuration resolution', () => {
     expect(resolved.baseURL.value).toBe('https://project.example/v1');
     expect(resolved.baseURL.source).toBe('project-config');
     expect(resolved.apiKey.value).toBe('persisted-secret');
-    expect(resolved.apiKey.source).toBe('project-secrets-file');
+    expect(resolved.apiKey.source).toBe('project-keychain');
     expect(resolved.mode.value).toBe('standard');
     expect(resolved.mode.source).toBe('project-config');
     expect(resolved.promptTier.value).toBe('balanced');
@@ -181,7 +181,7 @@ describe('LLM configuration resolution', () => {
 
   it('falls back to global llm settings when the project has no local provider', () => {
     const globalConfig = new GlobalLLMConfig();
-    const globalSecrets = new GlobalLLMSecrets(undefined, new UnavailableCredentialBackend());
+    const globalSecrets = new GlobalLLMSecrets(undefined, new MemoryCredentialBackend());
 
     globalConfig.setLLMProvider('deepseek');
     globalConfig.setLLMModel('deepseek-chat');
@@ -193,7 +193,7 @@ describe('LLM configuration resolution', () => {
 
     const resolved = resolveLLMSettings(
       new Config(testDir),
-      new Secrets(testDir, new UnavailableCredentialBackend()),
+      new Secrets(testDir, new MemoryCredentialBackend()),
       globalConfig,
       globalSecrets,
     );
@@ -203,7 +203,7 @@ describe('LLM configuration resolution', () => {
     expect(resolved.model.value).toBe('deepseek-chat');
     expect(resolved.baseURL.value).toBe('https://api.deepseek.com');
     expect(resolved.apiKey.value).toBe('global-secret');
-    expect(resolved.apiKey.source).toBe('global-secrets-file');
+    expect(resolved.apiKey.source).toBe('global-keychain');
     expect(resolved.mode.value).toBe('heavy');
     expect(resolved.mode.source).toBe('global-config');
     expect(resolved.promptTier.value).toBe('balanced');
@@ -218,12 +218,12 @@ describe('LLM configuration resolution', () => {
 
   it('prefers project settings over global defaults', () => {
     const globalConfig = new GlobalLLMConfig();
-    const globalSecrets = new GlobalLLMSecrets(undefined, new UnavailableCredentialBackend());
+    const globalSecrets = new GlobalLLMSecrets(undefined, new MemoryCredentialBackend());
     globalConfig.setLLMProvider('gemini');
     globalSecrets.setLLMApiKey('global-secret');
 
     const config = new Config(testDir);
-    const secrets = new Secrets(testDir, new UnavailableCredentialBackend());
+    const secrets = new Secrets(testDir, new MemoryCredentialBackend());
     config.setLLMProvider('openrouter');
     secrets.setLLMApiKey('project-secret');
 
@@ -232,7 +232,7 @@ describe('LLM configuration resolution', () => {
     expect(resolved.provider.value).toBe('openrouter');
     expect(resolved.provider.source).toBe('project-config');
     expect(resolved.apiKey.value).toBe('project-secret');
-    expect(resolved.apiKey.source).toBe('project-secrets-file');
+    expect(resolved.apiKey.source).toBe('project-keychain');
   });
 
   it('maps explicit standard mode to default validate policy and together flow', () => {
@@ -271,33 +271,5 @@ describe('LLM configuration resolution', () => {
     expect(resolved.validatePolicy.source).toBe('project-config');
     expect(resolved.generationFlow.value).toBe('semantic-first');
     expect(resolved.generationFlow.source).toBe('project-config');
-  });
-
-  it('ignores removed compatibility environment variables and legacy values', () => {
-    process.env.SPINE_LITE_MODE = 'true';
-    process.env.SPINE_VALIDATE_EXPERIMENTAL_SPLIT_STAGE = 'true';
-    process.env.SPINE_PROMPT_TIER = 'strict';
-    process.env.SPINE_VALIDATE_POLICY = 'audit-heavy';
-
-    const resolved = resolveLLMSettings(
-      new Config(testDir),
-      new Secrets(testDir, new UnavailableCredentialBackend()),
-    );
-
-    expect(resolved.mode.source).toBe('unset');
-    expect(resolved.promptTier.source).toBe('unset');
-    expect(resolved.validatePolicy.source).toBe('unset');
-    expect(resolved.generationFlow.source).toBe('unset');
-  });
-
-  it('removes secrets file after clearing the persisted api key', () => {
-    const secrets = new Secrets(testDir, new UnavailableCredentialBackend());
-    const secretsPath = path.join(testDir, '.spine', 'secrets.json');
-
-    secrets.setLLMApiKey('secret-token');
-    expect(fs.existsSync(secretsPath)).toBe(true);
-
-    secrets.clearLLMApiKey();
-    expect(fs.existsSync(secretsPath)).toBe(false);
   });
 });

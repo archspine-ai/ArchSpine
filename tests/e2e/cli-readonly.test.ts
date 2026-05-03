@@ -179,7 +179,7 @@ describe('E2E: Read-only commands', () => {
         ['--agent-file', 'CLAUDE.md'],
       );
 
-      const { stdout, stderr, status } = runCli(['status'], dir);
+      const { stdout, stderr } = runCli(['status'], dir);
       const output = `${stdout}${stderr}`;
 
       // status may exit non-zero when no baseline exists yet, verify output is informative
@@ -199,7 +199,7 @@ describe('E2E: Read-only commands', () => {
         ['--agent-file', 'CLAUDE.md'],
       );
 
-      const { stdout, stderr, status } = runCli(['history', 'src/index.ts'], dir);
+      const { stdout, stderr } = runCli(['history', 'src/index.ts'], dir);
       const output = `${stdout}${stderr}`;
 
       // history with no data should either exit 0 with a message or non-zero gracefully

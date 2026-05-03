@@ -17,7 +17,7 @@ describe('repo strategy drift checks', () => {
     }
   });
 
-  it('fails closed when the managed gitignore block does not ignore fallback credential files', () => {
+  it('fails closed when the managed gitattributes block is missing linguist-generated markers', () => {
     const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), 'archspine-repo-check-'));
     tempDirs.push(rootDir);
 
@@ -38,13 +38,7 @@ describe('repo strategy drift checks', () => {
     );
     fs.writeFileSync(
       path.join(rootDir, '.gitattributes'),
-      [
-        '# >>> ArchSpine managed >>>',
-        '.spine/index/** linguist-generated=true',
-        '.spine/atlas/** linguist-generated=true',
-        '# <<< ArchSpine managed <<<',
-        '',
-      ].join('\n'),
+      ['# >>> ArchSpine managed >>>', '# <<< ArchSpine managed <<<', ''].join('\n'),
       'utf-8',
     );
 
@@ -58,7 +52,7 @@ describe('repo strategy drift checks', () => {
       '[Repo Check] Repository Git file drift detected.',
     );
     expect(warnings.join('\n')).toContain(
-      'fallback credential files (.spine/secrets.json, secrets.json)',
+      '.gitattributes is missing linguist-generated markers for .spine snapshot paths',
     );
   });
 });

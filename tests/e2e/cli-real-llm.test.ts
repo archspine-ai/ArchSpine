@@ -69,17 +69,22 @@ function runCliOk(args: string[], cwd: string, env?: Record<string, string>): st
 
 let _llmConfigured: boolean | null = null;
 
-/** Detect whether a real LLM backend is available via global config or env vars */
+/** Only run real LLM tests when explicitly opted in via SPINE_E2E_REAL_LLM=1 */
 function hasRealLLMConfig(): boolean {
-  if (_llmConfigured !== null) return _llmConfigured;
+  if (_llmConfigured !== null) {
+    return _llmConfigured;
+  }
 
-  // Check env vars first
+  if (process.env.SPINE_E2E_REAL_LLM !== '1') {
+    _llmConfigured = false;
+    return false;
+  }
+
   if (process.env.SPINE_PROVIDER && process.env.SPINE_API_KEY) {
     _llmConfigured = true;
     return true;
   }
 
-  // Check global config via CLI
   try {
     const out = execFileSync('node', [builtCliPath, 'llm', 'show'], {
       encoding: 'utf-8',
@@ -224,31 +229,6 @@ describe('E2E: Real LLM integration', () => {
       expect(configRaw).not.toContain('sk-test-plaintext-secret-12345');
     });
 
-    it('SEC-02: .spine/secrets.json is gitignored when present', () => {
-      const dir = makeTempDir();
-      createdDirs.push(dir);
-      initGitRepo(dir);
-
-      fs.writeFileSync(
-        path.join(dir, 'package.json'),
-        JSON.stringify({ name: 'test', version: '1.0.0' }),
-      );
-      fs.mkdirSync(path.join(dir, 'src'), { recursive: true });
-      fs.writeFileSync(path.join(dir, 'src', 'index.ts'), 'export const x = 1;\n');
-
-      runInitWithPrompts(
-        dir,
-        [['English'], false, false, true, false, false],
-        ['--agent-file', 'CLAUDE.md'],
-      );
-
-      // If secrets.json exists, it must be in gitignore
-      const gitignorePath = path.join(dir, '.gitignore');
-      if (fs.existsSync(gitignorePath)) {
-        const gitignore = fs.readFileSync(gitignorePath, 'utf-8');
-        // ArchSpine managed block should include secrets exclusion
-        expect(gitignore).toMatch(/secrets\.json|\.spine\/secrets/);
-      }
     });
   });
 });

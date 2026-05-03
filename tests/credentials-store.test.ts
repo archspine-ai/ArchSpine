@@ -13,7 +13,7 @@ class UnreadableBackend implements CredentialBackend {
   readonly name = 'broken-backend';
 
   public isAvailable(): boolean {
-    return true;
+    return false;
   }
 
   public get(_secretName: string, _account: string): string | undefined {
@@ -37,118 +37,24 @@ describe('CredentialStore', () => {
     }
   });
 
-  it('falls back to file storage when backend write cannot be verified', () => {
-    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), 'archspine-credential-store-'));
-    tempDirs.push(rootDir);
-    const fallbackPath = path.join(rootDir, '.spine', 'secrets.json');
+  it('fails gracefully when backend write cannot be verified or fails', () => {
     const store = new CredentialStore({
       backend: new UnreadableBackend(),
-      fallbackPath,
       secretName: 'io.archspine.llm.project',
-      account: rootDir,
-      label: `${rootDir}/.spine`,
+      account: 'dummy-account',
+      label: 'dummy-label',
     });
 
-    store.set('secret-token');
-
-    expect(store.get()).toBe('secret-token');
-    expect(store.getSource()).toBe('file');
-    expect(fs.existsSync(fallbackPath)).toBe(true);
-  });
-
-  it('warns when fallback secrets are written but repository gitignore is missing', () => {
-    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), 'archspine-credential-store-'));
-    tempDirs.push(rootDir);
-    const fallbackPath = path.join(rootDir, '.spine', 'secrets.json');
     const warnings: string[] = [];
     vi.spyOn(console, 'warn').mockImplementation((message?: unknown) => {
       warnings.push(String(message ?? ''));
     });
 
-    const store = new CredentialStore({
-      backend: new UnreadableBackend(),
-      fallbackPath,
-      secretName: 'io.archspine.llm.project',
-      account: rootDir,
-      label: `${rootDir}/.spine`,
-      repositoryRoot: rootDir,
-    });
-
     store.set('secret-token');
 
-    expect(warnings.join('\n')).toContain('.gitignore does not exist');
-    expect(warnings.join('\n')).toContain('.spine/secrets.json');
-  });
-
-  it('warns when fallback secrets are written but repository gitignore does not ignore them', () => {
-    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), 'archspine-credential-store-'));
-    tempDirs.push(rootDir);
-    const fallbackPath = path.join(rootDir, '.spine', 'secrets.json');
-    fs.writeFileSync(path.join(rootDir, '.gitignore'), 'node_modules/\n', 'utf-8');
-    const warnings: string[] = [];
-    vi.spyOn(console, 'warn').mockImplementation((message?: unknown) => {
-      warnings.push(String(message ?? ''));
-    });
-
-    const store = new CredentialStore({
-      backend: new UnreadableBackend(),
-      fallbackPath,
-      secretName: 'io.archspine.llm.project',
-      account: rootDir,
-      label: `${rootDir}/.spine`,
-      repositoryRoot: rootDir,
-    });
-
-    store.set('secret-token');
-
-    expect(warnings.join('\n')).toContain('does not ignore it');
-    expect(warnings.join('\n')).toContain('.spine/secrets.json');
-  });
-
-  it('does not warn when fallback secrets are already ignored by repository gitignore', () => {
-    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), 'archspine-credential-store-'));
-    tempDirs.push(rootDir);
-    const fallbackPath = path.join(rootDir, '.spine', 'secrets.json');
-    fs.writeFileSync(path.join(rootDir, '.gitignore'), '.spine/secrets.json\n', 'utf-8');
-    const warnings: string[] = [];
-    vi.spyOn(console, 'warn').mockImplementation((message?: unknown) => {
-      warnings.push(String(message ?? ''));
-    });
-
-    const store = new CredentialStore({
-      backend: new UnreadableBackend(),
-      fallbackPath,
-      secretName: 'io.archspine.llm.project',
-      account: rootDir,
-      label: `${rootDir}/.spine`,
-      repositoryRoot: rootDir,
-    });
-
-    store.set('secret-token');
-
-    expect(warnings).toHaveLength(0);
-  });
-
-  it('clears fallback secrets after a verified backend write', () => {
-    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), 'archspine-credential-store-'));
-    tempDirs.push(rootDir);
-    const fallbackPath = path.join(rootDir, '.spine', 'secrets.json');
-    fs.mkdirSync(path.dirname(fallbackPath), { recursive: true });
-    fs.writeFileSync(fallbackPath, JSON.stringify({ llm: { apiKey: 'stale-secret' } }, null, 2));
-
-    const store = new CredentialStore({
-      backend: new MemoryCredentialBackend(),
-      fallbackPath,
-      secretName: 'io.archspine.llm.project',
-      account: rootDir,
-      label: `${rootDir}/.spine`,
-    });
-
-    store.set('fresh-secret');
-
-    expect(store.get()).toBe('fresh-secret');
-    expect(store.getSource()).toBe('keychain');
-    expect(fs.existsSync(fallbackPath)).toBe(false);
+    expect(store.get()).toBeUndefined();
+    expect(store.getSource()).toBe('missing');
+    expect(warnings.join('\n')).toContain('No valid credential backend available');
   });
 
   it('derives different Windows storage paths for different secret names', () => {

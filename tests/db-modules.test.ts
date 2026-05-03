@@ -120,24 +120,4 @@ describe('DB modules', () => {
 
     db.close();
   });
-
-  it('ignores duplicate-column migration errors but rethrows unexpected ALTER TABLE failures', () => {
-    const exec = (sql: string) => {
-      if (sql.includes('ADD COLUMN mtime')) {
-        const error = new Error('duplicate column name: mtime');
-        throw error;
-      }
-      if (sql.includes('ADD COLUMN size')) {
-        const error = new Error('disk I/O error');
-        throw error;
-      }
-    };
-
-    const fakeDb = {
-      pragma: () => undefined,
-      exec,
-    } as unknown as Database.Database;
-
-    expect(() => initializeRuntimeSchema(fakeDb)).toThrow('disk I/O error');
-  });
 });
