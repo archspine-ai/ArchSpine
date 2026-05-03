@@ -2,80 +2,91 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/infra/mcp/tools.ts",
-    "contentHash": "2136d2c142f15cdd28bb04341be6cae1df0ca300161fce70fff59af18fc4d6d9",
-    "skeletonHash": "68fc106d0f68ce22695d4020987c18fa8d32734849b1806a152c257df5144793",
-    "semanticHash": "d50ff8dc99b3f4c0887a14d77166a4ed4925cfb005e15c645691c9709b187c02",
+    "contentHash": "5f22b183f71ed1e5102346d7a0b0282275f962b0704bd3c361bc88324ec3328a",
+    "skeletonHash": "773b001bac199c3623dd6021341af27910d8475c7fadb676520efcb74d8d2224",
+    "semanticHash": "23ed1a9e6a241f074bd7dae663b2073da183655d7d17bb5e4696e017bb3d4023",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/mcp"
   },
   "semantic": {
-    "role": "MCP (Model Context Protocol) tool facade exposing ArchSpine system capabilities as queryable tools for external AI agents.",
+    "role": "MCP (Model Context Protocol) tool facade that wraps core ArchSpine system components (Scanner, RuleEngine, Manifest, Config) into a unified interface for external AI agents.",
     "responsibilities": [
-      "Provides tool implementations for querying architectural invariants and responsibilities of the codebase.",
-      "Exposes preview scanning functionality to analyze files against loaded architectural rules.",
-      "Offers access to drift history and resource templates for system introspection.",
-      "Wraps core system components (Scanner, Manifest, Config, Rules) behind a unified tool interface.",
-      "Manages MCP context gate for tool call tracking and auditing."
+      "Exposes ArchSpine system capabilities as MCP tools: queryInvariants, queryResponsibilities, previewScan, getDriftHistory, getFileContext, getViewData, getViolationsSummary, listResourceTemplates.",
+      "Provides baseline status (getBaselineStatus) and sync status (getSyncStatus) by interfacing with the Manifest and file system.",
+      "Performs preview scanning by loading rules from a directory, instantiating the Scanner and RuleEngine, and filtering matched invariants/responsibilities for a given file path.",
+      "Retrieves drift history from the index document and offers file context and view data for system introspection.",
+      "Notes tool calls on the MCPContextGate for audit/tracing.",
+      "Validates index document compatibility before reading drift history."
     ],
     "outOfScope": [
-      "Direct file system operations beyond reading .spine directory contents.",
-      "Execution of architectural rule enforcement or policy decisions.",
-      "User authentication or authorization logic.",
-      "Persistent storage of scan results or tool call history."
+      "Direct execution of scans or rule evaluations outside the MCP tool interface.",
+      "Scheduling, persistence, or daemon management of the ArchSpine system.",
+      "User authentication and session management.",
+      "Handling of raw file system operations not related to .spine directory."
     ],
     "invariants": [
-      "All tool methods must go through MCPContextGate.noteToolCall for auditing.",
-      "Errors must be wrapped using toArchSpineError for consistent error handling.",
-      "The .spine directory must exist for tool operations to function.",
-      "Infra modules should expose stable low-level capabilities and facades, must not absorb service/task/engine orchestration concerns."
+      "Infra modules must expose stable low-level capabilities and facades; they must not absorb service/task/engine orchestration concerns (but this facade necessarily absorbs some orchestration to function)."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a stable, queryable tool interface for external AI agents to introspect the ArchSpine system's architecture, rules, and drift history.",
-      "recentChangeIntent": "Fix lint warnings and type errors, and add CI workflow for automated validation."
+      "architecturalIntent": "Provide a stable, queryable MCP tool interface that exposes ArchSpine’s architectural governance capabilities (invariants, responsibilities, scanning, drift) to external AI agents, without exposing internal engine APIs directly.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era (general intial release intent, consistent with tool interface introduction)."
     },
     "publicSurface": [
-      "SpineTools constructor(rootDir, manifest?, contextGate?)",
-      "SpineTools.queryInvariants()",
-      "SpineTools.queryResponsibilities()",
-      "SpineTools.previewScan()",
-      "SpineTools.getDriftHistory()",
-      "SpineTools.listResourceTemplates()"
+      "SpineTools class constructor",
+      "SpineTools.getBaselineStatus",
+      "SpineTools.getSyncStatus",
+      "SpineTools.queryInvariants",
+      "SpineTools.queryResponsibilities",
+      "SpineTools.previewScan",
+      "SpineTools.getDriftHistory",
+      "SpineTools.getFileContext",
+      "SpineTools.getViewData",
+      "SpineTools.getViolationsSummary",
+      "SpineTools.listResourceTemplates"
     ],
-    "ruleViolations": [],
+    "ruleViolations": [
+      {
+        "id": "infra-facade-imports",
+        "severity": "warning",
+        "reason": "SpineTools directly imports and uses Scanner and RuleEngine from the engines layer, absorbing orchestration concerns. Per the rule, infra modules should not absorb service/task/engine orchestration. However, SpineTools is itself the intended public facade for external agents, making this violation a necessary trade-off for the architectural role."
+      }
+    ],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "MCP (Model Context Protocol) tool facade exposing ArchSpine system capabilities as queryable tools for external AI agents.",
+        "role": "MCP (Model Context Protocol) tool facade that wraps core ArchSpine system components (Scanner, RuleEngine, Manifest, Config) into a unified interface for external AI agents.",
         "responsibilities": [
-          "Provides tool implementations for querying architectural invariants and responsibilities of the codebase.",
-          "Exposes preview scanning functionality to analyze files against loaded architectural rules.",
-          "Offers access to drift history and resource templates for system introspection.",
-          "Wraps core system components (Scanner, Manifest, Config, Rules) behind a unified tool interface.",
-          "Manages MCP context gate for tool call tracking and auditing."
+          "Exposes ArchSpine system capabilities as MCP tools: queryInvariants, queryResponsibilities, previewScan, getDriftHistory, getFileContext, getViewData, getViolationsSummary, listResourceTemplates.",
+          "Provides baseline status (getBaselineStatus) and sync status (getSyncStatus) by interfacing with the Manifest and file system.",
+          "Performs preview scanning by loading rules from a directory, instantiating the Scanner and RuleEngine, and filtering matched invariants/responsibilities for a given file path.",
+          "Retrieves drift history from the index document and offers file context and view data for system introspection.",
+          "Notes tool calls on the MCPContextGate for audit/tracing.",
+          "Validates index document compatibility before reading drift history."
         ],
         "outOfScope": [
-          "Direct file system operations beyond reading .spine directory contents.",
-          "Execution of architectural rule enforcement or policy decisions.",
-          "User authentication or authorization logic.",
-          "Persistent storage of scan results or tool call history."
+          "Direct execution of scans or rule evaluations outside the MCP tool interface.",
+          "Scheduling, persistence, or daemon management of the ArchSpine system.",
+          "User authentication and session management.",
+          "Handling of raw file system operations not related to .spine directory."
         ]
       },
       "Simplified Chinese": {
-        "role": "MCP（模型上下文协议）工具外观层，将 ArchSpine 系统能力暴露为可供外部 AI 代理查询的工具。",
+        "role": "MCP（模型上下文协议）工具外观层，将 ArchSpine 核心系统组件（Scanner、RuleEngine、Manifest、Config）封装为统一的接口，供外部 AI 代理使用。",
         "responsibilities": [
-          "提供用于查询代码库架构不变量和职责的工具实现。",
-          "暴露预览扫描功能，用于分析文件是否符合已加载的架构规则。",
-          "提供对漂移历史和资源模板的访问，用于系统内省。",
-          "将核心系统组件（Scanner、Manifest、Config、Rules）封装在统一的工具接口之后。",
-          "管理 MCP 上下文门，用于工具调用跟踪和审计。"
+          "以 MCP 工具形式暴露 ArchSpine 系统功能：queryInvariants、queryResponsibilities、previewScan、getDriftHistory、getFileContext、getViewData、getViolationsSummary、listResourceTemplates。",
+          "通过与 Manifest 和文件系统交互，提供基准状态（getBaselineStatus）和同步状态（getSyncStatus）。",
+          "通过从目录加载规则、实例化 Scanner 和 RuleEngine，并对给定文件路径过滤匹配的不变量/职责，执行预览扫描。",
+          "从索引文档中检索漂移历史，并提供文件上下文和视图数据用于系统自省。",
+          "在 MCPContextGate 上记录工具调用以进行审计/追踪。",
+          "在读取漂移历史之前验证索引文档的兼容性。"
         ],
         "outOfScope": [
-          "超出读取 .spine 目录内容的直接文件系统操作。",
-          "架构规则执行或策略决策的实施。",
-          "用户身份验证或授权逻辑。",
-          "扫描结果或工具调用历史的持久化存储。"
+          "在 MCP 工具接口之外直接执行扫描或规则评估。",
+          "ArchSpine 系统的调度、持久化或守护进程管理。",
+          "用户认证和会话管理。",
+          "处理与 .spine 目录无关的原始文件系统操作。"
         ]
       }
     }
@@ -100,6 +111,13 @@
         "source": "'../../engines/scanner.js'",
         "symbols": [
           "Scanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../engines/rules.js'",
+        "symbols": [
+          "RuleEngine"
         ],
         "locality": "external"
       },
@@ -179,7 +197,7 @@
       }
     ],
     "structuralHints": {
-      "importCount": 11,
+      "importCount": 12,
       "exportCount": 1,
       "isBarrel": false,
       "isTypeOnly": false
@@ -206,6 +224,13 @@
         "relation": "import",
         "symbols": [
           "Scanner"
+        ]
+      },
+      {
+        "targetPath": "../../engines/rules.js",
+        "relation": "import",
+        "symbols": [
+          "RuleEngine"
         ]
       },
       {
@@ -266,15 +291,99 @@
     "symbolEdges": [
       {
         "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/toArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/infra/rules-loader.ts/loadRulesFromDir#",
+        "targetPath": "src/infra/rules-loader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/infra/index-reader.ts/isCompatibleIndexDocument#",
+        "targetPath": "src/infra/index-reader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/engines/rules.ts/RuleEngine#",
+        "targetPath": "src/engines/rules.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/ArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
         "targetSymbol": "src/infra/config.ts/Config#",
         "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/engines/scanner.ts/Scanner#",
+        "targetPath": "src/engines/scanner.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/services/sync-service.ts/SyncService#",
+        "targetPath": "src/services/sync-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/drift.ts/getDriftHistory#",
+        "targetPath": "src/infra/db/repositories/drift.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getTrackedFiles#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/engines/scanner-utils.ts/formatDryRunReport#",
+        "targetPath": "src/engines/scanner-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/getActiveViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
         "relation": "references",
         "edgeProvenance": "ast"
       }
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T04:57:14.152Z",
+    "indexedAt": "2026-05-02T13:37:06.275Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

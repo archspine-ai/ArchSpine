@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/infra",
-  "role": "The infrastructure layer of the ArchSpine mirror system, providing low-level services and utilities such as configuration management, database persistence, LLM client abstraction, prompt construction, credential storage, manifest tracking, and output I/O.",
-  "responsibility": "Collectively, the components in this directory establish a robust and modular foundation for the system's core operations: they manage configuration loading and validation, handle SQLite database lifecycle and data access, abstract LLM provider interactions with retry and client factory logic, construct structured and localized prompts for AI agents, secure API keys via platform-specific credential stores, maintain file integrity and manifest state, expose system data through MCP protocol, and enforce write protection on generated output directories. This layer ensures that all infrastructure concerns are isolated, testable, and consistently available to higher application layers.",
+  "role": "Infrastructure layer providing foundational services for the ArchSpine mirror system, including configuration, persistence, LLM integration, credential management, prompt generation, and system utilities.",
+  "responsibility": "Provides centralized configuration loading, validation, and runtime access; manages SQLite database lifecycle, schema migration, and data access for indexing; handles LLM provider abstraction, client creation, and retry logic; implements secure credential storage with platform-specific backends; constructs structured prompts for AI agents; manages manifest state persistence and file integrity verification; enforces write protection on internal directories; and offers CLI utilities for interactive output, file hashing, and repair policy decisions.",
   "children": [
     {
       "filePath": "src/infra/__mocks__",
@@ -81,7 +81,7 @@
     },
     {
       "filePath": "src/infra/mcp",
-      "role": "Implements the Model Context Protocol (MCP) infrastructure for external AI agent interaction and data access.",
+      "role": "MCP infrastructure layer that gates context, exposes resources, and provides tools for external AI agent integration.",
       "fileKind": "folder"
     },
     {
@@ -166,7 +166,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-02T10:11:08.871Z",
+    "indexedAt": "2026-05-02T13:37:39.516Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

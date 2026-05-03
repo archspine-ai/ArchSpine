@@ -2,9 +2,9 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/cli/commands/check.ts",
-    "contentHash": "f86c2113efb51160b81db89480cbbe261279b84d42b722e8760e17f1b9fa8116",
+    "contentHash": "deaa34d8a5d320e63985022e270ccb8aea51dc30c8b1b3477880e54d9ea46f2f",
     "skeletonHash": "2752e8279020a731af20e37c5e1fc097f0de9fd1b4af313a803134cc5d2f8a39",
-    "semanticHash": "84a427cebc5d1e1b879842921c6842a26cd5cd8b1d5e6706c0724c699dc00a6f",
+    "semanticHash": "f72f5f2bd91cefe2369f3aa8ae053ce932c9c62d7e843a3e85657e8b9fcc2017",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli/commands"
@@ -14,24 +14,27 @@
     "responsibilities": [
       "Exposes the CLI entry point for the 'check' command via the exported `executeCheckCommand` function.",
       "Delegates core rule checking and validation to the RuntimeService's CheckService, maintaining separation of concerns.",
-      "Throws a structured ArchSpineError if the check summary indicates violations or failed files, ensuring the CLI exits with an appropriate error code."
+      "Throws a structured ArchSpineError with code CliCommandFailed if the check summary indicates violations or failed files, ensuring the CLI exits with an appropriate error code.",
+      "Prints a localized experimental feature warning before executing the check, informing users that AI agents are preferred via MCP."
     ],
     "outOfScope": [
-      "Implementing rule checking or validation logic (delegated to CheckService).",
-      "Handling persistence or file I/O for checks.",
-      "Parsing CLI arguments or configuration (assumed to be handled upstream)."
+      "Actual rule validation logic — this is delegated entirely to RuntimeService/CheckService.",
+      "Persistence or state management beyond reading input options.",
+      "User-facing output formatting beyond console.log for the warning and potential error."
     ],
     "invariants": [
-      "Must remain a thin adapter; all business logic must be delegated to RuntimeService or its services.",
-      "Must not contain pipeline, engine, or infrastructure logic."
+      "Must not implement any rule checking or pipeline logic (enforced by rule cli-entrypoint-separation).",
+      "Must only delegate check execution via RuntimeService.getCheckService().run().",
+      "Must use ArchSpineError for error signaling to maintain consistent CLI exit behavior.",
+      "Imported dependencies are limited to RuntimeService and ArchSpineError, avoiding leakage of core or infra concerns."
     ],
     "changeIntent": {
-      "architecturalIntent": "Serve as a thin CLI entrypoint adapter, ensuring separation between command routing and core runtime services.",
-      "recentChangeIntent": "Part of refactoring to establish subsystem facades and resolve layer inversions, reinforcing this module's role as a thin adapter."
+      "architecturalIntent": "Provides a thin CLI adapter for running architecture rule checking via RuntimeService, keeping command routing separate from core logic.",
+      "recentChangeIntent": "Initial CLI entrypoint for the check command, part of the v1.0.0 architectural governance release that established the semantic layer and CLI structure."
     },
     "publicSurface": [
-      "ExecuteCheckCommandOptions interface",
-      "executeCheckCommand function"
+      "executeCheckCommand (async function): The primary entry point for the check command, accepting ExecuteCheckCommandOptions.",
+      "ExecuteCheckCommandOptions (interface): Options object containing runtimeService instance."
     ],
     "ruleViolations": [],
     "driftDetected": false,
@@ -42,12 +45,27 @@
         "responsibilities": [
           "Exposes the CLI entry point for the 'check' command via the exported `executeCheckCommand` function.",
           "Delegates core rule checking and validation to the RuntimeService's CheckService, maintaining separation of concerns.",
-          "Throws a structured ArchSpineError if the check summary indicates violations or failed files, ensuring the CLI exits with an appropriate error code."
+          "Throws a structured ArchSpineError with code CliCommandFailed if the check summary indicates violations or failed files, ensuring the CLI exits with an appropriate error code.",
+          "Prints a localized experimental feature warning before executing the check, informing users that AI agents are preferred via MCP."
         ],
         "outOfScope": [
-          "Implementing rule checking or validation logic (delegated to CheckService).",
-          "Handling persistence or file I/O for checks.",
-          "Parsing CLI arguments or configuration (assumed to be handled upstream)."
+          "Actual rule validation logic — this is delegated entirely to RuntimeService/CheckService.",
+          "Persistence or state management beyond reading input options.",
+          "User-facing output formatting beyond console.log for the warning and potential error."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "“check”命令的CLI适配器，提供入口点并将架构校验委托给 RuntimeService 的 CheckService，在失败时通过结构化错误进行信号传递。",
+        "responsibilities": [
+          "通过导出的 `executeCheckCommand` 函数公开“check”命令的CLI入口。",
+          "将核心规则检查与验证委托给 RuntimeService 的 CheckService，保持关注点分离。",
+          "若检查摘要显示存在违规或失败文件，则抛出结构化 ArchSpineError（错误码 CliCommandFailed），确保 CLI 以适当错误码退出。",
+          "在执行检查前打印本地化的实验性功能警告，提示用户优先通过 MCP 使用 AI 代理进行架构治理。"
+        ],
+        "outOfScope": [
+          "实际的规则校验逻辑——完全委托给 RuntimeService/CheckService。",
+          "超出读取输入选项之外的持久化或状态管理。",
+          "除警告和错误信息外，面向用户的输出格式化。"
         ]
       }
     }
@@ -121,14 +139,24 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/check.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/ArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:36.177Z",
+    "indexedAt": "2026-05-02T13:36:59.168Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "fallback"
+      "llm"
     ]
   }
 }

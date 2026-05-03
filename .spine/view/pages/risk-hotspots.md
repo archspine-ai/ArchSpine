@@ -1,6 +1,6 @@
 # Risk Hotspots Report
 
-> Generated: 2026-05-02T10:11:32.551Z
+> Generated: 2026-05-02T13:38:18.710Z
 > Top 12 risk hotspots ranked by a transparent additive score model.
 
 ## Top Risk Files
@@ -8,10 +8,10 @@
 | Rank | File | Risk Factors | Impact | Score |
 | ---- | ---- | ------------ | ------ | ----- |
 
-| 1 | `src/cli/commands/publish.ts` | `fan-out`, `semantic-change`, `rule-violations`, `surface-exposure` | Likely localized impact with a few downstream touch points. | 53 |
-| 2 | `src/ast/lang-registry.ts` | `semantic-change`, `surface-exposure`, `large-file`, `fan-out` | Likely localized impact with a few downstream touch points. | 52 |
-| 3 | `src/infra/llm/providers/openai.ts` | `semantic-change`, `fan-out`, `large-file`, `missing-adjacent-tests` | Likely localized impact with a few downstream touch points. | 52 |
-| 4 | `src/infra/mcp/tools.ts` | `fan-out`, `surface-exposure`, `large-file`, `missing-adjacent-tests` | Likely localized impact with a few downstream touch points. | 52 |
+| 1 | `src/infra/mcp/tools.ts` | `fan-out`, `surface-exposure`, `large-file`, `missing-adjacent-tests` | Likely localized impact with a few downstream touch points. | 61 |
+| 2 | `src/cli/commands/publish.ts` | `fan-out`, `semantic-change`, `rule-violations`, `surface-exposure` | Likely localized impact with a few downstream touch points. | 53 |
+| 3 | `src/ast/lang-registry.ts` | `semantic-change`, `surface-exposure`, `large-file`, `fan-out` | Likely localized impact with a few downstream touch points. | 52 |
+| 4 | `src/infra/llm/providers/openai.ts` | `semantic-change`, `fan-out`, `large-file`, `missing-adjacent-tests` | Likely localized impact with a few downstream touch points. | 52 |
 | 5 | `src/infra/prompt-context.ts` | `semantic-change`, `surface-exposure`, `fan-out`, `missing-adjacent-tests` | Likely localized impact with a few downstream touch points. | 50 |
 | 6 | `src/types/protocol/languages.ts` | `semantic-change`, `rule-violations`, `surface-exposure`, `missing-adjacent-tests` | Likely localized impact with a few downstream touch points. | 49 |
 | 7 | `src/engines/scanner.ts` | `fan-out`, `surface-exposure`, `large-file`, `missing-adjacent-tests` | Likely localized impact with a few downstream touch points. | 48 |
@@ -23,7 +23,21 @@
 
 ## Detailed Analysis
 
-### 1. `src/cli/commands/publish.ts`
+### 1. `src/infra/mcp/tools.ts`
+MCP (Model Context Protocol) tool facade that wraps core ArchSpine system components (Scanner, RuleEngine, Manifest, Config) into a unified interface for external AI agents; ranked due to fan-out, surface-exposure.
+Impact Radius: Likely localized impact with a few downstream touch points.
+Confidence: 0.73
+Score: 61
+
+- `fan-in` (4): File is depended on by 1 indexed file(s).
+- `fan-out` (18): File depends on 10 indexed file(s).
+- `cross-boundary-density` (4): File crosses 1 directory-boundary edge(s).
+- `surface-exposure` (12): File exposes 11 public-surface item(s) and 1 export(s).
+- `rule-violations` (5): File carries 1 active rule violation(s).
+- `large-file` (12): File has 756 line(s), increasing change surface area.
+- `missing-adjacent-tests` (6): No adjacent test file was detected near a shared or exposed module.
+
+### 2. `src/cli/commands/publish.ts`
 CLI command handler orchestrating the publish workflow for the ArchSpine mirror system, coordinating preflight checks, sync, document backfill, and atlas state management; ranked due to fan-out, semantic-change.
 Impact Radius: Likely localized impact with a few downstream touch points.
 Confidence: 0.69
@@ -35,7 +49,7 @@ Score: 53
 - `rule-violations` (8): File carries 1 active rule violation(s).
 - `missing-adjacent-tests` (6): No adjacent test file was detected near a shared or exposed module.
 
-### 2. `src/ast/lang-registry.ts`
+### 3. `src/ast/lang-registry.ts`
 Stateful language configuration registry and dynamic language loader for the ArchSpine code analysis pipeline, managing AST-grep language bindings and file-to-language resolution; ranked due to semantic-change, surface-exposure.
 Impact Radius: Likely localized impact with a few downstream touch points.
 Confidence: 0.69
@@ -48,7 +62,7 @@ Score: 52
 - `large-file` (8): File has 257 line(s), increasing change surface area.
 - `missing-adjacent-tests` (6): No adjacent test file was detected near a shared or exposed module.
 
-### 3. `src/infra/llm/providers/openai.ts`
+### 4. `src/infra/llm/providers/openai.ts`
 OpenAI-compatible LLM provider client with embedded prompt generation and response parsing orchestration, contrary to the Infra Facade design rule; ranked due to semantic-change, fan-out.
 Impact Radius: Likely localized impact with a few downstream touch points.
 Confidence: 0.69
@@ -59,19 +73,6 @@ Score: 52
 - `semantic-change` (16): The file header explicitly states it has drifted beyond a pure LLM client interface by absorbing prompt generation, strategy orchestration, and response parsing. The previous semantic contract also identified this pattern.
 - `rule-violations` (5): File carries 1 active rule violation(s).
 - `large-file` (8): File has 281 line(s), increasing change surface area.
-- `missing-adjacent-tests` (6): No adjacent test file was detected near a shared or exposed module.
-
-### 4. `src/infra/mcp/tools.ts`
-MCP (Model Context Protocol) tool facade exposing ArchSpine system capabilities as queryable tools for external AI agents; ranked due to fan-out, surface-exposure.
-Impact Radius: Likely localized impact with a few downstream touch points.
-Confidence: 0.69
-Score: 52
-
-- `fan-in` (4): File is depended on by 1 indexed file(s).
-- `fan-out` (18): File depends on 9 indexed file(s).
-- `cross-boundary-density` (4): File crosses 1 directory-boundary edge(s).
-- `surface-exposure` (12): File exposes 6 public-surface item(s) and 1 export(s).
-- `large-file` (8): File has 370 line(s), increasing change surface area.
 - `missing-adjacent-tests` (6): No adjacent test file was detected near a shared or exposed module.
 
 ### 5. `src/infra/prompt-context.ts`

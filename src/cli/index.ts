@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import 'dotenv/config';
 import { setGlobalDispatcher, ProxyAgent } from 'undici';
 
 if (process.env.https_proxy || process.env.http_proxy) {

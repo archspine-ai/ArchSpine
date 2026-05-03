@@ -2,28 +2,28 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "AGENTS.md",
-    "contentHash": "4ab9b19c76c077e70e85a5d6de8f43b858f5fa934b20ea013ae0aec40ed2ba09",
-    "semanticHash": "0111bacd27f15b808d85b910f0a42e0747b1356b0398475c479170e7723d5fae",
+    "contentHash": "70d579b1891016b04d2ec47b65560b763beb6dc0322eba2fa5920b675161a121",
+    "semanticHash": "e39a354dd992f269c38c4f650f5eca0a1ccb36a4932a3fd647bbf8c5c50ce3e9",
     "language": "unsupported",
     "fileKind": "document",
     "scope": ""
   },
   "semantic": {
-    "role": "Defines the structural, coding, testing, and documentation conventions for the ArchSpine project, including how to interact with the ArchSpine context system.",
+    "role": "Developer reference guide for the ArchSpine repository",
     "responsibilities": [
-      "Describing the project directory layout and module organization",
-      "Listing build, test, and development commands",
-      "Specifying TypeScript coding style and naming conventions",
-      "Outlining testing guidelines with Vitest",
-      "Defining commit and pull request conventions",
-      "Explaining documentation maintenance and the role of the temporary working area",
-      "Providing instructions for using the ArchSpine context system"
+      "Describing project structure and module organization under `src/`",
+      "Listing build, test, and development commands with Node.js 20+",
+      "Defining coding style, naming conventions, and linting expectations",
+      "Specifying testing guidelines using Vitest and bench fixtures",
+      "Recommending commit and pull request conventions (Conventional Commits)",
+      "Guiding documentation maintenance (English/Chinese alignment, public vs planning docs)",
+      "Providing ArchSpine-specific interaction rules (context files, protected outputs, sync workflow)"
     ],
     "outOfScope": [
-      "Detailed API reference or function-level documentation",
-      "Architecture design rationale or planning documents",
-      "Third-party dependency licenses or security policies",
-      "Deployment or release procedures"
+      "Detailed API or protocol specifications",
+      "End-user product documentation or changelogs",
+      "Architecture deep dives or design rationales beyond summary level",
+      "External dependency version upgrade policy"
     ],
     "invariants": [],
     "changeIntent": {
@@ -35,27 +35,25 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document serves as the central reference for all contributors to the ArchSpine repository. It establishes the ground rules for project structure, coding style, testing, documentation, and how to leverage the built-in ArchSpine context system for efficient development.",
-        "context_and_audience": "The intended audience is any developer or maintainer working on the ArchSpine codebase. It is particularly important for new contributors who need to understand the project's conventions and for all team members to ensure consistency across contributions. The document also provides critical instructions for AI agents on how to interact with the ArchSpine context files.",
+        "purpose": "To provide a comprehensive set of guidelines for developers working on the ArchSpine repository, covering project structure, development workflow, coding conventions, and interaction with the ArchSpine system.",
+        "context_and_audience": "This document is intended for developers (human and AI) who contribute to the ArchSpine project. It assumes familiarity with TypeScript, Node.js, and basic repository management.",
         "key_takeaways": [
-          "The project follows a strict modular structure under `src/` with clear separation of concerns (CLI, core, services, infra).",
-          "All code must adhere to the defined TypeScript style: ES modules, strict typing, 2-space indentation, and specific naming conventions.",
-          "Testing is mandatory for all behavior changes, using Vitest, with research fixtures kept separate from the main test suite.",
-          "Commits must follow Conventional Commits format, and PRs must include verification steps and related issue links.",
-          "Documentation changes must keep English and Chinese versions aligned; a temporary working area (`docs/temporary-to-be-cleared/`) is the source of truth for interim change notes.",
-          "AI agents and developers must consult the ArchSpine context (`.spine/atlas/`, `.spine/view/pages/`) before broad searches, and must not directly modify generated ArchSpine output files."
+          "Understand the module organization under `src/`.",
+          "Follow the established coding style (ES modules, strict typing, 2-space indentation).",
+          "Use Conventional Commits for commits and PRs.",
+          "Keep English and Chinese documentation aligned.",
+          "Respect ArchSpine control-plane files and avoid direct modification of generated outputs."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档是 ArchSpine 仓库所有贡献者的核心参考指南。它确立了项目结构、编码风格、测试、文档以及如何利用内置的 ArchSpine 上下文系统进行高效开发的基本规则。",
-        "context_and_audience": "目标读者是任何在 ArchSpine 代码库上工作的开发者或维护者。对于需要了解项目约定的新贡献者，以及为确保所有贡献一致性的团队成员来说，本文档尤为重要。此外，本文档还为 AI 代理提供了关于如何与 ArchSpine 上下文文件交互的关键指令。",
+        "purpose": "为在 ArchSpine 仓库工作的开发者提供一套全面的指南，涵盖项目结构、开发工作流、编码规范以及与 ArchSpine 系统的交互方式。",
+        "context_and_audience": "本文档面向参与 ArchSpine 项目的开发者（人类和 AI 代理），假定读者熟悉 TypeScript、Node.js 以及基本的仓库管理知识。",
         "key_takeaways": [
-          "项目遵循 `src/` 下的严格模块化结构，职责划分清晰（CLI、核心、服务、基础设施）。",
-          "所有代码必须遵守定义的 TypeScript 风格：ES 模块、严格类型、2 空格缩进以及特定的命名约定。",
-          "所有行为变更都必须进行测试，使用 Vitest，研究用的测试夹具应与主测试套件分开存放。",
-          "提交信息必须遵循 Conventional Commits 格式，拉取请求必须包含验证步骤和相关问题链接。",
-          "文档变更必须保持英文和中文版本对齐；临时工作区（`docs/temporary-to-be-cleared/`）是临时变更记录的唯一真实来源。",
-          "AI 代理和开发者在进行广泛搜索前，必须先查阅 ArchSpine 上下文（`.spine/atlas/`、`.spine/view/pages/`），并且不得直接修改 ArchSpine 生成的输出文件。"
+          "理解 `src/` 下的模块组织结构。",
+          "遵循既定的编码风格（ES modules、严格类型、2个空格缩进）。",
+          "在提交和 PR 中使用 Conventional Commits 格式。",
+          "保持英文和中文文档的一致性。",
+          "尊重 ArchSpine 的控制平面文件，避免直接修改自动生成的输出文件。"
         ]
       }
     }
@@ -78,7 +76,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T07:20:36.965Z",
+    "indexedAt": "2026-05-02T13:36:51.530Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

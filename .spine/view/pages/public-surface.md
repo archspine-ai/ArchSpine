@@ -1,6 +1,6 @@
 # Public Surface Map
 
-> Generated: 2026-05-02T10:11:32.546Z
+> Generated: 2026-05-02T13:38:18.702Z
 > Top 24 high-confidence public entry surfaces derived from index and graph signals.
 
 ## CLI Entry Points
@@ -131,7 +131,7 @@ CLI-facing entry: CLI command entry point for executing usage reports.
 Kind: MCP
 Symbols: `SpineTools`
 Confidence: 0.73
-MCP-facing entry: MCP (Model Context Protocol) tool facade exposing ArchSpine system capabilities as queryable tools for external AI agents.
+MCP-facing entry: MCP (Model Context Protocol) tool facade that wraps core ArchSpine system components (Scanner, RuleEngine, Manifest, Config) into a unified interface for external AI agents.
 
 ### `src/infra/mcp/resources.ts`
 Kind: MCP
