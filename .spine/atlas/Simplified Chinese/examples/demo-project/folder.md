@@ -1,10 +1,11 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project","role":"This directory aggregates the core configuration and rule definitions that govern the ArchSpine mirror system's behavior and structure.","responsibility":"Collectively, the components in this directory define system-level configuration parameters, establish structural guidelines for the .spine directory, enforce architectural rules and conventions for the mirror system, manage synchronization, indexing, validation, routing, and access control of mirrored data across distributed nodes, and define logical and functional layers including configuration management and interface abstraction to ensure consistency, fault tolerance, and a cohesive, extensible system architecture.","children":[{"filePath":"examples/demo-project/.spine","role":"This directory aggregates the core configuration and rule definitions that govern the ArchSpine mirror system's behavior and structure.","fileKind":"folder"},{"filePath":"examples/demo-project/demo.gif","role":"Project narrative and architectural overview for the ArchSpine mirror system","fileKind":"document"},{"filePath":"examples/demo-project/src","role":"This directory aggregates the application's core layers: API, domain, and infrastructure.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T07:20:47.846Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# ArchSpine 演示项目目录概览
+此目录是 ArchSpine 镜像系统的演示项目，通过具体的配置、文档和源代码，展示 ArchSpine 的架构与使用方式。
 
-本目录 `examples/demo-project` 是一个独立的 ArchSpine 镜像系统演示。它聚合了控制系统行为和结构的核心配置与规则定义。目录包含三个主要部分：
+目录内容按三个逻辑区域组织：
 
-- **`.spine` 文件夹**：包含 ArchSpine 镜像系统的中心配置和结构指南，涵盖跨分布式节点的同步、索引、验证、路由和访问控制。这是定义系统行为的最关键子模块。
-- **`demo.gif`**：提供项目叙述和架构概览的文档，面向人类读者的顶层说明。
-- **`src` 文件夹**：承载应用的核心层：API（接口抽象）、领域（业务逻辑与规则）和基础设施（持久化与通信）。这里是镜像系统功能的实际实现所在。
+- **配置**（`.spine/`）：存放 ArchSpine 的所有项目级别设置与状态。内部包含 `provider`（提供者）、`scan-policy`（扫描策略）、`ignore-chains`（忽略链）、`lang-map`（语言映射）、`sync-health`（同步健康快照）、`arch-rules`（架构规则）和 `checkpoint`（运行时检查点）等子模块，共同管理扫描、语言检测、同步健康、架构规则执行和运行时追踪。
 
-最重要的实现领域包括：配置管理（位于 `.spine` 内）、逻辑层分离（在 `src` 中），以及确保一致性和容错性的架构规则定义。需要重点考察的具体子模块有 `.spine` 内的配置文件和规则定义，以及 `src` 下的三个主要子目录（API、领域、基础设施）。
+- **文档**（`demo.gif`）：项目概览与叙述指南，解释 ArchSpine 的核心理念（脊柱层、图集层、索引层），涵盖多语言文档支持（英文、简体中文等），并说明规则、模式、模板、命令行界面以及构建/同步/验证工作流的维护方式。
+
+- **源代码**（`src/`）：一个示例用户管理系统，演示了预期的架构分层。包含 `api/`（HTTP 端点，处理用户创建请求）、`domain/`（用户实体管理）和 `infrastructure/`（数据库连接管理）。代码既展示了正确的架构，也包含了常见的偏离模式，为 ArchSpine 的分析管道提供了测试场景。
+
+关键实现领域包括配置管理、文档生成、多语言支持、架构强制以及分层应用设计。

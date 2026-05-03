@@ -1,41 +1,48 @@
-# ArchSpine Project Overview
+# ArchSpine Project Overview and Developer Guide
 
 ## Purpose
 
-This document serves as the central onboarding and governance reference for the ArchSpine project. It explains why ArchSpine exists — to embed a physical `.spine/` control plane inside Git repositories, making codebases queryable, governable, and auditable for AI-assisted engineering. It also defines the technical stack, development conventions, and strict commit discipline required to maintain the integrity of the `.spine/` distribution artifact.
+This document is the central README and developer onboarding guide for the ArchSpine project. It explains why ArchSpine exists, what it does, and how to contribute effectively. It serves as the single source of truth for **repository structure, build processes, code conventions, and governance rules** that both human developers and AI agents must follow.
 
 ## Who Should Read This
 
-The intended audience includes developers, AI agents, and maintainers who need to understand the project's architecture, contribute code, or operate the spine sync pipeline. The document assumes familiarity with TypeScript, Node.js, Git, and conventional commits. It is particularly relevant for anyone working on or with the `.spine/` control plane files.
+- **Primary audience:** Developers working on the ArchSpine toolchain itself, including AI agents that need to understand repository layout, build commands, and contribution protocols.
+- **Secondary audience:** Contributors exploring the codebase, reviewers, and anyone who needs to grasp the architectural philosophy behind `.spine/`.
 
-## Key Decisions and Workflows
+## Key Decisions and Workflows Anchored by This Document
 
-### Tech Stack and Conventions
+### 1. What ArchSpine Is (and Isn't)
 
-The project uses TypeScript 5 (strict mode, ESM), Node.js >=20, Vitest for testing, ESLint with Prettier for linting, VitePress for documentation, better-sqlite3 for local caching, @ast-grep/napi for AST extraction across multiple languages, and the MCP SDK for STDIO server communication. Code conventions mandate ES modules with `.js` import suffixes, 2-space indentation, camelCase/PascalCase naming, and Conventional Commits with optional scopes.
+ArchSpine is an **open-source protocol and toolchain** that builds a physical `.spine/` control plane inside Git repositories. This control plane makes codebases queryable, governable, and auditable for AI-assisted engineering. It is **not** a user manual or detailed API reference — those live in `docs/`.
 
-### Architecture Layers
+### 2. Technology Stack and Build Pipeline
 
-The source code is organized into nine layers under `src/`:
+The project uses **TypeScript 5 (strict mode, ESM)** on **Node.js ≥20**, with **Vitest** for testing, **ESLint + Prettier** for code quality, and **VitePress** for documentation. Key commands (build, test, lint, validate, sync) are standardized in the README.
 
-- **cli/** — Entrypoint and command dispatch (thin layer)
-- **core/** — Domain types, errors, pipeline, task state
-- **engines/** — Business logic (scanner, rules, checker, fixer, context)
-- **services/** — Runtime orchestration (sync, check, fix, view)
-- **infra/** — Infrastructure (config, DB, LLM, MCP, I/O, prompt)
-- **tasks/** — Individual task implementations
-- **types/** — Protocol type definitions
-- **utils/** — Shared utilities
-- **ast/** — AST extraction and language discovery
+### 3. Code Conventions and Architecture Layers
 
-### Commit Discipline
+- ES modules with explicit `.js` import suffixes, `strict: true`, 2-space indentation.
+- `camelCase` variables/functions, `PascalCase` classes/types.
+- Conventional Commits with optional scopes (e.g., `feat(cli): …`).
+- Architecture layers are clearly defined: `cli/`, `core/`, `engines/`, `services/`, `infra/`, `tasks/`, `types/`, `utils/`, `ast/`.
 
-The `.spine/` directory is a distribution artifact tracked in Git. It must follow strict commit discipline:
+### 4. Git Workflow and Commit Discipline
 
-1. **Source changes first, then sync**: Modify logic (src/, rules/, etc.) → `npm run build` → commit source changes. Then run `spine sync` separately → commit `.spine/` updates. These must be two distinct commits.
-2. **No `.spine/` noise in source commits**: If `.spine/` has dirty changes, restore it with `git checkout -- .spine/` before committing source code. Exceptions: `.spine/config.json` and `.spine/rules/**` are human-reviewed control plane files that can be committed with source changes.
-3. **Agent workflow**: AI agents must use `node dist/cli/index.js sync` to refresh `.spine/`, never edit generated files directly. Always run `git status` before committing to verify correct file classification.
+- Feature branches from `main`, PR template required.
+- **Critical rule:** Source changes and `.spine/` sync must be committed in **separate commits** — never mix them.
+- Generated files under `.spine/index/`, `.spine/atlas/`, `.spine/view/` must never be edited directly; use `spine sync` to refresh.
+- Human-reviewed files (`.spine/config.json`, `rules/`) can be committed with source changes.
 
-### Documentation Requirements
+### 5. Bilingual Documentation Requirement
 
-All documentation must be bilingual (English and Simplified Chinese), with entry points kept aligned. Design and planning documents under `docs/design/`, `docs/planning/`, and `docs/archive/` should not be promoted into public navigation. Interim change notes for docs should be recorded in `docs/temporary-to-be-cleared/` first, with a periodic sync agent handling consolidation.
+All documentation must be maintained in **English and Simplified Chinese**, with entry points kept aligned. Never publish design/planning docs into public navigation.
+
+### 6. AI Agent Guidelines
+
+- Always use `node dist/cli/index.js sync` to refresh `.spine/` — never edit generated files.
+- Verify staged file classification with `git status` before committing.
+- Be aware that `spine sync` may take significant time (scans full repo, calls LLM).
+
+---
+
+**This document anchors all architectural governance for the ArchSpine project.** Developers and AI agents should treat it as the authoritative starting point for understanding the repo’s structure, rules, and contribution workflow.

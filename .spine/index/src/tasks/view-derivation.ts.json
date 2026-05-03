@@ -4,60 +4,76 @@
     "filePath": "src/tasks/view-derivation.ts",
     "contentHash": "68055d0980120253a5408c77d26b202ffd71b15ae8973e860aec66676ecf8875",
     "skeletonHash": "45fd4c6c710dc90c0ff4656d953cb6b265218bcfaab70c913fe517ea8a322c5b",
-    "semanticHash": "bc2e43e655b68c9c3adca18b78723292401cbc786741df9622de86fb3d5938fb",
+    "semanticHash": "ebb55d47388c283793e543bd14e923981cce510e76885130d4691d3cdec82e0e",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/tasks"
   },
   "semantic": {
-    "role": "Pipeline task stage that orchestrates the derivation of multiple architectural views (public surface, risk hotspots, architecture diagram) from committed changes using the ViewService facade.",
+    "role": "Pipeline task stage that orchestrates selective derivation of architectural views (public surface, risk hotspots, architecture diagram) using the ViewService facade, based on enabled views configuration.",
     "responsibilities": [
-      "Instantiates ViewService with runtime dependencies (root directory, output manager, runtime IO, LLM client).",
-      "Clears view artifacts for views disabled in the current execution context.",
-      "Skips derivation during incremental sync when no changes are committed and no directories are affected.",
+      "Instantiates ViewService with runtime dependencies (rootDir, outputManager, runtimeIO, llmClient).",
+      "Computes disabled view IDs from VIEW_DEFINITIONS by filtering out enabled views.",
+      "Clears view artifacts for all disabled views to maintain consistency.",
       "Derives the public surface view when enabled, capturing exported symbols and their visibility.",
-      "Derives the risk hotspots view when enabled, identifying high-risk code areas.",
-      "Derives the architecture diagram view when enabled, generating a system diagram."
+      "Derives the risk hotspots view when enabled, identifying high-risk areas in the codebase.",
+      "Derives the architecture diagram view when enabled, generating an architectural overview.",
+      "Collects skipped views into an array for reporting when their derivation is not enabled."
     ],
     "outOfScope": [
-      "CLI command parsing",
-      "Direct file system scanning or git operations",
-      "Implementation of view derivation logic (delegated to ViewService)",
-      "Orchestration of unrelated pipeline services"
+      "Direct CLI command parsing or user input handling.",
+      "Implementation of individual view derivation logic (delegated to ViewService and view modules).",
+      "Persistent storage or output formatting beyond clearing artifacts."
     ],
     "invariants": [
-      "Must operate as a single stage in the SpineTask pipeline.",
-      "Must delegate view derivation logic to the ViewService facade.",
-      "Must respect the enabledViews configuration from the task context.",
-      "Must skip derivation when incremental sync conditions are met (no commits, no affected directories)."
+      "Task must operate via core task contracts (SpineTask, TaskContext) without bypassing runtime context.",
+      "View selection must be driven solely by the enabledViews configuration; no hardcoded view assumptions.",
+      "All disabled views must have their artifacts cleared before any derivation begins."
     ],
     "changeIntent": {
-      "architecturalIntent": "To provide a centralized task stage for generating all architectural views, ensuring consistency and proper cleanup of disabled views.",
-      "recentChangeIntent": "Extended view derivation to include risk hotspots and architecture diagram views, likely as part of an 'easy one' enhancement to support multiple view types."
+      "architecturalIntent": "Integrate view derivation as a dedicated pipeline stage to produce architectural governance artifacts (public surface, risk hotspots, diagram) in a configurable manner.",
+      "recentChangeIntent": "Refactored view derivation from a monolithic flow into a task stage with selective view generation based on enabled views configuration."
     },
     "publicSurface": [
-      "ViewDerivationTask (class)",
-      "execute (method)"
+      "export class ViewDerivationTask extends SpineTask<CommitStageOutput, ViewDerivationStageOutput>",
+      "async execute(ctx: TaskContext, input: CommitStageOutput): Promise<ViewDerivationStageOutput>"
     ],
     "ruleViolations": [],
-    "driftDetected": false,
-    "driftReason": null,
+    "driftDetected": true,
+    "driftReason": "Previous semantic included a skip condition during incremental sync when no changes are committed and no directories are affected. The current code snippet does not exhibit this logic; instead, it selectively derives views based solely on enabledViews configuration, omitting the incremental sync skip.",
     "localized": {
       "English": {
-        "role": "Pipeline task stage that orchestrates the derivation of multiple architectural views (public surface, risk hotspots, architecture diagram) from committed changes using the ViewService facade.",
+        "role": "Pipeline task stage that orchestrates selective derivation of architectural views (public surface, risk hotspots, architecture diagram) using the ViewService facade, based on enabled views configuration.",
         "responsibilities": [
-          "Instantiates ViewService with runtime dependencies (root directory, output manager, runtime IO, LLM client).",
-          "Clears view artifacts for views disabled in the current execution context.",
-          "Skips derivation during incremental sync when no changes are committed and no directories are affected.",
+          "Instantiates ViewService with runtime dependencies (rootDir, outputManager, runtimeIO, llmClient).",
+          "Computes disabled view IDs from VIEW_DEFINITIONS by filtering out enabled views.",
+          "Clears view artifacts for all disabled views to maintain consistency.",
           "Derives the public surface view when enabled, capturing exported symbols and their visibility.",
-          "Derives the risk hotspots view when enabled, identifying high-risk code areas.",
-          "Derives the architecture diagram view when enabled, generating a system diagram."
+          "Derives the risk hotspots view when enabled, identifying high-risk areas in the codebase.",
+          "Derives the architecture diagram view when enabled, generating an architectural overview.",
+          "Collects skipped views into an array for reporting when their derivation is not enabled."
         ],
         "outOfScope": [
-          "CLI command parsing",
-          "Direct file system scanning or git operations",
-          "Implementation of view derivation logic (delegated to ViewService)",
-          "Orchestration of unrelated pipeline services"
+          "Direct CLI command parsing or user input handling.",
+          "Implementation of individual view derivation logic (delegated to ViewService and view modules).",
+          "Persistent storage or output formatting beyond clearing artifacts."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "流水线任务阶段，通过 ViewService 门面基于启用的视图配置，有选择地编排架构视图（公共表面、风险热点、架构图）的推导。",
+        "responsibilities": [
+          "使用运行时依赖（rootDir、outputManager、runtimeIO、llmClient）实例化 ViewService。",
+          "根据VIEW_DEFINITIONS计算禁用的视图ID，剔除已启用的视图。",
+          "清除所有禁用视图的产物以保持一致性。",
+          "当启用时，推导公共表面视图，捕获导出符号及其可见性。",
+          "当启用时，推导风险热点视图，识别代码库中的高风险区域。",
+          "当启用时，推导架构图视图，生成架构概览。",
+          "当视图推导未启用时，将跳过的视图收集到数组以进行报告。"
+        ],
+        "outOfScope": [
+          "直接处理CLI命令解析或用户输入。",
+          "实现单个视图的推导逻辑（委托给ViewService和视图模块）。",
+          "超出清除产物的持久化存储或输出格式编排。"
         ]
       }
     }
@@ -134,18 +150,27 @@
         ]
       }
     ],
-    "dependedBy": [
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
       {
-        "targetPath": "src/services/sync-service.ts",
-        "relation": "import",
-        "edgeProvenance": "ast",
-        "symbols": []
+        "sourceSymbol": "src/tasks/view-derivation.ts/_file_#",
+        "targetSymbol": "src/services/view-service.ts/ViewService#",
+        "targetPath": "src/services/view-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/view-derivation.ts/_file_#",
+        "targetSymbol": "src/services/view/architecture-diagram-view.ts/deriveArchitectureDiagramView#",
+        "targetPath": "src/services/view/architecture-diagram-view.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
       }
-    ],
-    "reverseIndexComplete": true
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:41.845Z",
+    "indexedAt": "2026-05-03T11:25:06.532Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

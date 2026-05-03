@@ -54,7 +54,7 @@ export async function runInfoReport(
   const llmResolution = runtimeService.getResolvedLLMSettings();
   const syncProfile = runtimeService.getResolvedExecutionProfile('sync');
   const checkProfile = runtimeService.getResolvedExecutionProfile('check');
-  const status = await runtimeService.getSyncService().status();
+  const status = await runtimeService.getSyncStatusService().status();
   const usage = manifest.getTotalUsage();
   const langSnapshot = manifest.loadLanguageSnapshot();
   const manifestView = loadManifestView(rootDir);

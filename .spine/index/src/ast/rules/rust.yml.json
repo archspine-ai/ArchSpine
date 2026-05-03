@@ -3,23 +3,22 @@
   "identity": {
     "filePath": "src/ast/rules/rust.yml",
     "contentHash": "5ace25732f8c327e49304b0edf02a758966a63d37e9f1224b5cffea5d083962b",
-    "semanticHash": "665315e7c1423085cf9c2547168099218186f5bcdfbf2e6215a6a33c86599ecb",
+    "semanticHash": "97b6b25d07d88016a3dc282bba2f173e01c33f0a17dda63820e99e934e5cfd23",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/ast/rules"
   },
   "semantic": {
-    "role": "Defines the syntax and pattern-matching rules for extracting code structures from Rust source files within the ArchSpine mirror system.",
+    "role": "Spine rule document for Rust AST extraction",
     "responsibilities": [
-      "Specifying import patterns for source file inclusion",
-      "Defining export patterns for Rust constructs (functions, structs, traits, impl blocks, variables)",
-      "Defining usage patterns for function calls and path references",
-      "Serving as the configuration schema for code analysis and reflection"
+      "Defining tree-sitter patterns to extract Rust source code elements such as functions, structs, traits, implementations, variables, and usage references",
+      "Specifying how ArchSpine indexes and tracks dependencies within Rust projects",
+      "Providing the foundation for code analysis, symbol resolution, and usage detection in Rust codebases"
     ],
     "outOfScope": [
-      "Actual code execution or compilation logic",
-      "Language-agnostic or multi-language pattern definitions",
-      "User interface or documentation generation"
+      "Handling non-Rust programming languages or generic repository metadata",
+      "Describing the overall architecture or philosophy of the ArchSpine system",
+      "Providing end-user instructions or operational guides"
     ],
     "invariants": [],
     "changeIntent": {
@@ -31,23 +30,23 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document defines the pattern-matching rules that ArchSpine uses to introspect Rust source code. It specifies how imports, exports (functions, structs, traits, impl blocks, variables), and usages (calls, paths) are recognized and extracted from the codebase.",
-        "context_and_audience": "This document is intended for developers and AI agents who need to understand or modify how ArchSpine analyzes Rust code. It is the core configuration for the code reflection engine, defining the grammar of what ArchSpine can 'see' in a Rust project.",
+        "purpose": "This document defines the rules for extracting Rust source code structure and usage patterns using tree-sitter queries. It enables ArchSpine's mirror system to parse Rust files, identify key code elements like public functions, structs, traits, and impl blocks, and track how these elements are used across the codebase. This extraction is essential for maintenance boundaries, dependency mapping, and generating context for AI agents or human reviewers.",
+        "context_and_audience": "This rule file is intended for developers and AI agents who maintain ArchSpine's language support for Rust. It is also consumed by the ArchSpine indexing engine to build a structured representation of Rust projects. Understanding this document helps maintainers extend or fix Rust analysis capabilities and ensures consistent extraction across different Rust codebases.",
         "key_takeaways": [
-          "ArchSpine uses tree-sitter-like pattern rules to identify code structures.",
-          "Exports are categorized by Rust construct type (Function, Class, Interface, Type, Variable).",
-          "Usages track how exported items are referenced (calls and paths).",
-          "The document is a configuration file, not a narrative guide."
+          "Uses tree-sitter pattern matching to extract imports, function definitions, structs, traits, impls, and variable declarations in Rust.",
+          "Each export pattern targets a specific AST node kind and assigns a semantic type (e.g., Function, Class, Interface, Type, Variable).",
+          "Usage patterns capture calls and path references to enable dependency and usage tracking.",
+          "This document is part of the ArchSpine 'spine' framework that mirrors code analysis across multiple languages."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档定义了 ArchSpine 用于内省 Rust 源代码的模式匹配规则。它规定了如何识别和提取代码中的导入、导出（函数、结构体、特征、实现块、变量）以及使用（调用、路径）信息。",
-        "context_and_audience": "本文档面向需要理解或修改 ArchSpine 如何分析 Rust 代码的开发者及 AI 代理。它是代码反射引擎的核心配置，定义了 ArchSpine 在 Rust 项目中能够“看到”的语法结构。",
+        "purpose": "本文档定义了使用 tree-sitter 查询从 Rust 源代码中提取结构和用法模式的规则。它使 ArchSpine 镜像系统能够解析 Rust 文件，识别关键代码元素（如公共函数、结构体、特征和 impl 块），并跟踪这些元素在整个代码库中的使用情况。这种提取对于维护边界、依赖映射以及为 AI 代理或人工审查者生成上下文至关重要。",
+        "context_and_audience": "该规则文件面向维护 ArchSpine 语言支持（针对 Rust）的开发者和 AI 代理。ArchSpine 的索引引擎也会使用它来构建 Rust 项目的结构化表示。理解本文档有助于维护人员扩展或修复 Rust 分析能力，并确保跨不同 Rust 代码库的一致提取。",
         "key_takeaways": [
-          "ArchSpine 使用类似 tree-sitter 的模式规则来识别代码结构。",
-          "导出项按 Rust 构造类型（函数、类、接口、类型、变量）进行分类。",
-          "使用项追踪导出项如何被引用（调用和路径）。",
-          "本文档是一个配置文件，而非叙述性指南。"
+          "使用 tree-sitter 模式匹配来提取 Rust 中的导入、函数定义、结构体、特征、实现块和变量声明。",
+          "每个导出模式针对特定的 AST 节点类型，并分配语义类型（例如函数、类、接口、类型、变量）。",
+          "用法模式捕获调用和路径引用，以实现依赖和用法追踪。",
+          "本文档是 ArchSpine 框架的一部分，该框架镜像跨多种语言的代码分析。"
         ]
       }
     }
@@ -70,7 +69,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:54.168Z",
+    "indexedAt": "2026-05-03T11:26:07.160Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -4,64 +4,83 @@
     "filePath": "src/infra/prompt-context/trim.ts",
     "contentHash": "4bdec71f382e487fcfe963f9682f9674bac417db16fa3136a005001d175169e4",
     "skeletonHash": "dec9188677b6bd2afd550a728e5738e5fea26454977d72caab800b947fa8a998",
-    "semanticHash": "91ae58f56c965f81e2587497da1f15d0f7df00da054d68a0009056388b8d6153",
+    "semanticHash": "21534adf11198908d65a7004c9da7a78ff604e40fd03a59811788d5230c43b4a",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/prompt-context"
   },
   "semantic": {
-    "role": "Core utility module providing text trimming and formatting functions for the ArchSpine system.",
+    "role": "Core text formatting and trimming utility module for prompt construction in the ArchSpine system.",
     "responsibilities": [
-      "Trims a string to a specified maximum number of lines, adding an ellipsis if truncated.",
-      "Trims a string to a specified maximum character count while attempting to preserve line boundaries.",
-      "Provides text manipulation utilities used by other modules (e.g., for formatting rule blocks, context data)."
+      "Trims a string to a specified maximum number of lines, appending an ellipsis if truncated.",
+      "Trims a string to a specified maximum character count while preserving whole lines up to the limit.",
+      "Splits rule data into blocks on `[Rule: ]` markers, trimming whitespace and removing empty entries.",
+      "Trims rule data by splitting into blocks and applying character-based trimming to each, rejoining non-empty results.",
+      "Trims sectioned context data by splitting on double newlines, trimming each section by character limit, and rejoining.",
+      "Compacts a FileSkeleton for prompt inclusion according to prompt budgets.",
+      "Trims a previous semantic context to a maximum number of responsibilities."
     ],
     "outOfScope": [
-      "Does not handle file I/O or data persistence.",
-      "Does not implement business logic or orchestration workflows.",
-      "Does not interact with external services or APIs."
+      "File I/O operations",
+      "Network communication",
+      "State management or persistence",
+      "Direct interaction with large language model APIs"
     ],
     "invariants": [
-      "All functions are pure and side-effect free.",
-      "Functions operate only on string inputs and return string outputs.",
-      "No dependencies on infra, service, task, or engine modules."
+      "All exported functions are pure operations on string data with no side effects.",
+      "The module does not import or depend on infrastructure facades, thus conforming to the infra-facade-imports rule (which applies only to infra modules)."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide reusable, pure text manipulation utilities for formatting and truncating strings across the system.",
-      "recentChangeIntent": "No recent changes detected; module remains stable."
+      "architecturalIntent": "Provide reusable, composable text trimming utilities tailored to the prompt construction pipeline, ensuring deterministic size control for rule blocks, context sections, and skeleton representations.",
+      "recentChangeIntent": "Expanded the utility module from basic line/char trimming to include rule-specific and skeleton-specific trimming functions, aligning with broader ArchSpine v1.0.0 architectural governance and semantic layer goals."
     },
     "publicSurface": [
-      "trimLines(value: string, maxLines: number): string",
-      "trimTextByChars(value: string, maxChars: number): string"
+      "trimLines",
+      "trimTextByChars",
+      "splitRuleBlocks",
+      "trimRuleBlocks",
+      "trimSectionedContext",
+      "compactSkeletonForPrompt",
+      "trimPreviousSemantic"
     ],
     "ruleViolations": [],
-    "driftDetected": false,
-    "driftReason": null,
+    "driftDetected": true,
+    "driftReason": "Previous semantic only described two trimming functions; the current code includes five additional functions for rule block splitting, sectioned context trimming, skeleton compaction, and previous semantic trimming, significantly broadening responsibilities.",
     "localized": {
       "English": {
-        "role": "Core utility module providing text trimming and formatting functions for the ArchSpine system.",
+        "role": "Core text formatting and trimming utility module for prompt construction in the ArchSpine system.",
         "responsibilities": [
-          "Trims a string to a specified maximum number of lines, adding an ellipsis if truncated.",
-          "Trims a string to a specified maximum character count while attempting to preserve line boundaries.",
-          "Provides text manipulation utilities used by other modules (e.g., for formatting rule blocks, context data)."
+          "Trims a string to a specified maximum number of lines, appending an ellipsis if truncated.",
+          "Trims a string to a specified maximum character count while preserving whole lines up to the limit.",
+          "Splits rule data into blocks on `[Rule: ]` markers, trimming whitespace and removing empty entries.",
+          "Trims rule data by splitting into blocks and applying character-based trimming to each, rejoining non-empty results.",
+          "Trims sectioned context data by splitting on double newlines, trimming each section by character limit, and rejoining.",
+          "Compacts a FileSkeleton for prompt inclusion according to prompt budgets.",
+          "Trims a previous semantic context to a maximum number of responsibilities."
         ],
         "outOfScope": [
-          "Does not handle file I/O or data persistence.",
-          "Does not implement business logic or orchestration workflows.",
-          "Does not interact with external services or APIs."
+          "File I/O operations",
+          "Network communication",
+          "State management or persistence",
+          "Direct interaction with large language model APIs"
         ]
       },
       "Simplified Chinese": {
-        "role": "ArchSpine 系统的核心工具模块，提供文本修剪和格式化功能。",
+        "role": "用于ArchSpine系统提示构建的核心文本格式化和裁剪工具模块。",
         "responsibilities": [
-          "将字符串修剪到指定的最大行数，如果被截断则添加省略号。",
-          "将字符串修剪到指定的最大字符数，同时尽量保留行边界。",
-          "提供文本操作工具，供其他模块使用（例如，用于格式化规则块、上下文数据）。"
+          "将字符串裁剪到指定最大行数，若超限则追加省略号。",
+          "将字符串裁剪到指定最大字符数，同时尽量保持完整行边界。",
+          "按`[Rule: ]`标记将规则数据拆分为多个块，并去除空白和空条目。",
+          "将规则数据拆分为块后，对每个块应用基于字符的裁剪，重新合并非空结果。",
+          "将分段上下文数据按双换行拆分，对每段按字符限制裁剪后重新合并。",
+          "根据提示预算压缩FileSkeleton以纳入提示。",
+          "将先前语义上下文裁剪到指定的最大职责数量。"
         ],
         "outOfScope": [
-          "不处理文件 I/O 或数据持久化。",
-          "不实现业务逻辑或编排工作流。",
-          "不与外部服务或 API 交互。"
+          "文件输入/输出操作",
+          "网络通信",
+          "状态管理或持久化",
+          "直接与大型语言模型API交互"
         ]
       }
     }
@@ -161,29 +180,25 @@
       {
         "targetPath": "../../ast/extractor.js",
         "relation": "import",
-        "symbols": [
-          "FileSkeleton"
-        ]
+        "symbols": []
       },
       {
         "targetPath": "../llm/base.js",
         "relation": "import",
-        "symbols": [
-          "PreviousSemanticContext"
-        ]
+        "symbols": []
       },
       {
         "targetPath": "./types.js",
         "relation": "import",
-        "symbols": [
-          "PromptBudgets"
-        ]
+        "symbols": []
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:39.898Z",
+    "indexedAt": "2026-05-03T11:25:04.677Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

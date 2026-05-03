@@ -4,52 +4,76 @@
     "filePath": "src/cli/commands/config.ts",
     "contentHash": "fb594c0100abbac121d2d405fd710cb8d0a38334c7ae0cfde2b00d34b8a888c3",
     "skeletonHash": "8662135237e011b183d2b3d0a00ab3622ec4b233915bf837e33bde2ca77899ad",
-    "semanticHash": "bb5da3147868c099ef9392c83575a1be249da97fa8bf89671c71da0bec7469f8",
+    "semanticHash": "0a17d494fe1cb96298cff8a0eb1f7a45c1102872365f4a2426bed47c50559ec7",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli/commands"
   },
   "semantic": {
-    "role": "CLI command adapter for configuration management within the ArchSpine system.",
+    "role": "CLI command adapter for configuration management in the ArchSpine system.",
     "responsibilities": [
-      "Defines the command interface for configuration operations via ExecuteConfigCommandOptions interface.",
-      "Parses and validates configuration keys against the supported schema (e.g., 'llm.provider', 'llm.model').",
-      "Delegates configuration retrieval and mutation to the Config service (getPreCommitResolution, getHookSyncMode, getSupportedValue, setSupportedValue).",
-      "Formats and outputs configuration values to the console for user feedback using CLI utilities."
+      "Defines the command interface via ExecuteConfigCommandOptions (args: string[], config: Config).",
+      "Validates and parses the configuration key argument against the supported schema (llm.provider, llm.model, llm.baseURL, llm.mode, llm.promptTier) using parseSupportedConfigKey.",
+      "Retrieves current configuration values by calling config methods: getPreCommitResolution, getHookSyncMode, getSupportedValue.",
+      "Sets configuration values by calling config.setSupportedValue with a parsed value from parseConfigValue.",
+      "Outputs formatted configuration values to the console via formatConfigValue and console.log.",
+      "Handles usage errors and invalid arguments by invoking throwCliUsage.",
+      "Supports both get and set operations based on argument count (two args for get, three for set)."
     ],
     "outOfScope": [
-      "Implementing configuration storage or business logic (delegated to Config service).",
-      "Directly managing pipeline execution or persistence operations.",
-      "Providing interactive user interfaces beyond console output."
+      "Core business logic for configuration storage or validation rules beyond key existence.",
+      "Persistence or database interaction logic (delegated entirely to infra/config).",
+      "UI rendering beyond simple console output."
     ],
     "invariants": [
-      "Must remain a thin adapter, only handling command-line argument parsing, validation, and output formatting.",
-      "Must delegate all configuration state operations to the Config service.",
-      "Must not contain business logic for configuration resolution or persistence."
+      "[cli-entrypoint-separation] Must remain a thin CLI adapter, delegating all persistence and pipeline logic to the infra/config module.",
+      "[cli-entrypoint-separation] Must not implement configuration storage, validation schema, or transformation logic inline.",
+      "All configuration keys must be validated against a fixed set of SupportedConfigKey values."
     ],
     "changeIntent": {
-      "architecturalIntent": "Separation of concerns: CLI modules serve as entrypoints and adapters, keeping core logic in services.",
-      "recentChangeIntent": "Modularize CLI and decouple core infra services, aligning with keeping CLI thin."
+      "architecturalIntent": "Provide a CLI command for viewing and modifying configuration settings (e.g., LLM provider, model, mode) with a clear separation between the CLI adapter and the configuration infrastructure layer.",
+      "recentChangeIntent": "Part of the ArchSpine v1.0.0 release establishing architectural governance and semantic layer; no file-specific changes beyond ongoing maintenance."
     },
     "publicSurface": [
-      "ExecuteConfigCommandOptions interface"
+      "executeConfigCommand",
+      "ExecuteConfigCommandOptions"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "CLI command adapter for configuration management within the ArchSpine system.",
+        "role": "CLI command adapter for configuration management in the ArchSpine system.",
         "responsibilities": [
-          "Defines the command interface for configuration operations via the ExecuteConfigCommandOptions interface.",
-          "Parses and validates configuration keys against the supported schema (e.g., 'llm.provider', 'llm.model').",
-          "Delegates configuration retrieval and mutation to the Config service (getPreCommitResolution, getHookSyncMode, getSupportedValue, setSupportedValue).",
-          "Formats and outputs configuration values to the console for user feedback using CLI utilities."
+          "Defines the command interface via ExecuteConfigCommandOptions (args: string[], config: Config).",
+          "Validates and parses the configuration key argument against the supported schema (llm.provider, llm.model, llm.baseURL, llm.mode, llm.promptTier).",
+          "Retrieves current configuration values by calling config methods: getPreCommitResolution, getHookSyncMode, getSupportedValue.",
+          "Sets configuration values by calling config.setSupportedValue with a parsed value.",
+          "Outputs formatted configuration values to the console via formatConfigValue and console.log.",
+          "Handles usage errors and invalid arguments by invoking throwCliUsage.",
+          "Supports both get and set operations based on argument count."
         ],
         "outOfScope": [
-          "Implementing configuration storage or business logic (delegated to Config service).",
-          "Directly managing pipeline execution or persistence operations.",
-          "Providing interactive user interfaces beyond console output."
+          "Core business logic for configuration storage or validation rules beyond key existence.",
+          "Persistence or database interaction logic (delegated entirely to infra/config).",
+          "UI rendering beyond simple console output."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine系统中的CLI命令适配器，用于配置管理。",
+        "responsibilities": [
+          "通过ExecuteConfigCommandOptions（args: string[], config: Config）定义命令接口。",
+          "验证并解析配置键参数，确保其属于受支持的架构（llm.provider、llm.model、llm.baseURL、llm.mode、llm.promptTier）。",
+          "调用config.getPreCommitResolution、config.getHookSyncMode、config.getSupportedValue等方法来检索当前配置值。",
+          "调用config.setSupportedValue并传入解析后的值来设置配置。",
+          "通过formatConfigValue和console.log将格式化的配置值输出到控制台。",
+          "通过throwCliUsage处理用法错误和无效参数。",
+          "根据参数个数支持获取（两个参数）和设置（三个参数）操作。"
+        ],
+        "outOfScope": [
+          "配置存储或验证规则的核心业务逻辑（超出键存在性检查的范围）。",
+          "持久化或数据库交互逻辑（完全委托给infra/config模块）。",
+          "除简单控制台输出之外的UI渲染。"
         ]
       }
     }
@@ -127,10 +151,48 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/config.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/throwCliUsage#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/config.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/formatConfigValue#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/config.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/parseConfigValue#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/config.ts/_file_#",
+        "targetSymbol": "src/infra/config/supported-values.ts/getSupportedValue#",
+        "targetPath": "src/infra/config/supported-values.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/config.ts/_file_#",
+        "targetSymbol": "src/infra/config/supported-values.ts/setSupportedValue#",
+        "targetPath": "src/infra/config/supported-values.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:36.216Z",
+    "indexedAt": "2026-05-03T11:25:01.121Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

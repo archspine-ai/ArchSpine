@@ -1,2 +1,8 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples","role":"Aggregates example project configurations and architectural governance rules for the ArchSpine mirror system.","responsibility":"Provides a demonstration project and rule definitions that collectively illustrate system setup, structural conventions, synchronization, validation, and naming standards for the mirror system.","children":[{"filePath":"examples/demo-project","role":"This directory aggregates the core configuration and rule definitions that govern the ArchSpine mirror system's behavior and structure.","fileKind":"folder"},{"filePath":"examples/rules","role":"This directory contains architectural governance and naming convention rule definitions for the ArchSpine project.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-02T07:42:05.624Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`examples` 目录是 ArchSpine 镜像系统的示例项目配置与架构治理规则的核心聚合点。它包含两个主要子目录：`demo-project` 提供了一个演示项目，展示了系统设置与结构约定；`rules` 则定义了命名约定与验证标准。这两个子模块共同为镜像系统的同步、验证与命名规范提供了具体的参考实现。
+`examples/` 目录是 ArchSpine 镜像系统的实践基础和强制规范核心，既提供具体的示范项目，又定义架构规则的执行指南。它包含两个重要的子模块：
+
+- **demo-project**：一个完整的示范项目，展示 ArchSpine 的实际运作方式。包含配置文件（`.spine`）、视觉导览图（`demo.gif`）以及 `src/` 下的源代码。这是理解 ArchSpine 架构和用法的主要参考。
+
+- **rules**：定义架构与命名规范，用于强制代码库的一致性和正确的分层结构。它维护严格的规则，例如：确保领域层纯净、禁止反向依赖、API 层必须直接调用领域层，以及应用项目范围的命名约定（例如内部接口以 `I` 开头，测试文件使用 `.test.ts` 或 `.spec.ts` 后缀）。每条规则都有明确的严重级别和文档化的理由。
+
+最重要的实现领域是分层架构约束和命名规范定义，这两者共同使系统的架构既具示范性又具可执行性。
+---

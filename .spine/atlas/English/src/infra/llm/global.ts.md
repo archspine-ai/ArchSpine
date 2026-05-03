@@ -1,8 +1,0 @@
-<!-- spine-content-hash:5f0629dd8e76ded0baa7a0254046a017f7ace2b0f135413170e4f887e8102bdb -->
-The file serves as the infrastructure facade for global LLM configuration file I/O and credential store integration. It defines the `GlobalLLMConfigShape` interface for structured provider configuration (provider, model, baseURL, mode, prompt tier, validation policy). The `GlobalLLMConfig` class handles reading, writing, and pruning a JSON config file at a platform-appropriate global directory (XDG_CONFIG_HOME or ~/.config). The `GlobalLLMSecrets` class wraps the `CredentialStore` abstraction for secure LLM API key management via `createGlobalLLMCredentialStore`. It exports the `getGlobalArchSpineDir` utility to resolve the global ArchSpine configuration directory. Additionally, it re-exports type definitions for `LLMMode`, `PromptPolicyTier`, and `ValidatePolicy` from the prompt-policy module.
-
-**Key invariants**: The `GlobalLLMConfigShape` interface must remain stable for all consumers. Secrets are delegated to the CredentialStore, never managed directly. The config file path is deterministic based on XDG_CONFIG_HOME or OS home directory.
-
-**Out of scope**: This module does not handle per-project or per-user overrides, perform LLM inference or orchestration, or validate provider-specific schemas beyond the generic shape.
-
-**Public surface**: `getGlobalArchSpineDir`, `GlobalLLMConfig`, `GlobalLLMSecrets`, `GlobalLLMConfigShape`, `LLMMode`, `PromptPolicyTier`, `ValidatePolicy`.

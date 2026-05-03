@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/infra/db",
-  "role": "Infrastructure database layer providing SQLite-based persistence, lifecycle management, and data contracts for the ArchSpine indexing and audit system.",
-  "responsibility": "Manages SQLite database initialization, schema creation, WAL recovery, atomic batch commits, error mapping, and defines stable TypeScript interfaces for file metadata, commit records, drift events, usage analytics, and violation tracking, ensuring reliable data storage and retrieval.",
+  "role": "Infrastructure layer for SQLite database management in the ArchSpine mirror system, providing the core persistence foundation for file metadata, audit events, and system status.",
+  "responsibility": "Manages the SQLite runtime database lifecycle within the `.spine` directory, including atomic batch commits with semantic drift detection, runtime error mapping to standardized codes, schema initialization with WAL journal mode, stale WAL file recovery, and a data access layer for CRUD operations on files, drift events, symbol caches, token usage, and violations. Also provides stable TypeScript interfaces that decouple data producers (indexers, auditors) from consumers (CLI, services).",
   "children": [
     {
       "filePath": "src/infra/db/batch.ts",
-      "role": "Infrastructure-layer batch commit function for atomic file metadata synchronization to the SQLite index database.",
+      "role": "Infrastructure-layer function for atomic batch commit of file metadata to the SQLite index database with semantic drift detection.",
       "fileKind": "source"
     },
     {
@@ -16,12 +16,12 @@
     },
     {
       "filePath": "src/infra/db/repositories",
-      "role": "Persistence layer for the ArchSpine indexing system, providing SQLite-based data access objects for all core entities.",
+      "role": "Data access layer (DAO) for persistent storage in the ArchSpine system.",
       "fileKind": "folder"
     },
     {
       "filePath": "src/infra/db/runtime.ts",
-      "role": "Infrastructure facade module providing low-level runtime SQLite database lifecycle management, including filesystem preparation, stale WAL file detection/recovery, and error handling.",
+      "role": "Infrastructure facade for SQLite runtime database lifecycle management within the ArchSpine `.spine` directory.",
       "fileKind": "source"
     },
     {
@@ -41,7 +41,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-03T03:54:55.752Z",
+    "indexedAt": "2026-05-03T11:27:16.681Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

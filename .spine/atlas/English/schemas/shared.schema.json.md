@@ -1,42 +1,36 @@
-<!-- spine-content-hash:c9cb1ce6d5d97a05a3783e17f4c68854472c69abfdc4ec0f9e978cf1fb03e7d9 -->
-# ArchSpine Shared Types & Validation Schemas
+# ArchSpine Shared Definitions – Configuration Summary
 
-This file defines the core type definitions and validation schemas used across the entire ArchSpine system. It ensures data consistency, security, and interoperability between all components.
+This foundational schema defines all reusable data types and validation rules used across every ArchSpine component and schema. It ensures type consistency, enforces format constraints, and acts as the single source of truth for base types such as version strings, timestamps, paths, hashes, locale codes, and enumerated classifications.
 
-## Role
+## What the Configuration Controls
 
-Provides reusable type definitions and validation schemas shared across the ArchSpine system.
+The schema controls the allowed formats and values for every shared field in the ArchSpine ecosystem. Any data entering the system must conform to these definitions or validation fails. Key areas include:
 
-## Key Responsibilities
+- **Versioning**: All `schemaVersion` fields must follow `major.minor.patch` SemVer format. Malformed versions break schema validation chain.
+- **Timestamps**: `isoTimestamp` enforces ISO 8601 format; critical for ordering events, caching, and incremental processing.
+- **File Paths**: `repoRelativePath` and `scopePath` ensure paths are relative, cross-platform safe, and block absolute paths, backslashes, or double slashes (prevents traversal attacks).
+- **Content Integrity**: `contentHash` requires exactly 64 lowercase hex characters (SHA-256) – essential for cache consistency and corruption detection.
+- **Locale & Language**: `locale` validates BCP 47 tags; incorrect tags break localization lookups. `languageSelectionKey` non-empty check prevents missing keys during atlas merging.
+- **Enumerated Types**: `sourceLanguage`, `fileKind`, `symbolKind`, `dependencyRelation`, `edgeProvenance`, and `pipelineStage` are all constrained to closed enum sets. Any unknown value is rejected unless explicitly handled (e.g., `"unsupported"` for source language).
 
-- **Schema Versioning & Timestamps**: Enforces semantic versioning (`X.Y.Z`) for schema compatibility and validates ISO 8601 timestamps for event logging and synchronization.
-- **Path Validation**: Validates repository-relative paths (must not start with `/`, `./`, `../`, and must not contain backslashes or double slashes) and scope paths (empty or same constraints).
-- **Content Integrity**: Validates SHA-256 content hashes (64-character lowercase hex strings) for file integrity verification.
-- **Locale & Language**: Validates language tags (e.g., `en`, `zh-CN`) and ensures language selection keys are non-empty strings for localization maps.
-- **Classification**: Enumerates source languages, file kinds (source, config, document, other), symbol kinds, and dependency relations for analysis pipelines.
-- **Provenance Tracking**: Tracks whether dependency edges are derived from AST or inferred, and records which pipeline stage produced the data (AST, LLM, etc.).
-- **Generic Types**: Defines `nonEmptyString` and `stringArray` for flexible use.
-- **Localized Content**: Structures localized content as key-value pairs with validated language keys.
+## Important Parameters for Operators
 
-## Notable Invariants
+| Parameter | Why It Matters |
+|-----------|----------------|
+| `schemaVersion` | Version mismatch can cascade; must match the expected schema major version. |
+| `repoRelativePath` | Security-critical: blocks malicious paths. Misuse can cause false rejects for legitimate paths – review regex periodically. |
+| `contentHash` | Integrity anchor; stale or incorrect hashes invalidate downstream caches and comparisons. |
+| `locale` | Wrong format fails silently in some tools; ensure all locale entries follow BCP 47 exactly. |
+| `sourceLanguage` | Adding a new language requires schema update; until then, new languages must be treated as `"unsupported"`. |
+| `dependencyRelation` | Mistaking `type-import` for `import` skews dependency weight calculations – important for dependency analysis and governance. |
+| `pipelineStage` | Stale or misrecorded stage can invalidate downstream consumers (e.g., using `"ast"` data when `"llm"` was expected). |
+| `edgeProvenance` | Affects confidence scoring in dependency graphs. Over-relying on `"inferred"` edges may mislead analysis. |
 
-- `schemaVersion` must follow semantic versioning (`X.Y.Z`).
-- `repoRelativePath` must not start with `/`, `./`, or `../`, and must not contain backslashes or double slashes.
-- `scopePath` must be empty or match the same path constraints as `repoRelativePath`.
-- `contentHash` must be a 64-character lowercase hex string (SHA-256).
-- `locale` must match a valid language tag pattern.
-- `sourceLanguage`, `fileKind`, `symbolKind`, `dependencyRelation`, `edgeProvenance`, and `pipelineStage` must be one of their respective enumerated values.
-- `nonEmptyString` must have at least one character.
-- `localizedContentMap` property names must conform to the `languageSelectionKey` pattern.
+## Stability Concerns & Operational Risks
 
-## Negative Scope (Out of Scope)
+- **Tight coupling**: Any change to this schema propagates to all dependent schemas and runtime validators. Backward-incompatible changes (e.g., adding a required field, narrowing a regex, or removing an enum value) require a **major version bump**.
+- **Enum rigidity**: Closed enums provide strong validation but require schema releases to support new tools or languages. Consider the trade-off: relaxing to `"type": "string"` with documentation guidance increases flexibility but loses automatic validation.
+- **Security vs. usability**: The strict path and hash patterns prevent injection and path-traversal attacks but may reject legitimate edge cases (e.g., paths with non-ASCII characters, new language code formats). Regular audits and user feedback loops are recommended.
+- **Cache & ordering risks**: Timestamp and hash mismatches can break incremental builds and dependency caching. Operators must ensure timestamps are generated in UTC at consistent precision.
 
-This file does not handle any runtime logic, data processing, or external system interactions. It is purely a schema definition and validation layer.
-
-## Most Important Exported Behavior
-
-The primary exported behavior is the set of validation functions and type definitions that enforce the invariants listed above. These are used by all other ArchSpine components to ensure data integrity and consistency.
-
-## Stability & Risks
-
-This schema file is foundational for data integrity across ArchSpine. Incorrect validation could lead to path traversal vulnerabilities, hash mismatches causing data corruption, or locale parsing errors breaking internationalization. The strict patterns and enums reduce ambiguity but require careful maintenance when adding new languages or pipeline stages. Overall, this file enforces consistent data shapes that prevent many common configuration and security errors.
+All operators working with ArchSpine should treat this schema as immutable once in production unless a coordinated upgrade is planned. Use schema version negotiation to avoid silent failures.

@@ -3,8 +3,8 @@
   "identity": {
     "filePath": "tests/infra/index-recovery.test.ts",
     "contentHash": "ced0ca63ada461d98f464b1d2b23e2530fcd26c2288d6e60d2e2235dd2a54ecf",
-    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
-    "semanticHash": "8309531a8e2210f1e3e95fa454b9b86a06e43e299f48aba69f79d4ec83074fe1",
+    "skeletonHash": "e2ebc69ef5c00f0f92614bf3179a8a04cb008eacb564dee74c75c4ca0a74852d",
+    "semanticHash": "a3d701ec3868be74133fcf3b095430f0e2e23dcea9e8e38f2334cbc4599fb27e",
     "language": "typescript",
     "fileKind": "source",
     "scope": "tests/infra"
@@ -12,22 +12,26 @@
   "semantic": {
     "role": "Vitest test suite for validating index-based resume recovery and LLM retry mechanisms in the ArchSpine system.",
     "responsibilities": [
-      "Creates isolated temporary directories for each test case to avoid side effects.",
-      "Mocks LLM summarization task failures to simulate retry scenarios.",
-      "Verifies the system correctly recovers from partial or corrupted index states.",
-      "Cleans up test artifacts after each test run to maintain a pristine environment."
+      "Creates isolated temporary directories for each test case to avoid side effects and ensure test isolation.",
+      "Mocks LLM summarization task failures via vi.fn().mockRejectedValue to simulate retry scenarios and verify resilience.",
+      "Verifies the system correctly recovers from partial or corrupted index states by writing incomplete index files and triggering recovery logic.",
+      "Validates integration of task state, telemetry state, and protocol versioning within recovery workflows.",
+      "Cleans up all test artifacts and restores mocks after each test run to maintain a pristine environment."
     ],
     "outOfScope": [
-      "Production logic for summarization or index recovery.",
-      "Integration tests with external LLM services.",
-      "Performance or load testing of the recovery mechanism."
+      "Production runtime behavior and performance characteristics are not tested.",
+      "Network-level failures or external service integration beyond mocked LLM tasks.",
+      "End-to-end CLI or UI workflows."
     ],
     "invariants": [
-      "Test files must end with .test.ts or .spec.ts (rule: test-file-suffix)."
+      "Each test must run in a uniquely created temporary directory to prevent cross-test contamination.",
+      "All mocks must be restored after each test to avoid side effects across the suite.",
+      "Test artifacts must be removed after each test run to ensure no persistent state.",
+      "The test suite should not depend on external network access or real LLM endpoints."
     ],
     "changeIntent": {
-      "architecturalIntent": "Ensure robust index-based resume recovery and LLM retry logic through isolated, deterministic test scenarios.",
-      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, aligning test structure with project conventions."
+      "architecturalIntent": "Provide a reliable test harness for the index-based resume recovery mechanism, ensuring the system can recover from incomplete or corrupted state during AI-powered summarization tasks.",
+      "recentChangeIntent": "Part of the initial ArchSpine v1.0.0 release focusing on architectural governance and semantic layer testing for recovery resilience."
     },
     "publicSurface": [],
     "ruleViolations": [],
@@ -37,39 +41,118 @@
       "English": {
         "role": "Vitest test suite for validating index-based resume recovery and LLM retry mechanisms in the ArchSpine system.",
         "responsibilities": [
-          "Creates isolated temporary directories for each test case to avoid side effects.",
-          "Mocks LLM summarization task failures to simulate retry scenarios.",
-          "Verifies the system correctly recovers from partial or corrupted index states.",
-          "Cleans up test artifacts after each test run to maintain a pristine environment."
+          "Creates isolated temporary directories for each test case to avoid side effects and ensure test isolation.",
+          "Mocks LLM summarization task failures via vi.fn().mockRejectedValue to simulate retry scenarios and verify resilience.",
+          "Verifies the system correctly recovers from partial or corrupted index states by writing incomplete index files and triggering recovery logic.",
+          "Validates integration of task state, telemetry state, and protocol versioning within recovery workflows.",
+          "Cleans up all test artifacts and restores mocks after each test run to maintain a pristine environment."
         ],
         "outOfScope": [
-          "Production logic for summarization or index recovery.",
-          "Integration tests with external LLM services.",
-          "Performance or load testing of the recovery mechanism."
+          "Production runtime behavior and performance characteristics are not tested.",
+          "Network-level failures or external service integration beyond mocked LLM tasks.",
+          "End-to-end CLI or UI workflows."
         ]
       },
       "Simplified Chinese": {
-        "role": "用于验证 ArchSpine 系统中基于索引的恢复和 LLM 重试机制的 Vitest 测试套件。",
+        "role": "用于验证 ArchSpine 系统中基于索引的恢复机制和 LLM 重试策略的 Vitest 测试套件。",
         "responsibilities": [
-          "为每个测试用例创建隔离的临时目录，避免副作用。",
-          "模拟 LLM 摘要任务失败，以测试重试场景。",
-          "验证系统能够从部分或损坏的索引状态中正确恢复。",
-          "每次测试运行后清理测试工件，保持环境整洁。"
+          "为每个测试用例创建独立的临时目录，避免副作用并确保测试隔离。",
+          "通过 vi.fn().mockRejectedValue 模拟 LLM 摘要任务失败，模拟重试场景并验证弹性。",
+          "通过写入不完整的索引文件并触发恢复逻辑，验证系统能否从部分或损坏的索引状态正确恢复。",
+          "验证恢复工作流中任务状态、遥测状态和协议版本控制的集成。",
+          "每次测试运行后清理所有测试工件并恢复模拟，以保持环境整洁。"
         ],
         "outOfScope": [
-          "摘要或索引恢复的生产逻辑。",
-          "与外部 LLM 服务的集成测试。",
-          "恢复机制的性能或负载测试。"
+          "未测试生产运行时行为和性能特征。",
+          "未测试网络级故障或模拟 LLM 任务之外的外部服务集成。",
+          "未测试端到端的 CLI 或 UI 工作流。"
         ]
       }
     }
   },
   "skeleton": {
-    "imports": [],
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../src/tasks/summarize.js'",
+        "symbols": [
+          "SummarizationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../src/core/task-state.js'",
+        "symbols": [
+          "createTaskTelemetryState",
+          "createTaskState"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
     "exports": [],
     "declaredSymbols": [],
     "structuralHints": {
-      "importCount": 0,
+      "importCount": 10,
       "exportCount": 0,
       "isBarrel": false,
       "isTypeOnly": false
@@ -77,21 +160,6 @@
   },
   "graph": {
     "dependsOn": [
-      {
-        "targetPath": "fs",
-        "relation": "import",
-        "symbols": []
-      },
-      {
-        "targetPath": "os",
-        "relation": "import",
-        "symbols": []
-      },
-      {
-        "targetPath": "path",
-        "relation": "import",
-        "symbols": []
-      },
       {
         "targetPath": "vitest",
         "relation": "import",
@@ -125,18 +193,61 @@
           "CURRENT_SCHEMA_VERSION",
           "SpineUnit"
         ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
       }
     ],
     "dependedBy": [],
     "reverseIndexComplete": false,
-    "symbolEdges": []
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/infra/index-recovery.test.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/createTaskTelemetryState#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/infra/index-recovery.test.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/createTaskState#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/infra/index-recovery.test.ts/_file_#",
+        "targetSymbol": "src/tasks/summarize.ts/SummarizationTask#",
+        "targetPath": "src/tasks/summarize.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T03:58:25.808Z",
+    "indexedAt": "2026-05-03T11:25:08.309Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "llm"
+      "fallback"
     ]
   }
 }

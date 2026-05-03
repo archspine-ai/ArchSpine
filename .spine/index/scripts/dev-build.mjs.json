@@ -3,22 +3,22 @@
   "identity": {
     "filePath": "scripts/dev-build.mjs",
     "contentHash": "3556aade1deb02ae67ce4badc916245c1da1afdd9b980d08b85eab2500283953",
-    "semanticHash": "636a1367ecf8cc829d9debb2702392f6b0895f6cb0697831264613a7a82d4c64",
+    "semanticHash": "1bb68db96126886c8a95dce225ff9d5c95db90c48f898303c25e65510fb9197e",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "scripts"
   },
   "semantic": {
-    "role": "Development build automation script",
+    "role": "Development build watcher script that polls for source file changes and triggers automatic rebuilds.",
     "responsibilities": [
-      "Polling source directories and configuration files for changes",
-      "Triggering incremental rebuilds via npm run build",
-      "Managing build queue to avoid concurrent builds"
+      "Monitoring specified source directories and files for modifications",
+      "Rebuilding the project via npm run build whenever changes are detected",
+      "Queuing build requests and preventing concurrent executions"
     ],
     "outOfScope": [
-      "Application runtime logic",
-      "User-facing documentation",
-      "Deployment or release workflows"
+      "Production deployment or release processes",
+      "Running tests or linting",
+      "Multi-platform watch mechanisms beyond polling"
     ],
     "invariants": [],
     "changeIntent": {
@@ -30,23 +30,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document implements a file-watching build loop for the ArchSpine project. It continuously monitors source files, TypeScript configuration, and package metadata, then automatically re-runs the build script whenever a change is detected.",
-        "context_and_audience": "Intended for developers working on the ArchSpine build pipeline. The script runs in a development environment to provide fast feedback on code changes without manual rebuilds.",
+        "purpose": "Provide a development-time auto-rebuild mechanism that watches source files and rebuilds the project on change, reducing manual recompilation for developers.",
+        "context_and_audience": "Intended for ArchSpine developers working on the core tooling, who need immediate feedback when modifying TypeScript source code, build scripts, or configuration files.",
         "key_takeaways": [
-          "Watches src/, build.mjs, tsconfig.json, and package.json for modifications",
-          "Polls file modification timestamps every 1000ms",
-          "Queues rebuild requests if a build is already in progress",
-          "Logs build start, completion, and failure events to the console"
+          "Automatically rebuilds on file changes with a 1-second polling interval",
+          "Queues build requests to avoid overlapping builds",
+          "Covers src/, build scripts, tsconfig, and package.json"
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档实现了一个用于 ArchSpine 项目的文件监控构建循环。它会持续监视源文件、TypeScript 配置和包元数据，一旦检测到变化，就会自动重新运行构建脚本。",
-        "context_and_audience": "面向参与 ArchSpine 构建管线的开发人员。该脚本在开发环境中运行，旨在无需手动重建的情况下，为代码变更提供快速反馈。",
+        "purpose": "提供一个开发时期的自动重建机制，用于监控源文件的变化并在检测到改动时自动触发项目重建，从而减少开发人员的手动编译操作。",
+        "context_and_audience": "面向 ArchSpine 核心工具的开发人员，他们在修改 TypeScript 源代码、构建脚本或配置文件时，需要即时获得重建反馈。",
         "key_takeaways": [
-          "监控 src/、build.mjs、tsconfig.json 和 package.json 的修改",
-          "每 1000 毫秒轮询一次文件修改时间戳",
-          "如果构建正在进行中，则将重建请求加入队列",
-          "在控制台输出构建开始、完成和失败事件"
+          "以 1 秒轮询间隔自动检测文件更改并触发重建",
+          "通过队列机制避免并发构建冲突",
+          "监控范围包括 src/ 目录、构建脚本、tsconfig 和 package.json"
         ]
       }
     }
@@ -69,7 +67,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:44:58.287Z",
+    "indexedAt": "2026-05-03T11:24:12.365Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

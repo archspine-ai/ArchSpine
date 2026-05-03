@@ -101,7 +101,7 @@ describe('repair forced processing', () => {
     fs.mkdirSync(path.join(rootDir, 'docs'), { recursive: true });
     fs.writeFileSync(path.join(rootDir, 'docs/guide.md'), '# Guide\n');
 
-    const generateSummary = vi.fn().mockResolvedValue({
+    const generateSummary = vi.fn().mockResolvedValueOnce({
       usage: { inputTokens: 1, outputTokens: 1, totalTokens: 2 },
       json: {
         semantic: {
@@ -198,6 +198,128 @@ describe('repair forced processing', () => {
     expect(clearViolations).toHaveBeenCalledWith('docs/guide.md');
     expect(result.selection.affectedDirs.has('docs')).toBe(true);
     expect(info).toHaveBeenCalledWith('[Task: Summarization] Processing docs/guide.md...');
+  });
+
+  it('backfills missing markdown locales before failing a summarized file', async () => {
+    const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), 'archspine-repair-markdown-'));
+    tempDirs.push(rootDir);
+    fs.mkdirSync(path.join(rootDir, 'docs'), { recursive: true });
+    fs.writeFileSync(path.join(rootDir, 'docs/guide.md'), '# Guide\n');
+
+    const generateSummary = vi
+      .fn()
+      .mockResolvedValue({
+        usage: { inputTokens: 1, outputTokens: 1, totalTokens: 2 },
+        json: {
+          semantic: {
+            role: 'Guide',
+            responsibilities: [],
+            outOfScope: [],
+            invariants: [],
+            changeIntent: { architecturalIntent: null, recentChangeIntent: null },
+            publicSurface: [],
+            driftDetected: false,
+            driftReason: null,
+          },
+        },
+        markdown: {
+          English: '# Guide',
+        },
+      })
+      .mockResolvedValueOnce({
+        usage: { inputTokens: 1, outputTokens: 1, totalTokens: 2 },
+        json: {
+          semantic: {
+            role: 'Guide',
+            responsibilities: [],
+            outOfScope: [],
+            invariants: [],
+            changeIntent: { architecturalIntent: null, recentChangeIntent: null },
+            publicSurface: [],
+            driftDetected: false,
+            driftReason: null,
+          },
+        },
+        markdown: {
+          'Simplified Chinese': '# 指南',
+        },
+      });
+    const saveIndex = vi.fn();
+    const saveDocs = vi.fn();
+    const clearViolations = vi.fn();
+
+    const task = new SummarizationTask();
+    await task.execute(
+      {
+        rootDir,
+        scanner: {
+          getBranchName: () => 'main',
+          getGitStatusInfo: () => 'clean',
+          getFileLastCommit: () => null,
+        } as never,
+        manifest: {
+          calculateHash: () => 'same-hash',
+          needsUpdate: () => false,
+          getFileDocs: () => undefined,
+          clearViolations,
+        } as never,
+        aggregator: undefined,
+        outputManager: {
+          saveIndex,
+          saveDocs,
+          saveDiagnostics: vi.fn(),
+          readIndex: () => null,
+          pruneAtlasLocales: vi.fn().mockReturnValue([]),
+        } as never,
+        ruleEngine: {
+          getRulesForFile: () => [],
+        } as never,
+        contextEngine: {} as never,
+        extractor: {} as never,
+        llmClient: {
+          generateSummary,
+        } as never,
+        promptTier: 'balanced',
+        validatePolicy: 'default',
+        summarizeConcurrency: 8,
+        summarizeRetryLimit: 2,
+        generationFlow: 'semantic-first',
+        targetLocales: ['English', 'Simplified Chinese'],
+        isFullSync: false,
+        hookMode: false,
+        writeAtlasDocs: true,
+        forcedSyncFiles: new Set(['docs/guide.md']),
+        runtimeIO: {
+          info: vi.fn(),
+          warn: vi.fn(),
+          error: vi.fn(),
+          confirm: vi.fn(),
+        },
+        runtimeCache: {
+          skeletons: new Map(),
+          unsupportedFiles: new Map(),
+          pendingCommits: new Map(),
+        },
+        state: {
+          telemetry: createTaskTelemetryState('off'),
+        },
+      },
+      {
+        selection: {
+          filteredFiles: ['docs/guide.md'],
+          affectedDirs: new Set<string>(),
+        },
+        artifacts: {
+          skeletons: new Map(),
+          unsupportedFiles: new Map(),
+        },
+      },
+    );
+
+    expect(generateSummary).toHaveBeenCalledTimes(2);
+    expect(saveDocs).toHaveBeenCalledWith('docs/guide.md', 'English', '# Guide');
+    expect(saveDocs).toHaveBeenCalledWith('docs/guide.md', 'Simplified Chinese', '# 指南');
+    expect(clearViolations).toHaveBeenCalledWith('docs/guide.md');
   });
 
   it('retries retryable summarization failures up to the configured limit', async () => {
@@ -305,7 +427,7 @@ describe('repair forced processing', () => {
     );
   });
 
-  it('marks summarization as failed when requested markdown blocks are missing', async () => {
+  it('applies markdown fallback when requested markdown blocks are missing', async () => {
     const rootDir = fs.mkdtempSync(
       path.join(os.tmpdir(), 'archspine-repair-summary-missing-markdown-'),
     );
@@ -318,7 +440,7 @@ describe('repair forced processing', () => {
     const markItemStarted = vi.fn();
     const markItemCompleted = vi.fn();
     const markItemFailed = vi.fn();
-    const error = vi.fn();
+    const warn = vi.fn();
 
     const task = new SummarizationTask();
     const result = await task.execute(
@@ -378,8 +500,8 @@ describe('repair forced processing', () => {
         forcedSyncFiles: new Set(),
         runtimeIO: {
           info: vi.fn(),
-          warn: vi.fn(),
-          error,
+          warn,
+          error: vi.fn(),
           confirm: vi.fn(),
         },
         executionCheckpoint: {
@@ -408,22 +530,15 @@ describe('repair forced processing', () => {
       },
     );
 
-    expect(saveIndex).not.toHaveBeenCalled();
-    expect(saveDocs).not.toHaveBeenCalled();
+    expect(saveIndex).toHaveBeenCalled();
+    expect(saveDocs).toHaveBeenCalled();
     expect(markItemStarted).toHaveBeenCalledWith('summarization', 'docs/guide.md');
-    expect(markItemCompleted).not.toHaveBeenCalled();
-    expect(markItemFailed).toHaveBeenCalledWith(
-      'summarization',
-      'docs/guide.md',
-      expect.objectContaining({
-        message: 'LLM response did not include markdown blocks for requested locales: English',
-      }),
+    expect(markItemCompleted).toHaveBeenCalledWith('summarization', 'docs/guide.md');
+    expect(markItemFailed).not.toHaveBeenCalled();
+    expect(warn).toHaveBeenCalledWith(
+      '[Task: Summarization] Markdown missing after backfill for docs/guide.md; applied fallback.',
     );
-    expect(error).toHaveBeenCalledWith(
-      '[Task: Summarization] Failed to sync docs/guide.md after retries:',
-      'LLM response did not include markdown blocks for requested locales: English',
-    );
-    expect(result.artifacts.pendingCommits.size).toBe(0);
+    expect(result.artifacts.pendingCommits.size).toBe(1);
   });
 
   it('keeps validate violations persisted through the shared violation recorder', async () => {

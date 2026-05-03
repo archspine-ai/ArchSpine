@@ -4,53 +4,71 @@
     "filePath": "src/infra/repair-policy.ts",
     "contentHash": "d67801102ffba4916d8c809eb82cc1b41133953c23ed378f45fc08e5170b38cc",
     "skeletonHash": "81b08e91dd232831926729e4a86fdca99e6a20ae731e54917202ec2faf44321d",
-    "semanticHash": "29a24473396f08bb8df4bd620173957e6e01bcba93ab298d087536f1e4ace8d6",
+    "semanticHash": "523205f81cc38343096a4a46def26a7e218b5a351b90947254aaf19ba139460b",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra"
   },
   "semantic": {
-    "role": "TypeScript module defining the repair policy decision logic for violation handling in the ArchSpine sync system.",
+    "role": "Decision logic for determining the repair action based on syntactic violation reports in the ArchSpine sync system.",
     "responsibilities": [
-      "Defines the RepairPolicyAction union type for possible repair strategies (targeted-repair, prompt-full-rebuild, require-full-rebuild).",
-      "Defines the RepairPolicyDecision interface encapsulating the decision outcome with violation metrics and targeted files.",
-      "Implements logic to classify violation paths and determine appropriate repair actions based on path mapping.",
-      "Processes changed, added, and removed paths from violation reports to build targeted repair sets."
+      "Defines the RepairPolicyAction union type with possible values: targeted-repair, prompt-full-rebuild, require-full-rebuild.",
+      "Defines the RepairPolicyDecision interface encapsulating the decision outcome, violation metrics, and targeted files.",
+      "Implements evaluateRepairPolicy function that classifies violation paths by prefix (.spine/index/ and .spine/atlas/) and maps them to appropriate repair actions.",
+      "Builds sets of targeted source files from changed, added, and removed paths, and identifies aggregate-level paths and unmapped paths.",
+      "Applies a safe non-interactive downgrade rule to targeted-repair when all aggregate-level violations are already covered by targeted files."
     ],
     "outOfScope": [
-      "Direct file system I/O or network operations.",
-      "User interface rendering or interaction.",
-      "Low-level infrastructure orchestration or service management."
+      "Direct file system or LLM interaction.",
+      "Orchestration of full sync or rebuild processes.",
+      "Policy configuration or persistence."
     ],
     "invariants": [
-      "Exports only type definitions and pure decision logic.",
-      "Relies on imported violation report types for input structure.",
-      "Operates on path strings to produce repair decisions without side effects."
+      "Assumes input report contains valid, non-empty path lists (changedPaths, addedPaths, removedPaths).",
+      "Relies on classifyViolationPath and other internal helpers to parse path prefixes.",
+      "No side effects; pure decision logic producing a RepairPolicyDecision object."
     ],
     "changeIntent": {
-      "architecturalIntent": "Encapsulate repair strategy selection as a configurable policy to enable targeted sync repairs and reduce full rebuild overhead.",
-      "recentChangeIntent": "Addition of repair policy and experimental view layer as part of sync system enhancements."
+      "architecturalIntent": "Provide centralized, deterministic repair policy evaluation for violation handling, decoupling policy from execution in the sync engine.",
+      "recentChangeIntent": "Part of ArchSpine v1.0.0 architectural governance layer, establishing semantic contract for repair decisions."
     },
     "publicSurface": [
-      "RepairPolicyAction",
-      "RepairPolicyDecision"
+      "evaluateRepairPolicy",
+      "RepairPolicyDecision",
+      "RepairPolicyAction"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "TypeScript module defining the repair policy decision logic for violation handling in the ArchSpine sync system.",
+        "role": "Decision logic for determining the repair action based on syntactic violation reports in the ArchSpine sync system.",
         "responsibilities": [
-          "Defines the RepairPolicyAction union type for possible repair strategies such as targeted-repair, prompt-full-rebuild, and require-full-rebuild.",
-          "Defines the RepairPolicyDecision interface that encapsulates the decision outcome, including violation counts and targeted file lists.",
-          "Implements logic to classify violation paths and determine appropriate repair actions based on path mapping.",
-          "Processes changed, added, and removed paths from violation reports to build targeted repair sets."
+          "Defines the RepairPolicyAction union type with possible values: targeted-repair, prompt-full-rebuild, require-full-rebuild.",
+          "Defines the RepairPolicyDecision interface encapsulating the decision outcome, violation metrics, and targeted files.",
+          "Implements evaluateRepairPolicy function that classifies violation paths by prefix and maps them to appropriate repair actions.",
+          "Builds sets of targeted source files from changed, added, and removed paths, and identifies aggregate-level paths and unmapped paths.",
+          "Applies a safe non-interactive downgrade rule to targeted-repair when all aggregate-level violations are already covered by targeted files."
         ],
         "outOfScope": [
-          "Direct file system I/O or network operations.",
-          "User interface rendering or interaction.",
-          "Low-level infrastructure orchestration or service management."
+          "Direct file system or LLM interaction.",
+          "Orchestration of full sync or rebuild processes.",
+          "Policy configuration or persistence."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基于语法违规报告确定修复操作的决策逻辑，属于 ArchSpine 同步系统的核心组件。",
+        "responsibilities": [
+          "定义 RepairPolicyAction 联合类型，包含三种可能的修复策略：targeted-repair、prompt-full-rebuild、require-full-rebuild。",
+          "定义 RepairPolicyDecision 接口，封装决策结果、违规指标及目标文件集合。",
+          "实现 evaluateRepairPolicy 函数，根据违规路径前缀（.spine/index/ 和 .spine/atlas/）进行分类并映射到适当的修复动作。",
+          "从已变更、新增和移除的路径中构建目标源文件集合，并识别聚合级路径和未映射路径。",
+          "当所有聚合级违规均已由目标文件覆盖时，应用安全非交互降级规则，回退为 targeted-repair。"
+        ],
+        "outOfScope": [
+          "直接的文件系统或 LLM 交互。",
+          "全量同步或重建过程的编排。",
+          "策略配置或持久化。"
         ]
       }
     }
@@ -111,18 +129,12 @@
         ]
       }
     ],
-    "dependedBy": [
-      {
-        "targetPath": "src/cli/commands/sync.ts",
-        "relation": "import",
-        "edgeProvenance": "ast",
-        "symbols": []
-      }
-    ],
-    "reverseIndexComplete": true
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:40.321Z",
+    "indexedAt": "2026-05-03T11:25:05.098Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

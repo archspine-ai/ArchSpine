@@ -3,76 +3,217 @@
   "identity": {
     "filePath": "tests/cli.test.ts",
     "contentHash": "94c4303239e7a22fed06d906d126a87c9fee01aa5541211c33da69d31a3ff205",
-    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
-    "semanticHash": "caaac06a9de854ca8cbf7702f12e7067ff6b46a13f978921758253d19f99d874",
+    "skeletonHash": "f2ff0a80066c457271ab6df98cbcb3071c44352bf4073c314438e642f013b56f",
+    "semanticHash": "5446f0cb75104398927d483a3cdcef4287fd474536cf5e74249dedc6888ce14c",
     "language": "typescript",
     "fileKind": "source",
     "scope": "tests"
   },
   "semantic": {
-    "role": "Vitest end-to-end integration test suite for ArchSpine's CLI command workflow and service orchestration, validating real command-line behavior and engine interactions.",
+    "role": "Vitest end-to-end integration test suite for ArchSpine's CLI command workflow and core engine orchestration, validating real command-line behavior with a custom mock LLM client.",
     "responsibilities": [
       "Sets up isolated temporary directories for each test case to avoid side effects.",
-      "Mocks the LLM client via a custom E2EMockClient to simulate both successful and failing scenarios for testing robustness.",
-      "Executes ArchSpine CLI commands via child_process.execSync to validate real command-line behavior.",
-      "Verifies the interaction between core engines (check, fix, usage) and the synchronization workflow."
+      "Defines a custom E2EMockClient class implementing LLMClient interface to simulate both successful and failing LLM responses for robustness testing.",
+      "Executes ArchSpine CLI commands (e.g., archspine sync) via child_process.execSync to validate real command-line behavior.",
+      "Invokes core engines (runCheck, runFix, runUsageReport) and the sync workflow (runSyncWorkflow) to verify orchestration and error handling.",
+      "Cleans up temporary test directories after each test using afterEach and fs.rmSync."
     ],
     "outOfScope": [
-      "Unit testing of individual functions or modules in isolation.",
-      "Testing of non-CLI interfaces or API endpoints.",
-      "Performance or load testing of the system."
+      "Unit tests for individual modules or functions.",
+      "Tests against a real LLM provider endpoint.",
+      "Production code or deployment configuration."
     ],
     "invariants": [
-      "Test files must end with .test.ts or .spec.ts (rule: test-file-suffix)."
+      "Test files must end with .test.ts or .spec.ts (rule test-file-suffix is satisfied).",
+      "Each test must set up its own isolated temporary directory to prevent cross-test pollution.",
+      "LLM interactions must be simulated via a mock client, never using a real provider."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a comprehensive end-to-end test suite that validates the full CLI workflow, ensuring that the check, fix, usage, and sync engines work correctly together in a real command-line environment.",
-      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, ensuring the test suite is clean and reliable."
+      "architecturalIntent": "Validate the end-to-end CLI workflow and core engine orchestration of ArchSpine's architectural governance and semantic layer in a controlled, reproducible environment.",
+      "recentChangeIntent": "ArchSpine v1.0.0 introduced a complete architectural governance and semantic layer; this test suite ensures that the CLI sync, check, fix, and usage commands function correctly together, paving the way for reliable AI-driven repository management."
     },
-    "publicSurface": [
-      "E2EMockClient class (implements LLMClient)",
-      "Test cases for CLI commands and engine interactions"
-    ],
+    "publicSurface": [],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Vitest end-to-end integration test suite for ArchSpine's CLI command workflow and service orchestration, validating real command-line behavior and engine interactions.",
+        "role": "Vitest end-to-end integration test suite for ArchSpine's CLI command workflow and core engine orchestration, validating real command-line behavior with a custom mock LLM client.",
         "responsibilities": [
           "Sets up isolated temporary directories for each test case to avoid side effects.",
-          "Mocks the LLM client via a custom E2EMockClient to simulate both successful and failing scenarios for testing robustness.",
-          "Executes ArchSpine CLI commands via child_process.execSync to validate real command-line behavior.",
-          "Verifies the interaction between core engines (check, fix, usage) and the synchronization workflow."
+          "Defines a custom E2EMockClient class implementing LLMClient interface to simulate both successful and failing LLM responses for robustness testing.",
+          "Executes ArchSpine CLI commands (e.g., archspine sync) via child_process.execSync to validate real command-line behavior.",
+          "Invokes core engines (runCheck, runFix, runUsageReport) and the sync workflow (runSyncWorkflow) to verify orchestration and error handling.",
+          "Cleans up temporary test directories after each test using afterEach and fs.rmSync."
         ],
         "outOfScope": [
-          "Unit testing of individual functions or modules in isolation.",
-          "Testing of non-CLI interfaces or API endpoints.",
-          "Performance or load testing of the system."
+          "Unit tests for individual modules or functions.",
+          "Tests against a real LLM provider endpoint.",
+          "Production code or deployment configuration."
         ]
       },
-      "Simplified Chinese": {
-        "role": "ArchSpine CLI 命令工作流和服务编排的 Vitest 端到端集成测试套件，验证真实的命令行行为和引擎交互。",
+      "Simpified Chinese": {
+        "role": "使用 Vitest 的端到端集成测试套件，针对 ArchSpine 的 CLI 命令工作流和核心引擎编排，通过自定义模拟 LLM 客户端验证真实命令行行为。",
         "responsibilities": [
           "为每个测试用例设置隔离的临时目录，避免副作用。",
-          "通过自定义的 E2EMockClient 模拟 LLM 客户端，以模拟成功和失败场景，测试鲁棒性。",
-          "通过 child_process.execSync 执行 ArchSpine CLI 命令，验证真实的命令行行为。",
-          "验证核心引擎（check、fix、usage）与同步工作流之间的交互。"
+          "定义自定义 E2EMockClient 类实现 LLMClient 接口，模拟成功和失败的 LLM 响应以进行鲁棒性测试。",
+          "通过 child_process.execSync 执行 ArchSpine CLI 命令（如 archspine sync），验证真实命令行行为。",
+          "调用核心引擎（runCheck、runFix、runUsageReport）和同步工作流（runSyncWorkflow），验证编排和错误处理。",
+          "在每个测试后使用 afterEach 和 fs.rmSync 清理临时测试目录。"
         ],
         "outOfScope": [
-          "对单个函数或模块的单元测试。",
-          "对非 CLI 接口或 API 端点的测试。",
-          "系统的性能或负载测试。"
+          "单个模块或函数的单元测试。",
+          "针对真实 LLM 提供者端点的测试。",
+          "生产代码或部署配置。"
         ]
       }
     }
   },
   "skeleton": {
-    "imports": [],
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "beforeEach",
+          "afterEach",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/engines/check.js'",
+        "symbols": [
+          "runCheck"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/engines/fix.js'",
+        "symbols": [
+          "runFix"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/engines/usage.js'",
+        "symbols": [
+          "runUsageReport"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/services/sync-service.js'",
+        "symbols": [
+          "SyncService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/llm/base.js'",
+        "symbols": [
+          "LLMClient"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/llm/providers/mock.js'",
+        "symbols": [
+          "MockClient"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/services/runtime-service.js'",
+        "symbols": [
+          "RuntimeService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/cli/commands/sync.js'",
+        "symbols": [
+          "runSyncWorkflow"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'prompts'",
+        "symbols": [
+          "prompts"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
     "exports": [],
     "declaredSymbols": [],
     "structuralHints": {
-      "importCount": 0,
+      "importCount": 19,
       "exportCount": 0,
       "isBarrel": false,
       "isTypeOnly": false
@@ -149,18 +290,145 @@
         "symbols": [
           "runSyncWorkflow"
         ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execSync"
+        ]
+      },
+      {
+        "targetPath": "prompts",
+        "relation": "import",
+        "symbols": [
+          "prompts"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
       }
     ],
     "dependedBy": [],
     "reverseIndexComplete": false,
-    "symbolEdges": []
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/cli.test.ts/_file_#",
+        "targetSymbol": "src/cli/commands/sync.ts/runSyncWorkflow#",
+        "targetPath": "src/cli/commands/sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/cli.test.ts/_file_#",
+        "targetSymbol": "src/engines/check.ts/runCheck#",
+        "targetPath": "src/engines/check.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/cli.test.ts/_file_#",
+        "targetSymbol": "src/services/check-service.ts/runCheck#",
+        "targetPath": "src/services/check-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/cli.test.ts/_file_#",
+        "targetSymbol": "src/services/fix-service.ts/runFix#",
+        "targetPath": "src/services/fix-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/cli.test.ts/_file_#",
+        "targetSymbol": "src/engines/fix.ts/runFix#",
+        "targetPath": "src/engines/fix.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/cli.test.ts/_file_#",
+        "targetSymbol": "src/engines/usage.ts/runUsageReport#",
+        "targetPath": "src/engines/usage.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/cli.test.ts/_file_#",
+        "targetSymbol": "src/services/sync-service.ts/SyncService#",
+        "targetPath": "src/services/sync-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/cli.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/mock.ts/MockClient#",
+        "targetPath": "src/infra/llm/providers/mock.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/cli.test.ts/_file_#",
+        "targetSymbol": "src/infra/__mocks__/llm.ts/MockClient#",
+        "targetPath": "src/infra/__mocks__/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/cli.test.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/cli.test.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/cli.test.ts/_file_#",
+        "targetSymbol": "src/services/runtime-service.ts/RuntimeService#",
+        "targetPath": "src/services/runtime-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/cli.test.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/getActiveViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T03:58:26.008Z",
+    "indexedAt": "2026-05-03T11:25:07.380Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "llm"
+      "fallback"
     ]
   }
 }

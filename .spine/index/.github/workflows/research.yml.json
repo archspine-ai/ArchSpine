@@ -3,22 +3,26 @@
   "identity": {
     "filePath": ".github/workflows/research.yml",
     "contentHash": "8284bb33192599f227cc151b55510c51b9020ae389655da165d2a8fe11a56bd4",
-    "semanticHash": "718184bcac18f3ac1e4082bbe9a264fa3b07ebd7e788295496ed46b4352531ca",
+    "semanticHash": "438b7d4f7aec003390d741a54b0073bc3b317bf28960d630e458d4efd3cb70dd",
     "language": "unsupported",
     "fileKind": "document",
     "scope": ".github/workflows"
   },
   "semantic": {
-    "role": "CI workflow definition for running research-level test suites",
+    "role": "Define an automated workflow for ad-hoc research benchmark execution in the ArchSpine project",
     "responsibilities": [
-      "Defines a manually triggered GitHub Actions workflow named 'Research Bench'",
-      "Configures Node.js 20 environment with dependency caching",
-      "Executes the 'npm run test:research' command as the primary job step"
+      "Manual trigger via workflow_dispatch (GitHub UI or API)",
+      "Checkout repository source code",
+      "Set up Node.js 20 with npm caching",
+      "Install project dependencies using npm ci",
+      "Run the `npm run test:research` benchmark suite",
+      "Maintenance scope: update Node version, benchmark scripts, or dependency versions as needed"
     ],
     "outOfScope": [
-      "Production deployment or release pipelines",
-      "Unit or integration test suites outside the research scope",
-      "Scheduled or event-driven automation triggers"
+      "Automated or scheduled triggers (pull request, push, schedule)",
+      "Integration or unit test execution",
+      "Production deployment or release workflows",
+      "Cross-platform or multiple Node version matrix testing"
     ],
     "invariants": [],
     "changeIntent": {
@@ -30,23 +34,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document defines a GitHub Actions workflow called 'Research Bench' that provides a controlled, manual-trigger environment for running research-level test suites. It ensures that experimental or exploratory tests can be executed in isolation without interfering with standard CI pipelines.",
-        "context_and_audience": "This workflow is intended for developers and researchers working on the ArchSpine project who need to run specialized test suites that are not part of the regular build or test process. It is designed for manual invocation via the GitHub UI or API, making it suitable for ad-hoc testing scenarios.",
+        "purpose": "This document defines a GitHub Actions workflow for manually triggering research benchmark tests on the ArchSpine project.",
+        "context_and_audience": "It is intended for project maintainers and contributors who need to run performance or correctness benchmarks on the research module of ArchSpine. It provides a standardized, reproducible environment (Node 20, clean install) to ensure consistent results.",
         "key_takeaways": [
-          "Workflow is manually triggered only (workflow_dispatch), not automatic",
-          "Runs on Ubuntu with Node.js 20 and npm dependency caching",
-          "Executes the research test suite via 'npm run test:research'",
-          "Has a 15-minute timeout and cancels in-progress runs for the same workflow/ref"
+          "Triggered manually via GitHub UI or API.",
+          "Runs on Node 20 with npm cache for faster installs.",
+          "Executes npm run test:research after clean dependency installation."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档定义了一个名为“Research Bench”的 GitHub Actions 工作流，为运行研究级别的测试套件提供一个可控的手动触发环境。它确保实验性或探索性测试可以在隔离环境中执行，而不会干扰标准的 CI 流水线。",
-        "context_and_audience": "该工作流面向 ArchSpine 项目的开发者和研究人员，他们需要运行不属于常规构建或测试流程的特殊测试套件。它设计为通过 GitHub 界面或 API 手动调用，适用于临时性的测试场景。",
+        "purpose": "此文档定义了一个GitHub Actions工作流，用于手动触发ArchSpine项目的研究基准测试。",
+        "context_and_audience": "面向需要运行ArchSpine研究模块性能或正确性基准测试的项目维护者和贡献者。它提供了一个标准化、可复现的环境（Node 20，干净安装），以确保结果的一致性。",
         "key_takeaways": [
-          "工作流仅支持手动触发（workflow_dispatch），非自动触发",
-          "在 Ubuntu 上运行，使用 Node.js 20 和 npm 依赖缓存",
-          "通过 'npm run test:research' 命令执行研究测试套件",
-          "超时时间为 15 分钟，并会取消同一工作流/分支的正在运行的任务"
+          "通过GitHub界面或API手动触发。",
+          "在Node 20上运行，并使用npm缓存加快安装速度。",
+          "安装依赖后执行npm run test:research。"
         ]
       }
     }
@@ -69,7 +71,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:42:29.857Z",
+    "indexedAt": "2026-05-03T11:22:26.011Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

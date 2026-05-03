@@ -3,27 +3,31 @@
   "identity": {
     "filePath": "schemas/spine-manifest.schema.json",
     "contentHash": "63ef3291e0e8d90eebfe8cf16f0263163dee1ebc6b8255f0e00a67023c0a4c4d",
-    "semanticHash": "1a937e3b77c5c68ee2a01f4242e1645fefd3016018e5f579f197598725411051",
+    "semanticHash": "1fe4875a465d735450a099d87ea8f905e90dc22919cbb27cd96cc7ee91c8e959",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas"
   },
   "semantic": {
-    "role": "Defines the schema for the ArchSpine SpineManifest, a metadata manifest that tracks the synchronization state and indexed file inventory of a mirror repository.",
+    "role": "Manifest schema for ArchSpine sync index, recording the state of indexed source files, their documentation mappings across locales, and synchronization metadata.",
     "responsibilities": [
-      "Declares the required structure and validation rules for spine-manifest.json files",
-      "Enforces mandatory fields: schemaVersion, generatorVersion, createdAt, updatedAt, sync, files",
-      "Governs the sync metadata block including last sync timestamp, mode, reverse index completeness, and indexed unit count",
-      "Governs the files inventory block mapping repo-relative paths to their content hash, file kind, last indexed timestamp, associated documentation locales, and source existence flag"
+      "Track synchronization execution details: last sync time, mode (full/incremental/unknown), reverse index completion, and total indexed unit count.",
+      "Map each tracked source file (by repo-relative path) to its content hash, file kind, last index timestamp, and associated documentation entries per locale.",
+      "Provide a versioned snapshot for integrity verification (content hash) and incremental update decisions.",
+      "Serve as the authoritative record for the existence of source files (sourceExists flag) and their documentation coverage."
     ],
     "outOfScope": [],
     "invariants": [
-      "The 'sync' object must always include lastSyncAt, lastSyncMode, reverseIndexComplete, and indexedUnitCount",
-      "lastSyncMode must be one of: 'full', 'incremental', or 'unknown'",
-      "indexedUnitCount must be a non-negative integer",
-      "Each file entry must include contentHash, fileKind, lastIndexedAt, docs, and sourceExists",
-      "The 'files' object keys must conform to repo-relative path format",
-      "No additional properties are permitted at the root level or within sync or file entry objects"
+      "schemaVersion must be a valid schema version string as defined in shared schema.",
+      "generatorVersion must be a non-empty string.",
+      "createdAt and updatedAt must be valid ISO 8601 timestamps.",
+      "sync.lastSyncAt must be a date-time string or null.",
+      "sync.lastSyncMode must be one of: 'full', 'incremental', 'unknown'.",
+      "sync.reverseIndexComplete must be a boolean.",
+      "sync.indexedUnitCount must be a non-negative integer.",
+      "Each key in 'files' must match the repo-relative path pattern from shared schema.",
+      "Every file entry must have contentHash, fileKind, lastIndexedAt, docs (array), and sourceExists (boolean).",
+      "Each doc entry must have a locale and a path, both validated by shared schema."
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -34,42 +38,28 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Defines the schema for the ArchSpine SpineManifest, a metadata manifest that tracks the synchronization state and indexed file inventory of a mirror repository.",
+        "role": "Manifest schema for ArchSpine sync index, recording the state of indexed source files, their documentation mappings across locales, and synchronization metadata.",
         "parameter_definitions": {
-          "schemaVersion": "References the shared schema version definition; ensures compatibility with the expected schema revision.",
-          "generatorVersion": "A non-empty string identifying the version of the tool that generated this manifest.",
-          "createdAt": "ISO 8601 timestamp marking when this manifest was first created.",
-          "updatedAt": "ISO 8601 timestamp marking the last modification time of this manifest.",
-          "sync.lastSyncAt": "Nullable ISO 8601 timestamp of the most recent synchronization event; null indicates no sync has occurred.",
-          "sync.lastSyncMode": "Enum field indicating the synchronization mode: 'full', 'incremental', or 'unknown'.",
-          "sync.reverseIndexComplete": "Boolean flag indicating whether the reverse index (mapping indexed units back to files) has been fully built.",
-          "sync.indexedUnitCount": "Non-negative integer counting the total number of indexed units (e.g., documents or chunks) in the repository.",
-          "files.<path>.contentHash": "Hash of the file's content, used to detect changes and ensure integrity.",
-          "files.<path>.fileKind": "Classification of the file type (e.g., source, documentation, configuration) as defined by the shared fileKind schema.",
-          "files.<path>.lastIndexedAt": "ISO 8601 timestamp of when this file was last indexed.",
-          "files.<path>.docs": "Array of associated documentation entries, each with a locale and a repo-relative path.",
-          "files.<path>.sourceExists": "Boolean indicating whether the original source file still exists on disk."
+          "schemaVersion": "Version of the manifest schema used, ensuring compatibility.",
+          "generatorVersion": "Version of the tool that generated this manifest.",
+          "createdAt": "Timestamp when this manifest was initially created.",
+          "updatedAt": "Timestamp of the most recent update to this manifest.",
+          "sync": "Object containing synchronization state: lastSyncAt (last sync timestamp), lastSyncMode (full/incremental/unknown), reverseIndexComplete (whether reverse index is fully built), indexedUnitCount (total number of indexed units).",
+          "files": "Map from source file relative path to its indexing metadata. Each entry includes contentHash, fileKind, lastIndexedAt, docs (list of locale and documentation path), and sourceExists flag."
         },
-        "stability_and_risks": "This schema enforces structural integrity of the spine manifest, which is critical for the mirror system's ability to track synchronization state and file inventory. Violations of the schema (e.g., missing required fields, invalid enum values, or negative counts) will cause validation failures, potentially halting sync operations or corrupting the manifest. The strict 'additionalProperties: false' constraints prevent unexpected fields from being injected, reducing the risk of silent data corruption. The reverseIndexComplete flag is a safety invariant: if set to false while indexedUnitCount > 0, downstream tools may operate on incomplete data. The nullable lastSyncAt field allows graceful handling of never-synced repositories. Overall, strict adherence to this schema is essential for reliable mirror state management and recovery."
+        "stability_and_risks": "The manifest is a critical consistency point between source files and their documentation across multiple locales. Corrupted or stale manifests can lead to missed documentation updates, incorrect indexing, or broken localizations. The contentHash field provides integrity checking; a mismatch indicates drift between the indexed and actual file content. The reverseIndexComplete flag signals whether all reverse linkages are established; if false, certain features like cross-locale navigation may be incomplete. The indexedUnitCount must match the actual number of file entries; discrepancies suggest an incomplete or corrupted sync process. Tools should validate this manifest before using it for operations to avoid data integrity issues."
       },
       "Simplified Chinese": {
-        "role": "定义 ArchSpine SpineManifest 的架构，这是一个元数据清单，用于跟踪镜像仓库的同步状态和已索引文件清单。",
+        "role": "ArchSpine 同步索引的清单模式，记录已索引源文件的状态、跨语言文档映射以及同步元数据。",
         "parameter_definitions": {
-          "schemaVersion": "引用共享的架构版本定义；确保与预期的架构修订版本兼容。",
-          "generatorVersion": "标识生成此清单的工具版本的非空字符串。",
-          "createdAt": "ISO 8601 时间戳，标记此清单首次创建的时间。",
-          "updatedAt": "ISO 8601 时间戳，标记此清单的最后修改时间。",
-          "sync.lastSyncAt": "可为空的 ISO 8601 时间戳，表示最近一次同步事件的时间；null 表示从未同步过。",
-          "sync.lastSyncMode": "枚举字段，指示同步模式：'full'（全量）、'incremental'（增量）或 'unknown'（未知）。",
-          "sync.reverseIndexComplete": "布尔标志，指示反向索引（将索引单元映射回文件）是否已完全构建。",
-          "sync.indexedUnitCount": "非负整数，统计仓库中已索引单元（例如文档或片段）的总数。",
-          "files.<path>.contentHash": "文件内容的哈希值，用于检测变更并确保完整性。",
-          "files.<path>.fileKind": "文件类型的分类（例如源代码、文档、配置），由共享的 fileKind 架构定义。",
-          "files.<path>.lastIndexedAt": "ISO 8601 时间戳，表示此文件最后一次被索引的时间。",
-          "files.<path>.docs": "关联文档条目的数组，每个条目包含一个语言区域和一个仓库相对路径。",
-          "files.<path>.sourceExists": "布尔值，指示原始源文件是否仍然存在于磁盘上。"
+          "schemaVersion": "清单模式版本号，确保兼容性。",
+          "generatorVersion": "生成此清单的工具版本号。",
+          "createdAt": "清单首次创建的时间戳。",
+          "updatedAt": "清单最近一次更新的时间戳。",
+          "sync": "包含同步状态的对象：lastSyncAt（上次同步时间戳）、lastSyncMode（全量/增量/未知）、reverseIndexComplete（反向索引是否完整构建）、indexedUnitCount（已索引的总单元数）。",
+          "files": "从源文件相对路径到其索引元数据的映射。每个条目包括 contentHash（内容哈希）、fileKind（文件类型）、lastIndexedAt（最近索引时间戳）、docs（语言和文档路径列表）以及 sourceExists（源文件是否存在标志）。"
         },
-        "stability_and_risks": "此架构强制保证了脊柱清单的结构完整性，这对于镜像系统跟踪同步状态和文件清单至关重要。违反架构（例如缺少必填字段、无效的枚举值或负数计数）将导致验证失败，可能中断同步操作或损坏清单。严格的 'additionalProperties: false' 约束防止注入意外字段，降低了静默数据损坏的风险。reverseIndexComplete 标志是一个安全不变量：如果该标志为 false 而 indexedUnitCount 大于 0，下游工具可能会基于不完整的数据进行操作。可空的 lastSyncAt 字段允许优雅地处理从未同步过的仓库。总体而言，严格遵守此架构对于可靠的镜像状态管理和恢复至关重要。"
+        "stability_and_risks": "该清单是源文件与跨语言文档之间一致性的关键连接点。清单损坏或过时可能导致文档更新遗漏、索引错误或本地化链接失效。contentHash 字段提供完整性校验，若与实际文件内容不匹配则表明存在漂移。reverseIndexComplete 标志指示反向链接是否已全部建立，若为 false，则跨语言导航等功能可能不完整。indexedUnitCount 必须与实际文件条目数匹配，不一致表明同步过程不完整或清单已损坏。工具在使用此清单前应进行校验，以避免数据完整性问题。"
       }
     }
   },
@@ -91,7 +81,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:15.502Z",
+    "indexedAt": "2026-05-03T11:23:53.940Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

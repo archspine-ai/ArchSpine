@@ -1,5 +1,0 @@
-<!-- spine-content-hash:700607e12527ae0de73264057f54e027b04e5e1c02e3e4d85b7727d04f63663f -->
-- **Role:** LLM prompt template generator for architectural violation fixes.
-- **Key Responsibilities:** Defines the `FixViolationContext` data structure, which encapsulates all violation context needed to generate a fix prompt. Formats violation details and file context into a structured instructional prompt for an LLM assistant.
-- **Notable Invariants / Out of Scope:** Must not import CLI entrypoints or service-level orchestration modules (engine-independence rule). Does not execute or run fixes; only generates prompts. Does not parse or validate source code beyond formatting the provided context. Does not communicate with external services or persist data.
-- **Public Surface:** Exports `FixViolationContext` and `generateFixPrompt`. These are the two externally visible elements that other modules can use to produce fix prompts.

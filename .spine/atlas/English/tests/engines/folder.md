@@ -1,16 +1,9 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"tests/engines","role":"This directory contains the test suite for the Scanner engine.","responsibility":"The test suite validates the Scanner engine's file discovery behavior by creating isolated temporary directories, generating synthetic file system fixtures, invoking the Scanner with a resolved scan policy, and asserting correct inclusion and exclusion of files based on ignore patterns.","children":[{"filePath":"tests/engines/scanner.test.ts","role":"Vitest integration test suite for the Scanner engine's smoke and file discovery behavior.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T03:58:52.287Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# tests/engines – Scanner Engine Test Suite
+This directory contains integration tests for the **Scanner engine**, a core component of ArchSpine responsible for file discovery and policy‑based filtering. The tests verify that the Scanner correctly identifies files to include while respecting ignore patterns, using isolated execution in temporary directories and synthetic file‑system fixtures.
 
-This directory holds the complete test suite for the Scanner engine, which is responsible for file discovery within the ArchSpine project. The suite validates that the Scanner correctly traverses directories, respects ignore patterns, and includes or excludes files according to the resolved scan policy.
+The primary submodule is **`scanner.test.ts`**, a Vitest integration test suite that:
+- Creates and manages temporary directories for each test run.
+- Generates controlled synthetic fixtures (directories, files) to simulate real scanning targets.
+- Invokes the Scanner engine with a resolved scan policy.
+- Asserts that expected files are discovered and that files matching ignore patterns are excluded.
 
-The directory currently contains a single integration test file:
-
-- **scanner.test.ts** – A Vitest-based test file that verifies the Scanner's smoke test scenarios and detailed file discovery behavior. It isolates tests by creating temporary directories, generating synthetic file system fixtures, invoking the Scanner with a configured policy, and asserting that the results match expected inclusion and exclusion patterns.
-
-Key implementation areas covered by this suite include:
-- Temporary directory creation and isolation.
-- Synthetic filesystem generation for deterministic test environments.
-- Policy resolution and its effect on file listing.
-- Edge cases for glob patterns, ignore rules, and nested directory traversal.
-
-This suite is critical for ensuring that the Scanner engine behaves correctly before it is used by higher-level components.
+This test suite is critical for ensuring the reliability of ArchSpine’s file discovery pipeline. Implementation focus lies in the test’s handling of temporary environments, fixture generation, and deterministic policy application.

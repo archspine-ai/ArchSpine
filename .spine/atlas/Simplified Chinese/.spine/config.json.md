@@ -1,40 +1,42 @@
-<!-- spine-content-hash:ab521e4ea6b96d6baae6c5d153f73f33715847aa23b8fd72a9e914d5f3ed8e76 -->
-# ArchSpine 配置文件摘要
+# ArchSpine 根配置摘要
 
-## 角色
-ArchSpine 项目镜像系统的核心配置文件，定义项目元数据、LLM/MCP 设置、钩子行为、产物策略、扫描策略和初始化状态。
+## 作用
 
-## 主要职责
-- 注册项目元数据和受支持的语言
-- 控制 LLM 和 MCP 上下文模式行为
-- 配置预提交钩子和同步模式
-- 定义产物生成策略和视图层启用
-- 建立文件扫描策略，包括忽略链和协议排除/包含规则
-- 管理代理指令、忽略文件和 git 属性的初始化状态
+ArchSpine 项目镜像系统的根配置文件，定义了核心运行参数、扫描策略、产物生成、钩子以及初始化默认值。
 
-## 重要不变性
-- `schemaVersion` 必须为 `'1.0.0'` 以确保兼容性
-- `project.locales` 必须至少包含 `'English'` 和 `'Simplified Chinese'`
-- `mcp.contextMode` 必须为 `'off'` 以避免上下文干扰
-- `hooks.preCommit` 必须为 `false` 以防止自动提交
-- `artifacts.strategy` 必须为 `'distributable'`
-- `scanPolicy.fileSource` 必须为 `'git-tracked'`
-- `scanPolicy.ignoreChain.inheritGitIgnore` 必须为 `true`
-- `scanPolicy.protocolExclusions` 必须包含 `'.spine/'`
-- `scanPolicy.protocolInclusions` 必须包含 `'.spine/rules/'` 和 `'.spine/config.json'`
-- `initState.artifactStrategy` 必须与 `artifacts.strategy` 一致
+## 参数定义
 
-## 负面范围（不在范围内）
-- 未明确定义任何不在范围内的项目。
+| 参数 | 描述 |
+|------|------|
+| `schemaVersion` | 定义配置模式的版本号，必须遵循语义化版本以确保兼容性。 |
+| `project.name` | 被镜像项目的规范名称，用于所有子系统中的身份标识。 |
+| `project.locales` | 支持的地域列表，用于生成多语言文档；当前为英语和简体中文。 |
+| `llm` | 大语言模型提供商配置；当前为空，可添加模型端点。 |
+| `mcp.contextMode` | MCP 服务器的上下文聚合模式；`'off'` 表示不进行上下文增强。 |
+| `hooks.preCommit` | 是否启用预提交钩子；`false` 表示钩子未激活。 |
+| `hooks.syncMode` | 定义同步操作的触发方式；`'hook'` 表示通过 Git 钩子触发。 |
+| `artifacts.strategy` | 产物分发模型；`'distributable'` 表示产物可独立发布。 |
+| `artifacts.experimentalViewLayer` | 是否启用实验性视图层，用于高级架构视图渲染。 |
+| `artifacts.enabledViews` | 需要生成的视图类型列表：公开表面、风险热点、架构图。 |
+| `scanPolicy.fileSource` | 扫描器考虑的文件来源；`'git-tracked'` 仅扫描 Git 索引中的文件。 |
+| `scanPolicy.ignoreChain.inheritGitIgnore` | 是否继承仓库 `.gitignore` 中的模式。 |
+| `scanPolicy.ignoreChain.projectIgnore` | 项目级忽略文件路径 (`.spineignore`)。 |
+| `scanPolicy.ignoreChain.localIgnore` | 本地覆盖忽略文件路径 (`.spineignore.local`)。 |
+| `scanPolicy.protocolExclusions` | 默认排除的扫描路径；用于保护内部骨架目录不被扫描。 |
+| `scanPolicy.protocolInclusions` | 从排除中重新包含的路径；确保关键骨架配置被扫描。 |
+| `initState.artifactStrategy` | 首次初始化时使用的产物策略。 |
+| `initState.agentInstructionsFile` | 代理指令文件名（默认为 `AGENTS.md`）。 |
+| `initState.agentInstructionsCreatedByArchSpine` | 标记 `AGENTS.md` 是否由 ArchSpine 自动生成。 |
+| `initState.spineIgnoreManaged` | 是否由 ArchSpine 管理 `.spineignore` 文件。 |
+| `initState.spineIgnoreCreatedByArchSpine` | 标记 `.spineignore` 是否自动生成。 |
+| `initState.searchIgnoreManaged` | 是否管理搜索忽略文件。 |
+| `initState.searchIgnoreCreatedByArchSpine` | 标记搜索忽略文件是否自动生成。 |
+| `initState.gitIgnoreManaged` | 是否由 ArchSpine 管理 `.gitignore`。 |
+| `initState.gitIgnoreCreatedByArchSpine` | 标记 `.gitignore` 是否自动生成。 |
+| `initState.gitAttributesManaged` | 是否由 ArchSpine 管理 `.gitattributes`。 |
+| `initState.gitAttributesCreatedByArchSpine` | 标记 `.gitattributes` 是否自动生成。 |
 
-## 最重要的导出/外部可见行为
-- 配置强制执行严格的扫描策略，仅处理 git 跟踪的文件，确保可预测且安全的文件分析。
-- 忽略链继承 `.gitignore` 规则，并添加项目级（`.spineignore`）和本地（`.spineignore.local`）忽略文件，提供分层排除控制。
-- 协议排除规则防止扫描 `.spine/` 目录本身，而包含规则确保始终扫描关键配置文件（`config.json` 和 `rules/`）。
-- 产物生成使用 `'distributable'` 策略，生成适合共享的可移植输出。
-- MCP 上下文模式已禁用（`'off'`），防止意外上下文注入干扰系统行为。
-- 预提交钩子已禁用，避免自动提交导致仓库不稳定。
-- 初始化状态仔细跟踪哪些文件由 ArchSpine 管理或创建，哪些由用户创建，防止意外覆盖用户创建的文件。
+## 稳定性与风险
 
-## 稳定性和风险
-此配置文件对系统稳定性至关重要。扫描策略确保仅扫描 git 跟踪的文件，并采用强大的忽略链，继承 `.gitignore` 并添加项目级和本地忽略。协议排除规则防止扫描 `.spine/` 目录本身，而包含规则确保始终扫描关键配置文件。产物策略设置为 `'distributable'`，适合安全共享。MCP 上下文模式已禁用，降低了意外上下文注入的风险。预提交钩子已禁用，防止自动提交可能导致的仓库不稳定。初始化状态仔细管理哪些文件由 ArchSpine 创建，哪些由用户创建，避免覆盖。总体而言，此配置促进了稳定、可预测的镜像系统，数据丢失或损坏的风险极低。
+此配置文件控制核心扫描和产物生成流程。如果错误配置 `scanPolicy`（例如移除 `protocolExclusions`），可能导致 ArchSpine 索引自己的内部文件，造成递归循环和数据损坏。将 `hooks.preCommit` 设置为 `true` 而未充分测试时，可能意外阻塞提交。`artifacts.experimentalViewLayer` 功能标记为实验性，启用后可能带来渲染不稳定。`initState` 标志对于升级和迁移工作流至关重要；错误的值可能导致系统覆盖用户管理的文件，或无法更新受管理的文件。`mcp.contextMode` 设为 `'off'` 会禁用所有上下文增强，降低 LLM 开销但也会降低代理交互的响应质量。总体而言，在设置和升级过程中必须仔细审查此文件。
+---

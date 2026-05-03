@@ -1,15 +1,16 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src","role":"Contains the complete source code implementation of the ArchSpine mirror system, including core engine, CLI, services, infrastructure, and task orchestration.","responsibility":"The src directory collectively implements the entire ArchSpine mirror system by providing template definitions and documentation standards, AST parsing and language discovery, a command-line interface for user interaction, L2 aggregation orchestration and validation, scanning and architectural rule enforcement, infrastructure services for configuration, persistence, LLM abstraction, and MCP protocol exposure, service orchestration for check, fix, and sync pipelines, pipeline task execution for all stages, core data contracts and configuration schemas, and utility modules for file synchronization and CLI presentation.","children":[{"filePath":"src/assets","role":"This directory contains the core template definitions and documentation standards for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"src/ast","role":"AST parsing and language discovery layer for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"src/cli","role":"Entry point and command-line interface layer for the ArchSpine system, handling user commands, argument parsing, help presentation, and runtime bootstrapping.","fileKind":"folder"},{"filePath":"src/core","role":"This directory provides the core L2 aggregation orchestration, validation, and state management for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"src/engines","role":"Core engine and tooling for scanning, analyzing, and enforcing architectural rules in the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"src/infra","role":"The infrastructure layer of the ArchSpine mirror system, providing low-level services and utilities such as configuration management, database persistence, LLM client abstraction, prompt construction, credential storage, manifest tracking, and output I/O.","fileKind":"folder"},{"filePath":"src/services","role":"Service orchestration layer for the ArchSpine mirror system, coordinating check, fix, sync pipelines, runtime session management, and architectural view generation.","fileKind":"folder"},{"filePath":"src/tasks","role":"Pipeline task orchestration and execution layer for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"src/types","role":"Core data contracts and configuration schema for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"src/utils","role":"Provides foundational infrastructure and utility modules for file synchronization, path normalization, locking, and CLI presentation within the ArchSpine system.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-02T10:11:19.250Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src` 目录包含了 ArchSpine 镜像系统的完整源代码实现。该目录通过多个关键子目录共同实现了核心引擎、命令行界面、服务、基础设施和任务编排。主要子目录包括：
+`src/` 目录是 ArchSpine 镜像系统的源代码根目录，包含实现完整系统所需的所有模块：配置与 AST 分析、CLI 命令、服务编排、管道任务、基础设施支持、类型定义以及工具函数。  
 
-- **assets** – 核心模板定义和文档标准。
-- **ast** – 抽象语法树解析与语言发现层。
-- **cli** – 命令行界面层，处理用户命令、参数解析、帮助展示以及运行时启动。
-- **core** – L2 聚合编排、验证与状态管理。
-- **engines** – 扫描、分析与架构规则执行引擎。
-- **infra** – 基础设施服务：配置管理、数据库持久化、大语言模型抽象、提示词构建、凭据存储、清单追踪及输出 I/O。
-- **services** – 检查、修复、同步管道的编排，运行时会话管理以及架构视图生成。
-- **tasks** – 各阶段的管道任务执行层。
-- **types** – 核心数据契约与配置模式定义。
-- **utils** – 文件同步、路径规范化、锁定和命令行展示等工具模块。
+该目录按功能划分为十二个子目录，每个子目录专注于不同的领域：  
 
-最重要的实现区域包括核心引擎（`core`、`engines`）、服务编排（`services`）、基础设施（`infra`）以及命令行入口（`cli`）。这些模块共同决定了系统的架构执行、管道流转和用户交互能力。
+- **assets** —— 模板定义，涵盖文档蓝图、AI 提示词方案、架构规则和视图清单。  
+- **ast** —— 基于 AST 的代码提取、语言发现与解析，以及导入/导出/用法的提取规则。  
+- **cli** —— 面向用户的 CLI 入口，提供命令路由、帮助文本、UI 格式化、初始化和仓库配置。  
+- **core** —— 运行时基础设施：配置校验、错误定义、管道编排、任务状态管理、扫描策略以及管道阶段和依赖注入的类型契约。  
+- **engines** —— 运行骨干：扫描、聚合（索引/图谱）、规则匹配、依赖上下文分析、自动修复生成和系统诊断。  
+- **infra** —— 基础设施服务：配置管理、LLM 集成、持久化、凭据管理、提示词生成、MCP 服务器集成和输出管理。  
+- **services** —— 服务编排层，协调多阶段管道（扫描、AST 提取、校验、LLM 纠正、摘要、视图生成）并支持会话管理、断点续传和错误处理。  
+- **tasks** —— 管道阶段任务：扫描、同步、AST 提取、摘要、校验、修复生成、聚合、反向索引、视图推导和状态提交。  
+- **types** —— 标准类型契约，定义配置、文档、语言、清单、规则、版本和视图的规范，确保各子系统数据一致性。  
+- **utils** —— 工具模块，提供原子文件操作、Git 钩子生命周期管理、文件锁、SHA-256 指纹计算、智能体指令同步、路径规范化、交互式确认和品牌 CLI 横幅渲染。  
+
+最重要的实现区域是管道执行核心（`core`、`engines`、`services`、`tasks`），它驱动整个镜像工作流；CLI（`cli`）作为主要的用户交互点；以及模板定义（`assets`）定义系统的结构契约。

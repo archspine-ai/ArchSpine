@@ -1,34 +1,18 @@
-# ArchSpine Document Summary
+# ArchSpine Component Contract Summary
 
 ## Purpose
-
-This document provides an architectural summary for a project document within the ArchSpine mirror system. It defines the narrative purpose, responsibilities, and boundaries of the document to ensure consistent understanding across both human readers and AI agents.
+This document defines the architectural contract for a project component within the ArchSpine mirror system. It exists to establish a canonical specification that governs the component’s architectural role, responsibilities, and boundaries. By anchoring decisions about what the component must and must not do, it prevents architectural drift and ensures consistency across the mirrored project.
 
 ## Audience
-
-This summary is intended for developers, architects, and AI agents who need to understand the role and scope of a specific document in the ArchSpine system. It helps maintain alignment between narrative intent and technical implementation.
+This summary is intended for architects, developers, and AI agents who maintain the ArchSpine mirror system. Any stakeholder involved in designing, implementing, or reviewing the mirrored component should refer to this contract to understand its precise scope and obligations.
 
 ## Key Takeaways
+- Each component has a clearly defined role and a set of specific responsibilities it must fulfill.
+- Invariants and explicitly listed out-of-scope items prevent scope creep and preserve architectural integrity.
+- The document may include Mermaid diagrams and additional sections to enhance clarity, but such content is supplementary to the core contractual definitions.
 
-- The document defines its own architectural role and narrative purpose
-- Responsibilities and out-of-scope items are explicitly stated to prevent scope creep
-- The structure supports both human readability and machine parsing via JSON metadata
-- Localized descriptions ensure accessibility across English and Chinese-speaking audiences
-
-## Document Structure
-
-The document is organized into the following sections:
-
-- **Role**: Describes the core narrative concepts and architectural role of the document
-- **Responsibilities**: Defines maintenance boundaries and responsibilities
-- **Invariants & Out-of-Scope**: Lists invariants and explicitly out-of-scope topics
-- **Metadata**: Provides structured metadata for both human readers and AI agents
-
-## Decisions and Workflows
-
-This document anchors the following decisions and workflows:
-
-- **Scope Management**: Explicitly defines what is in and out of scope to prevent scope creep
-- **Narrative Alignment**: Ensures that the document's narrative purpose is clearly understood by all stakeholders
-- **AI Agent Integration**: Provides structured metadata that AI agents can parse to understand the document's role and boundaries
-- **Localization**: Supports both English and Chinese-speaking audiences through localized descriptions
+## Decisions and Workflows Anchored
+- **Role assignment**: Determines which architectural domain the component owns.
+- **Responsibility tracking**: Every listed responsibility becomes a testable requirement for implementation and review.
+- **Boundary enforcement**: Items marked as out-of-scope serve as hard limits during design discussions, code reviews, and AI agent planning.
+- **Diagram integration**: When present, diagrams give a visual reference for the component’s interactions and structure, but the written contract remains authoritative.

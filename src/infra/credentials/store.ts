@@ -48,12 +48,14 @@ export class CredentialStore {
       try {
         this.backend.set(this.secretName, this.account, secret);
       } catch (error) {
+        // eslint-disable-next-line no-console -- Credential storage failures must be visible to CLI users.
         console.warn(
           `[CredentialStore] Failed to store API key in ${this.backend.name} backend:`,
           error instanceof Error ? error.message : String(error),
         );
       }
     } else {
+      // eslint-disable-next-line no-console -- Credential storage failures must be visible to CLI users.
       console.warn(
         `[CredentialStore] No valid credential backend available to store API keys securely.`,
       );

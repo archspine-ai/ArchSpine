@@ -4,52 +4,67 @@
     "filePath": "src/cli/commands/hook.ts",
     "contentHash": "0ea38a3e26f30f0dd9331fc9355e6075988e8756ddaf5b0e9cae3f0ad7771022",
     "skeletonHash": "aa4a95892a46eeb4611f4c69ecbba1e26b7d2040dee97ba1bcfa7aeda54ecd68",
-    "semanticHash": "cba7b2c8b05490dc181ddd0b9e04015b8dffa7e7485ba30232f2e284f4eb0422",
+    "semanticHash": "db225d69998c9cf52cd19e71145bd1a62d860280925a360274b39aa68fb832bf",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli/commands"
   },
   "semantic": {
-    "role": "CLI command adapter for managing git hook integration and synchronization within the ArchSpine system.",
+    "role": "CLI command adapter for managing git hook installation, configuration, and execution within the ArchSpine system.",
     "responsibilities": [
       "Parses the hook synchronization mode from string input to enforce valid configuration.",
-      "Enables or disables the pre-commit git hook based on user command arguments via configuration updates.",
-      "Executes the synchronization workflow by delegating to the dedicated sync module when the hook is triggered.",
-      "Provides status feedback about the current hook configuration and synchronization mode to the user."
+      "Enables the pre-commit git hook by installing the hook script and setting the configuration flag to true.",
+      "Disables the pre-commit git hook by uninstalling the hook script and resetting the configuration flag.",
+      "Reports the current hook status, including enabled/disabled state and synchronization mode, to the user.",
+      "Triggers the synchronization workflow by delegating to the runSyncWorkflow function when the 'run' action is invoked."
     ],
     "outOfScope": [
-      "Implementing the core synchronization pipeline logic (delegated to sync.js).",
-      "Managing git hook script content (delegated to git-hook.js utilities).",
-      "Persisting configuration state (handled by Config service)."
+      "Direct git operations beyond hook script management.",
+      "Implementation of the synchronization pipeline or persistence of git state."
     ],
     "invariants": [
-      "Must remain a thin command adapter; all pipeline logic must be delegated to services/engines.",
-      "Must not contain business logic for scanning, analysis, or repair."
+      "Must not absorb synchronous or asynchronous pipeline logic that belongs in services or engines.",
+      "Must remain a thin command adapter that delegates to utilities and services."
     ],
     "changeIntent": {
-      "architecturalIntent": "Separate CLI command routing from core pipeline logic to maintain testability and reusability.",
-      "recentChangeIntent": "No direct changes detected in this module from the recent commit; the commit likely affected the sync workflow or view layer."
+      "architecturalIntent": "Provide a dedicated CLI command to manage git hooks, keeping hook lifecycle separate from other commands.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era"
     },
     "publicSurface": [
-      "ExecuteHookCommandOptions interface",
-      "parseHookSyncMode function"
+      "parseHookSyncMode",
+      "executeHookCommand",
+      "ExecuteHookCommandOptions"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "CLI command adapter for managing git hook integration and synchronization within the ArchSpine system.",
+        "role": "CLI command adapter for managing git hook installation, configuration, and execution within the ArchSpine system.",
         "responsibilities": [
           "Parses the hook synchronization mode from string input to enforce valid configuration.",
-          "Enables or disables the pre-commit git hook based on user command arguments via configuration updates.",
-          "Executes the synchronization workflow by delegating to the dedicated sync module when the hook is triggered.",
-          "Provides status feedback about the current hook configuration and synchronization mode to the user."
+          "Enables the pre-commit git hook by installing the hook script and setting the configuration flag to true.",
+          "Disables the pre-commit git hook by uninstalling the hook script and resetting the configuration flag.",
+          "Reports the current hook status, including enabled/disabled state and synchronization mode, to the user.",
+          "Triggers the synchronization workflow by delegating to the runSyncWorkflow function when the 'run' action is invoked."
         ],
         "outOfScope": [
-          "Implementing the core synchronization pipeline logic (delegated to sync.js).",
-          "Managing git hook script content (delegated to git-hook.js utilities).",
-          "Persisting configuration state (handled by Config service)."
+          "Direct git operations beyond hook script management.",
+          "Implementation of the synchronization pipeline or persistence of git state."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于管理 ArchSpine 系统中 git 钩子安装、配置和执行的 CLI 命令适配器。",
+        "responsibilities": [
+          "从字符串输入解析钩子同步模式，以确保配置有效。",
+          "通过安装钩子脚本并设置配置标志为 true 来启用 pre-commit git 钩子。",
+          "通过卸载钩子脚本并重置配置标志来禁用 pre-commit git 钩子。",
+          "向用户报告当前钩子状态，包括启用/禁用状态和同步模式。",
+          "当调用 'run' 操作时，通过委托给 runSyncWorkflow 函数触发同步工作流。"
+        ],
+        "outOfScope": [
+          "超出范围：直接 git 操作（除了钩子脚本管理）。",
+          "同步管道的实现或 git 状态的持久化。"
         ]
       }
     }
@@ -201,10 +216,48 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/hook.ts/_file_#",
+        "targetSymbol": "src/utils/git-hook.ts/installGitHook#",
+        "targetPath": "src/utils/git-hook.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/hook.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/printStep#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/hook.ts/_file_#",
+        "targetSymbol": "src/utils/git-hook.ts/uninstallGitHook#",
+        "targetPath": "src/utils/git-hook.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/hook.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/throwCliUsage#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/hook.ts/_file_#",
+        "targetSymbol": "src/cli/commands/sync.ts/runSyncWorkflow#",
+        "targetPath": "src/cli/commands/sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:36.360Z",
+    "indexedAt": "2026-05-03T11:25:01.255Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

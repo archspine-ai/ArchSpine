@@ -1,12 +1,34 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/utils","role":"Provides foundational infrastructure and utility modules for file synchronization, path normalization, locking, and CLI presentation within the ArchSpine system.","responsibility":"This directory delivers core utilities that support the ArchSpine system's operation, including atomic file operations, Git hook management, structural fingerprinting, interactive CLI prompts, and synchronization of agent instruction blocks across configuration files.","children":[{"filePath":"src/utils/agent-instructions.sync.ts","role":"Utility module providing file-level synchronization and removal operations for ArchSpine agent instruction blocks and configuration sections across repository configuration files.","fileKind":"source"},{"filePath":"src/utils/agent-instructions.templates.ts","role":"Static configuration module providing agent instruction blocks and repository ignore patterns for the ArchSpine system.","fileKind":"source"},{"filePath":"src/utils/agent-instructions.ts","role":"TypeScript barrel export module providing a unified public API for agent instruction utilities.","fileKind":"source"},{"filePath":"src/utils/banner.ts","role":"CLI presentation utility for rendering branded banners and version information.","fileKind":"source"},{"filePath":"src/utils/confirm.ts","role":"CLI utility module for interactive user confirmation prompts and terminal input handling.","fileKind":"source"},{"filePath":"src/utils/footprint.ts","role":"Utility module for generating deterministic structural fingerprints of source code files.","fileKind":"source"},{"filePath":"src/utils/fs.ts","role":"Infrastructure utility class providing atomic file write and safe file copy operations for the ArchSpine system.","fileKind":"source"},{"filePath":"src/utils/git-hook.ts","role":"Infrastructure utility module for generating and managing the ArchSpine pre-commit Git hook shell script block.","fileKind":"source"},{"filePath":"src/utils/lock.ts","role":"Infrastructure utility providing file-based mutual exclusion for runtime operations across the ArchSpine system.","fileKind":"source"},{"filePath":"src/utils/repo-path.ts","role":"Internal utility function providing cross-platform repository path normalization for consistent database key representation.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T04:57:49.192Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src/utils` 目录为 ArchSpine 系统提供了基础基础设施和核心工具。它负责原子文件操作、文件同步、路径规范化、运行时锁机制、Git 钩子管理、结构指纹生成、交互式 CLI 提示，以及跨配置文件同步代理指令块。
+## 工具模块目录
 
-其主要子模块分组如下：
+`utilities` 目录包含了 ArchSpine 所有共享的基础设施模块：文件同步、加密指纹生成、CLI 界面展示以及运行时互斥锁。这些模块设计为独立、可测试且可在系统不同部分复用的组件。
 
-- **文件系统与锁原语**：`fs.ts` 实现原子写入和安全复制；`lock.ts` 提供基于文件的互斥锁以支持并发操作。
-- **Git 集成**：`git-hook.ts` 生成并管理预提交 Git 钩子的 shell 脚本块。
-- **CLI 与展示**：`banner.ts` 渲染品牌横幅和版本信息；`confirm.ts` 处理交互式用户确认提示。
-- **代理指令**：`agent-instructions.sync.ts` 执行指令块的文件级同步和移除；`agent-instructions.templates.ts` 提供静态配置；`agent-instructions.ts` 作为统一导出的公共 API。
-- **路径与指纹工具**：`repo-path.ts` 规范化仓库路径以保证数据库键的一致表示；`footprint.ts` 生成源文件的确定性结构指纹。
+### 主要子模块及分组
 
-最关键的实现领域是 `fs.ts` 中的原子文件操作、`lock.ts` 中的独占锁机制，以及 `agent-instructions.sync.ts` 中的同步逻辑，它们确保整个系统的安全与一致更新。
+- **Agent 指令管理**（`agent-instructions.sync.ts`、`agent-instructions.templates.ts`、`agent-instructions.ts`）  
+  负责 ArchSpine 在仓库文件中管理的代码块完整生命周期：插入、更新和移除特定标记区域（如 `.gitignore`、`.gitattributes`、`AGENTS.md`、搜索忽略文件、spine 忽略文件以及 `package.json` 脚本）。模板文件提供静态标记常量和默认内容，同步文件实现所有修改逻辑，桶文件重新导出统一公共 API。
+
+- **指纹生成**（`footprint.ts`）  
+  生成架构骨架（`FileSkeleton`）和语义合约（`SpineSemantic`）的确定性 SHA-256 指纹。支持短路变更检测，无需完整内容比较。内部对导入/导出符号进行规范化和去重，确保哈希值稳定。
+
+- **安全文件 I/O**（`fs.ts`）  
+  提供原子写入（临时文件+重命名模式）和安全复制操作，自动创建目录。所有操作具备防损坏能力，并通过 `FileSystemManager` 支持回滚。
+
+- **Git 钩子生命周期**（`git-hook.ts`）  
+  管理 ArchSpine 预提交钩子的安装、更新和移除。生成可定位 spine CLI 的受管理 shell 块，优雅处理已有钩子（附加或替换），设置可执行权限，并返回类型化结果（`installed`、`updated`、`appended` 等）。
+
+- **文件锁**（`lock.ts`）  
+  基于文件的互斥实现，使用 `.spine/` 目录下的锁文件。采用 `crypto.randomUUID` 生成令牌，通过检查进程存活状态检测过期锁，并注册进程终止信号的清理处理器。
+
+- **路径规范化**（`repo-path.ts`）  
+  将原始文件系统路径转换为仓库相对路径（POSIX 风格），去除 `./` 和 `/` 前缀，转换 Windows 反斜杠。确保数据库键表示一致。
+
+- **CLI 界面**（`banner.ts`、`confirm.ts`）  
+  `banner.ts` 使用 chalk 主题渲染带版本信息的 ASCII 艺术横幅。`confirm.ts` 提供交互式确认提示，支持显式文本输入和单键输入模式，并正确管理终端状态。
+
+### 关键实现领域
+
+- **同步正确性**：agent 指令同步模块需处理每个文件中的多个受管理代码块，检测过时块，并在移除受管理部分时恢复原始内容。
+- **确定性指纹生成**：`footprint` 模块对导入/导出符号的规范化对于可靠变更检测至关重要；任何排序不稳定都会导致误报。
+- **原子性与安全性**：`fs.ts` 和 `git-hook.ts` 均依赖安全写入模式和备份/回滚机制，防止并发操作期间的损坏。
+- **锁的健壮性**：锁模块必须优雅处理进程崩溃，防止永久锁文件阻塞后续运行。
+- **跨平台路径处理**：`repo-path.ts` 确保 Windows 和 POSIX 系统的路径被统一规范化，便于数据库查找。

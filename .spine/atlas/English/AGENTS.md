@@ -1,39 +1,66 @@
-# ArchSpine Repository Guidelines
+# Repository Guidelines for ArchSpine
 
 ## Purpose
 
-This document is the central reference for developers contributing to the ArchSpine project. It defines the repository structure, development workflow, coding conventions, testing expectations, and documentation practices to ensure consistency across contributions.
+This document exists to onboard both human developers and AI agents to the ArchSpine repository. It provides a single source of truth for the project's directory layout, development workflow, coding conventions, and the ArchSpine context layer that governs AI interactions. By centralizing this information, the document ensures consistency across contributions and helps maintainers enforce quality standards.
 
-## Who Should Read This
+## Audience
 
-The intended audience is developers and maintainers working on the ArchSpine codebase. It is particularly relevant for new contributors who need to understand how the project is organized, how to run builds and tests, and how to follow the established conventions for commits, pull requests, and documentation updates. The document also includes ArchSpine-specific instructions for AI agents and developers interacting with the repository's semantic indexing and control plane.
+The intended audience includes:
 
-## Key Decisions and Workflows
+- **Software developers** who need to understand how to navigate, build, test, and contribute to the ArchSpine codebase.
+- **Maintainers** responsible for reviewing contributions and enforcing repository standards.
+- **AI agents** (such as Claude or Copilot) that require structured guidance on how to interact with the repository, including the ArchSpine control plane and protected outputs.
+
+This is a living reference that should be consulted before making any changes.
+
+## Key Decisions and Workflows Anchored by This Document
+
+The following decisions and workflows are explicitly defined and should be followed by all contributors:
 
 ### Project Structure
 
-Source code lives under `src/` with a clear separation into CLI, core, engines, services, infra, and asset directories. Tests reside in `tests/`, public documentation in `docs/` with Chinese mirrors under `docs/zh-CN/`, and JSON schemas in `schemas/`. The `examples/demo-project/` directory serves as the reference demo workspace.
+- Source code lives under `src/` with key directories: `cli`, `core`, `engines`, `services`, `infra`, `assets/templates`, and `ast/rules`.
+- Tests reside in `tests/` (for Vitest) and research/benchmark assets in `research/bench/`.
+- Public documentation has English and Chinese mirrors; `docs/zh-CN/` must stay aligned with English.
+- JSON schemas are in `schemas/`, and `examples/demo-project/` serves as the reference demo.
 
-### Development Environment
+### Development Workflow
 
-Use Node.js 20+ with ES modules and strict TypeScript. Key commands include `npm install` for dependencies, `npm run build` to compile, `npm test` for the full Vitest suite, and `npm run docs:dev` to start the local documentation server.
+- Node.js 20+ is required.
+- Standard commands: `npm install`, `npm run build`, `npm test`.
+- Additional commands: `npm run test:schema`, `npm run validate`, `npm run docs:dev`, and direct CLI execution via `node dist/cli/index.js`.
 
-### Coding Standards
+### Coding Style & Conventions
 
-Follow the existing TypeScript style: ES modules, explicit `.js` import suffixes, strict typing, and 2-space indentation. Use `camelCase` for variables and functions, `PascalCase` for classes and types, and kebab-case for documentation and asset filenames. Match surrounding code closely as no dedicated formatter or linter config is checked in.
+- Strict TypeScript with ES modules, explicit `.js` import suffixes, `strict` typing, and 2-space indentation.
+- Naming: `camelCase` for variables/functions, `PascalCase` for classes/types, kebab-case for docs/assets.
+- Linting and formatting enforced via ESLint, Prettier, and EditorConfig; run `npm run lint` and `npm run format:check` before submitting.
 
-### Testing Requirements
+### Testing Guidelines
 
-Add or update tests for every behavior change using Vitest. The default product suite covers `tests/**/*.test.ts` and `tests/**/*.bench.ts`. Focus testing on CLI flows, schema validation, and runtime services.
+- Vitest is the test runner, configured in `vitest.config.ts`.
+- Test files follow `*.test.ts` pattern in `tests/`.
+- Add or update tests for every behavior change, especially CLI flows, schema validation, and runtime services.
+- Separate test suites exist for schema compliance and protocol validation.
 
-### Commit and Pull Request Conventions
+### Commit & Pull Request Conventions
 
-Follow Conventional Commits format (e.g., `fix:`, `feat:`, `feat(cli):`). Keep commits focused and descriptive. PRs should explain the behavior change, list verification steps, link related issues, and include screenshots or terminal output when changing docs, demos, or CLI UX.
+- Commits must follow the Conventional Commits format (e.g., `fix:`, `feat:`, `feat(cli):`).
+- PRs must include a description of behavior change, verification steps, and links to related issues.
+- For changes to docs, demos, or CLI UX, include screenshots or terminal output.
+
+### ArchSpine Context for AI Agents
+
+- The `.spine/` directory acts as a control plane:
+  - `.spine/atlas/` for file-level semantic summaries.
+  - `.spine/view/pages/` for system-level architecture summaries.
+  - `.spine/index/` for precise structured data.
+- AI agents should prefer reading from the MCP server over manual file search.
+- Never manually edit generated output in `.spine/atlas/`, `.spine/view/`, or `.spine/index/`; instead, use `spine sync` to refresh.
+- `.spine/config.json` and `.spine/rules/` are the human-reviewed control-plane files.
 
 ### Documentation Maintenance
 
-Keep English and Chinese documentation aligned when making changes. Use `docs/temporary-to-be-cleared/` as the interim change log for recording new features and architecture changes. A periodic cleanup agent will later consolidate this content into the formal documentation.
-
-### ArchSpine Context Management
-
-ArchSpine context is managed via `.spine/` files. Always consult `.spine/atlas/` for file-level summaries and `.spine/view/pages/` for system-level architecture before broad workspace search. Use `spine sync` to refresh generated outputs—never edit `.spine/index/**`, `.spine/atlas/**`, or `.spine/view/**` directly. Treat `.spine/config.json` and `.spine/rules/**` as the main human-reviewed control-plane files.
+- Public docs must keep English and Chinese entry points aligned.
+- Planning and design material under `docs/design/`, `docs/planning/`, and `docs/archive/` should not be promoted into public navigation without intent.

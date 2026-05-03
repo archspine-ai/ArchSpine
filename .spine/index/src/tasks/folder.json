@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/tasks",
-  "role": "Pipeline stage tasks that orchestrate the core processing phases of the ArchSpine mirror system, from scanning and extraction to summarization, validation, and view derivation.",
-  "responsibility": "Collectively, these components implement the sequential stages of the ArchSpine pipeline: scanning and reconciling files, extracting ASTs, generating lightweight and full summaries, validating architectural rules, applying automated fixes, backfilling documentation, constructing reverse indices, committing state to the database, and deriving high-level architectural views (public surface, risk hotspots, architecture diagram).",
+  "role": "Pipeline stage tasks that implement specific processing steps in the ArchSpine execution graph.",
+  "responsibility": "Collectively orchestrate the core pipeline phases: scanning, reconciliation, AST extraction, summarization, validation, fix generation, aggregation, reverse indexing, view derivation, and state commitment, ensuring ordered execution and resumability.",
   "children": [
     {
       "filePath": "src/tasks/aggregate.ts",
-      "role": "Core pipeline task for hierarchical content aggregation across directories and projects.",
+      "role": "Pipeline task for hierarchical content aggregation, collecting directories and projects that require aggregation and delegating to the aggregator engine for ordered processing.",
       "fileKind": "source"
     },
     {
@@ -46,12 +46,12 @@
     },
     {
       "filePath": "src/tasks/scan-cleanup.ts",
-      "role": "Pipeline stage task for scanning the file system and cleaning up orphaned or stale files within the ArchSpine tracked state.",
+      "role": "Pipeline stage task for scanning the filesystem, detecting orphaned and changed files, and cleaning up tracked state in the ArchSpine manifest and output directory.",
       "fileKind": "source"
     },
     {
       "filePath": "src/tasks/state-commit.ts",
-      "role": "Pipeline stage task for committing synchronized file state (hashes and metadata) to the SQLite database after AST extraction and LLM summarization.",
+      "role": "Pipeline stage task for committing synchronized file state (hashes and metadata) to the SQLite database after AST extraction and LLM summarization are complete.",
       "fileKind": "source"
     },
     {
@@ -61,17 +61,17 @@
     },
     {
       "filePath": "src/tasks/validate.ts",
-      "role": "ArchSpine validation task orchestrator for LLM-powered architectural rule compliance checking.",
+      "role": "ArchSpine validation pipeline task that orchestrates LLM-powered architectural rule compliance checks on scanned source files, normalizing and persisting violation results.",
       "fileKind": "source"
     },
     {
       "filePath": "src/tasks/view-derivation.ts",
-      "role": "Pipeline task stage that orchestrates the derivation of multiple architectural views (public surface, risk hotspots, architecture diagram) from committed changes using the ViewService facade.",
+      "role": "Pipeline task stage that orchestrates selective derivation of architectural views (public surface, risk hotspots, architecture diagram) using the ViewService facade, based on enabled views configuration.",
       "fileKind": "source"
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-03T03:55:10.201Z",
+    "indexedAt": "2026-05-03T11:27:49.494Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

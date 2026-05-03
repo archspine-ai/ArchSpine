@@ -1,44 +1,30 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/infra","role":"The infrastructure layer of the ArchSpine mirror system, providing low-level services and utilities such as configuration management, database persistence, LLM client abstraction, prompt construction, credential storage, manifest tracking, and output I/O.","responsibility":"Collectively, the components in this directory establish a robust and modular foundation for the system's core operations: they manage configuration loading and validation, handle SQLite database lifecycle and data access, abstract LLM provider interactions with retry and client factory logic, construct structured and localized prompts for AI agents, secure API keys via platform-specific credential stores, maintain file integrity and manifest state, expose system data through MCP protocol, and enforce write protection on generated output directories. This layer ensures that all infrastructure concerns are isolated, testable, and consistently available to higher application layers.","children":[{"filePath":"src/infra/__mocks__","role":"This directory provides the public API surface for LLM provider mocking infrastructure.","fileKind":"folder"},{"filePath":"src/infra/auth.ts","role":"Example or fixture module providing stub authentication functions and a service class for demonstration or testing.","fileKind":"source"},{"filePath":"src/infra/config","role":"Configuration management layer for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"src/infra/config-validation.ts","role":"Infrastructure facade providing a stable public API for ArchSpine configuration resolution and validation.","fileKind":"source"},{"filePath":"src/infra/config.ts","role":"Public API barrel file for the configuration subsystem, re-exporting the facade and type definitions.","fileKind":"source"},{"filePath":"src/infra/credentials","role":"Platform-specific credential storage and secure secret management infrastructure.","fileKind":"folder"},{"filePath":"src/infra/db","role":"Infrastructure persistence layer providing SQLite database lifecycle management, schema evolution, and data access for the ArchSpine indexing system.","fileKind":"folder"},{"filePath":"src/infra/db.ts","role":"Database Facade / Repository Aggregator that provides a unified interface for all SQLite runtime database operations in the ArchSpine mirror system.","fileKind":"source"},{"filePath":"src/infra/execution-checkpoint.ts","role":"Infrastructure layer execution checkpoint state manager, providing type definitions, validation, filesystem persistence, and resume candidate derivation for the ArchSpine checkpoint retry system.","fileKind":"source"},{"filePath":"src/infra/index-reader.ts","role":"Infrastructure facade module providing stable, low-level index document reading and validation utilities with schema compatibility checking.","fileKind":"source"},{"filePath":"src/infra/lite-prompt.ts","role":"Utility class for constructing lightweight LLM prompts optimized for token-constrained APIs in low-precision 'Lite Mode' structural indexing.","fileKind":"source"},{"filePath":"src/infra/llm","role":"LLM infrastructure layer providing abstracted client interfaces, configuration management, and provider adapters.","fileKind":"folder"},{"filePath":"src/infra/llm.ts","role":"Infrastructure facade module providing a stable public interface for LLM configuration, client creation, and provider utility functions.","fileKind":"source"},{"filePath":"src/infra/manifest","role":"Infrastructure layer for manifest state persistence, file integrity verification, and file status tracking.","fileKind":"folder"},{"filePath":"src/infra/manifest.ts","role":"Public API entry point (facade) for the Spine manifest subsystem, aggregating and re-exporting core manifest types and queries.","fileKind":"source"},{"filePath":"src/infra/mcp","role":"Implements the Model Context Protocol (MCP) infrastructure for external AI agent interaction and data access.","fileKind":"folder"},{"filePath":"src/infra/output.ts","role":"Infrastructure facade for writing Spine index units (JSON) to the filesystem within the .spine directory.","fileKind":"source"},{"filePath":"src/infra/prompt","role":"This directory contains the prompt construction and assembly infrastructure for the ArchSpine system.","fileKind":"folder"},{"filePath":"src/infra/prompt-context","role":"This directory contains the core orchestration and configuration modules for the ArchSpine prompt policy system.","fileKind":"folder"},{"filePath":"src/infra/prompt-context.ts","role":"Public facade module for the prompt-context subsystem, providing a stable import surface for policy constants, budget profiles, artifact building, and resolution functions.","fileKind":"source"},{"filePath":"src/infra/prompt-policy.ts","role":"Public facade module providing a stable import surface for prompt policy constants, LLM mode enumerations, and their parsing/resolution utilities.","fileKind":"source"},{"filePath":"src/infra/prompt-rendering.ts","role":"Infrastructure facade module providing a stable public API for prompt rendering and composition utilities.","fileKind":"source"},{"filePath":"src/infra/prompt.ts","role":"Public facade module for prompt generation, providing a stable import surface for external consumers while isolating them from internal prompt implementation details.","fileKind":"source"},{"filePath":"src/infra/renderer.ts","role":"Infrastructure utility class and helper functions for generating structured markdown documentation from layout types within the ArchSpine system.","fileKind":"source"},{"filePath":"src/infra/repair-policy.ts","role":"TypeScript module defining the repair policy decision logic for violation handling in the ArchSpine sync system.","fileKind":"source"},{"filePath":"src/infra/repository-artifacts.ts","role":"Infrastructure utility module providing low-level file system and Git operations for managed block reading and repository state inspection.","fileKind":"source"},{"filePath":"src/infra/rules-loader.ts","role":"Infrastructure utility for loading and parsing Spine rule documents from the filesystem.","fileKind":"source"},{"filePath":"src/infra/runtime-io.ts","role":"Core Infrastructure facade for runtime I/O operations (logging, warnings, errors, and user confirmations).","fileKind":"source"},{"filePath":"src/infra/secrets.ts","role":"Infrastructure facade for secure LLM credential retrieval and management.","fileKind":"source"},{"filePath":"src/infra/spine-gate.ts","role":"Infrastructure utility module for detecting and reporting unauthorized mutations in ArchSpine's protected output directories.","fileKind":"source"},{"filePath":"src/infra/ui.ts","role":"CLI utility function for interactive foldable console output management during asynchronous operations.","fileKind":"source"},{"filePath":"src/infra/writer-boundary.ts","role":"Infrastructure boundary component that enforces write protection for ArchSpine's internal directories and files.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-02T10:11:08.871Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-## `src/infra` — 基础设施层
+# `src/infra` – ArchSpine 的基础设施层
 
-`src/infra` 是 ArchSpine 镜像系统的基石，封装了所有高层应用逻辑所依赖的低层级服务与工具。该层负责配置管理、数据库持久化、大语言模型（LLM）客户端抽象、提示词构建、凭据存储、清单追踪、输出 I/O 以及写入保护。每一部分都设计为隔离、可测试且始终可用。
+该目录是 ArchSpine 镜像系统的基础设施层，提供配置管理、LLM 客户端抽象、数据库操作、凭证存储、清单持久化、MCP 服务器集成和提示生成等核心服务，所有高层操作均依赖于此层。
 
-### 关键子模块及其职责
+## 主要子模块及其分组
 
-- **`config/`** — 配置管理子系统。包含 `config.ts`（公开入口）、`config-validation.ts`（配置解析与验证的门面）以及相关类型定义。负责系统配置的加载、解析与校验。
-- **`db/`** — 数据库持久化层。管理 SQLite 数据库的生命周期、模式演进以及索引系统的数据访问。顶层 `db.ts` 提供统一的数据仓储门面。
-- **`llm/`** — LLM 基础设施。提供抽象的客户端接口、供应商适配器、重试逻辑和客户端工厂。`llm.ts` 门面暴露配置与创建工具函数。
-- **`credentials/`** — 安全的凭据存储。管理平台特定的密钥存储，用于 API 密钥及其他敏感数据。
-- **`manifest/`** — 清单状态持久化与文件完整性校验。追踪文件状态并维护清单信息。`manifest.ts` 是公开门面。
-- **`mcp/`** — 模型上下文协议（MCP）基础设施。通过标准协议使外部 AI 代理能够访问系统数据。
-- **`prompt/`** — 提示词构建与组装。为 AI 代理构建结构化的、本地化的提示词。
-- **`prompt-context/`** — 提示词策略系统的编排与配置。处理策略常量、预算配置、制品构建和解析函数。
-- **`__mocks__/`** — 公开的模拟基础设施，用于在测试中模拟 LLM 供应商。
+各组件按逻辑领域组织如下：
 
-### 值得关注的独立模块
+| 领域 | 关键文件/子目录 | 用途 |
+|------|-----------------|------|
+| **配置管理** | `config/`、`config.ts`、`config-validation.ts` | 加载、验证并解析环境变量与默认值；提供 `resolveSpineConfig` 和 `validateSpineConfig` 的稳定 API。 |
+| **凭证存储** | `credentials/`、`secrets.ts` | 可插拔的凭证存储系统，支持平台特定后端（macOS Keychain、Linux secret-tool、Windows DPAPI、内存）以安全管理 LLM API 密钥。 |
+| **数据库** | `db/`、`db.ts`、`execution-checkpoint.ts` | 管理 SQLite 运行时数据库生命周期（WAL 日志模式、模式初始化、漂移检测、陈旧文件恢复）。`db.ts` 提供统一的 DAO 仓库，支持文件、漂移事件、符号缓存、令牌用量和违规记录的 CRUD 操作。 |
+| **LLM 集成** | `llm/`、`llm.ts` | 客户端抽象、工厂模式、全局配置文件管理、指数退避重试机制以及具体提供商实现（OpenAI、Gemini 等）。 |
+| **清单管理** | `manifest/`、`manifest.ts` | 文件状态追踪、SHA-256 哈希、确定性路径解析以及同步验证所需的状态持久化。 |
+| **MCP 服务器** | `mcp/` | 实现模型上下文协议（MCP）服务器，使用 stdio 传输，向外部 AI 代理暴露项目元数据、文件内容、扫描、规则和历史漂移信息。 |
+| **提示生成** | `prompt/`、`prompt-context/`、`prompt.ts`、`prompt-policy.ts`、`prompt-rendering.ts`、`lite-prompt.ts` | 流式提示构建器、策略解析、预算计算、裁剪、诊断工具以及针对 Markdown、源代码、配置、文档、文件夹和项目的专用提示生成器。`lite-prompt.ts` 提供令牌受限的“精简模式”提示。 |
+| **运行时 I/O 与工具** | `runtime-io.ts`、`ui.ts`、`renderer.ts`、`index-reader.ts`、`output.ts`、`rules-loader.ts`、`writer-boundary.ts`、`spine-gate.ts`、`repository-artifacts.ts`、`repair-policy.ts`、`auth.ts` | 标准化的日志/警告/错误处理、可折叠的终端 UI、Markdown 文档渲染、索引文件读取与模式验证、`.spine` JSON 文件的输出 DAO、规则文档加载、写保护边界、未授权变更检测、仓库快照工具以及修复操作决策逻辑。 |
+| **测试模拟** | `__mocks__/` | 提供 `MockClient` 的稳定公共导出，用于在测试中模拟 LLM 提供商交互。 |
 
-- `auth.ts` — 用于测试和演示的存根认证。
-- `execution-checkpoint.ts` — 用于重试系统的检查点状态管理器，支持文件系统持久化和恢复候选推导。
-- `index-reader.ts` — 低层级索引文档读取，带模式兼容性检查。
-- `lite-prompt.ts` — 针对令牌受限的“精简模式”索引优化过的轻量提示词构建器。
-- `output.ts` — 将 Spine 索引单元（JSON）写入 `.spine` 目录。
-- `renderer.ts` — 从布局类型生成结构化 Markdown 文档。
-- `repair-policy.ts` — 同步系统中违规处理的决策逻辑。
-- `repository-artifacts.ts` — 用于块读取和仓库状态检查的低层级文件系统与 Git 操作。
-- `rules-loader.ts` — 从文件系统加载并解析 Spine 规则文档。
-- `runtime-io.ts` — 运行时 I/O 门面（日志、警告、错误、用户确认）。
-- `secrets.ts` — 用于安全获取 LLM 凭据的门面。
-- `spine-gate.ts` — 检测受保护输出目录中的未授权修改。
-- `ui.ts` — 命令行工具中交互式可折叠控制台输出的工具函数。
-- `writer-boundary.ts` — 对内部目录和文件强制执行写入保护。
-- `prompt.ts`、`prompt-policy.ts`、`prompt-rendering.ts` — 提示词子系统的门面模块。
+## 重点实现领域
 
-### 最重要的实现区域
+- **配置与凭证** – 控制其他所有基础设施行为的基础设置。
+- **数据库（db/）** – 文件元数据、审计事件和系统状态的持久化核心。
+- **LLM 抽象（llm/）** – 将系统与特定提供商解耦，并处理容错恢复。
+- **提示系统（prompt/ + prompt-context/）** – 生成结构化、本地化且经过验证的提示，驱动 ArchSpine 的 AI 交互。
+- **MCP 服务器（mcp/）** – 允许外部 AI 代理直接消费 ArchSpine 的资源与工具。
+- **运行时 I/O（runtime-io.ts、ui.ts）** – 在整个应用程序中确保一致的用户交互体验与可测试性。
 
-- **配置与校验** — `config/` 子系统确保所有系统设置被一致加载、校验并可供访问。
-- **数据库与持久化** — `db/` 处理所有 SQLite 操作、模式迁移以及索引流程的数据访问。
-- **LLM 抽象** — `llm/` 对于供应商无关的交互、重试处理以及客户端生命周期管理至关重要。
-- **提示词工程** — `prompt/` 和 `prompt-context/` 目录构建驱动 AI 代理行为的结构化提示词。
-- **安全与完整性** — `credentials/`、`secrets.ts`、`spine-gate.ts` 和 `writer-boundary.ts` 强制执行访问控制、写入保护和文件完整性。
-- **清单与输出** — `manifest/` 和 `output.ts` 追踪文件状态并持久化生成的索引文件。
-- **MCP 集成** — `mcp/` 使外部 AI 代理能够通过标准协议查询系统数据。
+所有这些组件整合为一个统一的基础设施层，支撑着整个 ArchSpine 镜像系统的运行。

@@ -1,11 +1,35 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/services/view","role":"View layer for generating and rendering architectural visualizations and analysis reports.","responsibility":"Provides a unified subsystem for defining, generating, scoring, and rendering architectural views (such as architecture diagrams, risk hotspots, and public surface analysis) from indexed project metadata, with support for LLM-based specification generation and markdown report output.","children":[{"filePath":"src/services/view/arch-diagram-renderer.ts","role":"Pure rendering utility that transforms architectural diagram specifications into SVG markup.","fileKind":"source"},{"filePath":"src/services/view/architecture-diagram-view.ts","role":"ArchSpine view derivation service for generating and rendering interactive architecture diagrams from project metadata using LLM-based specification generation.","fileKind":"source"},{"filePath":"src/services/view/common.ts","role":"Pure utility module providing scoring and path suppression functions for the view layer.","fileKind":"source"},{"filePath":"src/services/view/index-loader.ts","role":"Infrastructure module that loads and caches indexed Spine units from the .spine/index directory for view layer consumption, particularly architecture diagram generation.","fileKind":"source"},{"filePath":"src/services/view/index.ts","role":"Public facade module for the view subsystem, centralizing exports for view-specific runtime and rendering components within the MCP (Model Context Protocol) resource layer.","fileKind":"source"},{"filePath":"src/services/view/public-surface-view.ts","role":"View generation scoring engine that ranks source files by their likelihood of being public API surface.","fileKind":"source"},{"filePath":"src/services/view/risk-hotspots-view.ts","role":"Pure view generator function that calculates architectural risk hotspots from indexed code units.","fileKind":"source"},{"filePath":"src/services/view/types.ts","role":"TypeScript interface defining a metadata wrapper for SpineUnit with line count, used by infrastructure components for index reading.","fileKind":"source"},{"filePath":"src/services/view/view-registry.ts","role":"Central registry and type definition module for architectural visualization views within the ArchSpine system.","fileKind":"source"},{"filePath":"src/services/view/view-renderer.ts","role":"View service module that renders architectural view artifacts (risk hotspots, CLI entries, MCP entries, module entries, public surface) into formatted markdown reports using filesystem-loaded templates.","fileKind":"source"},{"filePath":"src/services/view/view-runtime.ts","role":"Configuration resolution module for the experimental view layer and enabled views within the ArchSpine system.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T03:58:47.695Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-The `src/services/view` directory is the ArchSpine view layer, responsible for generating, scoring, and rendering architectural visualizations from indexed project metadata. It provides a unified subsystem that produces diagrams, risk analyses, public surface reports, and structured markdown documentation, all driven by a combination of LLM-based specification generation and pure algorithmic scoring.
+## ArchSpine View Generation & Rendering Subsystem
 
-The children are logically grouped into several areas:
+This directory contains the core view generation and rendering subsystem for ArchSpine's architectural visualization and analysis views. It is responsible for producing, validating, persisting, and rendering multiple architectural view types—such as architecture diagrams, risk hotspots, and public surface maps—using LLM-based specifications, scoring algorithms, and Markdown templates. The subsystem also manages the view registry and runtime configuration.
 
-- **Core view generators** – `architecture-diagram-view.ts` (LLM-based diagram specification), `risk-hotspots-view.ts` (risk calculation), and `public-surface-view.ts` (public API ranking). These produce the raw view data.
-- **Rendering utilities** – `arch-diagram-renderer.ts` (converts diagram specs to SVG) and `view-renderer.ts` (formats multiple view types into markdown reports using templates).
-- **Infrastructure and configuration** – `index-loader.ts` (caches Spine units), `view-runtime.ts` (enables/disables views), and `view-registry.ts` (central view type definitions).
-- **Shared support** – `common.ts` (scoring and path suppression), `types.ts` (metadata wrapper types), and `index.ts` (public facade for MCP resource layer).
+### Notable children and how they are grouped
 
-Key submodules to note: `architecture-diagram-view.ts` leverages LLM calls to generate interactive diagram specs, while `risk-hotspots-view.ts` computes risk scores purely from code structure. The `index-loader.ts` bridges the view layer with the persistent index, ensuring efficient access to project metadata.
+- **Rendering & Diagram Generation**  
+  - `arch-diagram-renderer.ts` – Pure utility that converts `ArchDiagramSpec` into SVG markup. It defines visual styling per node type (frontend, backend, database, etc.), orders layers, calculates positions, and escapes HTML entities for safe SVG text.  
+  - `architecture-diagram-view.ts` – Orchestrates generation, validation, and persistence of architecture diagrams. It loads project/folder units via `ViewIndexLoader`, constructs an LLM prompt, parses the LLM response into a validated `ArchDiagramSpec`, renders it to HTML using `ArchitectureDiagramRenderer`, and persists both the HTML and the raw spec.
+
+- **Scoring & Analysis**  
+  - `public-surface-view.ts` – A scoring engine that ranks source files by likelihood of being public API surface. It applies a multi-factor algorithm (semantic declarations, export counts, internal consumers, re-export amplification) and applies bonuses/penalties for specific surface kinds and type-only files.  
+  - `risk-hotspots-view.ts` – Generator for risk hotspot computation. It calculates a composite risk score per indexed unit based on fan-in, fan-out, cross-boundary edges, public surface exposure, semantic drift, rule violations, file size, and adjacent tests. The top 12 hotspots are selected and returned in a ranked `ViewArtifactEnvelope`.  
+  - `common.ts` – Pure utility module that provides scoring helpers (summation, confidence calculation), path suppression (regex for test, fixture, docs etc.), boundary extraction, and cross-boundary edge counting.
+
+- **Index & Data Loading**  
+  - `index-loader.ts` – Loads and caches `SpineFolderUnit` and `SpineProjectUnit` JSON files from the `.spine/index` directory. It validates each against `SpineUnit` schemas, warns about malformed files, and limits folder count for diagram clarity.
+
+- **Registry & Configuration**  
+  - `view-registry.ts` – Central registry defining `ViewDefinition` metadata (ID, title, description, enabled status, requirements, outputs). Provides `VIEW_DEFINITIONS` array, `VIEW_DEFINITION_MAP`, type guard `isViewId()`, and helpers `getViewDefinition()`, `getDefaultEnabledViewIds()`, `normalizeViewIds()`.  
+  - `view-runtime.ts` – Resolves configuration for the experimental view layer and enabled views from project config, environment variables, or defaults. Normalizes and filters unknown view IDs.
+
+- **Markdown Rendering & Export**  
+  - `view-renderer.ts` – Renders view artifacts (risk hotspots, CLI entries, MCP entries, module entries, public surface) into formatted Markdown reports using filesystem-loaded templates. It handles severity scoring, detail formatting, Markdown escaping, and confidence display.
+
+- **Public Facade**  
+  - `index.ts` – Aggregates and re-exports all public modules to provide a stable import interface for MCP clients and external consumers.
+
+### Implementation areas that matter most
+
+- **LLM-driven specification generation** for architectural diagrams, with strict validation and fallback handling.  
+- **Multi-factor scoring engines** for public surface detection and risk hotspot ranking, tuned with configurable thresholds and bonuses.  
+- **View registry and configuration resolution** to control which views are active and how they are enabled by default.  
+- **Markdown rendering pipeline** that loads templates on demand and escapes content to ensure safe output.  
+- **Layer isolation** between pure utilities (scoring, rendering) and orchestration (view generators, index loader) to keep the system testable and modular.

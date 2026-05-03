@@ -1,30 +1,26 @@
-<!-- spine-content-hash:0091b0a51af342ef54f9e690cbfd5389df755cf4a7e5d74cf048ed33b24b2d3b -->
-# ArchSpine: `no-direct-db-import` Architectural Rule
+---MARKDOWN:Simplified Chinese---
+# ArchSpine 配置摘要：规则 `no-direct-db-import`
 
-## Role
-This rule enforces architectural layer isolation by prohibiting direct imports from the database layer (`src/db/`) in service and middleware layers. It ensures clean domain boundaries between business logic and storage implementation.
+## 作用
+此规则为 ArchSpine 镜像系统定义导入限制，禁止非数据库层（服务层和中间层）直接导入数据库适配器模块。目的是通过强制架构治理，保持领域边界清晰，防止业务逻辑与存储实现紧耦合。
 
-## Key Responsibilities
-- Prevent service and middleware code from directly importing database adapters.
-- Enforce separation of concerns between business logic and data access.
-- Treat any violation as a compilation/deployment error.
+## 参数定义
+| 参数 | 说明 |
+|------|------|
+| `schemaVersion` | 规则结构的版本号，用于确保与规则引擎的兼容性。 |
+| `ruleId` | 规则的唯一标识符，供报告和修复功能引用。 |
+| `title` | 规则的可读短名称，显示在违规消息中。 |
+| `summary` | 规则的简要说明，帮助快速理解规则所强制的内容。 |
+| `appliesTo` | Glob 模式，指定哪些源文件受规则约束；支持包含和排除（通过 `!` 前缀）。 |
+| `severity` | 违规的严重级别：`error` 会阻塞流水线，`warning` 仅通知但不阻塞，`info` 提供信息性反馈。 |
+| `enforceable` | 布尔标志，指示规则是否可自动执行，或仅为建议性。 |
+| `rationale` | 规则的业务或技术理由，帮助开发者理解规则存在的原因。 |
+| `bodyMarkdown` | 规则的完整 Markdown 文档，包含允许和禁止的代码模式示例。 |
 
-## Invariants
-- Any file matching `src/**/*.ts` **except** those under `src/db/` must not import from `src/db/*`.
-- Violations are treated as errors (severity: `error`).
-- The rule is enforceable by tooling and cannot be bypassed.
+## 稳定性与风险
+该规则通过强制层隔离，直接影响到系统稳定性，防止业务逻辑与存储实现之间的紧密耦合。如果配置不当（例如 `appliesTo` 模式错误或严重级别过低），关键依赖违规可能被遗漏，导致架构腐化。`enforceable` 标志确保在 CI/CD 流水线中进行自动检查；禁用该标志会增加回归风险。规则的 `rationale` 和 `bodyMarkdown` 为开发者提供了必要的上下文以自行修正，减少误报带来的挫败感。总体而言，正确配置有助于长期维护系统的可维护性并减少技术债务。
 
-## Negative Scope (Out of Scope)
-- This rule does not restrict imports within the database layer itself.
-- It does not define how database adapters should be structured or exposed.
-- It does not enforce any specific abstraction pattern (e.g., repository pattern) — only the prohibition of direct imports.
-
-## Exported / Externally Visible Behavior
-- The rule is identified by `ruleId: "no-direct-db-import"`.
-- It applies to all TypeScript files outside `src/db/`, as defined by the `appliesTo` glob pattern.
-- The `severity` is `error`, meaning violations block compilation or deployment.
-- The `enforceable` flag is `true`, allowing automated enforcement in CI/CD pipelines.
-- The `rationale` (in Chinese) explains the purpose: maintaining clear domain boundaries and avoiding coupling business logic to storage implementation.
-
-## Stability and Risks
-This rule enhances system stability by enforcing a strict layered architecture, preventing accidental coupling between business logic and database specifics. It reduces the risk of cascading changes when storage implementations are modified. However, overly strict enforcement may require additional abstraction layers, increasing initial development complexity. Violations are treated as errors, ensuring early detection in CI/CD pipelines.
+**运维提示：**
+- 当前配置为 `severity: "error"` 且 `enforceable: true`，即违规会阻塞流水线——对于关键治理规则是合适的设置。
+- `appliesTo` 模式（`src/**/*.ts` 排除 `!src/db/**`）确保数据库层本身不受规则约束，避免自冲突。
+- 确保所有团队成员理解 `bodyMarkdown` 中的修正指导，避免浪费调试时间。

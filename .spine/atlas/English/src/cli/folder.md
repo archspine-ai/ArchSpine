@@ -1,22 +1,26 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/cli","role":"Entry point and command-line interface layer for the ArchSpine system, handling user commands, argument parsing, help presentation, and runtime bootstrapping.","responsibility":"Provides the complete command-line interface for ArchSpine, including the main entry point (index.ts), help text rendering, utility functions for UI formatting and configuration parsing, and subdirectories for command adapters (commands), initialization (init), and repository artifact management (repo). Collectively, these components enable users to interact with ArchSpine's semantic mirror workflows through terminal commands.","children":[{"filePath":"src/cli/cli-utils.ts","role":"CLI UI presentation utility for formatting language discovery results, conditional banner rendering, and configuration value parsing.","fileKind":"source"},{"filePath":"src/cli/commands","role":"CLI command adapters for the ArchSpine system, each handling a specific subcommand's argument parsing, validation, and delegation to core services.","fileKind":"folder"},{"filePath":"src/cli/document-languages.ts","role":"Configuration module defining types and constants for document language selection in multilingual documentation tiers.","fileKind":"source"},{"filePath":"src/cli/help.ts","role":"CLI help text renderer for the ArchSpine command-line interface.","fileKind":"source"},{"filePath":"src/cli/index.ts","role":"Primary CLI entrypoint and command router for the ArchSpine semantic mirror system.","fileKind":"source"},{"filePath":"src/cli/init","role":"This directory contains the initialization and bootstrapping subsystem for the ArchSpine project.","fileKind":"folder"},{"filePath":"src/cli/repo","role":"CLI command adapter for managing repository artifact strategies.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-02T07:41:55.417Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# `src/cli` — Command-Line Interface & Entry Point
+# `src/cli` — Command‑Line Interface & Entry Point
 
-The `src/cli` directory is the user-facing gateway to the ArchSpine semantic mirror system. It handles all terminal interactions: parsing commands, displaying help, bootstrapping the runtime, and delegating to core services.
+The `src/cli` directory is the primary user‑facing entry point for the ArchSpine mirror system. It handles all terminal‑based operations, from project initialization and repository configuration to daily synchronization and system diagnostics.
 
 ## Notable Children
 
-- **`index.ts`** — Primary CLI entry point and command router. It interprets the user’s invocation and dispatches to the appropriate subcommand.
-- **`commands/`** — A folder containing adapters for each ArchSpine subcommand. Each adapter performs argument validation and delegates to core business logic.
-- **`init/`** — The initialization and bootstrapping subsystem, responsible for setting up a new ArchSpine project (configuration files, scaffolding, etc.).
-- **`repo/`** — A CLI adapter for managing repository artifact strategies (e.g., snapshots, versioning policies).
-- **`help.ts`** — Renders the CLI help text, including usage examples and command descriptions.
-- **`cli-utils.ts`** — Utility functions for UI formatting (language discovery banners, conditional output) and configuration value parsing.
-- **`document-languages.ts`** — Defines types and constants for selecting documentation languages in multilingual tiers.
+- **`index.ts`** – The main command router. It bootstraps the runtime (configuration, secrets, LLM setup), parses `process.argv`, and dispatches execution to the appropriate handler module (e.g., `init`, `sync`, `build`, `publish`, `check`, `fix`, `scan`, `history`). Also configures global HTTP proxy and displays system banners.
 
-## Implementation Areas
+- **`cli-utils.ts`** – A set of UI presentation helpers for consistent command output: banner display (full/mini/suppressed), text wrapping, value parsing, error formatting, and step‑by‑step progress messages.
 
-- **Argument Parsing & Routing**: `index.ts` and the adapters inside `commands/` form the core of the CLI dispatch mechanism.
-- **Help System**: `help.ts` provides dynamically generated help output.
-- **Initialization Workflow**: The `init/` subdirectory handles project scaffolding, making it a critical entry point for new users.
-- **Repository Artifact Management**: The `repo/` subdirectory exposes CLI commands for controlling how repository artifacts are generated and maintained.
-- **Language Configuration**: `document-languages.ts` and `cli-utils.ts` together enable locale-aware help and configuration.
+- **`help.ts`** – Renders general help (list of all commands grouped by category) and detailed per‑command help for operations such as `init`, `sync`, `view`, etc.
+
+- **`document-languages.ts`** – Defines the `DocumentLanguageChoice` type and logic for building a list of supported document languages, including a separator for high‑capacity languages.
+
+- **`commands/`** – Houses dedicated handler modules for each CLI subcommand; the router in `index.ts` delegates to these modules after argument parsing.
+
+- **`init/`** – Orchestrates the full project initialization sequence: artifact strategy selection, rule template installation, Git hooks, LLM credential setup, file‑system scanning, language discovery, manifest updates, and handoff to the build workflow.
+
+- **`repo/`** – Provides CLI adapters for checking and setting repository artifact strategies, with progress feedback and result display.
+
+## Key Implementation Areas
+
+- **Command Routing & Help** – Central argument parsing and dispatcher (`index.ts`) combined with comprehensive help text (`help.ts`) that stays current with experimental commands.
+- **UI Formatting** – A consistent look and feel for all terminal output, handled by `cli-utils.ts`.
+- **Initialization Flow** – A multi‑step bootstrap that prepares an ArchSpine project from scratch (`init/`).
+- **Repository Configuration** – Interactive management of artifact strategies via the `repo/` adapters.

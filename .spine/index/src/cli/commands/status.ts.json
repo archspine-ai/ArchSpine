@@ -2,79 +2,119 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/cli/commands/status.ts",
-    "contentHash": "c8150a304a5d1fe54fb633941b1a3de60d095b143c04007070d521364e10190a",
-    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
-    "semanticHash": "6ecde4dfe157575178ad7f5529c26fb70fb962049b631b36efebbed7932e5ab5",
+    "contentHash": "b5b71db2b87a0079c3dc5ed1ec248919425a5d77a3156d4103ee8af1eb71beb3",
+    "skeletonHash": "fb3fc5bc755ea117d5a46da41c6579d02769a9d749a60515a18ba54e4bb05aaf",
+    "semanticHash": "c42056cd404a355139235ddbca9936af927d4926f1110c8e1610e21d191a9f58",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli/commands"
   },
   "semantic": {
-    "role": "CLI command adapter for displaying the synchronization status of the ArchSpine mirror system.",
+    "role": "CLI command adapter that orchestrates the display of synchronization status for the ArchSpine mirror system, acting as a thin entry point that delegates status retrieval to the runtime service and formats console output.",
     "responsibilities": [
-      "Provides the command interface (ExecuteStatusCommandOptions) for dependency injection of the runtime service facade.",
-      "Invokes the sync service's status method via the injected runtime service facade.",
-      "Formats and outputs the synchronization status (total files, needing sync, failures) to the console.",
-      "Handles errors by converting them to ArchSpineError instances for consistent CLI error reporting."
+      "Provides the `ExecuteStatusCommandOptions` interface for dependency injection of the `RuntimeService`.",
+      "Invokes the sync status service via `runtimeService.getSyncStatusService().status()` to retrieve current synchronization state.",
+      "Formats and logs synchronization metrics (total files, files needing sync, failures) to the console.",
+      "Converts caught errors to `ArchSpineError` instances using `toArchSpineError` for consistent CLI error handling."
     ],
     "outOfScope": [
-      "Direct interaction with file system or persistence layers.",
-      "Business logic for computing synchronization status.",
-      "Pipeline orchestration or data transformation."
+      "Direct data access or persistence operations.",
+      "Business logic for synchronization status computation.",
+      "Initialization or configuration of the runtime environment."
     ],
     "invariants": [
-      "Must remain a thin CLI adapter delegating all business logic to the runtime service.",
-      "Must not import or use persistence, pipeline, or engine modules directly."
+      "Adheres to the cli-entrypoint-separation rule by remaining a thin adapter without pipeline or persistence logic.",
+      "Error handling must always use `toArchSpineError` for uniformity."
     ],
     "changeIntent": {
-      "architecturalIntent": "Maintain a clean CLI entrypoint that delegates status retrieval to the runtime service, ensuring separation of concerns.",
-      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, ensuring the CLI adapter remains thin and compliant with separation rules."
+      "architecturalIntent": "Maintain thin CLI adapter pattern for the status command, ensuring separation of concerns from core logic.",
+      "recentChangeIntent": "Part of the initial ArchSpine v1.0.0 commit establishing architectural governance and semantic layer for the mirror system."
     },
     "publicSurface": [
-      "ExecuteStatusCommandOptions",
-      "executeStatusCommand"
+      "executeStatusCommand function",
+      "ExecuteStatusCommandOptions interface"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "CLI command adapter for displaying the synchronization status of the ArchSpine mirror system.",
+        "role": "CLI command adapter that orchestrates the display of synchronization status for the ArchSpine mirror system, acting as a thin entry point that delegates status retrieval to the runtime service and formats console output.",
         "responsibilities": [
-          "Provides the command interface (ExecuteStatusCommandOptions) for dependency injection of the runtime service facade.",
-          "Invokes the sync service's status method via the injected runtime service facade.",
-          "Formats and outputs the synchronization status (total files, needing sync, failures) to the console.",
-          "Handles errors by converting them to ArchSpineError instances for consistent CLI error reporting."
+          "Provides the `ExecuteStatusCommandOptions` interface for dependency injection of the `RuntimeService`.",
+          "Invokes the sync status service via `runtimeService.getSyncStatusService().status()` to retrieve current synchronization state.",
+          "Formats and logs synchronization metrics (total files, files needing sync, failures) to the console.",
+          "Converts caught errors to `ArchSpineError` instances using `toArchSpineError` for consistent CLI error handling."
         ],
         "outOfScope": [
-          "Direct interaction with file system or persistence layers.",
-          "Business logic for computing synchronization status.",
-          "Pipeline orchestration or data transformation."
+          "Direct data access or persistence operations.",
+          "Business logic for synchronization status computation.",
+          "Initialization or configuration of the runtime environment."
         ]
       },
       "Simplified Chinese": {
-        "role": "用于显示 ArchSpine 镜像系统同步状态的 CLI 命令适配器。",
+        "role": "ArchSpine镜像系统同步状态显示的命令行适配器，作为薄入口点，将状态检索委托给运行时服务并格式化控制台输出。",
         "responsibilities": [
-          "提供命令接口（ExecuteStatusCommandOptions），用于依赖注入运行时服务外观。",
-          "通过注入的运行时服务外观调用同步服务的状态方法。",
-          "将同步状态（总文件数、需要同步的文件数、失败数）格式化并输出到控制台。",
-          "处理错误，将其转换为 ArchSpineError 实例，以实现一致的 CLI 错误报告。"
+          "提供`ExecuteStatusCommandOptions`接口，用于依赖注入`RuntimeService`。",
+          "通过`runtimeService.getSyncStatusService().status()`调用同步状态服务以获取当前同步状态。",
+          "格式化并记录同步指标（总文件数、需要同步的文件数、失败数）到控制台。",
+          "使用`toArchSpineError`将捕获的错误转换为`ArchSpineError`实例，实现一致的CLI错误处理。"
         ],
         "outOfScope": [
-          "直接与文件系统或持久化层交互。",
-          "计算同步状态的业务逻辑。",
-          "管道编排或数据转换。"
+          "直接的数据访问或持久化操作。",
+          "同步状态计算的业务逻辑。",
+          "运行时环境的初始化或配置。"
         ]
       }
     }
   },
   "skeleton": {
-    "imports": [],
-    "exports": [],
-    "declaredSymbols": [],
+    "imports": [
+      {
+        "source": "'../../services/runtime-service.js'",
+        "symbols": [
+          "RuntimeService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../core/errors.js'",
+        "symbols": [
+          "ErrorCodes",
+          "toArchSpineError"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeStatusCommand",
+        "kind": "function",
+        "signature": "executeStatusCommand({\n  runtimeService,\n}: ExecuteStatusCommandOptions)"
+      },
+      {
+        "name": "ExecuteStatusCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteStatusCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeStatusCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/status.ts#"
+      },
+      {
+        "name": "ExecuteStatusCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/status.ts#"
+      }
+    ],
     "structuralHints": {
-      "importCount": 0,
-      "exportCount": 0,
+      "importCount": 2,
+      "exportCount": 2,
       "isBarrel": false,
       "isTypeOnly": false
     }
@@ -99,14 +139,22 @@
     ],
     "dependedBy": [],
     "reverseIndexComplete": false,
-    "symbolEdges": []
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/status.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/toArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T03:57:46.927Z",
+    "indexedAt": "2026-05-03T11:25:01.582Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "llm"
+      "fallback"
     ]
   }
 }

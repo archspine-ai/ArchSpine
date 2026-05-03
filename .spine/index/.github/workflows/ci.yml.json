@@ -3,22 +3,23 @@
   "identity": {
     "filePath": ".github/workflows/ci.yml",
     "contentHash": "3e61feeedd8f77d7cc27945df7266ab9b78e7fde24c473b45489b8c99e9737f3",
-    "semanticHash": "94b2b79e43fceb34c08e47cc5403a6a7efe197fd92d5cd45a02b5f48b941e732",
+    "semanticHash": "be626ce83ec3cf9395c1ded13c2991d921e0553cbeb379d8378a2fd073997ae8",
     "language": "unsupported",
     "fileKind": "document",
     "scope": ".github/workflows"
   },
   "semantic": {
-    "role": "Defines the automated CI pipeline for the ArchSpine project",
+    "role": "GitHub Actions CI workflow definition for the ArchSpine project",
     "responsibilities": [
-      "Triggering CI on pushes and pull requests to the main branch",
-      "Running linting, building, testing, and package integrity checks",
-      "Managing concurrency and cancellation of in-progress runs"
+      "Defines CI pipeline triggered on push and pull requests to main branch",
+      "Includes steps for checkout, Node.js setup, dependency installation, linting, building, testing, and package integrity check",
+      "Specifies concurrency control and permissions"
     ],
     "outOfScope": [
-      "Deployment or release automation",
-      "Multi-platform or multi-OS testing",
-      "Manual or scheduled CI triggers"
+      "Deployment steps",
+      "Release publishing",
+      "Multi-platform testing",
+      "Nightly or scheduled builds"
     ],
     "invariants": [],
     "changeIntent": {
@@ -30,21 +31,23 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document defines the continuous integration workflow for the ArchSpine project, ensuring code quality and build integrity on every push or pull request to the main branch.",
-        "context_and_audience": "Intended for developers and maintainers who contribute to the ArchSpine repository. It describes the automated checks that run in the CI environment to validate changes before merging.",
+        "purpose": "This document defines the continuous integration workflow for the ArchSpine repository using GitHub Actions.",
+        "context_and_audience": "Intended for project maintainers and contributors who need to understand or modify the automated CI pipeline. The workflow runs on every push and pull request to the main branch to ensure code quality and build integrity.",
         "key_takeaways": [
-          "CI runs on every push and pull request to the main branch.",
-          "The pipeline includes linting, building, testing, and a package integrity check.",
-          "Concurrent runs are automatically canceled to save resources."
+          "CI runs on push/PR to main branch",
+          "Steps: checkout, setup Node 20, install, lint, build, test, pack check",
+          "Concurrency group set to cancel redundant runs",
+          "Permissions limited to read-only for contents"
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档定义了 ArchSpine 项目的持续集成工作流，确保每次向主分支推送或发起拉取请求时，代码质量和构建完整性都得到验证。",
-        "context_and_audience": "面向为 ArchSpine 仓库贡献代码的开发者和维护者。它描述了在 CI 环境中自动运行的检查步骤，用于在合并前验证变更的有效性。",
+        "purpose": "本文档定义了 ArchSpine 仓库的持续集成工作流，使用 GitHub Actions 实现。",
+        "context_and_audience": "面向项目维护者和贡献者，帮助他们理解或修改自动化 CI 管道。该工作流在每次推送到主分支或创建拉取请求时运行，以确保代码质量和构建完整性。",
         "key_takeaways": [
-          "每次向主分支推送或发起拉取请求时都会触发 CI。",
-          "流水线包括代码检查、构建、测试和包完整性验证。",
-          "并发运行会自动取消以节省资源。"
+          "CI 在推送到主分支或创建 PR 时触发",
+          "步骤包括：检出代码、设置 Node 20、安装依赖、代码检查、构建、测试、打包完整性检查",
+          "设置并发组以取消冗余运行",
+          "权限仅限内容的读取权限"
         ]
       }
     }
@@ -67,7 +70,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T07:20:31.533Z",
+    "indexedAt": "2026-05-03T11:21:59.133Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

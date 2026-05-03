@@ -1,32 +1,22 @@
-<!-- spine-content-hash:fa7811ab101e5eb0d051174c5a2939ca46c93f471b4cd8c6ea27254598e11e1c -->
-# ArchSpine Architectural Constraint Rulebook
+# ArchSpine Layered Architecture Constraints
 
 ## Purpose
-This document establishes and enforces the layered architecture constraints for the ArchSpine project. It defines clear boundaries between CLI entrypoints, service orchestration, core pipeline contracts, task stages, analytical engines, and infrastructure facades. The goal is to prevent architectural drift, keep each layer focused on its responsibility, and ensure the system remains modular, testable, and maintainable as it evolves.
+This document establishes a set of layered architecture constraints that enforce a clear separation of concerns among the CLI, services, runtime, core, tasks, engines, and infra modules. The goal is to keep the codebase maintainable, testable, and understandable by preventing inappropriate cross-layer dependencies.
 
-## Context and Audience
-This document is intended for all contributors to the ArchSpine repository, including developers, code reviewers, and architects. It serves as both a reference for understanding the intended module structure and a rulebook for enforcing import and responsibility boundaries during development and code review. New contributors should read this document first to understand where their changes belong.
+## Audience
+This document is targeted at developers and AI agents who contribute to the ArchSpine repository. It defines architectural rules that must be followed when adding or modifying code. The rules are designed to be enforced by static analysis or code review to preserve the intended modular structure as the project evolves.
 
-## Key Takeaways
-- The project follows a strict layered architecture: CLI -> services -> core/tasks/engines -> infra, with clear dependency direction.
-- CLI modules must remain thin entrypoints and must not absorb pipeline or persistence logic.
-- Services orchestrate runtime behavior; view-specific services belong under `src/services/view/`.
-- Core modules define pipeline contracts and must not depend on CLI code.
-- Engines provide reusable analysis logic and must stay decoupled from service orchestration.
-- Infra modules expose stable facades and must not absorb orchestration concerns.
-- Each constraint has a severity level (Error or Warning) and a documented rationale.
+## Key Architectural Decisions
+- **CLI modules** must remain thin adapters and must not absorb pipeline or persistence logic.
+- **Services orchestrate** core/tasks/engines/infra; view-specific services belong under `src/services/view/`.
+- **Runtime compatibility modules** centralize schema versioning and migrations in a single layer.
+- **Core modules** define pipeline contracts without depending on CLI code.
+- **Task modules** implement stage-local work on top of core contracts and engines.
+- **Engines** provide reusable analysis logic independent of CLI and service orchestration.
+- **Infra modules** expose stable low-level facades; callers should prefer public facades over deep internals.
 
-## Out of Scope
-- Specific implementation details of individual modules
-- External API contracts or user-facing documentation
-- Deployment or infrastructure provisioning instructions
-- Testing strategies or CI/CD pipeline configuration
-
-## Invariants
-None specified.
-
-## Change Intent
-No recent architectural intent changes detected.
-
-## Drift Status
-No drift detected.
+## Workflows Anchored
+- **Code review**: Reviewers check that new code does not violate dependency direction (e.g., CLI importing core internals).
+- **Static analysis**: Linting or architecture validation tools (e.g., dependency-cruiser) can enforce these rules automatically.
+- **Architectural refactoring**: When evolving the codebase, these constraints guide where to place new modules and how to restructure existing ones.
+- **Contributor onboarding**: New team members refer to this document to understand the intended layer boundaries.

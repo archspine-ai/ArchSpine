@@ -4,35 +4,35 @@
     "filePath": "src/infra/lite-prompt.ts",
     "contentHash": "d7cd4aa65cdf6260b475fd286a98a6fbd8c01139ea55c0b2f76f6240bea3efd3",
     "skeletonHash": "ac19cd076288bc00aca199015855d14ea88ce5f05b1bc0327e80d1a39e2f039b",
-    "semanticHash": "f130e219cc83b88ef87656f302348a06f42d8cfdd76324fabdcb41de2fca4077",
+    "semanticHash": "c6f08046be0a169b3cb1d594bd12372142930641ac6d4716b0ae0537a70ab808",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra"
   },
   "semantic": {
-    "role": "Utility class for constructing lightweight LLM prompts optimized for token-constrained APIs in low-precision 'Lite Mode' structural indexing.",
+    "role": "Utility class and function for constructing concise LLM prompts in low-precision 'Lite Mode' structural indexing, optimized for token-constrained LLM APIs.",
     "responsibilities": [
-      "Builds concise prompt strings for high-level file summarization in low-precision structural indexing mode.",
-      "Supports configurable response modes (JSON-only or JSON-and-markdown).",
-      "Generates localized markdown instructions for specified languages.",
-      "Provides a fluent builder API for assembling prompt parts."
+      "Provides a fluent builder API (LitePromptBuilder) for assembling prompt parts.",
+      "Generates high-level lite summary prompts for source file structural indexing.",
+      "Supports multiple response modes: JSON-only or JSON-and-markdown.",
+      "Generates localized markdown instructions for specified languages (e.g., English, Simplified Chinese).",
+      "Offers a convenience function (generateLitePrompt) that composes the builder with identity, instructions, JSON schema, and source context."
     ],
     "outOfScope": [
-      "Orchestrating LLM API calls or managing token counting.",
-      "Handling high-precision or full-context analysis prompts.",
-      "Infrastructure-level concerns like network, logging, or configuration management."
+      "Invoking LLM APIs or handling response parsing.",
+      "Performing file I/O or reading source file contents.",
+      "Orchestrating indexing pipelines or managing execution flow."
     ],
     "invariants": [
-      "Exports a single public class LitePromptBuilder with a fluent interface.",
-      "Exports a type LitePromptResponseMode defining allowed response modes.",
-      "Maintains internal state as a private array of string parts.",
-      "Generates prompts focused on structural indexing with minimal context overhead."
+      "Must remain a stable low-level capability for prompt construction without absorbing orchestration or service concerns.",
+      "Should be used via its public facade (LitePromptBuilder or generateLitePrompt) rather than internal private parts."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a lightweight, configurable prompt builder for low-precision structural indexing to reduce token usage in constrained API environments.",
-      "recentChangeIntent": "Restore LLM-authored markdown generation capabilities within the Lite Mode prompt builder."
+      "architecturalIntent": "Provide a token-efficient prompt construction mechanism for structural indexing mode, enabling the ArchSpine semantic layer to operate under tight LLM token budgets.",
+      "recentChangeIntent": "Part of ArchSpine v1.0.0 foundational release establishing the semantic layer and architectural governance for AI-era indexing."
     },
     "publicSurface": [
+      "generateLitePrompt",
       "LitePromptBuilder",
       "LitePromptResponseMode"
     ],
@@ -41,17 +41,33 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Utility class for constructing lightweight LLM prompts optimized for token-constrained APIs in low-precision 'Lite Mode' structural indexing.",
+        "role": "Utility class and function for constructing concise LLM prompts in low-precision 'Lite Mode' structural indexing, optimized for token-constrained LLM APIs.",
         "responsibilities": [
-          "Builds concise prompt strings for high-level file summarization in low-precision structural indexing mode.",
-          "Supports configurable response modes (JSON-only or JSON-and-markdown).",
-          "Generates localized markdown instructions for specified languages.",
-          "Provides a fluent builder API for assembling prompt parts."
+          "Provides a fluent builder API (LitePromptBuilder) for assembling prompt parts.",
+          "Generates high-level lite summary prompts for source file structural indexing.",
+          "Supports multiple response modes: JSON-only or JSON-and-markdown.",
+          "Generates localized markdown instructions for specified languages (e.g., English, Simplified Chinese).",
+          "Offers a convenience function (generateLitePrompt) that composes the builder with identity, instructions, JSON schema, and source context."
         ],
         "outOfScope": [
-          "Orchestrating LLM API calls or managing token counting.",
-          "Handling high-precision or full-context analysis prompts.",
-          "Infrastructure-level concerns like network, logging, or configuration management."
+          "Invoking LLM APIs or handling response parsing.",
+          "Performing file I/O or reading source file contents.",
+          "Orchestrating indexing pipelines or managing execution flow."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于构建精简LLM提示词的实用类与函数，专为低精度「Lite模式」结构索引设计，针对令牌受限的LLM API进行优化。",
+        "responsibilities": [
+          "提供流畅的构建器API（LitePromptBuilder）来组装提示词片段。",
+          "生成用于源文件结构索引的高层次精简摘要提示。",
+          "支持多种响应模式：仅JSON或JSON与Markdown。",
+          "为指定语言（如英语、简体中文）生成本地化的Markdown指令。",
+          "提供便利函数（generateLitePrompt），通过链式调用集成身份、指令、JSON模式和源代码上下文。"
+        ],
+        "outOfScope": [
+          "调用LLM API或处理响应解析。",
+          "执行文件I/O或读取源文件内容。",
+          "编排索引管道或管理执行流程。"
         ]
       }
     }
@@ -104,10 +120,12 @@
   },
   "graph": {
     "dependsOn": [],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:38.871Z",
+    "indexedAt": "2026-05-03T11:25:03.683Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -1,2 +1,9 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/assets","role":"This directory contains the core template definitions and documentation standards for the ArchSpine mirror system.","responsibility":"Collectively, these templates provide a standardized and extensible framework for documenting components, generating structured architecture summaries, enforcing architectural and coding standards, and analyzing the public surface and risk profile of the ArchSpine project, ensuring consistency and completeness across all architectural artifacts for both human readers and AI agents.","children":[{"filePath":"src/assets/templates","role":"This directory contains the core template definitions and documentation standards for the ArchSpine mirror system.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T03:58:52.773Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src/assets` 目录是 ArchSpine 镜像系统中核心模板定义和文档标准的主要存储位置。它主要由 `templates` 子模块构成，其中包含了用于组件文档、架构摘要生成、架构与编码标准强制实施、以及公开接口与风险分析的结构化模板定义。这些模板确保所有架构制品的一致性和完整性，同时服务于人类读者和 AI 代理。`templates` 目录按功能组织子模块，例如组件模板、摘要模板和标准模板，使得定位和扩展具体文档实践变得简单。关键实现领域包括标准化组件定义、自动化摘要生成管道，以及与更广泛的 ArchSpine 规范模式进行交叉引用。
+`src/assets/templates` 目录是 ArchSpine 镜像系统的模板核心仓库。所有模板共同定义了系统的结构和行为契约，提供可复用的蓝图，用于镜像文档、生成结构化 AI 输出、强制执行架构约束以及评估代码库健康状况。
+
+该目录下的子模块按功能分为四类：
+- **基础文档模板**：为镜像内容提供基线结构，确保整个项目文档的一致性。
+- **AI 提示模式**：定义标准化的输入/输出格式，使 AI 驱动的分析和生成自动化可靠。
+- **架构规则**：编码系统必须遵循的约束（如依赖规则、模块边界），确保架构一致性。
+- **视图清单**：列出系统可抽取或生成的各种视图（结构、行为、部署等）。
+
+具体的子模块包括 `mirror-summary.md`、`prompt-schema.json`、`arch-rules.yaml` 和 `view-inventory.yaml`。最关键的实现领域是自动化文档镜像和基于 AI 的架构验证，两者都依赖于这些模板的精确性和完整性。

@@ -4,56 +4,69 @@
     "filePath": "src/infra/prompt/source.ts",
     "contentHash": "a8236d9098b3225013026e312c394a1ee1937e64a1f09d2acfea1f11062abfe4",
     "skeletonHash": "5e7d413c8104793f0d139e90d18f600b05a6ed4c85ff04df5d7dfa1667faffc3",
-    "semanticHash": "3a5361cbbe74d4b17162c6a739d6e9f640b46e9ab0fc1aa226705e0bf80d25a2",
+    "semanticHash": "2dda35964361a4fb8bbba92b072907bbdb5bfa8779b79a171f40a23171ec62f9",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/prompt"
   },
   "semantic": {
-    "role": "Infrastructure facade function that generates structured LLM prompts for source code analysis tasks within the ArchSpine system.",
+    "role": "Infrastructure facade function for generating structured LLM prompts for source code analysis and validation tasks within the ArchSpine semantic layer.",
     "responsibilities": [
-      "Assembles a PromptBuilder with identity, instructions, examples, and environmental context (branch, status).",
-      "Integrates localized language instructions and output contract rendering for multilingual support.",
-      "Injects architectural rules, git intent, dependency context, and previous semantic data into the prompt.",
-      "Applies a JSON schema (sourceFileSchema) to enforce output structure.",
-      "Supports configurable task modes (e.g., 'summarize', 'audit') and prompt policy tiers (e.g., 'balanced')."
+      "Assembles a PromptBuilder chain with identity (developer assistant), task-specific instructions (summarize or validate), localized language instructions, and an output contract enforcing JSON structure.",
+      "Injects environmental context (branch, git status), git intent, architectural rules for violation checks, dependency context, and previous semantic contracts to provide comprehensive context for the LLM.",
+      "Applies the sourceFileSchema JSON schema and injects few-shot role examples (sourceRoleExamples) to constrain and guide the LLM's output format.",
+      "Offers a dedicated validation variant (generateSourceValidationJsonPrompt) tailored for strict architectural audits, omitting examples and using more rigorous instructions.",
+      "Supports semantic drift detection by comparing the provided previousSemantic contract with the current state derived from the AST/headers."
     ],
     "outOfScope": [
-      "Orchestrating the actual LLM inference or API calls.",
-      "Parsing or analyzing source code AST beyond the provided content.",
-      "Enforcing architectural rules beyond injecting them into the prompt.",
-      "Managing prompt templates or schema definitions (delegated to assets)."
+      "Does not execute LLM API calls or manage the prompt execution lifecycle.",
+      "Does not persist prompts or cache generated outputs.",
+      "Does not handle network I/O, database access, or user authentication."
     ],
     "invariants": [
-      "Must remain a pure prompt assembly function with no side effects.",
-      "Must delegate all prompt rendering logic to the PromptBuilder and shared utilities.",
-      "Must not absorb service/task/engine orchestration concerns (per infra-facade-imports rule)."
+      "Must remain a prompt assembly and data structuring layer; must not absorb service orchestration, task execution, or engine logic (ref: infra-facade-imports rule).",
+      "Public facade functions (generateSourcePrompt, generateSourceValidationJsonPrompt) should be the preferred entry point for callers outside this module, shielding them from the internal PromptBuilder complexity."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a stable, configurable facade for generating prompts that adhere to architectural policies and output contracts, enabling consistent source code analysis across the system.",
-      "recentChangeIntent": "Refactor to establish subsystem facades and resolve layer inversions, likely consolidating prompt generation logic into a dedicated infra facade."
+      "architecturalIntent": "To provide a stable, public API for constructing AI prompts that analyze source files, acting as the semantic orchestration layer within ArchSpine's infra by translating raw file data and metadata into structured, schema-enforced prompts.",
+      "recentChangeIntent": "v1.0.0 establishment of the semantic analysis layer, replacing ad-hoc prompt construction with a structured, policy-driven, multi-lingual prompt generation system supporting summarization and strict validation workflows."
     },
     "publicSurface": [
-      "generateSourcePrompt"
+      "generateSourcePrompt",
+      "generateSourceValidationJsonPrompt"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Infrastructure facade function that generates structured LLM prompts for source code analysis tasks within the ArchSpine system.",
+        "role": "Infrastructure facade function for generating structured LLM prompts for source code analysis and validation tasks within the ArchSpine semantic layer.",
         "responsibilities": [
-          "Assembles a PromptBuilder with identity, instructions, examples, and environmental context (branch, status).",
-          "Integrates localized language instructions and output contract rendering for multilingual support.",
-          "Injects architectural rules, git intent, dependency context, and previous semantic data into the prompt.",
-          "Applies a JSON schema (sourceFileSchema) to enforce output structure.",
-          "Supports configurable task modes (e.g., 'summarize', 'audit') and prompt policy tiers (e.g., 'balanced')."
+          "Assembles a PromptBuilder chain with identity (developer assistant), task-specific instructions (summarize or validate), localized language instructions, and an output contract enforcing JSON structure.",
+          "Injects environmental context (branch, git status), git intent, architectural rules for violation checks, dependency context, and previous semantic contracts to provide comprehensive context for the LLM.",
+          "Applies the sourceFileSchema JSON schema and injects few-shot role examples (sourceRoleExamples) to constrain and guide the LLM's output format.",
+          "Offers a dedicated validation variant (generateSourceValidationJsonPrompt) tailored for strict architectural audits, omitting examples and using more rigorous instructions.",
+          "Supports semantic drift detection by comparing the provided previousSemantic contract with the current state derived from the AST/headers."
         ],
         "outOfScope": [
-          "Orchestrating the actual LLM inference or API calls.",
-          "Parsing or analyzing source code AST beyond the provided content.",
-          "Enforcing architectural rules beyond injecting them into the prompt.",
-          "Managing prompt templates or schema definitions (delegated to assets)."
+          "Does not execute LLM API calls or manage the prompt execution lifecycle.",
+          "Does not persist prompts or cache generated outputs.",
+          "Does not handle network I/O, database access, or user authentication."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 语义层中专门用于源代码分析与验证任务的结构化 LLM 提示生成基础设施门面函数。",
+        "responsibilities": [
+          "使用 PromptBuilder 组装提示链，包含开发者助手身份、任务特定指令（总结或验证）、多语言指令以及强制 JSON 结构的输出契约。",
+          "注入环境上下文（分支、Git 状态）、Git 提交意图、用于违规检查的架构规则、依赖上下文以及先前的语义契约，为 LLM 提供全面的上下文信息。",
+          "应用 sourceFileSchema JSON 模式，并注入少量示例角色（sourceRoleExamples）来约束和引导 LLM 的输出格式。",
+          "提供专门的验证变体函数（generateSourceValidationJsonPrompt），用于严格的架构审计，省略示例并使用更严格的指令。",
+          "通过将提供的先前语义契约（previousSemantic）与从 AST/头文件派生的当前状态进行比较，支持语义漂移检测。"
+        ],
+        "outOfScope": [
+          "不执行 LLM API 调用或管理提示执行生命周期。",
+          "不持久化提示或缓存生成的输出。",
+          "不处理网络 I/O、数据库访问或用户认证。"
         ]
       }
     }
@@ -120,7 +133,7 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "../../assets/templates/prompts/index.js",
+        "targetPath": "src/assets/templates/prompts/index.ts",
         "relation": "import",
         "symbols": [
           "sourceFileSchema",
@@ -128,25 +141,79 @@
         ]
       },
       {
-        "targetPath": "./builder.js",
+        "targetPath": "src/infra/prompt-policy.ts",
+        "relation": "import",
+        "symbols": [
+          "PromptPolicyTier",
+          "PromptTaskMode",
+          "ValidatePolicy"
+        ]
+      },
+      {
+        "targetPath": "src/infra/prompt/builder.ts",
         "relation": "import",
         "symbols": [
           "PromptBuilder"
         ]
       },
       {
-        "targetPath": "./shared.js",
+        "targetPath": "src/infra/prompt/shared.ts",
         "relation": "import",
         "symbols": [
           "buildLocalizedLanguageInstructions",
           "renderOutputContract"
         ]
+      },
+      {
+        "targetPath": "src/infra/prompt/types.ts",
+        "relation": "import",
+        "symbols": [
+          "PromptResponseMode"
+        ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/prompt/source.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/shared.ts/buildLocalizedLanguageInstructions#",
+        "targetPath": "src/infra/prompt/shared.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/source.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/shared.ts/renderOutputContract#",
+        "targetPath": "src/infra/prompt/shared.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/source.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/builder.ts/PromptBuilder#",
+        "targetPath": "src/infra/prompt/builder.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/source.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/PromptBuilder#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/source.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/PromptBuilder#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:40.217Z",
+    "indexedAt": "2026-05-03T11:25:04.995Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

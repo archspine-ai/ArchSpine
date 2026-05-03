@@ -1,11 +1,22 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/infra/db","role":"Infrastructure persistence layer providing SQLite database lifecycle management, schema evolution, and data access for the ArchSpine indexing system.","responsibility":"Manages the SQLite database lifecycle including file preparation, WAL recovery, schema migration, and error mapping, while providing a unified data access layer for CRUD operations on file metadata, symbol tables, drift events, usage metrics, and violation records.","children":[{"filePath":"src/infra/db/batch.ts","role":"Infrastructure-layer batch commit function for atomic file metadata synchronization to the SQLite index database.","fileKind":"source"},{"filePath":"src/infra/db/errors.ts","role":"Database runtime error mapping utility in the infrastructure layer.","fileKind":"source"},{"filePath":"src/infra/db/repositories","role":"Persistence layer for the ArchSpine indexing system, providing SQLite-based data access objects for all core entities.","fileKind":"folder"},{"filePath":"src/infra/db/runtime.ts","role":"Infrastructure facade module providing low-level runtime SQLite database lifecycle management, including filesystem preparation, stale WAL file detection/recovery, and error handling.","fileKind":"source"},{"filePath":"src/infra/db/schema.ts","role":"Database infrastructure utility for SQLite schema migration error handling and safe column addition.","fileKind":"source"},{"filePath":"src/infra/db/types.ts","role":"Infrastructure Type Definitions module providing stable data contracts for the indexing, audit, and status reporting domains.","fileKind":"source"},{"filePath":"src/infra/db/wal-recovery.ts","role":"Infrastructure utility module for SQLite Write-Ahead Log (WAL) stale file detection and cleanup.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T03:58:48.572Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-The `src/infra/db` directory is the infrastructure persistence layer for the ArchSpine indexing system. It manages the entire SQLite database lifecycle, from filesystem preparation and Write-Ahead Log (WAL) recovery to schema migration and error mapping, while exposing a unified data access layer for all core entities.
+# ArchSpine Infrastructure – SQLite Database Layer (`src/infra/db`)
 
-The notable children are grouped into two categories: **runtime and lifecycle modules** (files at the directory root) and a dedicated **repositories subfolder**. Key implementation areas include:
+This directory provides the core persistence foundation for the ArchSpine mirror system. It manages the entire lifecycle of the SQLite runtime database inside the `.spine` directory, from schema initialization and WAL journal mode to atomic batch commits, error mapping, and a data access layer. The layer decouples data producers (indexers, auditors) from consumers (CLI, services) through stable TypeScript interfaces.
 
-- **Database lifecycle** – `runtime.ts` coordinates low-level operations like creating database files, detecting and recovering from stale WAL files (handled by `wal-recovery.ts`), and initializing the connection.
-- **Schema evolution** – `schema.ts` provides utilities for safe column addition and migration error handling.
-- **Error mapping** – `errors.ts` translates runtime database errors into typed, application-level error codes.
-- **Batch operations** – `batch.ts` offers an atomic commit function for synchronizing file metadata in bulk.
-- **Data contracts** – `types.ts` defines stable TypeScript interfaces for indexing, audit, and status reporting across the system.
-- **Repositories** – The `repositories/` folder contains SQLite-based data access objects for CRUD operations on file metadata, symbol tables, drift events, usage metrics, and violation records, each implemented as a separate module.
+## Notable Components and Grouping
+
+- **Runtime Lifecycle** (`runtime.ts`, `wal-recovery.ts`, `schema.ts`) – Responsible for starting up and maintaining the database connection. `runtime.ts` ensures the `.spine` directory exists, recovers stale WAL files via `wal-recovery.ts`, and instantiates a `better-sqlite3` instance. `schema.ts` initializes the `files` table and enables Write‑Ahead Logging (`journal_mode = WAL`).
+
+- **Atomic Batch Operations** (`batch.ts`) – Provides atomic batch insertion/update of file metadata records (`FileCommitRecord`). Each commit runs inside a transaction and performs semantic drift detection by comparing incoming role/responsibility values against the current state. Detected drifts are recorded immediately via the drift repository.
+
+- **Error Handling** (`errors.ts`) – Maps unknown runtime database errors (open or init stage) to standardized `ArchSpineError` instances, detecting read‑only database conditions and assigning appropriate error codes (`RuntimeDbOpenFailed`, `RuntimeDbInitFailed`, `RuntimeDbReadonly`).
+
+- **Data Access Layer** (`repositories/` folder) – Contains SQLite‑based DAO objects for CRUD operations on file metadata, semantic drift events, exported symbol caches, token usage metrics, and architectural violation records. This is the primary interface for all persistent storage logic.
+
+- **Type Definitions** (`types.ts`) – Defines stable TypeScript interfaces: `FileRecord`, `FileStatusRecord`, `FileCommitRecord`, `DriftEvent`, `UsageSummaryRow`, `UsageTotals`, `ViolationRecord`, and `GlobalStatus`. These contracts unify data shapes across indexing, audit, and status reporting.
+
+## Key Implementation Areas
+
+- **Stale WAL Recovery** – The `wal-recovery.ts` module uses a byte threshold (512 KB) to detect stale WAL/SHM files left by a killed process and removes them to prevent empty reconciliations and LLM rate limit overload.
+- **Semantic Drift Detection** – Built directly into the batch commit function (`batch.ts`), comparing old and new role/responsibility metadata per file.
+- **Schema Initialization** – Only creates the core `files` table; additional tables are managed by the repositories layer.
+- **Error Isolation** – Every database open/init failure is wrapped into a meaningful `ArchSpineError` so upper layers can respond uniformly.

@@ -1,23 +1,36 @@
-<!-- spine-content-hash:3e61feeedd8f77d7cc27945df7266ab9b78e7fde24c473b45489b8c99e9737f3 -->
-# ArchSpine CI Pipeline
+# ArchSpine CI Workflow
 
 ## Purpose
-This document defines the continuous integration workflow for the ArchSpine project, ensuring code quality and build integrity on every push or pull request to the main branch.
 
-## Context and Audience
-Intended for developers and maintainers who contribute to the ArchSpine repository. It describes the automated checks that run in the CI environment to validate changes before merging.
+This document defines the continuous integration (CI) workflow for the ArchSpine repository, powered by GitHub Actions. It serves as the single source of truth for how every code change pushed to the `main` branch (or submitted as a pull request targeting it) is automatically validated before review or merge.
 
-## Key Responsibilities
-- Triggering CI on pushes and pull requests to the main branch
-- Running linting, building, testing, and package integrity checks
-- Managing concurrency and cancellation of in-progress runs
+## Audience
 
-## Out of Scope
-- Deployment or release automation
-- Multi-platform or multi-OS testing
-- Manual or scheduled CI triggers
+- **Project maintainers** who need to ensure the CI pipeline enforces quality gates consistently.
+- **Contributors** who want to understand what checks their pull requests must pass and how the pipeline is configured.
+- **DevOps/Infrastructure engineers** who may modify or extend the workflow.
 
-## Key Takeaways
-- CI runs on every push and pull request to the main branch.
-- The pipeline includes linting, building, testing, and a package integrity check.
-- Concurrent runs are automatically canceled to save resources.
+## Key Decisions Anchored by This Document
+
+- The CI pipeline runs **only on push/PR to the `main` branch** – no other branches or triggers (e.g., nightly builds) are included.
+- **Concurrency control** (`concurrency` group) is configured to automatically cancel any in-progress workflow run for the same branch/ref when a new push is made. This keeps the pipeline efficient and avoids wasted resources.
+- **Permissions** are limited to `contents: read` – the workflow cannot push changes, create releases, or modify settings. This follows the principle of least privilege.
+- The pipeline uses **Node.js 20** with npm caching, ensuring fast dependency installation.
+
+## Workflow Steps (Summary)
+
+The pipeline executes the following steps in order:
+
+1. **Checkout** – fetches the repository code.
+2. **Setup Node.js** – installs Node 20 and caches `node_modules`.
+3. **Install dependencies** – runs `npm ci` for reproducible builds.
+4. **Lint** – verifies code style and potential errors via `npm run lint`.
+5. **Build** – compiles the project with `npm run build`.
+6. **Test** – executes unit/integration tests via `npm test`.
+7. **Package integrity check** – runs `npm run pack:check` to ensure the package can be packed correctly (commonly verifies `package.json` files and bundling).
+
+## Why This Document Exists
+
+The workflow definition in `.github/workflows/ci.yml` is the exact code that GitHub Actions runs. This document explains the **intent** behind each decision, making it easier for humans to review, maintain, or troubleshoot the pipeline without reading the raw YAML. It also helps contributors understand what happens to their code after they push.
+
+---

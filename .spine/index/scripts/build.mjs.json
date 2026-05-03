@@ -3,24 +3,24 @@
   "identity": {
     "filePath": "scripts/build.mjs",
     "contentHash": "dab4ff9d929aa40e91305f7a0b3f6e649e0bec095309ecba61d1a37460194f82",
-    "semanticHash": "09324410cc7ad79424c0c9b36ded5af7fb1dc3148193205c000cb6209cf365f0",
+    "semanticHash": "91c7e9e4c6d7f3b3feb15f01c4249b67bae33abfd03c68fdebb4a590cc7982f9",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "scripts"
   },
   "semantic": {
-    "role": "Build script for the ArchSpine project — orchestrates compilation, asset copying, and cleanup for distribution.",
+    "role": "Build automation script for the ArchSpine project.",
     "responsibilities": [
-      "Compile TypeScript source into JavaScript using tsc",
-      "Copy AST rule files from src to dist",
-      "Copy static assets from src/assets to dist/assets",
-      "Remove __mocks__ directories from the dist output",
-      "Set executable permissions on the CLI entry point"
+      "Compile TypeScript source to JavaScript using the TypeScript compiler (tsc).",
+      "Copy AST language rule files (YAML) from source to dist directory.",
+      "Copy asset templates (prompts, schemas, views, etc.) to dist directory while excluding __mocks__ directories.",
+      "Remove all __mocks__ directories from the resulting dist folder to avoid shipping test-only code.",
+      "Set executable permissions on the CLI entry point (dist/cli/index.js)."
     ],
     "outOfScope": [
-      "Unit or integration testing logic",
-      "Runtime behavior of the mirror system",
-      "Configuration or schema definitions for ArchSpine"
+      "Any runtime logic of ArchSpine itself.",
+      "Testing or verification steps.",
+      "User-facing documentation or instructions."
     ],
     "invariants": [],
     "changeIntent": {
@@ -32,21 +32,23 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document defines the build pipeline for the ArchSpine project. It ensures that TypeScript source code is compiled, rule files and assets are copied to the distribution folder, and mock directories are excluded from the final output.",
-        "context_and_audience": "Intended for developers maintaining the ArchSpine build process. It explains how the distribution artifact is assembled and what steps are taken to keep the output clean and executable.",
+        "purpose": "This script is the authoritative build pipeline for the ArchSpine project. It orchestrates compilation, asset copying, and cleanup steps necessary to produce a ready-to-run distribution package.",
+        "context_and_audience": "Written for developers and maintainers of ArchSpine who need to build the project from source. It assumes familiarity with Node.js, TypeScript, and the project's directory structure.",
         "key_takeaways": [
-          "The build process runs tsc, then copies rules and assets into dist/",
-          "Mock directories (__mocks__) are explicitly removed from the dist tree",
-          "The CLI entry point is made executable after compilation"
+          "Executes 'tsc' to compile TypeScript into JavaScript.",
+          "Copies AST rule files (YAML) and all assets to the dist directory.",
+          "__mocks__ directories are excluded both during copy and removed post-copy to keep the distribution clean.",
+          "The CLI entry point is made executable (0o755)."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档定义了 ArchSpine 项目的构建流程。它确保 TypeScript 源代码被编译、规则文件和静态资源被复制到分发目录，并且模拟目录（__mocks__）不会出现在最终输出中。",
-        "context_and_audience": "面向维护 ArchSpine 构建流程的开发者。文档说明了分发产物是如何生成的，以及为了保持输出整洁和可执行所采取的步骤。",
+        "purpose": "该脚本是 ArchSpine 项目的权威构建流水线。它协调编译、资产复制和清理步骤，以生成可直接运行的发布包。",
+        "context_and_audience": "面向需要从源码构建 ArchSpine 的开发者与维护者。使用者需熟悉 Node.js、TypeScript 及项目目录结构。",
         "key_takeaways": [
-          "构建流程先运行 tsc，然后将规则文件和资源复制到 dist/ 目录",
-          "模拟目录（__mocks__）会从分发树中显式移除",
-          "CLI 入口文件在编译后被设置为可执行权限"
+          "运行 'tsc' 命令将 TypeScript 编译为 JavaScript。",
+          "将 AST 规则文件（YAML）及所有资产复制到 dist 目录。",
+          "复制过程中排除 __mocks__ 目录，并在复制后将其从 dist 中删除，确保发布包洁净。",
+          "CLI 入口文件被设置为可执行权限（0o755）。"
         ]
       }
     }
@@ -69,7 +71,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:44:56.729Z",
+    "indexedAt": "2026-05-03T11:24:23.306Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

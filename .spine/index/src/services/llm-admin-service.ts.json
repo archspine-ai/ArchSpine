@@ -4,53 +4,84 @@
     "filePath": "src/services/llm-admin-service.ts",
     "contentHash": "68a93a9fd747aeddd627ba43048e0a64f007748407a2a239a2eb4386097bff06",
     "skeletonHash": "687cdf0a156218cbdb842aa54c95b0a93d266f9bb7ae8e134e4ce98e018cedb9",
-    "semanticHash": "d4f03f4eb304fcfb5b39d7b7f1803ea3afbcde271630103859ff6dc297d067b4",
+    "semanticHash": "6a79ca71d5596b6799bea705f75f81baa71f619be7cc8bdca4a0111e6ad5b068",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/services"
   },
   "semantic": {
-    "role": "TypeScript type definition module for LLM configuration command structures and view models within the view service layer.",
+    "role": "Service module for LLM configuration command orchestration, bridging CLI commands with infrastructure config/secrets stores and runtime service.",
     "responsibilities": [
-      "Defines interfaces for LLM command targets, setup values, and status view models used by CLI commands and runtime services.",
-      "Provides type aliases for LLM configuration and secrets store subsets to enforce type safety across the LLM configuration boundary.",
-      "Encapsulates type definitions that facilitate communication between view services and infrastructure modules for LLM settings."
+      "Resolves the target (global vs project) LLM configuration and secrets store for CLI commands based on scope and root directory.",
+      "Provides functions to set and clear persisted LLM values (provider, model, base URL, API key, mode) via targeted configStore and secretsStore interfaces.",
+      "Orchestrates saving of complete LLM setup values (provider, model, API key, mode, prompt policy) to the appropriate config and secrets stores.",
+      "Builds a LLM status view model by querying RuntimeService for resolved LLM settings and execution profiles.",
+      "Defines interfaces (LLMCommandTarget, LLMSetupValues, LLMStatusViewModel) and type (LLMScope) for consistent command structure and type safety.",
+      "Integrates with GlobalLLMConfig and GlobalLLMSecrets to handle global LLM configuration alongside project-level settings."
     ],
     "outOfScope": [
-      "Orchestrating runtime LLM operations or service logic.",
-      "Direct interaction with LLM APIs or secret management.",
-      "Rendering UI components or handling HTTP requests."
+      "Direct configuration file parsing or disk I/O (delegated to infra modules).",
+      "Network requests or API calls to LLM providers.",
+      "User interface rendering or terminal output formatting.",
+      "Authentication or authorization beyond API key handling."
     ],
     "invariants": [
-      "Pure type definitions with no executable code.",
-      "Depends on infrastructure types (Config, Secrets, GlobalLLMConfig) and runtime service types.",
-      "Exclusively used by view services and CLI for LLM configuration typing."
+      "Must import infrastructure modules (Config, Secrets, GlobalLLMConfig, GlobalLLMSecrets) for persistence.",
+      "Must use RuntimeService for resolving runtime-level LLM settings.",
+      "Must not depend on UI frameworks or presentation layers.",
+      "If view-specific, should be located under src/services/view/ per architecture rules."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a strongly-typed contract for LLM configuration commands and view models, decoupling view service logic from infrastructure details.",
-      "recentChangeIntent": "Part of refactoring to slim LLM and service boundary, likely consolidating type definitions for clearer separation."
+      "architecturalIntent": "Provide a dedicated service layer for LLM command operations that abstracts CLI logic from infrastructure details, enabling consistent setup and status reporting for both global and project scopes.",
+      "recentChangeIntent": "Transition from a type-definition-only module to a full service layer with orchestration functions for LLM configuration persistence and view model building, aligning with the v1.0.0 architectural governance release which emphasizes runtime orchestration in services."
     },
     "publicSurface": [
+      "resolveLLMTarget",
+      "setPersistedLLMValue",
+      "clearPersistedLLMApiKey",
+      "saveLLMSetup",
+      "buildLLMStatusViewModel",
       "LLMCommandTarget",
       "LLMSetupValues",
       "LLMStatusViewModel",
       "LLMScope"
     ],
     "ruleViolations": [],
-    "driftDetected": false,
-    "driftReason": null,
+    "driftDetected": true,
+    "driftReason": "The previous semantic contract described this file as a pure type definition module, but the current implementation includes multiple exported functions with substantial orchestration logic (resolving targets, setting/clearing values, saving setup, building view model), transforming it into a service module with both type definitions and command orchestration.",
     "localized": {
       "English": {
-        "role": "TypeScript type definition module for LLM configuration command structures and view models within the view service layer.",
+        "role": "Service module for LLM configuration command orchestration, bridging CLI commands with infrastructure config/secrets stores and runtime service.",
         "responsibilities": [
-          "Defines interfaces for LLM command targets, setup values, and status view models used by CLI commands and runtime services.",
-          "Provides type aliases for LLM configuration and secrets store subsets to enforce type safety across the LLM configuration boundary.",
-          "Encapsulates type definitions that facilitate communication between view services and infrastructure modules for LLM settings."
+          "Resolves the target (global vs project) LLM configuration and secrets store for CLI commands based on scope and root directory.",
+          "Provides functions to set and clear persisted LLM values (provider, model, base URL, API key, mode) via targeted configStore and secretsStore interfaces.",
+          "Orchestrates saving of complete LLM setup values (provider, model, API key, mode, prompt policy) to the appropriate config and secrets stores.",
+          "Builds a LLM status view model by querying RuntimeService for resolved LLM settings and execution profiles.",
+          "Defines interfaces (LLMCommandTarget, LLMSetupValues, LLMStatusViewModel) and type (LLMScope) for consistent command structure and type safety.",
+          "Integrates with GlobalLLMConfig and GlobalLLMSecrets to handle global LLM configuration alongside project-level settings."
         ],
         "outOfScope": [
-          "Orchestrating runtime LLM operations or service logic.",
-          "Direct interaction with LLM APIs or secret management.",
-          "Rendering UI components or handling HTTP requests."
+          "Direct configuration file parsing or disk I/O (delegated to infra modules).",
+          "Network requests or API calls to LLM providers.",
+          "User interface rendering or terminal output formatting.",
+          "Authentication or authorization beyond API key handling."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "LLM 配置命令编排的服务模块，将 CLI 命令与基础设施配置/密钥存储及运行时服务进行桥接。",
+        "responsibilities": [
+          "根据作用域和根目录，为 CLI 命令解析目标（全局或项目）的 LLM 配置和密钥存储。",
+          "提供函数，通过指定的 configStore 和 secretsStore 接口设置和清除持久化的 LLM 值（提供商、模型、基础 URL、API 密钥、模式）。",
+          "编排完整的 LLM 设置值（提供商、模型、API 密钥、模式、提示策略）保存到相应的配置和密钥存储中。",
+          "通过查询 RuntimeService 获取已解析的 LLM 设置和执行配置文件，构建 LLM 状态视图模型。",
+          "定义接口（LLMCommandTarget、LLMSetupValues、LLMStatusViewModel）和类型（LLMScope），确保命令结构的一致性和类型安全。",
+          "与 GlobalLLMConfig 和 GlobalLLMSecrets 集成，处理全局 LLM 配置以及项目级别的设置。"
+        ],
+        "outOfScope": [
+          "直接解析配置文件或磁盘 I/O（委托给基础设施模块）。",
+          "向 LLM 提供商发出的网络请求或 API 调用。",
+          "用户界面渲染或终端输出格式化。",
+          "除 API 密钥处理之外的认证或授权。"
         ]
       }
     }
@@ -229,20 +260,29 @@
         "symbols": [
           "RuntimeService"
         ]
-      },
-      {
-        "targetPath": "../infra/prompt-policy.js",
-        "relation": "import",
-        "symbols": [
-          "LLMMode",
-          "PromptPolicyTier"
-        ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/llm-admin-service.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/getGlobalArchSpineDir#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/llm-admin-service.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/getGlobalArchSpineDir#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:40.678Z",
+    "indexedAt": "2026-05-03T11:25:05.433Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

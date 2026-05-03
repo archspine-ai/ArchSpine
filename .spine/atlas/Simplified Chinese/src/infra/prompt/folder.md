@@ -1,12 +1,18 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/infra/prompt","role":"This directory contains the prompt construction and assembly infrastructure for the ArchSpine system.","responsibility":"Provides a comprehensive set of utilities and factories for building structured, localized prompts for AI agents, including prompt builders, template renderers, output contract generators, and specialized prompt constructors for documents, configuration files, directories, source code, and project units.","children":[{"filePath":"src/infra/prompt/aggregate.ts","role":"Prompt construction factory for ArchSpine semantic synthesis, producing structured prompt strings for documents, configuration files, directories, and project units via a PromptBuilder pipeline.","fileKind":"source"},{"filePath":"src/infra/prompt/builder.ts","role":"Prompt assembly utility class that orchestrates the rendering of structured prompt blocks for AI agent interactions.","fileKind":"source"},{"filePath":"src/infra/prompt/markdown.ts","role":"Infrastructure utility for constructing localized markdown-only prompt strings from semantic JSON input.","fileKind":"source"},{"filePath":"src/infra/prompt/shared.ts","role":"Utility function generating formatted output contract strings for the ArchSpine prompt response system.","fileKind":"source"},{"filePath":"src/infra/prompt/source.ts","role":"Infrastructure facade function that generates structured LLM prompts for source code analysis tasks within the ArchSpine system.","fileKind":"source"},{"filePath":"src/infra/prompt/types.ts","role":"TypeScript type definition module for ArchSpine's prompt generation and response formatting protocol.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T03:58:47.726Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src/infra/prompt` 目录是整个 ArchSpine 系统中提示词构建与组装的基础设施核心。它提供了一套完整的工具集，用于生成结构化的、本地化的 AI 智能体提示词。目录中的子模块可以按功能分为以下几组：核心构建器与工厂（`aggregate.ts`、`builder.ts`）、本地化与输出格式化工具（`markdown.ts`、`shared.ts`）、源代码分析专用模块（`source.ts`）以及基础类型定义（`types.ts`）。
+`prompt` 目录是 ArchSpine AI 交互系统的提示组装与生成层。它提供了流畅的提示构建器、共享的协议以及专用的生成器，用于构造结构化、本地化且经过验证的 AI 代理提示。
 
-具体子模块包括：
-- **aggregate.ts**：通过 `PromptBuilder` 流水线，为文档、配置文件、目录和项目单元等不同类型生成结构化的提示词。
-- **builder.ts**：中心组装类，负责协调结构化提示词块的渲染，以驱动智能体交互。
-- **markdown.ts**：将语义 JSON 输入转换为本地化的纯 Markdown 提示字符串，便于人类阅读。
-- **shared.ts**：生成格式化的输出契约字符串，定义 AI 响应的预期结构。
-- **source.ts**：为源代码分析任务创建专用的 LLM 提示词。
-- **types.ts**：定义了整个提示词生成与响应格式化协议所需的所有 TypeScript 类型。
+### 主要子模块
 
-最重要的实现领域包括：提示词的构建逻辑（如何将不同输入源转化为结构化指令）、本地化支持（实现多语言智能体通信）以及响应契约生成（确保 AI 输出遵循可预测的格式）。这些模块共同构成了 ArchSpine 系统中所有提示词工作流的坚实支柱。
+- **`builder.ts`** – 导出 `PromptBuilder` 类，提供流畅接口，用于按顺序组装提示的各个部分（身份说明、指令、上下文等），最终拼接成一个字符串。
+- **`types.ts`** – 定义提示生成协议所需的 TypeScript 类型，包括 `PromptResponseMode`（仅 JSON，或 JSON 与 Markdown 混合）和 `MarkdownPromptInput` 接口。
+- **`shared.ts`** – 工具模块，负责生成格式化的输出约束（OUTPUT CONTRACT）字符串以及相关的语言/Markdown 指导。验证 `English` 是否始终作为必需的基础语言包含在内。
+- **`markdown.ts`** – 外观层，根据语义 JSON 输入生成仅包含 Markdown 的本地化提示。借助 `PromptBuilder` 和共享指导，指示模型仅返回带有精确语言标记的 Markdown 块。
+- **`source.ts`** – 外观层，用于生成源代码分析和验证的结构化 LLM 提示。注入环境上下文、架构规则、依赖上下文以及先前的语义合约。包含一个专用的验证变体，用于严格的架构审计和语义漂移检测。
+- **`aggregate.ts`** – 存在但角色未知，可能为未来的聚合逻辑预留。
+
+### 关键实现领域
+
+- **提示组装编排** – `PromptBuilder` 链式调用并渲染身份、指令、上下文和输出格式等结构化块。
+- **本地化与输出约束执行** – `shared.ts` 构建语言特定的指令，并强制要求包含 `English` 作为基础语言。
+- **Markdown 专用生成** – `markdown.ts` 序列化语义 JSON，并指示模型仅按语言返回 Markdown 块。
+- **源代码分析提示** – `source.ts` 提供包含少样本示例和 Schema 驱动输出约束的完整上下文，用于摘要或验证任务。
+- **验证与漂移检测** – `source.ts` 的验证变体执行严格的架构审计，并通过比较语义合约来检测漂移。

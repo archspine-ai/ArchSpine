@@ -4,53 +4,67 @@
     "filePath": "src/infra/db/runtime.ts",
     "contentHash": "1eff3b0cc540448d668d312d5aa8ef26de27c976259f35c6e37293a9980eafd1",
     "skeletonHash": "fddf9583e48305ac8bdb698dae389b284cd2aef883c6986d75ba76d5e4ec9e41",
-    "semanticHash": "c2ccfc50543b6280ffa8eb66f9872f3ca151cce5cf78ba6335bb97712f0b67de",
+    "semanticHash": "5e746883277b4d5d774a52c149d43186cd9ccf04448f382e05c7f548a6eee9d0",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/db"
   },
   "semantic": {
-    "role": "Infrastructure facade module providing low-level runtime SQLite database lifecycle management, including filesystem preparation, stale WAL file detection/recovery, and error handling.",
+    "role": "Infrastructure facade for SQLite runtime database lifecycle management within the ArchSpine `.spine` directory.",
     "responsibilities": [
-      "Manages the creation and opening of a SQLite database file within the project's .spine directory.",
-      "Handles filesystem operations to ensure the database directory exists.",
-      "Detects and recovers stale WAL (Write-Ahead Logging) files to prevent data loss or corruption.",
-      "Wraps database instantiation with error mapping for consistent runtime error handling."
+      "Ensures the `.spine` data directory exists under the given root directory.",
+      "Recovers stale Write-Ahead Log (WAL) files before opening the database to prevent corruption.",
+      "Instantiates and returns a `better-sqlite3` Database instance bound to the `.spine` directory.",
+      "Wraps database creation errors with a standardized runtime error mapper for consistent error handling."
     ],
     "outOfScope": [
-      "High-level business logic or application orchestration.",
-      "Database schema definition or migration management.",
-      "Query execution or transaction handling beyond initial connection."
+      "Schema migrations or seed data management.",
+      "Higher-level query or transaction orchestration.",
+      "Reading or writing domain-specific data beyond database lifecycle."
     ],
     "invariants": [
-      "Exposes a stable facade for database lifecycle operations.",
-      "Relies on internal infra modules (errors, wal-recovery) for specific concerns.",
-      "Does not absorb service, task, or engine orchestration responsibilities."
+      "The database file path is always `<rootDir>/.spine/runtime.db`.",
+      "The `.spine` directory is always created if absent before opening the database.",
+      "Stale WAL recovery is always attempted before database instantiation."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a dedicated, stable infrastructure facade for database lifecycle, decoupling low-level SQLite management from higher-level application logic.",
-      "recentChangeIntent": "Part of broader hardening efforts, potentially related to database decoupling from other components like LLM services."
+      "architecturalIntent": "Provide a stable, low-level facade for persistent runtime data storage using SQLite, abstracting filesystem and recovery details from higher services.",
+      "recentChangeIntent": "Initial implementation for ArchSpine v1.0.0 architectural governance and semantic layer, establishing the runtime database as part of the infra foundation."
     },
     "publicSurface": [
-      "RuntimeDatabase interface",
-      "openRuntimeDatabase function"
+      "openRuntimeDatabase(rootDir: string): RuntimeDatabase",
+      "interface RuntimeDatabase { db: Database.Database; dbPath: string; }"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Infrastructure facade module providing low-level runtime SQLite database lifecycle management, including filesystem preparation, stale WAL file detection/recovery, and error handling.",
+        "role": "Infrastructure facade for SQLite runtime database lifecycle management within the ArchSpine `.spine` directory.",
         "responsibilities": [
-          "Manages the creation and opening of a SQLite database file within the project's .spine directory.",
-          "Handles filesystem operations to ensure the database directory exists.",
-          "Detects and recovers stale WAL (Write-Ahead Logging) files to prevent data loss or corruption.",
-          "Wraps database instantiation with error mapping for consistent runtime error handling."
+          "Ensures the `.spine` data directory exists under the given root directory.",
+          "Recovers stale Write-Ahead Log (WAL) files before opening the database to prevent corruption.",
+          "Instantiates and returns a `better-sqlite3` Database instance bound to the `.spine` directory.",
+          "Wraps database creation errors with a standardized runtime error mapper for consistent error handling."
         ],
         "outOfScope": [
-          "High-level business logic or application orchestration.",
-          "Database schema definition or migration management.",
-          "Query execution or transaction handling beyond initial connection."
+          "Schema migrations or seed data management.",
+          "Higher-level query or transaction orchestration.",
+          "Reading or writing domain-specific data beyond database lifecycle."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "位于 ArchSpine `.spine` 目录内，负责 SQLite 运行时数据库生命周期的底层基础设施门面模块。",
+        "responsibilities": [
+          "确保指定根目录下存在 `.spine` 数据目录，若不存在则自动创建。",
+          "在打开数据库前，恢复陈旧的预写日志（WAL）文件，防止数据损坏。",
+          "实例化一个绑定到 `.spine` 目录的 `better-sqlite3` 数据库实例并返回。",
+          "对数据库创建过程中的错误进行统一封装，通过标准运行时错误映射器提供一致的错误处理。"
+        ],
+        "outOfScope": [
+          "数据库模式迁移或种子数据管理。",
+          "高层查询或事务编排。",
+          "超出数据库生命周期的领域数据读写。"
         ]
       }
     }
@@ -143,14 +157,14 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "./errors.js",
+        "targetPath": "src/infra/db/errors.ts",
         "relation": "import",
         "symbols": [
           "mapRuntimeDbError"
         ]
       },
       {
-        "targetPath": "./wal-recovery.js",
+        "targetPath": "src/infra/db/wal-recovery.ts",
         "relation": "import",
         "symbols": [
           "recoverStaleWal"
@@ -178,10 +192,34 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/db/runtime.ts/_file_#",
+        "targetSymbol": "src/infra/db/wal-recovery.ts/recoverStaleWal#",
+        "targetPath": "src/infra/db/wal-recovery.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db/runtime.ts/_file_#",
+        "targetSymbol": "src/infra/db/errors.ts/mapRuntimeDbError#",
+        "targetPath": "src/infra/db/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db/runtime.ts/_file_#",
+        "targetSymbol": "examples/demo-project/src/infra/database.ts/Database#",
+        "targetPath": "examples/demo-project/src/infra/database.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:38.660Z",
+    "indexedAt": "2026-05-03T11:25:03.427Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -4,6 +4,7 @@
 
 当前镜像页面：
 
+- [当前能力](CURRENT-CAPABILITIES)
 - [协议](PROTOCOL)
 - [忽略策略](IGNORE-POLICY)
 - [LLM 评测](LLM-BENCHMARKS)

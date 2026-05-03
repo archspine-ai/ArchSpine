@@ -3,96 +3,140 @@
   "identity": {
     "filePath": "src/tasks/aggregate.ts",
     "contentHash": "fc4f6b2a5a035c49d21d95acdac83aafb028abf747d83f1b65b77a216b4fdaf6",
-    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
-    "semanticHash": "3fc13cc0493c0b8aeb3e1b6c610700913cbcc0d0d3f5b49cd31df4066eedd6d7",
+    "skeletonHash": "cbf8beaa7dee48225318d0ab4f07c317f415a305d89622dba518419177cddc2f",
+    "semanticHash": "4afeb784da998c759f07eea64cda671da0c78bc9dfd5e97517edc6bc68dbb1b1",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/tasks"
   },
   "semantic": {
-    "role": "Core pipeline task for hierarchical content aggregation across directories and projects.",
+    "role": "Pipeline task for hierarchical content aggregation, collecting directories and projects that require aggregation and delegating to the aggregator engine for ordered processing.",
     "responsibilities": [
-      "Collects directories requiring aggregation from tracked files via scanner state.",
-      "Determines which directories need aggregation based on scanner state and aggregator engine.",
-      "Identifies projects requiring aggregation via the aggregator engine.",
-      "Organizes directories by depth for ordered hierarchical processing."
+      "Collects all directories containing tracked files from scanner state by enumerating parent paths of each tracked file.",
+      "Determines which directories need aggregation by consulting the aggregator engine's needsDirectoryAggregation check.",
+      "Identifies projects requiring aggregation via aggregator.needsProjectAggregation over the set of collected directories.",
+      "Organizes directories by depth (using directory path depth) for hierarchical ordered processing during aggregation execution.",
+      "Provides a checkpoint 'aggregation' within the pipeline execution graph, allowing resumability."
     ],
     "outOfScope": [
       "CLI command parsing or argument handling.",
-      "Unrelated service orchestration beyond content aggregation.",
-      "Direct file system writes or output formatting."
+      "Direct file system reads/writes beyond those performed by the aggregator engine.",
+      "User authentication or credential management.",
+      "Orchestration of pipeline stages outside the aggregation checkpoint."
     ],
     "invariants": [
-      "Must operate within the SpineTask contract and use core task infrastructure.",
-      "Must not take over CLI command parsing or unrelated service orchestration."
+      "Task must only operate within the aggregation stage boundary and not cross into CLI parsing or unrelated service orchestration (rule: task-stage-boundary).",
+      "Aggregation logic must rely on core contracts (SpineTask, TaskContext) and aggregator engine, not custom implementation."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a focused pipeline stage for hierarchical content aggregation that collects directories from scanner state, determines aggregation needs, and organizes them by depth for ordered processing.",
-      "recentChangeIntent": "No direct evidence of recent changes in this file; the commit intent about lint errors and pipeline fixes is not reflected in the code."
+      "architecturalIntent": "Integrate hierarchical content aggregation as a dedicated checkpoint within the ArchSpine pipeline to enable resumable, stage-based governance.",
+      "recentChangeIntent": "Align with ArchSpine v1.0.0 by establishing aggregation as a core semantic layer stage for architectural governance."
     },
     "publicSurface": [
-      "AggregationTask class extending SpineTask<CommitStageOutput, void>",
-      "name = 'Hierarchical Content Aggregation'",
-      "checkpointId = 'aggregation'",
-      "collectRecoverableDirs(ctx: TaskContext): string[]"
+      "AggregationTask"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Core pipeline task for hierarchical content aggregation across directories and projects.",
+        "role": "Pipeline task for hierarchical content aggregation, collecting directories and projects that require aggregation and delegating to the aggregator engine for ordered processing.",
         "responsibilities": [
-          "Collects directories requiring aggregation from tracked files via scanner state.",
-          "Determines which directories need aggregation based on scanner state and aggregator engine.",
-          "Identifies projects requiring aggregation via the aggregator engine.",
-          "Organizes directories by depth for ordered hierarchical processing."
+          "Collects all directories containing tracked files from scanner state by enumerating parent paths of each tracked file.",
+          "Determines which directories need aggregation by consulting the aggregator engine's needsDirectoryAggregation check.",
+          "Identifies projects requiring aggregation via aggregator.needsProjectAggregation over the set of collected directories.",
+          "Organizes directories by depth (using directory path depth) for hierarchical ordered processing during aggregation execution.",
+          "Provides a checkpoint 'aggregation' within the pipeline execution graph, allowing resumability."
         ],
         "outOfScope": [
           "CLI command parsing or argument handling.",
-          "Unrelated service orchestration beyond content aggregation.",
-          "Direct file system writes or output formatting."
+          "Direct file system reads/writes beyond those performed by the aggregator engine.",
+          "User authentication or credential management.",
+          "Orchestration of pipeline stages outside the aggregation checkpoint."
         ]
       },
       "Simplified Chinese": {
-        "role": "核心管道任务，用于跨目录和项目的层次化内容聚合。",
+        "role": "负责层次化内容聚合的管道任务，收集需要聚合的目录和项目，并委托给聚合引擎进行有序处理。",
         "responsibilities": [
-          "通过扫描器状态从跟踪文件中收集需要聚合的目录。",
-          "基于扫描器状态和聚合引擎确定哪些目录需要聚合。",
-          "通过聚合引擎识别需要聚合的项目。",
-          "按深度组织目录以实现有序的层次化处理。"
+          "通过枚举每个跟踪文件的父路径，从扫描器状态中收集所有包含跟踪文件的目录。",
+          "通过查询聚合引擎的 needsDirectoryAggregation 检查，确定哪些目录需要聚合。",
+          "基于收集到的目录集合，通过 aggregator.needsProjectAggregation 识别需要聚合的项目。",
+          "根据目录路径的深度对目录进行分组，以便在聚合执行期间进行层次化有序处理。",
+          "在管道执行图中提供名为 'aggregation' 的检查点，支持可恢复性。"
         ],
         "outOfScope": [
           "CLI 命令解析或参数处理。",
-          "超出内容聚合范围的不相关服务编排。",
-          "直接的文件系统写入或输出格式化。"
+          "超出聚合引擎执行范围的直接文件系统读写。",
+          "用户认证或凭据管理。",
+          "聚合检查点以外的管道阶段编排。"
         ]
       }
     }
   },
   "skeleton": {
-    "imports": [],
-    "exports": [],
-    "declaredSymbols": [],
+    "imports": [
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/task-state.js'",
+        "symbols": [
+          "addTaskUsage",
+          "incrementTaskFailed"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'p-limit'",
+        "symbols": [
+          "pLimit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "AggregationTask",
+        "kind": "class",
+        "signature": "class AggregationTask"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "AggregationTask",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/tasks/aggregate.ts#"
+      }
+    ],
     "structuralHints": {
-      "importCount": 0,
-      "exportCount": 0,
+      "importCount": 5,
+      "exportCount": 1,
       "isBarrel": false,
       "isTypeOnly": false
     }
   },
   "graph": {
     "dependsOn": [
-      {
-        "targetPath": "path",
-        "relation": "import",
-        "symbols": []
-      },
-      {
-        "targetPath": "p-limit",
-        "relation": "import",
-        "symbols": []
-      },
       {
         "targetPath": "../core/task.js",
         "relation": "import",
@@ -102,31 +146,46 @@
         ]
       },
       {
-        "targetPath": "../core/task-types.js",
-        "relation": "import",
-        "symbols": [
-          "CommitStageOutput"
-        ]
-      },
-      {
         "targetPath": "../core/task-state.js",
         "relation": "import",
         "symbols": [
           "addTaskUsage",
           "incrementTaskFailed"
         ]
+      },
+      {
+        "targetPath": "p-limit",
+        "relation": "import",
+        "symbols": [
+          "pLimit"
+        ]
       }
     ],
     "dependedBy": [],
     "reverseIndexComplete": false,
-    "symbolEdges": []
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/tasks/aggregate.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/addTaskUsage#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/aggregate.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/incrementTaskFailed#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T03:58:10.589Z",
+    "indexedAt": "2026-05-03T11:25:06.136Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "llm"
+      "fallback"
     ]
   }
 }

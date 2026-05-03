@@ -1,30 +1,46 @@
-<!-- spine-content-hash:949e27b174b4537099a624487eaadcf5a73fb4e76b92ae93e1ffb941f1cb9d04 -->
-# ArchSpine Project Root Configuration
+# ArchSpine Semantic Configuration Summary
 
-## Role
-Defines the project identity, module structure, and provenance metadata for the ArchSpine semantic indexing system.
+This configuration file defines the semantic identity, indexing pipeline, and provenance metadata for the **ArchSpine** project knowledge graph. It is the keystone for all indexing operations – if incorrectly set, the system may fail to generate correct semantic contracts, produce inconsistent documentation, or lose provenance traceability.
 
-## Key Responsibilities
-- Manage project metadata and schema versioning
-- Define module directory layout and role assignment
-- Track provenance for indexing pipeline stages
+## What This Configuration Controls
 
-## Important Parameters
-- **schemaVersion**: Controls compatibility with ArchSpine tooling; mismatched versions may cause parsing failures.
-- **projectName**: Identifies the repository for cross-reference integrity; must match the root project name.
-- **modules**: Declares source and documentation directories with their roles and file counts; affects indexing scope.
-- **provenance.indexedAt**: Timestamp of last indexing; used for cache invalidation and staleness detection.
-- **provenance.generatorVersion**: Version of the indexing tool that produced this file; critical for reproducibility.
-- **provenance.pipelineStages**: Ordered list of processing stages (e.g., AST, LLM) that generated the index; affects downstream tool behavior.
+The file declares the project name, high-level role, module directories, and indexing provenance. It tells ArchSpine *what* to index, *how* to interpret source directories, and *when* the index was built.
 
-## Invariants
-- `schemaVersion` must be a valid semver string
-- `projectName` must match the repository root identifier
-- `provenance.indexedAt` must be a valid ISO 8601 timestamp
-- `pipelineStages` must contain at least one stage
+### Key Parameters and Their Importance
 
-## Stability and Risks
-This file is the root configuration for the ArchSpine indexing pipeline. Incorrect `schemaVersion` or `projectName` can break cross-repository linking and toolchain compatibility. Missing or stale provenance timestamps may cause unnecessary re-indexing or missed updates. The module list defines the scope of semantic analysis; omitting directories can lead to incomplete knowledge graphs.
+| Parameter | Description | Operational Notes |
+|-----------|-------------|-------------------|
+| `schemaVersion` | Expected schema format (`"1.0.0"` must match current generator). | Mismatches cause parsing failures; must remain aligned with the runtime version to prevent silent data corruption. |
+| `projectName` | Identifier for the repository (e.g., `"archspine"`). | Used to scope generated artifacts and cross-reference indices. Must be a non‑empty string. |
+| `role` | Functional purpose of this configuration in the indexing pipeline (e.g., *Semantic indexing and protocol tooling for repository knowledge graphs*). | Describes the overall system intent – influences which pipeline stages are activated. |
+| `responsibility` | Primary outcome this configuration drives (e.g., *Builds machine‑readable semantic contracts and derived documentation under `.spine`*). | Affects downstream documentation generation; misalignment can produce irrelevant or broken outputs. |
+| `modules` | List of source directories and their roles. Each entry has `directory`, `role`, and `childCount`. | `childCount` helps allocate indexing resources and detect structural changes. Omitting or mislabeling modules leads to incomplete indexing or resource allocation errors. |
+| `provenance` | Records when (`indexedAt`), how (`generatorVersion`), and through which pipeline stages the index was built (e.g., `["ast", "llm"]`). | Critical for cache invalidation and audit trails. `indexedAt` must be a valid ISO 8601 timestamp; `generatorVersion` must match the current tool version. |
 
-## Exported Behavior
-This file is consumed by ArchSpine tooling to initialize the indexing pipeline. It does not export any runtime functions or classes; it is a static configuration document.
+### Example from Supporting Context
+
+```yaml
+projectName: archspine
+schemaVersion: "1.0.0"
+role: "Semantic indexing and protocol tooling for repository knowledge graphs."
+modules:
+  - directory: src
+    role: "Runtime and indexing pipeline implementation."
+    childCount: 14
+  - directory: docs
+    role: "Specification and strategy assets."
+    childCount: 4
+provenance:
+  indexedAt: "2026-04-02T10:00:00Z"
+  generatorVersion: "archspine/1.0.0"
+  pipelineStages: ["ast", "llm"]
+```
+
+## Operational Risks and Stability Concerns
+
+- **Schema/Generator version mismatch:** The `schemaVersion` and `generatorVersion` must align with the actual runtime version of the ArchSpine generator. A mismatch can silently corrupt indexed data or break the entire pipeline.
+- **Module misconfiguration:** Incorrect `directory` paths, roles, or omitted `childCount` values cause incomplete indexing and resource allocation errors. The system uses `childCount` to decide how many workers to assign per module.
+- **Provenance inconsistency:** If `indexedAt` is not a valid ISO timestamp, or `generatorVersion` does not match the tool, audit trails become unreliable and cache invalidation may not work.
+- **Missing invariants:** The `modules` array must contain at least one entry; `projectName` must be a non‑empty string; `schemaVersion` must be exactly `"1.0.0"`. Violating any of these invariants will prevent the index from being built at all.
+
+Operators should treat this file as a critical control plane – any change should be reviewed, validated, and tested against a non‑production environment first.

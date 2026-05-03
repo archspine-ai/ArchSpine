@@ -3,109 +3,201 @@
   "identity": {
     "filePath": "src/engines/scanner.ts",
     "contentHash": "3826adaa5ad9627b7c63961fcbf9a7025e4b6339c30d1664e20ec9c780baa9da",
-    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
-    "semanticHash": "9287a0fde6d4b09fb466d0882d4a89175d2caa495c73dc65f3d3de8b491e6f34",
+    "skeletonHash": "9215d1b0f5d7ead984037c972a3c075f8a765eda4795392ab08a5720bc0fa263",
+    "semanticHash": "c7eb609eca92368f7b24f569531cfc06b98d542c74638ffe361f6420c1c89bdb",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/engines"
   },
   "semantic": {
-    "role": "Core file system scanner engine that discovers, filters, and reports on repository files using layered ignore rules, git diff integration, and configurable scan policies.",
+    "role": "Core file system scanner engine that discovers, filters, and reports repository files using layered ignore rules, git diff integration, and configurable scan policies.",
     "responsibilities": [
-      "Recursively discovers all files in the repository root directory via filesystem traversal.",
-      "Applies layered ignore rules from .gitignore, .spineignore, and protocol-specific exclusions/inclusions using the 'ignore' library.",
-      "Filters files using picomatch patterns for both inclusions and exclusions based on ScanPolicy.",
-      "Identifies changed files by executing git diff commands for incremental scanning via ScannerGitClient.",
-      "Produces structured ScanResult output containing allFiles and changedFile arrays for downstream consumption."
+      "Recursively discovers all files in the repository root directory via filesystem traversal using the `ignore` library's filter.",
+      "Applies layered ignore rules from `.gitignore`, `.spineignore`, and protocol-specific exclusions/inclusions via the `ignore` chain.",
+      "Filters files using picomatch patterns from `ScanPolicy.protocolExclusions` and `ScanPolicy.protocolInclusions` via `createScannerMatcher`.",
+      "Identifies changed files by executing `git diff` commands through `ScannerGitClient` for incremental scanning.",
+      "Generates a `ScanResult` containing `allFiles` and `changedFiles` lists, optionally with a dry-run report via utility functions.",
+      "Handles pattern normalization, path deduplication, and building grouped counts for dry-run summaries."
     ],
     "outOfScope": [
-      "CLI argument parsing or command-line interface concerns.",
-      "Service-level orchestration or workflow management.",
-      "File content analysis or transformation logic.",
-      "Persistent state management or caching beyond git diff."
+      "File content analysis or parsing beyond path listing.",
+      "Change detection beyond file-level diff (not line-level or semantic diff).",
+      "Policy mutation or validation of scan configuration.",
+      "Orchestration of multiple scanners or integration with higher-level services."
     ],
     "invariants": [
-      "Must not import from CLI entrypoint modules (engine-independence rule).",
-      "Must remain decoupled from service-level orchestration concerns.",
-      "Must provide reusable analysis logic without presentation layer dependencies."
+      "Engine independence: Must not import CLI entrypoints or service orchestration modules."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a reusable, engine-level file scanning module that discovers repository files with layered ignore rules and git diff integration, producing structured results for downstream analysis.",
-      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, ensuring the scanner interface is stable and production-ready."
+      "architecturalIntent": "Provides a reusable, decoupled scanning engine that can be consumed by CLI commands, services, or other engines without coupling to presentation or orchestration concerns.",
+      "recentChangeIntent": "ArchSpine v1.0.0 establishes this as the foundational scan engine for architectural governance, supporting layered ignore rule processing and git-aware file discovery."
     },
     "publicSurface": [
-      "ScanResult (interface)",
-      "defaultScannerGitClient (imported from scanner-git)",
-      "ScannerGitClient (type, imported from scanner-git)",
-      "ScanPolicy (imported from scan-policy)",
-      "DEFAULT_SCAN_POLICY (imported from scan-policy)"
+      "Scanner (class): main scanning interface.",
+      "ScanResult (interface): output shape with allFiles and changedFiles.",
+      "ScanDryRunReport (interface): optional summary output."
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Core file system scanner engine that discovers, filters, and reports on repository files using layered ignore rules, git diff integration, and configurable scan policies.",
+        "role": "Core file system scanner engine that discovers, filters, and reports repository files using layered ignore rules, git diff integration, and configurable scan policies.",
         "responsibilities": [
-          "Recursively discovers all files in the repository root directory via filesystem traversal.",
-          "Applies layered ignore rules from .gitignore, .spineignore, and protocol-specific exclusions/inclusions using the 'ignore' library.",
-          "Filters files using picomatch patterns for both inclusions and exclusions based on ScanPolicy.",
-          "Identifies changed files by executing git diff commands for incremental scanning via ScannerGitClient.",
-          "Produces structured ScanResult output containing allFiles and changedFile arrays for downstream consumption."
+          "Recursively discovers all files in the repository root directory via filesystem traversal using the `ignore` library's filter.",
+          "Applies layered ignore rules from `.gitignore`, `.spineignore`, and protocol-specific exclusions/inclusions via the `ignore` chain.",
+          "Filters files using picomatch patterns from `ScanPolicy.protocolExclusions` and `ScanPolicy.protocolInclusions` via `createScannerMatcher`.",
+          "Identifies changed files by executing `git diff` commands through `ScannerGitClient` for incremental scanning.",
+          "Generates a `ScanResult` containing `allFiles` and `changedFiles` lists, optionally with a dry-run report via utility functions.",
+          "Handles pattern normalization, path deduplication, and building grouped counts for dry-run summaries."
         ],
         "outOfScope": [
-          "CLI argument parsing or command-line interface concerns.",
-          "Service-level orchestration or workflow management.",
-          "File content analysis or transformation logic.",
-          "Persistent state management or caching beyond git diff."
+          "File content analysis or parsing beyond path listing.",
+          "Change detection beyond file-level diff (not line-level or semantic diff).",
+          "Policy mutation or validation of scan configuration.",
+          "Orchestration of multiple scanners or integration with higher-level services."
         ]
       },
       "Simplified Chinese": {
-        "role": "核心文件系统扫描引擎，通过分层忽略规则、git diff 集成和可配置的扫描策略来发现、过滤和报告仓库文件。",
+        "role": "核心文件系统扫描引擎，使用分层忽略规则、Git diff 集成和可配置扫描策略来发现、过滤和报告仓库文件。",
         "responsibilities": [
-          "通过文件系统遍历递归发现仓库根目录下的所有文件。",
-          "使用 'ignore' 库应用来自 .gitignore、.spineignore 以及协议特定排除/包含的分层忽略规则。",
-          "基于 ScanPolicy 使用 picomatch 模式对包含和排除进行文件过滤。",
-          "通过 ScannerGitClient 执行 git diff 命令识别变更文件，支持增量扫描。",
-          "生成结构化的 ScanResult 输出，包含 allFiles 和 changedFiles 数组供下游消费。"
+          "通过 `ignore` 库的过滤器递归发现仓库根目录下的所有文件。",
+          "基于 `.gitignore`、`.spineignore` 以及协议特定的排除/包含规则，通过 `ignore` 链应用分层忽略规则。",
+          "通过 `createScannerMatcher` 根据 `ScanPolicy.protocolExclusions` 和 `ScanPolicy.protocolInclusions` 中的 picomatch 模式过滤文件。",
+          "通过 `ScannerGitClient` 执行 `git diff` 命令识别变更文件，支持增量扫描。",
+          "生成包含 `allFiles` 和 `changedFiles` 列表的 `ScanResult`，可选地通过工具函数生成 dry-run 报告。",
+          "处理模式规范化、路径去重以及为 dry-run 摘要构建分组计数。"
         ],
         "outOfScope": [
-          "CLI 参数解析或命令行接口相关功能。",
-          "服务级编排或工作流管理。",
-          "文件内容分析或转换逻辑。",
-          "超出 git diff 范围的持久状态管理或缓存。"
+          "超出路径列表的文件内容分析或解析。",
+          "超出文件级别差异的变更检测（非行级别或语义差异）。",
+          "扫描策略的变更或校验。",
+          "多扫描器的编排或与高层服务的集成。"
         ]
       }
     }
   },
   "skeleton": {
-    "imports": [],
-    "exports": [],
-    "declaredSymbols": [],
+    "imports": [
+      {
+        "source": "'../core/scan-policy.js'",
+        "symbols": [
+          "DEFAULT_SCAN_POLICY",
+          "ScanPolicy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./scanner-git.js'",
+        "symbols": [
+          "defaultScannerGitClient",
+          "type ScannerGitClient"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./scanner-utils.js'",
+        "symbols": [
+          "buildDryRunGroupedCounts",
+          "collectNotableExclusions",
+          "createScannerMatcher",
+          "formatDryRunReport",
+          "normalizeScannerPath",
+          "normalizeScannerPattern",
+          "splitScannerOutput",
+          "uniqueScannerPaths"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'ignore'",
+        "symbols": [
+          "ignore"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "Scanner",
+        "kind": "class",
+        "signature": "class Scanner"
+      },
+      {
+        "name": "ScanResult",
+        "kind": "interface",
+        "signature": "interface ScanResult"
+      },
+      {
+        "name": "ScanDryRunReport",
+        "kind": "interface",
+        "signature": "interface ScanDryRunReport"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "Scanner",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/engines/scanner.ts#"
+      },
+      {
+        "name": "ScanResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/scanner.ts#"
+      },
+      {
+        "name": "ScanDryRunReport",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/scanner.ts#"
+      }
+    ],
     "structuralHints": {
-      "importCount": 0,
-      "exportCount": 0,
-      "isBarrel": false,
+      "importCount": 9,
+      "exportCount": 3,
+      "isBarrel": true,
       "isTypeOnly": false
     }
   },
   "graph": {
     "dependsOn": [
-      {
-        "targetPath": "path",
-        "relation": "import",
-        "symbols": []
-      },
-      {
-        "targetPath": "fs",
-        "relation": "import",
-        "symbols": []
-      },
-      {
-        "targetPath": "ignore",
-        "relation": "import",
-        "symbols": []
-      },
       {
         "targetPath": "../core/scan-policy.js",
         "relation": "import",
@@ -142,6 +234,27 @@
         "symbols": [
           "defaultRuntimeIO"
         ]
+      },
+      {
+        "targetPath": "ignore",
+        "relation": "import",
+        "symbols": [
+          "ignore"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
       }
     ],
     "dependedBy": [
@@ -153,14 +266,71 @@
       }
     ],
     "reverseIndexComplete": true,
-    "symbolEdges": []
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/engines/scanner.ts/_file_#",
+        "targetSymbol": "src/engines/scanner-utils.ts/normalizeScannerPath#",
+        "targetPath": "src/engines/scanner-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/scanner.ts/_file_#",
+        "targetSymbol": "src/engines/scanner-utils.ts/normalizeScannerPattern#",
+        "targetPath": "src/engines/scanner-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/scanner.ts/_file_#",
+        "targetSymbol": "src/engines/scanner-utils.ts/createScannerMatcher#",
+        "targetPath": "src/engines/scanner-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/scanner.ts/_file_#",
+        "targetSymbol": "src/engines/scanner-utils.ts/splitScannerOutput#",
+        "targetPath": "src/engines/scanner-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/scanner.ts/_file_#",
+        "targetSymbol": "src/engines/scanner-utils.ts/uniqueScannerPaths#",
+        "targetPath": "src/engines/scanner-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/scanner.ts/_file_#",
+        "targetSymbol": "src/engines/scanner-utils.ts/buildDryRunGroupedCounts#",
+        "targetPath": "src/engines/scanner-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/scanner.ts/_file_#",
+        "targetSymbol": "src/engines/scanner-utils.ts/collectNotableExclusions#",
+        "targetPath": "src/engines/scanner-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/scanner.ts/_file_#",
+        "targetSymbol": "src/engines/scanner-utils.ts/formatDryRunReport#",
+        "targetPath": "src/engines/scanner-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T03:57:55.264Z",
+    "indexedAt": "2026-05-03T11:25:02.633Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "llm"
+      "fallback"
     ]
   }
 }

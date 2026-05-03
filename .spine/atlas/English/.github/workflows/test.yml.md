@@ -1,27 +1,33 @@
-<!-- spine-content-hash:38b6a6a201d2cb18f2b269a116d0d782ea3edc524ccedf707b8de92fbf0790f2 -->
-# ArchSpine CI Pipeline
+# ArchSpine CI Workflow Summary
 
 ## Purpose
-This document defines the CI workflow for the ArchSpine project. It ensures that every push or pull request to the main or master branches triggers automated verification steps, including building, unit testing, protocol asset validation, release gate checks, documentation builds, and package smoke tests. The goal is to maintain code quality and release readiness across multiple Node.js versions.
 
-## Context and Audience
-This document is intended for developers and maintainers of the ArchSpine project who need to understand the automated checks that run in the CI pipeline. It is also relevant for DevOps engineers managing the repository's continuous integration setup.
+This document defines the continuous integration pipeline for the ArchSpine project. It automates code verification, release readiness checks, documentation building, and packaging validation in response to pushes to the `main` and `master` branches, as well as all pull requests. The pipeline is also triggerable manually via `workflow_dispatch`.
 
-## Key Responsibilities
-- Automated testing and validation on push/PR to main/master branches
-- Multi-version Node.js verification (20, 22)
-- Release gate validation
-- Documentation build verification
-- Package smoke testing for npm publish readiness
+## Audience
 
-## Out of Scope
-- Deployment or production release workflows
-- Manual testing procedures
-- Code quality or linting rules
-- Environment-specific configuration
+This summary is intended for ArchSpine developers and repository maintainers who need to understand the automated CI checks and guarantees. The workflow runs on every push and PR, ensuring that changes meet project quality standards before merge.
+
+## Workflow Overview
+
+The CI pipeline consists of four independent jobs, all running on Ubuntu:
+
+- **Verify (Node 20 & 22):** Installs dependencies, builds the project, runs unit tests, and validates protocol assets. This job uses a matrix strategy across Node.js 20 and 22 to ensure compatibility.
+- **Release Gate:** Performs deeper validation on Node.js 20 before a release can proceed. This job acts as a quality gate for release readiness.
+- **Docs Build:** Builds the project’s documentation to catch broken references or build errors early.
+- **Package Smoke Check:** Packages the project and verifies that the npm publish snapshot is correct, catching packaging issues before publishing.
+
+The pipeline enforces concurrency on a per-ref basis and cancels in-flight runs to avoid wasted resources.
+
+## Key Decisions and Workflows Anchored
+
+- The workflow defines the standard verification path for all code changes.
+- The release gate job anchors the decision to proceed with a release; it must pass for release candidates.
+- Documentation builds and package smoke checks are mandatory for every PR, ensuring documentation integrity and publish readiness.
 
 ## Key Takeaways
-- CI runs on push/PR to main/master and can be triggered manually.
-- Verification includes build, unit tests, protocol validation, release gate, docs build, and package smoke check.
-- Node.js versions 20 and 22 are tested in parallel.
-- The release gate and package smoke check ensure npm publish readiness.
+
+- Verifies code on Node.js 20 and 22
+- Executes a release gate that performs deeper validation before a release
+- Builds documentation to ensure no broken references
+- Smoke tests the npm package to catch packaging issues early

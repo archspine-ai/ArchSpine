@@ -1,22 +1,29 @@
-<!-- spine-content-hash:da10fedffd58638c6fcfd783590fd567b3de663411b19d272e5522401480b2b8 -->
-# ArchSpine Go Pattern Definitions
+# Document Summary: Go AST Extraction Rules for ArchSpine
 
 ## Purpose
-This document defines the pattern-based grammar rules used by ArchSpine to extract structural symbols from Go source code. It specifies how imports, exports (functions, types, structs, interfaces, variables, constants), and usages (calls, selectors) are recognized and categorized.
 
-## Context and Audience
-Intended for developers maintaining the ArchSpine parser or extending its language support. It serves as the canonical reference for Go pattern definitions, ensuring consistent symbol extraction across the codebase.
+This document defines the Go language pattern definitions used by the ArchSpine AST extractor to identify imports, exports, and usages in Go source code. It is part of a multi-language rule set that enables the mirror system to build structural awareness of projects.
 
-## Key Responsibilities
-- Specifying import, export, and usage pattern definitions for Go language constructs
-- Maintaining the mapping between source code patterns and their semantic kinds (Function, Class, Interface, Type, Variable)
+## Audience
+
+This file is intended for developers maintaining the ArchSpine AST engine and contributors adding or updating language extraction rules. It should be reviewed whenever new Go syntax or idioms need to be supported.
+
+## Key Decisions & Workflows Anchored
+
+- **Import Detection**: Single imports (`import $SOURCE`) and grouped imports (using parentheses) are captured via two distinct patterns (`import` and `import_group`).
+- **Export Extraction**: Exports are extracted from:
+  - Functions (`func $NAME...`)
+  - Structs (`type $NAME struct...`) – mapped to kind `Class`
+  - Interfaces (`type $NAME interface...`) – kind `Interface`
+  - Type aliases (`type $NAME = $VAL`) – kind `Type`
+  - Variables (`var $NAME = $VAL`) – kind `Variable`
+  - Constants (`const $NAME = $VAL`) – kind `Variable`
+- **Usage Capture**: Two patterns cover call expressions (`$NAME(...)`) and selector expressions (`$OBJ.$NAME`), enabling detection of function calls and method/field access.
+- **Pattern Syntax**: All rules use a YAML-based template matching syntax with named capture groups (e.g., `$NAME`, `$$$SYMBOLS`), consistent across the multi-language framework.
 
 ## Out of Scope
-- Language-specific parsing logic beyond Go
-- Runtime execution or compilation of the matched patterns
-- User interface or visualization of the parsed results
 
-## Key Takeaways
-- Patterns are defined declaratively using a YAML-like structure with placeholders like `$NAME`, `$ARGS`, `$BODY`.
-- Each export pattern is assigned a semantic kind (Function, Class, Interface, Type, Variable) for downstream indexing.
-- Usage patterns capture how symbols are referenced (function calls, field/method selectors) to build dependency graphs.
+- Other programming languages (TypeScript, Python, Java, etc.)
+- Higher-level architecture or naming convention rules
+- Runtime behavior or execution semantics
+- Code transformation or repair logic

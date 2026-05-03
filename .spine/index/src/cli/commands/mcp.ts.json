@@ -18,21 +18,22 @@
       "Delegates server lifecycle management to the dedicated MCP server implementation in the infrastructure layer."
     ],
     "outOfScope": [
-      "Implementing MCP server logic (handled by infra/mcp/server)",
-      "Persistence or pipeline operations",
-      "Complex command-line argument validation beyond basic subcommand routing"
+      "MCP server implementation details (protocol, transport, lifecycle).",
+      "Authentication or authorization logic.",
+      "Configuration loading or validation.",
+      "Persistent storage or database access."
     ],
     "invariants": [
-      "Must remain a thin adapter; all MCP server logic belongs in the infrastructure layer.",
-      "Must not absorb business logic, pipeline, or persistence responsibilities."
+      "Must not absorb pipeline or persistence logic; remains a thin command adapter (as per cli-entrypoint-separation rule).",
+      "Must only import from infra/mcp/server and cli-utils; no direct dependency on core services."
     ],
     "changeIntent": {
-      "architecturalIntent": "Separate CLI command routing from server implementation to keep CLI thin and reusable.",
-      "recentChangeIntent": null
+      "architecturalIntent": "Maintains separation of CLI command adapters from implementation logic, aligning with architectural governance.",
+      "recentChangeIntent": "Part of ArchSpine v1.0.0 release focusing on architectural governance and semantic layer."
     },
     "publicSurface": [
-      "ExecuteMcpCommandOptions interface",
-      "executeMcpCommand function"
+      "executeMcpCommand",
+      "ExecuteMcpCommandOptions"
     ],
     "ruleViolations": [],
     "driftDetected": false,
@@ -47,9 +48,25 @@
           "Delegates server lifecycle management to the dedicated MCP server implementation in the infrastructure layer."
         ],
         "outOfScope": [
-          "Implementing MCP server logic (handled by infra/mcp/server)",
-          "Persistence or pipeline operations",
-          "Complex command-line argument validation beyond basic subcommand routing"
+          "MCP server implementation details (protocol, transport, lifecycle).",
+          "Authentication or authorization logic.",
+          "Configuration loading or validation.",
+          "Persistent storage or database access."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于启动 ArchSpine 模型上下文协议（MCP）服务器的 CLI 命令适配器。",
+        "responsibilities": [
+          "解析 'mcp' 子命令的命令行参数。",
+          "当调用 'start' 子命令时，实例化并启动 ArchSpineMCPServer。",
+          "提供结构化接口（ExecuteMcpCommandOptions）用于 MCP 命令执行选项。",
+          "将服务器生命周期管理委托给基础设施层中专门的 MCP 服务器实现。"
+        ],
+        "outOfScope": [
+          "MCP 服务器实现细节（协议、传输、生命周期）。",
+          "身份验证或授权逻辑。",
+          "配置加载或验证。",
+          "持久化存储或数据库访问。"
         ]
       }
     }
@@ -121,10 +138,27 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/mcp.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/throwCliUsage#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/mcp.ts/_file_#",
+        "targetSymbol": "src/infra/mcp/server.ts/ArchSpineMCPServer#",
+        "targetPath": "src/infra/mcp/server.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:36.541Z",
+    "indexedAt": "2026-05-03T11:25:01.418Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

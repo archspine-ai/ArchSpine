@@ -4,54 +4,70 @@
     "filePath": "src/utils/confirm.ts",
     "contentHash": "0732860fb39181958aee031003d49985f7539dcb219587945a0b2b9434064efa",
     "skeletonHash": "1e9b63ef627ba4f5e6e70abd3dac181b395729f51ab0dba56feae56bfeca7d12",
-    "semanticHash": "614c80d9993071c13941f1ca898518756a862e3ee6cf918e70915b9f9bdfa523",
+    "semanticHash": "31ebdd62ca0d5d8bed1f51f7aedd74a338ea441e475d15a8a7b7416c75eb315a",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/utils"
   },
   "semantic": {
-    "role": "CLI utility module for interactive user confirmation prompts and terminal input handling.",
+    "role": "Terminal input utility providing interactive confirmation prompts for CLI commands, supporting both explicit text input and immediate single-keypress modes.",
     "responsibilities": [
-      "Parses user confirmation input from various formats (string, boolean) into a boolean result.",
-      "Prompts for explicit confirmation with a customizable message and handles raw terminal mode for single-key input.",
-      "Manages terminal state (raw mode, event listeners) to ensure proper cleanup after confirmation.",
-      "Provides colored output (green/red) for confirmation prompts using kleur."
+      "Parses user confirmation input from various formats (string, boolean) into a normalized boolean result.",
+      "Prompts for explicit confirmation with a customizable message using the `prompts` library and returns a Promise<boolean>.",
+      "Handles immediate confirmation via raw terminal mode using readline, emitting keypress events and cleaning up listeners after a single response.",
+      "Provides colored prompt output (green for yes, red for no) using the kleur library.",
+      "Manages terminal state (raw mode, event listeners, stdout/stdin) to ensure robust cleanup and no resource leaks."
     ],
     "outOfScope": [
-      "General command-line argument parsing",
-      "File system operations",
-      "Network communication",
-      "Data persistence"
+      "Does not handle non-confirmation prompts such as text input or selection lists.",
+      "Does not persist user preferences across sessions.",
+      "Does not validate input beyond yes/no patterns."
     ],
     "invariants": [
-      "Must handle both programmatic boolean input and interactive string input.",
-      "Must restore terminal to a clean state after interactive prompts."
+      "Confirmation always returns a boolean after user interaction.",
+      "Terminal raw mode is always restored to false after immediate confirmation.",
+      "Keyboard event listeners are always removed after immediate confirmation."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a reusable, robust CLI interaction primitive for confirmation dialogs across the ArchSpine toolchain.",
-      "recentChangeIntent": "No recent changes to this module indicated by the git intent."
+      "architecturalIntent": "Enables consistent interactive confirmation for potentially destructive CLI operations within the ArchSpine governance layer.",
+      "recentChangeIntent": "Part of ArchSpine v1.0.0 release establishing an architectural governance and semantic layer for AI era; this module standardizes user confirmation across CLI commands."
     },
     "publicSurface": [
-      "parseConfirmation",
-      "promptForExplicitConfirmation"
+      "promptForExplicitConfirmation",
+      "promptForImmediateConfirmation"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "CLI utility module for interactive user confirmation prompts and terminal input handling.",
+        "role": "Terminal input utility providing interactive confirmation prompts for CLI commands, supporting both explicit text input and immediate single-keypress modes.",
         "responsibilities": [
-          "Parses user confirmation input from various formats (string, boolean) into a boolean result.",
-          "Prompts for explicit confirmation with a customizable message and handles raw terminal mode for single-key input.",
-          "Manages terminal state (raw mode, event listeners) to ensure proper cleanup after confirmation.",
-          "Provides colored output (green/red) for confirmation prompts using kleur."
+          "Parses user confirmation input from various formats (string, boolean) into a normalized boolean result.",
+          "Prompts for explicit confirmation with a customizable message using the `prompts` library and returns a Promise<boolean>.",
+          "Handles immediate confirmation via raw terminal mode using readline, emitting keypress events and cleaning up listeners after a single response.",
+          "Provides colored prompt output (green for yes, red for no) using the kleur library.",
+          "Manages terminal state (raw mode, event listeners, stdout/stdin) to ensure robust cleanup and no resource leaks."
         ],
         "outOfScope": [
-          "General command-line argument parsing",
-          "File system operations",
-          "Network communication",
-          "Data persistence"
+          "Does not handle non-confirmation prompts such as text input or selection lists.",
+          "Does not persist user preferences across sessions.",
+          "Does not validate input beyond yes/no patterns."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "提供交互式确认提示的终端输入工具，支持显式文本输入和即时按键两种模式。",
+        "responsibilities": [
+          "将用户确认输入（字符串、布尔值）解析为规范化布尔结果。",
+          "使用`prompts`库显示可自定义消息的显式确认提示，返回Promise<boolean>。",
+          "使用readline实现即时确认模式，设置原始终端模式并监听按键事件，响应后清理资源。",
+          "使用kleur库为提示输出着色（绿色表示是，红色表示否）。",
+          "管理终端状态（原始模式、事件监听器、stdout/stdin），确保稳健清理无泄漏。"
+        ],
+        "outOfScope": [
+          "不处理非确认类提示，如文本输入或选择列表。",
+          "不跨会话持久化用户偏好。",
+          "不验证除是/否以外的输入模式。"
         ]
       }
     }
@@ -133,7 +149,7 @@
         "targetPath": "readline",
         "relation": "import",
         "symbols": [
-          "*"
+          "readline"
         ]
       },
       {
@@ -146,16 +162,17 @@
     ],
     "dependedBy": [
       {
-        "targetPath": "src/cli/commands/sync.ts",
+        "targetPath": "src/cli/commands/god.ts",
         "relation": "import",
         "edgeProvenance": "ast",
         "symbols": []
       }
     ],
-    "reverseIndexComplete": true
+    "reverseIndexComplete": true,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:42.344Z",
+    "indexedAt": "2026-05-03T11:25:06.993Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

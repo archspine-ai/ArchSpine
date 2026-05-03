@@ -4,51 +4,67 @@
     "filePath": "src/infra/writer-boundary.ts",
     "contentHash": "bc1e0169ea8058d2564ad8a0935dacf4c95ba23fa5534a89dc0c4f56ec222d88",
     "skeletonHash": "8515c37618f504161e3e9b72c570c8de81292a239ad3e39f645915af23c1a034",
-    "semanticHash": "44f8b4873b10b77661030f27e06201e4bc7307877ba19ee5c0d7013cc4533a93",
+    "semanticHash": "ffae99a2c98457ddd8974f842a936dc7d6f79d522e69ee410f5dd89502c84200",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra"
   },
   "semantic": {
-    "role": "Infrastructure boundary component that enforces write protection for ArchSpine's internal directories and files.",
+    "role": "Infrastructure facade for file-system based write protection of ArchSpine's internal Spine directories and files.",
     "responsibilities": [
-      "Defines protected directories (.spine/index, .spine/atlas, .spine/view) and protected file prefixes (.spine/.lock, .spine/cache.db).",
-      "Provides file system permission locking/unlocking mechanisms to prevent unauthorized writes via mode changes.",
-      "Validates file paths against protected patterns to enforce write boundaries.",
-      "Recursively walks directory trees to apply protection policies."
+      "Defines protected directories (.spine/index, .spine/atlas, .spine/view) and protected file prefixes (.spine/.lock, .spine/cache.db) as immutable constants.",
+      "Provides function `withProtectedOutputsWriteAccess` to temporarily unlock protected files/directories, execute a user-supplied operation, and re-lock them atomically.",
+      "Provides class `SpineWriterBoundary` with methods for permission locking/unlocking and recursive directory walking to enforce protection policies.",
+      "Exposes a normalized relative path utility to ensure consistent path matching across platforms."
     ],
     "outOfScope": [
-      "Orchestrating high-level service or engine workflows.",
-      "Handling network or authentication concerns.",
-      "Providing generic file system utilities beyond the defined protection scope."
+      "Business logic for any specific ArchSpine domain (e.g., knowledge representation, indexing, AI orchestration).",
+      "CLI command handlers or user-facing interactions.",
+      "State management or persistence beyond file permission modes."
     ],
     "invariants": [
-      "Must only depend on Node.js built-in modules (fs, path) for low-level file operations.",
-      "Must expose a stable public class interface for write boundary enforcement, not absorb orchestration logic."
+      "Protected paths defined in the module must remain constant and must not be configurable at runtime to prevent bypasses.",
+      "The module must not import or use any service, engine, or task-specific modules (adheres to infra-facade-imports rule).",
+      "All operations that mutate protected paths must be gated through `withProtectedOutputsWriteAccess` or the public class API to maintain write integrity."
     ],
     "changeIntent": {
-      "architecturalIntent": "Encapsulate file system write protection as a stable infrastructure facade, isolating permission management from business logic.",
-      "recentChangeIntent": "No recent changes detected in this file; the git intent 'feat(sync): add repair policy and experimental view layer' does not correlate with this component's evidence."
+      "architecturalIntent": "Provide a stable, low-level file-system permission layer that ensures ArchSpine's internal Spine directories (index, atlas, view) are never accidentally overwritten by user code or higher-level components.",
+      "recentChangeIntent": "Part of the ArchSpine v1.0.0 architectural governance release: establish write protection boundaries to prevent corruption of the .spine project state."
     },
     "publicSurface": [
-      "SpineWriterBoundary"
+      "withProtectedOutputsWriteAccess (function)",
+      "SpineWriterBoundary (class)"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Infrastructure boundary component that enforces write protection for ArchSpine's internal directories and files.",
+        "role": "Infrastructure facade for file-system based write protection of ArchSpine's internal Spine directories and files.",
         "responsibilities": [
-          "Defines protected directories (.spine/index, .spine/atlas, .spine/view) and protected file prefixes (.spine/.lock, .spine/cache.db).",
-          "Provides file system permission locking/unlocking mechanisms to prevent unauthorized writes via mode changes.",
-          "Validates file paths against protected patterns to enforce write boundaries.",
-          "Recursively walks directory trees to apply protection policies."
+          "Defines protected directories (.spine/index, .spine/atlas, .spine/view) and protected file prefixes (.spine/.lock, .spine/cache.db) as immutable constants.",
+          "Provides function `withProtectedOutputsWriteAccess` to temporarily unlock protected files/directories, execute a user-supplied operation, and re-lock them atomically.",
+          "Provides class `SpineWriterBoundary` with methods for permission locking/unlocking and recursive directory walking to enforce protection policies.",
+          "Exposes a normalized relative path utility to ensure consistent path matching across platforms."
         ],
         "outOfScope": [
-          "Orchestrating high-level service or engine workflows.",
-          "Handling network or authentication concerns.",
-          "Providing generic file system utilities beyond the defined protection scope."
+          "Business logic for any specific ArchSpine domain (e.g., knowledge representation, indexing, AI orchestration).",
+          "CLI command handlers or user-facing interactions.",
+          "State management or persistence beyond file permission modes."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基于文件系统的写入保护基础设施门面，用于保护 ArchSpine 内部 Spine 目录和文件。",
+        "responsibilities": [
+          "定义受保护的目录（.spine/index、.spine/atlas、.spine/view）和受保护的文件前缀（.spine/.lock、.spine/cache.db）作为不可变常量。",
+          "提供 `withProtectedOutputsWriteAccess` 函数，临时解锁受保护的文件/目录，执行用户提供的操作，然后原子化地重新锁定。",
+          "提供 `SpineWriterBoundary` 类，包含权限锁定/解锁方法以及递归目录遍历，以强制执行保护策略。",
+          "暴露规范化的相对路径工具函数，确保跨平台路径匹配一致性。"
+        ],
+        "outOfScope": [
+          "任何特定 ArchSpine 领域的业务逻辑（如知识表示、索引、AI 编排）。",
+          "CLI 命令处理器或用户交互。",
+          "超出文件权限模式的持久化或状态管理。"
         ]
       }
     }
@@ -134,18 +150,12 @@
         ]
       }
     ],
-    "dependedBy": [
-      {
-        "targetPath": "src/cli/commands/sync.ts",
-        "relation": "import",
-        "edgeProvenance": "ast",
-        "symbols": []
-      }
-    ],
-    "reverseIndexComplete": true
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:40.571Z",
+    "indexedAt": "2026-05-03T11:25:05.332Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -3,8 +3,8 @@
   "identity": {
     "filePath": "src/infra/db/wal-recovery.ts",
     "contentHash": "dce8021ed8f2738ac312b0e952d381279f7a36e2d40de2b7871903e132dda1bf",
-    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
-    "semanticHash": "b8b6de0fb2ae54273f7172b78b495c62221693d96551697d5ff48426442989ea",
+    "skeletonHash": "78281b86f708869e5040da114c4020e1568efd3828c401eeea1f8191cc9cec9c",
+    "semanticHash": "67210f8e9937e1e8bf1e63fa37dade372e20a9b595458ea66c0ec41f5a1f87bf",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/db"
@@ -16,22 +16,18 @@
       "Exposes a recovery function that removes stale WAL and shared-memory (SHM) files to prevent empty reconciliations and subsequent LLM rate limit overload."
     ],
     "outOfScope": [
-      "Database connection management or query execution.",
-      "Orchestration of reconciliation or sync tasks.",
-      "Any higher-level business logic or service coordination."
+      "Does not perform the actual checkpointing or recovery of the SQLite database itself.",
+      "Does not handle concurrent access or multi-process coordination when cleaning stale files."
     ],
     "invariants": [
-      "The STALE_WAL_THRESHOLD_BYTES constant must remain at 512KB to match the heuristic for detecting killed processes.",
-      "The recoverStaleWal function must only operate on WAL and SHM files derived from the given dbPath.",
-      "The module must not import or depend on service, task, or engine modules to comply with the infra-facade-imports rule."
+      "Infra modules should expose stable low-level capabilities and facades, and must not absorb service/task/engine orchestration concerns."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a stable, low-level infrastructure facade for detecting and cleaning up stale SQLite WAL files, preventing data loss and LLM rate limit issues.",
-      "recentChangeIntent": "No recent changes detected; the module appears stable and aligned with the pipeline fixes before v1.0."
+      "architecturalIntent": "Provides a resilience mechanism for SQLite-backed stores to recover from killed processes by cleaning up stale WAL files.",
+      "recentChangeIntent": "The file is stable and unchanged in recent commits; it serves as part of the underlying semantic layer for ArchSpine v1.0.0, ensuring robust data recovery."
     },
     "publicSurface": [
-      "STALE_WAL_THRESHOLD_BYTES (constant)",
-      "recoverStaleWal(dbPath: string): void"
+      "recoverStaleWal"
     ],
     "ruleViolations": [],
     "driftDetected": false,
@@ -44,32 +40,58 @@
           "Exposes a recovery function that removes stale WAL and shared-memory (SHM) files to prevent empty reconciliations and subsequent LLM rate limit overload."
         ],
         "outOfScope": [
-          "Database connection management or query execution.",
-          "Orchestration of reconciliation or sync tasks.",
-          "Any higher-level business logic or service coordination."
+          "Does not perform the actual checkpointing or recovery of the SQLite database itself.",
+          "Does not handle concurrent access or multi-process coordination when cleaning stale files."
         ]
       },
       "Simplified Chinese": {
-        "role": "用于 SQLite 预写日志（WAL）过期文件检测与清理的基础设施工具模块。",
+        "role": "SQLite 预写式日志（WAL）陈旧文件检测与清理的基础设施工具模块。",
         "responsibilities": [
-          "定义字节阈值（512KB），用于识别可能因进程被杀死而残留的过期 WAL 文件。",
-          "提供恢复函数，删除过期的 WAL 和共享内存（SHM）文件，防止空数据恢复导致后续 LLM 速率限制过载。"
+          "定义一个字节阈值（512KB）以识别可能因进程被杀死而留下的陈旧 WAL 文件。",
+          "暴露一个恢复函数，清除陈旧的 WAL 和共享内存（SHM）文件，以防止因空比对导致的 LLM 速率限制过载。"
         ],
         "outOfScope": [
-          "数据库连接管理或查询执行。",
-          "协调或同步任务的编排。",
-          "任何更高级别的业务逻辑或服务协调。"
+          "不执行 SQLite 数据库本身的检查点或恢复操作。",
+          "不处理并发访问或多进程协调清除陈旧文件的问题。"
         ]
       }
     }
   },
   "skeleton": {
-    "imports": [],
-    "exports": [],
-    "declaredSymbols": [],
+    "imports": [
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "recoverStaleWal",
+        "kind": "function",
+        "signature": "recoverStaleWal(dbPath: string)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "recoverStaleWal",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/wal-recovery.ts#"
+      }
+    ],
     "structuralHints": {
-      "importCount": 0,
-      "exportCount": 0,
+      "importCount": 2,
+      "exportCount": 1,
       "isBarrel": false,
       "isTypeOnly": false
     }
@@ -82,16 +104,23 @@
         "symbols": []
       }
     ],
-    "dependedBy": [],
-    "reverseIndexComplete": false,
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/db/runtime.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T03:57:58.402Z",
+    "indexedAt": "2026-05-03T11:25:03.525Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "llm"
+      "fallback"
     ]
   }
 }

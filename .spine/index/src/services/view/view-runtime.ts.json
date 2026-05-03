@@ -4,7 +4,7 @@
     "filePath": "src/services/view/view-runtime.ts",
     "contentHash": "ba17f44b7a553811de7714023e42b5e74f04e0eda993a4cff8fa1c0265ddb957",
     "skeletonHash": "32f6c6303ebe17f07e0b11dc3975690ca92185d43b14e32426a7aa66b5e2c279",
-    "semanticHash": "cf8066bc1c9488f2f8a7ad680da62428b92991419d67e8d102e3aba1a40f4a0d",
+    "semanticHash": "f554226cf3b7e8b9a3e2c4c4bcb13c7706d7fb71f83617b76c9ec67633ae528b",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/services/view"
@@ -17,21 +17,24 @@
       "Resolves the list of enabled view IDs from project config or default, normalizing and filtering unknown IDs."
     ],
     "outOfScope": [
-      "Runtime orchestration of view services or engines.",
-      "Direct interaction with view rendering or UI components.",
-      "Persistence or storage of configuration data."
+      "Does not manage view lifecycle or instantiation.",
+      "Does not coordinate with runtime service orchestration.",
+      "Does not perform persistent storage or configuration writes."
     ],
     "invariants": [
-      "Pure configuration resolution with no side effects.",
-      "Depends on infra/config for project configuration and view-registry for view ID normalization."
+      "Resolution must always produce a valid ResolvedExperimentalViewLayer object even if config is absent (fallback to default).",
+      "Enabled views resolution must normalize view IDs and collect unknown IDs in the 'unknown' array.",
+      "The source of each resolved value must be accurately recorded as 'project-config', 'env', or 'default'."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a typed, centralized configuration resolution for the view layer, decoupling config sourcing from runtime logic.",
-      "recentChangeIntent": "Modularize CLI and decouple core infra services (as per git intent). This module likely supports decoupling by providing config resolution independent of runtime services."
+      "architecturalIntent": "Provide a systematic configuration resolution layer that respects project config, environment overrides, and sensible defaults for view layer and enabled views.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era (general system-wide intent, not specific to this file)."
     },
     "publicSurface": [
-      "ResolvedExperimentalViewLayer",
-      "ResolvedEnabledViews"
+      "ResolvedExperimentalViewLayer (interface)",
+      "ResolvedEnabledViews (interface)",
+      "resolveExperimentalViewLayer (function)",
+      "resolveEnabledViews (function)"
     ],
     "ruleViolations": [],
     "driftDetected": false,
@@ -45,9 +48,22 @@
           "Resolves the list of enabled view IDs from project config or default, normalizing and filtering unknown IDs."
         ],
         "outOfScope": [
-          "Runtime orchestration of view services or engines.",
-          "Direct interaction with view rendering or UI components.",
-          "Persistence or storage of configuration data."
+          "Does not manage view lifecycle or instantiation.",
+          "Does not coordinate with runtime service orchestration.",
+          "Does not perform persistent storage or configuration writes."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 系统中实验视图层和已启用视图的配置解析模块。",
+        "responsibilities": [
+          "定义解析后的视图层配置的 TypeScript 接口（ResolvedExperimentalViewLayer、ResolvedEnabledViews）。",
+          "从项目配置、环境变量或默认值中解析实验视图层标志。",
+          "从项目配置或默认值中解析已启用的视图 ID 列表，标准化并过滤未知 ID。"
+        ],
+        "outOfScope": [
+          "不管理视图的生命周期或实例化。",
+          "不与运行时服务编排协调。",
+          "不执行持久化存储或配置写入。"
         ]
       }
     }
@@ -143,10 +159,34 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/view/view-runtime.ts/_file_#",
+        "targetSymbol": "src/services/view/view-registry.ts/normalizeViewIds#",
+        "targetPath": "src/services/view/view-registry.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/view/view-runtime.ts/_file_#",
+        "targetSymbol": "src/services/view/view-registry.ts/getDefaultEnabledViewIds#",
+        "targetPath": "src/services/view/view-registry.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/view/view-runtime.ts/_file_#",
+        "targetSymbol": "src/infra/config/env.ts/parseBooleanEnv#",
+        "targetPath": "src/infra/config/env.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:41.383Z",
+    "indexedAt": "2026-05-03T11:25:06.101Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

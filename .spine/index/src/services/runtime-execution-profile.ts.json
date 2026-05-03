@@ -4,63 +4,70 @@
     "filePath": "src/services/runtime-execution-profile.ts",
     "contentHash": "ad91bf44cc9a53739e84ef99cc938badf9dfe9770c1c568f2b30221d3d384eda",
     "skeletonHash": "6af040a6f35bcbbab29e6b012aad8c09316e0cad038994ba6db3e7d1f5752166",
-    "semanticHash": "9c89fd510eac8768311de22a40a7d5c4ee4ea0cbfc58ff3d2a760c51d01654bc",
+    "semanticHash": "8df0559788aa21d59fbfb1d7dd5382a9485f114cb742913cbe0218cc23d24970",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/services"
   },
   "semantic": {
-    "role": "Type definition module for resolved runtime execution profiles and commands within the service layer.",
+    "role": "Service-level orchestrator for resolving execution profiles from LLM configuration and runtime commands.",
     "responsibilities": [
-      "Defines the `ResolvedExecutionProfile` interface aggregating resolved LLM settings, mode, prompt tier, validation policy, and generation flow.",
-      "Defines the `RuntimeCommand` type alias for representing runtime commands.",
+      "Defines the `ResolvedExecutionProfile` interface that aggregates resolved LLM settings including mode, prompt tier, validation policy, generation flow, and their respective sources.",
+      "Defines the `RuntimeCommand` type alias to represent runtime commands within the service layer.",
+      "Implements the `resolveExecutionProfileFromSettings` function that takes `ResolvedLLMSettings` and `RuntimeCommand` to produce a fully resolved `ResolvedExecutionProfile`, handling defaults and command-specific overrides.",
       "Imports and reuses types from the infra layer (`ResolvedLLMSettings`, `GenerationFlow`, `GenerationStrategy`, `LLMMode`, `PromptPolicyTier`, `PromptProfile`, `ValidatePolicy`, `ValidationProfile`) to ensure type consistency across the service boundary."
     ],
     "outOfScope": [
-      "Runtime orchestration or execution logic.",
-      "Service implementation or business logic.",
-      "Direct interaction with infra modules beyond type imports."
+      "Actual LLM invocation or API calls.",
+      "Validation or execution of prompts.",
+      "User interface or presentation logic.",
+      "Direct access to credentials or configuration storage."
     ],
     "invariants": [
-      "All fields in `ResolvedExecutionProfile` are resolved (non-optional) values derived from configuration or defaults.",
-      "The module depends only on infra type definitions, not on runtime infra modules."
+      "Must only import from the infra layer or other service modules, not from core/tasks/engines.",
+      "Must not contain view-specific logic; such logic belongs in `src/services/view/**`."
     ],
     "changeIntent": {
-      "architecturalIntent": "Establish a typed contract for resolved execution profiles that the runtime service uses to drive LLM interactions, separating configuration resolution from execution.",
-      "recentChangeIntent": "Initial commit for open source release (v1.0.0) — establishes the foundational type definitions for the service runtime."
+      "architecturalIntent": "Establish a canonical runtime execution profile resolution mechanism that decouples LLM configuration from command-specific overrides, enabling consistent behavior across commands.",
+      "recentChangeIntent": "Part of ArchSpine v1.0.0 architectural governance; the resolution function was likely added to support the semantic layer by providing a resolved profile for each command invocation."
     },
     "publicSurface": [
+      "resolveExecutionProfileFromSettings",
       "ResolvedExecutionProfile",
       "RuntimeCommand"
     ],
     "ruleViolations": [],
-    "driftDetected": false,
-    "driftReason": null,
+    "driftDetected": true,
+    "driftReason": "The module now implements a resolution function (`resolveExecutionProfileFromSettings`) in addition to type definitions, shifting it from a pure type-definition module to an active service resolver.",
     "localized": {
       "English": {
-        "role": "Type definition module for resolved runtime execution profiles and commands within the service layer.",
+        "role": "Service-level orchestrator for resolving execution profiles from LLM configuration and runtime commands.",
         "responsibilities": [
-          "Defines the `ResolvedExecutionProfile` interface aggregating resolved LLM settings, mode, prompt tier, validation policy, and generation flow.",
-          "Defines the `RuntimeCommand` type alias for representing runtime commands.",
-          "Imports and reuses types from the infra layer to ensure type consistency across the service boundary."
+          "Defines the `ResolvedExecutionProfile` interface aggregating resolved LLM settings including mode, prompt tier, validation policy, generation flow, and their sources.",
+          "Defines the `RuntimeCommand` type alias for runtime commands.",
+          "Implements the `resolveExecutionProfileFromSettings` function that produces a fully resolved profile from LLM settings and a command.",
+          "Imports and reuses infra layer types to ensure type consistency across the service boundary."
         ],
         "outOfScope": [
-          "Runtime orchestration or execution logic.",
-          "Service implementation or business logic.",
-          "Direct interaction with infra modules beyond type imports."
+          "Actual LLM invocation or API calls.",
+          "Validation or execution of prompts.",
+          "User interface or presentation logic.",
+          "Direct access to credentials or configuration storage."
         ]
       },
       "Simplified Chinese": {
-        "role": "服务层中已解析运行时执行配置和命令的类型定义模块。",
+        "role": "服务层编排器，负责从 LLM 配置和运行时命令解析执行配置文件。",
         "responsibilities": [
-          "定义 `ResolvedExecutionProfile` 接口，聚合已解析的 LLM 设置、模式、提示策略层级、验证策略和生成流程。",
-          "定义 `RuntimeCommand` 类型别名，用于表示运行时命令。",
-          "从基础设施层导入并复用类型，确保服务边界上的类型一致性。"
+          "定义 `ResolvedExecutionProfile` 接口，聚合已解析的 LLM 设置，包括模式、提示层级、验证策略、生成流程及其来源。",
+          "定义 `RuntimeCommand` 类型别名，表示运行时命令。",
+          "实现 `resolveExecutionProfileFromSettings` 函数，接收 `ResolvedLLMSettings` 和 `RuntimeCommand`，生成完全解析的执行配置文件，处理默认值和命令特定覆盖。",
+          "导入并复用基础设施层的类型，确保跨服务边界类型一致性。"
         ],
         "outOfScope": [
-          "运行时编排或执行逻辑。",
-          "服务实现或业务逻辑。",
-          "超出类型导入范围的基础设施模块直接交互。"
+          "实际的 LLM 调用或 API 请求。",
+          "提示的验证或执行。",
+          "用户界面或展示逻辑。",
+          "直接访问凭据或配置存储。"
         ]
       }
     }
@@ -134,10 +141,12 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:40.784Z",
+    "indexedAt": "2026-05-03T11:25:05.534Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -1,13 +1,10 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/infra/mcp","role":"Implements the Model Context Protocol (MCP) infrastructure for external AI agent interaction and data access.","responsibility":"Provides MCP server, resource templates, tool definitions, and context-aware access control to expose ArchSpine's internal project data and capabilities to external AI agents via stdio transport.","children":[{"filePath":"src/infra/mcp/context.ts","role":"Infrastructure facade class for gating Model Context Protocol (MCP) context flow based on priming state and operational mode.","fileKind":"source"},{"filePath":"src/infra/mcp/resources.ts","role":"Infrastructure facade providing MCP resource templates and handlers for accessing ArchSpine project metadata and files within the .spine directory, with context-aware access control via MCPContextGate.","fileKind":"source"},{"filePath":"src/infra/mcp/server.ts","role":"Infrastructure facade implementing the Model Context Protocol (MCP) server to expose ArchSpine's internal resources and tools to external AI agents via stdio transport.","fileKind":"source"},{"filePath":"src/infra/mcp/tools.ts","role":"MCP (Model Context Protocol) tool facade exposing ArchSpine system capabilities as queryable tools for external AI agents.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-02T10:10:53.271Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-**`src/infra/mcp` – 模型上下文协议基础设施**
+`mcp` 目录是 ArchSpine 的模型上下文协议（MCP）集成层，通过 stdio 传输将系统内部资源与工具暴露给外部 AI 代理。它充当一个网关，根据准备状态和操作模式控制上下文流，确保代理只获得其被授权访问的信息。
 
-此目录实现了 **模型上下文协议（MCP）** 的基础设施，允许外部 AI 代理访问 ArchSpine 的内部项目数据与能力。所有通信均通过 **stdio 传输** 进行，并由上下文感知的访问控制层加以限制。
+该目录包含四个基础设施外观子模块，每个模块职责明确：
 
-**关键文件及其分组：**
+- **context.ts** – 上下文门控与提供策略。定义 `MCPContextMode`（关闭、项目优先、搜索优先），维护项目和搜索准备状态的内部布尔标记，并通过 `SEARCH_PRIMING_TOOLS` 集在搜索导向工具被调用时更新搜索准备状态。
+- **resources.ts** – 资源模板与处理程序。提供 URI 模板（`spine://project`、`spine://file`、`spine://index`），读取并格式化 `.spine` 目录下的文件（JSON、Markdown），并通过 `MCPContextGate`（`requireResourceAccess`、`noteResourceRead`）实施上下文门控的访问控制。
+- **server.ts** – MCP 服务器生命周期。初始化 MCP SDK 服务器实例，使用 stdio 传输，注册资源和工具请求处理器，将资源检索委托给 `SpineResources`，将工具定义和执行委托给 `SpineTools`，从 Manifest 和 Config 加载项目上下文，并通过 `toArchSpineError` 统一错误报告。
+- **tools.ts** – 工具定义与执行。将核心 ArchSpine 组件（Scanner、RuleEngine、Manifest、Config）封装为 MCP 工具，包括 `queryInvariants`、`queryResponsibilities`、`previewScan`、`getDriftHistory`、`getFileContext`、`getViewData`、`getViolationsSummary`、`listResourceTemplates`。还提供基线/同步状态查询，并通过 `MCPContextGate` 集成审计/追踪。
 
-- **`context.ts`** – 定义 `MCPContextGate` 外观类，根据系统的初始化状态与运行模式控制 MCP 上下文的流转，是所有传入请求的第一道关卡。
-- **`resources.ts`** – 提供 MCP 资源模板与处理器，用于公开 `.spine` 目录内的项目元数据与文件，并通过 `MCPContextGate` 执行访问规则。
-- **`server.ts`** – 实现 MCP 服务器，将资源与工具整合在一起，通过 stdio 向外部代理暴露接口。
-- **`tools.ts`** – 工具外观，将 ArchSpine 系统的能力包装为可查询的 MCP 工具，使代理能够读写项目状态。
-
-这些文件共同构成一个统一的层次：（1）基于系统上下文安全地控制访问；（2）以标准 MCP 格式公开资源与工具；（3）通过 stdio 实现轻量级代理集成。最关键的实现领域是 **上下文门控** 以及 **资源/工具定义**。
+最重要的实现领域是**上下文感知访问控制**（决定上下文何时以及如何流向代理）和**资源/工具暴露**（通过结构化协议使项目元数据、文件内容、扫描、规则和漂移历史可用）。具体子模块如 `MCPContextGate`、`SpineResources` 和 `SpineTools` 是实施者应重点关注的主要构建块。

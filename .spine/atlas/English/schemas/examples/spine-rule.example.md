@@ -1,38 +1,25 @@
-# ArchSpine Architecture Rule: No Direct Database Import
+---MARKDOWN:Simplified Chinese---
+# ArchSpine：禁止直接导入数据库层规则
 
-## Purpose
+## 目的
 
-This document establishes a strict architectural rule that prohibits service and middleware layers from directly importing the underlying database adapter layer. It is part of the ArchSpine governance system to enforce clean domain boundaries.
+本文档定义了一条架构治理规则，禁止应用服务层直接导入数据库层（`src/db/*`），以确保清晰的架构边界，并保持关注点分离。
 
-## Audience
+## 目标读者
 
-This rule is intended for developers and architects working on the ArchSpine system who need to understand and comply with dependency constraints. The rule applies to all TypeScript source files except those within the database layer itself.
+本规则面向 ArchSpine 代码库的开发者与架构师，特别是编写服务层代码的人员。对于执行架构约束的代码审查者同样重要。
 
-## Key Takeaways
+## 关键决策与工作流
 
-- Direct imports from `src/db/*` are forbidden in application services
-- Use service abstractions or repository interfaces instead of direct database access
-- Violations are treated as errors with high severity
-- The rule exists to decouple business logic from storage implementation details
+- **强制导入规则**：应用服务（`src/**/*.ts` 文件，但排除 `src/db/**`）不得直接从 `src/db/*` 导入。
+- **允许的替代方案**：使用服务抽象或仓储接口代替直接依赖数据库层。
+- **原理**：保持领域边界清晰，避免业务逻辑与具体存储实现耦合，提升可测试性和可维护性。
+- **执行方式**：规则可强制执行，严重级别为 `error`，在开发或 CI 过程中捕获违规行为。
 
-## Rule Details
+## 范围
 
-**Rule ID:** `no-direct-db-import`
+规则适用于 `src/` 下所有 TypeScript 文件，但排除 `src/db/` 内部文件。它不规定如何实现抽象或仓储接口，也不涉及数据库层本身的数据访问模式。
 
-**Severity:** error
+## 总结
 
-**Enforceable:** yes
-
-**Applies to:** All `src/**/*.ts` files except those in `src/db/**`
-
-**Rationale:** Maintain clear domain boundaries and avoid coupling business logic to underlying storage implementations.
-
-## Workflow Impact
-
-This rule anchors the following decisions and workflows:
-
-- **Code Review:** Reviewers must check that service and middleware layers do not import from `src/db/*` directly
-- **Architecture Compliance:** Automated enforcement ensures violations are caught during development
-- **Refactoring:** Teams must use repository interfaces or service abstractions when accessing data
-
----
+该规则锚定了应用服务与数据存储交互的架构决策。遵循此规则可以保持清晰的层次架构，让存储后端的演进不影响业务逻辑。

@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/infra/config",
-  "role": "Configuration management layer for the ArchSpine mirror system.",
-  "responsibility": "Provides centralized configuration loading, validation, merging, and runtime access for all ArchSpine system settings, including LLM configuration, scan policies, pre-commit hooks, and artifact strategies.",
+  "role": "Configuration management and defaults for the ArchSpine mirror system.",
+  "responsibility": "Provides default configuration, environment variable parsing, configuration loading and validation, supported value access, and pre-commit setting resolution for ArchSpine.",
   "children": [
     {
       "filePath": "src/infra/config/defaults.ts",
@@ -11,27 +11,27 @@
     },
     {
       "filePath": "src/infra/config/env.ts",
-      "role": "Infrastructure utility module providing environment variable parsing constants and functions.",
+      "role": "Infrastructure utility module providing environment variable parsing functions and constants for configuration governance.",
       "fileKind": "source"
     },
     {
       "filePath": "src/infra/config/facade.ts",
-      "role": "Infrastructure configuration manager providing centralized access and mutation for the ArchSpine project's runtime settings.",
+      "role": "Centralized configuration store for ArchSpine runtime settings, providing read/write access to persisted config data and LLM-specific configuration values, acting as a facade over lower-level infra modules.",
       "fileKind": "source"
     },
     {
       "filePath": "src/infra/config/loader.ts",
-      "role": "Configuration loader and validator for the ArchSpine system, responsible for reading, parsing, validating, and merging configuration files with defaults.",
+      "role": "Infrastructure configuration loader and facade for the ArchSpine system, responsible for reading configuration from disk, parsing JSON, validating, and merging with defaults.",
       "fileKind": "source"
     },
     {
       "filePath": "src/infra/config/precommit.ts",
-      "role": "Configuration resolution utility for the pre-commit setting, determining its boolean value from environment variables or explicit parameters.",
+      "role": "Infra config utility for resolving the pre-commit boolean setting from an environment variable with an optional explicit parameter fallback.",
       "fileKind": "source"
     },
     {
       "filePath": "src/infra/config/supported-values.ts",
-      "role": "Core TypeScript interface defining the contract for accessing supported configuration values within the ArchSpine system.",
+      "role": "Core TypeScript interface and utility functions defining the contract and operations for accessing and mutating supported configuration values in the ArchSpine system.",
       "fileKind": "source"
     },
     {
@@ -46,7 +46,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-01T04:57:43.045Z",
+    "indexedAt": "2026-05-03T11:27:05.936Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -3,29 +3,34 @@
   "identity": {
     "filePath": "examples/demo-project/.spine/config.json",
     "contentHash": "0b29a82af58e08dce738047947abb37345f3b6612b135a84b9798a6387d5098c",
-    "semanticHash": "29f744caf27012c7b2f7f3bffadff3e6339179eb8cc5a01818f451c95153f28f",
+    "semanticHash": "f09ae9d4c35bfc767d659c32b47e12598a34a5ca42191a5c6981c2c16a4c70b2",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "examples/demo-project/.spine"
   },
   "semantic": {
-    "role": "Project-level configuration for the ArchSpine mirror system, defining localization, LLM provider, MCP context mode, hooks, artifact storage, and file scanning policy.",
+    "role": "Central configuration file for the ArchSpine system, controlling project metadata, LLM provider, MCP context mode, pre-commit hooks, and scan policy including ignore chains and protocol boundaries.",
     "responsibilities": [
-      "Localization settings for multi-language support",
-      "LLM provider selection and configuration",
-      "MCP context mode control",
-      "Pre-commit hook and sync mode management",
-      "Artifact storage configuration",
-      "File scanning policy and ignore chain management"
+      "Defining project name and supported locales",
+      "Configuring the LLM provider (e.g., mock provider)",
+      "Setting MCP context mode (on/off)",
+      "Enabling or disabling pre-commit hooks and sync mode",
+      "Specifying the file scan source (git-tracked or filesystem)",
+      "Managing ignore chain: inherited .gitignore, project .spineignore, local .spineignore.local",
+      "Defining protocol exclusions and inclusions to control which paths are scanned"
     ],
     "outOfScope": [],
     "invariants": [
-      "schemaVersion must be a valid semver string",
-      "project.locales must contain at least one locale",
-      "llm.provider must be a supported provider identifier",
-      "scanPolicy.fileSource must be one of the allowed sources",
-      "scanPolicy.ignoreChain.inheritGitIgnore must be a boolean",
-      "protocolExclusions and protocolInclusions must be arrays of path patterns"
+      "schemaVersion must be a valid semantic version string",
+      "project.locales must contain at least one supported locale",
+      "llm.provider must be a recognized provider string (e.g., 'mock', 'openai', 'gemini')",
+      "mcp.contextMode must be 'on' or 'off'",
+      "hooks.preCommit must be boolean",
+      "hooks.syncMode must be either 'hook' or 'auto'",
+      "scanPolicy.fileSource must be 'git-tracked' or 'filesystem'",
+      "scanPolicy.ignoreChain.inheritGitIgnore must be boolean",
+      "protocolExclusions and protocolInclusions must be arrays of path patterns",
+      "The sum of protocolExclusions and protocolInclusions must not create conflicting rules"
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -36,44 +41,38 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "This configuration file defines the core operational parameters for the ArchSpine mirror system project. It controls localization, the LLM provider, MCP context mode, hooks, artifacts, and file scanning policy.",
+        "role": "This configuration file sets the foundational parameters for the ArchSpine mirror system. It determines how the system identifies the project, which LLM engine drives documentation generation, how MCP context is managed, whether pre-commit hooks are active, and most importantly, which files are scanned and indexed. The scan policy controls the entire data pipeline, making this file critical for accurate and secure indexing.",
         "parameter_definitions": {
-          "schemaVersion": "Defines the version of the configuration schema. Must be a valid semver string.",
-          "project.name": "The name of the project. Used for identification and logging.",
-          "project.locales": "List of supported locales for the project. At least one locale must be specified.",
-          "llm.provider": "Specifies the LLM provider to use. Currently set to 'mock' for testing.",
-          "mcp.contextMode": "Controls the MCP context mode. 'off' disables context injection.",
-          "hooks.preCommit": "Enables or disables the pre-commit hook. Currently set to false.",
-          "hooks.syncMode": "Defines the synchronization mode. 'hook' means sync is triggered by hooks.",
-          "artifacts": "Configuration for artifact storage. Currently empty.",
-          "scanPolicy.fileSource": "Defines the source of files to scan. 'git-tracked' means only files tracked by Git.",
-          "scanPolicy.ignoreChain.inheritGitIgnore": "Whether to inherit Git ignore rules. Set to true.",
-          "scanPolicy.ignoreChain.projectIgnore": "Path to the project-level ignore file.",
-          "scanPolicy.ignoreChain.localIgnore": "Path to the local ignore file.",
-          "scanPolicy.protocolExclusions": "List of path patterns to exclude from scanning.",
-          "scanPolicy.protocolInclusions": "List of path patterns to include in scanning."
+          "schemaVersion": "Specifies the version of the configuration schema. Must be exactly '1.0.0' for this release.",
+          "project.name": "Identifies the project within ArchSpine; used for artifact naming and telemetry.",
+          "project.locales": "List of active locales for multilingual documentation generation. Each locale must be registered in the system.",
+          "llm.provider": "Selects the language model backend. 'mock' is a safe test provider; switching to a real provider (e.g., 'openai') sends prompts externally.",
+          "mcp.contextMode": "Toggles the MCP (Model Context Protocol) integration. 'off' means no external context sharing; 'on' enables it.",
+          "hooks.preCommit": "When true, ArchSpine runs checks before each commit. Disabling reduces safety but speeds up commits.",
+          "hooks.syncMode": "Controls whether synchronization happens via a git hook ('hook') or automatically ('auto').",
+          "scanPolicy.fileSource": "Determines which files are eligible for scanning: 'git-tracked' only scans versioned files; 'filesystem' scans all files.",
+          "scanPolicy.ignoreChain": "A layered ignore mechanism: inherits .gitignore, then applies .spineignore, then .spineignore.local for local overrides.",
+          "scanPolicy.protocolExclusions": "Paths that are always excluded from indexing, e.g., '.spine/' to avoid indexing internal artifacts.",
+          "scanPolicy.protocolInclusions": "Paths that are always included even if they would be excluded by ignore rules, e.g., '.spine/rules/'."
         },
-        "stability_and_risks": "This configuration is critical for system stability. Incorrect locale settings may cause localization failures. Disabling hooks may lead to inconsistent state. The mock LLM provider is for testing only and should not be used in production. The scan policy controls which files are processed; misconfiguration may cause security issues or data loss."
+        "stability_and_risks": "Misconfiguring the scan policy (e.g., missing protocol inclusions) can lead to incomplete indexing, causing missing rule enforcement or stale views. Using a real LLM provider with untrusted prompts may expose sensitive code. Disabling pre-commit hooks removes a safety gate for committing violations. The MCP context mode, if enabled without proper authentication, could leak internal context to external services. The ignore chain must be carefully maintained; a missing .spineignore file defaults to no project-level ignore, potentially scanning large irrelevant directories. Protocol exclusions/inclusions must not overlap; conflicting rules can break the scanner."
       },
       "Simplified Chinese": {
-        "role": "此配置文件定义了 ArchSpine 镜像系统项目的核心运行参数。它控制本地化设置、LLM 提供商、MCP 上下文模式、钩子、工件以及文件扫描策略。",
+        "role": "该配置文件为 ArchSpine 镜像系统设置基础参数。它决定了系统如何标识项目、哪个 LLM 引擎用于文档生成、MCP 上下文如何管理、预提交钩子是否启用，以及最重要的——哪些文件会被扫描和索引。扫描策略控制整个数据管道，因此此文件对准确和安全的索引至关重要。",
         "parameter_definitions": {
-          "schemaVersion": "定义配置模式的版本。必须是有效的语义化版本字符串。",
-          "project.name": "项目名称，用于标识和日志记录。",
-          "project.locales": "项目支持的语言列表。必须至少指定一种语言。",
-          "llm.provider": "指定要使用的 LLM 提供商。当前设置为 'mock' 用于测试。",
-          "mcp.contextMode": "控制 MCP 上下文模式。'off' 表示禁用上下文注入。",
-          "hooks.preCommit": "启用或禁用预提交钩子。当前设置为 false。",
-          "hooks.syncMode": "定义同步模式。'hook' 表示通过钩子触发同步。",
-          "artifacts": "工件存储的配置。当前为空。",
-          "scanPolicy.fileSource": "定义要扫描的文件来源。'git-tracked' 表示仅扫描 Git 跟踪的文件。",
-          "scanPolicy.ignoreChain.inheritGitIgnore": "是否继承 Git 忽略规则。设置为 true。",
-          "scanPolicy.ignoreChain.projectIgnore": "项目级忽略文件的路径。",
-          "scanPolicy.ignoreChain.localIgnore": "本地忽略文件的路径。",
-          "scanPolicy.protocolExclusions": "要从扫描中排除的路径模式列表。",
-          "scanPolicy.protocolInclusions": "要包含在扫描中的路径模式列表。"
+          "schemaVersion": "指定配置架构的版本。此版本必须为 '1.0.0'。",
+          "project.name": "在 ArchSpine 中标识项目，用于工件命名和遥测。",
+          "project.locales": "多语言文档生成的活动语言列表。每个语言必须在系统中注册。",
+          "llm.provider": "选择语言模型后端。'mock' 是安全的测试提供者；切换为真实提供者（如 'openai'）会将提示发送到外部。",
+          "mcp.contextMode": "切换 MCP（模型上下文协议）集成。'off' 表示不共享外部上下文；'on' 启用共享。",
+          "hooks.preCommit": "若为 true，ArchSpine 将在每次提交前运行检查。禁用会降低安全性但加快提交速度。",
+          "hooks.syncMode": "控制同步是通过 git 钩子（'hook'）还是自动（'auto'）进行。",
+          "scanPolicy.fileSource": "决定哪些文件可被扫描：'git-tracked' 仅扫描版本控制文件；'filesystem' 扫描所有文件。",
+          "scanPolicy.ignoreChain": "分层忽略机制：继承 .gitignore，然后应用 .spineignore，最后使用 .spineignore.local 进行本地覆盖。",
+          "scanPolicy.protocolExclusions": "始终排除在索引之外的路径，例如 '.spine/' 以避免索引内部工件。",
+          "scanPolicy.protocolInclusions": "即使被忽略规则排除也始终包含的路径，例如 '.spine/rules/'。"
         },
-        "stability_and_risks": "此配置对系统稳定性至关重要。错误的语言设置可能导致本地化失败。禁用钩子可能导致状态不一致。mock LLM 提供商仅用于测试，不应在生产环境中使用。扫描策略控制哪些文件被处理；配置错误可能导致安全问题或数据丢失。"
+        "stability_and_risks": "扫描策略配置错误（例如遗漏协议包含项）可能导致不完整的索引，从而造成规则执行缺失或视图陈旧。使用真实的 LLM 提供者且提示不可信时可能会泄露敏感代码。禁用预提交钩子会移除提交违规的安全门。MCP 上下文模式若在未正确认证的情况下启用，可能将内部上下文泄露给外部服务。忽略链必须仔细维护；缺少 .spineignore 文件将默认为无项目级忽略，可能扫描大量无关目录。协议排除/包含项不得重叠；冲突规则会破坏扫描器。"
       }
     }
   },
@@ -95,7 +94,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:43:31.727Z",
+    "indexedAt": "2026-05-03T11:22:55.600Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

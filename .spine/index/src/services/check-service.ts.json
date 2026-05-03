@@ -4,70 +4,76 @@
     "filePath": "src/services/check-service.ts",
     "contentHash": "7f7810704c0660b198c5d7b6d6403e13185e9393662b7ca85c0b70a660857dd5",
     "skeletonHash": "b39d8e436afb35dfd4be1abf19613497bace5ffd66029d9e8db15c6019a1781f",
-    "semanticHash": "1fc1ea39387951b38c6209280832735f95356dcc1937a51b37efad53906ff5c7",
+    "semanticHash": "ba9b84391fee07e552759e352b5e33fcace56802507f50f8b816f139ceb0d0e0",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/services"
   },
   "semantic": {
-    "role": "Service facade orchestrating the ArchSpine 'check' command pipeline, coordinating scanning, AST extraction, validation, and usage recording within a managed runtime session.",
+    "role": "Service facade orchestrating the ArchSpine 'check' command pipeline, coordinating scanning, AST extraction, and validation tasks via a managed runtime session.",
     "responsibilities": [
-      "Orchestrates the sequential execution of scanning, cleanup, AST extraction, and validation tasks via a TaskRunner.",
-      "Manages runtime session lifecycle and execution checkpoints for resumable operations using runWithRuntimeSession and deriveCheckResumeCandidateFiles.",
+      "Orchestrates the sequential execution of ScanAndCleanupTask, ASTExtractionTask, and ValidationTask using a TaskRunner within a managed runtime session.",
+      "Manages session lifecycle and resumable execution checkpoints via runWithRuntimeSession and deriveCheckResumeCandidateFiles.",
       "Records usage metrics and validation summaries into the project manifest via context.manifest.recordUsage.",
-      "Handles errors, logs stage-specific metrics (file counts, byte sizes), and formats byte counts for human-readable output."
+      "Handles errors, logs stage-specific metrics (file counts, byte sizes), and formats byte counts for human-readable output via formatBytes.",
+      "Provides a reusable CheckService class and a convenience async runCheck function that accept root directory, optional LLM client, and scan policy."
     ],
     "outOfScope": [
-      "Direct file system I/O operations (delegated to RuntimeIO).",
-      "LLM client configuration and secret resolution (delegated to infra/llm and infra/secrets).",
-      "Task implementation details (scanning, AST extraction, validation logic).",
-      "Execution profile resolution (delegated to runtime-execution-profile)."
+      "Low-level scanner implementation (src/core/scanner.ts)",
+      "AST parsing logic (src/tasks/ast-extra.ts)",
+      "LLM client initialization and authentication (src/infra/llm.ts)",
+      "File system I/O abstractions (src/infra/runtime-io.ts)",
+      "Execution checkpoint persistence details (src/infra/execution-checkpoint.ts)"
     ],
     "invariants": [
-      "The check pipeline must always execute within a runtime session managed by runWithRuntimeSession.",
-      "Execution checkpoints must be derived via deriveCheckResumeCandidateFiles before starting a run.",
-      "Usage metrics must be recorded into the manifest after pipeline completion."
+      "Services may orchestrate core/tasks/infra modules but must not replace infrastructure responsibilities.",
+      "View-specific service modules must reside under src/services/view/ (rule service-runtime-boundary)."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a centralized orchestration service for the 'check' command that coordinates task execution, session management, and metrics recording.",
-      "recentChangeIntent": "gogogo"
+      "architecturalIntent": "Provide a centralized orchestration layer for the 'check' command, enabling consistent scan, validation, and usage recording flow.",
+      "recentChangeIntent": "Part of ArchSpine v1.0.0 release that establishes the architectural governance and semantic validation pipeline."
     },
     "publicSurface": [
-      "CheckService",
-      "CheckServiceOptions"
+      "runCheck function: async convenience orchestration",
+      "CheckService class: reusable orchestration with constructor options",
+      "CheckServiceOptions interface: rootDir, llmClient, scanPolicy"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Service facade orchestrating the ArchSpine 'check' command pipeline, coordinating scanning, AST extraction, validation, and usage recording within a managed runtime session.",
+        "role": "Service facade orchestrating the ArchSpine 'check' command pipeline, coordinating scanning, AST extraction, and validation tasks via a managed runtime session.",
         "responsibilities": [
-          "Orchestrates the sequential execution of scanning, cleanup, AST extraction, and validation tasks via a TaskRunner.",
-          "Manages runtime session lifecycle and execution checkpoints for resumable operations using runWithRuntimeSession and deriveCheckResumeCandidateFiles.",
+          "Orchestrates sequential execution of ScanAndCleanupTask, ASTExtractionTask, and ValidationTask using TaskRunner within a managed runtime session.",
+          "Manages session lifecycle and resumable execution checkpoints via runWithRuntimeSession and deriveCheckResumeCandidateFiles.",
           "Records usage metrics and validation summaries into the project manifest via context.manifest.recordUsage.",
-          "Handles errors, logs stage-specific metrics (file counts, byte sizes), and formats byte counts for human-readable output."
+          "Handles errors, logs stage-specific metrics (file counts, byte sizes), and formats byte counts for human-readable output via formatBytes.",
+          "Provides a reusable CheckService class and a convenience async runCheck function accepting root directory, optional LLM client, and scan policy."
         ],
         "outOfScope": [
-          "Direct file system I/O operations (delegated to RuntimeIO).",
-          "LLM client configuration and secret resolution (delegated to infra/llm and infra/secrets).",
-          "Task implementation details (scanning, AST extraction, validation logic).",
-          "Execution profile resolution (delegated to runtime-execution-profile)."
+          "Low-level scanner implementation (src/core/scanner.ts)",
+          "AST parsing logic (src/tasks/ast-extra.ts)",
+          "LLM client initialization and authentication (src/infra/llm.ts)",
+          "File system I/O abstractions (src/infra/runtime-io.ts)",
+          "Execution checkpoint persistence details (src/infra/execution-checkpoint.ts)"
         ]
       },
       "Simplified Chinese": {
-        "role": "服务外观层，负责编排 ArchSpine 'check' 命令的流水线，在受管理的运行时会话中协调扫描、AST 提取、验证和用量记录。",
+        "role": "协调 ArchSpine 'check' 命令管道的服务外观层，通过受管理的运行时会话协调扫描、AST 提取和验证任务。",
         "responsibilities": [
-          "通过 TaskRunner 编排扫描、清理、AST 提取和验证任务的顺序执行。",
-          "使用 runWithRuntimeSession 和 deriveCheckResumeCandidateFiles 管理运行时会话生命周期和可恢复操作的执行检查点。",
-          "通过 context.manifest.recordUsage 将用量指标和验证摘要记录到项目清单中。",
-          "处理错误，记录阶段特定指标（文件数量、字节大小），并将字节数格式化为人类可读的输出。"
+          "使用 TaskRunner 在受管理的运行时会话中顺序执行 ScanAndCleanupTask、ASTExtractionTask 和 ValidationTask。",
+          "通过 runWithRuntimeSession 和 deriveCheckResumeCandidateFiles 管理会话生命周期和可恢复的执行检查点。",
+          "通过 context.manifest.recordUsage 将使用指标和验证摘要记录到项目清单中。",
+          "处理错误，记录各阶段指标（文件数量、字节大小），并通过 formatBytes 将字节数格式化为人类可读的输出。",
+          "提供可复用的 CheckService 类以及便捷的异步 runCheck 函数，接受根目录、可选的 LLM 客户端和扫描策略。"
         ],
         "outOfScope": [
-          "直接的文件系统 I/O 操作（委托给 RuntimeIO）。",
-          "LLM 客户端配置和密钥解析（委托给 infra/llm 和 infra/secrets）。",
-          "任务实现细节（扫描、AST 提取、验证逻辑）。",
-          "执行配置文件解析（委托给 runtime-execution-profile）。"
+          "底层扫描器实现（src/core/scanner.ts）",
+          "AST 解析逻辑（src/tasks/ast-extra.ts）",
+          "LLM 客户端初始化和认证（src/infra/llm.ts）",
+          "文件系统 I/O 抽象（src/infra/runtime-io.ts）",
+          "执行检查点持久化细节（src/infra/execution-checkpoint.ts）"
         ]
       }
     }
@@ -330,10 +336,160 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/services/runtime-session.ts/runWithRuntimeSession#",
+        "targetPath": "src/services/runtime-session.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/infra/execution-checkpoint.ts/deriveCheckResumeCandidateFiles#",
+        "targetPath": "src/infra/execution-checkpoint.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/services/task-runtime.ts/createTaskContext#",
+        "targetPath": "src/services/task-runtime.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/toArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/services/runtime-execution-profile.ts/resolveExecutionProfileFromSettings#",
+        "targetPath": "src/services/runtime-execution-profile.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/resolveLLMSettings#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/infra/llm/runtime.ts/resolveLLMSettings#",
+        "targetPath": "src/infra/llm/runtime.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/ArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/core/pipeline.ts/TaskRunner#",
+        "targetPath": "src/core/pipeline.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/tasks/scan-cleanup.ts/ScanAndCleanupTask#",
+        "targetPath": "src/tasks/scan-cleanup.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/tasks/ast-extra.ts/ASTExtractionTask#",
+        "targetPath": "src/tasks/ast-extra.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/tasks/validate.ts/ValidationTask#",
+        "targetPath": "src/tasks/validate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/infra/secrets.ts/Secrets#",
+        "targetPath": "src/infra/secrets.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/GlobalLLMConfig#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/GlobalLLMConfig#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/GlobalLLMSecrets#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/GlobalLLMSecrets#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/engines/check.ts/CheckService#",
+        "targetPath": "src/engines/check.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/usage.ts/recordUsage#",
+        "targetPath": "src/infra/db/repositories/usage.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:40.607Z",
+    "indexedAt": "2026-05-03T11:25:05.366Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -1,2 +1,20 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/infra/llm/providers","role":"Concrete LLM provider clients and utilities for generating structured semantic summaries.","responsibility":"Provides implementations for multiple LLM providers (Gemini, OpenAI), a mock client for testing, and utility functions for prompt assembly, response parsing, and usage aggregation used in the ArchSpine mirror system's semantic summary generation pipeline.","children":[{"filePath":"src/infra/llm/providers/gemini.ts","role":"Concrete LLM provider implementation for Google's Gemini API, handling structured summary generation for ArchSpine's mirror system.","fileKind":"source"},{"filePath":"src/infra/llm/providers/mock.ts","role":"Test infrastructure mock LLM client simulating LLM provider responses for unit and integration testing.","fileKind":"source"},{"filePath":"src/infra/llm/providers/openai.ts","role":"OpenAI-compatible LLM provider client with embedded prompt generation and response parsing orchestration, contrary to the Infra Facade design rule.","fileKind":"source"},{"filePath":"src/infra/llm/providers/utils.ts","role":"Infrastructure utility module providing content assembly, structured response parsing, and usage merging for the ArchSpine mirror system.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-02T10:10:47.469Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-The providers directory under src/infra/llm contains concrete client implementations for generating structured semantic summaries in the ArchSpine mirror system. It includes three provider modules: gemini.ts (Google Gemini API), openai.ts (OpenAI-compatible API), and mock.ts (a test double for unit and integration testing). A shared utility module utils.ts handles content assembly, structured response parsing, and usage token aggregation. Notably, the OpenAI client embeds prompt generation and parsing logic directly, which deviates from the Infra Facade design pattern. This directory is the operational core of the LLM summary generation pipeline, where provider-specific API calls are translated into consistent structured outputs for the mirror system.
+# LLM Clients
+
+This directory provides concrete implementations and utilities for interfacing with large language model (LLM) providers within the ArchSpine mirror system. It implements the LLM client interface that generates semantic summaries across different file kinds (config, document, source, folder, project, etc.).
+
+## Notable Children
+
+| Submodule | Description |
+|-----------|-------------|
+| `gemini.ts` | Concrete provider for Google's Gemini API. Uses `GoogleGenerativeAI` to send structured prompts and parse JSON/markdown responses via utility functions. |
+| `openai.ts` | Provider for OpenAI-compatible APIs (including custom endpoints). Relies on the OpenAI SDK for chat completions, prompt generation, and response parsing. |
+| `mock.ts` | A mock LLM client for unit and integration testing. Provides deterministic responses, simulates architectural rule violations, and tests prompt processing pipelines. |
+| `utils.ts` | Infrastructure module offering shared functions: response parsing (`parseStructuredResponse`, `parseMarkdownBlocks`), supporting context assembly (`buildSupportingContext`), and usage aggregation (`mergeUsage`). |
+
+## Implementation Areas
+
+- **Provider-specific communication**: Each client handles API authentication, model selection, and request/response cycles tailored to its provider.
+- **Prompt construction**: Prompts are built per file kind using dedicated generators (e.g., `generateSourcePrompt`, `generateConfigPrompt`).
+- **Response parsing**: Structured JSON and markdown blocks are extracted from raw LLM outputs using regex and fallback logic in `utils.ts`.
+- **Usage aggregation**: Token counts and usage info are merged across sequential API calls for unified reporting.
+- **Test support**: The mock client enables deterministic validation of prompt handling and rule checking without external API calls.

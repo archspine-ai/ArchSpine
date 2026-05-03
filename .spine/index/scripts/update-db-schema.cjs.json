@@ -3,22 +3,21 @@
   "identity": {
     "filePath": "scripts/update-db-schema.cjs",
     "contentHash": "808cb76a458aef0e09e7f7d8359638113791edb10a4671741eca1f33cea0104c",
-    "semanticHash": "1bfdcaec62dbaa95f01b97938a26fafd54225b542a56da5137b8ccf72291268e",
+    "semanticHash": "324a4c39da4642e2d2cfc058bace80b0ba58f1e1e492dce96d2e92e32d035436",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "scripts"
   },
   "semantic": {
-    "role": "Database schema migration script for the ArchSpine cache system",
+    "role": "Database schema migration script for ArchSpine's cache",
     "responsibilities": [
-      "Adding mtime (modification time) column to the files table",
-      "Adding size column to the files table",
-      "Ensuring idempotent schema updates via try-catch blocks"
+      "Managing schema evolution for the SQLite cache database",
+      "Adding missing columns (mtime, size) to the files table"
     ],
     "outOfScope": [
-      "Data migration or backfilling of existing records",
-      "Schema creation or initial database setup",
-      "Querying or reading cached data"
+      "User-facing features or documentation",
+      "Core mirroring operations",
+      "Narrative concepts of ArchSpine"
     ],
     "invariants": [],
     "changeIntent": {
@@ -30,21 +29,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document is a lightweight database migration script that ensures the ArchSpine cache schema includes the mtime and size columns for tracking file metadata.",
-        "context_and_audience": "Intended for developers maintaining the ArchSpine mirror system who need to evolve the local SQLite cache schema without breaking existing installations.",
+        "purpose": "This script ensures the ArchSpine cache database schema is up-to-date by adding the 'mtime' and 'size' columns to the files table if they do not already exist.",
+        "context_and_audience": "Maintainers and developers working on ArchSpine's internal storage layer. It is a low-level tool executed during initialization or after schema changes.",
         "key_takeaways": [
-          "The script uses ALTER TABLE with try-catch to handle cases where columns already exist.",
-          "It targets the .spine/cache.db SQLite database used for file tracking.",
-          "The migration is additive and non-destructive, preserving existing data."
+          "Adds two integer columns to the files table: mtime and size.",
+          "Uses ALTER TABLE with try/catch to avoid errors if columns already exist.",
+          "Operates on the `.spine/cache.db` SQLite database."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档是一个轻量级数据库迁移脚本，确保 ArchSpine 缓存模式包含用于跟踪文件元数据的 mtime 和 size 列。",
-        "context_and_audience": "适用于维护 ArchSpine 镜像系统的开发者，他们需要在不断现有安装的情况下演进本地 SQLite 缓存模式。",
+        "purpose": "此脚本确保 ArchSpine 缓存数据库的模式是最新的。它会在 `files` 表中添加 `mtime` 和 `size` 列（如果这些列尚未存在）。",
+        "context_and_audience": "面向维护 ArchSpine 内部存储层的开发人员。这是一个在初始化或模式变更后执行的底层工具。",
         "key_takeaways": [
-          "脚本使用 ALTER TABLE 配合 try-catch 处理列已存在的情况。",
-          "目标数据库是用于文件跟踪的 .spine/cache.db SQLite 数据库。",
-          "迁移是增量的且非破坏性的，保留现有数据。"
+          "在 files 表中添加两个整数列：mtime 和 size。",
+          "使用 ALTER TABLE 配合 try/catch 避免列已存在时出错。",
+          "操作对象为 `.spine/cache.db` SQLite 数据库。"
         ]
       }
     }
@@ -67,7 +66,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:16.807Z",
+    "indexedAt": "2026-05-03T11:24:27.730Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

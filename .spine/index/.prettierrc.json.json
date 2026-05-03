@@ -3,22 +3,24 @@
   "identity": {
     "filePath": ".prettierrc.json",
     "contentHash": "31eef325938108b2b10e35bd28fdcac03dddea723333292ea371d4d48d5c3731",
-    "semanticHash": "2f55e049124a365ecf4bc4a95c92d36a83da4b341bd29249696f06a303320394",
+    "semanticHash": "a00f239422b2bd04314b5f75bee4ebcaf4d9f6766fab57484a5e104b1bc37482",
     "language": "unsupported",
     "fileKind": "config",
     "scope": ""
   },
   "semantic": {
-    "role": "Defines code formatting rules for the ArchSpine project's source files, ensuring consistent style across contributions.",
+    "role": "Defines code formatting rules for the project using Prettier, ensuring consistent style across the codebase.",
     "responsibilities": [
-      "Source code formatting enforcement",
-      "Developer tooling configuration (Prettier)"
+      "Controls maximum line width for code wrapping",
+      "Enforces single or double quote usage",
+      "Manages semicolon inclusion",
+      "Configures trailing comma placement"
     ],
     "outOfScope": [],
     "invariants": [
-      "Print width must not exceed 100 characters per line",
-      "Semicolons are required at end of statements",
-      "Trailing commas are mandatory in all multi-line constructs"
+      "printWidth must be a positive integer (default 80, here 100)",
+      "singleQuote, semi must be boolean values",
+      "trailingComma must be one of 'none', 'es5', or 'all'"
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -29,24 +31,24 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Defines code formatting rules for the ArchSpine project's source files, ensuring consistent style across contributions.",
+        "role": "Defines code formatting rules for the project using Prettier, ensuring consistent style across the codebase.",
         "parameter_definitions": {
-          "printWidth": "Sets the maximum line length to 100 characters. Lines exceeding this will be wrapped by the formatter, improving readability and preventing horizontal scrolling.",
-          "singleQuote": "Enforces the use of single quotes (') instead of double quotes (\") for all string literals. This reduces visual noise and aligns with common JavaScript conventions.",
-          "semi": "Requires semicolons at the end of every statement. This prevents potential issues from automatic semicolon insertion (ASI) and clarifies statement boundaries.",
-          "trailingComma": "Mandates trailing commas wherever valid (e.g., in arrays, objects, function parameters). This reduces diff noise in version control when adding new items."
+          "printWidth": "Specifies the maximum line length before wrapping. Higher values reduce line breaks but may cause horizontal scrolling. Here set to 100, which is wider than the default 80.",
+          "singleQuote": "When true, prefers single quotes over double quotes for strings. Reduces visual noise in codebases that adopt this convention.",
+          "semi": "When true, ensures semicolons are added at the end of statements. Promotes consistency especially in mixed JS/TS projects.",
+          "trailingComma": "Controls trailing commas in object/array literals. 'all' adds them wherever possible, enabling cleaner diffs in version control."
         },
-        "stability_and_risks": "This configuration enforces a strict, predictable code style. The primary risk is developer friction if the rules conflict with existing code or personal preferences, but this is mitigated by automated formatting. The invariants (printWidth, semi, trailingComma) are safe and widely adopted; they improve code consistency and reduce merge conflicts. No operational or security risks are introduced."
+        "stability_and_risks": "This configuration has low operational risk. Misconfiguration (e.g., invalid trailingComma value) can cause Prettier to error and block formatting or CI. Values are all safe and standard. The higher printWidth may cause longer lines in code review, but it is a common project preference."
       },
       "Simplified Chinese": {
-        "role": "定义 ArchSpine 项目源代码的代码格式化规则，确保所有贡献的代码风格一致。",
+        "role": "使用 Prettier 定义项目的代码格式化规则，确保整个代码库风格一致。",
         "parameter_definitions": {
-          "printWidth": "设置最大行长度为 100 个字符。超过此长度的行将被格式化器自动换行，从而提高可读性并避免横向滚动。",
-          "singleQuote": "强制所有字符串字面量使用单引号（'）而非双引号（\"）。这可以减少视觉干扰，并符合常见的 JavaScript 编码惯例。",
-          "semi": "要求在每条语句末尾添加分号。这可以防止自动分号插入（ASI）可能引发的问题，并明确语句的边界。",
-          "trailingComma": "在所有允许的位置（如数组、对象、函数参数）强制使用尾随逗号。这可以减少版本控制中新增条目时产生的差异噪声。"
+          "printWidth": "指定换行前的最大行长度。较高的值减少换行但可能导致水平滚动。此处设为 100，比默认的 80 更宽。",
+          "singleQuote": "如果为 true，则优先使用单引号而非双引号表示字符串。采用此约定的代码库可减少视觉干扰。",
+          "semi": "如果为 true，则在语句末尾添加分号。在混合 JS/TS 项目中促进一致性。",
+          "trailingComma": "控制对象/数组字面量中的尾逗号。'all' 尽可能添加尾逗号，使版本控制中的差异更清晰。"
         },
-        "stability_and_risks": "此配置强制执行严格且可预测的代码风格。主要风险在于如果规则与现有代码或个人偏好冲突，可能会引起开发者的抵触情绪，但通过自动化格式化可以缓解此问题。这些不变规则（printWidth、semi、trailingComma）安全且被广泛采用；它们能提高代码一致性并减少合并冲突。此配置不会引入任何操作或安全风险。"
+        "stability_and_risks": "此配置的运行风险较低。错误配置（如无效的 trailingComma 值）可能导致 Prettier 报错并阻塞格式化或 CI。所有值均为安全且标准的。较高的 printWidth 可能导致代码审查中出现较长行，但这是常见的项目偏好。"
       }
     }
   },
@@ -68,7 +70,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:42:33.633Z",
+    "indexedAt": "2026-05-03T11:22:02.781Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

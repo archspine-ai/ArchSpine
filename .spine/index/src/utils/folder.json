@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/utils",
-  "role": "Core utility modules supporting file synchronization, CLI presentation, user interaction, cryptographic footprints, atomic file operations, Git hook management, process locking, and path normalization for the ArchSpine system.",
-  "responsibility": "Provides a comprehensive set of reusable infrastructure components that enable reliable file system operations, deterministic structural hashing, interactive CLI prompts, branded output, agent instruction management, pre-commit hook lifecycle, and exclusive runtime access control.",
+  "role": "Utility modules providing file sync, fingerprinting, CLI UI, and infrastructure support for ArchSpine.",
+  "responsibility": "Combined, these utilities handle atomic file operations, git hook lifecycle management, file locking, SHA-256 fingerprinting of skeletons and semantics, agent instruction block synchronization, repository path normalization, interactive confirmation prompts, and branded CLI banner rendering.",
   "children": [
     {
       "filePath": "src/utils/agent-instructions.sync.ts",
-      "role": "Utility module providing file-level synchronization and removal operations for ArchSpine agent instruction blocks and configuration sections across repository configuration files.",
+      "role": "Centralized file I/O module for synchronizing and removing ArchSpine-managed configuration blocks in repository files (gitignore, gitattributes, agent instructions, search ignore, spine ignore, package.json scripts).",
       "fileKind": "source"
     },
     {
@@ -26,12 +26,12 @@
     },
     {
       "filePath": "src/utils/confirm.ts",
-      "role": "CLI utility module for interactive user confirmation prompts and terminal input handling.",
+      "role": "Terminal input utility providing interactive confirmation prompts for CLI commands, supporting both explicit text input and immediate single-keypress modes.",
       "fileKind": "source"
     },
     {
       "filePath": "src/utils/footprint.ts",
-      "role": "Utility module for generating deterministic structural fingerprints of source code files.",
+      "role": "Utility module for generating deterministic SHA-256 fingerprints of architectural skeletons and semantic contracts.",
       "fileKind": "source"
     },
     {
@@ -56,7 +56,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-03T03:55:11.032Z",
+    "indexedAt": "2026-05-03T11:27:54.939Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

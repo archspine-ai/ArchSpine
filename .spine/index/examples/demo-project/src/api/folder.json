@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "examples/demo-project/src/api",
-  "role": "This directory contains the HTTP API handler for user creation operations.",
-  "responsibility": "Provides the HTTP entry point for user creation, delegating logic to UserService while directly managing database connections, which violates layered architecture principles.",
+  "role": "HTTP entry point handling user creation requests and delegating to the UserService domain service.",
+  "responsibility": "Serves as the API layer for user creation, receiving HTTP requests, delegating business logic to UserService, and directly managing the database connection lifecycle (which violates the layered architecture pattern).",
   "children": [
     {
       "filePath": "examples/demo-project/src/api/handler.ts",
@@ -11,7 +11,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-01T03:58:41.902Z",
+    "indexedAt": "2026-05-03T11:26:41.413Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

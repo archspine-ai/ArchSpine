@@ -1,23 +1,17 @@
-<!-- spine-content-hash:b232b63b058af9e6010f5e6a32ee62b47ed7e27556020041042280be988bf01d -->
-# ArchSpine Architectural Governance Specification
+# ArchSpine Demo Project: Architecture Rule Definitions
 
-## Purpose
-This document establishes the core architectural governance rules for the ArchSpine demo project. It defines clear boundaries between software layers and mandates documentation standards to maintain code quality and architectural integrity.
+This document exists to codify specific architectural boundaries and documentation expectations for the demo project under the ArchSpine mirror system. It ensures consistent, machine-enforceable constraints that both human developers and automated tools (e.g., linters, AI agents) must follow when working with the codebase.
 
-## Context & Audience
-Intended for developers and architects working on the ArchSpine project who need to understand and comply with the enforced architectural constraints. The rules are written in a parser-compatible format to enable automated validation.
+## Who should read this
+- Project developers who modify code in `src/api/` or `src/domain/`.
+- AI agents that perform code changes, reviews, or generate architectural context.
+- Any team member or tool responsible for verifying compliance with the project's architecture conventions.
 
-## Key Responsibilities
-- **Layer Isolation**: Documents rules that prevent direct imports between API, domain, and infrastructure modules, ensuring each layer remains independent and testable.
-- **Documentation Standards**: Specifies that all public domain-level classes and methods must include TSDoc comments, providing a consistent and maintainable architecture documentation baseline.
-- **Automated Enforcement**: Provides rule syntax that is compatible with automated parsing tools, allowing the governance specification to be validated programmatically.
+## What it anchors
+- **Layer Isolation Rule** (severity: error) – API handlers (`src/api/**`) may import from `src/domain/**` but must **not** directly import from `src/infra/**`. This keeps the API layer independent of infrastructure details and enforces a clean domain intermediary.
+- **Documentation Rule** (severity: warning) – All public domain classes and methods (in `src/domain/**`) must have TSDoc comments. This ensures domain contracts remain readable in generated architecture context.
 
-## Out of Scope
-- Detailed implementation guidelines for specific programming languages or frameworks
-- Deployment or operational procedures
-- User-facing feature specifications or product requirements
-
-## Key Takeaways
-- API handlers must not directly import infrastructure modules, ensuring layer independence
-- All public domain classes and methods require TSDoc comments for maintainable architecture documentation
-- Rules are structured for both human readability and machine parsing
+## Key takeaways
+- API handlers must not directly import from `src/infra/`; use the domain layer as an intermediary.
+- All public domain classes and methods must have TSDoc comments.
+- Violations of Layer Isolation are errors; missing documentation is a warning.

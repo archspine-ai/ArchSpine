@@ -1,18 +1,16 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/services","role":"Service orchestration layer for the ArchSpine mirror system, coordinating check, fix, sync pipelines, runtime session management, and architectural view generation.","responsibility":"Orchestrates multi-stage pipelines for codebase analysis (check), automated fixes, synchronization, and architectural view derivation, managing runtime sessions with checkpoint support, task execution profiles, and integration with LLM and validation services to ensure consistency and resumability.","children":[{"filePath":"src/services/check-service.ts","role":"Service facade orchestrating the ArchSpine 'check' command pipeline, coordinating scanning, AST extraction, validation, and usage recording within a managed runtime session.","fileKind":"source"},{"filePath":"src/services/fix-service.ts","role":"Service-layer orchestrator for the ArchSpine architectural fix pipeline, managing the sequential execution of scanning, AST extraction, LLM-driven correction, and validation tasks, with retry support and runtime session integration.","fileKind":"source"},{"filePath":"src/services/llm-admin-service.ts","role":"TypeScript type definition module for LLM configuration command structures and view models within the view service layer.","fileKind":"source"},{"filePath":"src/services/publish-preflight.ts","role":"Infrastructure-layer validation facade that asserts runtime conditions for publish operations, including baseline checks, snapshot readiness, and local strategy warnings.","fileKind":"source"},{"filePath":"src/services/repository-admin-service.ts","role":"Infrastructure module defining interfaces and orchestration logic for repository artifact management and initialization strategies.","fileKind":"source"},{"filePath":"src/services/runtime-execution-profile.ts","role":"Type definition module for resolved runtime execution profiles and commands within the service layer.","fileKind":"source"},{"filePath":"src/services/runtime-service.ts","role":"Service layer facade for runtime orchestration that resolves execution profiles, LLM settings, view configurations, and constructs domain service instances (Check, Fix, Sync) in the ArchSpine system.","fileKind":"source"},{"filePath":"src/services/runtime-service.types.ts","role":"TypeScript interface defining a placeholder boundary for future runtime service capabilities within the ArchSpine type system.","fileKind":"source"},{"filePath":"src/services/runtime-session.ts","role":"Infrastructure orchestration service for managing resumable command execution sessions with checkpoint validation and protected output mutation detection.","fileKind":"source"},{"filePath":"src/services/sync-service.ts","role":"Core orchestration service that coordinates the multi-stage synchronization pipeline for the ArchSpine mirror system.","fileKind":"source"},{"filePath":"src/services/task-runtime.ts","role":"Service-level factory and orchestrator that prepares a fully configured task context for analysis pipelines.","fileKind":"source"},{"filePath":"src/services/view","role":"View layer for generating and rendering architectural visualizations and analysis reports.","fileKind":"folder"},{"filePath":"src/services/view-service.ts","role":"Service orchestrator for generating and managing architectural views from indexed codebase data.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-02T10:11:07.801Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src/services` 是 ArchSpine 镜像系统的核心编排层，负责协调代码分析、自动修复、数据同步和架构可视化等多阶段流水线，同时管理运行时会话与执行配置，确保操作的可恢复性与一致性。
+`src/services` 目录实现了 ArchSpine 镜像系统的服务编排层，负责协调多阶段的分析、修复、同步、大语言模型配置及视图生成管线。该层作为 CLI 命令与基础设施组件之间的桥梁，通过带断点恢复功能的运行时会话，管理执行状态、错误处理与配置解析。
 
 主要子模块包括：
+- **check-service**：编排检查管线（扫描、AST 提取、校验），管理会话生命周期并记录使用指标。
+- **fix-service**：管理修复管线，支持最多 2 次重试、重新检查环节，并与运行时会话集成。
+- **sync-service**：协调完整同步管线（调和、扫描、AST 提取、摘要生成、状态提交、后提交推导），并集成视图服务注册表。
+- **llm-admin-service**：将 LLM 配置相关的 CLI 命令与配置/密钥存储桥接，并解析状态视图。
+- **runtime-service**：统一入口门面，解析 LLM 设置、执行配置文件、视图配置，并构建 `CheckService`、`FixService` 和 `SyncService` 实例。
+- **view-service**（位于 `src/services/view`）：从索引的代码库数据中生成并渲染架构视图（架构图、风险热点、公共表面等），使用 LLM 规约和 Markdown 模板。
+- **task-runtime**：工厂模块，准备预配置的任务上下文，包括扫描器、聚合器、AST 提取器、规则引擎、上下文引擎和输出管理器。
+- **repository-admin-service**：管理仓库工件策略、智能体指令，以及同步管理文件（Git 属性、Git 忽略、包脚本）。
+- **runtime-session**：提供可恢复的命令执行会话，支持检查点验证、锁管理以及保护输出的写入安全。
+- **publish-preflight**：验证发布前提条件（目录存在、清单完整性、锁文件有效性、快照就绪状态）。
+- **runtime-execution-profile**：从 LLM 设置和运行时命令解析执行配置文件，处理默认值和命令特定覆盖。
 
-- **check-service.ts** – 编排“检查”命令流水线（代码扫描、AST 提取、验证、使用记录）。
-- **fix-service.ts** – 驱动架构修复流水线，集成 LLM 修正、重试机制和会话管理。
-- **sync-service.ts** – 协调完整的多阶段同步流水线。
-- **runtime-service.ts** – 解析执行配置、LLM 参数和视图设置，并构造检测、修复、同步等领域服务实例。
-- **runtime-session.ts** – 管理可中断的命令执行会话，支持检查点验证和输出变更检测。
-- **task-runtime.ts** – 工厂模块，为分析流水线准备完全配置的任务上下文。
-- **view-service.ts** – 基于已索引的代码库数据生成架构视图。
-- **view/** – 视图层的子目录，包含渲染与展示相关组件。
-- **publish-preflight.ts** – 发布前的运行环境合法性校验。
-- **repository-admin-service.ts** – 处理仓库制品管理与初始化策略。
-- **llm-admin-service.ts**、**runtime-execution-profile.ts**、**runtime-service.types.ts** – 辅助类型定义与配置结构。
-
-关键实现领域包括：流水线编排（检查、修复、同步）、会话管理与可恢复性、LLM 集成、以及架构视图生成。
+这些组件共同确保整个 ArchSpine 镜像工作流程的一致、可恢复且合规执行。

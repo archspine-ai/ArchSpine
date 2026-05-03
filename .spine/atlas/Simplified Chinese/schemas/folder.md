@@ -1,15 +1,12 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"schemas","role":"This directory contains the JSON schema definitions that validate all metadata units, manifests, and rule documents in the ArchSpine mirror system.","responsibility":"Collectively, these schema files define and enforce the structural integrity, data validation rules, and type constraints for every component of the ArchSpine semantic indexing and architecture enforcement system, including project units, folder units, file units, manifests, and governance rules.","children":[{"filePath":"schemas/examples","role":"This directory contains the core configuration and rule definitions for the ArchSpine semantic indexing and architecture enforcement system.","fileKind":"folder"},{"filePath":"schemas/shared.schema.json","role":"Defines reusable type definitions and validation schemas shared across the ArchSpine system.","fileKind":"config"},{"filePath":"schemas/spine-folder-unit.schema.json","role":"Defines the schema for a SpineFolderUnit, a structural node in the ArchSpine mirror system that represents a directory with a specific role and responsibility.","fileKind":"config"},{"filePath":"schemas/spine-manifest.schema.json","role":"Defines the schema for the ArchSpine SpineManifest, a metadata manifest that tracks the synchronization state and indexed file inventory of a mirror repository.","fileKind":"config"},{"filePath":"schemas/spine-project-unit.schema.json","role":"Defines the structural schema for a SpineProjectUnit, which is the fundamental project unit descriptor in the ArchSpine mirror system.","fileKind":"config"},{"filePath":"schemas/spine-rules.schema.json","role":"Defines the schema for individual SpineRule documents within the ArchSpine mirror system, specifying the structure and validation constraints for governance rules.","fileKind":"config"},{"filePath":"schemas/spine-unit.schema.json","role":"Defines the schema for a SpineUnit, the core metadata unit in the ArchSpine mirror system that captures the identity, semantics, structure, and provenance of a source file.","fileKind":"config"}],"provenance":{"indexedAt":"2026-05-01T03:58:57.841Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`schemas` 目录是 ArchSpine 镜像系统的形式化基础：它包含所有用于验证元数据单元、清单文件和治理规则文档的 JSON 模式定义。这些模式共同协作，为整个语义索引和架构强制系统强制执行结构完整性、数据验证规则和类型约束。  
+`schemas/examples` 目录定义了 ArchSpine 镜像系统的核心模式框架，为元数据索引、配置和治理提供了基础数据模型。该目录包含六个关键模式文件，共同构建了一个统一的验证、溯源追踪和策略执行体系。
 
-目录中的子项逻辑上分为两类：  
-- **专用的 `examples` 子文件夹**，其中存放核心配置和规则定义，供系统初始化和引用使用。  
-- **独立的模式文件**，为每个关键组件定义结构和验证逻辑。  
+主要子文件：
 
-关键实现领域包括：  
-- **元数据单元验证**——通过 `spine-unit.schema.json`（核心文件元数据）和 `spine-project-unit.schema.json`（项目描述符）。  
-- **结构节点验证**——通过 `spine-folder-unit.schema.json`（目录层级的角色与职责）。  
-- **清单同步**——通过 `spine-manifest.schema.json`（跟踪索引状态和文件清单）。  
-- **治理强制执行**——通过 `spine-rules.schema.json`（规则文档约束）。  
-- **共享类型定义**——通过 `shared.schema.json`（跨所有模式的可复用验证片段）。  
+- **`shared.schema.json`**：提供可复用的基础类型定义（如版本字符串、时间戳、文件路径、内容哈希），确保所有模式中的类型一致性。
+- **`spine-folder-unit.schema.json`**：定义目录级元数据的模式，捕获角色、职责、子文件条目以及溯源信息（索引时间戳、生成器版本、流水线阶段）。
+- **`spine-manifest.schema.json`**：记录已索引源文件的同步状态、各语言文档映射，并通过内容哈希实现完整性验证。追踪同步模式（全量/增量）、反向索引完成情况和总索引单元数。
+- **`spine-project-unit.schema.json`**：结构化项目元数据、模块分解（目录、角色、子模块数量）以及生成溯源信息。
+- **`spine-rules.schema.json`**：管理架构和编码规则定义，包含 ID、标题、严重级别、可执行性、适用范围（`appliesTo`）以及供人工阅读的 Markdown 正文。
+- **`spine-unit.schema.json`**：SpineUnit 文档的总体模式，强制要求 `schemaVersion`、`identity`、`semantic`、`skeleton`、`graph` 和 `provenance` 等必需字段，以及不变条件和变更意图的嵌套结构。
 
-这些具体子模块共同使 ArchSpine 系统能够维护项目架构和元数据的一致性、自验证镜像。
+这些模式紧密整合，支持 ArchSpine 系统的核心职责：索引目录结构和文件元数据、跨语言同步文档、执行架构规则，以及追踪所有索引和生成过程的溯源。共享模式作为基础，而专用单元模式涵盖了文件夹、项目、清单和规则领域。它们共同实现了整个镜像系统的一致性验证、增量更新和完整性检查。最重要的实现领域包括验证一致性、索引与生成过程的溯源追踪、基于规则的策略执行以及同步完整性管理。

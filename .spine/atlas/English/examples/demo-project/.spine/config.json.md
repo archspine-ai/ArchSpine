@@ -1,43 +1,41 @@
-<!-- spine-content-hash:0b29a82af58e08dce738047947abb37345f3b6612b135a84b9798a6387d5098c -->
-# ArchSpine Mirror System Configuration
+# ArchSpine Configuration Summary
 
-## Role
-This configuration file defines the core operational parameters for the ArchSpine mirror system project. It controls localization, the LLM provider, MCP context mode, hooks, artifacts, and file scanning policy.
+This configuration file defines the foundational settings for the ArchSpine mirror system. It controls how the system identifies the project, which LLM engine is used for documentation generation, how MCP context is managed, whether pre‑commit hooks are active, and most critically, which files are scanned and indexed. The scan policy governs the entire data pipeline, making this file essential for accurate and secure indexing.
 
-## Key Responsibilities
-- **Localization settings** for multi-language support
-- **LLM provider** selection and configuration
-- **MCP context mode** control
-- **Pre-commit hook** and sync mode management
-- **Artifact storage** configuration
-- **File scanning policy** and ignore chain management
+## Key Parameters
 
-## Parameter Definitions
-- **schemaVersion**: Defines the version of the configuration schema. Must be a valid semver string.
-- **project.name**: The name of the project. Used for identification and logging.
-- **project.locales**: List of supported locales for the project. At least one locale must be specified.
-- **llm.provider**: Specifies the LLM provider to use. Currently set to 'mock' for testing.
-- **mcp.contextMode**: Controls the MCP context mode. 'off' disables context injection.
-- **hooks.preCommit**: Enables or disables the pre-commit hook. Currently set to false.
-- **hooks.syncMode**: Defines the synchronization mode. 'hook' means sync is triggered by hooks.
-- **artifacts**: Configuration for artifact storage. Currently empty.
-- **scanPolicy.fileSource**: Defines the source of files to scan. 'git-tracked' means only files tracked by Git.
-- **scanPolicy.ignoreChain.inheritGitIgnore**: Whether to inherit Git ignore rules. Set to true.
-- **scanPolicy.ignoreChain.projectIgnore**: Path to the project-level ignore file.
-- **scanPolicy.ignoreChain.localIgnore**: Path to the local ignore file.
-- **scanPolicy.protocolExclusions**: List of path patterns to exclude from scanning.
-- **scanPolicy.protocolInclusions**: List of path patterns to include in scanning.
+### Project Metadata
+- **schemaVersion**: `1.0.0` – Must be a valid semantic version.  
+- **project.name**: `archspine-demo` – Identifies the project within ArchSpine; used for artifact naming and telemetry.  
+- **project.locales**: `["English", "Simplified Chinese"]` – Supported locales for multilingual documentation generation. Each locale must be registered in the system.
 
-## Notable Invariants
-- `schemaVersion` must be a valid semver string
-- `project.locales` must contain at least one locale
-- `llm.provider` must be a supported provider identifier
-- `scanPolicy.fileSource` must be one of the allowed sources
-- `scanPolicy.ignoreChain.inheritGitIgnore` must be a boolean
-- `protocolExclusions` and `protocolInclusions` must be arrays of path patterns
+### LLM Provider
+- **llm.provider**: `mock` – Selects the language model backend. `mock` is a safe test provider; switching to a real provider (e.g. `openai`) will send prompts to an external service.
 
-## Stability and Risks
-This configuration is critical for system stability. Incorrect locale settings may cause localization failures. Disabling hooks may lead to inconsistent state. The mock LLM provider is for testing only and should not be used in production. The scan policy controls which files are processed; misconfiguration may cause security issues or data loss.
+### MCP Context Mode
+- **mcp.contextMode**: `off` – Controls Model Context Protocol integration. `off` means no external context sharing; `on` would enable it. When enabled without proper authentication, internal context may leak externally.
 
-## Negative Scope
-This configuration does not define runtime behavior, business logic, or data processing rules. It is purely a static configuration file that sets operational parameters for the mirror system.
+### Pre‑commit Hooks & Sync Mode
+- **hooks.preCommit**: `false` – When `true`, ArchSpine runs checks before each commit. Disabling (`false`) reduces safety but speeds up commits.  
+- **hooks.syncMode**: `hook` – Determines how synchronisation occurs: via a git hook (`hook`) or automatically (`auto`).
+
+### Scan Policy
+- **scanPolicy.fileSource**: `git-tracked` – Limits scanning to version‑controlled files. `filesystem` would scan all files on disk, increasing risk of indexing unwanted directories.  
+- **scanPolicy.ignoreChain**:  
+  - `inheritGitIgnore: true` – Inherits patterns from the repository’s `.gitignore`.  
+  - `projectIgnore: ".spineignore"` – Applies project‑level ignore rules from `.spineignore`.  
+  - `localIgnore: ".spineignore.local"` – Allows local overrides via `.spineignore.local`.  
+  Missing any of these files may cause unintended scanning of large irrelevant directories or missing important excludes.  
+- **protocolExclusions**: `[".spine/"]` – Paths always excluded from indexing. Here, the entire `.spine/` directory is excluded to avoid indexing internal artifacts.  
+- **protocolInclusions**: `[".spine/rules/", ".spine/config.json"]` – Paths always included, even if they would be excluded by ignore rules. These ensure that specific files inside `.spine/` are still indexed.
+
+## Stability & Risks
+
+- **Incomplete Indexing**: Misconfiguring the scan policy (e.g. missing protocol inclusions) can lead to incomplete indexing, causing missing rule enforcement or stale views.  
+- **Sensitive Data Exposure**: Using a real LLM provider with untrusted prompts may expose sensitive code to external services.  
+- **Removed Safety Gate**: Disabling pre‑commit hooks (as done here with `hooks.preCommit: false`) removes a safety check for committing violations.  
+- **MCP Leakage**: Enabling MCP context mode without proper authentication could leak internal context to external services.  
+- **Ignore Chain Maintenance**: The ignore chain must be kept consistent; a missing `.spineignore` file defaults to no project‑level ignore, and overlapping protocol exclusions/inclusions can break the scanner.  
+- **Conflicting Rules**: Protocol exclusions and inclusions must not overlap. In this configuration, `.spine/` is excluded but `.spine/rules/` and `.spine/config.json` are included, which is correct as the inclusions are nested under the exclusion and take precedence.
+
+This configuration is effectively a safe, test‑oriented setup: it uses a mock LLM, disables MCP context, skips pre‑commit checks, scans only git‑tracked files, and relies on a layered ignore chain. Operators should carefully review and adapt these values before moving to production or enabling real LLM providers.

@@ -1,36 +1,30 @@
-<!-- spine-content-hash:0e5c4b2152da8ae2fbaf9c642a032447aab868c798faefa922bee1dfcb4af953 -->
-# ArchSpine TypeScript 配置
+# ArchSpine TypeScript 配置概述
 
-## 角色
-控制 ArchSpine 项目中 `src/` 目录下的 TypeScript 源文件如何编译为 `dist/` 目录中的 JavaScript 输出，包括模块格式、类型检查严格度和调试支持。
+本配置定义了如何将 `./src` 目录中的 TypeScript 源文件编译为 JavaScript。它控制输出语言的版本、模块系统、类型检查的严格程度以及文件处理规则。运维人员需要了解各项设置对构建稳定性、运行时兼容性和调试的影响。
 
-## 主要职责
-- 将 TypeScript 源代码转译为 JavaScript
-- 模块解析与打包策略
-- 输出目录与源映射生成
-- 类型检查严格度与库包含
+## 关键参数
 
-## 不变约束
-- 必须启用严格模式以强制类型安全
-- 模块系统必须为 NodeNext 以支持 ESM/CJS 互操作
-- 必须生成源映射以支持调试
-- 输出目录必须为 `./dist`，源根目录必须为 `./src`
-
-## 参数定义
-- **target**：设置输出的 ECMAScript 目标版本；ESNext 使用 Node.js 支持的最新特性。
-- **module**：定义模块代码生成方式；NodeNext 启用原生 ESM 并兼容 CommonJS 回退。
-- **moduleResolution**：决定模块路径的解析方式；NodeNext 遵循 Node.js 的解析规则。
-- **outDir**：指定编译后 JavaScript 文件的输出目录。
-- **rootDir**：指定 TypeScript 源文件的根目录。
-- **strict**：启用所有严格类型检查选项；对于在编译时捕获类型错误至关重要。
-- **esModuleInterop**：允许从 CommonJS 模块进行默认导入；提高与 npm 包的兼容性。
-- **skipLibCheck**：跳过对声明文件 (.d.ts) 的类型检查；加快编译速度但可能隐藏依赖中的类型错误。
-- **forceConsistentCasingInFileNames**：确保导入时文件名大小写一致；防止跨平台问题。
-- **types**：指定要包含的类型定义包；此处仅包含 @types/node。
-- **sourceMap**：生成用于调试的源映射文件；将编译后的 JavaScript 映射回原始 TypeScript。
+| 参数 | 值 | 说明 |
+|------|-----|------|
+| `target` | `ESNext` | 使用最新的 ECMAScript 语法特性。可能无法在较旧的 Node.js 版本上运行；请确认运行环境兼容性。 |
+| `module` | `NodeNext` | 按照 Node.js 原生 ES 模块支持生成模块代码。需要在 `package.json` 中设置 `"type": "module"`。 |
+| `moduleResolution` | `NodeNext` | 模拟 Node.js 对 ES 模块的解析行为，确保导入路径正确解析。 |
+| `outDir` | `./dist` | 编译后 JavaScript 的输出目录，必须与部署路径一致。 |
+| `rootDir` | `./src` | TypeScript 源文件的根目录，所有源码必须位于该目录下。 |
+| `strict` | `true` | 启用所有严格类型检查选项。可提升代码安全性，但可能增加编译期错误且需要更多类型注解。 |
+| `esModuleInterop` | `true` | 允许从 CommonJS 模块进行默认导入，简化与遗留包的交互。 |
+| `skipLibCheck` | `true` | 跳过声明文件（`.d.ts`）的类型检查，加快编译速度，但可能隐藏依赖包中的类型错误。 |
+| `forceConsistentCasingInFileNames` | `true` | 确保项目中文件名大小写一致，防止在大小写敏感文件系统上出现问题。 |
+| `types` | `["node"]` | 包含 Node.js API 的类型声明，用于编辑器提示和类型检查。 |
+| `sourceMap` | `true` | 生成 source map 文件，支持调试时将编译后的 JavaScript 映射回原始的 TypeScript。 |
+| `include` | `["src/**/*"]` | 指定需要编译的文件模式，`src/` 下的所有 TypeScript 文件都会被处理。 |
 
 ## 稳定性与风险
-此配置直接影响构建可靠性和运行时行为。严格模式在编译时防止了许多常见的 JavaScript 错误。NodeNext 模块系统确保与现代 Node.js ESM 特性的兼容性，但如果依赖项不兼容 ESM 可能会导致问题。跳过库检查可加快构建速度，但可能使第三方库中的类型错误未被检测到。源映射对于调试至关重要，但会增加输出大小。总体而言，此配置优先考虑类型安全和现代模块支持，从而提高了长期可维护性并减少了运行时错误。
 
-## 范围外
-此配置未定义明确的范围外项目。
+- **严格模式**（`strict: true`）是一把双刃剑：能在编译时捕获大量潜在运行时错误，但会减慢构建速度并需要更多类型注解。团队需要权衡严格程度与开发效率。
+- **ESNext 目标**启用现代语法，但可能不被较旧的 Node.js 运行时（如 v22 以前）支持。请确保部署环境能够运行输出的 JavaScript。
+- **skipLibCheck** 可显著加快构建，但可能掩盖第三方库中的类型错误。如果依赖包频繁更新，请谨慎使用。
+- **sourceMap** 对于调试至关重要，但会增加 `dist` 输出的体积。如果对构建产物大小敏感，可考虑在生产构建中关闭。
+- **文件大小写一致性**可防止跨平台错误（例如 macOS 与 Linux 之间）。团队协作中务必保持此设置。
+
+总体而言，此配置为现代 Node.js 项目打造了健壮、类型安全的构建流程。随着代码库增长，请持续关注严格程度与构建性能之间的平衡。

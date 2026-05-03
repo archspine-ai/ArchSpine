@@ -4,65 +4,73 @@
     "filePath": "src/infra/manifest/io.ts",
     "contentHash": "ef37cd8cc48677161f0a998f17ea94529cb2004e41a69f4750d5d591de796d36",
     "skeletonHash": "41ba7ad453fbff54fadcf92a1008d83c61f632a7daacf4a6fb9cb9f71a85da72",
-    "semanticHash": "126be20830b3170d087bf7251639ab35d6b1853ec404056b682234805a439e1d",
+    "semanticHash": "7d60b97a5f128cf87c45e1181dd0645d6e1d0da97fb7f49d6d3f8e21bf840390",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/manifest"
   },
   "semantic": {
-    "role": "Infrastructure utility module providing file path resolution, JSON file reading, and file status snapshot capabilities for the ArchSpine manifest and language snapshot system.",
+    "role": "Infrastructure utility module that provides deterministic file path resolution, JSON file reading with null safety, and filesystem status snapshots for the ArchSpine manifest and language snapshot subsystem.",
     "responsibilities": [
-      "Constructs absolute paths to the spine manifest (.spine/manifest.json) and language snapshot (.spine/languages.json) files within a given root directory.",
-      "Reads and parses JSON files from the filesystem with null safety for missing files, using defaultRuntimeIO for warning output.",
-      "Provides file status snapshot capabilities (mtimeMs, size) via fs.statSync for monitoring file changes."
+      "Resolves absolute paths to the spine manifest (.spine/manifest.json) and language snapshot (.spine/languages.json) files given a root directory.",
+      "Reads and parses JSON files from the filesystem, returning null if the file does not exist.",
+      "Reads JSON files with a configurable warning message via defaultRuntimeIO when the file is missing.",
+      "Captures file status snapshots (mtimeMs and size) using fs.statSync, returning a zeroed snapshot for non-existent files."
     ],
     "outOfScope": [
-      "Does not handle schema validation or parsing of manifest/language content beyond JSON deserialization.",
-      "Does not manage file writing, deletion, or directory creation.",
-      "Does not implement caching or memoization of file reads."
+      "File writing or modification operations.",
+      "Validation or schema enforcement of the parsed JSON content.",
+      "Orchestration of multiple file reads or application logic beyond file I/O.",
+      "Network I/O or any remote data access."
     ],
     "invariants": [
-      "Manifest and language snapshot paths are always relative to the provided rootDir under the .spine subdirectory.",
-      "readJsonFile returns null if the file does not exist, never throws for missing files.",
-      "File status snapshots are computed synchronously using fs.statSync."
+      "All exported functions are pure file-system utility facades; they must not incorporate service/engine orchestration concerns (per rule infra-facade-imports).",
+      "Path construction uses path.join only, ensuring cross-platform safety.",
+      "JSON parsing uses synchronous fs.readFileSync and JSON.parse; no asynchronous patterns are introduced."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a stable, low-level facade for accessing ArchSpine manifest and language snapshot files, isolating filesystem operations from higher-level orchestration layers.",
-      "recentChangeIntent": "Not directly reflected in this file."
+      "architecturalIntent": "Maintain a stable, low-level infrastructure layer for manifest and language snapshot access, consistent with ArchSpine's architectural governance where infra modules expose only file I/O facades.",
+      "recentChangeIntent": "Part of the v1.0.0 release that establishes architectural governance and semantic layer for the AI era; this module remains unchanged but fits the governance pattern."
     },
     "publicSurface": [
       "getManifestPath(rootDir: string): string",
       "getLanguageSnapshotPath(rootDir: string): string",
-      "readJsonFile<T>(filePath: string): T | null"
+      "readJsonFile<T>(filePath: string): T | null",
+      "readJsonFileWithWarning<T>(filePath: string, warningBuilder: (reason: string) => string): T | null",
+      "getFileStatusSnapshot(filePath: string): FileStatusSnapshot"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Infrastructure utility module providing file path resolution, JSON file reading, and file status snapshot capabilities for the ArchSpine manifest and language snapshot system.",
+        "role": "Infrastructure utility module that provides deterministic file path resolution, JSON file reading with null safety, and filesystem status snapshots for the ArchSpine manifest and language snapshot subsystem.",
         "responsibilities": [
-          "Constructs absolute paths to the spine manifest (.spine/manifest.json) and language snapshot (.spine/languages.json) files within a given root directory.",
-          "Reads and parses JSON files from the filesystem with null safety for missing files, using defaultRuntimeIO for warning output.",
-          "Provides file status snapshot capabilities (mtimeMs, size) via fs.statSync for monitoring file changes."
+          "Resolves absolute paths to the spine manifest and language snapshot files.",
+          "Reads and parses JSON files, returning null if the file does not exist.",
+          "Reads JSON files with a configurable warning message via defaultRuntimeIO when the file is missing.",
+          "Captures file status snapshots including mtime and size."
         ],
         "outOfScope": [
-          "Does not handle schema validation or parsing of manifest/language content beyond JSON deserialization.",
-          "Does not manage file writing, deletion, or directory creation.",
-          "Does not implement caching or memoization of file reads."
+          "File writing or modification.",
+          "JSON validation or schema enforcement.",
+          "Orchestration of multiple files or application logic.",
+          "Network I/O or remote access."
         ]
       },
       "Simplified Chinese": {
-        "role": "基础设施工具模块，为 ArchSpine 的清单和语言快照系统提供文件路径解析、JSON 文件读取以及文件状态快照功能。",
+        "role": "基础设施工具模块，为 ArchSpine 的清单和语言快照子系统提供确定的文件路径解析、空安全的 JSON 文件读取以及文件系统状态快照功能。",
         "responsibilities": [
-          "在给定的根目录下构建 spine 清单文件 (.spine/manifest.json) 和语言快照文件 (.spine/languages.json) 的绝对路径。",
-          "从文件系统读取并解析 JSON 文件，对缺失文件提供空安全处理，并使用 defaultRuntimeIO 输出警告信息。",
-          "通过 fs.statSync 提供文件状态快照功能（mtimeMs、size），用于监控文件变更。"
+          "根据根目录解析出 spine 清单文件 (.spine/manifest.json) 和语言快照文件 (.spine/languages.json) 的绝对路径。",
+          "从文件系统读取并解析 JSON 文件，若文件不存在则返回 null。",
+          "读取 JSON 文件时，若文件缺失可通过 defaultRuntimeIO 输出可自定义的警告信息。",
+          "通过 fs.statSync 获取文件状态快照（mtimeMs 和 size），对不存在的文件返回零值快照。"
         ],
         "outOfScope": [
-          "不处理超出 JSON 反序列化之外的清单或语言内容的模式验证或解析。",
-          "不管理文件的写入、删除或目录创建。",
-          "不实现文件读取的缓存或记忆化。"
+          "文件写入或修改操作。",
+          "JSON 内容的校验或模式实施。",
+          "多文件编排或应用逻辑。",
+          "网络 I/O 或远程数据访问。"
         ]
       }
     }
@@ -198,21 +206,23 @@
         "targetPath": "fs",
         "relation": "import",
         "symbols": [
-          "* as fs"
+          "*"
         ]
       },
       {
         "targetPath": "path",
         "relation": "import",
         "symbols": [
-          "* as path"
+          "*"
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:39.365Z",
+    "indexedAt": "2026-05-03T11:25:04.187Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

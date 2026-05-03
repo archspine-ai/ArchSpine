@@ -4,55 +4,69 @@
     "filePath": "src/infra/db/repositories/usage.ts",
     "contentHash": "4a09021e3a4f46a2ada0d28508baf7a33420b7806a41f7efc9cbdd32dca6979e",
     "skeletonHash": "cceb818449dcbe3f5da3dc12bd3eb28d054840ee850f85d997313c9069ef7154",
-    "semanticHash": "f9539358a49853d13a05c1ec62a98981bdeb3531c64fbcadd331c3e66d4ebc14",
+    "semanticHash": "1daaf900fd07c0f1891d73b400df9e3182f483e3c5a9f7e7b9f98b52a136d261",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/db/repositories"
   },
   "semantic": {
-    "role": "Infrastructure Data Access Object (DAO) for persisting and querying token usage metrics in the SQLite database.",
+    "role": "Infrastructure Data Access Object (DAO) for persisting and querying token usage metrics in a SQLite database.",
     "responsibilities": [
-      "Inserts token usage records (input, output, total) into the usage_logs table with sync metadata.",
-      "Provides aggregated summary queries for recent usage grouped by date and sync mode.",
-      "Provides total lifetime usage statistics across all recorded sessions."
+      "Inserts a token usage record into the usage_logs table with sync_id, date, sync_mode, input/output/total token counts.",
+      "Retrieves a grouped usage summary aggregated by date and sync_mode, ordered descending, limited to the last 30 rows.",
+      "Retrieves total lifetime usage statistics including sums of input/output/total tokens and session count."
     ],
     "outOfScope": [
-      "Orchestrating service/task/engine workflows",
-      "Exposing high-level infrastructure facades",
-      "Handling authentication or authorization",
-      "Managing database connection pooling or transactions beyond simple queries"
+      "Session lifecycle management or scheduling.",
+      "LLM tokenization or counting logic.",
+      "CLI command handling or user interaction.",
+      "Orchestration of sync operations across services."
     ],
     "invariants": [
-      "Depends on better-sqlite3 Database instance for all operations",
-      "Exports pure functions that accept a database connection as parameter",
-      "Queries are static SQL strings prepared at call time",
-      "Uses ISO date strings for date column storage"
+      "Must only depend on trusted low-level infra modules (better-sqlite3, shared types).",
+      "Must not import from service, engine, or cli layers.",
+      "SQL schema (usage_logs table) is assumed to exist as per migration or setup.",
+      "All exposed functions require a valid better-sqlite3 Database instance."
     ],
     "changeIntent": {
-      "architecturalIntent": "Encapsulate database interactions for usage metrics to separate concerns and enable testability.",
-      "recentChangeIntent": "No recent changes detected in this module; recent commit 'refactor: modularize CLI and decouple core infra services' may affect surrounding infrastructure but not this DAO directly."
+      "architecturalIntent": "Provide a stable, low-level data access facade for token usage metrics that other infra or service modules can depend on without reaching into private implementation details.",
+      "recentChangeIntent": "Part of the ArchSpine v1.0.0 release that introduced architectural governance and a semantic layer, establishing this file as a core infra component for usage tracking."
     },
     "publicSurface": [
-      "recordUsage(db, mode, input, output, total): void",
-      "getRecentUsageSummary(db): UsageSummaryRow[]",
-      "getLifetimeUsageTotals(db): UsageTotals"
+      "recordUsage(db: Database.Database, mode: string, input: number, output: number, total: number): void",
+      "getUsageSummary(db: Database.Database): UsageSummaryRow[]",
+      "getTotalUsage(db: Database.Database): UsageTotals"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Infrastructure Data Access Object (DAO) for persisting and querying token usage metrics in the SQLite database.",
+        "role": "Infrastructure Data Access Object (DAO) for persisting and querying token usage metrics in a SQLite database.",
         "responsibilities": [
-          "Inserts token usage records (input, output, total) into the usage_logs table with sync metadata.",
-          "Provides aggregated summary queries for recent usage grouped by date and sync mode.",
-          "Provides total lifetime usage statistics across all recorded sessions."
+          "Inserts a token usage record into the usage_logs table with sync_id, date, sync_mode, input/output/total token counts.",
+          "Retrieves a grouped usage summary aggregated by date and sync_mode, ordered descending, limited to the last 30 rows.",
+          "Retrieves total lifetime usage statistics including sums of input/output/total tokens and session count."
         ],
         "outOfScope": [
-          "Orchestrating service/task/engine workflows",
-          "Exposing high-level infrastructure facades",
-          "Handling authentication or authorization",
-          "Managing database connection pooling or transactions beyond simple queries"
+          "Session lifecycle management or scheduling.",
+          "LLM tokenization or counting logic.",
+          "CLI command handling or user interaction.",
+          "Orchestration of sync operations across services."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施数据访问对象（DAO），用于在 SQLite 数据库中持久化和查询令牌用量指标。",
+        "responsibilities": [
+          "将包含 sync_id、日期、同步模式以及输入/输出/总令牌数的用量记录插入到 usage_logs 表中。",
+          "按日期和同步模式分组检索用量摘要，按降序排列，限制最近 30 行。",
+          "检索总生命周期用量统计信息，包括输入/输出/总令牌数的总和以及会话计数。"
+        ],
+        "outOfScope": [
+          "会话生命周期管理或调度。",
+          "LLM 令牌化或计数逻辑。",
+          "CLI 命令处理或用户交互。",
+          "跨服务的同步操作编排。"
         ]
       }
     }
@@ -121,10 +135,12 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:38.589Z",
+    "indexedAt": "2026-05-03T11:25:03.361Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

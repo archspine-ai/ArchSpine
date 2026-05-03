@@ -3,76 +3,225 @@
   "identity": {
     "filePath": "src/engines/scanner-utils.ts",
     "contentHash": "c71b9afe66b27ee29f18692e09e7d8cd8bc9020ca9e6f4a45c6f6fb00afe3ced",
-    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
-    "semanticHash": "629eb84fb3f32fffc99100344222af54b7605af2182754139f758cef51cc163c",
+    "skeletonHash": "6503739c8003253dabc30d7c3eed5214a7c1d16e7406dfa86251b4745e33fa04",
+    "semanticHash": "64bac6587133194552b690d46627c24d874797d54ba5b0433d6b57edeed337fa",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/engines"
   },
   "semantic": {
-    "role": "Scanner engine utility module providing path and pattern normalization for file scanning operations.",
+    "role": "Scanner engine utility module providing path normalization, pattern matching with picomatch, and dry-run report formatting for scan operations.",
     "responsibilities": [
       "Normalizes file paths to Unix-style slashes and strips leading './' prefixes.",
-      "Normalizes scanner patterns, ensuring directory patterns are expanded with '**'.",
-      "Defines the NotableExclusion interface for tracking excluded patterns with metadata."
+      "Normalizes scanner patterns, appending '**' for directory patterns.",
+      "Creates a picomatch-based matcher function for a given pattern with dot-file support.",
+      "Splits scanner output string into deduplicated normalized file paths.",
+      "Filters and deduplicates an array of file paths using normalization.",
+      "Groups files by scanner-specific prefix labels (e.g., '.spine/rules/').",
+      "Builds grouped counts for dry-run reports, tracking per-group inclusion status.",
+      "Formats a ScanDryRunReport into a human-readable string with policy, counts, and notable exclusions.",
+      "Collects notable exclusions from ignore chains and protocol exclusions, providing source and reason metadata."
     ],
     "outOfScope": [
-      "File system traversal or directory walking logic.",
-      "Pattern matching execution or glob evaluation.",
-      "Scan result aggregation or reporting."
+      "Actual file system scanning or glob resolution.",
+      "CLI presentation or user-facing output beyond string generation.",
+      "Authentication, authorization, or credential handling.",
+      "Service orchestration or business logic beyond scanner utility."
     ],
     "invariants": [
-      "Must remain free of CLI entrypoint imports to satisfy engine-independence rule.",
-      "Must not import service-level orchestration modules."
+      "Maintains platform-independent path normalization (slash conversion).",
+      "Functions are pure and rely only on scanner-specific input types.",
+      "Does not import any CLI modules or service orchestrators."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide reusable path and pattern normalization utilities for the scanner engine, ensuring consistent handling of file paths and glob patterns across scanning operations.",
-      "recentChangeIntent": "No recent changes detected; the module remains stable as part of the pre-v1.0 pipeline fixes."
+      "architecturalIntent": "Provide a reusable, testable set of utilities for the scanner engine, decoupled from CLI and orchestration layers.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era (no recent modifications to this file)"
     },
     "publicSurface": [
       "normalizeScannerPath(file: string): string",
       "normalizeScannerPattern(pattern: string): string",
-      "NotableExclusion interface"
+      "createScannerMatcher(pattern: string): (input: string) => boolean",
+      "splitScannerOutput(output: string): string[]",
+      "uniqueScannerPaths(files: string[]): string[]",
+      "getScannerGroupLabel(file: string): string",
+      "buildDryRunGroupedCounts(files: string[], isProtocolIncluded: (file: string) => boolean): { label: string; count: number; protocolIncluded: boolean }[]",
+      "formatDryRunReport(report: ScanDryRunReport): string",
+      "collectNotableExclusions(ignoreChain: ScanDryRunReport['ignoreChain'], protocolExclusions: string[]): NotableExclusion[]",
+      "NotableExclusion (interface)"
     ],
     "ruleViolations": [],
-    "driftDetected": false,
-    "driftReason": null,
+    "driftDetected": true,
+    "driftReason": "Previous semantic contract limited responsibilities to path/pattern normalization and NotableExclusion interface. AST evidence reveals multiple additional exported functions for picomatch-based matching, output handling, deduplication, grouping, and report formatting.",
     "localized": {
       "English": {
-        "role": "Scanner engine utility module providing path and pattern normalization for file scanning operations.",
+        "role": "Scanner engine utility module providing path normalization, pattern matching with picomatch, and dry-run report formatting for scan operations.",
         "responsibilities": [
           "Normalizes file paths to Unix-style slashes and strips leading './' prefixes.",
-          "Normalizes scanner patterns, ensuring directory patterns are expanded with '**'.",
-          "Defines the NotableExclusion interface for tracking excluded patterns with metadata."
+          "Normalizes scanner patterns, appending '**' for directory patterns.",
+          "Creates a picomatch-based matcher function for a given pattern with dot-file support.",
+          "Splits scanner output string into deduplicated normalized file paths.",
+          "Filters and deduplicates an array of file paths using normalization.",
+          "Groups files by scanner-specific prefix labels (e.g., '.spine/rules/').",
+          "Builds grouped counts for dry-run reports, tracking per-group inclusion status.",
+          "Formats a ScanDryRunReport into a human-readable string with policy, counts, and notable exclusions.",
+          "Collects notable exclusions from ignore chains and protocol exclusions, providing source and reason metadata."
         ],
         "outOfScope": [
-          "File system traversal or directory walking logic.",
-          "Pattern matching execution or glob evaluation.",
-          "Scan result aggregation or reporting."
+          "Actual file system scanning or glob resolution.",
+          "CLI presentation or user-facing output beyond string generation.",
+          "Authentication, authorization, or credential handling.",
+          "Service orchestration or business logic beyond scanner utility."
         ]
       },
       "Simplified Chinese": {
-        "role": "扫描引擎工具模块，提供文件路径和模式的规范化功能，用于文件扫描操作。",
+        "role": "扫描引擎工具模块，提供路径规范化、基于picomatch的模式匹配以及扫描预览报告的格式化功能。",
         "responsibilities": [
-          "将文件路径规范化为 Unix 风格斜杠，并去除开头的 './' 前缀。",
-          "规范化扫描模式，确保目录模式扩展为包含 '**' 的形式。",
-          "定义 NotableExclusion 接口，用于跟踪带有元数据的排除模式。"
+          "将文件路径规范化为Unix风格斜杠，并去除首部的\"./\"前缀。",
+          "规范化扫描模式，目录模式后附加\"**\"。",
+          "基于给定模式创建picomatch匹配函数，支持隐藏文件。",
+          "将扫描输出字符串拆分为去重后的规范化文件路径列表。",
+          "过滤并去重传入的文件路径数组，应用规范化操作。",
+          "根据扫描特有的前缀标签（例如\".spine/rules/\"）对文件进行分组。",
+          "构建预览报告的分组计数，追踪每个分组的纳入状态。",
+          "将ScanDryRunReport格式化为人类可读字符串，包含策略、计数和值得注意的排除项。",
+          "从忽略链和协议排除项中收集值得注意的排除项，提供来源和原因元数据。"
         ],
         "outOfScope": [
-          "文件系统遍历或目录行走逻辑。",
-          "模式匹配执行或 glob 评估。",
-          "扫描结果聚合或报告生成。"
+          "实际的文件系统扫描或glob解析。",
+          "超出字符串生成的CLI展示或面向用户的输出。",
+          "认证、授权或凭据处理。",
+          "扫描工具之外的业务逻辑或服务编排。"
         ]
       }
     }
   },
   "skeleton": {
-    "imports": [],
-    "exports": [],
-    "declaredSymbols": [],
+    "imports": [
+      {
+        "source": "'picomatch'",
+        "symbols": [
+          "picomatch"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "normalizeScannerPath",
+        "kind": "function",
+        "signature": "normalizeScannerPath(file: string)"
+      },
+      {
+        "name": "normalizeScannerPattern",
+        "kind": "function",
+        "signature": "normalizeScannerPattern(pattern: string)"
+      },
+      {
+        "name": "createScannerMatcher",
+        "kind": "function",
+        "signature": "createScannerMatcher(pattern: string)"
+      },
+      {
+        "name": "splitScannerOutput",
+        "kind": "function",
+        "signature": "splitScannerOutput(output: string)"
+      },
+      {
+        "name": "uniqueScannerPaths",
+        "kind": "function",
+        "signature": "uniqueScannerPaths(files: string[])"
+      },
+      {
+        "name": "getScannerGroupLabel",
+        "kind": "function",
+        "signature": "getScannerGroupLabel(file: string)"
+      },
+      {
+        "name": "buildDryRunGroupedCounts",
+        "kind": "function",
+        "signature": "buildDryRunGroupedCounts(\n  files: string[],\n  isProtocolIncluded: (file: string) => boolean,\n)"
+      },
+      {
+        "name": "formatDryRunReport",
+        "kind": "function",
+        "signature": "formatDryRunReport(report: ScanDryRunReport)"
+      },
+      {
+        "name": "collectNotableExclusions",
+        "kind": "function",
+        "signature": "collectNotableExclusions(\n  ignoreChain: ScanDryRunReport['ignoreChain'],\n  protocolExclusions: string[],\n)"
+      },
+      {
+        "name": "NotableExclusion",
+        "kind": "interface",
+        "signature": "interface NotableExclusion"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "normalizeScannerPath",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/scanner-utils.ts#"
+      },
+      {
+        "name": "normalizeScannerPattern",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/scanner-utils.ts#"
+      },
+      {
+        "name": "createScannerMatcher",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/scanner-utils.ts#"
+      },
+      {
+        "name": "splitScannerOutput",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/scanner-utils.ts#"
+      },
+      {
+        "name": "uniqueScannerPaths",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/scanner-utils.ts#"
+      },
+      {
+        "name": "getScannerGroupLabel",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/scanner-utils.ts#"
+      },
+      {
+        "name": "buildDryRunGroupedCounts",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/scanner-utils.ts#"
+      },
+      {
+        "name": "formatDryRunReport",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/scanner-utils.ts#"
+      },
+      {
+        "name": "collectNotableExclusions",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/scanner-utils.ts#"
+      },
+      {
+        "name": "NotableExclusion",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/scanner-utils.ts#"
+      }
+    ],
     "structuralHints": {
-      "importCount": 0,
-      "exportCount": 0,
+      "importCount": 1,
+      "exportCount": 10,
       "isBarrel": false,
       "isTypeOnly": false
     }
@@ -86,7 +235,7 @@
       },
       {
         "targetPath": "./scanner.js",
-        "relation": "import-type",
+        "relation": "import",
         "symbols": [
           "ScanDryRunReport"
         ]
@@ -97,11 +246,11 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T03:57:47.844Z",
+    "indexedAt": "2026-05-03T11:25:02.600Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "llm"
+      "fallback"
     ]
   }
 }

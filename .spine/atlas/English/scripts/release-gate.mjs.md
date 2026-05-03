@@ -1,22 +1,37 @@
-<!-- spine-content-hash:6764ce6dd821ade05be4bb30eb164fdfe5af7fa0c6805e4b41f493c20302d9ac -->
-# ArchSpine Release Gate Automation Script
+# ArchSpine Release Gate Script
 
-## Purpose
-This document describes a Node.js script that automates the pre-release quality assurance process for the ArchSpine project. It runs a series of validation gates in sequence, stopping if any gate fails, to ensure the codebase is ready for release.
+## Why This Document Exists
 
-## Context and Audience
-Intended for developers and release managers working on the ArchSpine project. It is used as part of the CI/CD pipeline or manually before creating a release.
+This document describes **ArchSpine's automated release gate script** — the final quality checkpoint before any release can be published. It codifies the exact sequence of validations that must pass: build, unit tests, schema tests, protocol validation, and pack check. Without this script, releases would rely on manual, error-prone steps.
 
-## Key Responsibilities
-- Defines and executes a sequence of quality checks (build, unit tests, schema tests, protocol validation, pack check) before a release
-- Ensures all gates pass in order before allowing the release to proceed
+## Who Should Read It
+
+- **Developers** who need to run the release gate locally or understand why a release was blocked.
+- **Release Managers** who oversee the release pipeline and depend on a repeatable, fail-fast validation process.
+- **CI/CD Engineers** who maintain or extend the continuous integration workflow.
+
+## Workflow & Decisions Anchored by This Script
+
+The script defines a **five‑gate pipeline** executed in strict order:
+
+1. **Build** — ensures the project compiles (`npm run build`).
+2. **Unit Tests** — runs all unit tests.
+3. **Schema Tests** — validates schema changes.
+4. **Protocol Validation** — checks protocol invariants.
+5. **Pack Check** — verifies package integrity.
+
+If any gate fails, the script exits immediately with a clear error message. This "fail‑fast" design prevents incomplete or broken builds from proceeding to release.
+
+The script is intended to run either:
+- As part of a **CI/CD pipeline** on every release candidate.
+- **Manually** by a maintainer who wants a pre‑flight check.
 
 ## Out of Scope
-- Actual release publishing or deployment steps
-- Configuration of individual test or build commands
-- Error recovery or rollback procedures
 
-## Key Takeaways
-- Five sequential gates: build, unit tests, schema tests, protocol validation, and pack check
-- Each gate must pass before the next one starts
-- The script exits with an error if any gate fails, preventing an unstable release
+- Manual release steps (e.g., version bumping, changelog generation).
+- Deployment, rollout, or rollback procedures.
+- Environmental setup (the script assumes the environment is already configured).
+
+---
+
+**Key Takeaway:** This script acts as the **single source of truth** for what must pass before a release. It is both a documentation artifact and an executable gate.

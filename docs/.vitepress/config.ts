@@ -10,16 +10,17 @@ export default defineConfig({
     nav: [
       { text: 'Home', link: 'index' },
       { text: 'Tutorials', link: 'tutorials/quick-start' },
-      { text: 'How-to', link: 'how-to/RUNBOOK' },
-      { text: 'Reference', link: 'reference/PROTOCOL' },
-      { text: 'Explanation', link: 'explanation/ARCHITECTURE-OVERVIEW' },
+      { text: 'How-to', link: 'how-to/' },
+      { text: 'Reference', link: 'reference/' },
+      { text: 'Explanation', link: 'explanation/' },
       { text: '中文文档', link: 'zh-CN/' },
-      { text: 'GitHub', link: 'https://github.com/iZoy/archSpine' },
+      { text: 'GitHub', link: 'https://github.com/archspine-ai/archspine' },
     ],
     sidebar: [
       {
         text: 'Tutorials',
         items: [
+          { text: 'Overview', link: 'tutorials/' },
           { text: 'Quick Start', link: 'tutorials/quick-start' },
           { text: 'Official Demo', link: 'tutorials/DEMO' },
           { text: 'Showcase', link: 'tutorials/showcase' },
@@ -28,6 +29,7 @@ export default defineConfig({
       {
         text: 'How-to Guides',
         items: [
+          { text: 'Overview', link: 'how-to/' },
           { text: 'Runbook', link: 'how-to/RUNBOOK' },
           { text: 'MCP Integration', link: 'how-to/MCP' },
           { text: 'Local LLM', link: 'how-to/LOCAL-LLM' },
@@ -47,6 +49,7 @@ export default defineConfig({
       {
         text: 'Explanation',
         items: [
+          { text: 'Overview', link: 'explanation/' },
           { text: 'Architecture Overview', link: 'explanation/ARCHITECTURE-OVERVIEW' },
           { text: 'View Layer', link: 'explanation/VIEW-LAYER' },
           { text: 'Cost & Usage', link: 'explanation/COST-USAGE' },
@@ -61,6 +64,7 @@ export default defineConfig({
           {
             text: '教程 (Tutorials)',
             items: [
+              { text: '概览 (Overview)', link: 'zh-CN/tutorials/' },
               { text: '中文快速开始', link: 'zh-CN/tutorials/quick-start' },
               { text: '中文 Demo', link: 'zh-CN/tutorials/DEMO' },
               { text: '中文 Showcase', link: 'zh-CN/tutorials/showcase' },
@@ -69,6 +73,7 @@ export default defineConfig({
           {
             text: '操作指南 (How-to Guides)',
             items: [
+              { text: '概览 (Overview)', link: 'zh-CN/how-to/' },
               { text: '中文 Runbook', link: 'zh-CN/how-to/RUNBOOK' },
               { text: '中文 MCP 指南', link: 'zh-CN/how-to/MCP' },
               { text: '中文本地 LLM', link: 'zh-CN/how-to/LOCAL-LLM' },
@@ -78,6 +83,7 @@ export default defineConfig({
           {
             text: '参考规范 (Reference)',
             items: [
+              { text: '概览 (Overview)', link: 'zh-CN/reference/' },
               { text: '中文当前能力', link: 'zh-CN/reference/CURRENT-CAPABILITIES' },
               { text: '中文协议 (Protocol)', link: 'zh-CN/reference/PROTOCOL' },
               { text: '中文忽略策略', link: 'zh-CN/reference/IGNORE-POLICY' },
@@ -87,6 +93,7 @@ export default defineConfig({
           {
             text: '深度解析 (Explanation)',
             items: [
+              { text: '概览 (Overview)', link: 'zh-CN/explanation/' },
               { text: '中文架构总览', link: 'zh-CN/explanation/ARCHITECTURE-OVERVIEW' },
               { text: '中文 View Layer 指南', link: 'zh-CN/explanation/VIEW-LAYER' },
               { text: '中文成本指南', link: 'zh-CN/explanation/COST-USAGE' },
@@ -97,7 +104,7 @@ export default defineConfig({
         ],
       },
     ],
-    socialLinks: [{ icon: 'github', link: 'https://github.com/iZoy/archSpine' }],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/archspine-ai/archspine' }],
     search: {
       provider: 'local',
     },

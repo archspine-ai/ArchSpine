@@ -1,23 +1,25 @@
-<!-- spine-content-hash:0de48a7c61fe6f1c8f51b0886997c2cdef8dbf5ba768236889f92c07eba43050 -->
-# ArchSpine Architectural Governance Rules
+# ArchSpine Layered Architecture Constraints
 
-## Purpose
-This document establishes and enforces a strict layered architecture model for the ArchSpine project, ensuring that high-level domain modules remain pure and independent from low-level infrastructure or presentation concerns.
+## Purpose & Scope
 
-## Context and Audience
-This document is intended for all developers contributing to the ArchSpine codebase, particularly those working on domain logic, API layers, or infrastructure modules. It serves as a reference for maintaining architectural integrity during development and code review.
+This document exists to enforce a **strict layered architecture** for the ArchSpine mirror system. It codifies the rules that prevent reverse dependencies, ensure domain isolation, and guarantee that API layers only call service or domain layers—preserving the integrity of the classical layered model. Without this specification, the system would risk coupling domain logic to infrastructure or presentation concerns, eroding maintainability and testability.
 
-## Key Responsibilities
-- Defining layered architecture constraints for the ArchSpine project
-- Specifying dependency rules between domain, infrastructure, API, and CLI layers
-- Enforcing domain isolation and preventing reverse dependencies
+## Who Should Read This
 
-## Out of Scope
-- Implementation details of specific modules
-- Testing strategies or test code organization
-- Deployment or infrastructure configuration
+- **Developers** writing code in any ArchSpine module.
+- **Architects** reviewing pull requests or planning system evolution.
+- **AI agents** that need to understand architectural boundaries before generating or validating code.
 
-## Key Takeaways
-- Domain modules must never import from infrastructure or CLI layers
-- Domain should only depend on internal domain logic or generic utilities
-- API layers must only call Service or Domain layers, never bypass business logic
+## Key Decisions & Workflows Anchored Here
+
+- **Domain purity**: Domain modules must never import from infra or CLI layers (error severity). This decision ensures the domain remains a pure, independently testable core.
+- **Minimal domain dependencies**: Domain may only depend on internal domain logic or generic utils (warning severity). This keeps the domain focused and free of infrastructure entanglements.
+- **API layer responsibility**: API layers must only call service or domain layers; bypassing business logic is prohibited (error severity). This workflow guarantees business logic lives in the domain and is not sidestepped.
+
+## Critical Takeaways
+
+- Domain modules **must not** import from `src/infra/**` or `src/cli/**`.
+- Domain modules **should** depend only on other domain logic or generic utilities.
+- API layers **must** call only Service or Domain layers—never infra or CLI directly.
+
+These rules are enforced with error (blocking) or warning (advisory) severity. They form the backbone of the ArchSpine mirror system's architectural governance.

@@ -4,54 +4,69 @@
     "filePath": "src/infra/prompt-context/budgets.ts",
     "contentHash": "c4776d0cb0149779bdc67072b52ada2c2a4e2797ca9c3a368bc57ddd736ece81",
     "skeletonHash": "9eafe5172cab74cbda6e75a40fa242b6c18c2ca721b5bb8ac134781e0856b66d",
-    "semanticHash": "273d20e0de003c209be8d369521322285ae1bc03185f428ef25deab385e170e3",
+    "semanticHash": "2a8edd17694d896aed84fb9d566ae49c837964846146c53e63e47250ea33e3d0",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/prompt-context"
   },
   "semantic": {
-    "role": "Infrastructure utility function for calculating prompt token budgets based on task mode, validation policy, and source code artifacts.",
+    "role": "Infrastructure facade for resolving and computing prompt token budgets based on task mode, validation policy, and source artifacts.",
     "responsibilities": [
-      "Determines the applicable prompt tier and validation policy for a given task mode and input overrides.",
-      "Selects the appropriate budget profile from constants based on the resolved task mode, validation policy, and tier.",
-      "Calculates line count and import count from the provided source content and skeleton.",
-      "Computes final budget allocations (like maxTokens, reservedTokens) by applying profile multipliers and clamps to the calculated base values."
+      "Resolves the effective prompt tier and validation policy by delegating to policy resolvers.",
+      "Selects the appropriate budget profile (strict or standard) using the resolved parameters.",
+      "Calculates line count and import count from the provided source content.",
+      "Computes final budget allocations (e.g., maxTokens, reservedTokens) by applying profile multipliers and clamps to the calculated base values."
     ],
     "outOfScope": [
-      "Orchestrating tasks or engines",
-      "Managing external API calls or network requests",
-      "Persisting or caching budget results",
-      "Providing a user-facing CLI or UI"
+      "Actual LLM API invocation or token consumption.",
+      "Credential management or authentication.",
+      "Source code parsing or language-specific analysis beyond line and import counts.",
+      "Service orchestration or task routing logic."
     ],
     "invariants": [
-      "Pure function with no side effects",
-      "Relies on imported constants and policy resolution functions",
-      "Output is deterministic based on input parameters"
+      "Must only import from local infra modules (constants, policy, types) to avoid absorbing service/engine orchestration concerns.",
+      "Must expose a stable public function (calculateSourcePromptBudgets) as a facade for budget computation.",
+      "Must delegate policy resolution to dedicated policy module, not implement policy logic inline."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a stable, low-level utility for token budget calculation, decoupled from orchestration logic to support modular CLI and core infra services.",
-      "recentChangeIntent": "Modularize CLI and decouple core infra services (aligns with refactoring intent to keep infra focused on utilities)."
+      "architecturalIntent": "Infrastructure budget calculation profile resolver and allocator for prompt token budgets under varying task modes and validation policies.",
+      "recentChangeIntent": "Initial implementation aligning with architectural governance for the ArchSpine v1.0.0 release."
     },
     "publicSurface": [
-      "calculateSourcePromptBudgets"
+      "calculateSourcePromptBudgets(input: SourcePromptArtifactsInput): PromptBudgets"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Infrastructure utility function for calculating prompt token budgets based on task mode, validation policy, and source code artifacts.",
+        "role": "Infrastructure facade for resolving and computing prompt token budgets based on task mode, validation policy, and source artifacts.",
         "responsibilities": [
-          "Determines the applicable prompt tier and validation policy for a given task mode and input overrides.",
-          "Selects the appropriate budget profile from constants based on the resolved task mode, validation policy, and tier.",
-          "Calculates line count and import count from the provided source content and skeleton.",
-          "Computes final budget allocations (like maxTokens, reservedTokens) by applying profile multipliers and clamps to the calculated base values."
+          "Resolves the effective prompt tier and validation policy by delegating to policy resolvers.",
+          "Selects the appropriate budget profile (strict or standard) using the resolved parameters.",
+          "Calculates line count and import count from the provided source content.",
+          "Computes final budget allocations (e.g., maxTokens, reservedTokens) by applying profile multipliers and clamps to the calculated base values."
         ],
         "outOfScope": [
-          "Orchestrating tasks or engines",
-          "Managing external API calls or network requests",
-          "Persisting or caching budget results",
-          "Providing a user-facing CLI or UI"
+          "Actual LLM API invocation or token consumption.",
+          "Credential management or authentication.",
+          "Source code parsing or language-specific analysis beyond line and import counts.",
+          "Service orchestration or task routing logic."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施外观层，负责根据任务模式、验证策略和源码工件解析并计算提示令牌预算。",
+        "responsibilities": [
+          "通过委托给策略解析器确定有效的提示层和验证策略。",
+          "根据解析后的参数选择适当的预算配置文件（严格或标准）。",
+          "从提供的源内容中计算行数和导入数量。",
+          "通过将配置文件乘数和裁剪应用于计算出的基值，最终计算预算分配（例如最大令牌数、保留令牌数）。"
+        ],
+        "outOfScope": [
+          "实际的LLM API调用或令牌消耗。",
+          "凭据管理或身份验证。",
+          "超出行数和导入计数的源代码解析或特定语言分析。",
+          "服务编排或任务路由逻辑。"
         ]
       }
     }
@@ -114,12 +129,65 @@
           "resolvePromptPolicyTier",
           "resolveValidatePolicy"
         ]
+      },
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "PromptBudgets",
+          "SourcePromptArtifactsInput"
+        ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/prompt-context/budgets.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/policy.ts/resolvePromptPolicyTier#",
+        "targetPath": "src/infra/prompt-context/policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/budgets.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/resolvePromptPolicyTier#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/budgets.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-policy.ts/resolvePromptPolicyTier#",
+        "targetPath": "src/infra/prompt-policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/budgets.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/policy.ts/resolveValidatePolicy#",
+        "targetPath": "src/infra/prompt-context/policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/budgets.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/resolveValidatePolicy#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/budgets.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-policy.ts/resolveValidatePolicy#",
+        "targetPath": "src/infra/prompt-policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:39.721Z",
+    "indexedAt": "2026-05-03T11:25:04.513Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

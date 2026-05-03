@@ -1,50 +1,32 @@
-<!-- spine-content-hash:63ef3291e0e8d90eebfe8cf16f0263163dee1ebc6b8255f0e00a67023c0a4c4d -->
-# ArchSpine SpineManifest 架构
+# ArchSpine SpineManifest 配置摘要
 
-## 角色
+## 概述
 
-定义 ArchSpine SpineManifest 的架构，这是一个元数据清单，用于跟踪镜像仓库的同步状态和已索引文件清单。
+**SpineManifest** 是 ArchSpine 镜像系统的权威同步索引。它记录了已索引源文件的状态、跨语言文档映射以及同步元数据。该清单作为运营者管理文档覆盖范围和跨语言一致性的单一事实来源。
 
-## 主要职责
+## 关键参数
 
-- 声明 `spine-manifest.json` 文件所需的结构和验证规则
-- 强制要求必填字段：`schemaVersion`、`generatorVersion`、`createdAt`、`updatedAt`、`sync`、`files`
-- 管理同步元数据块，包括上次同步时间戳、模式、反向索引完整性和已索引单元计数
-- 管理文件清单块，将仓库相对路径映射到其内容哈希、文件类型、上次索引时间戳、关联文档语言区域和源文件存在标志
-
-## 重要不变量
-
-- `sync` 对象必须始终包含 `lastSyncAt`、`lastSyncMode`、`reverseIndexComplete` 和 `indexedUnitCount`
-- `lastSyncMode` 必须是以下之一：`'full'`（全量）、`'incremental'`（增量）或 `'unknown'`（未知）
-- `indexedUnitCount` 必须是非负整数
-- 每个文件条目必须包含 `contentHash`、`fileKind`、`lastIndexedAt`、`docs` 和 `sourceExists`
-- `files` 对象的键必须符合仓库相对路径格式
-- 根级别以及 sync 或文件条目对象内不允许有额外属性
-
-## 负面范围
-
-此架构不定义实际的同步逻辑、文件索引算法或存储后端。它仅定义清单文件本身的结构和验证规则。
-
-## 最重要的导出行为
-
-此架构强制保证了脊柱清单的结构完整性，这对于镜像系统跟踪同步状态和文件清单至关重要。违反架构（例如缺少必填字段、无效的枚举值或负数计数）将导致验证失败，可能中断同步操作或损坏清单。严格的 `additionalProperties: false` 约束防止注入意外字段，降低了静默数据损坏的风险。`reverseIndexComplete` 标志是一个安全不变量：如果该标志为 `false` 而 `indexedUnitCount` 大于 0，下游工具可能会基于不完整的数据进行操作。可空的 `lastSyncAt` 字段允许优雅地处理从未同步过的仓库。总体而言，严格遵守此架构对于可靠的镜像状态管理和恢复至关重要。
-
-## 参数定义
-
-- **schemaVersion**：引用共享的架构版本定义；确保与预期的架构修订版本兼容。
-- **generatorVersion**：标识生成此清单的工具版本的非空字符串。
-- **createdAt**：ISO 8601 时间戳，标记此清单首次创建的时间。
-- **updatedAt**：ISO 8601 时间戳，标记此清单的最后修改时间。
-- **sync.lastSyncAt**：可为空的 ISO 8601 时间戳，表示最近一次同步事件的时间；null 表示从未同步过。
-- **sync.lastSyncMode**：枚举字段，指示同步模式：`'full'`（全量）、`'incremental'`（增量）或 `'unknown'`（未知）。
-- **sync.reverseIndexComplete**：布尔标志，指示反向索引（将索引单元映射回文件）是否已完全构建。
-- **sync.indexedUnitCount**：非负整数，统计仓库中已索引单元（例如文档或片段）的总数。
-- **files.\<path\>.contentHash**：文件内容的哈希值，用于检测变更并确保完整性。
-- **files.\<path\>.fileKind**：文件类型的分类（例如源代码、文档、配置），由共享的 fileKind 架构定义。
-- **files.\<path\>.lastIndexedAt**：ISO 8601 时间戳，表示此文件最后一次被索引的时间。
-- **files.\<path\>.docs**：关联文档条目的数组，每个条目包含一个语言区域和一个仓库相对路径。
-- **files.\<path\>.sourceExists**：布尔值，指示原始源文件是否仍然存在于磁盘上。
+- **schemaVersion**：使用的清单模式版本号，确保工具与清单文件之间的兼容性。
+- **generatorVersion**：生成此清单的工具版本号，用于追踪由哪个软件版本产生。
+- **createdAt / updatedAt**：清单首次创建和最近一次更新的 ISO 8601 时间戳。运营者可凭此判断清单新旧程度。
+- **sync**：包含同步状态的对象：
+  - **lastSyncAt**（日期时间或 null）：上次同步周期的时间戳。
+  - **lastSyncMode**（枚举：`full`、`incremental`、`unknown`）：上次同步是完整重建、增量更新还是未知。
+  - **reverseIndexComplete**（布尔值）：反向索引（从文档到源文件的映射）是否已完整构建。
+  - **indexedUnitCount**（非负整数）：已索引的总单元数（即源文件数量）。
+- **files**：从源文件相对路径到其索引元数据的映射。每个条目包含：
+  - **contentHash**：源文件内容的校验和，用于完整性检查。
+  - **fileKind**：文件类型或类别（例如普通、生成等）。
+  - **lastIndexedAt**：上次索引该文件的时间戳。
+  - **docs**：对象数组，每个对象包含 **locale**（语言）和 **path**（路径），指向该源文件在不同语言下的文档文件。
+  - **sourceExists**（布尔值）：标示源文件是否仍存在于仓库中。
 
 ## 稳定性与风险
 
-此架构强制保证了脊柱清单的结构完整性，这对于镜像系统跟踪同步状态和文件清单至关重要。违反架构（例如缺少必填字段、无效的枚举值或负数计数）将导致验证失败，可能中断同步操作或损坏清单。严格的 `additionalProperties: false` 约束防止注入意外字段，降低了静默数据损坏的风险。`reverseIndexComplete` 标志是一个安全不变量：如果该标志为 `false` 而 `indexedUnitCount` 大于 0，下游工具可能会基于不完整的数据进行操作。可空的 `lastSyncAt` 字段允许优雅地处理从未同步过的仓库。总体而言，严格遵守此架构对于可靠的镜像状态管理和恢复至关重要。
+本清单是源文件与多语言文档之间一致性的关键连接点。
+
+- **清单损坏或过时**会导致文档更新遗漏、索引错误或本地化链接失效。
+- **contentHash** 字段提供了一种检测已索引内容与实际文件内容之间漂移的机制。哈希不匹配表示文件已更改但未重新索引。
+- **reverseIndexComplete** 标志指示反向链接是否已全部建立。若为 `false`，则跨语言导航等功能可能不完整或缺失。
+- **indexedUnitCount** 必须与 `files` 映射中的实际条目数匹配；不一致表明同步过程不完整或清单已损坏。
+- **运营建议**：在将清单用于任何操作之前，务必对照实际仓库状态进行验证。工具应拒绝哈希不匹配或缺失必填字段的清单，以避免数据完整性问题。

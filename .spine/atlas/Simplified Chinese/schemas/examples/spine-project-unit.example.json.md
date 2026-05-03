@@ -1,30 +1,46 @@
-<!-- spine-content-hash:949e27b174b4537099a624487eaadcf5a73fb4e76b92ae93e1ffb941f1cb9d04 -->
-# ArchSpine 项目根配置
+# ArchSpine 语义配置概要
 
-## 角色
-定义 ArchSpine 语义索引系统的项目标识、模块结构和溯源元数据。
+本配置文件定义了 ArchSpine 项目知识图谱的语义标识、索引管线以及来源元数据。它是所有索引操作的核心，如果配置有误，系统可能无法生成正确的语义合约、产生不一致的文档，或丢失溯源信息。
 
-## 主要职责
-- 管理项目元数据和模式版本控制
-- 定义模块目录布局和角色分配
-- 跟踪索引管道的处理阶段溯源
+## 该配置控制的内容
 
-## 重要参数
-- **schemaVersion**：控制与 ArchSpine 工具的兼容性；版本不匹配可能导致解析失败。
-- **projectName**：标识仓库以保持交叉引用完整性；必须与根项目名称一致。
-- **modules**：声明源代码和文档目录及其角色和文件数量；影响索引范围。
-- **provenance.indexedAt**：上次索引的时间戳；用于缓存失效和过时检测。
-- **provenance.generatorVersion**：生成此文件的索引工具版本；对可重现性至关重要。
-- **provenance.pipelineStages**：生成索引的处理阶段有序列表（例如 AST、LLM）；影响下游工具行为。
+该文件声明了项目名称、顶层角色、模块目录和索引来源信息。它告诉 ArchSpine *索引什么*、*如何解释源代码目录*以及*索引何时构建*。
 
-## 不变约束
-- `schemaVersion` 必须是有效的 semver 字符串
-- `projectName` 必须与仓库根标识符匹配
-- `provenance.indexedAt` 必须是有效的 ISO 8601 时间戳
-- `pipelineStages` 必须至少包含一个阶段
+### 关键参数及其重要性
 
-## 稳定性与风险
-此文件是 ArchSpine 索引管道的根配置。错误的 `schemaVersion` 或 `projectName` 可能破坏跨仓库链接和工具链兼容性。缺失或过时的溯源时间戳可能导致不必要的重新索引或遗漏更新。模块列表定义了语义分析的范围；遗漏目录会导致知识图谱不完整。
+| 参数 | 说明 | 操作注意 |
+|------|------|----------|
+| `schemaVersion` | 期望的模式版本（必须为 `"1.0.0"` 以匹配当前生成器）。 | 不匹配会导致解析失败；必须与运行时版本保持一致，以防静默数据损坏。 |
+| `projectName` | 仓库标识符（例如 `"archspine"`）。 | 用于限定生成的构件和跨引用索引的范围。必须是非空字符串。 |
+| `role` | 本配置在索引管线中的功能定位（例如 *语义索引与协议工具——用于仓库知识图谱的构建*）。 | 描述系统的整体意图，影响哪些管线阶段被激活。 |
+| `responsibility` | 此配置驱动的主要产出（例如 *在 `.spine` 目录下生成机器可读的语义合约及派生文档*）。 | 影响下游文档生成方向；配置不当会导致产出不相关或损坏。 |
+| `modules` | 源代码目录列表及其职责。每个条目包含 `directory`、`role` 和 `childCount`。 | `childCount` 有助于分配索引资源并检测结构变化。遗漏或错标模块会导致索引不完整或资源分配异常。 |
+| `provenance` | 记录索引何时构建（`indexedAt`）、如何构建（`generatorVersion`）以及经过哪些管线阶段（例如 `["ast", "llm"]`）。 | 对缓存失效和审计追踪至关重要。`indexedAt` 必须是有效的 ISO 8601 时间戳；`generatorVersion` 必须匹配当前工具版本。 |
 
-## 外部行为
-此文件由 ArchSpine 工具读取以初始化索引管道。它不导出任何运行时函数或类；它是一个静态配置文档。
+### 来自支持上下文的示例
+
+```yaml
+projectName: archspine
+schemaVersion: "1.0.0"
+role: "语义索引与协议工具——用于仓库知识图谱的构建。"
+modules:
+  - directory: src
+    role: "运行时与索引管线实现。"
+    childCount: 14
+  - directory: docs
+    role: "规范与策略资产。"
+    childCount: 4
+provenance:
+  indexedAt: "2026-04-02T10:00:00Z"
+  generatorVersion: "archspine/1.0.0"
+  pipelineStages: ["ast", "llm"]
+```
+
+## 操作风险与稳定性注意事项
+
+- **模式/生成器版本不匹配：** `schemaVersion` 和 `generatorVersion` 必须与 ArchSpine 生成器的实际运行时版本一致。不匹配可能悄无声息地损坏索引数据或使整个管线崩溃。
+- **模块配置错误：** 错误的 `directory` 路径、角色或遗漏 `childCount` 会导致索引不完整和资源分配错误。系统依赖 `childCount` 决定为每个模块分配多少工作进程。
+- **来源信息不一致：** 如果 `indexedAt` 不是有效的 ISO 时间戳，或者 `generatorVersion` 与工具不匹配，审计轨迹将不可靠，缓存失效可能无法正常工作。
+- **缺失不变条件：** `modules` 数组至少需要一个条目；`projectName` 必须是非空字符串；`schemaVersion` 必须恰好是 `"1.0.0"`。违反任何一条不变条件都会阻止索引构建。
+
+操作员应将此文件视为关键控制平面——任何更改都应经过审查、验证，并首先在非生产环境中进行测试。

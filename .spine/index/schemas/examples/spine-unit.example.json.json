@@ -3,24 +3,23 @@
   "identity": {
     "filePath": "schemas/examples/spine-unit.example.json",
     "contentHash": "dd0170bd06ba517ac9c85a319a4d09be661885daf052ce0c619bb02b28d20fd2",
-    "semanticHash": "c2588bbb54a092941a3973147fb5a2e65439922b09b456301f08d2645897e969",
+    "semanticHash": "9a6bb3601bb3f879a61ab08f01a590aa0db59cb18c1697c90fb69c2ff781284c",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas/examples"
   },
   "semantic": {
-    "role": "Authentication entry module for login and logout operations.",
+    "role": "Metadata document for the authentication source file, describing its identity, structure, semantics, and constraints to support system indexing and validation.",
     "responsibilities": [
-      "Expose login and logout functions.",
-      "Provide a minimal AuthService singleton entry point."
+      "Records the file path, language, and content hash for identity verification.",
+      "Defines the functional role and responsibilities of the source module.",
+      "Specifies architectural invariants that must be enforced (e.g., no direct database access).",
+      "Documents the public surface (exported symbols) and their signatures.",
+      "Provides dependency graph and provenance metadata for traceability."
     ],
     "outOfScope": [],
     "invariants": [
-      {
-        "id": "no-direct-db-access",
-        "description": "This module must not import database adapters directly.",
-        "enforceable": true
-      }
+      "This module must not import database adapters directly."
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -31,24 +30,30 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Authentication entry module for login and logout operations.",
+        "role": "This configuration file serves as a metadata document for the authentication source file 'src/auth.ts', capturing its identity, semantics, invariants, and structural information to enable automated indexing and validation.",
         "parameter_definitions": {
-          "login": "Starts a login flow for a caller-supplied user identity. Accepts user and pass parameters.",
-          "logout": "Terminates an active session from the caller side.",
-          "AuthService": "Singleton class providing the authentication service entry point.",
-          "no-direct-db-access": "Critical invariant: This module must not import database adapters directly to maintain separation of concerns."
+          "schemaVersion": "Defines the schema version for compatibility; mismatched versions could cause parsing errors.",
+          "identity.filePath": "Specifies the source file path; used for locating and verifying the file.",
+          "identity.language": "Indicates the programming language; affects AST parsing and rule application.",
+          "semantic.role": "Describes the functional role of the source module; influences how the system interprets its purpose.",
+          "semantic.invariants": "Lists mandatory constraints; violations may indicate architecture breaches and potential security risks.",
+          "skeleton.exports": "Records exported symbols; critical for dependency resolution and API surface analysis.",
+          "provenance.generatorVersion": "Tracks the tool version that generated this metadata; important for upgrade compatibility."
         },
-        "stability_and_risks": "This file defines the authentication entry point for the system. Its lightweight design and prohibition on direct database access reduce coupling and improve testability. The primary risk is that any changes to the login/logout signatures or AuthService interface could break all consumers. The invariant against database imports prevents accidental state persistence or data leaks from this layer."
+        "stability_and_risks": "This configuration ensures the authentication module is correctly identified and its architectural constraints are documented. If the invariants are violated (e.g., unauthorized database imports), the system can detect and flag them, preventing architectural drift. The metadata also supports dependency analysis and impact assessment. A corrupt or missing configuration could lead to misclassification of the module, potentially allowing security vulnerabilities to go unnoticed."
       },
       "Simplified Chinese": {
-        "role": "用于登录和注销操作的认证入口模块。",
+        "role": "此配置文件作为认证源文件“src/auth.ts”的元数据文档，记录其身份、语义、不变量和结构信息，以支持自动索引和验证。",
         "parameter_definitions": {
-          "login": "为调用方提供的用户身份启动登录流程。接受用户名和密码参数。",
-          "logout": "从调用方终止当前活动会话。",
-          "AuthService": "提供认证服务入口的单例类。",
-          "no-direct-db-access": "关键不变约束：此模块不得直接导入数据库适配器，以保持关注点分离。"
+          "schemaVersion": "定义架构兼容性版本；版本不匹配可能导致解析错误。",
+          "identity.filePath": "指定源文件路径，用于定位和验证文件。",
+          "identity.language": "指示编程语言，影响AST解析和规则应用。",
+          "semantic.role": "描述源模块的功能角色，影响系统对其目的的解读。",
+          "semantic.invariants": "列出强制性约束条件，违反可能表明架构违规和潜在安全风险。",
+          "skeleton.exports": "记录导出的符号，对依赖解析和API表面分析至关重要。",
+          "provenance.generatorVersion": "跟踪生成此元数据的工具版本，对升级兼容性很重要。"
         },
-        "stability_and_risks": "此文件定义了系统的认证入口点。其轻量级设计以及禁止直接访问数据库的约束降低了耦合度，提高了可测试性。主要风险在于，对login/logout签名或AuthService接口的任何更改都可能破坏所有消费者。禁止数据库导入的不变约束防止了从该层意外持久化状态或泄露数据。"
+        "stability_and_risks": "此配置文件确保认证模块被正确识别并记录其架构约束。如果违反不变量（例如未授权的数据库导入），系统可以检测并标记它们，防止架构偏离。元数据还支持依赖分析和影响评估。配置损坏或缺失可能导致模块分类错误，从而可能使安全漏洞被忽视。"
       }
     }
   },
@@ -70,7 +75,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:44:38.867Z",
+    "indexedAt": "2026-05-03T11:24:18.173Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

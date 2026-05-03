@@ -4,65 +4,72 @@
     "filePath": "src/services/view/common.ts",
     "contentHash": "db976f85ed4617024f1e31634632f541907bbbf5aabf0377a5cb02ac534471de",
     "skeletonHash": "9354c55d71307276e303440138675878dfdb0adc558d2497b9f4c13a56dc8348",
-    "semanticHash": "2df9ae9c739219c532a0354ea20049c726f7eddaebd0914e3b24a0e0c6bb9a8b",
+    "semanticHash": "7b1f076f004d3685e746a3d29b2270ea8e0cdb6eb81b2f7bc6548236d7ff79e6",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/services/view"
   },
   "semantic": {
-    "role": "Pure utility module providing scoring and path suppression functions for the view layer.",
+    "role": "Pure utility module providing scoring, path suppression, and cross-boundary analysis functions for the view layer.",
     "responsibilities": [
       "Detects suppressed file paths based on regex patterns for test, fixture, example, docs, dist, and build directories.",
       "Sums scores from a breakdown of view score contributions.",
-      "Calculates confidence scores from total score and support count with normalization and clamping."
+      "Calculates confidence scores from total score and support count with normalization and clamping.",
+      "Extracts the top-level directory segment from a file path for boundary identification.",
+      "Counts cross-boundary edges in a SpineUnit for dependency validation and architectural governance."
     ],
     "outOfScope": [
-      "View rendering or presentation logic.",
-      "Data access or persistence operations.",
-      "Architecture diagram generation or risk hotspot analysis."
+      "This module does not execute or enforce architectural rules itself; it only provides utility functions.",
+      "It does not perform I/O operations or persist state.",
+      "It does not interpret or validate the semantics of SpineUnit beyond counting edges."
     ],
     "invariants": [
-      "All exported functions are pure and side-effect free.",
-      "Path suppression logic uses a fixed regex pattern and does not depend on external configuration.",
-      "Confidence score is clamped between 0 and 0.99."
+      "All view utility functions must be exposed from this module to maintain a single point of utility access.",
+      "This module must remain located under `src/services/view/` to comply with the service-runtime-boundary rule."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide reusable, stateless utility functions for the view layer to standardize path suppression and score computation.",
-      "recentChangeIntent": "Initial release of ArchSpine v1.0.0; no specific recent changes to this file beyond the initial implementation."
+      "architecturalIntent": "Provide foundational utility functions for view-layer scoring and suppression, and extend to support cross-boundary edge analysis for architectural governance.",
+      "recentChangeIntent": "Added topLevelBoundary and countCrossBoundaryEdges functions as part of ArchSpine v1.0.0's architectural governance and semantic layer."
     },
     "publicSurface": [
-      "isSuppressedPath(filePath: string): boolean",
-      "sumScores(scoreBreakdown: ViewScoreContribution[]): number",
-      "toConfidence(totalScore: number, supportCount: number): number"
+      "isSuppressedPath",
+      "sumScores",
+      "toConfidence",
+      "topLevelBoundary",
+      "countCrossBoundaryEdges"
     ],
     "ruleViolations": [],
-    "driftDetected": false,
-    "driftReason": null,
+    "driftDetected": true,
+    "driftReason": "The previous semantic contract did not include the newly added functions `topLevelBoundary` and `countCrossBoundaryEdges`, which extend the module's role beyond scoring and path suppression to cross-boundary edge analysis.",
     "localized": {
       "English": {
-        "role": "Pure utility module providing scoring and path suppression functions for the view layer.",
+        "role": "Pure utility module providing scoring, path suppression, and cross-boundary analysis functions for the view layer.",
         "responsibilities": [
           "Detects suppressed file paths based on regex patterns for test, fixture, example, docs, dist, and build directories.",
           "Sums scores from a breakdown of view score contributions.",
-          "Calculates confidence scores from total score and support count with normalization and clamping."
+          "Calculates confidence scores from total score and support count with normalization and clamping.",
+          "Extracts the top-level directory segment from a file path for boundary identification.",
+          "Counts cross-boundary edges in a SpineUnit for dependency validation and architectural governance."
         ],
         "outOfScope": [
-          "View rendering or presentation logic.",
-          "Data access or persistence operations.",
-          "Architecture diagram generation or risk hotspot analysis."
+          "This module does not execute or enforce architectural rules itself; it only provides utility functions.",
+          "It does not perform I/O operations or persist state.",
+          "It does not interpret or validate the semantics of SpineUnit beyond counting edges."
         ]
       },
       "Simplified Chinese": {
-        "role": "纯工具模块，为视图层提供评分和路径过滤功能。",
+        "role": "纯工具模块，为视图层提供评分、路径抑制和跨边界分析功能。",
         "responsibilities": [
-          "基于正则表达式模式检测被屏蔽的文件路径，涵盖测试、夹具、示例、文档、dist 和 build 目录。",
-          "对视图评分贡献的分解结果进行求和。",
-          "根据总分和支持计数计算置信度分数，并进行归一化和钳位处理。"
+          "基于正则表达式检测抑制的文件路径，覆盖测试、夹具、示例、文档、分发和构建目录。",
+          "从视图评分贡献的分解中求和得分。",
+          "根据总分和支持计数计算置信度得分，并进行归一化和钳位处理。",
+          "从文件路径中提取顶级目录段，用于边界识别。",
+          "统计 SpineUnit 中的跨边界边数，用于依赖验证和架构治理。"
         ],
         "outOfScope": [
-          "视图渲染或展示逻辑。",
-          "数据访问或持久化操作。",
-          "架构图生成或风险热点分析。"
+          "本模块不执行或强制架构规则；它仅提供工具函数。",
+          "不执行 I/O 操作或持久化状态。",
+          "除了计数边之外，不解释或验证 SpineUnit 的语义。"
         ]
       }
     }
@@ -160,16 +167,12 @@
       {
         "targetPath": "../../types/protocol.js",
         "relation": "import",
-        "symbols": [
-          "SpineUnit"
-        ]
+        "symbols": []
       },
       {
         "targetPath": "../../types/view.js",
         "relation": "import",
-        "symbols": [
-          "ViewScoreContribution"
-        ]
+        "symbols": []
       }
     ],
     "dependedBy": [],
@@ -177,7 +180,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:41.100Z",
+    "indexedAt": "2026-05-03T11:25:05.834Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -3,84 +3,127 @@
   "identity": {
     "filePath": "src/services/view/risk-hotspots-view.ts",
     "contentHash": "ea197f97af91017b651c1f65f4d19e40a3bfb6310465e574d9e3be099b57ed58",
-    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
-    "semanticHash": "01795bfe7165302f9a858df3ebaecbb586d735e4a6a351d7240d4a130ec1a4d3",
+    "skeletonHash": "579ccf328c795c7590f5e1631141c1ac8fa51d94636a6689ea4a9504fed69666",
+    "semanticHash": "052489f4035f34e7883de4ffc67df04d8f109ae085b3e7c172f1176a6650b1c4",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/services/view"
   },
   "semantic": {
-    "role": "Pure view generator function that calculates architectural risk hotspots from indexed code units.",
+    "role": "View generator function for architectural risk hotspot calculation from indexed code units.",
     "responsibilities": [
-      "Calculates a composite risk score for each indexed file based on fan-in, fan-out, cross-boundary edges, public surface exposure, semantic drift, rule violations, file size, and missing adjacent tests.",
-      "Filters out suppressed paths and low-scoring units (totalScore < 20).",
-      "Ranks units by total risk score and selects the top 12 hotspots.",
-      "Produces a structured ViewArtifactEnvelope containing risk hotspot items with score breakdowns and confidence metrics."
+      "Computes a composite risk score for each indexed unit by analyzing fan-in, fan-out, cross-boundary edges, public surface exposure, semantic drift, rule violations, file size, and presence of adjacent tests.",
+      "Filters out suppressed paths and units with totalScore below internal thresholds, focusing on actionable hotspots.",
+      "Sorts candidates by descending totalScore and selects the top MAX_RISK_HOTSPOTS (12) items.",
+      "Assembles a ViewArtifactEnvelope containing ranked RiskHotspotViewItem entries with score breakdowns, risk factor labels, and confidence metrics.",
+      "Exports only the buildRiskHotspotsView function as the public API of the module."
     ],
     "outOfScope": [
-      "Does not handle authentication or authorization of view requests.",
-      "Does not persist or cache risk hotspot results to disk or database.",
-      "Does not provide real-time streaming or incremental updates of risk scores.",
-      "Does not manage user-facing UI rendering or interactive visualization of hotspots."
+      "Does not persist or cache computed views; relies on caller to provide fresh LoadedUnit input.",
+      "Does not modify or enrich the SpineUnit data passed in; it is a pure transformation.",
+      "Does not classify units beyond risk hotspot ranking (e.g., no architectural layer assignment)."
     ],
     "invariants": [
-      "The maximum number of risk hotspots returned is capped at MAX_RISK_HOTSPOTS (12).",
-      "Only units with totalScore >= 20 are considered for hotspot ranking.",
-      "Suppressed paths (matching isSuppressedPath) are excluded from analysis.",
-      "The function must be a pure computation with no side effects on the input data."
+      "Must reside under src/services/view/ to comply with the service-runtime-boundary rule — current location is valid.",
+      "Must not import from src/infra/ or src/engines/ directly; imports from common.js and protocol types are acceptable.",
+      "All input units must be fully indexed (identity, metrics, rules) before calling this function."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a deterministic, pure-function view generator that computes and ranks architectural risk hotspots to guide refactoring priorities.",
-      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, ensuring the risk hotspot view generator is stable and correctly integrated into the ArchSpine pipeline."
+      "architecturalIntent": "Provide a focused risk view that surfaces the most architecturally fragile files, enabling maintainers to prioritize refactoring efforts.",
+      "recentChangeIntent": "Part of the v1.0.0 release establishing a semantic layer with governance-aware views; aligns with the 'Architectural Governance & Semantic Layer' moniker."
     },
     "publicSurface": [
-      "MAX_RISK_HOTSPOTS (constant)",
-      "RiskHotspotCandidate (interface)",
-      "generateRiskHotspots (function, inferred)"
+      "buildRiskHotspotsView: function(units: LoadedUnit[]) => ViewArtifactEnvelope<RiskHotspotViewItem>"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Pure view generator function that calculates architectural risk hotspots from indexed code units.",
+        "role": "View generator function for architectural risk hotspot calculation from indexed code units.",
         "responsibilities": [
-          "Calculates a composite risk score for each indexed file based on fan-in, fan-out, cross-boundary edges, public surface exposure, semantic drift, rule violations, file size, and missing adjacent tests.",
-          "Filters out suppressed paths and low-scoring units (totalScore < 20).",
-          "Ranks units by total risk score and selects the top 12 hotspots.",
-          "Produces a structured ViewArtifactEnvelope containing risk hotspot items with score breakdowns and confidence metrics."
+          "Computes a composite risk score for each indexed unit by analyzing fan-in, fan-out, cross-boundary edges, public surface exposure, semantic drift, rule violations, file size, and presence of adjacent tests.",
+          "Filters out suppressed paths and units with low total scores, focusing on actionable hotspots.",
+          "Sorts candidates by descending total score and selects the top MAX_RISK_HOTSPOTS (12) items.",
+          "Assembles a ViewArtifactEnvelope containing ranked RiskHotspotViewItem entries with score breakdowns, risk factor labels, and confidence metrics.",
+          "Exports only the buildRiskHotspotsView function as the public API of the module."
         ],
         "outOfScope": [
-          "Does not handle authentication or authorization of view requests.",
-          "Does not persist or cache risk hotspot results to disk or database.",
-          "Does not provide real-time streaming or incremental updates of risk scores.",
-          "Does not manage user-facing UI rendering or interactive visualization of hotspots."
+          "Does not persist or cache computed views; relies on caller to provide fresh LoadedUnit input.",
+          "Does not modify or enrich the SpineUnit data passed in; it is a pure transformation.",
+          "Does not classify units beyond risk hotspot ranking (e.g., no architectural layer assignment)."
         ]
       },
       "Simplified Chinese": {
-        "role": "纯视图生成函数，根据索引的代码单元计算架构风险热点。",
+        "role": "从已索引的代码单元计算架构风险热点的纯视图生成函数。",
         "responsibilities": [
-          "基于扇入、扇出、跨边界边数、公共表面暴露度、语义漂移、规则违规、文件大小和缺失的相邻测试，为每个索引文件计算综合风险评分。",
-          "过滤掉被抑制的路径和低分单元（总分 < 20）。",
-          "按总风险评分对单元进行排序，并选择前 12 个热点。",
-          "生成包含风险热点项及其评分细项和置信度指标的结构化 ViewArtifactEnvelope。"
+          "针对每个已索引的单元，通过分析扇入、扇出、跨边界边数、公共表面暴露、语义漂移、规则违规、文件大小以及相邻测试的存在情况，计算综合风险分数。",
+          "过滤掉被抑制的路径和总分数低于内部阈值的单元，聚焦于可操作的热点。",
+          "按降序对候选单元排序，并选择排名最高的 MAX_RISK_HOTSPOTS（12个）项。",
+          "组装包含排名后的 RiskHotspotViewItem 条目、分数明细、风险因素标签和置信度指标的 ViewArtifactEnvelope。",
+          "仅导出 buildRiskHotspotsView 函数作为模块的公开接口。"
         ],
         "outOfScope": [
-          "不处理视图请求的身份验证或授权。",
-          "不将风险热点结果持久化到磁盘或数据库。",
-          "不提供风险评分的实时流式更新或增量更新。",
-          "不管理面向用户的 UI 渲染或热点的交互式可视化。"
+          "不持久化或缓存计算结果，依赖调用方提供最新的 LoadedUnit 输入。",
+          "不修改或扩充传入的 SpineUnit 数据，仅为纯转换操作。",
+          "不进行超出风险热点排名的分类（例如不分配架构层级）。"
         ]
       }
     }
   },
   "skeleton": {
-    "imports": [],
-    "exports": [],
-    "declaredSymbols": [],
+    "imports": [
+      {
+        "source": "'../../types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "type SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./common.js'",
+        "symbols": [
+          "countCrossBoundaryEdges",
+          "isSuppressedPath",
+          "sumScores",
+          "toConfidence"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "buildRiskHotspotsView",
+        "kind": "function",
+        "signature": "buildRiskHotspotsView(\n  units: LoadedUnit[],\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "buildRiskHotspotsView",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/risk-hotspots-view.ts#"
+      }
+    ],
     "structuralHints": {
-      "importCount": 0,
-      "exportCount": 0,
+      "importCount": 4,
+      "exportCount": 1,
       "isBarrel": false,
       "isTypeOnly": false
     }
@@ -88,29 +131,7 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "path",
-        "relation": "import",
-        "symbols": []
-      },
-      {
-        "targetPath": "../../types/protocol.js",
-        "relation": "import",
-        "symbols": [
-          "CURRENT_SCHEMA_VERSION",
-          "SpineUnit"
-        ]
-      },
-      {
-        "targetPath": "../../types/view.js",
-        "relation": "import",
-        "symbols": [
-          "RiskHotspotViewItem",
-          "ViewArtifactEnvelope",
-          "ViewScoreContribution"
-        ]
-      },
-      {
-        "targetPath": "./common.js",
+        "targetPath": "src/services/view/common.js",
         "relation": "import",
         "symbols": [
           "countCrossBoundaryEdges",
@@ -120,23 +141,74 @@
         ]
       },
       {
-        "targetPath": "./types.js",
+        "targetPath": "src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "src/types/view.js",
+        "relation": "import",
+        "symbols": [
+          "RiskHotspotViewItem",
+          "ViewArtifactEnvelope",
+          "ViewScoreContribution"
+        ]
+      },
+      {
+        "targetPath": "src/services/view/types.js",
         "relation": "import",
         "symbols": [
           "LoadedUnit"
         ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
       }
     ],
     "dependedBy": [],
     "reverseIndexComplete": false,
-    "symbolEdges": []
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/view/risk-hotspots-view.ts/_file_#",
+        "targetSymbol": "src/services/view/common.ts/isSuppressedPath#",
+        "targetPath": "src/services/view/common.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/view/risk-hotspots-view.ts/_file_#",
+        "targetSymbol": "src/services/view/common.ts/countCrossBoundaryEdges#",
+        "targetPath": "src/services/view/common.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/view/risk-hotspots-view.ts/_file_#",
+        "targetSymbol": "src/services/view/common.ts/sumScores#",
+        "targetPath": "src/services/view/common.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/view/risk-hotspots-view.ts/_file_#",
+        "targetSymbol": "src/services/view/common.ts/toConfidence#",
+        "targetPath": "src/services/view/common.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T03:58:13.608Z",
+    "indexedAt": "2026-05-03T11:25:05.970Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "llm"
+      "fallback"
     ]
   }
 }

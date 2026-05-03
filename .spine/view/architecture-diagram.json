@@ -1,243 +1,225 @@
 {
   "title": "ArchSpine",
-  "subtitle": "A rule-enforced mirror system for documenting, analyzing, and synchronizing software architecture across distributed nodes.",
+  "subtitle": "AI-augmented architectural governance mirror system with automated validation and documentation",
   "nodes": [
     {
       "id": "cli",
       "label": "CLI",
-      "sublabel": "User Commands",
-      "type": "frontend"
+      "sublabel": "Command-line interface",
+      "type": "backend"
     },
     {
       "id": "mcp-server",
       "label": "MCP Server",
-      "sublabel": "AI Agent Integration",
+      "sublabel": "AI agent integration",
+      "type": "backend"
+    },
+    {
+      "id": "core",
+      "label": "Core Runtime",
+      "sublabel": "Pipeline orchestration & state",
       "type": "backend"
     },
     {
       "id": "services",
       "label": "Services",
-      "sublabel": "Orchestration Layer",
+      "sublabel": "Session & pipeline coordination",
       "type": "backend"
     },
     {
       "id": "tasks",
       "label": "Tasks",
-      "sublabel": "Pipeline Stages",
+      "sublabel": "Pipeline stage implementations",
       "type": "backend"
     },
     {
       "id": "engines",
       "label": "Engines",
-      "sublabel": "Scanning & Analysis",
+      "sublabel": "Scanning, rules, fixing, reporting",
       "type": "backend"
     },
     {
-      "id": "ast-parser",
-      "label": "AST Parser",
-      "sublabel": "Code Analysis",
+      "id": "ast-engine",
+      "label": "AST Engine",
+      "sublabel": "Code extraction & language discovery",
       "type": "backend"
     },
     {
       "id": "view-generator",
       "label": "View Generator",
-      "sublabel": "Diagrams & Reports",
+      "sublabel": "Architecture diagrams & risk views",
       "type": "backend"
     },
     {
-      "id": "infra-config",
-      "label": "Config Manager",
-      "sublabel": "Defaults & Validation",
+      "id": "templates",
+      "label": "Templates",
+      "sublabel": "Atlas, prompts, rules, view contracts",
       "type": "backend"
     },
     {
-      "id": "infra-credentials",
-      "label": "Credential Store",
-      "sublabel": "Secure Storage",
-      "type": "security"
-    },
-    {
-      "id": "infra-db",
-      "label": "SQLite Database",
-      "sublabel": "Persistence",
+      "id": "db",
+      "label": "Database",
+      "sublabel": "SQLite",
       "type": "database"
     },
     {
-      "id": "infra-llm",
+      "id": "llm-client",
       "label": "LLM Client",
-      "sublabel": "AI Summarization",
+      "sublabel": "Provider abstraction & invocation",
+      "type": "backend"
+    },
+    {
+      "id": "llm-providers",
+      "label": "LLM Providers",
+      "sublabel": "Gemini, OpenAI",
       "type": "external"
     },
     {
-      "id": "infra-manifest",
-      "label": "Manifest Manager",
-      "sublabel": "File Integrity",
+      "id": "credential-store",
+      "label": "Credential Store",
+      "sublabel": "Secure secret persistence",
+      "type": "security"
+    },
+    {
+      "id": "config-manager",
+      "label": "Config Manager",
+      "sublabel": "Defaults, env, loading, validation",
       "type": "backend"
     },
     {
-      "id": "infra-mcp",
-      "label": "MCP Infrastructure",
-      "sublabel": "Context & Tools",
-      "type": "backend"
-    },
-    {
-      "id": "infra-prompt",
-      "label": "Prompt Builder",
-      "sublabel": "LLM Prompts",
-      "type": "backend"
-    },
-    {
-      "id": "utils",
-      "label": "Utilities",
-      "sublabel": "File Ops & Locking",
-      "type": "backend"
-    },
-    {
-      "id": "spine-rules",
-      "label": "Spine Rules",
-      "sublabel": "Architectural Governance",
-      "type": "backend"
-    },
-    {
-      "id": "tests",
-      "label": "Test Suite",
-      "sublabel": "Unit & Integration",
+      "id": "manifest",
+      "label": "Manifest",
+      "sublabel": "File integrity & state persistence",
       "type": "backend"
     }
   ],
   "edges": [
     {
       "from": "cli",
-      "to": "services",
-      "label": "commands",
+      "to": "core",
+      "label": "triggers operations",
       "style": "solid"
     },
     {
       "from": "mcp-server",
       "to": "services",
-      "label": "requests",
+      "label": "exposes resources/tools",
+      "style": "solid"
+    },
+    {
+      "from": "core",
+      "to": "services",
+      "label": "orchestrates pipeline",
       "style": "solid"
     },
     {
       "from": "services",
       "to": "tasks",
-      "label": "orchestrates",
+      "label": "coordinates stages",
+      "style": "solid"
+    },
+    {
+      "from": "services",
+      "to": "engines",
+      "label": "calls scanning/rules",
       "style": "solid"
     },
     {
       "from": "tasks",
       "to": "engines",
-      "label": "runs",
-      "style": "solid"
-    },
-    {
-      "from": "engines",
-      "to": "ast-parser",
-      "label": "uses",
+      "label": "uses engines",
       "style": "solid"
     },
     {
       "from": "tasks",
+      "to": "ast-engine",
+      "label": "triggers extraction",
+      "style": "solid"
+    },
+    {
+      "from": "services",
       "to": "view-generator",
-      "label": "triggers",
+      "label": "generates views",
       "style": "solid"
     },
     {
-      "from": "services",
-      "to": "infra-config",
-      "label": "reads",
+      "from": "view-generator",
+      "to": "templates",
+      "label": "uses contracts",
       "style": "solid"
     },
     {
-      "from": "services",
-      "to": "infra-credentials",
-      "label": "reads",
+      "from": "view-generator",
+      "to": "llm-client",
+      "label": "requests LLM specs",
       "style": "solid"
     },
     {
-      "from": "services",
-      "to": "infra-db",
-      "label": "persists",
-      "style": "solid"
-    },
-    {
-      "from": "services",
-      "to": "infra-llm",
-      "label": "calls",
-      "style": "solid"
-    },
-    {
-      "from": "services",
-      "to": "infra-manifest",
-      "label": "manages",
-      "style": "solid"
-    },
-    {
-      "from": "services",
-      "to": "infra-mcp",
-      "label": "exposes",
-      "style": "solid"
-    },
-    {
-      "from": "services",
-      "to": "infra-prompt",
-      "label": "builds",
-      "style": "solid"
-    },
-    {
-      "from": "services",
-      "to": "utils",
-      "label": "uses",
-      "style": "solid"
-    },
-    {
-      "from": "services",
-      "to": "spine-rules",
-      "label": "enforces",
-      "style": "solid"
-    },
-    {
-      "from": "tests",
-      "to": "services",
-      "label": "validates",
+      "from": "llm-client",
+      "to": "llm-providers",
+      "label": "invokes external AI",
       "style": "dashed"
     },
     {
-      "from": "tests",
-      "to": "engines",
-      "label": "validates",
-      "style": "dashed"
+      "from": "llm-client",
+      "to": "credential-store",
+      "label": "retrieves secrets",
+      "style": "solid"
     },
     {
-      "from": "tests",
-      "to": "infra-db",
-      "label": "validates",
-      "style": "dashed"
+      "from": "core",
+      "to": "config-manager",
+      "label": "loads configuration",
+      "style": "solid"
+    },
+    {
+      "from": "services",
+      "to": "config-manager",
+      "label": "resolves policy",
+      "style": "solid"
+    },
+    {
+      "from": "tasks",
+      "to": "db",
+      "label": "persists metadata",
+      "style": "solid"
+    },
+    {
+      "from": "services",
+      "to": "manifest",
+      "label": "manages state",
+      "style": "solid"
+    },
+    {
+      "from": "ast-engine",
+      "to": "config-manager",
+      "label": "reads language config",
+      "style": "solid"
     }
   ],
   "summaryCards": [
     {
       "heading": "Core Modules",
       "points": [
-        "CLI, MCP Server, and Services orchestrate user and AI agent interactions.",
-        "Engines, AST Parser, and Tasks drive scanning, analysis, and validation pipelines.",
-        "View Generator produces architectural diagrams and reports."
+        "CLI and MCP Server expose commands and AI agent integration",
+        "Engine layer provides scanning, rule enforcement, and fixing",
+        "Service and Task layers coordinate resumable pipeline execution"
       ]
     },
     {
       "heading": "Key Dependencies",
       "points": [
-        "SQLite for persistent state and indexing.",
-        "LLM Client for AI-powered summarization and analysis.",
-        "Config Manager, Credential Store, and Manifest Manager for infrastructure."
+        "SQLite for persistent metadata and audit events",
+        "LLM providers (Gemini, OpenAI) for semantic summaries and specs",
+        "Secure credential store for API keys and secrets"
       ]
     },
     {
       "heading": "System Boundaries",
       "points": [
-        "External LLM providers for semantic analysis.",
-        "File system for source code scanning and output generation.",
-        "Test suite validates all core components and pipelines."
+        "External LLM providers are accessed via abstracted client",
+        "User interaction limited to CLI commands and MCP protocol",
+        "All configuration and rules reside in .spine directory within project"
       ]
     }
   ]

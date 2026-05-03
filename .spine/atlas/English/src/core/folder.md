@@ -1,9 +1,23 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/core","role":"This directory provides the core L2 aggregation orchestration, validation, and state management for the ArchSpine mirror system.","responsibility":"It orchestrates data collection from multiple L1 sources, performs validation and deduplication, and constructs the canonical L2 state for the mirror network. The included modules define the configuration schema, error handling, pipeline execution, scanning policy, task state management, type definitions, and dependency injection context required for reliable mirror aggregation.","children":[{"filePath":"src/core/compat","role":"This directory contains the core L2 aggregation logic for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"src/core/config-schema.ts","role":"Core validation contract and constants definition for the ArchSpine configuration schema.","fileKind":"source"},{"filePath":"src/core/errors.ts","role":"Core infrastructure module providing centralized error code constants and error option type definitions for the ArchSpine system.","fileKind":"source"},{"filePath":"src/core/pipeline.ts","role":"Core runtime orchestrator for executing SpineTask instances with lifecycle management and performance telemetry.","fileKind":"source"},{"filePath":"src/core/scan-policy.ts","role":"Core TypeScript type definition module establishing the scanning policy configuration contract for the ArchSpine mirror system.","fileKind":"source"},{"filePath":"src/core/task-state.ts","role":"Core pipeline state factory and mutation module providing initialization functions and runtime state management for the ArchSpine task execution pipeline.","fileKind":"source"},{"filePath":"src/core/task-types.ts","role":"Core TypeScript contract definitions for ArchSpine pipeline task state, metrics, and stage boundaries.","fileKind":"source"},{"filePath":"src/core/task.ts","role":"Core interface defining the dependency injection context for ArchSpine task execution.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-02T10:11:09.853Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-The `src/core` directory is the central hub for ArchSpine's L2 aggregation orchestration. It manages data collection from multiple L1 sources, performs validation and deduplication, and maintains the canonical L2 state for the mirror network. The directory is organized into several key areas:
+# Core Runtime Infrastructure (`src/runtime`)
 
-- **Configuration & Validation**: `config-schema.ts` defines the core validation contract and constants, while `scan-policy.ts` establishes the scanning policy configuration contract.
-- **Error Handling**: `errors.ts` provides centralized error code constants and option type definitions.
-- **Pipeline & State Management**: `pipeline.ts` orchestrates `SpineTask` execution with lifecycle hooks and telemetry. `task-state.ts` handles state initialization and mutation, `task-types.ts` defines task state, metrics, and stage boundaries, and `task.ts` specifies the dependency injection context.
-- **Submodule**: The `compat` folder contains additional core L2 aggregation logic.
+This directory holds the foundational runtime scaffolding for the ArchSpine mirror system. It is responsible for configuration validation, error definition, pipeline orchestration, scan policy contracts, and task execution state management. The files are grouped into six implementation areas:
 
-Concrete submodules include the pipeline runner, task state factory, and scanning policy schema. The most critical implementation areas are the validation pipeline, deduplication logic, and state synchronization across the mirror network.
+1. **Configuration Validation** – `config-schema.ts`  
+   Provides runtime predicates and the primary `resolveSpineConfig` function (with a thin `validateSpineConfig` wrapper) that parses and validates the `SpineConfig` schema against canonical sets of allowed enum values. Returns a validated config or a list of issues.
+
+2. **Error Definitions** – `errors.ts`  
+   Centralizes all error code constants into a union type (`ArchSpineErrorCode`) for CLI, runtime, publish, and config domains, and defines the `ArchSpineErrorOptions` interface for structured error construction.
+
+3. **Pipeline Orchestration** – `pipeline.ts`  
+   The main task executor that runs generic `SpineTask` instances with full lifecycle management (start, completion, failure checkpoints), performance telemetry (duration, memory), and logging through the `runtimeIO` interface.
+
+4. **Scanning Policy** – `scan-policy.ts`  
+   Defines the `FileSource` union type and the `ScanPolicy` / `PartialScanPolicy` interfaces that govern file origins, ignore chains, and protocol inclusion/exclusion lists for mirror scanning.
+
+5. **Task State Management** – `task-state.ts`  
+   Exports factory functions (`createTaskArtifactsState`, `createTaskTelemetryState`, `createTaskState`) to initialize pipeline state objects, plus mutation helpers for resetting state, tracking LLM usage, recording performance metrics, managing runtime caches, and incrementing file counters (processed/skipped/failed). Also provides drift warning and diagnostic snapshot utilities.
+
+6. **Type Contracts** – `task-types.ts` and `task.ts`  
+   `task-types.ts` establishes statistical interfaces (`TaskStats`, `TaskStageMetric`), state containers, and input/output contracts for all pipeline stages. `task.ts` defines the `TaskContext` interface that supplies shared engines (Scanner, Aggregator, ContextEngine, RuleEngine, ASTExtractor) and infrastructure (Manifest, OutputManager) for dependency injection in task execution.
+
+The most critical implementation areas are configuration validation (ensuring system integrity at startup), pipeline orchestration with telemetry (providing observability and lifecycle control), and task state management (the backbone for multi-stage execution tracking). These submodules are the core contract points that all higher-level mirror operations depend on.

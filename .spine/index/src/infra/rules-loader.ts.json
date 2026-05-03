@@ -2,84 +2,149 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/infra/rules-loader.ts",
-    "contentHash": "ce2a624f89a580296de0a86a672046186ba0b6486fb21e193a6d5c1a70e9f6c1",
-    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
-    "semanticHash": "8a2092751f98d1d4c35157f268e290dbdcd6a0b75431bd90fc330c7e8a42896f",
+    "contentHash": "afbd8fcf9abb7da864c3e525ad6005f264e95736dbc79c61e52ac7ec5afd7bb3",
+    "skeletonHash": "0ac17654d3efaab1fe477cd645aee926b0c94c90e995cc43150a684ae9b3e83a",
+    "semanticHash": "6a3290fa75b4472ef40296feaa33e705135b12ef313b1674462ed0591cad0308",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra"
   },
   "semantic": {
-    "role": "Infrastructure utility for loading and parsing Spine rule documents from the filesystem.",
+    "role": "Infrastructure module for loading, parsing, and normalizing Spine rule documents from the filesystem.",
     "responsibilities": [
-      "Reads rule files from disk using synchronous file system operations.",
-      "Parses rule file content using gray-matter frontmatter parsing.",
-      "Normalizes rule severity values to a standard lowercase format.",
-      "Generates URL-friendly slugs from rule identifiers for consistent referencing."
+      "Reads rule files from a specified directory using synchronous file system operations (fs.existsSync, fs.readFileSync).",
+      "Parses rule file content using gray-matter frontmatter parsing and js-yaml for YAML content.",
+      "Normalizes rule severity values to lowercase with a default of 'warning'.",
+      "Generates URL-friendly slugs from rule identifiers using the slugifyRuleId helper.",
+      "Constructs a list of LoadedRuleFile objects containing file paths and parsed SpineRuleDocument instances."
     ],
     "outOfScope": [
-      "Rule validation or enforcement logic.",
-      "Rule execution or application logic.",
-      "Asynchronous file system operations.",
-      "Writing or modifying rule files on disk."
+      "Validation of rule content beyond basic frontmatter structure.",
+      "Rule execution, application, or enforcement.",
+      "Network or remote rule fetching.",
+      "UI, CLI, or interactive presentation of rules."
     ],
     "invariants": [
-      "Must only expose stable low-level file reading and parsing capabilities.",
-      "Must not absorb service/task/engine orchestration concerns.",
-      "Callers should prefer this public facade over reaching into deep private implementation paths."
+      "Must remain a thin filesystem facade with no imports from service, task, or engine layers (per rule infra-facade-imports).",
+      "Must expose only a stable public API (currently loadRulesFromDir) for callers to consume.",
+      "Must not contain business logic or orchestration beyond file loading and parsing."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a stable, low-level infrastructure facade for loading and parsing Spine rule documents from the filesystem, ensuring consistent rule document structure and severity normalization.",
-      "recentChangeIntent": "No recent changes detected beyond general pipeline fixes; the file remains a stable infrastructure utility."
+      "architecturalIntent": "Establish a foundational infrastructure that reliably loads and parses architectural governance rules from the filesystem, supporting the ArchSpine governance engine.",
+      "recentChangeIntent": "Initial implementation aligning with ArchSpine v1.0.0 governance framework (0c6bd73)."
     },
     "publicSurface": [
-      "slugifyRuleId",
-      "normalizeSeverity",
-      "LoadedRuleFile interface"
+      "loadRulesFromDir"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Infrastructure utility for loading and parsing Spine rule documents from the filesystem.",
+        "role": "Infrastructure module for loading, parsing, and normalizing Spine rule documents from the filesystem.",
         "responsibilities": [
-          "Reads rule files from disk using synchronous file system operations.",
-          "Parses rule file content using gray-matter frontmatter parsing.",
-          "Normalizes rule severity values to a standard lowercase format.",
-          "Generates URL-friendly slugs from rule identifiers for consistent referencing."
+          "Reads rule files from a specified directory using synchronous file system operations (fs.existsSync, fs.readFileSync).",
+          "Parses rule file content using gray-matter frontmatter parsing and js-yaml for YAML content.",
+          "Normalizes rule severity values to lowercase with a default of 'warning'.",
+          "Generates URL-friendly slugs from rule identifiers using the slugifyRuleId helper.",
+          "Constructs a list of LoadedRuleFile objects containing file paths and parsed SpineRuleDocument instances."
         ],
         "outOfScope": [
-          "Rule validation or enforcement logic.",
-          "Rule execution or application logic.",
-          "Asynchronous file system operations.",
-          "Writing or modifying rule files on disk."
+          "Validation of rule content beyond basic frontmatter structure.",
+          "Rule execution, application, or enforcement.",
+          "Network or remote rule fetching.",
+          "UI, CLI, or interactive presentation of rules."
         ]
       },
       "Simplified Chinese": {
-        "role": "用于从文件系统加载和解析 Spine 规则文档的基础设施工具。",
+        "role": "基础设施模块，用于从文件系统加载、解析并规范化 Spine 规则文档。",
         "responsibilities": [
-          "使用同步文件系统操作从磁盘读取规则文件。",
-          "使用 gray-matter 前置元数据解析器解析规则文件内容。",
-          "将规则严重性值规范化为标准小写格式。",
-          "从规则标识符生成 URL 友好的短横线命名，以便一致引用。"
+          "通过同步文件系统操作（fs.existsSync、fs.readFileSync）读取指定目录下的规则文件。",
+          "使用 gray-matter 解析文件前置元数据，借助 js-yaml 处理 YAML 内容。",
+          "将规则严重级别规范化为小写，默认值为 'warning'。",
+          "利用 slugifyRuleId 工具函数从规则标识符生成 URL 友好的短链接。",
+          "构建 LoadedRuleFile 对象列表，包含文件路径及已解析的 SpineRuleDocument 实例。"
         ],
         "outOfScope": [
-          "规则验证或执行逻辑。",
-          "规则应用或执行逻辑。",
-          "异步文件系统操作。",
-          "在磁盘上写入或修改规则文件。"
+          "对规则内容进行超出基本前置元数据结构的校验。",
+          "规则的执行、应用或强制实施。",
+          "网络远程规则获取。",
+          "规则的 UI、CLI 或交互式呈现。"
         ]
       }
     }
   },
   "skeleton": {
-    "imports": [],
-    "exports": [],
-    "declaredSymbols": [],
+    "imports": [
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SpineRuleDocument"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'gray-matter'",
+        "symbols": [
+          "matter"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'js-yaml'",
+        "symbols": [
+          "yaml"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "loadRulesFromDir",
+        "kind": "function",
+        "signature": "loadRulesFromDir(rulesDir: string)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "loadRulesFromDir",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/rules-loader.ts#"
+      }
+    ],
     "structuralHints": {
-      "importCount": 0,
-      "exportCount": 0,
+      "importCount": 7,
+      "exportCount": 1,
       "isBarrel": false,
       "isTypeOnly": false
     }
@@ -87,26 +152,39 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "fs",
-        "relation": "import",
-        "symbols": []
-      },
-      {
-        "targetPath": "path",
-        "relation": "import",
-        "symbols": []
-      },
-      {
-        "targetPath": "gray-matter",
-        "relation": "import",
-        "symbols": []
-      },
-      {
         "targetPath": "../types/protocol.js",
         "relation": "import",
         "symbols": [
           "CURRENT_SCHEMA_VERSION",
           "SpineRuleDocument"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "path"
+        ]
+      },
+      {
+        "targetPath": "gray-matter",
+        "relation": "import",
+        "symbols": [
+          "matter"
+        ]
+      },
+      {
+        "targetPath": "js-yaml",
+        "relation": "import",
+        "symbols": [
+          "yaml"
         ]
       }
     ],
@@ -115,11 +193,11 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T03:58:07.472Z",
+    "indexedAt": "2026-05-03T11:25:05.165Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "llm"
+      "fallback"
     ]
   }
 }

@@ -4,79 +4,23 @@
     "filePath": "src/infra/prompt/aggregate.ts",
     "contentHash": "896e26edc789c47b18d4f53498e1d58645225357d3fefb240591d301bcbbfa26",
     "skeletonHash": "c1e80edea1a3a61107e5fc0783a5888c40e7221168e151f60ec4fe9a0664a792",
-    "semanticHash": "921ff4593130ae78a97f87e067de150dc9feff0c16a3c6ea43a31b244ae583a9",
+    "semanticHash": "43d72a0291f4217673728e734f7cb7cc7c41a6f1f801b58a8833602b04ddde49",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/prompt"
   },
   "semantic": {
-    "role": "Prompt construction factory for ArchSpine semantic synthesis, producing structured prompt strings for documents, configuration files, directories, and project units via a PromptBuilder pipeline.",
-    "responsibilities": [
-      "Constructs prompt strings for document analysis by configuring a PromptBuilder with document-specific identity, instructions, localized language instructions, environmental context, JSON schema, and source content.",
-      "Constructs prompt strings for configuration file analysis with operational safety focus, using config-specific identity and schema.",
-      "Constructs prompt strings for directory (L2 aggregation) analysis with a simplified instruction set and folder schema.",
-      "Constructs prompt strings for project unit analysis using project schema and appropriate identity.",
-      "Leverages shared utilities (buildLocalizedLanguageInstructions, renderOutputContract) to enforce output contract and multilingual instruction generation."
-    ],
-    "outOfScope": [
-      "Does not execute or orchestrate any analysis or service logic.",
-      "Does not handle file I/O, scanning, or runtime state.",
-      "Does not define or validate schemas; imports them from templates.",
-      "Does not manage prompt caching or lifecycle."
-    ],
-    "invariants": [
-      "All generated prompts enforce a JSON output contract via renderOutputContract.",
-      "All prompts include localized language instructions when multiple languages are specified.",
-      "PromptBuilder is always used with setIdentity, addInstructions, addEnvironmentalContext, addJSONSchema, and addSourceContent in a consistent pipeline.",
-      "The module remains a pure factory, free of service/task/engine orchestration concerns."
-    ],
+    "role": "Unknown role",
+    "responsibilities": [],
+    "outOfScope": [],
+    "invariants": [],
     "changeIntent": {
-      "architecturalIntent": "Provide a centralized, reusable prompt generation layer for all semantic analysis targets, ensuring consistency in output format, localization, and environmental context injection.",
-      "recentChangeIntent": "Modularize CLI and decouple core infra services — this prompt factory aligns by isolating prompt construction from service orchestration."
+      "architecturalIntent": null,
+      "recentChangeIntent": null
     },
-    "publicSurface": [
-      "generateDocumentPrompt",
-      "generateConfigPrompt",
-      "generateFolderPrompt",
-      "generateProjectPrompt"
-    ],
-    "ruleViolations": [],
+    "publicSurface": [],
     "driftDetected": false,
-    "driftReason": null,
-    "localized": {
-      "English": {
-        "role": "Prompt construction factory for ArchSpine semantic synthesis, producing structured prompt strings for documents, configuration files, directories, and project units via a PromptBuilder pipeline.",
-        "responsibilities": [
-          "Constructs prompt strings for document analysis by configuring a PromptBuilder with document-specific identity, instructions, localized language instructions, environmental context, JSON schema, and source content.",
-          "Constructs prompt strings for configuration file analysis with operational safety focus, using config-specific identity and schema.",
-          "Constructs prompt strings for directory (L2 aggregation) analysis with a simplified instruction set and folder schema.",
-          "Constructs prompt strings for project unit analysis using project schema and appropriate identity.",
-          "Leverages shared utilities (buildLocalizedLanguageInstructions, renderOutputContract) to enforce output contract and multilingual instruction generation."
-        ],
-        "outOfScope": [
-          "Does not execute or orchestrate any analysis or service logic.",
-          "Does not handle file I/O, scanning, or runtime state.",
-          "Does not define or validate schemas; imports them from templates.",
-          "Does not manage prompt caching or lifecycle."
-        ]
-      },
-      "Simplified Chinese": {
-        "role": "ArchSpine 语义合成的提示词构造工厂，通过 PromptBuilder 流水线为文档、配置文件、目录和项目单元生成结构化的提示词字符串。",
-        "responsibilities": [
-          "通过配置 PromptBuilder，为文档分析构建提示词字符串，包含文档特定的身份、指令、本地化语言指令、环境上下文、JSON 模式和源内容。",
-          "为配置文件分析构建提示词字符串，侧重于操作安全影响，使用配置特定的身份和模式。",
-          "为目录（L2 聚合）分析构建提示词字符串，使用简化的指令集和文件夹模式。",
-          "为项目单元分析构建提示词字符串，使用项目模式和适当的身份。",
-          "利用共享工具函数（buildLocalizedLanguageInstructions、renderOutputContract）强制执行输出合约和多语言指令生成。"
-        ],
-        "outOfScope": [
-          "不执行或编排任何分析或服务逻辑。",
-          "不处理文件 I/O、扫描或运行时状态。",
-          "不定义或验证模式；从模板导入模式。",
-          "不管理提示词缓存或生命周期。"
-        ]
-      }
-    }
+    "driftReason": null
   },
   "skeleton": {
     "imports": [
@@ -162,37 +106,49 @@
     }
   },
   "graph": {
-    "dependsOn": [
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
       {
-        "targetPath": "../../assets/templates/prompts/index.js",
-        "relation": "import",
-        "symbols": [
-          "configSchema",
-          "documentSchema",
-          "folderSchema",
-          "projectSchema"
-        ]
+        "sourceSymbol": "src/infra/prompt/aggregate.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/shared.ts/buildLocalizedLanguageInstructions#",
+        "targetPath": "src/infra/prompt/shared.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
       },
       {
-        "targetPath": "./builder.js",
-        "relation": "import",
-        "symbols": [
-          "PromptBuilder"
-        ]
+        "sourceSymbol": "src/infra/prompt/aggregate.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/shared.ts/renderOutputContract#",
+        "targetPath": "src/infra/prompt/shared.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
       },
       {
-        "targetPath": "./shared.js",
-        "relation": "import",
-        "symbols": [
-          "buildLocalizedLanguageInstructions",
-          "renderOutputContract"
-        ]
+        "sourceSymbol": "src/infra/prompt/aggregate.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/builder.ts/PromptBuilder#",
+        "targetPath": "src/infra/prompt/builder.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/aggregate.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/PromptBuilder#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/aggregate.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/PromptBuilder#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
       }
-    ],
-    "reverseIndexComplete": false
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:40.075Z",
+    "indexedAt": "2026-05-03T11:25:04.848Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

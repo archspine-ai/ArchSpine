@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/services",
-  "role": "Service layer facade and orchestration for ArchSpine's core commands (check, fix, sync) and runtime management.",
-  "responsibility": "Coordinates end-to-end pipelines for architectural validation, automated fixes, and synchronization, manages runtime sessions and execution profiles, handles LLM configuration, repository artifact strategies, and view generation, providing a unified service interface for CLI and infrastructure layers.",
+  "role": "Service orchestration layer that coordinates and manages the core analysis, fix, synchronization, LLM configuration, and view generation pipelines for the ArchSpine mirror system.",
+  "responsibility": "Collectively, these components orchestrate the sequential execution of multi-stage tasks (scanning, AST extraction, validation, LLM correction, summarization, view generation) with runtime session management, checkpoint/resume support, error handling, and configuration resolution. They serve as the bridge between CLI commands and infrastructure components, ensuring consistent, resumable, and policy-compliant operations for mirror synchronization, architectural validation, fix operations, and repository management.",
   "children": [
     {
       "filePath": "src/services/check-service.ts",
-      "role": "Service facade orchestrating the ArchSpine 'check' command pipeline, coordinating scanning, AST extraction, validation, and usage recording within a managed runtime session.",
+      "role": "Service facade orchestrating the ArchSpine 'check' command pipeline, coordinating scanning, AST extraction, and validation tasks via a managed runtime session.",
       "fileKind": "source"
     },
     {
@@ -16,7 +16,7 @@
     },
     {
       "filePath": "src/services/llm-admin-service.ts",
-      "role": "TypeScript type definition module for LLM configuration command structures and view models within the view service layer.",
+      "role": "Service module for LLM configuration command orchestration, bridging CLI commands with infrastructure config/secrets stores and runtime service.",
       "fileKind": "source"
     },
     {
@@ -31,7 +31,7 @@
     },
     {
       "filePath": "src/services/runtime-execution-profile.ts",
-      "role": "Type definition module for resolved runtime execution profiles and commands within the service layer.",
+      "role": "Service-level orchestrator for resolving execution profiles from LLM configuration and runtime commands.",
       "fileKind": "source"
     },
     {
@@ -46,7 +46,7 @@
     },
     {
       "filePath": "src/services/runtime-session.ts",
-      "role": "Infrastructure orchestration service for managing resumable command execution sessions with checkpoint validation and protected output mutation detection.",
+      "role": "Runtime service orchestrator for resumable command execution sessions with checkpoint validation and protected output mutation safety.",
       "fileKind": "source"
     },
     {
@@ -61,7 +61,7 @@
     },
     {
       "filePath": "src/services/view",
-      "role": "View layer for generating and rendering architectural visualizations and analysis reports.",
+      "role": "Directory containing the view generation and rendering subsystem for ArchSpine's architectural visualization and analysis views.",
       "fileKind": "folder"
     },
     {
@@ -71,7 +71,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-03T03:55:10.197Z",
+    "indexedAt": "2026-05-03T11:27:52.139Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

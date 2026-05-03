@@ -3,78 +3,146 @@
   "identity": {
     "filePath": "src/cli/commands/init.ts",
     "contentHash": "ab10d0fb9dbfac90cea76c35d4c1f5eaaaa23db1476b9caaaa1d1dba0970008a",
-    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
-    "semanticHash": "b6fe54e8eb92bbc2c954e01f694d1e4341964d111de2ab981d33fbba6e1c4139",
+    "skeletonHash": "52d1e8a175bd00dd451a76e475daf0fd561e86a4e1d2f23eb76282c8656649cd",
+    "semanticHash": "9d1eb5663042b826aa13449440f3cf8c2309731b789f11027541a079ca355a96",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli/commands"
   },
   "semantic": {
-    "role": "CLI command orchestrator for initializing the ArchSpine environment, configuration, and repository structure.",
+    "role": "CLI command orchestrator for initializing the ArchSpine environment, managing documentation language configuration, and coordinating repository and runtime bootstrap.",
     "responsibilities": [
-      "Parses CLI arguments for agent file specification (--agent-file), artifact strategy (--artifact-strategy), and package script injection (--inject-package-scripts).",
-      "Manages language configuration selection and persistence for documentation via the Config service.",
-      "Orchestrates repository bootstrap to set up .spine directory structure via the runRepositoryBootstrap function.",
-      "Orchestrates runtime bootstrap to initialize runtime state via the runRuntimeBootstrap function and prompt for initial sync."
+      "Parses CLI arguments for agent file (--agent-file), artifact strategy (--artifact-strategy), and package script injection (--inject-package-scripts).",
+      "Manages language configuration selection and persistence via the Config service, including prompting and saving.",
+      "Orchestrates repository bootstrap to set up the .spine directory structure via runRepositoryBootstrap.",
+      "Orchestrates runtime bootstrap to initialize runtime state via runRuntimeBootstrap, including prompting for initial sync."
     ],
     "outOfScope": [
-      "Pipeline or persistence logic that belongs in services, core, engines, or infra.",
-      "Direct filesystem or database operations beyond delegation to bootstrap functions."
+      "Detailed implementation of repository or runtime bootstrapping steps.",
+      "Direct file system mutations beyond delegating to bootstrap functions.",
+      "Pipeline execution details outside the init sequence."
     ],
     "invariants": [
-      "Must remain a thin CLI adapter, delegating all pipeline and persistence work to services or bootstrap modules.",
-      "Must not absorb logic that would make runtime behavior non-reusable outside the CLI."
+      "CLI modules must remain thin entrypoints and not absorb pipeline or persistence logic (rule: cli-entrypoint-separation)."
     ],
     "changeIntent": {
-      "architecturalIntent": "Maintain a clean CLI entrypoint that delegates initialization tasks to dedicated bootstrap and service modules.",
-      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, ensuring the init command adheres to separation of concerns."
+      "architecturalIntent": "Initialize the ArchSpine environment by configuring documentation languages, setting up repository structure, and preparing runtime state.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era"
     },
     "publicSurface": [
-      "parseInitAgentFileArg",
-      "parseInitArtifactStrategyArg",
-      "parseInitInjectPackageScriptsArg",
-      "parseInitLanguageArg",
-      "runInit"
+      "executeInitCommand",
+      "ExecuteInitCommandOptions"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "CLI command orchestrator for initializing the ArchSpine environment, configuration, and repository structure.",
+        "role": "CLI command orchestrator for initializing the ArchSpine environment, managing documentation language configuration, and coordinating repository and runtime bootstrap.",
         "responsibilities": [
-          "Parses CLI arguments for agent file specification (--agent-file), artifact strategy (--artifact-strategy), and package script injection (--inject-package-scripts).",
-          "Manages language configuration selection and persistence for documentation via the Config service.",
-          "Orchestrates repository bootstrap to set up .spine directory structure via the runRepositoryBootstrap function.",
-          "Orchestrates runtime bootstrap to initialize runtime state via the runRuntimeBootstrap function and prompt for initial sync."
+          "Parses CLI arguments for agent file (--agent-file), artifact strategy (--artifact-strategy), and package script injection (--inject-package-scripts).",
+          "Manages language configuration selection and persistence via the Config service, including prompting and saving.",
+          "Orchestrates repository bootstrap to set up the .spine directory structure via runRepositoryBootstrap.",
+          "Orchestrates runtime bootstrap to initialize runtime state via runRuntimeBootstrap, including prompting for initial sync."
         ],
         "outOfScope": [
-          "Pipeline or persistence logic that belongs in services, core, engines, or infra.",
-          "Direct filesystem or database operations beyond delegation to bootstrap functions."
+          "Detailed implementation of repository or runtime bootstrapping steps.",
+          "Direct file system mutations beyond delegating to bootstrap functions.",
+          "Pipeline execution details outside the init sequence."
         ]
       },
       "Simplified Chinese": {
-        "role": "用于初始化 ArchSpine 环境、配置和仓库结构的 CLI 命令编排器。",
+        "role": "初始化 ArchSpine 环境的 CLI 命令编排器，负责管理文档语言配置，并协调仓库和运行时的引导。",
         "responsibilities": [
-          "解析 CLI 参数，包括代理文件规范 (--agent-file)、产物策略 (--artifact-strategy) 和包脚本注入 (--inject-package-scripts)。",
-          "通过 Config 服务管理文档的语言配置选择与持久化。",
-          "通过 runRepositoryBootstrap 函数编排仓库引导，以设置 .spine 目录结构。",
-          "通过 runRuntimeBootstrap 函数编排运行时引导，以初始化运行时状态并提示初始同步。"
+          "解析 CLI 参数，包括代理文件（--agent-file）、工件策略（--artifact-strategy）以及包脚本注入（--inject-package-scripts）。",
+          "通过 Config 服务管理文档语言的选择和持久化，包括用户提示和保存。",
+          "编排仓库引导流程，通过 runRepositoryBootstrap 设置 .spine 目录结构。",
+          "编排运行时引导流程，通过 runRuntimeBootstrap 初始化运行时状态，包括提示是否立即同步。"
         ],
         "outOfScope": [
-          "属于服务、核心、引擎或基础设施的管道或持久化逻辑。",
-          "超出委托给引导函数范围之外的直接文件系统或数据库操作。"
+          "仓库或运行时引导步骤的详细实现。",
+          "除委托给引导函数外的直接文件系统变更。",
+          "不属于初始化序列的流水线执行细节。"
         ]
       }
     }
   },
   "skeleton": {
-    "imports": [],
-    "exports": [],
-    "declaredSymbols": [],
+    "imports": [
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../services/runtime-service.js'",
+        "symbols": [
+          "RuntimeService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../init/repository-bootstrap.js'",
+        "symbols": [
+          "runRepositoryBootstrap"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../init/runtime-bootstrap.js'",
+        "symbols": [
+          "promptForInitialSync",
+          "runRuntimeBootstrap"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "normalizeOptionalString",
+          "throwCliUsage"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../repo/strategy.js'",
+        "symbols": [
+          "parseArtifactStrategy"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeInitCommand",
+        "kind": "function",
+        "signature": "executeInitCommand(options: ExecuteInitCommandOptions)"
+      },
+      {
+        "name": "ExecuteInitCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteInitCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeInitCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/init.ts#"
+      },
+      {
+        "name": "ExecuteInitCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/init.ts#"
+      }
+    ],
     "structuralHints": {
-      "importCount": 0,
-      "exportCount": 0,
+      "importCount": 6,
+      "exportCount": 2,
       "isBarrel": false,
       "isTypeOnly": false
     }
@@ -96,13 +164,6 @@
         ]
       },
       {
-        "targetPath": "../../types/protocol.js",
-        "relation": "import-type",
-        "symbols": [
-          "LanguageSnapshot"
-        ]
-      },
-      {
         "targetPath": "../init/repository-bootstrap.js",
         "relation": "import",
         "symbols": [
@@ -115,13 +176,6 @@
         "symbols": [
           "promptForInitialSync",
           "runRuntimeBootstrap"
-        ]
-      },
-      {
-        "targetPath": "../init/types.js",
-        "relation": "import-type",
-        "symbols": [
-          "LLMScope"
         ]
       },
       {
@@ -142,14 +196,106 @@
     ],
     "dependedBy": [],
     "reverseIndexComplete": false,
-    "symbolEdges": []
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/init.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/normalizeOptionalString#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/init.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/throwCliUsage#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/init.ts/_file_#",
+        "targetSymbol": "src/cli/repo/strategy.ts/parseArtifactStrategy#",
+        "targetPath": "src/cli/repo/strategy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/init.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/displayUIBanner#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/init.ts/_file_#",
+        "targetSymbol": "src/utils/confirm.ts/promptForImmediateConfirmation#",
+        "targetPath": "src/utils/confirm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/init.ts/_file_#",
+        "targetSymbol": "src/cli/commands/languages.ts/promptForDocumentationLanguages#",
+        "targetPath": "src/cli/commands/languages.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/init.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/printStep#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/init.ts/_file_#",
+        "targetSymbol": "src/cli/init/repository-bootstrap.ts/runRepositoryBootstrap#",
+        "targetPath": "src/cli/init/repository-bootstrap.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/init.ts/_file_#",
+        "targetSymbol": "src/cli/init/runtime-bootstrap.ts/runRuntimeBootstrap#",
+        "targetPath": "src/cli/init/runtime-bootstrap.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/init.ts/_file_#",
+        "targetSymbol": "src/cli/init/runtime-bootstrap.ts/promptForInitialSync#",
+        "targetPath": "src/cli/init/runtime-bootstrap.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/init.ts/_file_#",
+        "targetSymbol": "eslint.config.js/default#",
+        "targetPath": "eslint.config.js",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/init.ts/_file_#",
+        "targetSymbol": "vitest.config.e2e.ts/default#",
+        "targetPath": "vitest.config.e2e.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/init.ts/_file_#",
+        "targetSymbol": "vitest.config.ts/default#",
+        "targetPath": "vitest.config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T03:57:40.279Z",
+    "indexedAt": "2026-05-03T11:25:01.319Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "llm"
+      "fallback"
     ]
   }
 }

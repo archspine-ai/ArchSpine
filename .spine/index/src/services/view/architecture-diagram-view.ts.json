@@ -4,56 +4,75 @@
     "filePath": "src/services/view/architecture-diagram-view.ts",
     "contentHash": "db0ec1c2e54c8c2276fb1af7f12a266f430a8dfc7fbe96d5beba72cc5e4b022d",
     "skeletonHash": "c9eb33e75938fa48f62cfaa6972fdd8b27e62b9bd34b2eef4f5a4c5a646e3944",
-    "semanticHash": "d58b668e5a20aef825293399c07e5925f34a353d336f57f2b090a6aeb24e7bcd",
+    "semanticHash": "7935510fdac5aa5940a840e99f940c6f3478f58f1069dfdaecba43c131ab88e9",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/services/view"
   },
   "semantic": {
-    "role": "ArchSpine view derivation service for generating and rendering interactive architecture diagrams from project metadata using LLM-based specification generation.",
+    "role": "ArchSpine view derivation service that orchestrates the generation, validation, and persistence of architecture diagram views using LLM-based specification generation.",
     "responsibilities": [
-      "Loads project and folder units from the view index via ViewIndexLoader to gather architectural context.",
-      "Constructs LLM prompts using the predefined generateArchitectureDiagramPrompt template to request an architecture diagram specification.",
-      "Invokes a text-generation LLM client to produce a structured ArchDiagramSpec JSON.",
-      "Validates the generated specification for required fields, node types, and structural integrity using internal validation logic.",
-      "Renders the validated specification into HTML using ArchitectureDiagramRenderer.",
-      "Saves the rendered HTML and view data via OutputManager for persistence."
+      "Loads project and folder units from the view index via ViewIndexLoader to gather architectural context for diagram generation.",
+      "Constructs an LLM prompt using the generateArchitectureDiagramPrompt template to request a structured architecture diagram specification.",
+      "Invokes an LLM client (llmClient.generateText) to produce a raw string, then parses and validates it into an ArchDiagramSpec via validateArchDiagramSpec.",
+      "Validates the generated spec for structural integrity, required fields, and permitted node types.",
+      "Renders the validated specification into an HTML representation using ArchitectureDiagramRenderer.render.",
+      "Persists both the rendered HTML (saveViewHtml) and the raw spec as a view (saveView) via OutputManager.",
+      "Logs informational messages and warnings via RuntimeIO for observability during the generation pipeline."
     ],
     "outOfScope": [
-      "Directly managing LLM client configuration or authentication.",
-      "Handling low-level diagram rendering graphics or SVG generation.",
-      "Providing user interface components for diagram interaction."
+      "Direct interaction with external file systems or git operations beyond the ViewIndexLoader abstraction.",
+      "Validation or enforcement of architectural rules (only validates diagram spec structure).",
+      "Handling of authentication or authorization for LLM client access."
     ],
     "invariants": [
-      "Requires a text-generation LLM client for diagram specification generation.",
-      "Depends on ViewIndexLoader for architectural context.",
-      "Outputs must be saved via OutputManager's saveView and saveViewHtml methods."
+      "The file must reside under src/services/view/ to align with the service-runtime-boundary rule.",
+      "All imported infra modules (LLMClient, RuntimeIO, OutputManager) are used as injected dependencies, not directly instantiated."
     ],
     "changeIntent": {
-      "architecturalIntent": "Facade service orchestrating LLM-based diagram generation, validation, and rendering to produce view artifacts.",
-      "recentChangeIntent": "Refactoring to establish subsystem facades and resolve layer inversions, as indicated by the git commit."
+      "architecturalIntent": "Provide a centralized, LLM-driven service for generating architecture diagram views, separating concerns of prompt construction, LLM invocation, spec validation, rendering, and output persistence.",
+      "recentChangeIntent": "Establish the architecture diagram view derivation service as part of the ArchSpine v1.0.0 semantic layer, enabling automated diagram generation with validation and render persistence."
     },
     "publicSurface": [
-      "deriveArchitectureDiagramView function"
+      "deriveArchitectureDiagramView",
+      "validateArchDiagramSpec"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "ArchSpine view derivation service for generating and rendering interactive architecture diagrams from project metadata using LLM-based specification generation.",
+        "role": "ArchSpine view derivation service that orchestrates the generation, validation, and persistence of architecture diagram views using LLM-based specification generation.",
         "responsibilities": [
-          "Loads project and folder units from the view index via ViewIndexLoader to gather architectural context.",
-          "Constructs LLM prompts using the predefined generateArchitectureDiagramPrompt template to request an architecture diagram specification.",
-          "Invokes a text-generation LLM client to produce a structured ArchDiagramSpec JSON.",
-          "Validates the generated specification for required fields, node types, and structural integrity using internal validation logic.",
-          "Renders the validated specification into HTML using ArchitectureDiagramRenderer.",
-          "Saves the rendered HTML and view data via OutputManager for persistence."
+          "Loads project and folder units from the view index via ViewIndexLoader to gather architectural context for diagram generation.",
+          "Constructs an LLM prompt using the generateArchitectureDiagramPrompt template to request a structured architecture diagram specification.",
+          "Invokes an LLM client (llmClient.generateText) to produce a raw string, then parses and validates it into an ArchDiagramSpec via validateArchDiagramSpec.",
+          "Validates the generated spec for structural integrity, required fields, and permitted node types.",
+          "Renders the validated specification into an HTML representation using ArchitectureDiagramRenderer.render.",
+          "Persists both the rendered HTML (saveViewHtml) and the raw spec as a view (saveView) via OutputManager.",
+          "Logs informational messages and warnings via RuntimeIO for observability during the generation pipeline."
         ],
         "outOfScope": [
-          "Directly managing LLM client configuration or authentication.",
-          "Handling low-level diagram rendering graphics or SVG generation.",
-          "Providing user interface components for diagram interaction."
+          "Direct interaction with external file systems or git operations beyond the ViewIndexLoader abstraction.",
+          "Validation or enforcement of architectural rules (only validates diagram spec structure).",
+          "Handling of authentication or authorization for LLM client access."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 视图推导服务，负责利用 LLM 驱动的规范生成来编排架构图的生成、验证与持久化。",
+        "responsibilities": [
+          "通过 ViewIndexLoader 加载视图索引中的项目和文件夹单元，获取用于架构图生成的上下文。",
+          "使用 generateArchitectureDiagramPrompt 模板构建 LLM 提示词，请求生成结构化的架构图规范。",
+          "调用 LLM 客户端（llmClient.generateText）生成原始字符串，然后通过 validateArchDiagramSpec 解析并验证为 ArchDiagramSpec。",
+          "验证生成的规范在结构完整性、必填字段和允许的节点类型方面的正确性。",
+          "使用 ArchitectureDiagramRenderer.render 将验证后的规范渲染为 HTML 表示。",
+          "通过 OutputManager 将生成的 HTML（saveViewHtml）和原始规范作为视图（saveView）持久化。",
+          "通过 RuntimeIO 记录信息性消息和警告，确保生成管线的可观测性。"
+        ],
+        "outOfScope": [
+          "超出 ViewIndexLoader 抽象的直接文件系统或 Git 操作。",
+          "架构规则的验证或执行（仅限于图表规范结构的验证）。",
+          "LLM 客户端访问的认证或授权处理。"
         ]
       }
     }
@@ -137,12 +156,52 @@
         "symbols": [
           "ViewIndexLoader"
         ]
+      },
+      {
+        "targetPath": "../../infra/llm.js",
+        "relation": "import-type",
+        "symbols": [
+          "LLMClient"
+        ]
+      },
+      {
+        "targetPath": "../../infra/runtime-io.js",
+        "relation": "import-type",
+        "symbols": [
+          "RuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "../../types/view.js",
+        "relation": "import-type",
+        "symbols": [
+          "ArchDiagramSpec",
+          "ArchNodeType",
+          "ViewId"
+        ]
+      },
+      {
+        "targetPath": "../../infra/output.js",
+        "relation": "import-type",
+        "symbols": [
+          "OutputManager"
+        ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/view/architecture-diagram-view.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/arch-diagram.ts/generateArchitectureDiagramPrompt#",
+        "targetPath": "src/assets/templates/prompts/arch-diagram.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:41.065Z",
+    "indexedAt": "2026-05-03T11:25:05.801Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

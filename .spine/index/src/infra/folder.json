@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/infra",
-  "role": "Infrastructure layer providing foundational services and abstractions for the ArchSpine mirror system.",
-  "responsibility": "Provides a cohesive set of infrastructure modules including configuration management, secure credential storage, database persistence, LLM provider interaction, prompt generation and rendering, manifest tracking, MCP server exposure, checkpoint retry, file output, rule loading, runtime I/O, and write protection for protected directories, collectively enabling the core indexing, audit, and repair functionality of the ArchSpine system.",
+  "role": "Infrastructure layer providing core services for configuration management, LLM integration, persistence, credentials, and prompt generation for the ArchSpine mirror system.",
+  "responsibility": "Combines database management, LLM client abstraction, credential storage, configuration resolution, manifest persistence, MCP server integration, prompt assembly and rendering, runtime I/O utilities, and output management to form the foundational support for the ArchSpine mirror system's operations.",
   "children": [
     {
       "filePath": "src/infra/__mocks__",
-      "role": "This directory provides the public API surface for LLM provider mocking infrastructure.",
+      "role": "Facade module for LLM provider mocking infrastructure.",
       "fileKind": "folder"
     },
     {
@@ -16,7 +16,7 @@
     },
     {
       "filePath": "src/infra/config",
-      "role": "Configuration management layer for the ArchSpine mirror system.",
+      "role": "Configuration management and defaults for the ArchSpine mirror system.",
       "fileKind": "folder"
     },
     {
@@ -31,12 +31,12 @@
     },
     {
       "filePath": "src/infra/credentials",
-      "role": "Credential storage infrastructure for ArchSpine, providing secure platform-specific backends and managed credential stores.",
+      "role": "Provides a pluggable credential storage system with platform-specific backends and scoped store factories for secure secret persistence.",
       "fileKind": "folder"
     },
     {
       "filePath": "src/infra/db",
-      "role": "Infrastructure database layer providing SQLite-based persistence, lifecycle management, and data contracts for the ArchSpine indexing and audit system.",
+      "role": "Infrastructure layer for SQLite database management in the ArchSpine mirror system, providing the core persistence foundation for file metadata, audit events, and system status.",
       "fileKind": "folder"
     },
     {
@@ -56,12 +56,12 @@
     },
     {
       "filePath": "src/infra/lite-prompt.ts",
-      "role": "Utility class for constructing lightweight LLM prompts optimized for token-constrained APIs in low-precision 'Lite Mode' structural indexing.",
+      "role": "Utility class and function for constructing concise LLM prompts in low-precision 'Lite Mode' structural indexing, optimized for token-constrained LLM APIs.",
       "fileKind": "source"
     },
     {
       "filePath": "src/infra/llm",
-      "role": "LLM infrastructure layer providing abstracted client interfaces, configuration management, and provider adapters.",
+      "role": "Infrastructure layer for LLM client abstraction, configuration, and resilient invocation within the ArchSpine mirror system.",
       "fileKind": "folder"
     },
     {
@@ -71,7 +71,7 @@
     },
     {
       "filePath": "src/infra/manifest",
-      "role": "Infrastructure layer for manifest state persistence, file integrity verification, and file status tracking.",
+      "role": "Infrastructure layer for manifest persistence, file integrity, and state management in the ArchSpine mirror system.",
       "fileKind": "folder"
     },
     {
@@ -81,22 +81,22 @@
     },
     {
       "filePath": "src/infra/mcp",
-      "role": "Infrastructure layer for exposing ArchSpine's internal resources and tools to external AI agents via the Model Context Protocol (MCP) over stdio transport, with context-aware access control.",
+      "role": "MCP integration layer for exposing ArchSpine's resources and tools to external AI agents.",
       "fileKind": "folder"
     },
     {
       "filePath": "src/infra/output.ts",
-      "role": "Infrastructure facade for writing Spine index units (JSON) to the filesystem within the .spine directory.",
+      "role": "Infrastructure data access object (DAO) for reading and writing Spine index units (JSON) within the .spine directory, with integrated runtime-awareness for warnings via defaultRuntimeIO.",
       "fileKind": "source"
     },
     {
       "filePath": "src/infra/prompt",
-      "role": "This directory contains the prompt construction and assembly infrastructure for the ArchSpine system.",
+      "role": "Prompt assembly and generation layer for ArchSpine's AI interaction system.",
       "fileKind": "folder"
     },
     {
       "filePath": "src/infra/prompt-context",
-      "role": "This directory contains the core orchestration and configuration modules for the ArchSpine prompt policy system.",
+      "role": "Infrastructure layer responsible for assembling source prompt artifacts, including policy resolution, budget calculation, trimming, diagnostics, and type definitions for the ArchSpine prompt system.",
       "fileKind": "folder"
     },
     {
@@ -126,17 +126,17 @@
     },
     {
       "filePath": "src/infra/repair-policy.ts",
-      "role": "TypeScript module defining the repair policy decision logic for violation handling in the ArchSpine sync system.",
+      "role": "Decision logic for determining the repair action based on syntactic violation reports in the ArchSpine sync system.",
       "fileKind": "source"
     },
     {
       "filePath": "src/infra/repository-artifacts.ts",
-      "role": "Infrastructure utility module providing low-level file system and Git operations for managed block reading and repository state inspection.",
+      "role": "Infrastructure utility module providing low-level file system and Git operations for managed block reading and repository snapshot state inspection within the ArchSpine governance layer.",
       "fileKind": "source"
     },
     {
       "filePath": "src/infra/rules-loader.ts",
-      "role": "Infrastructure utility for loading and parsing Spine rule documents from the filesystem.",
+      "role": "Infrastructure module for loading, parsing, and normalizing Spine rule documents from the filesystem.",
       "fileKind": "source"
     },
     {
@@ -161,12 +161,12 @@
     },
     {
       "filePath": "src/infra/writer-boundary.ts",
-      "role": "Infrastructure boundary component that enforces write protection for ArchSpine's internal directories and files.",
+      "role": "Infrastructure facade for file-system based write protection of ArchSpine's internal Spine directories and files.",
       "fileKind": "source"
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-03T03:55:10.782Z",
+    "indexedAt": "2026-05-03T11:28:02.206Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

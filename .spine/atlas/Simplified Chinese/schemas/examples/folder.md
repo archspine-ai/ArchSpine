@@ -1,15 +1,9 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"schemas/examples","role":"This directory contains the core configuration and rule definitions for the ArchSpine semantic indexing and architecture enforcement system.","responsibility":"Collectively, these files define the project identity, module structure, documentation synchronization state, and architectural dependency rules that govern the ArchSpine system, ensuring consistent indexing, integrity verification, and layer isolation.","children":[{"filePath":"schemas/examples/spine-folder-unit.example.json","role":"Defines the core application module container for the repository indexing pipeline.","fileKind":"config"},{"filePath":"schemas/examples/spine-manifest.example.json","role":"Language index manifest for the ArchSpine documentation atlas","fileKind":"config"},{"filePath":"schemas/examples/spine-project-unit.example.json","role":"Defines the project identity, module structure, and provenance metadata for the ArchSpine semantic indexing system.","fileKind":"config"},{"filePath":"schemas/examples/spine-rule-document.example.json","role":"Architectural dependency rule enforcing layer isolation in the ArchSpine system","fileKind":"config"},{"filePath":"schemas/examples/spine-rule.example.md","role":"Architecture enforcement rule","fileKind":"document"},{"filePath":"schemas/examples/spine-unit.example.json","role":"Authentication entry module for login and logout operations.","fileKind":"config"}],"provenance":{"indexedAt":"2026-05-01T03:58:52.136Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-# `schemas/examples` – ArchSpine 配置与规则示例目录
+该目录包含了 ArchSpine 镜像系统的核心元数据、索引配置和架构治理规则。其内容主要分为以下三组：
 
-该目录存放 ArchSpine 语义索引与架构强制系统的核心配置及规则定义示例。这些文件共同演示了如何定义项目标识、模块结构、文档同步状态以及架构依赖规则，以确保一致的索引、完整性校验和层级隔离。
+1. **结构元数据单元** – 例如 *spine-folder-unit.example.json*、*spine-project-unit.example.json* 和 *spine-unit.example.json*，它们定义了源目录和文件的标识、语义角色及溯源信息。这些文件使系统能够识别模块分组、追踪索引管线的处理阶段，并验证结构不变性。
 
-## 主要子项
+2. **索引清单与状态快照** – *spine-manifest.example.json* 文件维护了所有已索引源文件的注册表，包括内容哈希、按语言环境关联的文档信息以及同步元数据。它为运行时操作和同步工作流提供了一个轻量级的状态快照。
 
-- **`spine-folder-unit.example.json`** – 定义仓库索引管线的核心应用模块容器。
-- **`spine-manifest.example.json`** – ArchSpine 文档图谱的语言索引清单。
-- **`spine-project-unit.example.json`** – 索引系统的项目标识、模块结构和溯源元数据。
-- **`spine-rule-document.example.json`** – 强制执行层级隔离的架构依赖规则。
-- **`spine-rule.example.md`** – 架构强制规则（Markdown 文档）。
-- **`spine-unit.example.json`** – 处理登录/登出操作的身份验证入口模块。
+3. **架构治理规则** – *spine-rule-document.example.json* 和 *spine-rule.example.md* 共同实施关注点分离，通过限制架构层级间的导入依赖、禁止从服务层直接访问底层适配器，并定义基于模式的适用范围（含严重程度和可执行性控制），来维护清晰的架构边界。这些规则附有明确的原理说明和修复指南。
 
-这些示例按功能分组：模块容器（`folder-unit`, `unit`）、项目元数据（`project-unit`）、语言图谱（`manifest`）以及架构规则（`rule-document`, `rule`）。最关键的实现领域包括索引管线（folder-unit）、溯源跟踪（project-unit）以及层级隔离强制（rule-document）。
+最关键的实现领域包括：索引管线的配置（溯源跟踪与变更检测）、结构标识的分配（为目录和文件赋予语义角色），以及策略执行（维护整洁架构的边界）。需要关注的具体子模块包括：溯源元数据的模式定义、清单中反向索引的完整性校验，以及基于规则的导入验证引擎。

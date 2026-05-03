@@ -1,16 +1,10 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/types","role":"Core data contracts and configuration schema for the ArchSpine mirror system.","responsibility":"Defines the foundational type definitions, configuration interfaces, and versioning constants that establish the data model and public API contract for the entire ArchSpine infrastructure layer, enabling consistent representation of mirrored code units, dependency graphs, language metadata, synchronization manifests, and rule documents. It also provides a stable public entry point for importing all protocol types and defines view artifact contracts for architecture diagrams.","children":[{"filePath":"src/types/protocol","role":"Defines the core data contracts and configuration schema for the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"src/types/protocol.ts","role":"Public protocol facade module providing a stable entry point for importing all ArchSpine protocol types.","fileKind":"source"},{"filePath":"src/types/view.ts","role":"Type definition module establishing the contract for view artifacts in the ArchSpine view generation system.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-02T10:11:06.692Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-The `src/types` directory serves as the **core data contracts and configuration schema** for the ArchSpine mirror system. It establishes the foundational type definitions, configuration interfaces, and versioning constants that underpin the entire infrastructure layer.
+The `src/types/protocol` directory serves as the type foundation for the entire ArchSpine mirror system. It defines the canonical schemas and interfaces that govern all core data structures — covering configuration, documents, languages, manifests, rules, versioning, and views. These contracts ensure data consistency and interoperability across every subsystem.
 
-**Notable children grouping**:
-- A dedicated `src/types/protocol` subfolder houses the detailed core data contracts and configuration schema for the mirror system.
-- The `src/types/protocol.ts` file acts as a stable public facade module, providing a unified entry point for importing all ArchSpine protocol types.
-- The `src/types/view.ts` file defines the contract for view artifacts in the ArchSpine view generation system.
+The notable children are organized into two main areas:
 
-**Implementation areas that matter most**:
-- Consistent representation of mirrored code units, dependency graphs, language metadata, synchronization manifests, and rule documents.
-- Public API contract for the entire ArchSpine infrastructure layer.
-- View artifact contracts for architecture diagrams.
+- **`protocol.ts`**: A public facade module that provides a single, stable import path for all protocol types. It re-exports everything from the internal `./protocol/index.js` module, decoupling external consumers from the internal module structure.
+- **`view.ts`**: A dedicated type definition module that establishes the contract for view artifacts in the view generation system. It defines TypeScript interfaces for view envelopes, content structures, identifiers (ViewId, ViewType), architecture diagram specifications (nodes, edges, summary cards), and specific view item types (public surface, risk hotspot).
 
-**Concrete submodules**:
-- `src/types/protocol` — the primary module defining all core data models (e.g., code unit types, dependency graph structures, language metadata, sync manifests, rule documents).
-- `src/types/view.ts` — a standalone module that specifies the TypeScript type contract for generated view artifacts (architecture diagrams).
+Internally, the `protocol/` subdirectory (accessed via `protocol.ts` and `./protocol/index.js`) groups type definitions for configuration, documents, languages, manifests, rules, and versioning. This modular separation makes the type system both extensible and maintainable.
+
+The most critical implementation areas are: (1) the protocol facade ensuring a stable API surface, (2) the view type contracts that drive the generation of architecture diagrams and risk summaries, and (3) the canonical schemas for rules and manifests that underpin validation and mirroring workflows.

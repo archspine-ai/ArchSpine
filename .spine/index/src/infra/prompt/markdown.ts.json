@@ -4,54 +4,76 @@
     "filePath": "src/infra/prompt/markdown.ts",
     "contentHash": "064d4eda44eb8563be07bd89326f4616c2fae95cbd8759b087fcca6876e8bd06",
     "skeletonHash": "27933fdd6135e5c2cdd66420a3c2ab31ccd3a08ab4406b56036d51936ffe0841",
-    "semanticHash": "2bec5fff581123a1a35baf59263ceb312db6f1d4201eed309b068b3f5aff2fea",
+    "semanticHash": "01d67ffe9c35ca9dc7795a967f06ca8646e8a0f57f51c403d9b52f2459eac9fa",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/prompt"
   },
   "semantic": {
-    "role": "Infrastructure utility for constructing localized markdown-only prompt strings from semantic JSON input.",
+    "role": "Infrastructure facade for constructing a localized markdown-only prompt string from semantic JSON input, leveraging PromptBuilder and shared instruction utilities.",
     "responsibilities": [
-      "Assembles a prompt string using the PromptBuilder facade for documentation generation.",
+      "Assembles a prompt string via PromptBuilder with identity 'a documentation architect' and file-kind-specific summary.",
       "Integrates localized language instructions and markdown section guidance from shared utilities.",
-      "Formats the semantic JSON and supporting context as prompt context blocks.",
-      "Ensures output adheres to specified language markers for markdown blocks."
+      "Serializes the semantic JSON as a context block within the prompt.",
+      "Attaches optional supporting context to the prompt.",
+      "Instructs the model to return markdown blocks only, one per language, using exact markers.",
+      "Exposes a single public function `generateMarkdownPrompt` as a stable facade."
     ],
     "outOfScope": [
-      "Orchestrating service or engine execution",
-      "Managing authentication or user sessions",
-      "Performing data persistence or queries",
-      "Rendering UI components"
+      "Does not handle JSON-only prompt construction.",
+      "Does not perform any LLM invocations or orchestration.",
+      "Does not parse or validate the semantic JSON input structure.",
+      "Does not manage prompt history, caching, or conversation state."
     ],
     "invariants": [
-      "Must import PromptBuilder facade for prompt construction",
-      "Must not contain business logic or domain-specific processing",
-      "Must output a string formatted with markdown block markers"
+      "Input must conform to MarkdownPromptInput with fileKind, languages, semanticJson, and optional supportingContext.",
+      "Output is always a non-null string.",
+      "Must incorporate buildMarkdownSectionGuidance and buildLocalizedLanguageInstructions from shared.",
+      "Must use PromptBuilder as the construction builder."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a reusable, localized prompt-building utility for documentation generation within the infrastructure layer.",
-      "recentChangeIntent": "No recent changes detected in this file; the git intent references modularizing CLI and decoupling core infra services, but this file shows no evidence of such changes."
+      "architecturalIntent": "Provide a dedicated prompt construction entry point for markdown-only output, separating concerns from JSON-only or mixed-output prompt types.",
+      "recentChangeIntent": "Part of ArchSpine v1.0.0 establishment, adding infrastructure for generating prompts that instruct the model to emit localized markdown blocks exclusively."
     },
     "publicSurface": [
-      "buildMarkdownOnlyPrompt"
+      "generateMarkdownPrompt"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Infrastructure utility for constructing localized markdown-only prompt strings from semantic JSON input.",
+        "role": "Infrastructure facade for constructing a localized markdown-only prompt string from semantic JSON input, leveraging PromptBuilder and shared instruction utilities.",
         "responsibilities": [
-          "Assembles a prompt string using the PromptBuilder facade for documentation generation.",
+          "Assembles a prompt string via PromptBuilder with identity 'a documentation architect' and file-kind-specific summary.",
           "Integrates localized language instructions and markdown section guidance from shared utilities.",
-          "Formats the semantic JSON and supporting context as prompt context blocks.",
-          "Ensures output adheres to specified language markers for markdown blocks."
+          "Serializes the semantic JSON as a context block within the prompt.",
+          "Attaches optional supporting context to the prompt.",
+          "Instructs the model to return markdown blocks only, one per language, using exact markers.",
+          "Exposes a single public function `generateMarkdownPrompt` as a stable facade."
         ],
         "outOfScope": [
-          "Orchestrating service or engine execution",
-          "Managing authentication or user sessions",
-          "Performing data persistence or queries",
-          "Rendering UI components"
+          "Does not handle JSON-only prompt construction.",
+          "Does not perform any LLM invocations or orchestration.",
+          "Does not parse or validate the semantic JSON input structure.",
+          "Does not manage prompt history, caching, or conversation state."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施外观模块，用于从语义 JSON 输入构造仅限 Markdown 的本地化提示字符串，利用 PromptBuilder 和共享指令工具。",
+        "responsibilities": [
+          "通过 PromptBuilder 组装提示字符串，身份为 '文档架构师'，并使用文件类型特定的摘要。",
+          "集成来自共享工具的本地化语言指令和 Markdown 段落指南。",
+          "将语义 JSON 序列化为提示中的上下文块。",
+          "向提示附加可选的支撑上下文。",
+          "指示模型仅返回 Markdown 块，每种语言一个，使用精确标记。",
+          "公开单个稳定外观函数 `generateMarkdownPrompt`。"
+        ],
+        "outOfScope": [
+          "不处理仅 JSON 的提示构造。",
+          "不执行任何 LLM 调用或编排。",
+          "不解析或验证语义 JSON 输入结构。",
+          "不管理提示历史、缓存或对话状态。"
         ]
       }
     }
@@ -99,32 +121,63 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "./builder.js",
+        "targetPath": "src/infra/prompt/builder.ts",
         "relation": "import",
         "symbols": [
           "PromptBuilder"
         ]
       },
       {
-        "targetPath": "./shared.js",
+        "targetPath": "src/infra/prompt/shared.ts",
         "relation": "import",
         "symbols": [
           "buildLocalizedLanguageInstructions",
           "buildMarkdownSectionGuidance"
         ]
-      },
-      {
-        "targetPath": "./types.js",
-        "relation": "import",
-        "symbols": [
-          "MarkdownPromptInput"
-        ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/prompt/markdown.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/shared.ts/buildMarkdownSectionGuidance#",
+        "targetPath": "src/infra/prompt/shared.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/markdown.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/shared.ts/buildLocalizedLanguageInstructions#",
+        "targetPath": "src/infra/prompt/shared.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/markdown.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/builder.ts/PromptBuilder#",
+        "targetPath": "src/infra/prompt/builder.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/markdown.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/PromptBuilder#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/markdown.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/PromptBuilder#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:40.146Z",
+    "indexedAt": "2026-05-03T11:25:04.924Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

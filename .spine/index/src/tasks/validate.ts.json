@@ -4,55 +4,74 @@
     "filePath": "src/tasks/validate.ts",
     "contentHash": "898d7b195e123fc8955e0ef2d9148e9129a48e1ddbadc17c4b1b2b7f35f3b1f8",
     "skeletonHash": "fda04b9356f6ac508ed57811508e5fb0d77bc486a5b1a76dd4b30e03ca42c8a9",
-    "semanticHash": "fb72ee3a1a75ea10c52a19422e1dd23cfb7f211070418f75651d1d8e0a6a3485",
+    "semanticHash": "b78b0fd8815d1cf9b24ce616fd098ce499b1c7f8889a2be60fb998335bfd129b",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/tasks"
   },
   "semantic": {
-    "role": "ArchSpine validation task orchestrator for LLM-powered architectural rule compliance checking.",
+    "role": "ArchSpine validation pipeline task that orchestrates LLM-powered architectural rule compliance checks on scanned source files, normalizing and persisting violation results.",
     "responsibilities": [
-      "Orchestrates validation of source files against configured architectural rules using LLM-generated prompts.",
-      "Builds prompt artifacts from source files and rule contexts for LLM validation.",
-      "Executes LLM validation prompts with concurrency control and handles LLM response parsing.",
-      "Normalizes and filters LLM-generated rule violation entries to ensure structured compliance data.",
-      "Logs validation diagnostics and records violations to the manifest."
+      "Orchestrates per-file validation: retrieves architectural rules for each file via ruleEngine, builds prompt artifacts using source context, and generates an LLM validation prompt.",
+      "Executes LLM validation prompts with concurrency control (p-limit) and parses the structured JSON response into normalized RuleViolation entries.",
+      "Normalizes and filters LLM-generated violation entries by verifying id/severity/reason fields, removing malformed or unsupported severity values.",
+      "Persists validated violations via manifest.recordViolation and updates diagnostic state through pushValidateDiagnostics.",
+      "Tracks LLM token usage via addTaskUsage and reports progress/errors through runtime I/O, respecting execution checkpoint indicators (skipped items)."
     ],
     "outOfScope": [
-      "CLI command parsing or unrelated service orchestration.",
-      "Direct LLM API communication or token management.",
-      "Rule definition or storage management."
+      "Direct invocation of CLI command handlers or user-facing argument parsing.",
+      "Performing static code analysis or rule inference itself—delegates entirely to the LLM.",
+      "Managing the repository scanning, manifest construction, or initial extraction stages.",
+      "Handling network or filesystem I/O outside of reading source files and writing violations (those are managed by the core framework)."
     ],
     "invariants": [
-      "Must operate as a pipeline stage on top of core task contracts and engines.",
-      "Must delegate prompt generation and LLM execution to dedicated infrastructure modules.",
-      "Must output structured validation results compatible with the RuleViolation protocol."
+      "Must not assume responsibility for CLI argument parsing or high-level orchestration of unrelated pipeline stages (consistent with the 'task-stage-boundary' rule).",
+      "Depends on a completed extraction stage (ExtractionStageOutput as input) and a functional rule engine to retrieve per-file rules.",
+      "Validation results must be normalized to a consistent schema (id, severity, reason) before persistence."
     ],
     "changeIntent": {
-      "architecturalIntent": "Implements a validation stage that uses LLM prompts to check source code against architectural rules, integrating with the task execution graph.",
-      "recentChangeIntent": "Recent commits aimed to harden scan resume validation and fix fallback paths, though specific changes are not detailed in the provided AST."
+      "architecturalIntent": "The ValidationTask is the central orchestrator for the validation stage, designed to decouple LLM interaction from core pipeline logic and ensure structured, auditable violation output.",
+      "recentChangeIntent": "As part of ArchSpine v1.0.0 architectural governance, this validation task was hardened to ensure structured violation output and concurrency-safe invocation."
     },
     "publicSurface": [
-      "ValidationSummary interface",
-      "ValidationTaskResult interface"
+      "ValidationTask (class extending SpineTask)",
+      "ValidationSummary (interface)",
+      "ValidationTaskResult (interface)"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "ArchSpine validation task orchestrator for LLM-powered architectural rule compliance checking.",
+        "role": "ArchSpine validation pipeline task that orchestrates LLM-powered architectural rule compliance checks on scanned source files, normalizing and persisting violation results.",
         "responsibilities": [
-          "Orchestrates validation of source files against configured architectural rules using LLM-generated prompts.",
-          "Builds prompt artifacts from source files and rule contexts for LLM validation.",
-          "Executes LLM validation prompts with concurrency control and handles LLM response parsing.",
-          "Normalizes and filters LLM-generated rule violation entries to ensure structured compliance data.",
-          "Logs validation diagnostics and records violations to the manifest."
+          "Orchestrates per-file validation: retrieves architectural rules for each file via ruleEngine, builds prompt artifacts using source context, and generates an LLM validation prompt.",
+          "Executes LLM validation prompts with concurrency control (p-limit) and parses the structured JSON response into normalized RuleViolation entries.",
+          "Normalizes and filters LLM-generated violation entries by verifying id/severity/reason fields, removing malformed or unsupported severity values.",
+          "Persists validated violations via manifest.recordViolation and updates diagnostic state through pushValidateDiagnostics.",
+          "Tracks LLM token usage via addTaskUsage and reports progress/errors through runtime I/O, respecting execution checkpoint indicators (skipped items)."
         ],
         "outOfScope": [
-          "CLI command parsing or unrelated service orchestration.",
-          "Direct LLM API communication or token management.",
-          "Rule definition or storage management."
+          "Direct invocation of CLI command handlers or user-facing argument parsing.",
+          "Performing static code analysis or rule inference itself—delegates entirely to the LLM.",
+          "Managing the repository scanning, manifest construction, or initial extraction stages.",
+          "Handling network or filesystem I/O outside of reading source files and writing violations (those are managed by the core framework)."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 验证管道任务，协调基于 LLM 的架构规则合规检查，对扫描的源文件进行违规检测，并标准化和持久化违规结果。",
+        "responsibilities": [
+          "为每个文件协调验证：通过 ruleEngine 获取架构规则，利用源上下文构建提示模板，生成 LLM 验证提示。",
+          "使用并发控制（p-limit）执行 LLM 验证提示，并将结构化 JSON 响应解析为标准化的 RuleViolation 条目。",
+          "通过验证 id、严重级别、原因字段，标准化并筛选 LLM 生成的违规条目，移除格式错误或不受支持的严重级别。",
+          "通过 manifest.recordViolation 持久化已验证的违规记录，并通过 pushValidateDiagnostics 更新诊断状态。",
+          "通过 addTaskUsage 跟踪 LLM 令牌使用情况，并通过运行时输入/输出报告进度和错误，同时遵守执行检查点指示（已跳过项目）。"
+        ],
+        "outOfScope": [
+          "直接调用 CLI 命令处理器或用户面向的参数解析。",
+          "自身执行静态代码分析或规则推理 — 完全委托给 LLM。",
+          "管理仓库扫描、清单构建或初始提取阶段。",
+          "处理网络或文件系统 I/O（读取源文件和写入违规记录由核心框架管理）。"
         ]
       }
     }
@@ -197,6 +216,20 @@
         ]
       },
       {
+        "targetPath": "../core/task-types.js",
+        "relation": "import",
+        "symbols": [
+          "ExtractionStageOutput"
+        ]
+      },
+      {
+        "targetPath": "../infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "PreviousSemanticContext"
+        ]
+      },
+      {
         "targetPath": "../infra/prompt-context.js",
         "relation": "import",
         "symbols": [
@@ -232,26 +265,106 @@
           "addTaskUsage",
           "pushValidateDiagnostics"
         ]
-      }
-    ],
-    "dependedBy": [
-      {
-        "targetPath": "src/services/check-service.ts",
-        "relation": "import",
-        "edgeProvenance": "ast",
-        "symbols": []
       },
       {
-        "targetPath": "src/services/fix-service.ts",
+        "targetPath": "fs",
         "relation": "import",
-        "edgeProvenance": "ast",
-        "symbols": []
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "p-limit",
+        "relation": "import",
+        "symbols": [
+          "pLimit"
+        ]
       }
     ],
-    "reverseIndexComplete": true
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/tasks/validate.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/buildSourcePromptArtifacts#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/validate.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/artifacts.ts/buildSourcePromptArtifacts#",
+        "targetPath": "src/infra/prompt-context/artifacts.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/validate.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/pushValidateDiagnostics#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/validate.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/generateSourceValidationJsonPrompt#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/validate.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/generateSourceValidationJsonPrompt#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/validate.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/source.ts/generateSourceValidationJsonPrompt#",
+        "targetPath": "src/infra/prompt/source.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/validate.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/addTaskUsage#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/validate.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/recordViolation#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/validate.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/clearViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/validate.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getFileDocs#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:41.810Z",
+    "indexedAt": "2026-05-03T11:25:06.500Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -1,9 +1,9 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/src","role":"This directory aggregates the application's core layers: API, domain, and infrastructure.","responsibility":"The components in this directory collectively provide the HTTP API for user creation, define the User domain entity with in-memory storage, and supply a database connectivity stub, though the API layer directly manages database connections, violating layered architecture principles.","children":[{"filePath":"examples/demo-project/src/api","role":"This directory contains the HTTP API handler for user creation operations.","fileKind":"folder"},{"filePath":"examples/demo-project/src/domain","role":"This directory contains the domain service for the User entity.","fileKind":"folder"},{"filePath":"examples/demo-project/src/infra","role":"Infrastructure layer providing database connectivity stubs.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T03:58:47.747Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-The `src` directory under `examples/demo-project` serves as the central hub for the application's core layers: API, domain, and infrastructure. It holds the HTTP handler for user creation, the `User` domain entity with in-memory storage, and a database connectivity stub. However, the API layer directly manages database connections, violating clean layered architecture principles.
+This directory is a sample project that demonstrates the ArchSpine architecture by implementing a minimal user management system. It is organized into three primary submodules that correspond to the architectural layers: **API**, **Domain**, and **Infrastructure**.
 
-Notable children include:
-- **api/** – Contains the HTTP API handler for user creation.
-- **domain/** – Holds the domain service for the `User` entity.
-- **infra/** – Provides database connectivity stubs.
+- **`api/`** – The HTTP entry point that receives user creation requests and delegates to the domain service. This layer also directly manages the database connection lifecycle, which intentionally illustrates a common deviation from the intended layered architecture.
 
-The most critical implementation areas are the API layer (which currently breaks layering by mixing data access), the domain model (responsible for core business logic and in-memory storage), and the infrastructure stubs (requiring full implementation). Each submodule should be refactored to enforce proper dependency inversion, with the domain depending only on abstractions rather than direct infrastructure calls.
+- **`domain/`** – The domain service layer that defines the `User` entity interface (with `id`, `name`, and `email` properties) and provides in-memory storage and management of users, including auto-generated IDs and retrieval by ID.
+
+- **`infra/`** – The database infrastructure layer, which exports a `Database` class that handles connection state and exposes a `connect` method for establishing connections to SQLite or PostgreSQL.
+
+The most important implementation areas are the boundary between the API and domain layers (where the architectural deviation occurs) and the placeholder nature of the infrastructure layer, which is designed for easy replacement with a real database adapter.

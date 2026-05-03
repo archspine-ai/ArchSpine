@@ -18,18 +18,17 @@
       "Provides a type guard function to validate config schema version compatibility."
     ],
     "outOfScope": [
-      "Runtime version management or dynamic version resolution.",
-      "Interface definitions (no interfaces present).",
-      "Schema validation beyond version string equality."
+      "Version comparison or parsing logic.",
+      "Any side effects or runtime logic beyond type checking."
     ],
     "invariants": [
-      "All exported version constants are string literals or template literals.",
-      "SchemaVersion type is a semantic version string template literal.",
-      "isSupportedConfigSchemaVersion is a pure type guard."
+      "Module must remain side-effect free.",
+      "Version constants must be exported immutably.",
+      "SchemaVersion type alias must follow the semantic version template."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide immutable version constants and type safety for schema versioning across the ArchSpine system.",
-      "recentChangeIntent": null
+      "architecturalIntent": "Establish a single source of truth for all version-related constants and types within the ArchSpine ecosystem.",
+      "recentChangeIntent": "Part of ArchSpine v1.0.0 release, consolidating version definitions for schema, config, and generator."
     },
     "publicSurface": [
       "SchemaVersion",
@@ -52,9 +51,21 @@
           "Provides a type guard function to validate config schema version compatibility."
         ],
         "outOfScope": [
-          "Runtime version management or dynamic version resolution.",
-          "Interface definitions (no interfaces present).",
-          "Schema validation beyond version string equality."
+          "Version comparison or parsing logic.",
+          "Any side effects or runtime logic beyond type checking."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 架构的版本定义核心模块，用于管理 Schema 和包版本。",
+        "responsibilities": [
+          "定义 SchemaVersion 类型别名，格式为语义版本字符串模板。",
+          "导出当前包版本、Schema 版本和配置 Schema 版本的常量。",
+          "导出标识 ArchSpine 工具链的生成器版本字符串。",
+          "提供类型守卫函数，用于验证配置 Schema 版本的兼容性。"
+        ],
+        "outOfScope": [
+          "版本比较或解析逻辑。",
+          "除类型检查外的任何副作用或运行时逻辑。"
         ]
       }
     }
@@ -118,10 +129,12 @@
   },
   "graph": {
     "dependsOn": [],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:42.129Z",
+    "indexedAt": "2026-05-03T11:25:06.792Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

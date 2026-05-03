@@ -4,7 +4,7 @@
     "filePath": "src/cli/commands/remove.ts",
     "contentHash": "dd3c82c8882288e516a438d9a23bc86829087c16ca17b2b364d7429a67b79514",
     "skeletonHash": "a4ea4970c9d68f3116a45bb016a91cb346fb4f35966a0c4039d3163e927ceb8b",
-    "semanticHash": "c153489df11a75ed52b08e89c00d8f21128d19b7b379be952386fd759a3d3076",
+    "semanticHash": "9fa393f5bb595603a935187cd89085ac11f1b961b1e74d8c5b45fd7d0d588330",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli/commands"
@@ -18,21 +18,18 @@
       "Provides user confirmation prompts before performing destructive removal operations."
     ],
     "outOfScope": [
-      "Implementing low-level file system removal logic.",
-      "Managing persistence of configuration state.",
-      "Executing core pipeline or scanning logic."
+      "Direct filesystem deletion and utility implementations (delegated to `utils/agent-instructions` and `utils/git-hook`).",
+      "Configuration state management and persistence (delegated to `Config` infra)."
     ],
     "invariants": [
-      "Must remain a thin command adapter, delegating all file and hook operations to dedicated utility modules.",
-      "Must not contain business logic for determining what constitutes an ArchSpine-managed artifact; that logic belongs to the Config service."
+      "Must confirm with user before destructive operations (uses `promptForExplicitConfirmation`).",
+      "Must delegate actual removal operations to utility functions and not implement its own filesystem deletion logic (compliance with CLI entrypoint separation rule)."
     ],
     "changeIntent": {
-      "architecturalIntent": "Decouple CLI entrypoints from core services to keep command routing thin and runtime behavior reusable.",
-      "recentChangeIntent": "Refactor to modularize CLI and decouple core infra services, aligning with the separation rule."
+      "architecturalIntent": "Maintain clean separation of CLI command routing from execution logic by delegating removal operations to utility modules.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era"
     },
-    "publicSurface": [
-      "ExecuteRemoveCommandOptions interface"
-    ],
+    "publicSurface": [],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
@@ -46,9 +43,21 @@
           "Provides user confirmation prompts before performing destructive removal operations."
         ],
         "outOfScope": [
-          "Implementing low-level file system removal logic.",
-          "Managing persistence of configuration state.",
-          "Executing core pipeline or scanning logic."
+          "Direct filesystem deletion and utility implementations (delegated to `utils/agent-instructions` and `utils/git-hook`).",
+          "Configuration state management and persistence (delegated to `Config` infra)."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于 'remove' 操作的 CLI 命令适配器，负责协调从仓库清理 ArchSpine 管理的工件。",
+        "responsibilities": [
+          "解析命令行参数以确定删除范围和确认需求。",
+          "根据配置状态，协调删除 ArchSpine 管理的文件（agent 指令、git 属性、git 忽略、搜索忽略、spine 忽略）。",
+          "管理从仓库卸载 ArchSpine 管理的 Git hooks。",
+          "在执行破坏性删除操作前提供用户确认提示。"
+        ],
+        "outOfScope": [
+          "直接的文件系统删除和工具实现（委托给 `utils/agent-instructions` 和 `utils/git-hook`）。",
+          "配置状态管理和持久化（委托给 `Config` 基础设施）。"
         ]
       }
     }
@@ -203,21 +212,87 @@
         "targetPath": "fs",
         "relation": "import",
         "symbols": [
-          "* as fs"
+          "existsSync"
         ]
       },
       {
         "targetPath": "path",
         "relation": "import",
         "symbols": [
-          "* as path"
+          "join"
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/remove.ts/_file_#",
+        "targetSymbol": "src/utils/confirm.ts/promptForExplicitConfirmation#",
+        "targetPath": "src/utils/confirm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/remove.ts/_file_#",
+        "targetSymbol": "src/utils/git-hook.ts/uninstallGitHook#",
+        "targetPath": "src/utils/git-hook.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/remove.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeManagedAgentInstructionsFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/remove.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/printStep#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/remove.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeManagedSearchIgnoreFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/remove.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeManagedSpineIgnoreFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/remove.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeManagedGitIgnoreFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/remove.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeManagedGitAttributesFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/remove.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeArchSpineScripts#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:36.612Z",
+    "indexedAt": "2026-05-03T11:25:01.484Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

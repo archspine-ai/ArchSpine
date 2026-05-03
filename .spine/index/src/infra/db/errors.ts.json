@@ -4,7 +4,7 @@
     "filePath": "src/infra/db/errors.ts",
     "contentHash": "0f4aa608b4bcd4ef4869268c2c2015349c7edf3cf05bc0ef1fb731f45d0cf9d7",
     "skeletonHash": "088f7f70f0b1201f038c9d6ca2c42d21372ba1ae2963eff677b1b8eb6f16653b",
-    "semanticHash": "307707f85cd5dc0f321c364dfeab00710b6bebde147880e7a2be43e32f2f2f56",
+    "semanticHash": "904c41720fc016745a807c8240a768ca36ec252a2af33ea7c5929eaf5a489711",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/db"
@@ -12,26 +12,27 @@
   "semantic": {
     "role": "Database runtime error mapping utility in the infrastructure layer.",
     "responsibilities": [
-      "Maps unknown runtime database errors to standardized ArchSpineError instances.",
-      "Detects read-only database conditions via error message pattern matching.",
-      "Assigns appropriate error codes based on failure stage (open/init) and error characteristics."
+      "Maps unknown runtime database errors (open/init stage) to standardized ArchSpineError instances.",
+      "Detects read-only database conditions via error message pattern matching and assigns ErrorCodes.RuntimeDbReadonly.",
+      "Assigns appropriate error codes based on failure stage: RuntimeDbOpenFailed for open stage, RuntimeDbInitFailed for init stage, when read-only is not detected.",
+      "Passes through existing ArchSpineError instances unchanged."
     ],
     "outOfScope": [
-      "Orchestrating database connections or transactions.",
-      "Handling application-level business logic.",
-      "Providing database driver implementations."
+      "High-level error handling or orchestration beyond the infrastructure layer.",
+      "Database read/write operations, connection management, or lifecycle management.",
+      "Error mapping for other subsystems (e.g., network, authentication)."
     ],
     "invariants": [
-      "Pure function with no side effects.",
-      "Always returns an ArchSpineError instance.",
-      "Relies on core error definitions and codes."
+      "Must import only from core/errors to remain a stable infrastructure facade.",
+      "Must not absorb service/task/engine orchestration concerns (per rule infra-facade-imports).",
+      "Must remain a pure utility without side effects beyond error transformation."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a stable, low-level error normalization facade for database runtime failures, insulating callers from driver-specific error details.",
-      "recentChangeIntent": "Generic commit (iZoy 's great commit) with no specific intent discernible from code evidence."
+      "architecturalIntent": "Provide a stable, low-level error mapping facade for database runtime operations, ensuring consistent error types across infrastructure layers.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — This file supports the architectural governance effort by standardizing database error handling via a dedicated mapping function."
     },
     "publicSurface": [
-      "mapRuntimeDbError"
+      "mapRuntimeDbError(error: unknown, stage: 'open' | 'init', dbPath: string): ArchSpineError"
     ],
     "ruleViolations": [],
     "driftDetected": false,
@@ -40,14 +41,29 @@
       "English": {
         "role": "Database runtime error mapping utility in the infrastructure layer.",
         "responsibilities": [
-          "Maps unknown runtime database errors to standardized ArchSpineError instances.",
-          "Detects read-only database conditions via error message pattern matching.",
-          "Assigns appropriate error codes based on failure stage (open/init) and error characteristics."
+          "Maps unknown runtime database errors (open/init stage) to standardized ArchSpineError instances.",
+          "Detects read-only database conditions via error message pattern matching and assigns ErrorCodes.RuntimeDbReadonly.",
+          "Assigns appropriate error codes based on failure stage: RuntimeDbOpenFailed for open stage, RuntimeDbInitFailed for init stage, when read-only is not detected.",
+          "Passes through existing ArchSpineError instances unchanged."
         ],
         "outOfScope": [
-          "Orchestrating database connections or transactions.",
-          "Handling application-level business logic.",
-          "Providing database driver implementations."
+          "High-level error handling or orchestration beyond the infrastructure layer.",
+          "Database read/write operations, connection management, or lifecycle management.",
+          "Error mapping for other subsystems (e.g., network, authentication)."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施层中的数据库运行时错误映射工具。",
+        "responsibilities": [
+          "将未知的运行时数据库错误（open/init 阶段）映射为标准化的 ArchSpineError 实例。",
+          "通过错误消息的模式匹配检测只读数据库条件，并分配 ErrorCodes.RuntimeDbReadonly。",
+          "根据失败阶段分配相应的错误码：open 阶段分配 RuntimeDbOpenFailed，init 阶段分配 RuntimeDbInitFailed（当未检测到只读条件时）。",
+          "对已是 ArchSpineError 的实例直接透传，不做修改。"
+        ],
+        "outOfScope": [
+          "基础设施层之外的高级错误处理或编排。",
+          "数据库的读写操作、连接管理或生命周期管理。",
+          "其他子系统（如网络、认证）的错误映射。"
         ]
       }
     }
@@ -88,7 +104,7 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "../../core/errors.js",
+        "targetPath": "src/core/errors.ts",
         "relation": "import",
         "symbols": [
           "ArchSpineError",
@@ -96,10 +112,27 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/db/runtime.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/db/errors.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/ArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:38.447Z",
+    "indexedAt": "2026-05-03T11:25:03.231Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

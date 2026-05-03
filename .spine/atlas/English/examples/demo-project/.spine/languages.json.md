@@ -1,35 +1,19 @@
-<!-- spine-content-hash:a54cef3e2b83284c936367b354112264dbef01ab58b78af9c7c8edc350bc32af -->
-# ArchSpine Language & Extension Registry
+# ArchSpine File Extension and Language Support Configuration
 
-## Role
-This file serves as the **language and extension registry** for the ArchSpine mirror system. It declares which file extensions are recognized, maps programming languages to their associated extensions, and tracks the availability status of each language processor.
+This configuration file controls which file extensions the ArchSpine system recognizes during scanning and indexing, and defines available programming languages for AST extraction and rule enforcement. The settings directly impact the scope of file processing and the accuracy of analysis.
 
-## Key Responsibilities
-- Declares the set of file extensions the system will process.
-- Maps each programming language identifier to its file extension(s).
-- Tracks whether each language processor is ready for use (e.g., `available`).
+## Key Parameters
 
-## Notable Invariants
-- `schemaVersion` must be `1` for this configuration format.
-- Every language entry must have a non-empty `extensions` array.
-- Every language entry must include a valid `status` field.
+- **`schemaVersion`**: Must be set to `1` for compatibility with the current processing pipeline. Changing this value may break reading of the configuration file.
+- **`detectedExtensions`**: A list of file extensions that the system will scan and analyze. Currently includes `.gif`, `.json`, `.md`, `.ts`, `.yml`. Any file with an extension not in this list will be ignored. Adding or removing extensions alters the processing scope; missing expected extensions (e.g., `.tsx` for TypeScript React files) can lead to incomplete indexing.
+- **`languages.typescript.extensions`**: The file extensions mapped to TypeScript language analysis. Currently only `.ts` is defined. If your project uses `.tsx` files, you must add that extension here to ensure they are processed under TypeScript rules.
+- **`languages.typescript.status`**: Must be set to `"available"` for TypeScript analysis to be active. Any other value (e.g., `"disabled"`) will skip AST extraction and rule enforcement for TypeScript files.
 
-## Negative Scope (Out of Scope)
-- This file does **not** define processing logic, transformation rules, or analysis behavior for any language.
-- It does **not** validate the actual presence or correctness of language processors — only their declared status.
+## Stability and Operational Risks
 
-## Exported / Externally Visible Behavior
-- The system reads this registry to determine which file types to discover and process.
-- If a language is marked `available` but its processor is missing or misconfigured, the system may fail to analyze or transform files of that type.
-- Missing extensions in `detectedExtensions` may cause files to be silently ignored.
-- Changing `schemaVersion` without a corresponding schema update will break configuration loading.
+- **Incomplete scanning**: If `detectedExtensions` does not include every file extension present in your repository, those files will be silently ignored. This can cause gaps in analysis and rule violations to go undetected.
+- **Performance impact**: Adding many extensions (especially large binary files) can slow down scanning and indexing. Stick to well-known source code extensions.
+- **Language analysis disabled**: Accidentally changing a language's `status` to anything other than `"available"` will disable its analysis entirely, potentially breaking architectural enforcement.
+- **Runtime crashes**: Adding unsupported or malformed extensions may trigger errors in the scanner. Always verify that extensions correspond to valid file types in your project.
 
-## Parameter Definitions
-- **schemaVersion**: Defines the version of the configuration schema. Currently fixed at `1`.
-- **detectedExtensions**: List of all file extensions that the system has discovered and will process.
-- **languages**: Mapping of programming language identifiers to their configuration objects.
-  - **languages.typescript.extensions**: File extensions associated with TypeScript. Currently only `.ts`.
-  - **languages.typescript.status**: Indicates whether the TypeScript language processor is ready for use. Value `available` means it is operational.
-
-## Stability & Risks
-This file controls which file types the system recognizes and processes. If a language is marked as `available` but its processor is missing or misconfigured, the system may fail to analyze or transform files of that type. Missing extensions in `detectedExtensions` could cause files to be silently ignored. The `schemaVersion` invariant ensures backward compatibility; changing it without a corresponding schema update will break configuration loading.
+To maintain system stability, keep this configuration tightly aligned with your project's actual file types and language support requirements. Review changes carefully before deployment.

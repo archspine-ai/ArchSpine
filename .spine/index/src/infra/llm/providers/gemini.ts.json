@@ -4,7 +4,7 @@
     "filePath": "src/infra/llm/providers/gemini.ts",
     "contentHash": "14ea2fb427d9d05ed2c4c88281e16eaf35384bde93e7ce55df5b622d7b517fe2",
     "skeletonHash": "f78bfef653e51023f3be57542008cc5de4506517c78ac578420d701e65ae0e76",
-    "semanticHash": "26bc9a1b581357603c066d664aef35e0a12c08353c898051240f984a85569374",
+    "semanticHash": "978f1703356a8e41f0764caaa3ad12865376d0c17aaa6c0e7c8f5ef549e52ac4",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/llm/providers"
@@ -14,26 +14,26 @@
     "responsibilities": [
       "Implements the LLMClient interface to generate semantic summaries for config, document, source, folder, and project file kinds.",
       "Formats prompts using the ArchSpine prompt engine (generateConfigPrompt, generateDocumentPrompt, etc.) tailored to each FileKind.",
-      "Executes requests to the Gemini API with configurable model, generation strategy, and timeout.",
-      "Applies retry logic via the withRetry utility for robustness (implied by previous contract and recent change intent).",
-      "Parses and structures LLM responses using utility functions (parseMarkdownBlocks, parseStructuredResponse)."
+      "Executes requests to the Gemini API via GoogleGenerativeAI with configurable model and generation strategy.",
+      "Parses structured responses from Gemini (JSON blocks and markdown) using utility functions like parseStructuredResponse and parseMarkdownBlocks.",
+      "Aggregates usage information across multiple API calls for a single summary generation."
     ],
     "outOfScope": [
-      "Orchestrating high-level tasks or engine workflows (delegated to services).",
-      "Managing API key storage or rotation (handled by configuration).",
-      "Implementing custom prompt templates outside the provided prompt utilities."
+      "Does not implement provider for other LLM APIs (e.g., OpenAI, Anthropic).",
+      "Does not define prompt templates; delegates to the prompt engine in ../../prompt.js.",
+      "Does not handle caching or persistence of generated summaries.",
+      "Does not manage API keys or provider configuration beyond initial setup."
     ],
     "invariants": [
-      "Must adhere to the LLMClient interface contract for all file kinds.",
-      "Must use the provided prompt utilities from infra for consistency.",
-      "Must not absorb service/task orchestration concerns (infra-facade-imports rule)."
+      "Must remain a thin LLM interaction layer without absorbing orchestration logic from services or tasks.",
+      "Must not directly access the file system or repository structure."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a stable, configurable LLM provider facade for Gemini API integration, isolating vendor-specific details from the core summary generation logic.",
-      "recentChangeIntent": "Harden LLM client stability, possibly through retry logic or error handling improvements (aligned with git intent)."
+      "architecturalIntent": "Provide a concrete LLM provider for Gemini within the provider abstraction, enabling ArchSpine to generate semantic mirrors using Google's Generative AI.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era"
     },
     "publicSurface": [
-      "GeminiClient class (implements LLMClient)"
+      "GeminiClient"
     ],
     "ruleViolations": [],
     "driftDetected": false,
@@ -43,15 +43,30 @@
         "role": "Concrete LLM provider implementation for Google's Gemini API, handling structured summary generation for ArchSpine's mirror system.",
         "responsibilities": [
           "Implements the LLMClient interface to generate semantic summaries for config, document, source, folder, and project file kinds.",
-          "Formats prompts using the ArchSpine prompt engine (generateConfigPrompt, generateDocumentPrompt, etc.) tailored to each FileKind.",
-          "Executes requests to the Gemini API with configurable model, generation strategy, and timeout.",
-          "Applies retry logic via the withRetry utility for robustness.",
-          "Parses and structures LLM responses using utility functions (parseMarkdownBlocks, parseStructuredResponse)."
+          "Formats prompts using the ArchSpine prompt engine tailored to each FileKind.",
+          "Executes requests to the Gemini API with configurable model and generation strategy.",
+          "Parses structured responses from Gemini and aggregates usage information."
         ],
         "outOfScope": [
-          "Orchestrating high-level tasks or engine workflows (delegated to services).",
-          "Managing API key storage or rotation (handled by configuration).",
-          "Implementing custom prompt templates outside the provided prompt utilities."
+          "Does not implement providers for other LLM APIs.",
+          "Does not define prompt templates.",
+          "Does not handle caching or persistence.",
+          "Does not manage API credentials directly."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "Google Gemini API 的具体 LLM 提供器实现，负责为 ArchSpine 的镜像系统生成结构化摘要。",
+        "responsibilities": [
+          "实现 LLMClient 接口，为配置、文档、源代码、文件夹和项目文件类型生成语义摘要。",
+          "使用 ArchSpine 的提示引擎根据每种 FileKind 格式化提示。",
+          "通过 GoogleGenerativeAI 执行对 Gemini API 的请求，支持可配置的模型和生成策略。",
+          "解析 Gemini 的结构化响应并聚合多次 API 调用的用量信息。"
+        ],
+        "outOfScope": [
+          "不实现其他 LLM API（如 OpenAI、Anthropic）的提供器。",
+          "不定义提示模板。",
+          "不处理生成摘要的缓存或持久化。",
+          "不管理 API 密钥或提供器配置。"
         ]
       }
     }
@@ -138,6 +153,13 @@
   "graph": {
     "dependsOn": [
       {
+        "targetPath": "@google/generative-ai",
+        "relation": "import",
+        "symbols": [
+          "GoogleGenerativeAI"
+        ]
+      },
+      {
         "targetPath": "../base.js",
         "relation": "import",
         "symbols": [
@@ -185,10 +207,174 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/lite-prompt.ts/generateLitePrompt#",
+        "targetPath": "src/infra/lite-prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/generateDocumentPrompt#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/generateDocumentPrompt#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/aggregate.ts/generateDocumentPrompt#",
+        "targetPath": "src/infra/prompt/aggregate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/generateConfigPrompt#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/generateConfigPrompt#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/aggregate.ts/generateConfigPrompt#",
+        "targetPath": "src/infra/prompt/aggregate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/generateSourcePrompt#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/generateSourcePrompt#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/source.ts/generateSourcePrompt#",
+        "targetPath": "src/infra/prompt/source.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/utils.ts/buildSupportingContext#",
+        "targetPath": "src/infra/llm/providers/utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/utils.ts/mergeUsage#",
+        "targetPath": "src/infra/llm/providers/utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/generateFolderPrompt#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/generateFolderPrompt#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/aggregate.ts/generateFolderPrompt#",
+        "targetPath": "src/infra/prompt/aggregate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/generateProjectPrompt#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/generateProjectPrompt#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/aggregate.ts/generateProjectPrompt#",
+        "targetPath": "src/infra/prompt/aggregate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/generateMarkdownPrompt#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/generateMarkdownPrompt#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/markdown.ts/generateMarkdownPrompt#",
+        "targetPath": "src/infra/prompt/markdown.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/utils.ts/parseMarkdownBlocks#",
+        "targetPath": "src/infra/llm/providers/utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/providers/gemini.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/utils.ts/parseStructuredResponse#",
+        "targetPath": "src/infra/llm/providers/utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:39.048Z",
+    "indexedAt": "2026-05-03T11:25:03.891Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -1,7 +1,0 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/index/src/infra","role":"Metadata and indexing layer for the ArchSpine mirror system's database infrastructure.","responsibility":"Provides structural metadata, content integrity tracking, and provenance records for database-related source files and directories within the ArchSpine mirror system.","children":[{"filePath":"examples/demo-project/.spine/index/src/infra/database.ts.json","role":"Metadata and structural index for a TypeScript database infrastructure source file","fileKind":"config"},{"filePath":"examples/demo-project/.spine/index/src/infra/folder.json","role":"Defines the structural metadata and indexing provenance for a source code directory within the ArchSpine mirror system.","fileKind":"config"}],"provenance":{"indexedAt":"2026-05-01T03:58:34.643Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`infra` 目录是 ArchSpine 镜像系统索引中数据库基础架构的元数据与索引层。该目录包含两个配置文件，共同提供结构元数据、内容完整性追踪和溯源记录，服务于数据库相关的源代码。
-
-- **`database.ts.json`** — 保存 TypeScript 数据库基础架构源文件的元数据和结构索引。该文件记录了文件的作用、依赖关系以及任何提取的语义信息。
-- **`folder.json`** — 定义整个源目录的结构元数据和索引溯源信息。它记录了该目录在镜像系统中的角色以及用于生成索引的处理流程阶段（AST 和 LLM）。
-
-这两个文件构成了数据库基础架构索引的核心，使人类和 AI 消费者能够理解数据库层的组织、依赖关系和加工历史。

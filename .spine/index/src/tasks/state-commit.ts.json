@@ -4,53 +4,69 @@
     "filePath": "src/tasks/state-commit.ts",
     "contentHash": "c8ee286d6d83b88a58a80d34acf69105b40beefd5c046dee5c137bd09f88dd90",
     "skeletonHash": "d7e2b3fcabbc8c55ea5144984734084084bc0b5a388287a9988c1ddbb04792b3",
-    "semanticHash": "424ec67c3dfd66239c975624e075d94de87d5b3e7ca004f0f37a931da9898f53",
+    "semanticHash": "c82a16e4c4afc175af179258081fdaa2ed5bd4afca0e0806fd2b4460805b2641",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/tasks"
   },
   "semantic": {
-    "role": "Pipeline stage task for committing synchronized file state (hashes and metadata) to the SQLite database after AST extraction and LLM summarization.",
+    "role": "Pipeline stage task for committing synchronized file state (hashes and metadata) to the SQLite database after AST extraction and LLM summarization are complete.",
     "responsibilities": [
-      "Commits batched file state (hashes and metadata) to the SQLite database via the manifest system.",
+      "Commits batched file state (hashes and metadata) to the SQLite database via ctx.manifest.commitBatch.",
       "Ensures database writes occur only after successful AST extraction and LLM summarization stages.",
       "Prevents write competition and partial failure contamination by coordinating with execution checkpoints.",
-      "Logs commitment progress and updates checkpoint completion status."
+      "Logs commitment progress and updates checkpoint completion status via ctx.executionCheckpoint.markItemCompleted."
     ],
     "outOfScope": [
-      "CLI command parsing",
-      "Service orchestration beyond its own stage",
-      "AST extraction or LLM summarization logic",
-      "Direct file I/O or hash calculation"
+      "CLI command parsing or argument handling.",
+      "Direct service orchestration beyond the pipeline stage.",
+      "AST extraction or LLM summarization logic.",
+      "Handling of unrelated infrastructure (e.g., HTTP server, configuration loading)."
     ],
     "invariants": [
-      "Must implement stage-local work on top of core contracts and engines (SpineTask, TaskContext).",
-      "Must not take over CLI command parsing or unrelated service orchestration."
+      "State commit must execute only after AST extraction and LLM summarization have successfully completed for the selected files.",
+      "Database writes must use ctx.manifest.commitBatch to ensure atomicity and consistency.",
+      "Checkpoint tracking (ctx.executionCheckpoint) must be updated for each committed artifact to prevent re-commit after partial failure."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a dedicated pipeline stage for atomic database commitment, ensuring data integrity after upstream processing.",
-      "recentChangeIntent": "Core task state contracts were refactored; this task likely depends on updated types but maintains its stage-local focus."
+      "architecturalIntent": "Integrate the state commitment stage into the pipeline to ensure database writes occur only after successful extraction and summarization, preventing partial failure contamination and maintaining synchronization integrity.",
+      "recentChangeIntent": "Part of the ArchSpine v1.0.0 release establishing architectural governance and semantic layer for the AI era."
     },
     "publicSurface": [
-      "StateCommitTask class"
+      "export class StateCommitTask extends SpineTask<SummarizationStageOutput, CommitStageOutput>"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Pipeline stage task for committing synchronized file state (hashes and metadata) to the SQLite database after AST extraction and LLM summarization.",
+        "role": "Pipeline stage task for committing synchronized file state (hashes and metadata) to the SQLite database after AST extraction and LLM summarization are complete.",
         "responsibilities": [
-          "Commits batched file state (hashes and metadata) to the SQLite database via the manifest system.",
+          "Commits batched file state (hashes and metadata) to the SQLite database via ctx.manifest.commitBatch.",
           "Ensures database writes occur only after successful AST extraction and LLM summarization stages.",
           "Prevents write competition and partial failure contamination by coordinating with execution checkpoints.",
-          "Logs commitment progress and updates checkpoint completion status."
+          "Logs commitment progress and updates checkpoint completion status via ctx.executionCheckpoint.markItemCompleted."
         ],
         "outOfScope": [
-          "CLI command parsing",
-          "Service orchestration beyond its own stage",
-          "AST extraction or LLM summarization logic",
-          "Direct file I/O or hash calculation"
+          "CLI command parsing or argument handling.",
+          "Direct service orchestration beyond the pipeline stage.",
+          "AST extraction or LLM summarization logic.",
+          "Handling of unrelated infrastructure (e.g., HTTP server, configuration loading)."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "管道阶段任务，负责在AST提取和LLM摘要完成之后，将同步后的文件状态（哈希值和元数据）提交到SQLite数据库。",
+        "responsibilities": [
+          "通过 ctx.manifest.commitBatch 将批量文件状态（哈希值和元数据）提交到SQLite数据库。",
+          "确保数据库写入仅在AST提取和LLM摘要阶段成功之后进行。",
+          "通过与执行检查点协调，防止写入竞争和部分失败污染。",
+          "记录提交进度，并通过 ctx.executionCheckpoint.markItemCompleted 更新检查点完成状态。"
+        ],
+        "outOfScope": [
+          "CLI命令解析或参数处理。",
+          "超出管道阶段的直接服务编排。",
+          "AST提取或LLM摘要逻辑。",
+          "处理不相关的基础设施（例如HTTP服务器、配置加载）。"
         ]
       }
     }
@@ -97,20 +113,37 @@
           "SpineTask",
           "TaskContext"
         ]
-      }
-    ],
-    "dependedBy": [
+      },
       {
-        "targetPath": "src/services/sync-service.ts",
+        "targetPath": "../core/task-types.js",
         "relation": "import",
-        "edgeProvenance": "ast",
-        "symbols": []
+        "symbols": [
+          "CommitStageOutput",
+          "SummarizationStageOutput"
+        ]
       }
     ],
-    "reverseIndexComplete": true
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/tasks/state-commit.ts/_file_#",
+        "targetSymbol": "src/infra/db/batch.ts/commitBatch#",
+        "targetPath": "src/infra/db/batch.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/state-commit.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getFileDocs#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:41.739Z",
+    "indexedAt": "2026-05-03T11:25:06.434Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

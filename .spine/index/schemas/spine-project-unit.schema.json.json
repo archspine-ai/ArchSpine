@@ -3,24 +3,25 @@
   "identity": {
     "filePath": "schemas/spine-project-unit.schema.json",
     "contentHash": "c7274001b0270538fec96a7e7437a48b44e5c3b2c7419d4cd35bd096b6b2367a",
-    "semanticHash": "6b0eb01c79d29f9c9409d5981bf089f418aadb707e8e2b4ce69fb732240b8ba3",
+    "semanticHash": "95a6d8c95fa25f0968a108c1441aaca7d88ea40b4bbd841f61ff7f58464e72a1",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas"
   },
   "semantic": {
-    "role": "Defines the structural schema for a SpineProjectUnit, which is the fundamental project unit descriptor in the ArchSpine mirror system.",
+    "role": "Defines the structure and required fields for documenting a project unit within the ArchSpine mirror system, ensuring consistent representation of project metadata, module decomposition, and generation provenance.",
     "responsibilities": [
-      "Project unit metadata validation",
-      "Module hierarchy definition",
-      "Provenance tracking for generation pipelines"
+      "Project metadata (name, role, responsibility) storage and validation",
+      "Module decomposition specification (directory, role, child count)",
+      "Provenance tracking (index timestamp, generator version, pipeline stages)"
     ],
     "outOfScope": [],
     "invariants": [
-      "schemaVersion, projectName, role, responsibility, modules, and provenance are all required fields",
-      "additionalProperties is false at both root and nested object levels, enforcing strict schema compliance",
-      "childCount must be a non-negative integer (minimum 0)",
-      "All string fields reference nonEmptyString definitions, preventing empty values"
+      "All required fields (schemaVersion, projectName, role, responsibility, modules, provenance) must be present",
+      "No additional properties allowed beyond the defined schema",
+      "Each module entry must include directory, role, and childCount (childCount must be a non-negative integer)",
+      "Provenance must include indexedAt (ISO timestamp), generatorVersion (non-empty string), and pipelineStages (array)",
+      "Shared schema references enforce consistent types (e.g., nonEmptyString, isoTimeStamp, scopePath, pipelineStage)"
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -31,28 +32,28 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Defines the structural schema for a SpineProjectUnit, which is the fundamental project unit descriptor in the ArchSpine mirror system.",
+        "role": "This configuration schema defines the mandatory structure for a SpineProjectUnit, which represents a self-contained project unit in the ArchSpine knowledge mirror. It enforces consistent documentation of a project's identity, its modular decomposition, and the provenance of its generation, enabling reliable indexing, validation, and cross-tool interoperability.",
         "parameter_definitions": {
-          "schemaVersion": "Specifies the version of the schema being used, ensuring compatibility with the ArchSpine system.",
-          "projectName": "A non-empty string uniquely identifying the project within the mirror system.",
-          "role": "A non-empty string describing the functional role of this project unit.",
-          "responsibility": "A non-empty string outlining the primary responsibility or domain of this project unit.",
-          "modules": "An array of module objects, each defining a sub-component with a directory path, role, and child count. This structures the project's internal hierarchy.",
-          "provenance": "An object tracking the origin and generation metadata of this project unit, including indexing timestamp, generator version, and pipeline stages."
+          "schemaVersion": "Specifies the version of the ArchSpine schema used, ensuring compatibility and enabling future evolution of the protocol.",
+          "projectName": "The unique name of the project unit, used for identification and cross-referencing across the mirror system.",
+          "role": "Describes the high-level functional role of the project (e.g., 'backend service', 'library'), affecting how it is categorized and visualized.",
+          "responsibility": "A concise statement of the project's core responsibility, used for architectural analysis and dependency assessment.",
+          "modules": "A list of logical submodules within the project. Each module captures a directory path, its role, and the number of immediate child units, enabling hierarchical decomposition analysis.",
+          "provenance": "Metadata about the generation of this unit: timestamp, generator version, and the pipeline stages executed. Critical for audit trails and reproducibility."
         },
-        "stability_and_risks": "This schema enforces strict structural validation for project units. The invariants prevent malformed or incomplete configurations, which could otherwise lead to cascading failures in the mirror system's dependency resolution or module discovery. The provenance tracking ensures auditability but requires accurate pipeline stage data; missing or incorrect provenance may cause synchronization issues. The non-empty string constraints mitigate risks of silent failures from empty identifiers. Overall, this schema promotes system stability by ensuring all project units are well-formed and traceable."
+        "stability_and_risks": "This schema is foundational to the ArchSpine protocol. Stability is high due to strict validation and well-defined shared types. Risks include misconfiguration if required fields are omitted (validation will reject), or if module directory paths reference non-existent locations (operational inconsistency). The provenance block ensures traceability but may expose sensitive generation timestamps if not handled carefully. Overall, adherence to this schema prevents structural drift and supports reliable automated processing."
       },
       "Simplified Chinese": {
-        "role": "定义 SpineProjectUnit 的结构化模式，这是 ArchSpine 镜像系统中基本的项目单元描述符。",
+        "role": "该配置模式定义了 SpineProjectUnit（脊柱项目单元）的强制性结构。SpineProjectUnit 是 ArchSpine 知识镜像系统中一个独立项目单元的表示。它强制要求一致地记录项目的身份、模块分解以及生成来源信息，从而实现可靠的索引、验证以及跨工具互操作。",
         "parameter_definitions": {
-          "schemaVersion": "指定所使用的模式版本，确保与 ArchSpine 系统的兼容性。",
-          "projectName": "一个非空字符串，用于在镜像系统中唯一标识该项目。",
-          "role": "一个非空字符串，描述此项目单元的功能角色。",
-          "responsibility": "一个非空字符串，概述此项目单元的主要职责或领域。",
-          "modules": "一个模块对象数组，每个对象定义一个子组件，包含目录路径、角色和子项数量。这用于构建项目的内部层次结构。",
-          "provenance": "一个对象，跟踪此项目单元的来源和生成元数据，包括索引时间戳、生成器版本和流水线阶段。"
+          "schemaVersion": "指定所使用的 ArchSpine 模式版本，确保协议兼容性并为未来演进提供支持。",
+          "projectName": "项目单元的唯一名称，用于在镜像系统中进行识别和交叉引用。",
+          "role": "描述项目的高层功能角色（例如“后端服务”、“库”），影响项目的分类和可视化展示。",
+          "responsibility": "项目核心职责的简要陈述，用于架构分析和依赖评估。",
+          "modules": "项目内的逻辑子模块列表。每个模块包含目录路径、角色以及直接子单元的数量，支持层次化分解分析。",
+          "provenance": "关于本单元生成的元数据：时间戳、生成器版本以及执行的流水线阶段。对于审计追踪和可重复性至关重要。"
         },
-        "stability_and_risks": "此模式对项目单元实施严格的结构验证。不变性约束防止了格式错误或不完整的配置，否则可能导致镜像系统在依赖解析或模块发现时出现级联故障。来源追踪确保了可审计性，但需要准确的流水线阶段数据；缺失或不正确的来源信息可能引发同步问题。非空字符串约束降低了因空标识符导致静默失败的风险。总体而言，此模式通过确保所有项目单元格式正确且可追溯，促进了系统稳定性。"
+        "stability_and_risks": "此模式是 ArchSpine 协议的基础。由于严格验证和明确定义的共享类型，稳定性很高。风险包括：若缺失必填字段（验证将拒绝）或模块目录路径引用不存在的路径（操作不一致）。来源块确保可追溯性，但若处理不当可能暴露敏感的时间戳。总体而言，遵循此模式能防止结构漂移并支持可靠的自动化处理。"
       }
     }
   },
@@ -74,7 +75,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:05.829Z",
+    "indexedAt": "2026-05-03T11:24:03.497Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -3,23 +3,27 @@
   "identity": {
     "filePath": "schemas/examples/spine-manifest.example.json",
     "contentHash": "e8c1d8370902b7efe8e67eec37c64fb065135ca814e75c819ec1cb606bd5e44c",
-    "semanticHash": "5eefda22303c58d751a48a88b7e95db25d7957b3ea6d4dedb7e0635957a67a01",
+    "semanticHash": "15c660dadb2ed24cc2e2515bdeee63a62ed1d488fd540608ee1c23716bf5889d",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas/examples"
   },
   "semantic": {
-    "role": "Language index manifest for the ArchSpine documentation atlas",
+    "role": "Manifest index file for ArchSpine Atlas, recording the current state of indexed source files and their associated documentation.",
     "responsibilities": [
-      "Tracking the synchronization state of documentation files",
-      "Mapping source files to their localized documentation paths",
-      "Recording content hashes for integrity verification"
+      "Maintain a registry of all indexed source files with content hashes for change detection.",
+      "Associate each source file with its documentation (Atlas entries) per locale.",
+      "Track sync metadata including last sync time, mode, and completeness of reverse index.",
+      "Provide a lightweight state snapshot for runtime and synchronization workflows."
     ],
     "outOfScope": [],
     "invariants": [
-      "Each source file must have a corresponding docs entry for every configured locale",
-      "The contentHash must match the actual file content at last index time",
-      "sourceExists must be true for any file that is expected to be present"
+      "contentHash must match the SHA-256 hash of the actual file content.",
+      "fileKind must be one of the allowed source types (e.g., 'source', 'test', 'config').",
+      "sourceExists must be true for files that currently exist on disk; false if deleted.",
+      "Each doc entry must have a valid locale code and a path within .spine/atlas/.",
+      "sync.lastSyncMode must be 'full' or 'incremental'.",
+      "sync.indexedUnitCount must equal the number of entries in the 'files' object."
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -30,44 +34,46 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Language index manifest for the ArchSpine documentation atlas",
+        "role": "This manifest file acts as the central index for the ArchSpine Atlas system. It records every source file that has been indexed, along with its content fingerprint and links to its documentation in supported locales. It also stores synchronization checkpoint data used by the runtime to determine when a rescan is needed.",
         "parameter_definitions": {
-          "schemaVersion": "Defines the version of the manifest schema; used for forward compatibility checks.",
-          "generatorVersion": "Identifies the tool and version that generated this file; critical for debugging generation issues.",
-          "createdAt": "Timestamp of initial file creation; used for audit and freshness tracking.",
-          "updatedAt": "Timestamp of last modification; helps detect stale or concurrent updates.",
-          "sync.lastSyncAt": "Records when the last full or partial synchronization completed; used to determine staleness of the index.",
-          "sync.lastSyncMode": "Indicates whether the last sync was 'full' or 'incremental'; affects how reverse index completeness is interpreted.",
-          "sync.reverseIndexComplete": "Boolean flag indicating whether the reverse index (locale-to-file mapping) is fully built; if false, some locale queries may be incomplete.",
-          "sync.indexedUnitCount": "Number of documentation units indexed; used for progress monitoring and consistency checks.",
-          "files.<path>.contentHash": "SHA-256 hash of the source file content; used to detect changes and trigger re-indexing.",
-          "files.<path>.fileKind": "Categorizes the file (e.g., 'source', 'generated'); affects processing pipeline behavior.",
-          "files.<path>.lastIndexedAt": "Timestamp of the last successful indexing of this file; used to determine if re-indexing is needed.",
-          "files.<path>.docs[].locale": "Locale code for the documentation variant; determines which language-specific atlas path is used.",
-          "files.<path>.docs[].path": "Relative path to the localized documentation file; must exist and be readable for the index to be valid.",
-          "files.<path>.sourceExists": "Boolean indicating whether the source file is present on disk; if false, the entry is orphaned and should be cleaned up."
+          "schemaVersion": "Defines the version of the manifest schema. Updating this may break compatibility with older tools.",
+          "generatorVersion": "Identifies the exact version of the ArchSpine tool that created this manifest. Useful for debugging and migration.",
+          "createdAt": "Timestamp of initial creation. Helps trace the lifecycle of the index.",
+          "updatedAt": "Timestamp of last modification. Used to detect stale state.",
+          "sync": "A block containing synchronization metadata. Controls whether the runtime considers the index up-to-date or in need of a full rebuild.",
+          "sync.lastSyncAt": "Records when the last sync operation completed. Used for incremental sync decisions.",
+          "sync.lastSyncMode": "Indicates whether the last sync was 'full' or 'incremental'. Affects the trust level of the index.",
+          "sync.reverseIndexComplete": "Boolean flag that tells the system whether the reverse index (mapping docs back to source files) has been fully built. If false, certain operations may be impaired.",
+          "sync.indexedUnitCount": "Number of source units currently tracked. Should match the count of keys in the 'files' object; divergence indicates corruption.",
+          "files": "The core payload: a mapping of source file paths to their metadata. Each entry includes content hash, file kind, indexing timestamp, and links to documentation files.",
+          "files.<path>.contentHash": "SHA-256 hex digest of the file content. Used to detect modifications without re-reading the entire file.",
+          "files.<path>.fileKind": "Categorizes the file (e.g., 'source', 'test'). Influences which analysis pipelines are applied.",
+          "files.<path>.lastIndexedAt": "Timestamp of when this file was last indexed. Used to decide if re-indexing is necessary.",
+          "files.<path>.docs": "Array of documentation entries for this file. Each entry specifies a locale and a path to the markdown document in the Atlas.",
+          "files.<path>.sourceExists": "Boolean indicating whether the source file is still present on disk. Allows the system to gracefully handle deleted files."
         },
-        "stability_and_risks": "This file is the central registry for the documentation atlas. If it becomes corrupted or out of sync, the system may fail to locate or generate localized documentation, leading to broken references in the user interface or build pipeline. The reverseIndexComplete flag being false can cause incomplete locale-based queries. Missing or mismatched contentHash values will trigger unnecessary re-indexing or, worse, serve stale documentation. The sourceExists flag must be kept accurate to prevent orphaned entries from accumulating and confusing the indexing logic."
+        "stability_and_risks": "This manifest is the single source of truth for the indexing subsystem. If it becomes inconsistent (e.g., contentHash doesn't match actual file content), analysis and fix operations may produce false positives or miss violations. Deleting or corrupting this file will cause a full re-index on next sync, which can be time-consuming. The 'reverseIndexComplete' flag must be handled carefully: if set to false, view generation and certain queries will be degraded. The integrity of the entire system depends on this manifest staying in sync with the file system."
       },
       "Simplified Chinese": {
-        "role": "ArchSpine 文档图谱的语言索引清单",
+        "role": "此清单文件是 ArchSpine Atlas 系统的中央索引，记录了所有已索引的源文件及其内容指纹，以及各语言环境下的文档链接。同时包含同步检查点数据，供运行时判断是否需要重新扫描。",
         "parameter_definitions": {
-          "schemaVersion": "定义清单模式的版本号，用于向前兼容性检查。",
-          "generatorVersion": "标识生成此文件的工具及其版本，对调试生成问题至关重要。",
-          "createdAt": "文件首次创建的时间戳，用于审计和新鲜度追踪。",
-          "updatedAt": "文件最后修改的时间戳，有助于检测过期或并发更新。",
-          "sync.lastSyncAt": "记录最近一次完整或部分同步完成的时间，用于判断索引是否过时。",
-          "sync.lastSyncMode": "指示上次同步是“完整”还是“增量”模式，影响对反向索引完整性的解读。",
-          "sync.reverseIndexComplete": "布尔标志，指示反向索引（语言到文件的映射）是否已完全构建；若为 false，某些语言查询可能不完整。",
-          "sync.indexedUnitCount": "已索引的文档单元数量，用于进度监控和一致性检查。",
-          "files.<path>.contentHash": "源文件内容的 SHA-256 哈希值，用于检测变更并触发重新索引。",
-          "files.<path>.fileKind": "文件分类（例如“源文件”、“生成文件”），影响处理管道的行为。",
-          "files.<path>.lastIndexedAt": "该文件上次成功索引的时间戳，用于判断是否需要重新索引。",
-          "files.<path>.docs[].locale": "文档变体的语言代码，决定使用哪个特定语言的图谱路径。",
-          "files.<path>.docs[].path": "本地化文档文件的相对路径，该文件必须存在且可读，索引才有效。",
-          "files.<path>.sourceExists": "布尔标志，指示源文件是否存在于磁盘上；若为 false，则该条目为孤立条目，应予以清理。"
+          "schemaVersion": "定义清单模式的版本号。升级此版本可能破坏与旧工具的兼容性。",
+          "generatorVersion": "标识创建此清单的 ArchSpine 工具精确版本，便于调试和迁移。",
+          "createdAt": "初始创建时间戳，用于追踪索引的生命周期。",
+          "updatedAt": "最后修改时间戳，用于检测状态是否过时。",
+          "sync": "包含同步元数据的块，控制运行时是否认为索引是最新的，或需要完全重建。",
+          "sync.lastSyncAt": "记录上次同步操作完成的时间，用于增量同步决策。",
+          "sync.lastSyncMode": "指示上次同步模式为“完整”或“增量”，影响索引的可信度。",
+          "sync.reverseIndexComplete": "布尔标志，告知系统反向索引（从文档映射回源文件）是否已完全构建。若为 false，某些操作可能受损。",
+          "sync.indexedUnitCount": "当前跟踪的源单元数量，应与 files 对象中的键数量一致；不一致表示数据损坏。",
+          "files": "核心内容：源文件路径到元数据的映射。每个条目包含内容哈希、文件类型、索引时间戳及文档链接。",
+          "files.<path>.contentHash": "文件内容的 SHA-256 十六进制摘要，用于在不重新读取整个文件的情况下检测修改。",
+          "files.<path>.fileKind": "文件分类（如“source”、“test”），影响所应用的分析流程。",
+          "files.<path>.lastIndexedAt": "该文件上次被索引的时间戳，用于判断是否需要重新索引。",
+          "files.<path>.docs": "该文件的文档条目数组，每个条目指定语言环境和 Atlas 中的 Markdown 文档路径。",
+          "files.<path>.sourceExists": "布尔值，指示源文件是否仍存在于磁盘上，使系统能够优雅处理已删除的文件。"
         },
-        "stability_and_risks": "此文件是文档图谱的中央注册表。如果它损坏或不同步，系统可能无法定位或生成本地化文档，导致用户界面或构建管道中出现断链。reverseIndexComplete 标志为 false 可能导致基于语言的查询不完整。缺失或不匹配的 contentHash 值会触发不必要的重新索引，或者更糟，提供过时的文档。必须保持 sourceExists 标志的准确性，以防止孤立条目累积并混淆索引逻辑。"
+        "stability_and_risks": "此清单是指纹子系统的唯一真实数据源。如果它变得不一致（例如 contentHash 与实际文件内容不匹配），分析和修复操作可能会产生误报或遗漏违规。删除或损坏此文件将导致下次同步时进行完全重新索引，这可能非常耗时。 reverseIndexComplete 标志必须谨慎处理：如果设置为 false，视图生成和某些查询将降级。整个系统的完整性依赖于此清单与文件系统保持同步。"
       }
     }
   },
@@ -89,7 +95,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:44:47.657Z",
+    "indexedAt": "2026-05-03T11:23:35.534Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

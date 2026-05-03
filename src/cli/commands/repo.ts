@@ -19,7 +19,9 @@ export async function executeRepoCommand({
   } else if (repoSubcommand === 'strategy' && args[1] === 'set') {
     const nextStrategy = parseArtifactStrategy(args[2]);
     if (!nextStrategy || args.length !== 3) {
-      throwCliUsage('Usage: spine repo strategy set <local|distributable>');
+      throwCliUsage(
+        `Invalid artifact strategy "${args[2] || ''}". Usage: spine repo strategy set <local|distributable>`,
+      );
     }
     runRepoStrategySet(rootDir, config, nextStrategy, printStep);
   } else {

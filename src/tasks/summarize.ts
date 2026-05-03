@@ -193,6 +193,72 @@ function hasAllRequestedMarkdown(
   });
 }
 
+function formatMarkdownList(items: unknown[]): string {
+  const values = items.filter(
+    (item): item is string => typeof item === 'string' && item.trim().length > 0,
+  );
+  if (values.length === 0) {
+    return '- N/A';
+  }
+  return values.map((item) => `- ${item}`).join('\n');
+}
+
+function getLocalizedSemanticData(
+  semanticJson: unknown,
+  locale: string,
+): Record<string, unknown> | undefined {
+  if (!isObjectRecord(semanticJson)) {
+    return undefined;
+  }
+  const localized = semanticJson.localized;
+  if (!isObjectRecord(localized)) {
+    return undefined;
+  }
+  const localeData = localized[locale];
+  return isObjectRecord(localeData) ? localeData : undefined;
+}
+
+function buildMarkdownFallback(
+  relativeFilePath: string,
+  semanticJson: unknown,
+  locale: string,
+): string {
+  const semantic = isObjectRecord(semanticJson) ? semanticJson : {};
+  const localized = getLocalizedSemanticData(semanticJson, locale);
+  const role =
+    (typeof localized?.role === 'string' && localized.role) ||
+    (typeof semantic.role === 'string' && semantic.role) ||
+    'Unknown role';
+  const responsibilities = Array.isArray(localized?.responsibilities)
+    ? localized.responsibilities
+    : Array.isArray(semantic.responsibilities)
+      ? semantic.responsibilities
+      : [];
+  const outOfScope = Array.isArray(localized?.outOfScope)
+    ? localized.outOfScope
+    : Array.isArray(semantic.outOfScope)
+      ? semantic.outOfScope
+      : [];
+  const localizedNote = locale.toLowerCase().includes('chinese')
+    ? '本地兜底版本，确保文档输出完整。'
+    : 'Deterministic fallback generated to keep documentation output complete.';
+
+  return [
+    `# File: ${relativeFilePath}`,
+    '',
+    `## ${locale.toLowerCase().includes('chinese') ? '角色' : 'Role'}`,
+    role,
+    '',
+    `## ${locale.toLowerCase().includes('chinese') ? '职责' : 'Responsibilities'}`,
+    formatMarkdownList(responsibilities),
+    '',
+    `## ${locale.toLowerCase().includes('chinese') ? '负面范围' : 'Out of Scope'}`,
+    formatMarkdownList(outOfScope),
+    '',
+    localizedNote,
+  ].join('\n');
+}
+
 function buildSpineSkeleton(fileSkeleton: FileSkeleton, filePath: string): SpineSkeleton {
   const imports = (fileSkeleton.imports || []).map((imp) => ({
     source: imp.source,
@@ -564,14 +630,45 @@ export class SummarizationTask extends SpineTask<ExtractionStageOutput, Summariz
     );
 
     addTaskUsage(fullTaskContext, rawSummary.usage);
+    let markdown = rawSummary.markdown;
 
     if (
       ctx.writeAtlasDocs &&
       ctx.targetLocales.length > 0 &&
-      !hasAllRequestedMarkdown(rawSummary.markdown, ctx.targetLocales)
+      !hasAllRequestedMarkdown(markdown, ctx.targetLocales)
     ) {
-      throw new Error(
-        `LLM response did not include markdown blocks for requested locales: ${ctx.targetLocales.join(', ')}`,
+      markdown = await this.backfillMissingMarkdownLocales(
+        ctx,
+        fullTaskContext,
+        relativeFilePath,
+        fileKind,
+        content,
+        contextData,
+        ruleData,
+        previousSemantic,
+        gitIntent || undefined,
+        branch,
+        status,
+        markdown,
+      );
+    }
+
+    if (
+      ctx.writeAtlasDocs &&
+      ctx.targetLocales.length > 0 &&
+      !hasAllRequestedMarkdown(markdown, ctx.targetLocales)
+    ) {
+      ctx.targetLocales.forEach((locale) => {
+        if (!markdown[locale]?.trim()) {
+          markdown[locale] = buildMarkdownFallback(
+            relativeFilePath,
+            rawSummary.json.semantic,
+            locale,
+          );
+        }
+      });
+      ctx.runtimeIO.warn(
+        `[Task: Summarization] Markdown missing after backfill for ${relativeFilePath}; applied fallback.`,
       );
     }
 
@@ -629,9 +726,63 @@ export class SummarizationTask extends SpineTask<ExtractionStageOutput, Summariz
       hash,
       fileKind,
       spineUnit,
-      rawSummary.markdown,
+      markdown,
     );
     return shouldPropagateDirChange(previousUnit, spineUnit);
+  }
+
+  private async backfillMissingMarkdownLocales(
+    ctx: SummarizationTaskContext,
+    fullTaskContext: TaskContext,
+    relativeFilePath: string,
+    fileKind: FileKind,
+    content: string,
+    contextData: string | undefined,
+    ruleData: string,
+    previousSemantic: PreviousSemanticContext | undefined,
+    gitIntent: string | undefined,
+    branch: string,
+    status: string,
+    existingMarkdown: Record<string, string>,
+  ): Promise<Record<string, string>> {
+    if (!ctx.llmClient?.generateSummary) {
+      return existingMarkdown;
+    }
+
+    const markdown: Record<string, string> = { ...existingMarkdown };
+    const missingLocales = ctx.targetLocales.filter((locale) => !markdown[locale]?.trim());
+    if (missingLocales.length === 0) {
+      return markdown;
+    }
+
+    ctx.runtimeIO.warn(
+      `[Task: Summarization] Markdown backfill required for ${relativeFilePath}; regenerating missing locales: ${missingLocales.join(', ')}`,
+    );
+
+    for (const locale of missingLocales) {
+      const response = await ctx.llmClient.generateSummary(
+        relativeFilePath,
+        content,
+        contextData,
+        ruleData,
+        gitIntent,
+        [locale],
+        branch,
+        status,
+        previousSemantic,
+        ctx.promptTier,
+        ctx.validatePolicy,
+        fileKind,
+        'summarize',
+      );
+      addTaskUsage(fullTaskContext, response.usage);
+      const contentForLocale = response.markdown[locale];
+      if (contentForLocale?.trim()) {
+        markdown[locale] = contentForLocale.trim();
+      }
+    }
+
+    return markdown;
   }
 }
 

@@ -3,22 +3,23 @@
   "identity": {
     "filePath": "examples/demo-project/.spine/rules/arch.yml",
     "contentHash": "b232b63b058af9e6010f5e6a32ee62b47ed7e27556020041042280be988bf01d",
-    "semanticHash": "e8d12ac41e55bb6cf3f14808ac82793282c04f48188c47298642e441f480384b",
+    "semanticHash": "6db86d1b8cec7f95b8169efd29734b3452cb3227134e17dfcbe5219c5012c664",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "examples/demo-project/.spine/rules"
   },
   "semantic": {
-    "role": "Defines architectural rules and constraints for the ArchSpine demo project, serving as a machine-readable governance specification.",
+    "role": "Rule definition document for the ArchSpine demo project, enforcing specific architectural constraints.",
     "responsibilities": [
-      "Documenting layer isolation rules between API, domain, and infrastructure modules",
-      "Specifying documentation requirements for domain-level public interfaces",
-      "Providing parser-compatible rule syntax for automated enforcement"
+      "Define a Layer Isolation rule preventing API layer from directly importing infrastructure modules.",
+      "Define a Documentation rule requiring TSDoc comments for public domain classes and methods.",
+      "Specify severity levels (error, warning) and rationale for each rule.",
+      "Provide scoped targets (src/api/**, src/domain/**) for rule application."
     ],
     "outOfScope": [
-      "Detailed implementation guidelines for specific programming languages or frameworks",
-      "Deployment or operational procedures",
-      "User-facing feature specifications or product requirements"
+      "Global or cross-project architecture rules.",
+      "Rules for layers beyond API and domain (e.g., infrastructure, tests, deployment).",
+      "Detailed implementation patterns for fixing violations."
     ],
     "invariants": [],
     "changeIntent": {
@@ -30,21 +31,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document establishes the core architectural governance rules for the ArchSpine demo project. It defines clear boundaries between software layers and mandates documentation standards to maintain code quality and architectural integrity.",
-        "context_and_audience": "Intended for developers and architects working on the ArchSpine project who need to understand and comply with the enforced architectural constraints. The rules are written in a parser-compatible format to enable automated validation.",
+        "purpose": "To codify specific architectural boundaries and documentation expectations for the demo project under ArchSpine, ensuring consistent enforcement by both humans and automated tools.",
+        "context_and_audience": "Intended for project developers and AI agents maintaining the demo project. These rules guide code changes and reviews within the project scope.",
         "key_takeaways": [
-          "API handlers must not directly import infrastructure modules, ensuring layer independence",
-          "All public domain classes and methods require TSDoc comments for maintainable architecture documentation",
-          "Rules are structured for both human readability and machine parsing"
+          "API handlers must not directly import from src/infra/; use domain layer as intermediary.",
+          "All public domain classes and methods must have TSDoc comments.",
+          "Violations of Layer Isolation are errors; missing documentation is a warning."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档为ArchSpine演示项目定义了核心架构治理规则。它明确了软件层之间的边界，并强制要求文档标准，以维护代码质量和架构完整性。",
-        "context_and_audience": "面向ArchSpine项目的开发者和架构师，帮助他们理解并遵守强制性的架构约束。规则采用解析器兼容格式编写，支持自动化验证。",
+        "purpose": "为 ArchSpine 演示项目确立具体的架构边界和文档规范，确保人工与自动化工具一致地执行这些约束。",
+        "context_and_audience": "面向维护该演示项目的开发者与 AI 代理。这些规则在项目范围内指导代码变更与审查。",
         "key_takeaways": [
-          "API处理器不得直接导入基础设施模块，确保层间独立性",
-          "所有公共领域类和方法必须包含TSDoc注释，以维护可读的架构文档",
-          "规则结构兼顾人类可读性与机器解析能力"
+          "API 处理程序不得直接导入 src/infra/；应通过领域层进行中转。",
+          "所有公开的领域类和方法必须包含 TSDoc 注释。",
+          "违反层隔离规则视为错误；缺少文档则作为警告处理。"
         ]
       }
     }
@@ -67,7 +68,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:44:08.403Z",
+    "indexedAt": "2026-05-03T11:22:29.425Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -4,49 +4,70 @@
     "filePath": "src/engines/context-relevance.ts",
     "contentHash": "6ea99dc98e44c48f923d807588b2a84c1789d42a31324e3631722c4ade4202df",
     "skeletonHash": "628bc2de038c7c5e492ace61851d1d0a6fd90b5573f9100005cca842df27a758",
-    "semanticHash": "60b1848a1d1496633f9b1daa98951601f33e162e2e4aaf245c00581165c8701d",
+    "semanticHash": "fde15565ebaeca6843adae3cc114bd70a7b98846372e7253bec257f34c49cd76",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/engines"
   },
   "semantic": {
-    "role": "Engine utility function for extracting and filtering keywords from architectural rule text.",
+    "role": "Engine module for scoring the relevance of dependency candidates and target paths using rule-derived keywords, symbol evidence, and path distance heuristics.",
     "responsibilities": [
-      "Tokenizes rule content into search tokens using an external extractSearchTokens function.",
-      "Filters out predefined rule-related stopwords to isolate meaningful keywords.",
-      "Limits the keyword list to a maximum of 16 unique tokens for efficiency."
+      "Extracts meaningful keywords from architectural rule text by tokenizing with extractSearchTokens and filtering RULE_KEYWORD_STOPWORDS, capping at 16 unique tokens.",
+      "Computes a composite relevance score for a dependency candidate (relativeFilePath, targetPath, importedSymbols) by aggregating contributions from symbol evidence score, path distance score, and rule keyword match score.",
+      "Computes a composite relevance score for a target path (usage, targetPath, importTargets, importedSymbolMap) by aggregating contributions from import target match, imported symbol use, path distance, public surface overlap, and rule keyword match.",
+      "Derives symbol evidence score using getSymbolEvidenceScore and public surface symbols via getPublicSurfaceSymbols.",
+      "Applies path distance metric via computePathDistance to weigh closeness between source and target files."
     ],
     "outOfScope": [
-      "Parsing or validating rule structure.",
-      "Scoring or ranking rule relevance.",
-      "Direct interaction with CLI or service orchestration."
+      "Rule storage, loading, or validation logic.",
+      "Actual dependency resolution or file system traversal.",
+      "CLI interaction, user input handling, or presentation concerns."
     ],
     "invariants": [
-      "Must not depend on CLI entrypoints or service orchestration modules.",
-      "Must be a pure function focused on text tokenization and filtering."
+      "Must not import from CLI entrypoints (engine-independence rule).",
+      "Should remain decoupled from service-level orchestration where practical."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provides a reusable text processing utility for rule analysis, supporting search and categorization.",
-      "recentChangeIntent": "No direct evidence of the scanner/context split in this file."
+      "architecturalIntent": "Provide reusable semantic scoring primitives for the rule-driven dependency analysis engine, enabling prioritization of dependency candidates based on architectural relevance.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era: This file implements scoring heuristics that support the semantic layer by weighting dependencies according to rule keywords and structural proximity."
     },
     "publicSurface": [
-      "extractRuleKeywords"
+      "extractRuleKeywords(ruleData: string): string[]",
+      "scoreDependencyCandidate(relativeFilePath: string, targetPath: string, importedSymbols: string[], doc: IndexedDoc, ruleKeywords: string[]): number",
+      "scoreTargetPath(relativeFilePath: string, usage: string, targetPath: string, importTargets: Set<string>, importedSymbolMap: Map<string, string>, doc: IndexedDoc, ruleKeywords: string[]): number"
     ],
     "ruleViolations": [],
-    "driftDetected": false,
-    "driftReason": null,
+    "driftDetected": true,
+    "driftReason": "Previous semantic contract described only a utility for extracting keywords from rule text. This file now includes two additional scoring functions (scoreDependencyCandidate, scoreTargetPath) that compute composite relevance scores using symbol evidence, path distance, and keyword match, significantly expanding its architectural role.",
     "localized": {
       "English": {
-        "role": "Engine utility function for extracting and filtering keywords from architectural rule text.",
+        "role": "Engine module for scoring the relevance of dependency candidates and target paths using rule-derived keywords, symbol evidence, and path distance heuristics.",
         "responsibilities": [
-          "Tokenizes rule content into search tokens using an external extractSearchTokens function.",
-          "Filters out predefined rule-related stopwords to isolate meaningful keywords.",
-          "Limits the keyword list to a maximum of 16 unique tokens for efficiency."
+          "Extracts meaningful keywords from architectural rule text by tokenizing with extractSearchTokens and filtering RULE_KEYWORD_STOPWORDS, capping at 16 unique tokens.",
+          "Computes a composite relevance score for a dependency candidate (relativeFilePath, targetPath, importedSymbols) by aggregating contributions from symbol evidence score, path distance score, and rule keyword match score.",
+          "Computes a composite relevance score for a target path (usage, targetPath, importTargets, importedSymbolMap) by aggregating contributions from import target match, imported symbol use, path distance, public surface overlap, and rule keyword match.",
+          "Derives symbol evidence score using getSymbolEvidenceScore and public surface symbols via getPublicSurfaceSymbols.",
+          "Applies path distance metric via computePathDistance to weigh closeness between source and target files."
         ],
         "outOfScope": [
-          "Parsing or validating rule structure.",
-          "Scoring or ranking rule relevance.",
-          "Direct interaction with CLI or service orchestration."
+          "Rule storage, loading, or validation logic.",
+          "Actual dependency resolution or file system traversal.",
+          "CLI interaction, user input handling, or presentation concerns."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "引擎模块，使用规则衍生的关键词、符号证据和路径距离启发式方法，对依赖候选和目标路径的相关性进行评分。",
+        "responsibilities": [
+          "通过 extractSearchTokens 对架构规则文本进行分词并使用 RULE_KEYWORD_STOPWORDS 过滤，提取有意义的规则关键词，上限为 16 个唯一标记。",
+          "计算依赖候选（relativeFilePath、targetPath、importedSymbols）的复合相关性分数，聚合符号证据分数、路径距离分数和规则关键词匹配分数。",
+          "计算目标路径（usage、targetPath、importTargets、importedSymbolMap）的复合相关性分数，聚合导入目标匹配、导入符号使用、路径距离、公共表面重叠和规则关键词匹配的贡献。",
+          "使用 getSymbolEvidenceScore 和 getPublicSurfaceSymbols 推导符号证据分数。",
+          "通过 computePathDistance 应用路径距离度量，衡量源文件与目标文件之间的接近程度。"
+        ],
+        "outOfScope": [
+          "规则的存储、加载或验证逻辑。",
+          "实际的依赖解析或文件系统遍历。",
+          "CLI 交互、用户输入处理或展示相关关注点。"
         ]
       }
     }
@@ -131,17 +152,26 @@
         ]
       },
       {
+        "targetPath": "./context.js",
+        "relation": "import-type",
+        "symbols": [
+          "RelevanceScoreContribution"
+        ]
+      },
+      {
         "targetPath": "path",
         "relation": "import",
         "symbols": [
-          "*"
+          "path"
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:37.493Z",
+    "indexedAt": "2026-05-03T11:25:02.340Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

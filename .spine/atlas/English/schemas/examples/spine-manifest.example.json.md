@@ -1,31 +1,37 @@
-<!-- spine-content-hash:e8c1d8370902b7efe8e67eec37c64fb065135ca814e75c819ec1cb606bd5e44c -->
-# ArchSpine Language Index Manifest
+# ArchSpine Atlas Manifest – Operator Summary
 
-## Role
-This file serves as the **central language index manifest** for the ArchSpine documentation atlas. It tracks the synchronization state of all documentation files, maps source files to their localized documentation paths, and records content hashes for integrity verification.
+## Purpose
 
-## Key Responsibilities
-- **Tracking synchronization state** of documentation files across all configured locales.
-- **Mapping source files** to their corresponding localized documentation paths.
-- **Recording content hashes** (SHA-256) for integrity verification and change detection.
+This manifest file (`atlas.json`) is the central index for the ArchSpine Atlas system. It records every source file that has been indexed, along with its content fingerprint (SHA-256 hash) and links to its documentation in supported locales. It also stores synchronization checkpoint data used by the runtime to determine when a rescan is needed.
 
-## Notable Invariants
-- Every source file must have a corresponding documentation entry for each configured locale.
-- The `contentHash` must match the actual file content at the time of last indexing.
-- The `sourceExists` flag must be `true` for any file that is expected to be present on disk.
+## Key Parameters & What They Control
 
-## Negative Scope (Out of Scope)
-- This file does **not** contain the actual documentation content.
-- It does **not** perform any indexing or generation itself; it only records the results of such processes.
+| Parameter | What It Means | Why It Matters |
+|-----------|---------------|----------------|
+| `schemaVersion` | Version of the manifest schema. | Upgrading this can break compatibility with older tools. |
+| `generatorVersion` | Exact ArchSpine tool version that created the manifest. | Used for debugging and migration. |
+| `createdAt` / `updatedAt` | Timestamps of creation and last modification. | Help trace lifecycle and detect stale state. |
+| `sync.lastSyncAt` | When the last sync completed. | Used for incremental sync decisions. |
+| `sync.lastSyncMode` | `'full'` or `'incremental'`. | Affects the trust level of the index. |
+| `sync.reverseIndexComplete` | Boolean: whether the reverse index (docs back to source) is fully built. | If `false`, view generation and certain queries degrade. Handle with care. |
+| `sync.indexedUnitCount` | Number of tracked source units. | Should match the count of keys in `files`. **Divergence indicates corruption.** |
+| `files.<path>.contentHash` | SHA-256 hex digest of file content. | Used to detect modifications without re-reading the entire file. |
+| `files.<path>.fileKind` | Category of the file (`source`, `test`, `config`). | Influences which analysis pipelines are applied. |
+| `files.<path>.lastIndexedAt` | When this file was last indexed. | Decides if re-indexing is needed. |
+| `files.<path>.docs` | Array of locale + path to Atlas documentation. | Each entry must have a valid locale and a path under `.spine/atlas/`. |
+| `files.<path>.sourceExists` | Boolean: whether the source file still exists on disk. | Allows graceful handling of deleted files. |
 
-## Exported / Externally Visible Behavior
-- **Public Surface**: None directly; this is an internal manifest consumed by the ArchSpine build and indexing pipeline.
-- **Consumers**: The documentation atlas builder, locale-aware query system, and integrity verification tools.
-- **Key Fields**:
-  - `schemaVersion` / `generatorVersion`: Versioning and tool identification.
-  - `createdAt` / `updatedAt`: Timestamps for audit and freshness.
-  - `sync.*`: Synchronization metadata (last sync time, mode, reverse index completeness, indexed unit count).
-  - `files.<path>.*`: Per-file metadata including `contentHash`, `fileKind`, `lastIndexedAt`, `docs[]` (locale + path), and `sourceExists`.
+## Operational Risks & Stability Concerns
 
-## Stability and Risks
-This file is the **central registry** for the documentation atlas. If it becomes corrupted or out of sync, the system may fail to locate or generate localized documentation, leading to broken references in the user interface or build pipeline. The `reverseIndexComplete` flag being `false` can cause incomplete locale-based queries. Missing or mismatched `contentHash` values will trigger unnecessary re-indexing or, worse, serve stale documentation. The `sourceExists` flag must be kept accurate to prevent orphaned entries from accumulating and confusing the indexing logic.
+- **Single source of truth**: This manifest is the foundation for all indexing and analysis. If it becomes inconsistent (e.g., `contentHash` mismatches actual file content), analysis and fix operations will produce false positives or miss violations.
+- **Corruption or deletion**: If this file is deleted or corrupted, the next sync will trigger a **full re-index**, which can be very time-consuming.
+- **`reverseIndexComplete` flag**: If set to `false`, view generation and certain queries are degraded. Only set to `true` when the reverse index has been fully built, and ensure the process is reliable.
+- **`indexedUnitCount` mismatch**: If the number of entries in `files` differs from `sync.indexedUnitCount`, the manifest is corrupt. Operators should validate this count after every sync.
+- **`contentHash` integrity**: The hash must match the actual file content. If the file changes without updating the hash, the system will not detect the change. Use only authorized ArchSpine tooling to update the manifest.
+- **File system syncing**: The entire system's integrity depends on this manifest staying in sync with the file system. Any manual edits or out-of-band modifications risk instability.
+
+## Example (from current context)
+
+- `files` contains two entries (`src/auth.ts` and `src/sync.ts`), both `source` type, with docs in `zh-CN`.
+- `reverseIndexComplete` is `false` – meaning certain cross-reference lookups may not work until a full reverse index build is run.
+- `sync.lastSyncMode` is `full` – the index was completely rebuilt on the last sync.

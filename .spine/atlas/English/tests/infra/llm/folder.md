@@ -1,2 +1,21 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"tests/infra/llm","role":"Test suite for the LLM retry utility's error classification function.","responsibility":"Validates that the `isRetryableError` function correctly classifies various error types as retryable or non-retryable, ensuring robust error handling for LLM interactions.","children":[{"filePath":"tests/infra/llm/retry.test.ts","role":"Vitest unit test suite for the LLM retry utility's error classification function.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T03:58:47.491Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-This directory, `tests/infra/llm`, is part of the ArchSpine mirror system's test infrastructure. It contains a single Vitest test suite, `retry.test.ts`, which exhaustively validates the `isRetryableError` function from the LLM retry utility. The suite ensures that diverse error types (network, API, timeout, etc.) are correctly classified as retryable or non-retryable, guaranteeing robust error handling for large language model interactions. The directory is deliberately minimal, focusing solely on this critical classification logic without additional configuration or fixture files.
+## Test Suite: Error Classification for LLM Retry Utility
+
+This directory contains the unit test suite that validates the LLM retry utility's error classification function. The tests ensure that the retry logic correctly identifies which errors should trigger a retry and which should not.
+
+### Structure
+
+The suite consists of a single test file:
+
+- **`retry.test.ts`** — A Vitest test file that exercises the `isRetryableError` function against four distinct error scenarios.
+
+### Test Coverage
+
+The `retry.test.ts` file validates the following cases:
+
+- **Socket hang up** — verified as retryable.
+- **ECONNRESET** — verified as retryable.
+- **Terminated errors** — verified as retryable.
+- **HTTP 429 (rate limit)** — verified as retryable.
+- **HTTP 400 (bad request)** — verified as non-retryable.
+
+Together these tests confirm that only transient or server‑side throttling errors are marked for retry, while client‑side request errors are not.

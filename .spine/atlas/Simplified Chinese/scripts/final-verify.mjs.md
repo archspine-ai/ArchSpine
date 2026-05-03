@@ -1,25 +1,18 @@
-<!-- spine-content-hash:09fd95cf959caf347b149d76693e9c4afd2bd8ad9869a71f297079f100852392 -->
-# ArchSpine ASTExtractor 验证脚本
+# File: scripts/final-verify.mjs
 
-## 目的
-本文档是一个自动化测试脚本，用于验证 ASTExtractor 组件能否正确提取六种编程语言源代码中的导出符号。它确保提取器能准确处理继承、接口、泛型、约束及其他语言特定结构。
+## 角色
+Multi-language AST extractor verification script
 
-## 上下文与受众
-面向维护或扩展 ArchSpine AST 提取管线的开发者。该测试作为回归套件，用于确认对提取器的修改不会破坏多语言支持。
+## 职责
+- End-to-end validation of ASTExtractor against Java, C++, Rust, C, Python, and Go code snippets
+- Ensures that exported symbols (classes, functions, interfaces, traits, structs, etc.) are correctly identified
+- Acts as a regression test suite for the extractor's multi-language support
+- Provides a clear pass/fail report for each language fixture
 
-## 主要职责
-- 针对 Java、C++、Rust、C、Python 和 Go 的测试用例测试 ASTExtractor
-- 验证类、接口、函数、结构体、特质和泛型等导出符号的正确提取
-- 对照预期列表检查缺失或多余的导出
-- 按语言报告通过/失败状态及详细的导出签名
+## 负面范围
+- Does not test extraction of imports, dependencies, or internal symbols
+- Does not validate type resolution, generics bounds, or inheritance semantics beyond name extraction
+- Does not cover languages beyond the six fixtures included
+- Does not test error handling or malformed code
 
-## 不涉及范围
-- 不测试 ASTExtractor 的错误处理或超出基本用例的边界情况
-- 不覆盖非导出符号或内部实现细节
-- 不包括性能或内存分析
-
-## 关键要点
-- 覆盖 Java、C++、Rust、C、Python 和 Go 的代表性测试用例
-- 验证类、函数、接口、结构体、特质和泛型等导出符号
-- 按语言报告缺失或多余的导出，便于快速调试
-- 任何失败均以非零退出码退出，便于 CI 集成
+本地兜底版本，确保文档输出完整。

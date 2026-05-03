@@ -1,15 +1,19 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"tests/e2e","role":"End-to-end integration test suites for the ArchSpine CLI binary, covering commands like init, generate, validation, and pipeline execution.","responsibility":"Provides isolated, automated tests that validate CLI behavior by executing the built binary in temporary Git repositories, simulating user prompts, and asserting correct output, exit codes, and file system side effects—ensuring command correctness and regression prevention across the entire CLI surface.","children":[{"filePath":"tests/e2e/cli-config.test.ts","role":"End-to-end test suite for CLI commands, using vitest and child_process to automate integration testing.","fileKind":"source"},{"filePath":"tests/e2e/cli-init-advanced.test.ts","role":"Vitest end-to-end test suite for the CLI 'init' command, verifying interactive prompt and filesystem behavior.","fileKind":"source"},{"filePath":"tests/e2e/cli-pipeline-mock.test.ts","role":"Vitest integration test for the ArchSpine CLI pipeline end-to-end flow.","fileKind":"source"},{"filePath":"tests/e2e/cli-readonly.test.ts","role":"Vitest end-to-end (E2E) test suite for the ArchSpine CLI commands","fileKind":"source"},{"filePath":"tests/e2e/cli-real-llm.test.ts","role":"End-to-end test suite for the ArchSpine CLI, verifying correct behavior in a real temporary repository environment.","fileKind":"source"},{"filePath":"tests/e2e/cli-real-violation.test.ts","role":"End-to-end (E2E) integration test for the ArchSpine CLI binary using Vitest, verifying CLI execution and rule violation detection in isolated git repositories.","fileKind":"source"},{"filePath":"tests/e2e/cli-remove.test.ts","role":"Integration test suite for ArchSpine CLI commands using vitest, spawning the built CLI and mocking user prompts.","fileKind":"source"},{"filePath":"tests/e2e/cli-repo.test.ts","role":"Vitest end-to-end test suite for the ArchSpine CLI commands.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-02T07:41:52.531Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-**tests/e2e** 目录是 ArchSpine CLI 二进制文件的端到端集成测试核心。这里的所有文件都是 Vitest 测试套件，在独立的临时 Git 仓库中启动实际构建的 CLI，模拟真实的用户交互，并验证正确的输出、退出码和文件系统变化。  
+此目录是 **ArchSpine 命令行接口（CLI）的端到端集成测试套件**。它通过在隔离的临时环境中运行编译后的 CLI 二进制文件，验证所有主要 CLI 命令和工作流的正确性，包括标准输出、标准错误、退出代码以及文件系统副作用。
 
-八个测试文件按命令或场景逻辑分组：  
+测试文件按覆盖的命令或场景分组：
 
-- **`cli-config.test.ts`** – 验证通用 CLI 配置命令和整体参数解析。  
-- **`cli-init-advanced.test.ts`** – 专注 `init` 交互式命令，测试提示流程和生成的项目结构。  
-- **`cli-pipeline-mock.test.ts`** – 在模拟依赖关系下测试管道执行，确保端到端编排正常工作。  
-- **`cli-readonly.test.ts`** – 测试只读命令（例如 `generate` 的预演/展示模式），此时不会写入文件系统。  
-- **`cli-real-llm.test.ts`** – 使用真实 LLM 后端执行完整管道，在真实仓库中检查输出正确性。  
-- **`cli-real-violation.test.ts`** – 验证 CLI 运行期间在真实 Git 仓库中是否正确触发规则违反检测。  
-- **`cli-remove.test.ts`** – 验证 `remove` 命令，包括提示处理和文件系统清理。  
-- **`cli-repo.test.ts`** – 测试仓库级别命令及其与底层 Git 状态的交互。  
+- **核心命令测试**  
+  - `cli-config.test.ts` – 通用 CLI 编排、配置与参数处理。  
+  - `cli-init-advanced.test.ts` – `init` 命令，通过包装脚本模拟用户交互输入。  
+  - `cli-readonly.test.ts` – 只读命令（如 inventory 和 generation），以及 JSON 输出验证。  
+  - `cli-remove.test.ts` – `remove` 命令，包含提示模拟与 Git 工作流验证。  
+  - `cli-repo.test.ts` – 仓库级命令（`init`、`build`），在临时 Git 仓库中执行。
 
-这些套件共同保护了 CLI 每个主要功能点（`init`、`generate`、验证、管道执行、删除和只读操作）免受回归影响。它们依赖 `vitest` 和 `child_process` 生成子进程，使用临时目录并初始化真实 Git 仓库，精确断言标准输出、错误输出、退出码和文件副作用。
+- **管道与 LLM 测试**  
+  - `cli-pipeline-mock.test.ts` – 端到端管道执行，拦截 prompts 模块以模拟用户输入。  
+  - `cli-real-llm.test.ts` – 真实 LLM 集成测试（需要 API 密钥），验证在真实模型下的生成行为。
+
+- **规则违规检测**  
+  - `cli-real-violation.test.ts` – 强制验证规则违规被正确检测并报告，包括退出码断言。
+
+所有测试均使用 Vitest、`child_process.spawnSync`/`execFileSync` 和 `fs.mkdtempSync` 确保隔离性与可重现性。最重要的实现领域包括：自动化的提示模拟包装脚本、临时目录的生命周期管理（通过 `beforeAll`/`afterEach` 进行设置与清理），以及针对预期错误信息和文件系统结果的 CLI 行为精确断言。

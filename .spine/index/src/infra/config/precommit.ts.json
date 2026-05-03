@@ -4,50 +4,67 @@
     "filePath": "src/infra/config/precommit.ts",
     "contentHash": "8bc02a17858bd9e9c6f1997c4f5523987503a520f1f8c8aacede07388a0f7eec",
     "skeletonHash": "a9eea3b569ed92f4f8234d3a0b742a1a43676f1046724aa63efef0227d88db5b",
-    "semanticHash": "26a50ce6ea9034d36592ea9dd9a3e176083b3c83060f31e32fd409c320b9cb4b",
+    "semanticHash": "21c9ef8968a419632df41d54ec2eba88e3a613637ab8b19a420e86743bf6afd6",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/config"
   },
   "semantic": {
-    "role": "Configuration resolution utility for the pre-commit setting, determining its boolean value from environment variables or explicit parameters.",
+    "role": "Infra config utility for resolving the pre-commit boolean setting from an environment variable with an optional explicit parameter fallback.",
     "responsibilities": [
-      "Resolves the pre-commit boolean setting by checking the environment variable defined by PRE_COMMIT_ENV_VAR using parseBooleanEnv.",
-      "Returns a structured BooleanSettingResolution object indicating the resolved value, source ('env'), and the environment variable name.",
-      "Provides a fallback pattern where an explicit preCommit parameter could be used (though not fully shown in snippet, implied by function signature)."
+      "Reads the environment variable named by `PRE_COMMIT_ENV_VAR` and parses it via `parseBooleanEnv`.",
+      "If the environment variable is set to a valid boolean value, returns a `BooleanSettingResolution` with `source: 'env'` and the variable name.",
+      "If the environment variable is not set or is undefined, falls back to the explicit `preCommit` boolean parameter (implied by function signature and typical usage).",
+      "Returns a typed `BooleanSettingResolution` object consistently, isolating callers from environment parsing details."
     ],
     "outOfScope": [
-      "Orchestrating services, tasks, or engines",
-      "Providing infrastructure facades or low-level capabilities",
-      "Handling runtime business logic beyond configuration resolution"
+      "Does not resolve settings from config files, command-line arguments, or other configuration sources.",
+      "Does not validate the boolean value beyond what `parseBooleanEnv` provides (e.g., no schema enforcement).",
+      "Does not handle multiple environment variable alternatives or default values beyond the explicit parameter."
     ],
     "invariants": [
-      "Pure function with no side effects",
-      "Depends only on environment utilities and type definitions",
-      "Exports a single resolution function"
+      "The constant `PRE_COMMIT_ENV_VAR` must point to a valid environment variable name.",
+      "The function `parseBooleanEnv` must correctly handle `undefined`, `'true'`, `'false'`, and any other inputs as per its contract.",
+      "The returned object always conforms to the `BooleanSettingResolution` interface (value, source, envVar fields).",
+      "Callers should always call `resolvePreCommitSetting` rather than accessing environment variables directly to maintain a single point of resolution."
     ],
     "changeIntent": {
-      "architecturalIntent": "Encapsulate environment-based configuration resolution to promote consistency and testability across the codebase.",
-      "recentChangeIntent": null
+      "architecturalIntent": "Provide a consistent, typed pattern for resolving boolean settings from environment variables with an explicit fallback, used across the configuration subsystem.",
+      "recentChangeIntent": "Initial creation of the pre-commit setting resolution utility as part of the ArchSpine v1.0.0 architectural governance release."
     },
     "publicSurface": [
-      "resolvePreCommitSetting"
+      "resolvePreCommitSetting(preCommit: boolean | undefined): BooleanSettingResolution"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Configuration resolution utility for the pre-commit setting, determining its boolean value from environment variables or explicit parameters.",
+        "role": "Infra config utility for resolving the pre-commit boolean setting from an environment variable with an optional explicit parameter fallback.",
         "responsibilities": [
-          "Resolves the pre-commit boolean setting by checking the environment variable defined by PRE_COMMIT_ENV_VAR using parseBooleanEnv.",
-          "Returns a structured BooleanSettingResolution object indicating the resolved value, source ('env'), and the environment variable name.",
-          "Provides a fallback pattern where an explicit preCommit parameter could be used (though not fully shown in snippet, implied by function signature)."
+          "Reads the environment variable named by `PRE_COMMIT_ENV_VAR` and parses it via `parseBooleanEnv`.",
+          "Returns a `BooleanSettingResolution` with source 'env' and the environment variable name if set.",
+          "Falls back to the explicit `preCommit` parameter when the environment variable is not set.",
+          "Provides a consistent typed interface for pre-commit setting resolution."
         ],
         "outOfScope": [
-          "Orchestrating services, tasks, or engines",
-          "Providing infrastructure facades or low-level capabilities",
-          "Handling runtime business logic beyond configuration resolution"
+          "Does not resolve from config files, CLI arguments, or other sources.",
+          "Does not validate beyond boolean parsing.",
+          "Does not handle multiple env vars or default values other than the explicit parameter."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施配置工具，用于从环境变量解析预提交（pre-commit）的布尔设置，并支持通过显式参数作为后备方案。",
+        "responsibilities": [
+          "读取由 `PRE_COMMIT_ENV_VAR` 指定的环境变量，并通过 `parseBooleanEnv` 进行解析。",
+          "如果环境变量设置有效，返回带有来源类型 `'env'` 和变量名的 `BooleanSettingResolution` 对象。",
+          "当环境变量未设置时，回退到显式提供的 `preCommit` 布尔参数（根据函数签名推断）。",
+          "提供一致的、类型化的接口，使调用方无需直接处理环境变量解析细节。"
+        ],
+        "outOfScope": [
+          "不处理来自配置文件、命令行参数或其他配置源的设置。",
+          "不进行除布尔解析之外的验证。",
+          "不处理多个环境变量替代项或除显式参数之外的默认值。"
         ]
       }
     }
@@ -110,10 +127,20 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/config/precommit.ts/_file_#",
+        "targetSymbol": "src/infra/config/env.ts/parseBooleanEnv#",
+        "targetPath": "src/infra/config/env.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:38.165Z",
+    "indexedAt": "2026-05-03T11:25:02.969Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

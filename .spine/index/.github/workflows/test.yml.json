@@ -3,25 +3,23 @@
   "identity": {
     "filePath": ".github/workflows/test.yml",
     "contentHash": "38b6a6a201d2cb18f2b269a116d0d782ea3edc524ccedf707b8de92fbf0790f2",
-    "semanticHash": "ab44377193ddd6dbbd44193a896d84cd343f58122e178a2f05b2a5a2e63f83c1",
+    "semanticHash": "3341dd8736961f321a6f3452f4af312260865dac6ece4b621d3e421a8ab54a64",
     "language": "unsupported",
     "fileKind": "document",
     "scope": ".github/workflows"
   },
   "semantic": {
-    "role": "Defines the continuous integration (CI) pipeline for the ArchSpine project, automating verification, testing, documentation building, and release readiness checks.",
+    "role": "CI workflow definition for the ArchSpine project",
     "responsibilities": [
-      "Automated testing and validation on push/PR to main/master branches",
-      "Multi-version Node.js verification (20, 22)",
-      "Release gate validation",
-      "Documentation build verification",
-      "Package smoke testing for npm publish readiness"
+      "Defines continuous integration jobs for code verification across multiple Node.js versions",
+      "Contains a release gate job for quality assurance",
+      "Includes a documentation build job",
+      "Includes a package smoke check job to verify npm publish readiness"
     ],
     "outOfScope": [
-      "Deployment or production release workflows",
-      "Manual testing procedures",
-      "Code quality or linting rules",
-      "Environment-specific configuration"
+      "Deployment or release automation",
+      "Manual testing or approval steps",
+      "Cross-platform or non-Linux build environments"
     ],
     "invariants": [],
     "changeIntent": {
@@ -33,23 +31,23 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document defines the CI workflow for the ArchSpine project. It ensures that every push or pull request to the main or master branches triggers automated verification steps, including building, unit testing, protocol asset validation, release gate checks, documentation builds, and package smoke tests. The goal is to maintain code quality and release readiness across multiple Node.js versions.",
-        "context_and_audience": "This document is intended for developers and maintainers of the ArchSpine project who need to understand the automated checks that run in the CI pipeline. It is also relevant for DevOps engineers managing the repository's continuous integration setup.",
+        "purpose": "This document defines the continuous integration pipeline for the ArchSpine project. It automates code verification, release readiness checks, documentation building, and packaging validation in response to pushes to main/master branches and pull requests.",
+        "context_and_audience": "ArchSpine developers and repository maintainers who need to understand the automated CI checks and guarantees. The workflow runs on every push and PR, ensuring that changes meet project quality standards before merge.",
         "key_takeaways": [
-          "CI runs on push/PR to main/master and can be triggered manually.",
-          "Verification includes build, unit tests, protocol validation, release gate, docs build, and package smoke check.",
-          "Node.js versions 20 and 22 are tested in parallel.",
-          "The release gate and package smoke check ensure npm publish readiness."
+          "Verifies code on Node.js 20 and 22",
+          "Executes a release gate that performs deeper validation before a release",
+          "Builds documentation to ensure no broken references",
+          "Smoke-tests the npm package to catch packaging issues early"
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档定义了 ArchSpine 项目的持续集成（CI）工作流程。它确保每次向 main 或 master 分支的推送或拉取请求都会触发自动验证步骤，包括构建、单元测试、协议资产验证、发布门控检查、文档构建和包冒烟测试。其目标是在多个 Node.js 版本上维护代码质量和发布就绪状态。",
-        "context_and_audience": "本文档面向 ArchSpine 项目的开发者和维护者，帮助他们了解 CI 管道中运行的自动化检查。同时，也适用于管理仓库持续集成设置的 DevOps 工程师。",
+        "purpose": "本文档定义了 ArchSpine 项目的持续集成流水线。它自动执行代码验证、发布就绪检查、文档构建以及打包验证，这些操作针对主分支、master 分支的推送以及拉取请求触发。",
+        "context_and_audience": "面向 ArchSpine 的开发者与仓库维护者，帮助其了解自动化的 CI 检查与保障措施。该工作流在每次推送和 PR 时运行，确保变更在合并前满足项目质量标准。",
         "key_takeaways": [
-          "CI 在推送到 main/master 或发起拉取请求时运行，也可手动触发。",
-          "验证步骤包括构建、单元测试、协议验证、发布门控、文档构建和包冒烟检查。",
-          "并行测试 Node.js 20 和 22 两个版本。",
-          "发布门控和包冒烟检查确保 npm 发布就绪。"
+          "在 Node.js 20 和 22 上验证代码",
+          "执行发布门控，在发布前进行更深度的验证",
+          "构建文档以确保没有损坏的引用",
+          "对 npm 包进行冒烟测试，尽早发现打包问题"
         ]
       }
     }
@@ -72,7 +70,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:42:33.995Z",
+    "indexedAt": "2026-05-03T11:21:58.121Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

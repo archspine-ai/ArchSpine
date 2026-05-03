@@ -1,33 +1,20 @@
-<!-- spine-content-hash:764067e49382a73c612f61a9787f7dbdccb062c9e49fdfbdef2d4e4c5ebe60c6 -->
-# ArchSpine C/C++ Pattern Grammar
+# ArchSpine C/C++ AST Extraction Rules
 
 ## Purpose
-This document defines the pattern-based grammar rules used by ArchSpine to parse and mirror C/C++ source code structures. It specifies how imports, exports, and usages are identified and extracted from source files.
+This document defines the exact syntactic patterns that the ArchSpine scanner uses to recognize C/C++ code constructs such as functions, structs, variables, includes, and usage references. It acts as the language-specific rule set for the AST extraction engine within the mirror system.
 
-## Context & Audience
-Intended for developers and AI agents working on the ArchSpine mirror system who need to understand or modify the source code parsing rules. It is also relevant for anyone integrating C/C++ code analysis into the ArchSpine framework.
-
-## Key Responsibilities
-- **Import Patterns**: Specifying how `#include` directives and other import mechanisms are recognized.
-- **Export Patterns**: Defining patterns for exported functions, structs (classes), and variables.
-- **Usage Patterns**: Describing how function calls, field access, and pointer field access are matched.
-
-## Out of Scope
-- Language-specific semantics beyond C/C++ syntax.
-- Runtime behavior or execution logic.
-- Project-specific business rules or domain logic.
+## Audience and Context
+This document is intended for developers who maintain or extend ArchSpine’s language support, particularly for C/C++ codebases. It is also consumed automatically by the scanner to perform static analysis and symbol extraction. Understanding these rules is essential for adding new C/C++ constructs, debugging extraction issues, or porting the system to other dialects.
 
 ## Key Takeaways
-- The document defines three main categories: imports, exports, and usages.
-- Exports cover functions, structs (classes), and variables.
-- Usages cover function calls, field access, and pointer field access.
-- Patterns use a template syntax with placeholders like `$NAME`, `$TYPE`, `$RET`, etc.
+- Patterns use a YAML-based DSL with placeholders like `$NAME`, `$RET`, `$ARGS`.
+- Export rules map code structures to symbolic kinds (`Function`, `Class`, `Variable`) for the index.
+- Usage rules capture how symbols are referenced (calls, field access) for dependency tracking.
+- This rule set covers only C/C++; other languages have separate files.
 
-## Invariants
-No invariants are currently defined for this component.
+## Workflows Anchored
+- **Scanning pipeline**: The scanner loads this rule definition to recognize and extract symbols from C/C++ source files.
+- **Index building**: Exports become entries in the system’s symbolic index.
+- **Dependency analysis**: Usages feed into the mirror’s dependency graph construction.
 
-## Public Surface
-No public surface elements are currently exported from this document.
-
-## Drift Detection
-No drift detected.
+---

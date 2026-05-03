@@ -54,13 +54,23 @@ export function parseStructuredResponse(
   logContext: string,
 ): { json: unknown; markdown: Record<string, string> } {
   const jsonPart =
-    fullResponse.match(/---JSON---([\s\S]*?)(---MARKDOWN(?::|---)|$)/)?.[1]?.trim() ||
-    fullResponse.match(/---JSON---([\s\S]*)/)?.[1]?.trim() ||
+    fullResponse.match(/---JSON---([\s\S]*?)(?=---MARKDOWN(?::|---)|$)/)?.[1]?.trim() ||
     fullResponse;
 
   let json: unknown = {};
   try {
-    json = JSON.parse(jsonPart.replace(/```json/g, '').replace(/```/g, ''));
+    let cleanJson = jsonPart
+      .replace(/```json/gi, '')
+      .replace(/```/g, '')
+      .trim();
+    const firstBrace = cleanJson.indexOf('{');
+    const lastBrace = cleanJson.lastIndexOf('}');
+    if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+      cleanJson = cleanJson.substring(firstBrace, lastBrace + 1);
+    }
+    if (cleanJson) {
+      json = JSON.parse(cleanJson);
+    }
   } catch (error) {
     // eslint-disable-next-line no-console -- Warn on LLM response parse failure
     console.warn(`Failed to parse JSON from LLM for ${logContext}:`, error);

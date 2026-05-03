@@ -1,2 +1,21 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"tests/infra/llm","role":"Test suite for the LLM retry utility's error classification function.","responsibility":"Validates that the `isRetryableError` function correctly classifies various error types as retryable or non-retryable, ensuring robust error handling for LLM interactions.","children":[{"filePath":"tests/infra/llm/retry.test.ts","role":"Vitest unit test suite for the LLM retry utility's error classification function.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T03:58:47.491Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`tests/infra/llm` 目录属于 ArchSpine 镜像系统的测试基础设施，内含一个独立的 Vitest 测试套件 `retry.test.ts`。该套件全面验证 LLM 重试工具中的 `isRetryableError` 函数，确保各类错误（如网络、API、超时等）被正确归类为可重试或不可重试，从而保障与大语言模型交互时的错误处理健壮性。该目录结构精简，仅聚焦于这一关键分类逻辑的测试，不包含额外的配置文件或测试固件。
+## 测试套件：LLM 重试工具错误分类功能
+
+本目录包含用于验证 LLM 重试工具错误分类函数的单元测试套件。这些测试确保重试逻辑能正确识别哪些错误应触发重试、哪些不应。
+
+### 结构
+
+该套件包含一个测试文件：
+
+- **`retry.test.ts`** — 一个 Vitest 测试文件，针对 `isRetryableError` 函数执行四种不同的错误场景验证。
+
+### 测试覆盖范围
+
+`retry.test.ts` 文件验证了以下情况：
+
+- **Socket 挂起** — 验证为可重试。
+- **ECONNRESET（连接重置）** — 验证为可重试。
+- **连接终止错误** — 验证为可重试。
+- **HTTP 429 限速** — 验证为可重试。
+- **HTTP 400 错误请求** — 验证为不可重试。
+
+这些测试共同确认：只有瞬态错误或服务端限速错误才被标记为可重试，而客户端请求错误不被重试。

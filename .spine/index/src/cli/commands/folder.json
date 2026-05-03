@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/cli/commands",
-  "role": "CLI command adapters for ArchSpine operations.",
-  "responsibility": "Provides the command-line interface entry points for all ArchSpine subcommands, handling argument parsing, validation, delegation to core services, and user feedback.",
+  "role": "Entry point for all CLI subcommands, routing each command to its dedicated handler.",
+  "responsibility": "Provides a structured interface for initializing, configuring, synchronizing, fixing, scanning, publishing, and managing the ArchSpine mirror system via command-line operations.",
   "children": [
     {
       "filePath": "src/cli/commands/build.ts",
@@ -16,7 +16,7 @@
     },
     {
       "filePath": "src/cli/commands/config.ts",
-      "role": "CLI command adapter for configuration management within the ArchSpine system.",
+      "role": "CLI command adapter for configuration management in the ArchSpine system.",
       "fileKind": "source"
     },
     {
@@ -26,7 +26,7 @@
     },
     {
       "filePath": "src/cli/commands/god.ts",
-      "role": "CLI command handler for the God Mode feature, providing user warnings and confirmation before delegating to the God engine.",
+      "role": "CLI command adapter for the God Mode feature, handling user warnings and confirmation before delegating to the God engine.",
       "fileKind": "source"
     },
     {
@@ -36,7 +36,7 @@
     },
     {
       "filePath": "src/cli/commands/hook.ts",
-      "role": "CLI command adapter for managing git hook integration and synchronization within the ArchSpine system.",
+      "role": "CLI command adapter for managing git hook installation, configuration, and execution within the ArchSpine system.",
       "fileKind": "source"
     },
     {
@@ -46,7 +46,7 @@
     },
     {
       "filePath": "src/cli/commands/init.ts",
-      "role": "CLI command orchestrator for initializing the ArchSpine environment, configuration, and repository structure.",
+      "role": "CLI command orchestrator for initializing the ArchSpine environment, managing documentation language configuration, and coordinating repository and runtime bootstrap.",
       "fileKind": "source"
     },
     {
@@ -66,7 +66,7 @@
     },
     {
       "filePath": "src/cli/commands/publish.ts",
-      "role": "CLI command handler orchestrating the publish workflow for the ArchSpine mirror system, coordinating preflight checks, sync, document backfill, and atlas state management.",
+      "role": "CLI command handler orchestrating the publish workflow for the ArchSpine mirror system, coordinating preflight checks, sync, document backfill, and manifest state management.",
       "fileKind": "source"
     },
     {
@@ -76,22 +76,22 @@
     },
     {
       "filePath": "src/cli/commands/repo.ts",
-      "role": "CLI command router for repository-level operations in the ArchSpine system.",
+      "role": "CLI command adapter/router for repository-level operations in the ArchSpine system.",
       "fileKind": "source"
     },
     {
       "filePath": "src/cli/commands/scan.ts",
-      "role": "CLI command handler for the 'scan' operation, orchestrating source code scanning and dry-run reporting.",
+      "role": "CLI command adapter for the 'scan' operation, parsing command-line options and delegating scanning to the Scanner engine.",
       "fileKind": "source"
     },
     {
       "filePath": "src/cli/commands/status.ts",
-      "role": "CLI command adapter for displaying the synchronization status of the ArchSpine mirror system.",
+      "role": "CLI command adapter that orchestrates the display of synchronization status for the ArchSpine mirror system, acting as a thin entry point that delegates status retrieval to the runtime service and formats console output.",
       "fileKind": "source"
     },
     {
       "filePath": "src/cli/commands/sync.ts",
-      "role": "CLI command adapter orchestrating the synchronization workflow for the ArchSpine mirror system.",
+      "role": "CLI command adapter that orchestrates the complete synchronization workflow for the ArchSpine mirror system, including argument parsing, spine gate enforcement, repair policy evaluation, and execution checkpoint management.",
       "fileKind": "source"
     },
     {
@@ -101,17 +101,17 @@
     },
     {
       "filePath": "src/cli/commands/usage.ts",
-      "role": "CLI command entry point for executing usage reports.",
+      "role": "CLI command adapter for executing the usage report, defined as the usage command entry point.",
       "fileKind": "source"
     },
     {
       "filePath": "src/cli/commands/view.ts",
-      "role": "CLI command adapter for the 'view' subcommand, handling view selection, validation, and orchestration of protected output writes within the ArchSpine system.",
+      "role": "CLI command adapter for the `view` subcommand, handling view selection, display, and protected output baseline writes within the ArchSpine system.",
       "fileKind": "source"
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-02T13:37:14.614Z",
+    "indexedAt": "2026-05-03T11:27:20.800Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

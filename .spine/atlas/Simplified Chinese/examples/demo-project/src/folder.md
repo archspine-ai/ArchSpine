@@ -1,9 +1,9 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/src","role":"This directory aggregates the application's core layers: API, domain, and infrastructure.","responsibility":"The components in this directory collectively provide the HTTP API for user creation, define the User domain entity with in-memory storage, and supply a database connectivity stub, though the API layer directly manages database connections, violating layered architecture principles.","children":[{"filePath":"examples/demo-project/src/api","role":"This directory contains the HTTP API handler for user creation operations.","fileKind":"folder"},{"filePath":"examples/demo-project/src/domain","role":"This directory contains the domain service for the User entity.","fileKind":"folder"},{"filePath":"examples/demo-project/src/infra","role":"Infrastructure layer providing database connectivity stubs.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T03:58:47.747Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src` 目录位于 `examples/demo-project` 下，是应用核心层（API、领域、基础设施）的汇聚点。它包含用于创建用户的 HTTP 处理器、带有内存存储的 `User` 领域实体，以及数据库连接桩。但当前 API 层直接管理数据库连接，违反了清晰的分层架构设计原则。
+该目录是一个示例项目，演示了包含API层、领域层和基础设施层的ArchSpine架构，并通过一个最小化的用户管理系统进行实践。项目结构明确分为三个子模块，分别对应架构中的各层：
 
-主要子目录包括：
-- **api/** – 包含用户创建操作的 HTTP API 处理器。
-- **domain/** – 持有 `User` 实体的领域服务。
-- **infra/** – 提供数据库连接桩。
+- **`api/`** – HTTP入口点，接收用户创建请求并委托给领域服务。该层还直接管理数据库连接的生命周期，这有意展示了一种与预期分层架构的常见偏差。
 
-最重要的实现区域包括：API 层（目前因混合数据访问而违背分层原则）、领域模型（负责核心业务逻辑和内存存储），以及基础设施桩（需完整实现）。每个子模块都应重构以强化依赖反转，确保领域仅依赖抽象而非直接调用基础设施。
+- **`domain/`** – 领域服务层，定义了`User`实体接口（包含`id`、`name`和`email`属性），并提供基于内存的用户存储和管理功能，包括自动生成ID及按ID检索。
+
+- **`infra/`** – 数据库基础设施层，导出一个`Database`类，负责管理连接状态，并提供一个`connect`方法用于建立与SQLite或PostgreSQL的连接。
+
+最值得关注的实现区域在于API层与领域层之间的边界（此处存在架构偏差），以及基础设施层的占位性质——它被设计为易于替换为真实的数据库适配器。

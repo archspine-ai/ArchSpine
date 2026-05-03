@@ -4,63 +4,75 @@
     "filePath": "src/infra/prompt-context/parsers.ts",
     "contentHash": "6bc3ff90c686321640781a3e78d9597c8f271c0fb261f2560071b24340c589e9",
     "skeletonHash": "1d9aba91221704c9f77f3716b180307fcb32a0eba81379f0333dca442e8aa978",
-    "semanticHash": "888397eb434dd5a86bb09bd6f720eb2e290f803e4ff1a32b52122f54cf32ae12",
+    "semanticHash": "6786d75ae509baa28a2a3ec53907fdf5849784bcb4f33235632850337850dd66",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/prompt-context"
   },
   "semantic": {
-    "role": "Infrastructure utility function for parsing and validating the PromptPolicyTier configuration value from raw string input.",
+    "role": "Infrastructure utility for parsing and validating typed configuration enums from raw string input.",
     "responsibilities": [
-      "Parses a raw string input into a validated PromptPolicyTier enum value ('lite' or 'balanced').",
-      "Provides type-safe normalization by trimming and lowercasing the input string.",
-      "Returns undefined for empty, undefined, or invalid input values, enforcing a clean optional result."
+      "Parses raw string into PromptPolicyTier enum ('lite', 'balanced'), returning undefined for invalid or empty input.",
+      "Parses raw string into ValidatePolicy enum, returning undefined for invalid or empty input.",
+      "Parses raw string into LLMMode enum, returning undefined for invalid or empty input.",
+      "Parses raw string into RelevanceDiagnosticsMode enum, returning undefined for invalid or empty input.",
+      "Provides type-safe normalization (trim, lowercase) for all parsing functions."
     ],
     "outOfScope": [
-      "Does not handle any other configuration parsing or validation.",
-      "Does not interact with file system, network, or external services.",
-      "Does not perform any logging, error reporting, or side effects."
+      "Does not perform semantic validation beyond exact enum membership.",
+      "Does not interact with external systems or services.",
+      "Does not enforce architectural policies or orchestration logic.",
+      "Does not handle default values or configuration loading."
     ],
     "invariants": [
-      "The function is pure and deterministic: same input always produces same output.",
-      "The function never throws exceptions; invalid inputs always return undefined.",
-      "The function only accepts string or undefined as input; no other types are handled."
+      "Must not import from service or engine layers (infra isolation rule).",
+      "Functions must be pure and side-effect-free.",
+      "All parsing functions must follow consistent normalization pattern."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a stable, type-safe utility for normalizing user-provided prompt policy tier strings into the internal enum representation, ensuring consistent configuration parsing across the system.",
-      "recentChangeIntent": "No recent changes detected; the function remains a stable utility for configuration parsing."
+      "architecturalIntent": "Provide stable, isolated parsing facades for governance-related configuration enums, adhering to infra isolation principle.",
+      "recentChangeIntent": "Addition of comprehensive configuration parsing utilities for governance semantics (ArchSpine v1.0.0)."
     },
     "publicSurface": [
-      "parsePromptPolicyTier(value: string | undefined): PromptPolicyTier | undefined"
+      "parsePromptPolicyTier(value: string | undefined): PromptPolicyTier | undefined",
+      "parseValidatePolicy(value: string | undefined): ValidatePolicy | undefined",
+      "parseLLMMode(value: string | undefined): LLMMode | undefined",
+      "parseRelevanceDiagnosticsMode(value: string | undefined): RelevanceDiagnosticsMode | undefined"
     ],
     "ruleViolations": [],
-    "driftDetected": false,
-    "driftReason": null,
+    "driftDetected": true,
+    "driftReason": "File now exports four parsing functions (parseValidatePolicy, parseLLMMode, parseRelevanceDiagnosticsMode) in addition to parsePromptPolicyTier, expanding its scope beyond the previous single-function contract.",
     "localized": {
       "English": {
-        "role": "Infrastructure utility function for parsing and validating the PromptPolicyTier configuration value from raw string input.",
+        "role": "Infrastructure utility for parsing and validating typed configuration enums from raw string input.",
         "responsibilities": [
-          "Parses a raw string input into a validated PromptPolicyTier enum value ('lite' or 'balanced').",
-          "Provides type-safe normalization by trimming and lowercasing the input string.",
-          "Returns undefined for empty, undefined, or invalid input values, enforcing a clean optional result."
+          "Parses raw string into PromptPolicyTier enum ('lite', 'balanced'), returning undefined for invalid or empty input.",
+          "Parses raw string into ValidatePolicy enum, returning undefined for invalid or empty input.",
+          "Parses raw string into LLMMode enum, returning undefined for invalid or empty input.",
+          "Parses raw string into RelevanceDiagnosticsMode enum, returning undefined for invalid or empty input.",
+          "Provides type-safe normalization (trim, lowercase) for all parsing functions."
         ],
         "outOfScope": [
-          "Does not handle any other configuration parsing or validation.",
-          "Does not interact with file system, network, or external services.",
-          "Does not perform any logging, error reporting, or side effects."
+          "Does not perform semantic validation beyond exact enum membership.",
+          "Does not interact with external systems or services.",
+          "Does not enforce architectural policies or orchestration logic.",
+          "Does not handle default values or configuration loading."
         ]
       },
       "Simplified Chinese": {
-        "role": "基础设施工具函数，用于从原始字符串输入中解析和验证 PromptPolicyTier 配置值。",
+        "role": "基础设施工具函数，用于从原始字符串解析并验证类型化的配置枚举。",
         "responsibilities": [
-          "将原始字符串输入解析为经过验证的 PromptPolicyTier 枚举值（'lite' 或 'balanced'）。",
-          "通过修剪和转小写输入字符串，提供类型安全的规范化处理。",
-          "对于空值、未定义值或无效输入值返回 undefined，强制执行清晰的可选结果。"
+          "将原始字符串解析为 PromptPolicyTier 枚举（'lite'、'balanced'），无效或为空时返回 undefined。",
+          "将原始字符串解析为 ValidatePolicy 枚举，无效或为空时返回 undefined。",
+          "将原始字符串解析为 LLMMode 枚举，无效或为空时返回 undefined。",
+          "将原始字符串解析为 RelevanceDiagnosticsMode 枚举，无效或为空时返回 undefined。",
+          "为所有解析函数提供类型安全的标准化处理（trim、toLowerCase）。"
         ],
         "outOfScope": [
-          "不处理任何其他配置的解析或验证。",
-          "不与文件系统、网络或外部服务交互。",
-          "不执行任何日志记录、错误报告或副作用操作。"
+          "不执行超出精确枚举成员匹配的语义验证。",
+          "不涉及外部系统或服务的交互。",
+          "不涉及架构策略执行或编排逻辑。",
+          "不处理默认值或配置加载。"
         ]
       }
     }
@@ -135,10 +147,12 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:39.828Z",
+    "indexedAt": "2026-05-03T11:25:04.611Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

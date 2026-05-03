@@ -3,22 +3,25 @@
   "identity": {
     "filePath": "schemas/examples/spine-folder-unit.example.json",
     "contentHash": "9a6be5a8fb2d48f4401fa10d40e6ce44cfb5c63986d102595be72d01799d9617",
-    "semanticHash": "008e8b4711ae1050ec988c23a2d6c61e04463bcb9114b174f0c53fad92304ed1",
+    "semanticHash": "493d65e22273fe9ac842126be865b313892bc783b613d31593c902b247c34a5a",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas/examples"
   },
   "semantic": {
-    "role": "Defines the core application module container for the repository indexing pipeline.",
+    "role": "Defines the structural metadata and indexing provenance for a source directory within the ArchSpine repository.",
     "responsibilities": [
-      "Groups source files implementing the repository indexing pipeline",
-      "Coordinates authentication and synchronization modules"
+      "Source file group identification",
+      "Assignment of semantic roles to directory and files",
+      "Provenance tracking for indexing pipeline stages"
     ],
     "outOfScope": [],
     "invariants": [
-      "All source files must reside under the 'src' directory",
-      "Each child entry must have a valid filePath and fileKind",
-      "Provenance metadata must include indexedAt timestamp and generatorVersion"
+      "All children entries must specify a valid filePath and fileKind.",
+      "The fileKind value must be one of the recognized kinds (e.g., 'source').",
+      "The provenance block must include indexedAt, generatorVersion, and pipelineStages to ensure traceability.",
+      "The directory value must correspond to a real directory in the repository.",
+      "The schemaVersion must match a supported version (e.g., '1.0.0')."
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -29,28 +32,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Defines the core application module container for the repository indexing pipeline.",
+        "role": "Defines the structural metadata and indexing provenance for a source directory within the ArchSpine repository. This configuration file tells the system how to interpret the folder’s contents, assigns a high-level responsibility to the directory, and tracks which processing stages were applied during indexing.",
         "parameter_definitions": {
-          "schemaVersion": "Version identifier for the configuration schema format.",
-          "directory": "Root directory path where source files are located.",
-          "role": "Functional description of this configuration block.",
-          "responsibility": "High-level responsibility statement for the module group.",
-          "children": "Array of source file entries, each with filePath, role, and fileKind.",
-          "provenance": "Metadata block recording indexing timestamp, generator version, and pipeline stages used."
+          "schemaVersion": "Controls compatibility with the ArchSpine parser; using an unsupported version may cause errors.",
+          "directory": "Specifies the relative path of the directory being described; must exist or the index may fail.",
+          "role": "A natural-language description of the directory’s purpose; used by AI agents to understand context.",
+          "responsibility": "A high-level statement of what the directory is accountable for; influences system reasoning.",
+          "children": "An array of file entries; each entry’s integrity directly affects downstream indexing and querying.",
+          "filePath": "The relative path to a file within the directory; must be valid and accessible.",
+          "fileKind": "Categorizes the file type (e.g., 'source'); incorrect values may break parsers.",
+          "provenance": "Metadata block that certifies when and how this configuration was generated; missing fields may lead to trust issues.",
+          "indexedAt": "Timestamp of the indexing run; used for cache invalidation and freshness checks.",
+          "generatorVersion": "The version of the ArchSpine tool that produced this file; ensures compatibility with the pipeline.",
+          "pipelineStages": "List of processing stages applied (e.g., 'ast', 'llm'); gaps can indicate incomplete indexing."
         },
-        "stability_and_risks": "This configuration defines the structural layout of the core application. Misconfiguration of the directory path or missing children entries could break the indexing pipeline. The provenance metadata is critical for audit trails and reproducibility; missing or incorrect timestamps may cause versioning conflicts. The pipelineStages field must match the actual processing stages to avoid data integrity issues."
-      },
-      "Simplified Chinese": {
-        "role": "定义核心应用程序模块容器，用于仓库索引管道。",
-        "parameter_definitions": {
-          "schemaVersion": "配置模式格式的版本标识符。",
-          "directory": "源文件所在的根目录路径。",
-          "role": "此配置块的功能描述。",
-          "responsibility": "模块组的高级职责说明。",
-          "children": "源文件条目数组，每个条目包含文件路径、角色和文件类型。",
-          "provenance": "记录索引时间戳、生成器版本和所用管道阶段的元数据块。"
-        },
-        "stability_and_risks": "此配置定义了核心应用程序的结构布局。目录路径配置错误或缺少子条目可能导致索引管道中断。溯源元数据对于审计追踪和可重现性至关重要；时间戳缺失或不正确可能引发版本冲突。pipelineStages字段必须与实际处理阶段匹配，否则可能导致数据完整性问题。"
+        "stability_and_risks": "This configuration file is a structural anchor for the indexing pipeline. If fields like 'role' or 'responsibility' are missing or inaccurate, AI agents may misinterpret the module’s purpose, leading to incorrect recommendations. The 'children' list must be kept in sync with the actual file system; stale entries cause indexing mismatches. Provenance fields such as 'generatorVersion' protect against pipeline version drift — omitting them risks silent incompatibility. Overall, this file is low-risk when auto-generated, but manual edits should be validated against the schema to avoid silent failures."
       }
     }
   },
@@ -72,7 +68,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:44:31.979Z",
+    "indexedAt": "2026-05-03T11:23:14.644Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

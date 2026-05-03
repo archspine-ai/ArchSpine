@@ -1,13 +1,11 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/types/protocol","role":"Defines the core data contracts and configuration schema for the ArchSpine mirror system.","responsibility":"Provides the foundational type definitions, configuration interfaces, and versioning constants that establish the data model and public API contract for the entire ArchSpine infrastructure layer, enabling consistent representation of mirrored code units, dependency graphs, language metadata, synchronization manifests, and rule documents.","children":[{"filePath":"src/types/protocol/config.ts","role":"TypeScript interface defining the central configuration schema for the ArchSpine mirror system.","fileKind":"source"},{"filePath":"src/types/protocol/index-documents.ts","role":"Core TypeScript type definitions module for the ArchSpine mirror system's data model, defining all interfaces and types for the complete mirror data structure including unit, identity, semantic, skeleton, graph, provenance, folder, and project representations.","fileKind":"source"},{"filePath":"src/types/protocol/index.ts","role":"Public API facade (barrel export) for the infrastructure subsystem, aggregating and re-exporting all infra-layer modules.","fileKind":"source"},{"filePath":"src/types/protocol/languages.ts","role":"TypeScript type definition module defining the data contracts for language support metadata within the ArchSpine mirror system.","fileKind":"source"},{"filePath":"src/types/protocol/manifest.ts","role":"Core TypeScript module defining shared data transfer object (DTO) interfaces for the ArchSpine synchronization and manifest system.","fileKind":"source"},{"filePath":"src/types/protocol/rules.ts","role":"TypeScript interface defining the canonical data structure for an ArchSpine rule document within the rule engine's domain model.","fileKind":"source"},{"filePath":"src/types/protocol/versions.ts","role":"Centralized version definition module for ArchSpine schema and package versioning.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T04:57:43.564Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src/types/protocol` 目录承载了 ArchSpine 镜像系统的核心数据契约和配置模式。它定义了基础的类型定义、配置接口和版本常量，构成了整个基础设施层的数据模型和公开 API 契约。该目录确保镜像代码单元、依赖图、语言元数据、同步清单和规则文档的一致性表示。
+此目录定义了 ArchSpine 镜像系统的核心数据结构和类型契约。各个子模块按功能职责划分如下：
 
-子文件按以下关键领域分组：
-- **核心数据模型**：`index-documents.ts` 提供完整的镜像数据结构接口，包括单元、身份、语义、骨架、图、溯源、文件夹和项目表示。
-- **配置模式**：`config.ts` 定义系统的中央配置接口。
-- **公开 API 外观**：`index.ts` 作为桶导出，汇总并重新导出所有基础设施层模块。
-- **语言支持**：`languages.ts` 定义语言元数据的契约。
-- **同步与清单**：`manifest.ts` 定义同步和清单系统共享的数据传输对象（DTO）接口。
-- **规则引擎**：`rules.ts` 定义规则文档的规范数据结构。
-- **版本管理**：`versions.ts` 集中管理模式和包版本常量。
+- **配置模式**（`config.ts`）：声明 `SpineConfig` 接口，包含模式版本、项目元数据（name、locales）以及可选的 LLM 集成配置（provider、model、baseURL、mode）。该模块还导出了 `MCPContextMode` 类型。
+- **完整镜像数据模型**（`index-documents.ts`）：系统的主干，定义了表示镜像代码单元的所有主要接口：`SpineUnit`、`SpineIdentity`、`SpineSemantic`、`SpineSkeleton`、`SkeletonImport`、`SkeletonExport`、`DeclaredSymbol`、`StructuralHints`、`ArchSpine`、`FileDependencyEdge`、`SymbolDependencyEdge`、`EdgeProvenance`、`SpineProvenance`、`SpineFolderUnit`、`FolderChild`、`SpineProjectUnit`、`ProjectModule`，以及规则检查结果（`RuleViolation`、`Invariant`）、变更追踪（`ChangeIntent`）和公共表面文档（`PublicSurfaceEntry`）。同时定义了 `SourceLanguage`、`FileKind`、`SymbolKind`、`DependencyRelation`、`SymbolRelation` 和 `PipelineStage` 等联合类型。
+- **语言支持元数据**（`languages.ts`）：提供 `LanguageSnapshot`（全部检测语言的状态）、`LanguageSupport`（单一语言的可用性和元数据）及 `LanguageDelta`（两个语言状态之间的变化）的契约。
+- **同步与清单 DTO**（`manifest.ts`）：定义同步状态（`SyncBlock`）、本地化文档引用（`DocRef`）、文件状态（`FileStatus`）以及项目根清单（`SpineManifest`）的接口。
+- **规则文档模式**（`rules.ts`）：规定规则定义的规范结构，包括 `schemaVersion`、`ruleId`、`title`、`summary`、`appliesTo`、`severity`、`enforceable`、`rationale` 和 `bodyMarkdown` 属性。
+- **版本定义**（`versions.ts`）：集中管理模式和包版本，提供 `SchemaVersion` 类型别名、当前版本常量、生成器版本字符串，以及用于验证配置模式版本兼容性的类型守卫函数。
+- **公共 API 外观**（`index.ts`）：桶导出文件，重新导出上述所有模块，为其他子系统提供单一引用入口。
 
-值得注意的具体子模块包括 `index-documents.ts`（类型定义最广泛的模块）、`config.ts`（配置中枢）和 `manifest.ts`（对同步至关重要）。这些模块共同建立了 ArchSpine 基础设施不同部分之间的契约，确保镜像代码表示的一致性。
+最关键的实施领域包括：核心数据模型（`index-documents.ts`），它为所有镜像操作奠定结构基础；配置模式（`config.ts`），确保系统级别的一致性；以及版本管理模块（`versions.ts`），在 ArchSpine 管线的演进中强制模式兼容性。

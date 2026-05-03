@@ -1,24 +1,17 @@
-# ArchSpine Pull Request Template
+# ArchSpine Pull Request Template – Summary
 
 ## Purpose
+This document is a standardized pull request template designed to guide contributors in describing their changes to the ArchSpine project. It exists to ensure that every PR includes a clear summary, motivation, testing evidence, and documentation impact assessment – creating a consistent and reviewable record of all contributions.
 
-This document provides a standardized pull request template for the ArchSpine project. It ensures that every proposed change is clearly described, motivated, tested, and documented before being merged into the codebase.
+## Audience
+This template is intended for all developers contributing to ArchSpine, including both human maintainers and AI agents. Anyone who opens a pull request should use this template to structure their description.
 
-## Who Should Read This
+## Key Workflows Anchored
+- **PR Submission**: The template defines required sections (Summary, Motivation, Testing, Docs impact) that must be filled out for every contribution.
+- **Review Process**: It provides a checklist for testing (`npm run build`, `npm test`, `npm run validate`) and a documentation impact checkbox, making reviews faster and more reliable.
+- **Change Documentation**: By forcing explicit motivation and testing evidence, the template anchors the workflow of linking code changes back to user-facing problems or feature requirements.
 
-- **Contributors** who are submitting pull requests to ArchSpine
-- **Maintainers** who review and approve pull requests
-- **Project leads** who want to enforce consistent quality standards across all changes
-
-## Key Decisions and Workflows
-
-The template anchors the following critical workflows:
-
-1. **Change Description** – Every PR must include a concise summary (2-5 sentences) explaining what the change does.
-2. **Motivation** – Contributors must articulate the problem being solved or the user-facing impact of the change.
-3. **Testing Validation** – All changes must be validated by running `npm run build`, `npm test`, and `npm run validate`. Contributors can mark "Not applicable" if testing is not relevant.
-4. **Documentation Impact** – Contributors must explicitly state whether README or other documentation needs updating, or confirm that no docs changes are required.
-
-## How to Use This Template
-
-When creating a pull request, fill out each section completely. The template ensures that reviewers have all necessary context to evaluate the change efficiently and that the project maintains high quality standards.
+## Key Takeaways
+- Every PR must include a summary and motivation.
+- Testing checklist ensures changes are verified before merging.
+- Documentation impact must be assessed and indicated in the pull request.

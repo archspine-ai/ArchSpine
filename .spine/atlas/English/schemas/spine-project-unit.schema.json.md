@@ -1,35 +1,38 @@
-<!-- spine-content-hash:c7274001b0270538fec96a7e7437a48b44e5c3b2c7419d4cd35bd096b6b2367a -->
-# ArchSpine SpineProjectUnit Schema
+# ArchSpine SpineProjectUnit Configuration Summary
 
-## Role
-Defines the structural schema for a `SpineProjectUnit`, which is the fundamental project unit descriptor in the ArchSpine mirror system.
+## Overview
+This configuration defines the **SpineProjectUnit**, a self-contained project unit within the ArchSpine knowledge mirror system. It is a foundational schema that enforces consistent representation of a project’s identity, its modular decomposition, and the provenance of its generation. Adherence to this schema ensures reliable indexing, validation, and cross-tool interoperability across the mirror ecosystem.
 
-## Key Responsibilities
-- **Project unit metadata validation** – Ensures every project unit conforms to a strict, well-defined structure.
-- **Module hierarchy definition** – Organizes sub-components (modules) with directory paths, roles, and child counts to represent internal project structure.
-- **Provenance tracking for generation pipelines** – Captures origin and generation metadata (indexing timestamp, generator version, pipeline stages) for auditability.
+## What This Configuration Controls
+The schema governs three core aspects of each project unit:
+- **Project metadata**: name, high‑level functional role, and core responsibility.
+- **Module decomposition**: a list of logical submodules, each with a directory path, its role, and a child count.
+- **Provenance tracking**: the generation timestamp, generator version, and pipeline stages executed.
 
-## Notable Invariants
-- All fields (`schemaVersion`, `projectName`, `role`, `responsibility`, `modules`, `provenance`) are **required**.
-- `additionalProperties` is set to `false` at both root and nested object levels, enforcing strict schema compliance.
-- `childCount` must be a **non-negative integer** (minimum 0).
-- All string fields reference `nonEmptyString` definitions, **preventing empty values**.
+All six required fields (`schemaVersion`, `projectName`, `role`, `responsibility`, `modules`, `provenance`) must be present. No extra properties are allowed.
 
-## Negative Scope (Out of Scope)
-- No explicit out-of-scope items are defined.
+## Key Parameters and Their Operational Significance
 
-## Most Important Exported / Externally Visible Behavior
-- The schema acts as a **contract** for all project units in the mirror system. Any unit that does not satisfy these invariants will be rejected, preventing malformed configurations from causing cascading failures in dependency resolution or module discovery.
-- Provenance tracking ensures **traceability** but requires accurate pipeline stage data; missing or incorrect provenance may cause synchronization issues.
-- Non-empty string constraints mitigate risks of **silent failures** from empty identifiers.
+- **`schemaVersion`** – Indicates which ArchSpine schema protocol version is in use. This is critical for forward/backward compatibility and schema evolution. Operators should ensure it matches the expected version for their tools.
+- **`projectName`** – The unique name used for identification and cross‑referencing inside the mirror. Duplicate names can cause indexing conflicts.
+- **`role`** – A high‑level functional category (e.g. "backend service", "library"). This affects how the project is visualized and grouped in architectural analyses. Use a consistent set of roles across the mirror.
+- **`responsibility`** – A concise statement of the unit’s core purpose. Used for dependency and architectural analysis. Keep descriptions precise and actionable.
+- **`modules`** – An array of submodule objects. Each must include:
+  - `directory` – a valid scope‑path (e.g. relative directory). Referencing a non‑existent path will not cause schema validation to fail, but may lead to operational inconsistencies during automated processing.
+  - `role` – submodule functionality label.
+  - `childCount` – non‑negative integer representing immediate children. Values must be accurate for hierarchical decomposition analysis; incorrect counts can skew metrics.
+- **`provenance`** – Contains `indexedAt` (ISO 8601 timestamp), `generatorVersion` (non‑empty string), and `pipelineStages` (array of pipeline stage objects). This block is essential for audit trails and reproducibility. Be aware that timestamps may be sensitive and should be handled appropriately in logs or shared environments.
 
-## Stability and Risks
-This schema enforces strict structural validation for project units. The invariants prevent malformed or incomplete configurations, which could otherwise lead to cascading failures in the mirror system's dependency resolution or module discovery. The provenance tracking ensures auditability but requires accurate pipeline stage data; missing or incorrect provenance may cause synchronization issues. The non-empty string constraints mitigate risks of silent failures from empty identifiers. Overall, this schema promotes system stability by ensuring all project units are well-formed and traceable.
+## Stability and Operational Risks
 
-## Parameter Definitions
-- **schemaVersion**: Specifies the version of the schema being used, ensuring compatibility with the ArchSpine system.
-- **projectName**: A non-empty string uniquely identifying the project within the mirror system.
-- **role**: A non-empty string describing the functional role of this project unit.
-- **responsibility**: A non-empty string outlining the primary responsibility or domain of this project unit.
-- **modules**: An array of module objects, each defining a sub-component with a directory path, role, and child count. This structures the project's internal hierarchy.
-- **provenance**: An object tracking the origin and generation metadata of this project unit, including indexing timestamp, generator version, and pipeline stages.
+**Stability**: The schema is robust — it uses strict validation (`additionalProperties: false`), required fields, and shared type definitions (e.g. `nonEmptyString`, `isoTimestamp`, `scopePath`). This structural rigidity prevents drift and ensures that all project units conform to a predictable shape.
+
+**Operational Risks**:
+- **Missing or invalid required fields**: The schema will reject any unit that omits a required property; validate all inputs before ingestion.
+- **Module directory misalignment**: While schema validation does not check file system existence, a directory that does not exist in the actual project can lead to failures in downstream tools that rely on those paths.
+- **Child count inaccuracies**: Over‑ or under‑reporting `childCount` can distort decomposition metrics. Automated generation should derive this count from the actual file tree.
+- **Provenance timestamp exposure**: The `indexedAt` timestamp reveals when the unit was generated. If these timestamps are shared broadly, consider whether they expose internal generation schedules or latencies.
+- **Future schema evolution**: The `schemaVersion` field allows the protocol to evolve. Operators must track version migrations and ensure old units are either upgraded or still compatible.
+
+## Summary for Operators
+Treat this schema as the single source of truth for project unit structure in ArchSpine. Validate all unit documents against it before ingestion. Keep role and responsibility definitions consistent across your mirror to enable meaningful architectural queries. Monitor provenance data for audit compliance, and always automate the computation of module child counts to avoid manual errors. When in doubt, review the `shared.schema.json` type definitions referenced by this schema to understand the exact constraints on each field.

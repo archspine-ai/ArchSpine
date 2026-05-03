@@ -1,24 +1,23 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/ast/rules","role":"Language-specific grammar definitions for parsing source code into structured symbols.","responsibility":"Provides pattern-based extraction rules for imports, exports, and usages across multiple programming languages (C, C++, Go, Java, Python, Rust, TypeScript/JavaScript), enabling the ArchSpine mirror system to analyze and index code structures uniformly.","children":[{"filePath":"src/ast/rules/c.yml","role":"Defines the structural grammar and pattern-matching rules for parsing C/C++ source code within the ArchSpine mirror system.","fileKind":"document"},{"filePath":"src/ast/rules/cpp.yml","role":"Defines the syntax and rules for extracting structural metadata from C/C++ source code within the ArchSpine mirror system.","fileKind":"document"},{"filePath":"src/ast/rules/go.yml","role":"Define the syntax patterns for parsing Go source code into a structured symbol index","fileKind":"document"},{"filePath":"src/ast/rules/java.yml","role":"Defines the syntax patterns for parsing Java-like source code within the ArchSpine mirror system.","fileKind":"document"},{"filePath":"src/ast/rules/python.yml","role":"Defines the pattern-based extraction rules for parsing Python source code symbols (imports, exports, and usages) within the ArchSpine mirror system.","fileKind":"document"},{"filePath":"src/ast/rules/rust.yml","role":"Defines the syntax and pattern-matching rules for extracting code structures from Rust source files within the ArchSpine mirror system.","fileKind":"document"},{"filePath":"src/ast/rules/typescript.yml","role":"Defines the pattern-based extraction rules for parsing TypeScript/JavaScript source code into structured symbols (imports, exports, usages).","fileKind":"document"}],"provenance":{"indexedAt":"2026-05-01T03:58:48.079Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-## `src/ast/rules` — 各语言语法定义
+---MARKDOWN:Simplified Chinese---
+# ArchSpine 语言 AST 规则目录
 
-该目录是 ArchSpine 镜像系统的**语法定义中心**。它包含一组 YAML 文件，每个文件对应一种编程语言，定义了从源代码中提取 **导入（imports）**、**导出（exports）** 和 **使用（usages）** 的模式化规则。
+此目录存放了 ArchSpine 镜像系统代码分析流程中使用的、针对不同编程语言的抽象语法树（AST）提取规则定义。每个 YAML 文件都定义了识别特定语言的导入、导出和使用引用的模式，从而使系统能够在多语言代码库中构建依赖图并追踪符号流动。
 
-### 主要子文件
+## 主要子模块（文件）
 
-目录中包含以下语言规则文件：
+- **c.yml** – C/C++ 规则：定义导入模式（include 指令）、导出模式（函数、结构体、变量）以及使用模式（调用、字段访问、指针解引用）。  
+- **cpp.yml** – C++ 扩展：涵盖 include 指令，函数、类、结构体、命名空间、模板类的导出，以及 `::` 作用域访问和方法调用等使用模式。  
+- **go.yml** – Go 语言规则：单一和分组导入检测，函数、结构体、接口、类型别名、变量、常量的导出，以及函数调用和选择器表达式的使用检测。  
+- **java.yml** – Java 模式：通过 `import $SOURCE` 提取导入，类/接口导出，以及方法调用和 `new` 实例化等使用模式。  
+- **python.yml** – Python 支持：`from/import` 和简单导入的模式；函数、类、异步函数、变量和 `__all__` 的导出；函数调用和属性访问的使用检测。  
+- **rust.yml** – Rust 规则：基于 tree-sitter 的模式，提取函数、结构体、trait、实现、变量和使用引用；是 Rust 代码依赖追踪的基础。  
+- **typescript.yml** – TypeScript 定义：导入模式（具名、默认、命名空间），导出模式（函数、类、接口、类型、const/let/var、默认、列表），以及使用模式（调用、构造函数调用、属性访问）。
 
-- **`c.yml`** — C 语言结构的解析规则。
-- **`cpp.yml`** — C++ 语法与结构元数据规则。
-- **`go.yml`** — 提取 Go 符号索引的模式。
-- **`java.yml`** — Java 类语言的语法定义。
-- **`python.yml`** — Python 的导入、导出与使用规则。
-- **`rust.yml`** — Rust 代码结构的语法定义。
-- **`typescript.yml`** — TypeScript/JavaScript 符号提取规则。
+## 关键实现领域
 
-### 实现重点
+- **导入识别** – 每个语言文件都包含定位源代码中导入（如 `#include`、`import`、`use`）的模式，这是依赖解析的基础。  
+- **导出提取** – 定义了如何捕获对外可见的符号（函数定义、类声明、类型导出等），以便系统索引公共 API。  
+- **使用检测** – 函数调用、方法调用、字段访问和构造函数调用的模式允许追踪符号被引用的位置。  
+- **多语言统一** – YAML 文件提供一致的结构（import/export/usage 部分，使用正则或 tree-sitter 查询），使得 ArchSpine 的扫描器和聚合器引擎能够以统一方式消费，无论源语言是什么。
 
-这些规则文件是 **ArchSpine 多语言支持的基础**。通过为每种受支持的语言提供统一的语法层，系统能够将异构代码库解析为一致的符号图。最关键的实现领域包括：
-
-1.  **模式覆盖率** — 确保每种语言的导入/导出/使用模式完整且正确。
-2.  **扩展性** — 支持新语言只需在此目录中添加一个新的 YAML 文件。
-3.  **性能** — 高效匹配这些规则对于实时索引至关重要。
+此目录是 ArchSpine 镜像系统的核心组件：没有这些规则，系统将无法跨语言边界将源代码解析为可用的符号模型。

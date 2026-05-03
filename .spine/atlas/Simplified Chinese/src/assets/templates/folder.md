@@ -1,11 +1,10 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/assets/templates","role":"This directory contains the core template definitions and documentation standards for the ArchSpine mirror system.","responsibility":"Collectively, these templates provide a standardized and extensible framework for documenting components, generating structured architecture summaries, enforcing architectural and coding standards, and analyzing the public surface and risk profile of the ArchSpine project, ensuring consistency and completeness across all architectural artifacts for both human readers and AI agents.","children":[{"filePath":"src/assets/templates/atlas","role":"This directory contains the core template definitions for documenting components, documents, folders, projects, and sources within the ArchSpine mirror system.","fileKind":"folder"},{"filePath":"src/assets/templates/prompts","role":"This directory contains the prompt template engine and schema definitions for generating structured architecture summaries.","fileKind":"folder"},{"filePath":"src/assets/templates/rules","role":"This directory defines the architectural and coding standards for the ArchSpine project.","fileKind":"folder"},{"filePath":"src/assets/templates/view","role":"This directory contains analysis and documentation files that describe the public surface and risk profile of the ArchSpine project.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T03:58:48.206Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src/assets/templates` 目录是 ArchSpine 镜像系统的核心模板仓库。它提供了一个标准化且可扩展的框架，用于记录组件、生成结构化架构摘要、强制执行架构和编码标准，以及分析项目的公共表面和风险概况。这些模板确保了所有架构工件（无论是人类读者还是 AI 代理）的一致性和完整性。
+此目录 `src/assets/templates` 包含了 ArchSpine 镜像系统的所有模板定义。它是核心蓝图的中央仓库，这些蓝图管理着系统的文档镜像、AI 提示模式、架构规则以及视图清单。这些模板共同定义了 ArchSpine 的结构与行为契约。
 
-该目录包含四个主要子模块：
+该目录由以下四个关键子模块组成：
 
-- **`atlas/`** – 包含用于记录组件、文档、文件夹、项目和源代码的基本模板定义。这是 ArchSpine 内所有结构化文档的骨干。
-- **`prompts/`** – 存放提示模板引擎和架构摘要生成所需的结构模式定义。该子模块对于自动化文档合成至关重要。
-- **`rules/`** – 定义 ArchSpine 项目的架构和编码标准。这些规则强制执行代码库和文档的一致性。
-- **`view/`** – 包含描述 ArchSpine 项目公共表面和风险概况的分析和文档文件。该子模块对于安全和 API 治理至关重要。
+- **atlas**：包含基础文档和模板，用于阐明 ArchSpine 的用途、配置以及镜像契约。这是系统的核心概念蓝图。
+- **prompts**：提供提示模板模式、渲染工具和示例。它们使 AI 代理能够以一致的 JSON 格式生成结构化的架构图与语义摘要。
+- **rules**：定义代码库的架构约束和命名约定。它强制执行分层架构规则、依赖流向、关注点分离，以及接口和测试文件的命名标准。
+- **view**：聚合项目公共接口（CLI 命令、MCP 工具、导出模块）和代码库健康状况的自动生成清单与风险评估，识别高风险文件以优先进行重构。
 
-最重要的实现领域是提示引擎（用于 AI 驱动的摘要生成）、atlas 模板（用于一致的组件文档）和规则定义（用于强制执行标准）。view 子模块对于评估项目的外部暴露和风险至关重要。
+最重要的实现领域包括 AI 提示生成管道（prompts）、架构规则的强制执行（rules）以及自动化的健康与接口审计（view）。这三者共同确保镜像文档的准确性、AI 输出的结构化、架构的合规性以及代码库风险的可视化。

@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "tests",
-  "role": "Comprehensive test suite covering the entire ArchSpine system from unit to end-to-end integration.",
-  "responsibility": "Validates correctness, robustness, and architectural integrity of all ArchSpine components including CLI commands, configuration, engines, infrastructure, services, synchronization, and workflow orchestration through isolated temporary environments, mocked dependencies, and real binary invocations.",
+  "role": "Contains the complete test suite for the ArchSpine mirror system, including unit, integration, end-to-end, and acceptance tests.",
+  "responsibility": "Validates the ArchSpine system's correctness, reliability, and architectural integrity through comprehensive testing of CLI commands, configuration, LLM integration, database operations, security, error handling, and core workflows.",
   "children": [
     {
       "filePath": "tests/agent-host-init.test.ts",
@@ -26,7 +26,7 @@
     },
     {
       "filePath": "tests/cli.test.ts",
-      "role": "Vitest end-to-end integration test suite for ArchSpine's CLI command workflow and service orchestration, validating real command-line behavior and engine interactions.",
+      "role": "Vitest end-to-end integration test suite for ArchSpine's CLI command workflow and core engine orchestration, validating real command-line behavior with a custom mock LLM client.",
       "fileKind": "source"
     },
     {
@@ -51,7 +51,7 @@
     },
     {
       "filePath": "tests/credentials-store.test.ts",
-      "role": "Vitest test suite for the CredentialStore component, verifying backend integration and fallback file safety.",
+      "role": "Vitest test suite for CredentialStore component, validating backend integration, secret storage, retrieval, fallback file safety, and error handling.",
       "fileKind": "source"
     },
     {
@@ -71,12 +71,12 @@
     },
     {
       "filePath": "tests/e2e",
-      "role": "End-to-end integration test suite for the ArchSpine CLI, covering all commands and workflows in isolated temporary environments.",
+      "role": "End-to-end integration test suite for the ArchSpine Command-Line Interface (CLI) commands and workflows.",
       "fileKind": "folder"
     },
     {
       "filePath": "tests/engines",
-      "role": "This directory contains the test suite for the Scanner engine.",
+      "role": "Contains integration tests for the Scanner engine.",
       "fileKind": "folder"
     },
     {
@@ -106,7 +106,7 @@
     },
     {
       "filePath": "tests/helpers",
-      "role": "Contains the lock worker script for testing the distributed lock mechanism.",
+      "role": "This directory contains utilities for testing concurrency control via lock management.",
       "fileKind": "folder"
     },
     {
@@ -116,7 +116,7 @@
     },
     {
       "filePath": "tests/infra",
-      "role": "This directory contains test suites for validating index-based recovery and LLM retry mechanisms.",
+      "role": "Test suite for validating index-based resume recovery and LLM retry mechanisms in the ArchSpine mirror system.",
       "fileKind": "folder"
     },
     {
@@ -341,7 +341,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-03T03:55:21.573Z",
+    "indexedAt": "2026-05-03T11:28:38.978Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

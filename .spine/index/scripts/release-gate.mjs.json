@@ -3,21 +3,25 @@
   "identity": {
     "filePath": "scripts/release-gate.mjs",
     "contentHash": "6764ce6dd821ade05be4bb30eb164fdfe5af7fa0c6805e4b41f493c20302d9ac",
-    "semanticHash": "7ed9e0686723627f6bef36fff5e1a71a71b8a38c6ba0ed89e2cf2ee7d8abd5c5",
+    "semanticHash": "a2a541e290f55ace02ae6b825db1491039ebe5bef70d9cb24267b4b3dcfbcef0",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "scripts"
   },
   "semantic": {
-    "role": "Release gate automation script for the ArchSpine project",
+    "role": "Automated release gate script for validating software build, tests, and packaging before release.",
     "responsibilities": [
-      "Defines and executes a sequence of quality checks (build, unit tests, schema tests, protocol validation, pack check) before a release",
-      "Ensures all gates pass in order before allowing the release to proceed"
+      "Running the build process",
+      "Executing unit tests",
+      "Running schema validation tests",
+      "Performing protocol validation",
+      "Checking package integrity via pack check"
     ],
     "outOfScope": [
-      "Actual release publishing or deployment steps",
-      "Configuration of individual test or build commands",
-      "Error recovery or rollback procedures"
+      "Manual release steps",
+      "Deployment or rollout",
+      "Rollback procedures",
+      "Environmental setup"
     ],
     "invariants": [],
     "changeIntent": {
@@ -29,21 +33,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document is a Node.js script that automates the pre-release quality assurance process for the ArchSpine project. It runs a series of validation gates in sequence, stopping if any gate fails, to ensure the codebase is ready for release.",
-        "context_and_audience": "Intended for developers and release managers working on the ArchSpine project. It is used as part of the CI/CD pipeline or manually before creating a release.",
+        "purpose": "This script automates the sequence of quality gates required before a release: it runs build, unit tests, schema tests, protocol validation, and pack check sequentially, failing fast if any step fails.",
+        "context_and_audience": "This script is part of the continuous integration pipeline. Its intended audience is developers and release managers who need a reliable, repeatable validation process before publishing a new version.",
         "key_takeaways": [
-          "Five sequential gates: build, unit tests, schema tests, protocol validation, and pack check",
-          "Each gate must pass before the next one starts",
-          "The script exits with an error if any gate fails, preventing an unstable release"
+          "Executes five gates in order: build, unit-tests, schema-tests, protocol-validate, pack-check.",
+          "Fails immediately if any gate fails, providing clear output.",
+          "Intended to be run as part of a release pipeline or manually by maintainers."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档是一个 Node.js 脚本，用于自动化 ArchSpine 项目的发布前质量保证流程。它按顺序执行一系列验证关卡，如果任何关卡失败则停止，以确保代码库准备好发布。",
-        "context_and_audience": "面向 ArchSpine 项目的开发者和发布管理者。该脚本用于 CI/CD 流水线中，或在创建发布前手动执行。",
+        "purpose": "此脚本自动化了发布前所需的一系列质量关卡：依次执行构建、单元测试、模式验证、协议验证和打包检查，并在任何步骤失败时立即停止。",
+        "context_and_audience": "该脚本是持续集成流水线的一部分，面向需要可靠、可重复的验证流程的开发者与发布管理员，确保发布新版本前的代码质量。",
         "key_takeaways": [
-          "五个顺序关卡：构建、单元测试、模式测试、协议验证和打包检查",
-          "每个关卡必须通过后才能进入下一个",
-          "如果任何关卡失败，脚本会报错退出，防止发布不稳定的版本"
+          "按顺序执行五个关卡：构建、单元测试、模式验证、协议验证和打包检查。",
+          "任一关卡失败即立即终止，并提供清晰的输出信息。",
+          "可作为发布流水线的一部分运行，也可由维护人员手动执行。"
         ]
       }
     }
@@ -66,7 +70,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:11.611Z",
+    "indexedAt": "2026-05-03T11:24:28.876Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

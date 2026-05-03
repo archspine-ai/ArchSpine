@@ -2,54 +2,66 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/cli/commands/repo.ts",
-    "contentHash": "7cf308e51abca3228e225829a0af22011fdeb2326a8cba6c79607e959c6301c1",
+    "contentHash": "9dfefcc5a98574b57f29a3aadf780797777b072c47e321cf407bec63c0e3d6e4",
     "skeletonHash": "c63d0d9e0c8df5e844fd862c36ec5fa1fbbfb5f06e4f717d5bec3ad0777102b5",
-    "semanticHash": "dd835594d6bb8e29e32305fc1b127409f7d5afe407e69fe7dc1824f19adb57c5",
+    "semanticHash": "b05d9b0c6e463df8017c95b07bb972356b4b59cd1a7dbe8159f24e6f528c5827",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli/commands"
   },
   "semantic": {
-    "role": "CLI command router for repository-level operations in the ArchSpine system.",
+    "role": "CLI command adapter/router for repository-level operations in the ArchSpine system.",
     "responsibilities": [
-      "Defines the interface for repository command execution options (ExecuteRepoCommandOptions).",
-      "Routes the 'repo' subcommand to appropriate strategy functions: 'check', 'strategy', or 'help'.",
-      "Validates subcommand arguments and provides usage guidance via throwCliUsage.",
-      "Coordinates repository artifact strategy parsing and execution via parseArtifactStrategy."
+      "Defines the `ExecuteRepoCommandOptions` interface for command execution parameters.",
+      "Parses CLI arguments to route subcommands (`check`, `strategy`, `help`) to the appropriate strategy functions (`runRepoCheck`, `runRepoStrategySet`, `parseArtifactStrategy`).",
+      "Validates argument length and calls `throwCliUsage` for invalid usage to provide guidance.",
+      "Coordinates artifact strategy parsing by invoking `parseArtifactStrategy` and passing results to the strategy execution functions."
     ],
     "outOfScope": [
-      "Implementing repository analysis or strategy logic (delegated to repo/strategy.js).",
-      "Handling configuration loading or persistence.",
-      "Directly managing file I/O or pipeline execution."
+      "Actual repository check or strategy execution logic (delegated to `strategy.js`).",
+      "Configuration loading or persistence (handled by `infra/config.js`).",
+      "User-facing display formatting beyond usage errors."
     ],
     "invariants": [
-      "Must remain a thin command router, delegating core logic to services/engines.",
-      "Must not contain business logic for repository scanning, analysis, or artifact generation."
+      "Must remain a thin CLI adapter without pipeline or persistence logic (rule: cli-entrypoint-separation).",
+      "Must delegate all substantive operations to strategy functions."
     ],
     "changeIntent": {
-      "architecturalIntent": "Separate CLI command routing from core business logic to maintain testability and reusability.",
-      "recentChangeIntent": "No recent changes to this file's core responsibilities detected from the provided git intent."
+      "architecturalIntent": "Maintain clean separation between CLI command routing and domain logic by keeping the CLI entrypoint thin and delegating to strategy functions.",
+      "recentChangeIntent": "Reinforce separation of CLI entrypoints from core service logic as part of architectural governance (ArchSpine v1.0.0)."
     },
     "publicSurface": [
-      "ExecuteRepoCommandOptions interface",
-      "executeRepoCommand function"
+      "executeRepoCommand",
+      "ExecuteRepoCommandOptions"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "CLI command router for repository-level operations in the ArchSpine system.",
+        "role": "CLI command adapter/router for repository-level operations in the ArchSpine system.",
         "responsibilities": [
-          "Defines the interface for repository command execution options (ExecuteRepoCommandOptions).",
-          "Routes the 'repo' subcommand to appropriate strategy functions: 'check', 'strategy', or 'help'.",
-          "Validates subcommand arguments and provides usage guidance via throwCliUsage.",
-          "Coordinates repository artifact strategy parsing and execution via parseArtifactStrategy."
+          "Defines the `ExecuteRepoCommandOptions` interface for command execution parameters.",
+          "Parses CLI arguments to route subcommands to appropriate strategy functions.",
+          "Validates argument length and provides usage guidance.",
+          "Coordinates artifact strategy parsing via `parseArtifactStrategy`."
         ],
         "outOfScope": [
-          "Implementing repository analysis or strategy logic (delegated to repo/strategy.js).",
-          "Handling configuration loading or persistence.",
-          "Directly managing file I/O or pipeline execution."
+          "Actual repository check or strategy execution logic.",
+          "Configuration loading or persistence."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 系统中用于仓库级别操作的 CLI 命令适配器/路由器。",
+        "responsibilities": [
+          "定义 `ExecuteRepoCommandOptions` 接口，用于命令执行参数。",
+          "解析 CLI 参数，将子命令（check、strategy、help）路由到相应的策略函数。",
+          "验证参数数量，并调用 `throwCliUsage` 提供用法指导。",
+          "通过 `parseArtifactStrategy` 协调工件策略的解析。"
+        ],
+        "outOfScope": [
+          "实际的仓库检查或策略执行逻辑（委托给 strategy.js）。",
+          "配置加载或持久化逻辑。"
         ]
       }
     }
@@ -141,10 +153,41 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/repo.ts/_file_#",
+        "targetSymbol": "src/cli/repo/strategy.ts/runRepoCheck#",
+        "targetPath": "src/cli/repo/strategy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/repo.ts/_file_#",
+        "targetSymbol": "src/cli/repo/strategy.ts/parseArtifactStrategy#",
+        "targetPath": "src/cli/repo/strategy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/repo.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/throwCliUsage#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/repo.ts/_file_#",
+        "targetSymbol": "src/cli/repo/strategy.ts/runRepoStrategySet#",
+        "targetPath": "src/cli/repo/strategy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:36.647Z",
+    "indexedAt": "2026-05-03T11:25:01.516Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -1,8 +1,1 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":".spine","role":"Root configuration and rule directory for the ArchSpine project mirror system.","responsibility":"Centralizes project-wide configuration (LLM, MCP, hooks, scanning, artifacts) and architectural rulebooks that enforce layered module structure, import boundaries, naming conventions, and coding standards across the entire monorepo.","children":[{"filePath":".spine/config.json","role":"Central configuration file for the ArchSpine project mirror system, defining project metadata, LLM/MCP settings, hook behavior, artifact strategy, scan policy, and initialization state.","fileKind":"config"},{"filePath":".spine/rules","role":"This directory contains the architectural and coding standard rulebooks that govern the structure and conventions of the ArchSpine project.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T03:58:57.227Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`.spine` 目录是 ArchSpine 项目镜像系统的根配置与规则目录。它集中管理全局的 LLM（大语言模型）、MCP（模型上下文协议）、钩子、扫描和工件策略等配置，以及定义项目的分层模块结构、导入边界、命名规范和编码标准的架构规则手册。
-
-其中主要的子项包括：
-- `config.json`：集中配置文件，定义项目元数据、LLM/MCP 设置、钩子行为、工件策略、扫描策略和初始化状态。
-- `rules/`：包含项目架构和编码标准规则手册的目录，用于规范整个项目的结构与约定。
-
-关键实施领域包括 LLM 与 MCP 配置管理、钩子行为、工件策略，以及通过 `rules/` 子模块中的规则手册强制执行的架构规则。
+这是 ArchSpine 项目镜像系统的根目录，充当操作配置与架构治理的中心枢纽。它包含 `config.json`，用于定义核心操作参数，例如扫描策略（文件来源、忽略链、协议包含/排除）、工件生成策略、预提交钩子、同步模式、LLM 提供商详情，以及 Agent 指令、忽略文件和 git 属性的初始化默认值。`config.json` 还管理项目标识和区域设置支持。子目录 `.spine/rules` 强制实施架构约束和命名约定，建立层次化模块边界和一致的命名规则，以防止架构侵蚀。关键实现领域包括扫描配置、工件生成管道、钩子集成以及维护代码库一致性的架构规则引擎。

@@ -2,52 +2,76 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/engines/info.ts",
-    "contentHash": "6892db4124c191610c3829a83cdc9d91957b4e9d57350dc45ce0d9a1c5a15ca3",
+    "contentHash": "97879e0b79e4bb8c6a89e65a0b4fdc73463ce830aa4f2c249565704f5ababc4d",
     "skeletonHash": "520631c0581eaad32e5016ec0f644a6a27e3ea63e33753835d57604927380bc3",
-    "semanticHash": "0515e4bf43b95e5356fd88004b6205a66ee51f992192449c60b8367a7bf61764",
+    "semanticHash": "c8f43ec1671049a62e498a456273d49e1b3836568d06297580efeef0ad611c44",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/engines"
   },
   "semantic": {
-    "role": "CLI command module for checking project sync status, validating protected outputs, and reporting system health.",
+    "role": "Engine module for generating a comprehensive system info and health report for ArchSpine projects.",
     "responsibilities": [
-      "Loads and inspects the project manifest to retrieve sync status, language snapshots, and indexed unit counts.",
-      "Validates protected output mutations using spine-gate detection and formats warnings for user display.",
-      "Reports sync completion status, reverse index state, and total usage statistics via runtime IO.",
-      "Integrates with runtime service to resolve LLM settings and execution profiles for context-aware checks."
+      "Loads and inspects the project manifest (ManifestView), configuration (Config), secrets (Secrets), and global LLM configuration to construct a system state view.",
+      "Resolves LLM settings and execution profiles via RuntimeService for context-aware diagnostic output.",
+      "Invokes spine-gate’s detectProtectedOutputMutations to check for unauthorized changes to protected files and formats warnings using formatProtectedOutputMutationWarning.",
+      "Reports sync status, reverse index state, language snapshot counts, and total usage statistics via runtimeIO output.",
+      "Supports verbose mode and injectable RuntimeIO for flexible integration with CLI, IDE, or CI pipelines."
     ],
     "outOfScope": [
-      "Performing actual sync operations or modifying the manifest.",
-      "Direct LLM inference or content generation.",
-      "Orchestrating multiple engines or analytical transformations."
+      "Does not parse CLI arguments or register commands; it is a reusable engine called by CLI or other orchestrators.",
+      "Does not modify any project files, manifest, or configuration.",
+      "Does not execute LLM calls or perform write operations beyond diagnostic output."
     ],
     "invariants": [
-      "Must remain a CLI-facing command module, not an engine.",
-      "Depends on infrastructure modules (config, manifest, secrets, runtime-io) and runtime service for orchestration.",
-      "Should not import CLI entrypoints or presentation layers beyond runtime IO."
+      "Engine must not import symbols from CLI command modules (e.g., cli/commands/) or presentational layers.",
+      "Engine must be read-only with respect to project state."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provides a user-facing CLI command for health and sync status reporting, leveraging the runtime service and infrastructure for consistent project state inspection.",
-      "recentChangeIntent": "Refactoring to establish subsystem facades and resolve layer inversions, likely aligning this module with clearer separation from engine logic."
+      "architecturalIntent": "Provide a reusable diagnostic engine that aggregates project health, sync status, and configuration details for consumption by various interfaces (CLI, IDE, CI).",
+      "recentChangeIntent": "Initial implementation of runInfoReport as part of ArchSpine v1.0.0 release, enabling system-wide introspection and protected output monitoring."
     },
-    "publicSurface": [],
-    "ruleViolations": [],
-    "driftDetected": false,
-    "driftReason": null,
+    "publicSurface": [
+      "runInfoReport"
+    ],
+    "ruleViolations": [
+      {
+        "id": "engine-independence",
+        "severity": "error",
+        "reason": "Imports RuntimeService from '../services/runtime-service.js', coupling an engine module to service-level orchestration. The rule states engines should stay decoupled from service-level orchestration where practical. This dependency could have been avoided by using lower-level infra (e.g., direct config/manifest access) for the required settings."
+      }
+    ],
+    "driftDetected": true,
+    "driftReason": "Previous semantic described this module as a CLI command module, but the code resides in src/engines/ and exports an async function without any CLI argument parsing, confirming it is an engine module, not a CLI command.",
     "localized": {
       "English": {
-        "role": "CLI command module for checking project sync status, validating protected outputs, and reporting system health.",
+        "role": "Engine module for generating a comprehensive system info and health report for ArchSpine projects.",
         "responsibilities": [
-          "Loads and inspects the project manifest to retrieve sync status, language snapshots, and indexed unit counts.",
-          "Validates protected output mutations using spine-gate detection and formats warnings for user display.",
-          "Reports sync completion status, reverse index state, and total usage statistics via runtime IO.",
-          "Integrates with runtime service to resolve LLM settings and execution profiles for context-aware checks."
+          "Loads and inspects the project manifest (ManifestView), configuration (Config), secrets (Secrets), and global LLM configuration to construct a system state view.",
+          "Resolves LLM settings and execution profiles via RuntimeService for context-aware diagnostic output.",
+          "Invokes spine-gate’s detectProtectedOutputMutations to check for unauthorized changes to protected files and formats warnings using formatProtectedOutputMutationWarning.",
+          "Reports sync status, reverse index state, language snapshot counts, and total usage statistics via runtimeIO output.",
+          "Supports verbose mode and injectable RuntimeIO for flexible integration with CLI, IDE, or CI pipelines."
         ],
         "outOfScope": [
-          "Performing actual sync operations or modifying the manifest.",
-          "Direct LLM inference or content generation.",
-          "Orchestrating multiple engines or analytical transformations."
+          "Does not parse CLI arguments or register commands; it is a reusable engine called by CLI or other orchestrators.",
+          "Does not modify any project files, manifest, or configuration.",
+          "Does not execute LLM calls or perform write operations beyond diagnostic output."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "引擎模块，用于生成 ArchSpine 项目的全面系统信息和健康报告。",
+        "responsibilities": [
+          "加载项目清单 (ManifestView)、配置 (Config)、密钥 (Secrets) 以及全局 LLM 配置，构建系统状态视图。",
+          "通过 RuntimeService 解析 LLM 设置和执行配置，为上下文感知的诊断输出提供支持。",
+          "调用 spine-gate 的 detectProtectedOutputMutations 检查受保护文件的未授权变更，并使用 formatProtectedOutputMutationWarning 格式化警告。",
+          "通过 runtimeIO 输出同步状态、反向索引状态、语言快照计数及总使用统计。",
+          "支持详细模式与可注入的 RuntimeIO，便于与 CLI、IDE 或 CI 管道灵活集成。"
+        ],
+        "outOfScope": [
+          "不解析 CLI 参数或注册命令；它是一个被 CLI 或其他编排器调用的可复用引擎。",
+          "不修改任何项目文件、清单或配置。",
+          "不执行 LLM 调用或执行超出诊断输出的写操作。"
         ]
       }
     }
@@ -168,28 +192,28 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "src/infra/config.ts",
+        "targetPath": "../infra/config.js",
         "relation": "import",
         "symbols": [
           "Config"
         ]
       },
       {
-        "targetPath": "src/infra/manifest.ts",
+        "targetPath": "../infra/manifest.js",
         "relation": "import",
         "symbols": [
           "Manifest"
         ]
       },
       {
-        "targetPath": "src/infra/secrets.ts",
+        "targetPath": "../infra/secrets.js",
         "relation": "import",
         "symbols": [
           "Secrets"
         ]
       },
       {
-        "targetPath": "src/infra/llm.ts",
+        "targetPath": "../infra/llm.js",
         "relation": "import",
         "symbols": [
           "GlobalLLMConfig",
@@ -198,14 +222,14 @@
         ]
       },
       {
-        "targetPath": "src/services/runtime-service.ts",
+        "targetPath": "../services/runtime-service.js",
         "relation": "import",
         "symbols": [
           "RuntimeService"
         ]
       },
       {
-        "targetPath": "src/infra/spine-gate.ts",
+        "targetPath": "../infra/spine-gate.js",
         "relation": "import",
         "symbols": [
           "detectProtectedOutputMutations",
@@ -213,25 +237,140 @@
         ]
       },
       {
-        "targetPath": "src/types/protocol.ts",
+        "targetPath": "../types/protocol.js",
         "relation": "import",
         "symbols": [
           "LanguageSnapshot"
         ]
       },
       {
-        "targetPath": "src/infra/runtime-io.ts",
+        "targetPath": "../infra/runtime-io.js",
         "relation": "import",
         "symbols": [
           "defaultRuntimeIO",
           "RuntimeIO"
         ]
+      },
+      {
+        "targetPath": "node:fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "node:path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/spine-gate.ts/formatProtectedOutputMutationWarning#",
+        "targetPath": "src/infra/spine-gate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/spine-gate.ts/detectProtectedOutputMutations#",
+        "targetPath": "src/infra/spine-gate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/getGlobalArchSpineDir#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/getGlobalArchSpineDir#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/secrets.ts/Secrets#",
+        "targetPath": "src/infra/secrets.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/GlobalLLMConfig#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/GlobalLLMConfig#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/GlobalLLMSecrets#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/GlobalLLMSecrets#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/services/runtime-service.ts/RuntimeService#",
+        "targetPath": "src/services/runtime-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/usage.ts/getTotalUsage#",
+        "targetPath": "src/infra/db/repositories/usage.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/state.ts/loadLanguageSnapshot#",
+        "targetPath": "src/infra/manifest/state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:37.670Z",
+    "indexedAt": "2026-05-03T11:25:02.502Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

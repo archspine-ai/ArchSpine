@@ -1,7 +1,0 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/index/.spine/rules","role":"Defines the architectural rules and directory structure for the ArchSpine mirror system's rule engine.","responsibility":"Collectively establishes the schema, metadata, and organizational framework for rule files within the .spine/rules directory, enabling rule indexing, drift detection, and configuration management.","children":[{"filePath":"examples/demo-project/.spine/index/.spine/rules/arch.yml.json","role":"Architecture rule definition for the ArchSpine mirror system","fileKind":"config"},{"filePath":"examples/demo-project/.spine/index/.spine/rules/folder.json","role":"Defines the directory structure and metadata for a rules folder within the ArchSpine project, serving as a container for configuration documents.","fileKind":"config"}],"provenance":{"indexedAt":"2026-05-01T03:58:34.692Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`rules/` 目录位于 `.spine/index/.spine` 层级内部，是 ArchSpine 镜像系统的规则定义中心。它包含了用于规则引擎的架构约束、目录架构和元数据策略的配置文件。该目录下有两个关键配置文档：
-
-- **`arch.yml.json`** – 定义了 ArchSpine 镜像系统的核心架构规则，明确了架构元素的结构与验证方式。
-- **`folder.json`** – 描述了规则文件夹的目录布局及元数据要求，作为其他配置文档的容器蓝图。
-
-这两个文件共同支持规则的索引、漂移检测以及配置管理，是整个系统规则执行逻辑的权威来源。

@@ -1,47 +1,37 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "examples/demo-project/.spine",
-  "role": "This directory aggregates the core configuration and rule definitions that govern the ArchSpine mirror system's behavior and structure.",
-  "responsibility": "Collectively, the components in this directory define system-level configuration parameters, establish structural guidelines for the .spine directory, enforce architectural rules and conventions for the mirror system, manage synchronization, indexing, validation, routing, and access control of mirrored data across distributed nodes, and define logical and functional layers including configuration management and interface abstraction to ensure consistency, fault tolerance, and a cohesive, extensible system architecture.",
+  "role": "Central configuration and state directory for the ArchSpine system within a demo project.",
+  "responsibility": "This directory collectively provides project-level settings (provider, scan policy, ignore chains), language detection mappings, sync health snapshots, architecture rule enforcement, and runtime checkpoint tracking to manage the ArchSpine analysis pipeline.",
   "children": [
     {
-      "filePath": "examples/demo-project/.spine/atlas",
-      "role": "This directory aggregates the core configuration and rule definitions that govern the ArchSpine mirror system's behavior and structure.",
-      "fileKind": "folder"
-    },
-    {
       "filePath": "examples/demo-project/.spine/config.json",
-      "role": "Project-level configuration for the ArchSpine mirror system, defining localization, LLM provider, MCP context mode, hooks, artifact storage, and file scanning policy.",
+      "role": "Central configuration file for the ArchSpine system, controlling project metadata, LLM provider, MCP context mode, pre-commit hooks, and scan policy including ignore chains and protocol boundaries.",
       "fileKind": "config"
     },
     {
-      "filePath": "examples/demo-project/.spine/index",
-      "role": "Root configuration and structural index for the ArchSpine mirror system.",
-      "fileKind": "folder"
-    },
-    {
       "filePath": "examples/demo-project/.spine/languages.json",
-      "role": "Language and extension registry for the ArchSpine mirror system",
+      "role": "This configuration file defines the file extension detection and language support settings for the ArchSpine analysis system.",
       "fileKind": "config"
     },
     {
       "filePath": "examples/demo-project/.spine/manifest.json",
-      "role": "Health-check and sync-state snapshot for the ArchSpine mirror system",
+      "role": "Provides a lightweight, human-readable health-check snapshot of the ArchSpine synchronization state and project metadata. It is not the authoritative state store (which lives in cache.db) but serves as a quick overview for operators and CI systems.",
       "fileKind": "config"
     },
     {
       "filePath": "examples/demo-project/.spine/rules",
-      "role": "Architectural governance specification for the ArchSpine project.",
+      "role": "Directory containing the ArchSpine architecture rule definition file.",
       "fileKind": "folder"
     },
     {
       "filePath": "examples/demo-project/.spine/runtime",
-      "role": "Execution checkpoint records for synchronization runs in the ArchSpine mirror system.",
+      "role": "Checkpoint records directory for the ArchSpine sync pipeline execution.",
       "fileKind": "folder"
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-01T04:57:44.303Z",
+    "indexedAt": "2026-05-03T11:27:01.637Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

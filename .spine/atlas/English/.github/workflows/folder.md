@@ -1,8 +1,18 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":".github/workflows","role":"CI/CD workflow definitions for the ArchSpine project.","responsibility":"Automates the continuous integration and delivery pipeline, including linting, building, testing across Node.js versions, research-level test suites, documentation verification, and release readiness checks.","children":[{"filePath":".github/workflows/ci.yml","role":"Defines the automated CI pipeline for the ArchSpine project","fileKind":"document"},{"filePath":".github/workflows/research.yml","role":"CI workflow definition for running research-level test suites","fileKind":"document"},{"filePath":".github/workflows/test.yml","role":"Defines the continuous integration (CI) pipeline for the ArchSpine project, automating verification, testing, documentation building, and release readiness checks.","fileKind":"document"}],"provenance":{"indexedAt":"2026-05-01T07:20:45.763Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-The `.github/workflows` directory contains the complete CI/CD pipeline definitions for the ArchSpine project. It automates continuous integration and delivery, covering code quality checks, multi-version Node.js builds, unit and integration testing, research-level test suites, documentation validation, and release readiness verification. The directory holds three workflow files:
+## .github/workflows — CI/CD Workflows
 
-- **`ci.yml`** – Core CI pipeline for linting, building, and basic testing.
-- **`research.yml`** – Specialized workflow for running research-oriented test suites.
-- **`test.yml`** – Comprehensive pipeline for verification, testing, documentation building, and release readiness checks.
+This directory contains all continuous integration and deployment workflow definitions for the ArchSpine project. The workflows here collectively automate code verification, testing, building, linting, and research benchmark execution across multiple Node.js versions on push and pull request events, ensuring code quality and release readiness.
 
-These workflows together ensure the project remains stable during development and ready for deployment.
+### Notable children and grouping
+
+- **`ci.yml`** — Standard CI pipeline triggered on pushes and pull requests to the main branch. Handles checkout, Node.js setup, dependency installation, linting, building, testing, and package integrity checks. Includes concurrency control and permission settings.
+
+- **`test.yml`** — Multi-version CI workflow that runs code verification across several Node.js versions. Contains a release gate job for quality assurance, a documentation build job, and a package smoke check to verify npm publish readiness.
+
+- **`research.yml`** — Manually triggered workflow (`workflow_dispatch`) for ad-hoc research benchmark execution. Sets up Node.js 20 with npm caching, installs dependencies, and runs the `npm run test:research` benchmark suite.
+
+### Key implementation areas
+
+- **Linting & unit tests** — Enforced on every push/PR via `ci.yml` and `test.yml`.
+- **Build & package integrity** — Ensures the project builds and that the npm package is publishable.
+- **Node.js version matrix** — `test.yml` tests against multiple Node.js versions to guarantee compatibility.
+- **Manual benchmark triggers** — `research.yml` allows on-demand performance evaluation without altering the standard CI flow.

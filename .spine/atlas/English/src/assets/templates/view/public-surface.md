@@ -1,39 +1,24 @@
-# Public Surface Map
+# Public Surface Map — Summary
 
 ## Purpose
 
-This document serves as a comprehensive registry of all public-facing interfaces in the ArchSpine system. It is automatically generated to provide a single source of truth for CLI commands, MCP endpoints, and exported modules, ensuring developers and AI agents can quickly discover available entry points.
+This document is an **auto-generated inventory** of the ArchSpine project's public interface. It lists every CLI command, MCP tool, and exported module, providing a single source of truth for what the system exposes externally. Because it is automatically refreshed via `spine sync`, it always reflects the current implementation without manual effort.
 
 ## Audience
 
-Intended for developers, system integrators, and AI agents who need to understand the complete public API surface of ArchSpine. This includes both human readers reviewing the system's capabilities and automated tools that consume the structured data for integration or testing purposes.
+- **Developers** who need to quickly discover available commands and APIs.
+- **CI pipelines** that verify the documented surface matches the actual code.
+- **AI agents** consuming the system's API and requiring a machine-readable catalog.
+- **Maintainers** who want to confirm that all public entry points are accounted for.
 
 ## Key Takeaways
 
-- Auto-generated inventory of all public entry points
-- Covers three categories: CLI, MCP, and exported modules
-- Refreshed via `spine sync` command
-- Experimental view that evolves with the system
+- The document is **auto-generated** — never edit it manually. Any changes to CLI, MCP, or module exports are captured by running `spine sync`.
+- It serves dual purpose: a human-friendly overview for quick reference and a machine-parseable index for automated workflows.
+- Consult this map as the **authoritative list** of public interfaces before integrating with or extending ArchSpine.
 
-## Document Structure
+## How It Anchors Workflows
 
-The document is organized into three main sections:
-
-- **CLI Entry Points**: Lists all command-line interface commands and their entry points.
-- **MCP Entry Points**: Documents all Model Context Protocol endpoints.
-- **Exported Modules**: Catalogs all exported module interfaces.
-
-Each section provides a machine-readable and human-readable map of the system's public surface, making it easy to discover and integrate with ArchSpine's capabilities.
-
-## Workflow Anchors
-
-This document anchors the following workflows:
-
-- **Discovery**: Developers and AI agents use this map to find available entry points.
-- **Integration**: System integrators reference this document to understand how to connect with ArchSpine.
-- **Testing**: Automated tools consume the structured data for integration or testing purposes.
-- **Evolution**: The document is refreshed via `spine sync` as the system evolves.
-
----
-
-_Experimental view. Refresh via `spine sync`._
+- **Onboarding** — new team members and agents can learn the full public surface in one place.
+- **Syncing** — the `spine sync` command regenerates the map, ensuring documentation stays in lockstep with code.
+- **Quality checks** — CI can compare this map against generated binding or client stubs to catch accidental API changes.

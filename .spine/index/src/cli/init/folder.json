@@ -1,17 +1,17 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/cli/init",
-  "role": "This directory contains the initialization and bootstrapping subsystem for the ArchSpine project.",
-  "responsibility": "Collectively, these components handle the complete setup of an ArchSpine-managed repository, including configuration bootstrapping, runtime initialization, LLM credential setup, file scanning, language discovery, and git hook installation, all coordinated through shared type contracts.",
+  "role": "Core directory responsible for initializing and bootstrapping both the repository configuration and the runtime environment of an ArchSpine project.",
+  "responsibility": "Orchestrates the complete setup sequence including repository artifact strategy selection, rule template installation, git hook configuration, LLM credential setup, file system scanning, language discovery, manifest updates, and handoff to the build workflow. Also provides shared type contracts for consistent initialization across CLI commands and service layers.",
   "children": [
     {
       "filePath": "src/cli/init/repository-bootstrap.ts",
-      "role": "CLI command adapter for bootstrapping an ArchSpine configuration and artifacts in a target repository.",
+      "role": "CLI command adapter for bootstrapping an ArchSpine repository with artifact strategy selection and initial configuration.",
       "fileKind": "source"
     },
     {
       "filePath": "src/cli/init/runtime-bootstrap.ts",
-      "role": "CLI runtime bootstrap orchestrator that initializes the ArchSpine system and triggers the build pipeline.",
+      "role": "Service module that orchestrates the ArchSpine runtime bootstrap sequence: LLM credential setup, scanner initialization, language discovery, manifest update, and handoff to the build workflow.",
       "fileKind": "source"
     },
     {
@@ -21,7 +21,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-01T03:58:47.789Z",
+    "indexedAt": "2026-05-03T11:27:13.410Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

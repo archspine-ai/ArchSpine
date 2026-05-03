@@ -1,17 +1,19 @@
-<!-- spine-content-hash:632f53536a3a4cb0bbc9471ee85ed0ac4af580e633fd4ee751da5c58826d1a65 -->
-# Documentation Improvement Template
+# Documentation Improvement Template for ArchSpine
 
 ## Purpose
-This document provides a structured issue template for contributors to suggest improvements to the project's documentation, including README, examples, and website copy.
+This template exists to streamline community contributions to ArchSpine's documentation. By providing a clear, structured format, it helps users and contributors report documentation problems, suggest edits, and track improvements consistently. It ensures that every suggestion is actionable and includes the necessary context.
 
-## Context and Audience
-Intended for community contributors and maintainers who want to report or propose fixes to documentation gaps, errors, or unclear sections. It ensures all documentation feedback is captured with a clear page reference and a specific description of the needed change.
+## Who Should Read
+- **Contributors** who want to help improve README, user guides, code examples, or website copy.
+- **Users** who encounter unclear, missing, or outdated documentation and wish to report it effectively.
+- **Maintainers** who review documentation issues and prioritize changes.
+
+## Decisions and Workflows Anchored
+1. **Problem Reporting**: The template separates documentation issues from bug reports and feature requests, ensuring each category uses its own channel.
+2. **Precise Guidance**: By requiring a link to the specific page and a description of the desired change, the template enforces specificity, saving time for both reporters and reviewers.
+3. **Quality Maintenance**: The structured fields (`Which page needs work?` and `What should change?`) directly map to actions, making it easy to assign, triage, and implement fixes.
 
 ## Key Takeaways
-- Template requires two fields: the page needing work and a description of the change.
-- Labels are automatically set to 'documentation' for easy triage.
-- The template is designed to reduce ambiguity in documentation requests.
-
-## Out of Scope
-- Bug reports or feature requests unrelated to documentation.
-- Code changes or pull request templates.
+- Reporters can pinpoint the exact document page or file needing improvement.
+- Reporters must describe the edit, missing content, or unclear section in detail.
+- The template reinforces ArchSpine’s commitment to high-quality, community-driven documentation.

@@ -3,25 +3,27 @@
   "identity": {
     "filePath": "examples/demo-project/.spine/manifest.json",
     "contentHash": "12c8b567f15a43d187207ac6c3e019507bdfb4a50548331f7d1f7116b6edfc1a",
-    "semanticHash": "dcac6db5b576b9b5ea71fed0126d49e4e52ae7c9534041be2f0904eb975ab930",
+    "semanticHash": "7e554eb6867889212bb73f8aa5316b7636c1d0c7eff477bf0e2cf3e2ae9898b1",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "examples/demo-project/.spine"
   },
   "semantic": {
-    "role": "Health-check and sync-state snapshot for the ArchSpine mirror system",
+    "role": "Provides a lightweight, human-readable health-check snapshot of the ArchSpine synchronization state and project metadata. It is not the authoritative state store (which lives in cache.db) but serves as a quick overview for operators and CI systems.",
     "responsibilities": [
-      "Tracking last synchronization timestamp and mode",
-      "Reporting reverse index completeness and indexed unit count",
-      "Exposing LLM provider and model configuration used during sync",
-      "Reporting active constraint violations and last sync duration"
+      "Tracks the last synchronization timestamp and mode to detect stale or incomplete syncs",
+      "Reports the count of indexed units and completeness of the reverse index",
+      "Exposes the active LLM provider, model, and their configuration sources for auditing",
+      "Provides a violation count and sync duration gauge for monitoring system health",
+      "Serves as a minimal validation point for schema conformance and generator version compatibility"
     ],
     "outOfScope": [],
     "invariants": [
-      "activeViolations must be non-negative",
-      "lastSyncDurationMs must be non-negative",
-      "indexedUnitCount must be non-negative",
-      "reverseIndexComplete must be a boolean"
+      "schemaVersion must be exactly '1.0.0' for current protocol compatibility",
+      "generatorVersion must match the expected ArchSpine version pattern",
+      "lastSyncAt must be a valid ISO 8601 UTC timestamp to avoid time drift issues",
+      "reverseIndexComplete must be true before index-based operations can be trusted",
+      "health.activeViolations must be 0 for a clean bill of health; non‑zero indicates unresolved rule violations"
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -32,44 +34,42 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Provides a lightweight, read-only health-check view of the ArchSpine mirror system's synchronization state and constraint status.",
+        "role": "Provides a lightweight, human-readable health-check snapshot of the ArchSpine synchronization state and project metadata. It is not the authoritative state store (which lives in cache.db) but serves as a quick overview for operators and CI systems.",
         "parameter_definitions": {
-          "schemaVersion": "Version of the schema this file conforms to.",
-          "generatorVersion": "Version of the ArchSpine generator that produced this file.",
-          "project": "Name of the project this configuration belongs to.",
-          "sync.lastSyncAt": "ISO 8601 timestamp of the most recent synchronization.",
-          "sync.lastSyncMode": "Type of the last sync operation (e.g., full or incremental).",
-          "sync.reverseIndexComplete": "Boolean indicating whether the reverse index was fully built during the last sync.",
-          "sync.indexedUnitCount": "Number of units indexed during the last sync.",
-          "sync.llm.provider": "LLM provider used during the last sync (e.g., mock, openai).",
-          "sync.llm.providerSource": "Source of the LLM provider configuration (e.g., project-config, global-config).",
-          "sync.llm.model": "LLM model used during the last sync (e.g., deepseek-chat).",
-          "sync.llm.modelSource": "Source of the LLM model configuration (e.g., global-config).",
-          "health.activeViolations": "Number of currently active constraint violations. Zero indicates a healthy state.",
-          "health.lastSyncDurationMs": "Duration of the last sync operation in milliseconds.",
-          "_note": "Informational note indicating that the core state is stored in .spine/cache.db."
+          "schemaVersion": "Defines the format version of this config file. Must be '1.0.0' to ensure compatibility with the current toolchain.",
+          "generatorVersion": "Version of the ArchSpine generator that produced this file, used for traceability and upgrade decisions.",
+          "project": "Human‑readable project name for identification in multi‑project environments.",
+          "sync.lastSyncAt": "ISO 8601 timestamp of the most recent full or incremental sync. A stale timestamp indicates the repository may be out of date.",
+          "sync.lastSyncMode": "Indicates whether the last sync was 'full' or 'incremental'. Affects how much state was rebuilt.",
+          "sync.reverseIndexComplete": "Boolean flag; when false, any operation relying on the reverse index (e.g., symbol search) may be incomplete.",
+          "sync.indexedUnitCount": "Number of source units successfully indexed. A lower than expected count may signal missing files or scan failures.",
+          "sync.llm.provider": "The LLM provider used for the last sync (e.g., 'mock', 'openai', 'gemini'). Important for cost and consistency auditing.",
+          "sync.llm.providerSource": "Where the provider selection originated ('project-config' or 'global-config'), affecting override behavior.",
+          "sync.llm.model": "The specific model name used for LLM calls (e.g., 'deepseek-chat').",
+          "sync.llm.modelSource": "Where the model came from, enabling debugging of model resolution precedence.",
+          "health.activeViolations": "Current number of unaddressed rule violations. Zero is ideal; positive values require investigation.",
+          "health.lastSyncDurationMs": "Milliseconds taken by the last sync, useful for performance trend analysis."
         },
-        "stability_and_risks": "This file is a derived, read-only snapshot. It does not control system behavior directly. However, if the values become stale or inconsistent with the cache database, monitoring and alerting systems may report false positives or miss real issues. A non-zero activeViolations count indicates constraint breaches that could affect downstream operations. A very high lastSyncDurationMs may signal performance degradation or resource contention. The LLM provider/model fields are informational; mismatches with actual runtime configuration could cause confusion during debugging."
+        "stability_and_risks": "This configuration file is a derived health-check view, not the primary state database. The main risk is that `health.activeViolations` may be zero while the actual state in cache.db is stale or corrupt. Operators should treat this file as a quick diagnostic indicator and cross‑reference with the full manifest and cache for critical decisions. A mismatch between `lastSyncAt` and the actual repository state can lead to false confidence. The invariants on `reverseIndexComplete` and `activeViolations` serve as safety gates; ignoring them may cause incomplete analyses or missed governance issues."
       },
       "Simplified Chinese": {
-        "role": "提供 ArchSpine 镜像系统的同步状态和约束健康状况的轻量级只读快照。",
+        "role": "提供一份轻量级、可读性高的健康检查快照，展示 ArchSpine 同步状态和项目元数据。该文件并非权威状态存储（实际状态存储于 cache.db），而是为操作人员和 CI 系统提供快速概览。",
         "parameter_definitions": {
-          "schemaVersion": "此文件所遵循的架构版本。",
-          "generatorVersion": "生成此文件的 ArchSpine 生成器版本。",
-          "project": "此配置所属的项目名称。",
-          "sync.lastSyncAt": "最近一次同步的 ISO 8601 时间戳。",
-          "sync.lastSyncMode": "最近一次同步的类型（例如 full 或 incremental）。",
-          "sync.reverseIndexComplete": "布尔值，指示最近一次同步是否完整构建了反向索引。",
-          "sync.indexedUnitCount": "最近一次同步中索引的单元数量。",
-          "sync.llm.provider": "最近一次同步使用的 LLM 提供商（例如 mock、openai）。",
-          "sync.llm.providerSource": "LLM 提供商配置的来源（例如 project-config、global-config）。",
-          "sync.llm.model": "最近一次同步使用的 LLM 模型（例如 deepseek-chat）。",
-          "sync.llm.modelSource": "LLM 模型配置的来源（例如 global-config）。",
-          "health.activeViolations": "当前活跃的约束违规数量。零表示系统健康。",
-          "health.lastSyncDurationMs": "最近一次同步操作的持续时间（毫秒）。",
-          "_note": "提示信息，说明核心状态存储在 .spine/cache.db 中。"
+          "schemaVersion": "定义此配置文件的格式版本。必须为 '1.0.0' 以确保与当前工具链兼容。",
+          "generatorVersion": "生成此文件的 ArchSpine 生成器版本，用于追溯和升级决策。",
+          "project": "人类可读的项目名称，用于在多项目环境中进行标识。",
+          "sync.lastSyncAt": "最近一次全量或增量同步的 ISO 8601 时间戳。时间戳过时表示仓库可能不同步。",
+          "sync.lastSyncMode": "指示上次同步是 'full'（全量）还是 'incremental'（增量），影响重建了多少状态。",
+          "sync.reverseIndexComplete": "布尔标志；为 false 时，任何依赖反向索引的操作（如符号搜索）可能不完整。",
+          "sync.indexedUnitCount": "成功索引的源单元数量。低于预期可能表示缺少文件或扫描失败。",
+          "sync.llm.provider": "上次同步使用的 LLM 提供商（例如 'mock'、'openai'、'gemini'），对成本和一致性审计重要。",
+          "sync.llm.providerSource": "提供商选择来源（'project-config' 或 'global-config'），影响覆盖行为。",
+          "sync.llm.model": "用于 LLM 调用的具体模型名称（例如 'deepseek-chat'）。",
+          "sync.llm.modelSource": "模型的来源，用于调试模型解析优先级。",
+          "health.activeViolations": "当前未解决的规则违规数量。零为理想值，正值需要调查。",
+          "health.lastSyncDurationMs": "上次同步所花费的毫秒数，用于性能趋势分析。"
         },
-        "stability_and_risks": "此文件是一个派生的只读快照，不直接控制系统行为。但如果其值与缓存数据库不一致，监控和告警系统可能会误报或遗漏真实问题。非零的 activeViolations 表示存在约束违规，可能影响下游操作。过高的 lastSyncDurationMs 可能表明性能下降或资源争用。LLM 提供商和模型字段仅供参考；若与实际运行时配置不匹配，可能在调试时造成混淆。"
+        "stability_and_risks": "此配置文件是一个衍生出的健康检查视图，并非主状态数据库。主要风险在于 `health.activeViolations` 可能为零，而 cache.db 中的实际状态已过期或损坏。操作人员应将该文件视为快速诊断指标，在做出关键决策时与完整清单和缓存进行交叉验证。`lastSyncAt` 与实际仓库状态之间的不一致可能导致错误的安全感。`reverseIndexComplete` 和 `activeViolations` 的不变量作为安全门；忽略它们可能导致分析不完整或遗漏治理问题。"
       }
     }
   },
@@ -91,7 +91,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:44:23.557Z",
+    "indexedAt": "2026-05-03T11:22:49.973Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

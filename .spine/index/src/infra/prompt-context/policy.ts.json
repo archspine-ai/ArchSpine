@@ -4,54 +4,75 @@
     "filePath": "src/infra/prompt-context/policy.ts",
     "contentHash": "7ceb4309b7ebd0efb4726aa5f71f9ba720c4ad8e701a7b0e3af60d977ba9bf7b",
     "skeletonHash": "9f65a02838e6619f1b7ae9cd681c6f5c213a48107a7c234c12e29dd6cc8d6342",
-    "semanticHash": "e0e08ed8a5f8e6be87b08d8655f1921c7f87183ecd80c12dc6470be044f4132a",
+    "semanticHash": "bee62c210feb622436378d2a1035275c18b30ecaeed788a5eae50999d8397654",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/prompt-context"
   },
   "semantic": {
-    "role": "Infrastructure policy resolver providing default prompt and validation policies based on task mode.",
+    "role": "Infrastructure policy resolver providing default and overridable prompt tier and validation policy for task modes.",
     "responsibilities": [
       "Determines the default prompt policy tier (e.g., 'balanced') for a given PromptTaskMode.",
-      "Determines the default validation policy (e.g., 'strict', 'default') for a given PromptTaskMode.",
-      "Resolves prompt policy tier with optional override consideration (partial function shown).",
-      "Exposes stable policy decision functions as a facade for other modules."
+      "Determines the default validation policy (e.g., 'strict' for validate mode, 'default' for others) for a given PromptTaskMode.",
+      "Resolves the final prompt policy tier by combining the task mode default with an optional explicit override.",
+      "Resolves the final validation policy by combining the task mode default with an optional explicit override.",
+      "Exposes stable, stateless policy decision functions as an infrastructure facade for other modules."
     ],
     "outOfScope": [
-      "Orchestrating task execution or engine workflows.",
-      "Managing runtime state or configuration loading.",
-      "Handling user input or CLI command parsing."
+      "Orchestration of service or engine workflows.",
+      "Execution of prompts or validations.",
+      "Task mode lifecycle management or persistence.",
+      "IO or network operations."
     ],
     "invariants": [
-      "Must remain a pure function library with no side effects.",
-      "Must not absorb service orchestration concerns to comply with infra-facade-imports rule.",
-      "Exports must provide a stable facade for policy resolution."
+      "[infra-facade-imports] This module must remain a stateless, deterministic policy resolver and must not absorb orchestration concerns from services or engines.",
+      "All policy decisions must be derivable solely from the task mode and optional overrides, without external state.",
+      "The public API must be kept stable to serve as the canonical facade for prompt policy resolution."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a stable, decoupled policy resolution facade for infrastructure, enabling consistent prompt and validation policy decisions across tasks.",
-      "recentChangeIntent": "Part of broader CLI modularization and core infra decoupling (per git intent), though this specific file may not have changed directly."
+      "architecturalIntent": "Establishes a centralized, stable infrastructure facade for determining and overriding prompt-tier and validation policies based on task mode, enforcing consistent governance across the system.",
+      "recentChangeIntent": "Part of ArchSpine v1.0.0 initial architectural release; baseline policy resolution module."
     },
     "publicSurface": [
-      "defaultPromptTierForTask",
-      "defaultValidatePolicyForTask",
-      "resolvePromptPolicyTier"
+      "defaultPromptTierForTask(taskMode: PromptTaskMode): PromptPolicyTier",
+      "defaultValidatePolicyForTask(taskMode: PromptTaskMode): ValidatePolicy",
+      "resolvePromptPolicyTier(taskMode: PromptTaskMode, promptTier?: PromptPolicyTier): Result<PromptPolicyTier>",
+      "resolveValidatePolicy(taskMode: PromptTaskMode, validatePolicy?: ValidatePolicy): Result<ValidatePolicy>"
     ],
     "ruleViolations": [],
     "driftDetected": false,
-    "driftReason": null,
+    "driftReason": "No semantic drift; previous contract was based on partial initial analysis, current full evidence aligns.",
     "localized": {
       "English": {
-        "role": "Infrastructure policy resolver providing default prompt and validation policies based on task mode.",
+        "role": "Infrastructure policy resolver providing default and overridable prompt tier and validation policy for task modes.",
         "responsibilities": [
           "Determines the default prompt policy tier (e.g., 'balanced') for a given PromptTaskMode.",
-          "Determines the default validation policy (e.g., 'strict', 'default') for a given PromptTaskMode.",
-          "Resolves prompt policy tier with optional override consideration (partial function shown).",
-          "Exposes stable policy decision functions as a facade for other modules."
+          "Determines the default validation policy (e.g., 'strict' for validate mode, 'default' for others) for a given PromptTaskMode.",
+          "Resolves the final prompt policy tier by combining the task mode default with an optional explicit override.",
+          "Resolves the final validation policy by combining the task mode default with an optional explicit override.",
+          "Exposes stable, stateless policy decision functions as an infrastructure facade for other modules."
         ],
         "outOfScope": [
-          "Orchestrating task execution or engine workflows.",
-          "Managing runtime state or configuration loading.",
-          "Handling user input or CLI command parsing."
+          "Orchestration of service or engine workflows.",
+          "Execution of prompts or validations.",
+          "Task mode lifecycle management or persistence.",
+          "IO or network operations."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施策略解析器，为任务模式提供默认且可覆盖的提示层级和验证策略。",
+        "responsibilities": [
+          "根据给定的 PromptTaskMode 确定默认的提示策略层级（例如 'balanced'）。",
+          "根据给定的 PromptTaskMode 确定默认的验证策略（例如 'validate' 模式返回 'strict'，其他模式返回 'default'）。",
+          "通过组合任务模式默认值和可选显式覆盖，解析最终的提示策略层级。",
+          "通过组合任务模式默认值和可选显式覆盖，解析最终的验证策略。",
+          "作为基础设施外观模块，对外暴露稳定、无状态的策略决策函数。"
+        ],
+        "outOfScope": [
+          "服务或引擎工作流的编排。",
+          "提示或验证的执行。",
+          "任务模式生命周期管理或持久化。",
+          "IO 或网络操作。"
         ]
       }
     }
@@ -125,10 +146,41 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/prompt-context/policy.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/defaultPromptTierForTask#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/policy.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-policy.ts/defaultPromptTierForTask#",
+        "targetPath": "src/infra/prompt-policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/policy.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/defaultValidatePolicyForTask#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/policy.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-policy.ts/defaultValidatePolicyForTask#",
+        "targetPath": "src/infra/prompt-policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:39.863Z",
+    "indexedAt": "2026-05-03T11:25:04.644Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

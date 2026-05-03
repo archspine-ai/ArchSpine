@@ -4,32 +4,33 @@
     "filePath": "src/infra/manifest/integrity.ts",
     "contentHash": "41893fab664aca7d03e99d990e6aeb06627f27b4a4982bb48a057fc5f7f0ecf2",
     "skeletonHash": "9b75cca045fb6e64cc6b241b40e98867bc2786a4f02e3ea449fdcd25d13ffbeb",
-    "semanticHash": "714ff667f824a6838ad38c3d52e08698c00c2d6eedb20ba15e75a90b9496b993",
+    "semanticHash": "1a45cca8bc5e0025fcc16eb0cd491416f068e3cd2807c68ed020fb80a8b15a26",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/manifest"
   },
   "semantic": {
-    "role": "Utility function for generating SHA-256 file hashes with metadata validation and database integration.",
+    "role": "Infrastructure utility for computing SHA-256 file hashes with filesystem validation and SpineDB status integration.",
     "responsibilities": [
-      "Validates file existence and retrieves filesystem metadata (size, modification time).",
-      "Normalizes file paths using the repository path utility.",
-      "Queries the SpineDB for the current file status.",
-      "Computes a SHA-256 hash of the file content."
+      "Validates file existence and checks that the path points to a regular file.",
+      "Normalizes the file path using the repository path utility.",
+      "Retrieves current file status from SpineDB (via getFileStatus).",
+      "Reads file content from disk and computes a SHA-256 hash using Node.js crypto.",
+      "Throws descriptive errors for missing files or non-regular files."
     ],
     "outOfScope": [
-      "Orchestrating service or engine workflows",
-      "Providing a stable infrastructure facade",
-      "Handling file content parsing or transformation beyond hashing"
+      "Writing or updating file metadata in the database.",
+      "Handling hashing of directories or non-regular files (symlinks, pipes, etc.).",
+      "Encryption or any cryptographic operation other than SHA-256 hashing.",
+      "Any orchestration of higher-level workflows or service calls."
     ],
     "invariants": [
-      "Depends on SpineDB for file status lookup",
-      "Uses Node.js crypto and fs modules for hash computation and file system operations",
-      "Path normalization must be applied before database queries"
+      "Must expose a stable low-level hashing capability without absorbing service/task/engine orchestration concerns (per infra-facade-imports rule).",
+      "File existence and type validation must occur before reading content to avoid crashes."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a deterministic, database-aware file hashing utility for the ArchSpine mirror system to track file integrity and changes.",
-      "recentChangeIntent": "No direct changes indicated; recent commit 'tighten schema handling and add try preview' appears unrelated to this utility."
+      "architecturalIntent": "Provide a reusable, validated file-hashing primitive that integrates with SpineDB for tracking file state, supporting governance and semantic consistency.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era; likely includes consolidation of hashing as part of governance infrastructure."
     },
     "publicSurface": [
       "calculateHash(db: SpineDB, filePath: string): string"
@@ -39,17 +40,35 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Utility function for generating SHA-256 file hashes with metadata validation and database integration.",
+        "role": "Infrastructure utility for computing SHA-256 file hashes with filesystem validation and SpineDB status integration.",
         "responsibilities": [
-          "Validates file existence and retrieves filesystem metadata (size, modification time).",
-          "Normalizes file paths using the repository path utility.",
-          "Queries the SpineDB for the current file status.",
-          "Computes a SHA-256 hash of the file content."
+          "Validates file existence and checks that the path points to a regular file.",
+          "Normalizes the file path using the repository path utility.",
+          "Retrieves current file status from SpineDB (via getFileStatus).",
+          "Reads file content from disk and computes a SHA-256 hash using Node.js crypto.",
+          "Throws descriptive errors for missing files or non-regular files."
         ],
         "outOfScope": [
-          "Orchestrating service or engine workflows",
-          "Providing a stable infrastructure facade",
-          "Handling file content parsing or transformation beyond hashing"
+          "Writing or updating file metadata in the database.",
+          "Handling hashing of directories or non-regular files (symlinks, pipes, etc.).",
+          "Encryption or any cryptographic operation other than SHA-256 hashing.",
+          "Any orchestration of higher-level workflows or service calls."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施工具函数，用于计算 SHA-256 文件哈希，集成文件系统验证和 SpineDB 状态查询。",
+        "responsibilities": [
+          "验证文件是否存在，并确保路径指向普通文件。",
+          "利用仓库路径工具对文件路径进行标准化。",
+          "从 SpineDB 检索文件的当前状态（通过 getFileStatus）。",
+          "读取磁盘文件内容并使用 Node.js crypto 计算 SHA-256 哈希。",
+          "对缺失文件或非普通文件抛出描述性错误。"
+        ],
+        "outOfScope": [
+          "写入或更新数据库中的文件元数据。",
+          "处理目录或非普通文件（如符号链接、管道等）的哈希计算。",
+          "除 SHA-256 哈希之外的加密或任何密码学操作。",
+          "任何更高级别的编排或服务调用的编排。"
         ]
       }
     }
@@ -152,10 +171,27 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/manifest/integrity.ts/_file_#",
+        "targetSymbol": "src/utils/repo-path.ts/normalizeRepoPath#",
+        "targetPath": "src/utils/repo-path.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/integrity.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getFileStatus#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:39.329Z",
+    "indexedAt": "2026-05-03T11:25:04.155Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

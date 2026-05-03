@@ -1,2 +1,22 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/cli/repo","role":"CLI command adapter for managing repository artifact strategies.","responsibility":"Parses and validates artifact strategy input from CLI arguments, coordinates strategy checks and application via the repository admin service, provides user-facing console feedback, and integrates with system configuration for persisted and initialization strategies.","children":[{"filePath":"src/cli/repo/strategy.ts","role":"CLI command adapter for repository artifact strategy management within the ArchSpine system.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T03:58:47.342Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src/cli/repo` 目录是 ArchSpine 系统中用于管理仓库制品策略的 CLI 命令适配器。它仅包含一个关键的子模块 `strategy.ts`，该模块负责解析和验证来自 CLI 参数的制品策略输入，通过仓库管理服务协调策略的检查与应用，提供面向用户的控制台反馈，并与系统配置集成以支持持久化和初始化策略。最重要的实现领域包括参数解析、策略验证逻辑、与管理服务的交互以及控制台输出格式化。
+## 目录：仓库制品策略 CLI 命令适配器
+
+本目录是 ArchSpine 系统中用于仓库制品策略操作的 CLI 命令适配层。它提供命令行接口，用于 **检查** 和 **设置** 仓库的制品策略（`"local"` 本地或 `"distributable"` 可分发型）。
+
+### 结构与分组
+
+目录中仅包含一个主模块：
+
+- **`strategy.ts`** – 作为所有 CLI 交互的主入口点。它从命令行参数解析并规范化策略输入，通过 `checkRepositoryStrategy` 和 `applyRepositoryStrategy` 委托给核心逻辑执行，并利用 `printStep` 回调分步显示进度与结果。
+
+所有逻辑集中在单个文件中，使适配层专注于输入/输出处理，而核心业务规则保持分离在独立的领域层中。
+
+### 关键实现区域
+
+1. **输入解析** – 从 CLI 参数验证并规范化用户提供的策略值（`"local"` 或 `"distributable"`）。
+2. **策略检查** – 调用 `checkRepositoryStrategy` 报告当前策略状态，包括对缺失或不一致策略的警告。
+3. **策略设置** – 通过进度回调（`printStep`）调用 `applyRepositoryStrategy`，在操作过程中提供实时反馈。
+4. **配置报告** – 读取系统配置（`Config`），向用户展示持久化的制品策略和初始化策略。
+
+### 具体子模块
+
+- `strategy.ts` – 仓库制品策略检查/设置命令的完整 CLI 适配器实现。

@@ -3,24 +3,25 @@
   "identity": {
     "filePath": "src/assets/templates/view/public-surface.md",
     "contentHash": "16b11e6041f2e3cbcab5ceb94eaf7f41c98b263efff45867a00bb3d20cf805bb",
-    "semanticHash": "66070b51ea662c1650bacaba2e4e6289c88ddd5d3a5c8ef0ca5e787a3a47bdec",
+    "semanticHash": "463f0302b3c933370997e4484488a5225b0c9af4f5f9849858b18957124cb967",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/assets/templates/view"
   },
   "semantic": {
-    "role": "Public API surface inventory and entry point registry",
+    "role": "An auto-generated inventory of the project's public interface, listing CLI commands, MCP tools, and exported modules to provide a single source of truth for what the system exposes externally.",
     "responsibilities": [
-      "Catalog all CLI commands and their entry points",
-      "List all MCP (Model Context Protocol) endpoints",
-      "Document exported module interfaces",
-      "Provide a machine-readable and human-readable map of the system's public surface"
+      "Listing all CLI entry points (commands) with their signatures and descriptions.",
+      "Listing all MCP (Model Context Protocol) tools and resources provided by the system.",
+      "Listing all exported modules from the codebase along with their public symbols.",
+      "Serving as a machine-readable and human-readable catalog of the public surface.",
+      "Being automatically refreshed via the `spine sync` command to remain in sync with the actual implementation."
     ],
     "outOfScope": [
-      "Internal implementation details",
-      "Private APIs or non-exported functions",
-      "Configuration or environment setup instructions",
-      "Usage examples or tutorials"
+      "Internal or private APIs not intended for external consumption.",
+      "Runtime state or dynamic endpoint discovery (e.g., REST routes registered at startup).",
+      "Detailed usage examples or tutorials for each entry point.",
+      "Manual editing; the document is auto-generated and any manual changes will be overwritten."
     ],
     "invariants": [],
     "changeIntent": {
@@ -32,23 +33,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document serves as a comprehensive registry of all public-facing interfaces in the ArchSpine system. It is automatically generated to provide a single source of truth for CLI commands, MCP endpoints, and exported modules, ensuring developers and AI agents can quickly discover available entry points.",
-        "context_and_audience": "Intended for developers, system integrators, and AI agents who need to understand the complete public API surface of ArchSpine. This includes both human readers reviewing the system's capabilities and automated tools that consume the structured data for integration or testing purposes.",
+        "purpose": "The Public Surface Map provides a single, automatically maintained reference for all public entry points of the ArchSpine project. It enumerates every CLI command, MCP tool, and exported module so that developers, CI pipelines, and AI agents can quickly discover how to interact with the system without searching through source code or multiple documentation pages.",
+        "context_and_audience": "This document is intended for developers integrating ArchSpine into their workflows, AI agents consuming the system's API, and maintainers verifying that the documented surface matches the actual implementation. It is generated as part of the `spine sync` pipeline and should be consulted as the authoritative list of public interfaces.",
         "key_takeaways": [
-          "Auto-generated inventory of all public entry points",
-          "Covers three categories: CLI, MCP, and exported modules",
-          "Refreshed via `spine sync` command",
-          "Experimental view that evolves with the system"
+          "The document is auto-generated and should never be manually edited.",
+          "Refresh via `spine sync` to capture any changes to CLI, MCP, or module exports.",
+          "It serves as both a human-friendly overview and a machine-parseable index for agents."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档是 ArchSpine 系统中所有公开接口的完整注册表。它自动生成，提供 CLI 命令、MCP 端点和导出模块的单一可信来源，确保开发者和 AI 代理能够快速发现可用的入口点。",
-        "context_and_audience": "适用于需要了解 ArchSpine 完整公开 API 表面的开发者、系统集成商和 AI 代理。既包括人工审查系统能力，也包括自动化工具消费结构化数据以进行集成或测试。",
+        "purpose": "公共表面映射提供了一份由系统自动维护的参考清单，列出了 ArchSpine 项目的所有公共入口点。它逐一记录了每条 CLI 命令、每个 MCP 工具以及每个导出的模块，使开发者、CI 流水线和 AI 代理无需翻阅源码或多份文档，就能快速了解如何与系统交互。",
+        "context_and_audience": "本文档面向将 ArchSpine 集成到自己工作流中的开发者、消费系统 API 的 AI 代理，以及需要验证文档表面与实际实现是否一致的维护人员。它由 `spine sync` 管线自动生成，应作为公共接口的权威清单使用。",
         "key_takeaways": [
-          "所有公开入口点的自动生成清单",
-          "覆盖三类：CLI、MCP 和导出模块",
-          "通过 `spine sync` 命令刷新",
-          "随系统演进的实验性视图"
+          "该文档为自动生成，切勿手动编辑。",
+          "运行 `spine sync` 即可刷新，捕获 CLI、MCP 或模块导出的任何变更。",
+          "它既是面向人类的友好概览，也是供代理解析的机器可读索引。"
         ]
       }
     }
@@ -71,7 +70,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:30.642Z",
+    "indexedAt": "2026-05-03T11:24:59.862Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -4,64 +4,72 @@
     "filePath": "src/infra/prompt/shared.ts",
     "contentHash": "be70097ede9d3a94955696ccc1211eaf63ba4db7cc7fd12458933a79ffb02541",
     "skeletonHash": "9b3b1fbf065a94ae8cff22f4413063e19bedb3045890ef9ac49b53056f86d9f0",
-    "semanticHash": "db07d7b749121bf607739f9e0ffde204431dc94d7b555f0e60afd638610a83d1",
+    "semanticHash": "f2bd8174e0fd5a8d2fb9cf236623d53fa9841415e39f2d1aac9c27a398db16b4",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/prompt"
   },
   "semantic": {
-    "role": "Utility function generating formatted output contract strings for the ArchSpine prompt response system.",
+    "role": "Utility module generating the formatted OUTPUT CONTRACT string and associated language/markdown guidance for the ArchSpine prompt response system.",
     "responsibilities": [
-      "Renders the OUTPUT CONTRACT section text based on the specified PromptResponseMode and target languages.",
-      "Conditionally includes markdown block instructions when response mode is not 'json-only'.",
-      "Validates language list to ensure 'English' is included as a required base language."
+      "Renders the OUTPUT CONTRACT section text, starting with '---JSON---', based on the specified PromptResponseMode and target languages.",
+      "Conditionally includes markdown block instructions when response mode is not 'json-only', using buildMarkdownSectionGuidance for file-kind-specific guidance.",
+      "Validates the language list to ensure 'English' is always included as a required base language.",
+      "Builds localized language instructions for each requested language to be included in the contract.",
+      "Generates file-kind-specific (document, schema, atlas, records, project) markdown section guidance for human-readable documentation."
     ],
     "outOfScope": [
-      "Does not handle actual JSON schema generation or validation.",
-      "Does not manage prompt construction beyond the output contract section.",
-      "Does not interact with file I/O, network, or external services."
+      "Does not handle actual LLM prompt generation or schema validation beyond the contract format.",
+      "Does not enforce architectural rules or perform runtime logging.",
+      "Does not manage file I/O or configuration loading."
     ],
     "invariants": [
-      "The function must always return a string that starts with 'OUTPUT CONTRACT:'.",
-      "The function must always include the first two numbered contract points.",
-      "When responseMode is 'json-only', the function must return only the JSON contract without markdown instructions.",
-      "The function must validate that 'English' is present in the languages array, case-insensitively."
+      "The output contract must always start with the literal line '---JSON---'.",
+      "English must be present in the languages list; if missing, an instruction is pushed to add it.",
+      "When responseMode is 'json-only', the contract must end with a line forbidding markdown after JSON.",
+      "When responseMode is not 'json-only', markdown sections for each requested language and the file kind must be included."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a reusable, parameterized output contract renderer that adapts to different response modes and language requirements, ensuring consistent prompt formatting across the system.",
-      "recentChangeIntent": "No recent changes detected; the file aligns with the modularization intent of the CLI and core infra services."
+      "architecturalIntent": "Provides a consistent, machine-readable output contract for AI-generated responses, enforcing structured JSON delivery and optional human-readable markdown expansions.",
+      "recentChangeIntent": "Added buildMarkdownSectionGuidance to support file-kind-specific markdown block instructions, aligning with ArchSpine v1.0.0's focus on architectural governance and semantic layer documentation."
     },
     "publicSurface": [
-      "renderOutputContract(responseMode: PromptResponseMode, languages: string[]): string"
+      "renderOutputContract",
+      "buildLocalizedLanguageInstructions",
+      "buildMarkdownSectionGuidance"
     ],
     "ruleViolations": [],
-    "driftDetected": false,
-    "driftReason": null,
+    "driftDetected": true,
+    "driftReason": "Previous semantic contract referenced only the renderOutputContract function; now two additional exported functions (buildLocalizedLanguageInstructions, buildMarkdownSectionGuidance) exist, expanding responsibilities to include language validation and file-kind-specific markdown guidance.",
     "localized": {
       "English": {
-        "role": "Utility function generating formatted output contract strings for the ArchSpine prompt response system.",
+        "role": "Utility module generating the formatted OUTPUT CONTRACT string and associated language/markdown guidance for the ArchSpine prompt response system.",
         "responsibilities": [
-          "Renders the OUTPUT CONTRACT section text based on the specified PromptResponseMode and target languages.",
-          "Conditionally includes markdown block instructions when response mode is not 'json-only'.",
-          "Validates language list to ensure 'English' is included as a required base language."
+          "Renders the OUTPUT CONTRACT section text, starting with '---JSON---', based on the specified PromptResponseMode and target languages.",
+          "Conditionally includes markdown block instructions when response mode is not 'json-only', using buildMarkdownSectionGuidance for file-kind-specific guidance.",
+          "Validates the language list to ensure 'English' is always included as a required base language.",
+          "Builds localized language instructions for each requested language to be included in the contract.",
+          "Generates file-kind-specific (document, schema, atlas, records, project) markdown section guidance for human-readable documentation."
         ],
         "outOfScope": [
-          "Does not handle actual JSON schema generation or validation.",
-          "Does not manage prompt construction beyond the output contract section.",
-          "Does not interact with file I/O, network, or external services."
+          "Does not handle actual LLM prompt generation or schema validation beyond the contract format.",
+          "Does not enforce architectural rules or perform runtime logging.",
+          "Does not manage file I/O or configuration loading."
         ]
       },
       "Simplified Chinese": {
-        "role": "为 ArchSpine 提示响应系统生成格式化输出合约字符串的实用函数。",
+        "role": "生成格式化输出合同字符串的实用工具模块，用于ArchSpine提示响应系统。",
         "responsibilities": [
-          "根据指定的 PromptResponseMode 和目标语言列表，渲染 OUTPUT CONTRACT 部分的文本。",
-          "当响应模式不是 'json-only' 时，有条件地包含 Markdown 块指令。",
-          "验证语言列表，确保 'English' 作为必需的基础语言被包含在内。"
+          "根据指定的响应模式和语言列表渲染输出合同文本，以'---JSON---'开头。",
+          "当响应模式不是'json-only'时，有条件地包含Markdown块指令，并使用buildMarkdownSectionGuidance生成按文档类型区分的指导。",
+          "验证语言列表，确保始终包含英文作为基础语言。",
+          "为每个请求的语言构建本地化语言指令，并包含在合同文本中。",
+          "为不同的文档类型（document、schema、atlas、records、project）生成Markdown章节指导，便于生成人类可读的文档。"
         ],
         "outOfScope": [
-          "不处理实际的 JSON 模式生成或验证。",
-          "不管理超出输出合约部分的提示构建。",
-          "不与文件 I/O、网络或外部服务交互。"
+          "不处理实际的LLM提示生成或超出合同格式的模式验证。",
+          "不执行架构规则或运行时日志记录。",
+          "不管理文件I/O或配置加载。"
         ]
       }
     }
@@ -129,10 +137,25 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/prompt/markdown.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "src/infra/prompt/source.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:40.181Z",
+    "indexedAt": "2026-05-03T11:25:04.959Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

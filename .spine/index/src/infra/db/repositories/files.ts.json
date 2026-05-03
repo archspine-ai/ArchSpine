@@ -4,64 +4,89 @@
     "filePath": "src/infra/db/repositories/files.ts",
     "contentHash": "3017ae5b9269b3cdb7fca6fd57aba9092ded38cedca4c4a824315af02e617674",
     "skeletonHash": "bfad905fa28e9ea48a16b5dd9ae65f6dd1cf92568e5c835c90ec4a279824be9b",
-    "semanticHash": "e4ee0104385199dd416ed2e32e87f887e0f38746accd8067efeac9046c361a2a",
+    "semanticHash": "d30a1310ab7971cd14646c328b9f69f1d47a0142877d93d6c2abb9ceb41ffc32",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/db/repositories"
   },
   "semantic": {
-    "role": "Data Access Object (DAO) providing SQLite persistence operations for file metadata in the ArchSpine indexing system.",
+    "role": "SQLite Data Access Object (DAO) providing file metadata persistence operations for the ArchSpine indexing system.",
     "responsibilities": [
-      "Queries and returns file status records (hash, kind, mtime, size) from the SQLite database by file path.",
-      "Upserts file records into the database with optional metadata, ensuring idempotent insertion.",
-      "Updates file documentation and authoritative status in the database.",
-      "Deletes file records from the database by path.",
-      "Lists all file paths stored in the database.",
-      "Counts total file records in the database."
+      "Retrieves file status record (hash, kind, mtime, size) from the SQLite database by file path.",
+      "Ensures existence of a file record via upsert, with optional metadata (kind, mtime, size).",
+      "Updates file status including hash, kind, locales, and timestamps, logging the last tracked time.",
+      "Updates file status with associated documentation (SpineUnit) for tracking file documentation context.",
+      "Retrieves stored documentation (SpineUnit) for a given file path, with JSON parsing.",
+      "Deletes a file record from the database by file path.",
+      "Lists all tracked file paths from the database.",
+      "Returns global status: total count of tracked files."
     ],
     "outOfScope": [
-      "Orchestrating indexing tasks or engine workflows.",
-      "Providing high-level infrastructure facades for other services.",
-      "Handling HTTP requests or user authentication.",
-      "Managing database schema migrations or connections."
+      "Performing file system scanning or directory traversal.",
+      "Project-level aggregate analysis beyond total file count.",
+      "Business logic filtering or transformation of query results.",
+      "Authentication, authorization, or credential management."
     ],
     "invariants": [
-      "Depends on better-sqlite3 Database instance for all operations.",
-      "Assumes a 'files' table with columns: path, hash, kind, lastIndexedAt, docs, is_authoritative, mtime, size.",
-      "Exports pure functions that perform direct SQL operations without side effects beyond the database."
+      "Uses parameterized SQL via better-sqlite3 prepared statements to prevent injection.",
+      "Path-based uniqueness for file records enforced by SQLite UNIQUE constraint.",
+      "Documentation stored as JSON string for serialized SpineUnit.",
+      "Timestamps recorded in ISO 8601 format via new Date().toISOString()."
     ],
     "changeIntent": {
-      "architecturalIntent": "Encapsulate SQLite file metadata persistence to isolate database concerns from business logic.",
-      "recentChangeIntent": "Part of broader refactoring to modularize CLI and decouple core infra services, though no direct changes evident in this snippet."
+      "architecturalIntent": "Provide a stable, isolated persistence layer over SQLite for file metadata operations, adhering to the DAO pattern with parameterized queries and typed return values.",
+      "recentChangeIntent": "Initial implementation of file status tracking, documentation persistence, and global status reporting for the ArchSpine indexing system."
     },
     "publicSurface": [
-      "getFileStatus",
-      "ensureFileRecord",
-      "updateFileDocs",
-      "updateFileAuthoritative",
-      "deleteFileRecord",
-      "listAllFiles",
-      "countFiles"
+      "getFileStatus(db, filePath)",
+      "ensureFileRecord(db, filePath, kind, mtime, size)",
+      "updateFileStatus(db, filePath, hash, kind, locales, mtime, size)",
+      "updateFileStatusWithDocs(db, filePath, hash, kind, spineUnit, locales, mtime, size)",
+      "getFileDocs(db, filePath)",
+      "deleteFile(db, filePath)",
+      "getTrackedFiles(db)",
+      "getGlobalStatus(db)"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Data Access Object (DAO) providing SQLite persistence operations for file metadata in the ArchSpine indexing system.",
+        "role": "SQLite Data Access Object (DAO) providing file metadata persistence operations for the ArchSpine indexing system.",
         "responsibilities": [
-          "Queries and returns file status records (hash, kind, mtime, size) from the SQLite database by file path.",
-          "Upserts file records into the database with optional metadata, ensuring idempotent insertion.",
-          "Updates file documentation and authoritative status in the database.",
-          "Deletes file records from the database by path.",
-          "Lists all file paths stored in the database.",
-          "Counts total file records in the database."
+          "Retrieves file status record (hash, kind, mtime, size) from the SQLite database by file path.",
+          "Ensures existence of a file record via upsert, with optional metadata (kind, mtime, size).",
+          "Updates file status including hash, kind, locales, and timestamps, logging the last tracked time.",
+          "Updates file status with associated documentation (SpineUnit) for tracking file documentation context.",
+          "Retrieves stored documentation (SpineUnit) for a given file path, with JSON parsing.",
+          "Deletes a file record from the database by file path.",
+          "Lists all tracked file paths from the database.",
+          "Returns global status: total count of tracked files."
         ],
         "outOfScope": [
-          "Orchestrating indexing tasks or engine workflows.",
-          "Providing high-level infrastructure facades for other services.",
-          "Handling HTTP requests or user authentication.",
-          "Managing database schema migrations or connections."
+          "Performing file system scanning or directory traversal.",
+          "Project-level aggregate analysis beyond total file count.",
+          "Business logic filtering or transformation of query results.",
+          "Authentication, authorization, or credential management."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "SQLite 数据访问对象（DAO），为 ArchSpine 索引系统提供文件元数据持久化操作。",
+        "responsibilities": [
+          "根据文件路径从 SQLite 数据库中获取文件状态记录（哈希、种类、修改时间、大小）。",
+          "通过插入或更新确保文件记录存在，并可选地设置种类、修改时间和大小等元数据。",
+          "更新文件状态，包括哈希、种类、区域设置和时间戳，并记录最后跟踪时间。",
+          "更新文件状态并关联文档（SpineUnit），用于跟踪文件的文档上下文。",
+          "根据文件路径获取存储的文档（SpineUnit），并进行 JSON 解析。",
+          "根据文件路径从数据库中删除文件记录。",
+          "列出数据库中所有被跟踪的文件路径。",
+          "返回全局状态：被跟踪文件的总数。"
+        ],
+        "outOfScope": [
+          "执行文件系统扫描或目录遍历。",
+          "超出文件总数统计的项目级聚合分析。",
+          "对查询结果执行业务逻辑过滤或转换。",
+          "身份验证、授权或凭据管理。"
         ]
       }
     }
@@ -192,10 +217,12 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:38.518Z",
+    "indexedAt": "2026-05-03T11:25:03.296Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

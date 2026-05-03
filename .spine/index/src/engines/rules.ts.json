@@ -3,8 +3,8 @@
   "identity": {
     "filePath": "src/engines/rules.ts",
     "contentHash": "433b78d5640541d01157d7734e5c3246c2de40ab9f5a7b50cbbd5c025f2b63a0",
-    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
-    "semanticHash": "303f92b097f93208c729738acd6a89a8c7214b0317575d5270c812b709f6edc3",
+    "skeletonHash": "a5466a7c269cc1f0daeef408ec536411d52081f34fd52db28a437d68d4b55069",
+    "semanticHash": "82bfddc96e78764bc134c7a96df8986bdd1295029945892b15875dc07ed1a8cb",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/engines"
@@ -12,30 +12,28 @@
   "semantic": {
     "role": "Core rule engine for loading, storing, and matching architectural rules against file paths within the ArchSpine system.",
     "responsibilities": [
-      "Loads SpineRuleDocument objects from a specified directory using the rules-loader infrastructure.",
-      "Filters and applies rule patterns (including negations with '!') to determine which rules match a given file path.",
-      "Provides a public method to retrieve all rules applicable to a specific file for downstream enforcement or analysis.",
-      "Utilizes picomatch for glob pattern matching against file paths."
+      "Loads SpineRuleDocument objects from a specified root directory using loadRulesFromDir.",
+      "Filters and applies glob pattern matching (including negation via '!') to determine which rules apply to a given file path.",
+      "Provides a public API to retrieve all rules applicable to a specific file for downstream enforcement or analysis.",
+      "Utilizes picomatch for efficient glob pattern matching against file paths.",
+      "Logs informational messages about rule matching and loading via defaultRuntimeIO."
     ],
     "outOfScope": [
-      "CLI entrypoints or command-line argument parsing.",
-      "Service-level orchestration or workflow management.",
-      "User interface or presentation concerns.",
-      "Direct file system traversal beyond the configured root directory."
+      "Rule validation, semantic analysis, or transformation beyond pattern matching.",
+      "Direct file system operations beyond initial rule loading from directory.",
+      "Integration with CLI command handlers or service orchestration layers."
     ],
     "invariants": [
-      "Engine modules must not import CLI entrypoints or service-level orchestration (engine-independence rule).",
-      "Rule matching must support negation patterns using '!' prefix.",
-      "All loaded rules must conform to the SpineRuleDocument type."
+      "Rule patterns support standard glob syntax and negation via leading '!'.",
+      "Rules are loaded eagerly at construction from the configured root directory.",
+      "Pattern matching is performed using picomatch with case-sensitive behavior."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a reusable, decoupled rule engine that loads architectural rules from disk and enables pattern-based matching for file paths, forming the analytical backbone of the ArchSpine system.",
-      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, ensuring the rule engine integrates cleanly with the broader infrastructure."
+      "architecturalIntent": "Provide a reusable, engine-level abstraction for architectural rule loading and matching, decoupled from presentation or orchestration concerns.",
+      "recentChangeIntent": "Part of ArchSpine v1.0.0 architectural governance and semantic layer initialization."
     },
     "publicSurface": [
-      "constructor(rootDir: string)",
-      "loadRules()",
-      "getRulesForFile(filePath: string): SpineRuleDocument[]"
+      "RuleEngine class (constructor and public methods for rule retrieval)"
     ],
     "ruleViolations": [],
     "driftDetected": false,
@@ -44,63 +42,118 @@
       "English": {
         "role": "Core rule engine for loading, storing, and matching architectural rules against file paths within the ArchSpine system.",
         "responsibilities": [
-          "Loads SpineRuleDocument objects from a specified directory using the rules-loader infrastructure.",
-          "Filters and applies rule patterns (including negations with '!') to determine which rules match a given file path.",
-          "Provides a public method to retrieve all rules applicable to a specific file for downstream enforcement or analysis.",
-          "Utilizes picomatch for glob pattern matching against file paths."
+          "Loads SpineRuleDocument objects from a specified root directory using loadRulesFromDir.",
+          "Filters and applies glob pattern matching (including negation via '!') to determine which rules apply to a given file path.",
+          "Provides a public API to retrieve all rules applicable to a specific file for downstream enforcement or analysis.",
+          "Utilizes picomatch for efficient glob pattern matching against file paths.",
+          "Logs informational messages about rule matching and loading via defaultRuntimeIO."
         ],
         "outOfScope": [
-          "CLI entrypoints or command-line argument parsing.",
-          "Service-level orchestration or workflow management.",
-          "User interface or presentation concerns.",
-          "Direct file system traversal beyond the configured root directory."
+          "Rule validation, semantic analysis, or transformation beyond pattern matching.",
+          "Direct file system operations beyond initial rule loading from directory.",
+          "Integration with CLI command handlers or service orchestration layers."
         ]
       },
       "Simplified Chinese": {
-        "role": "ArchSpine 系统中的核心规则引擎，负责加载、存储和匹配针对文件路径的架构规则。",
+        "role": "ArchSpine系统中用于加载、存储和匹配架构规则的核心规则引擎。",
         "responsibilities": [
-          "通过规则加载基础设施从指定目录加载 SpineRuleDocument 对象。",
-          "过滤并应用规则模式（包括使用 '!' 前缀的否定模式），以确定哪些规则匹配给定的文件路径。",
-          "提供公共方法，用于检索适用于特定文件的所有规则，供下游执行或分析使用。",
-          "利用 picomatch 库对文件路径进行 glob 模式匹配。"
+          "通过loadRulesFromDir从指定根目录加载SpineRuleDocument对象。",
+          "应用基于glob的模式匹配（包括否定模式过滤）确定适用于给定文件路径的规则。",
+          "提供公共API供下游获取匹配的规则以进行执行或分析。",
+          "使用picomatch库进行高效的glob模式匹配。",
+          "通过defaultRuntimeIO记录规则加载和匹配的相关信息。"
         ],
         "outOfScope": [
-          "CLI 入口点或命令行参数解析。",
-          "服务级编排或工作流管理。",
-          "用户界面或展示层相关功能。",
-          "超出已配置根目录的直接文件系统遍历。"
+          "超出模式匹配范围的规则验证、语义分析或转换。",
+          "除初始规则加载外的直接文件系统操作。",
+          "与CLI命令处理或服务编排层的集成。"
         ]
       }
     }
   },
   "skeleton": {
-    "imports": [],
-    "exports": [],
-    "declaredSymbols": [],
+    "imports": [
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "SpineRuleDocument"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/rules-loader.js'",
+        "symbols": [
+          "loadRulesFromDir"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'picomatch'",
+        "symbols": [
+          "picomatch"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "RuleEngine",
+        "kind": "class",
+        "signature": "class RuleEngine"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "RuleEngine",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/engines/rules.ts#"
+      }
+    ],
     "structuralHints": {
-      "importCount": 0,
-      "exportCount": 0,
+      "importCount": 8,
+      "exportCount": 1,
       "isBarrel": false,
       "isTypeOnly": false
     }
   },
   "graph": {
     "dependsOn": [
-      {
-        "targetPath": "fs",
-        "relation": "import",
-        "symbols": []
-      },
-      {
-        "targetPath": "path",
-        "relation": "import",
-        "symbols": []
-      },
-      {
-        "targetPath": "picomatch",
-        "relation": "import",
-        "symbols": []
-      },
       {
         "targetPath": "../types/protocol.js",
         "relation": "import",
@@ -121,18 +174,47 @@
         "symbols": [
           "defaultRuntimeIO"
         ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "picomatch",
+        "relation": "import",
+        "symbols": [
+          "picomatch"
+        ]
       }
     ],
     "dependedBy": [],
     "reverseIndexComplete": false,
-    "symbolEdges": []
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/engines/rules.ts/_file_#",
+        "targetSymbol": "src/infra/rules-loader.ts/loadRulesFromDir#",
+        "targetPath": "src/infra/rules-loader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T03:57:52.684Z",
+    "indexedAt": "2026-05-03T11:25:02.535Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "llm"
+      "fallback"
     ]
   }
 }

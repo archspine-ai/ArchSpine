@@ -1,25 +1,14 @@
-<!-- spine-content-hash:dab4ff9d929aa40e91305f7a0b3f6e649e0bec095309ecba61d1a37460194f82 -->
-# ArchSpine Build Script
+---MARKDOWN:Simplified Chinese---
+# ArchSpine 构建脚本摘要
 
-## Purpose
-This document defines the build pipeline for the ArchSpine project. It ensures that TypeScript source code is compiled, rule files and assets are copied to the distribution folder, and mock directories are excluded from the final output.
+## 目的
+该脚本是 ArchSpine 项目的权威构建流水线。它协调编译、资产复制和清理步骤，以生成可直接运行的发布包。
 
-## Context & Audience
-Intended for developers maintaining the ArchSpine build process. It explains how the distribution artifact is assembled and what steps are taken to keep the output clean and executable.
+## 背景与读者
+面向需要从源码构建 ArchSpine 的开发者与维护者。使用者需熟悉 Node.js、TypeScript 及项目目录结构。
 
-## Key Responsibilities
-- Compile TypeScript source into JavaScript using `tsc`
-- Copy AST rule files from `src` to `dist`
-- Copy static assets from `src/assets` to `dist/assets`
-- Remove `__mocks__` directories from the `dist` output
-- Set executable permissions on the CLI entry point
-
-## Out of Scope
-- Unit or integration testing logic
-- Runtime behavior of the mirror system
-- Configuration or schema definitions for ArchSpine
-
-## Key Takeaways
-- The build process runs `tsc`, then copies rules and assets into `dist/`
-- Mock directories (`__mocks__`) are explicitly removed from the dist tree
-- The CLI entry point is made executable after compilation
+## 要点
+- 运行 `tsc` 命令将 TypeScript 编译为 JavaScript。
+- 将 AST 规则文件（YAML）及所有资产复制到 dist 目录。
+- 复制过程中排除 `__mocks__` 目录，并在复制后将其从 dist 中删除，确保发布包洁净。
+- CLI 入口文件被设置为可执行权限（0o755）。

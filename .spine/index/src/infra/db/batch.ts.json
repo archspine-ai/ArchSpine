@@ -4,53 +4,63 @@
     "filePath": "src/infra/db/batch.ts",
     "contentHash": "a93d40e2272f1996b79a3b0e315bce173065f12c9ed56c74b9a844741af07006",
     "skeletonHash": "44323a43ccaba7f90f20fce6e76221698cd37d7ca1caa58fa1c7b2a3bcd710ae",
-    "semanticHash": "c9cdf40dddd807584c07c4e127ad225c9ef4cc755dc0027583386e268787ee7e",
+    "semanticHash": "7c60697a6e9f59a11546190db9ea0563d58a54c0008e1504baec2d364f138d32",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/db"
   },
   "semantic": {
-    "role": "Infrastructure-layer batch commit function for atomic file metadata synchronization to the SQLite index database.",
+    "role": "Infrastructure-layer function for atomic batch commit of file metadata to the SQLite index database with semantic drift detection.",
     "responsibilities": [
-      "Executes atomic batch insertion and updates of FileCommitRecord objects into the SQLite files table.",
-      "Records semantic drift events via the drift repository for changes in file role or responsibilities."
+      "Executes atomic batch insertion/update of FileCommitRecord objects into the SQLite files table using a database transaction.",
+      "Detects semantic drift by comparing previous role and responsibilities from the incoming commit records against current state.",
+      "Records drift events via the drift repository for each commit where drift is detected."
     ],
     "outOfScope": [
-      "Orchestrating high-level scanning or indexing workflows",
-      "Providing public API facades for other infrastructure services",
-      "Handling file I/O or filesystem operations directly"
+      "Database schema migrations.",
+      "File content hashing or indexing orchestration.",
+      "Higher-level service orchestration or business logic."
     ],
     "invariants": [
-      "Must maintain atomicity of batch commits via SQLite transactions",
-      "Must not absorb business logic or orchestration responsibilities beyond data persistence and drift recording"
+      "Commit transaction must be atomic across all inserts/updates.",
+      "All drift events must be persisted before or as part of the same transaction.",
+      "The function must not throw for invalid commit records (handled by database constraints)."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a stable, atomic batch commit mechanism for file metadata persistence, decoupling database operations from higher-level scanning engines.",
-      "recentChangeIntent": "Modularize CLI and decouple core infra services (aligns with refactoring to isolate infrastructure batch commit logic)."
+      "architecturalIntent": "Provide an atomic, transaction-safe commit mechanism for synchronizing file metadata to the SQLite index database, with automatic drift tracking to maintain semantic integrity.",
+      "recentChangeIntent": "Initial implementation as part of the ArchSpine v1.0.0 release; see CHANGELOG for detailed changes."
     },
     "publicSurface": [
-      "commitBatch(db: Database.Database, commits: FileCommitRecord[]): void"
+      "commitBatch"
     ],
-    "ruleViolations": [
-      {
-        "id": "infra-facade-imports",
-        "severity": "warning",
-        "reason": "Module imports './repositories/drift.js' to record semantic drift events, which may be a service/orchestration concern rather than a low-level infrastructure capability. This could violate the rule that infra modules should not absorb service/task/engine orchestration concerns."
-      }
-    ],
+    "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Infrastructure-layer batch commit function for atomic file metadata synchronization to the SQLite index database.",
+        "role": "Infrastructure-layer function for atomic batch commit of file metadata to the SQLite index database with semantic drift detection.",
         "responsibilities": [
-          "Executes atomic batch insertion and updates of FileCommitRecord objects into the SQLite files table.",
-          "Records semantic drift events via the drift repository for changes in file role or responsibilities."
+          "Executes atomic batch insertion/update of FileCommitRecord objects into the SQLite files table using a database transaction.",
+          "Detects semantic drift by comparing previous role and responsibilities from the incoming commit records against current state.",
+          "Records drift events via the drift repository for each commit where drift is detected."
         ],
         "outOfScope": [
-          "Orchestrating high-level scanning or indexing workflows",
-          "Providing public API facades for other infrastructure services",
-          "Handling file I/O or filesystem operations directly"
+          "Database schema migrations.",
+          "File content hashing or indexing orchestration.",
+          "Higher-level service orchestration or business logic."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施层函数，用于原子性地批量提交文件元数据到SQLite索引数据库，并检测语义漂移。",
+        "responsibilities": [
+          "使用数据库事务原子性地批量插入/更新FileCommitRecord对象到files表。",
+          "通过比较提交记录中的之前角色和职责与当前状态来检测语义漂移。",
+          "对于检测到漂移的提交，通过漂移仓库记录漂移事件。"
+        ],
+        "outOfScope": [
+          "数据库模式迁移。",
+          "文件内容哈希或索引编排。",
+          "更高级别的服务编排或业务逻辑。"
         ]
       }
     }
@@ -90,6 +100,20 @@
   "graph": {
     "dependsOn": [
       {
+        "targetPath": "better-sqlite3",
+        "relation": "import",
+        "symbols": [
+          "Database"
+        ]
+      },
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "FileCommitRecord"
+        ]
+      },
+      {
         "targetPath": "./repositories/drift.js",
         "relation": "import",
         "symbols": [
@@ -97,10 +121,20 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/db/batch.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/drift.ts/recordDriftEvent#",
+        "targetPath": "src/infra/db/repositories/drift.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:38.412Z",
+    "indexedAt": "2026-05-03T11:25:03.197Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -1,24 +1,20 @@
-<!-- spine-content-hash:010e30e58bfecc216211079b26b2d57461cdf5698a7a4a1c802bf3b060aac9d7 -->
-# ArchSpine Placeholder Package Publishing Script
+# ArchSpine Placeholder Publishing Script
 
 ## Purpose
-This document defines the automated script used to publish the initial placeholder version of the ArchSpine npm package. It ensures that the package name is available, the version is set to the required placeholder, and a release gate is passed before publishing.
+This document describes a CI script that automates the placeholder publishing step for the ArchSpine npm package. Its goal is to securely reserve the package name `archspine` on the official npm registry before any real releases begin, preventing another publisher from taking the name.
 
-## Context and Audience
-Intended for developers and DevOps engineers responsible for initializing the ArchSpine package on the npm registry. The script is part of the project's release pipeline and should be run only once during setup.
+## Intended Audience
+Maintainers and CI pipeline developers working on the ArchSpine project. This script is typically run as a one-time setup before the first real release, or whenever the package name needs to be reserved again.
 
-## Key Responsibilities
-- Describes the automated process for publishing a placeholder version (0.0.1) of the ArchSpine package to the npm registry
-- Covers validation steps: verifying package name, version, and registry availability
-- Documents the release gate execution and final publish command
-
-## Out of Scope
-- Detailed architectural design of the ArchSpine system
-- User-facing feature documentation or API reference
-- Maintenance procedures beyond initial placeholder publishing
+## Key Decisions and Workflows Anchored by This Document
+- The script enforces a strict placeholder version (`0.0.1`) to prevent accidental exposure of real code or version bumps during the reservation step.
+- It performs a query against the npm registry to verify the package name is not already taken; if it is, the script fails early, requiring a different package name.
+- It runs the project’s release gate (`npm run release:gate`) to ensure quality checks pass before publishing even a placeholder.
+- After verification, it publishes the package with `npm publish` to the official registry, completing the reservation.
+- The script explicitly refuses to publish if the `package.json` name or version does not match the expected placeholder values, protecting against misconfiguration.
 
 ## Key Takeaways
-- The script checks that the package name is 'archspine' and version is '0.0.1' before proceeding.
-- It verifies the package does not already exist on the npm registry to avoid conflicts.
-- A release gate (npm run release:gate) must pass before publishing.
-- The script publishes the placeholder package to the official npm registry.
+- The placeholder version **must** be `0.0.1`; any other version will cause the script to abort.
+- The script checks the live npm registry; it does not rely on local caches.
+- Integration with the release gate ensures that the placeholder step is consistent with the project’s overall quality standards.
+- The script is a one-shot process meant to be run only once (or when a re-reservation is needed) — it is not part of the normal release pipeline.

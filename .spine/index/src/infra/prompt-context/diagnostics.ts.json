@@ -4,50 +4,67 @@
     "filePath": "src/infra/prompt-context/diagnostics.ts",
     "contentHash": "4de69744d263b70566c54463d86ae93cbdf8a4f9e4fbf78c4d8d29b70fd3e4df",
     "skeletonHash": "55d8f9d980362b9f9985cf3e284c24a2c9b651aa3a90721b5d287cb3ddf1e3aa",
-    "semanticHash": "66883e54bc47920efa0a68801cedd80d391ef88c30c438f4edc559dff0ea8132",
+    "semanticHash": "d40a269fd5173e0794cc7b2fd49e3e5895d23b54a65d2607527da839a2f7e562",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/prompt-context"
   },
   "semantic": {
-    "role": "Core diagnostic utility for analyzing rule block retention and filtering in prompt relevance processing.",
+    "role": "Diagnostic utility for analyzing rule block retention and dependency selection in prompt relevance processing within the ArchSpine infrastructure layer.",
     "responsibilities": [
-      "Extracts rule IDs from raw rule block text using regex pattern matching.",
-      "Builds diagnostics comparing raw and final rule data to identify retained and dropped rule blocks.",
-      "Integrates with dependency diagnostics to filter retained candidates based on context inclusion."
+      "Extracts rule IDs from raw rule block text using regex pattern matching (via extractRuleId helper).",
+      "Builds diagnostics comparing raw and final rule data to identify retained and dropped rule blocks (buildRuleBlockDiagnostics).",
+      "Builds diagnostics for dependency selection by filtering retained candidates based on inclusion in final context data (buildDependencySelectionDiagnostics).",
+      "Provides structured diagnostic output for debugging prompt context trimming and relevance."
     ],
     "outOfScope": [
-      "Orchestrating service or engine workflows",
-      "Providing low-level infrastructure capabilities",
-      "Handling HTTP requests or external API calls"
+      "Actual splitting or parsing of rule blocks (delegated to splitRuleBlocks from trim.js).",
+      "Any mutation or application of rule data or dependency data.",
+      "User input validation or configuration handling."
     ],
     "invariants": [
-      "Operates purely on string data representing rule blocks",
-      "Depends on local utility functions for rule block splitting",
-      "Exports a single diagnostic builder function"
+      "This module only produces diagnostic information; it does not alter the rule or dependency data it receives.",
+      "Must not absorb service or engine orchestration concerns (per rule infra-facade-imports).",
+      "All exported functions are pure in the sense they only compute and return diagnostic structures."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide diagnostic insights into rule processing pipeline to ensure relevance and retention accuracy.",
-      "recentChangeIntent": "Part of broader refactoring to modularize CLI and decouple core infra services, though no direct changes evident in this snippet."
+      "architecturalIntent": "Provide diagnostic metrics for monitoring the quality of prompt context trimming and dependency selection, enabling developers to debug context relevance issues in the ArchSpine runtime.",
+      "recentChangeIntent": "Part of the initial governance layer for the v1.0.0 release, delivering rule block and dependency diagnostics to support architectural governance."
     },
     "publicSurface": [
-      "buildRuleBlockDiagnostics"
+      "buildRuleBlockDiagnostics",
+      "buildDependencySelectionDiagnostics"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Core diagnostic utility for analyzing rule block retention and filtering in prompt relevance processing.",
+        "role": "Diagnostic utility for analyzing rule block retention and dependency selection in prompt relevance processing within the ArchSpine infrastructure layer.",
         "responsibilities": [
           "Extracts rule IDs from raw rule block text using regex pattern matching.",
           "Builds diagnostics comparing raw and final rule data to identify retained and dropped rule blocks.",
-          "Integrates with dependency diagnostics to filter retained candidates based on context inclusion."
+          "Builds diagnostics for dependency selection by filtering retained candidates based on inclusion in final context data.",
+          "Provides structured diagnostic output for debugging prompt context trimming and relevance."
         ],
         "outOfScope": [
-          "Orchestrating service or engine workflows",
-          "Providing low-level infrastructure capabilities",
-          "Handling HTTP requests or external API calls"
+          "Actual splitting or parsing of rule blocks (delegated to splitRuleBlocks from trim.js).",
+          "Any mutation or application of rule data or dependency data.",
+          "User input validation or configuration handling."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于分析规则块保留情况和依赖选择情况的诊断工具，位于 ArchSpine 基础设施层的提示上下文处理模块中。",
+        "responsibilities": [
+          "通过正则表达式从原始规则块文本中提取规则 ID（借助 extractRuleId 辅助函数）。",
+          "构建比较原始与最终规则数据的诊断结果，识别保留和丢弃的规则块（buildRuleBlockDiagnostics）。",
+          "基于依赖候选在最终上下文数据中的包含情况，构建依赖选择诊断结果（buildDependencySelectionDiagnostics）。",
+          "提供结构化的诊断输出，用于调试提示上下文裁剪和相关性问题。"
+        ],
+        "outOfScope": [
+          "实际的规则块分割或解析逻辑（委托给 trim.js 中的 splitRuleBlocks）。",
+          "对规则数据或依赖数据的任何修改或应用。",
+          "用户输入验证或配置处理。"
         ]
       }
     }
@@ -105,10 +122,20 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/prompt-context/diagnostics.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/trim.ts/splitRuleBlocks#",
+        "targetPath": "src/infra/prompt-context/trim.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:39.793Z",
+    "indexedAt": "2026-05-03T11:25:04.578Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

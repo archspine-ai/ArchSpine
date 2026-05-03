@@ -4,35 +4,37 @@
     "filePath": "src/cli/commands/view.ts",
     "contentHash": "d6e7d5899e8f17df8dff5968861b2148dc4ede0b5c42d317136ea0d13d32c7d2",
     "skeletonHash": "1d0dfc77e4c6fd519f6cfe8aa1d1703c95b3f4b3572c9e12839d1cfe52685585",
-    "semanticHash": "ec78425c6314977eee3e28ad84e8d59ad3705815286855328c127e49f0622f60",
+    "semanticHash": "87d65241e532c87b08b48bcff19e68c9530349ef96c93dffc4a55cb5799e02ce",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli/commands"
   },
   "semantic": {
-    "role": "CLI command adapter for the 'view' subcommand, handling view selection, validation, and orchestration of protected output writes within the ArchSpine system.",
+    "role": "CLI command adapter for the `view` subcommand, handling view selection, display, and protected output baseline writes within the ArchSpine system.",
     "responsibilities": [
-      "Defines the ExecuteViewCommandOptions interface for CLI view command parameters.",
-      "Implements initial view selection logic by normalizing configured enabled views and resolving experimental view layers.",
-      "Orchestrates interactive prompts for view selection when needed, using the prompts library.",
-      "Validates selected view IDs against known view definitions.",
-      "Coordinates protected output write access via withProtectedOutputsWriteAccess and writeProtectedOutputBaseline.",
-      "Logs view configuration details (configured, effective, unknown views) to the console."
+      "Defines the ExecuteViewCommandOptions interface for CLI view command parameters (args, config).",
+      "Implements interactive view selection via prompts by normalizing configured enabled views and resolving experimental view layers.",
+      "Implements the executeViewCommand function to handle subcommands ('show', 'select'), normalize view IDs, display current/effective/unknown views, and invoke protected output baseline writes via the spine-gate boundary.",
+      "Wraps protected output writes with withProtectedOutputsWriteAccess to enforce write boundary."
     ],
     "outOfScope": [
-      "View derivation or computation logic (belongs in services/view or engines).",
-      "Persistence or storage of view state (belongs in infra).",
-      "Business logic for view rendering or transformation."
+      "Core view resolution or experimental layer logic (delegated to services/view).",
+      "Persistent storage of configuration or view state.",
+      "LLM client invocation or pipeline orchestration.",
+      "Visual rendering beyond CLI text output."
     ],
     "invariants": [
-      "CLI entrypoints must not absorb pipeline or persistence logic; they must delegate to services, core, engines, or infra.",
-      "View selection must respect configured and experimental view layers as defined in services/view."
+      "CLI module must not absorb pipeline or persistence logic (rule cli-entrypoint-separation).",
+      "View IDs must be validated against known definitions (isViewId, getViewDefinition).",
+      "Protected output writes must be wrapped by withProtectedOutputsWriteAccess."
     ],
     "changeIntent": {
-      "architecturalIntent": "Maintain thin CLI adapter for view command, delegating view logic to services and protected writes to infra.",
-      "recentChangeIntent": "easy one — likely a minor fix or cleanup in view selection or logging."
+      "architecturalIntent": "Maintain a thin CLI adapter for view commands that delegates to service and infra layers, ensuring testable and reusable runtime behavior outside CLI.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era: formalize view command orchestration with protected output writes and interactive selection."
     },
     "publicSurface": [
+      "promptForEnabledViews(currentViews: ViewId[] = []): Promise<ViewId[] | undefined>",
+      "executeViewCommand(options: ExecuteViewCommandOptions): Promise<void>",
       "ExecuteViewCommandOptions"
     ],
     "ruleViolations": [],
@@ -40,35 +42,33 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "CLI command adapter for the 'view' subcommand, handling view selection, validation, and orchestration of protected output writes within the ArchSpine system.",
+        "role": "CLI command adapter for the `view` subcommand, handling view selection, display, and protected output baseline writes within the ArchSpine system.",
         "responsibilities": [
-          "Defines the ExecuteViewCommandOptions interface for CLI view command parameters.",
-          "Implements initial view selection logic by normalizing configured enabled views and resolving experimental view layers.",
-          "Orchestrates interactive prompts for view selection when needed, using the prompts library.",
-          "Validates selected view IDs against known view definitions.",
-          "Coordinates protected output write access via withProtectedOutputsWriteAccess and writeProtectedOutputBaseline.",
-          "Logs view configuration details (configured, effective, unknown views) to the console."
+          "Defines the ExecuteViewCommandOptions interface for CLI view command parameters (args, config).",
+          "Implements interactive view selection via prompts by normalizing configured enabled views and resolving experimental view layers.",
+          "Implements the executeViewCommand function to handle subcommands ('show', 'select'), normalize view IDs, display current/effective/unknown views, and invoke protected output baseline writes via the spine-gate boundary.",
+          "Wraps protected output writes with withProtectedOutputsWriteAccess to enforce write boundary."
         ],
         "outOfScope": [
-          "View derivation or computation logic (belongs in services/view or engines).",
-          "Persistence or storage of view state (belongs in infra).",
-          "Business logic for view rendering or transformation."
+          "Core view resolution or experimental layer logic (delegated to services/view).",
+          "Persistent storage of configuration or view state.",
+          "LLM client invocation or pipeline orchestration.",
+          "Visual rendering beyond CLI text output."
         ]
       },
       "Simplified Chinese": {
-        "role": "ArchSpine 系统中 'view' 子命令的 CLI 命令适配器，负责视图选择、验证以及受保护输出写入的编排。",
+        "role": "ArchSpine 系统的 `view` 子命令的 CLI 命令适配器，负责视图选择、显示以及受保护输出基线的写入。",
         "responsibilities": [
-          "定义 ExecuteViewCommandOptions 接口，用于 CLI 视图命令参数。",
-          "通过规范化配置的已启用视图和解析实验性视图层，实现初始视图选择逻辑。",
-          "在需要时使用 prompts 库编排交互式视图选择提示。",
-          "根据已知视图定义验证所选视图 ID。",
-          "通过 withProtectedOutputsWriteAccess 和 writeProtectedOutputBaseline 协调受保护输出写入访问。",
-          "将视图配置详情（已配置、有效、未知视图）记录到控制台。"
+          "定义 ExecuteViewCommandOptions 接口，用于 CLI 视图命令的参数（args, config）。",
+          "实现交互式视图选择：规范化已启用的视图配置、解析实验性视图层，并通过 prompts 库提供交互式提示。",
+          "实现 executeViewCommand 函数，处理子命令（'show', 'select'）——规范化视图 ID、显示当前/有效/未知视图，并通过 spine-gate 边界调用受保护输出基线的写入。",
+          "使用 withProtectedOutputsWriteAccess 包装受保护输出的写入，以强制写操作边界。"
         ],
         "outOfScope": [
-          "视图推导或计算逻辑（属于 services/view 或 engines）。",
-          "视图状态的持久化或存储（属于 infra）。",
-          "视图渲染或转换的业务逻辑。"
+          "核心视图解析或实验性图层逻辑（委托给 services/view）。",
+          "配置或视图状态的持久化存储。",
+          "LLM 客户端调用或流水线编排。",
+          "除 CLI 文本输出之外的视觉渲染。"
         ]
       }
     }
@@ -217,10 +217,90 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/view.ts/_file_#",
+        "targetSymbol": "src/services/view/view-registry.ts/normalizeViewIds#",
+        "targetPath": "src/services/view/view-registry.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/view.ts/_file_#",
+        "targetSymbol": "src/services/view/view-runtime.ts/resolveExperimentalViewLayer#",
+        "targetPath": "src/services/view/view-runtime.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/view.ts/_file_#",
+        "targetSymbol": "src/services/view/view-runtime.ts/resolveEnabledViews#",
+        "targetPath": "src/services/view/view-runtime.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/view.ts/_file_#",
+        "targetSymbol": "src/services/view/view-registry.ts/isViewId#",
+        "targetPath": "src/services/view/view-registry.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/view.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/throwCliUsage#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/view.ts/_file_#",
+        "targetSymbol": "src/services/view/view-registry.ts/getViewDefinition#",
+        "targetPath": "src/services/view/view-registry.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/view.ts/_file_#",
+        "targetSymbol": "src/infra/writer-boundary.ts/withProtectedOutputsWriteAccess#",
+        "targetPath": "src/infra/writer-boundary.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/view.ts/_file_#",
+        "targetSymbol": "src/infra/spine-gate.ts/writeProtectedOutputBaseline#",
+        "targetPath": "src/infra/spine-gate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/view.ts/_file_#",
+        "targetSymbol": "src/infra/output.ts/OutputManager#",
+        "targetPath": "src/infra/output.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/view.ts/_file_#",
+        "targetSymbol": "src/services/view-service.ts/ViewService#",
+        "targetPath": "src/services/view-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/view.ts/_file_#",
+        "targetSymbol": "src/services/view/architecture-diagram-view.ts/deriveArchitectureDiagramView#",
+        "targetPath": "src/services/view/architecture-diagram-view.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:36.859Z",
+    "indexedAt": "2026-05-03T11:25:01.730Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -3,8 +3,8 @@
   "identity": {
     "filePath": "tests/semantic-drift.test.ts",
     "contentHash": "fcc5cb1d66cc82bc8600be18a14750168e79810d1e891bdef8980212d74f761f",
-    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
-    "semanticHash": "4f51578ab9f593b78d118340adca2af1b647b34db38ea96ce5c5ce190d406c7d",
+    "skeletonHash": "141d71cac80621bba87ccd0425c61733dfcaed8ef5c20938f3ff2467b8dd4287",
+    "semanticHash": "74ad465650ec72d6f676f434b6284b5cc1d4be517115c644ad98a149ef39cab4",
     "language": "typescript",
     "fileKind": "source",
     "scope": "tests"
@@ -12,27 +12,28 @@
   "semantic": {
     "role": "Vitest integration test suite for semantic drift detection and LLM client behavior in the ArchSpine sync system.",
     "responsibilities": [
-      "Mocks LLMClient (DriftMockClient) to track PreviousSemanticContext usage across passes.",
-      "Sets up temporary test directories and cleans them up after each test.",
-      "Executes shell commands via execSync to simulate CLI operations in isolated environments.",
-      "Validates that the SyncService correctly handles semantic drift scenarios."
+      "Mocks LLMClient with DriftMockClient to track and assert PreviousSemanticContext usage across sync passes.",
+      "Creates isolated temporary directories with mock manifest files for each test case.",
+      "Runs CLI commands (execSync) to simulate sync operations in a controlled environment.",
+      "Validates that SyncService correctly attaches previous semantic context on the second pass when drift is detected.",
+      "Tests that the sync process respects configuration flags, language lists, and file path mapping.",
+      "Ensures proper teardown of temporary resources and mock restoration after each test.",
+      "Exercises the integration between Manifest loading, SyncService execution, and LLM client interaction."
     ],
     "outOfScope": [
-      "Unit testing of individual SyncService methods in isolation.",
-      "Testing of production LLM client implementations (e.g., OpenAI, Anthropic).",
-      "Performance or load testing of the sync system."
+      "Production sync logic or service implementation details.",
+      "UI or documentation generation.",
+      "Network or real API call behavior (LLM calls are mocked)."
     ],
     "invariants": [
-      "Test files must end with .test.ts or .spec.ts (rule: test-file-suffix)."
+      "Test file suffix must be .test.ts (rule: test-file-suffix).",
+      "Each test must clean up its temporary directory and restore mocks."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a test harness for verifying semantic drift detection in the ArchSpine sync pipeline, ensuring the system correctly passes PreviousSemanticContext across multiple passes.",
-      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, aligning with the commit message intent."
+      "architecturalIntent": "Provide a robust integration test suite for the governance layer, specifically verifying semantic drift detection and LLM context propagation across sync passes.",
+      "recentChangeIntent": "Introduced with ArchSpine v1.0.0 to test the new semantic drift detection feature, ensuring SynchronizationService correctly passes previous semantic context to the LLM client."
     },
-    "publicSurface": [
-      "DriftMockClient class",
-      "generateSummary method"
-    ],
+    "publicSurface": [],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
@@ -40,39 +41,121 @@
       "English": {
         "role": "Vitest integration test suite for semantic drift detection and LLM client behavior in the ArchSpine sync system.",
         "responsibilities": [
-          "Mocks LLMClient (DriftMockClient) to track PreviousSemanticContext usage across passes.",
-          "Sets up temporary test directories and cleans them up after each test.",
-          "Executes shell commands via execSync to simulate CLI operations in isolated environments.",
-          "Validates that the SyncService correctly handles semantic drift scenarios."
+          "Mocks LLMClient with DriftMockClient to track and assert PreviousSemanticContext usage across sync passes.",
+          "Creates isolated temporary directories with mock manifest files for each test case.",
+          "Runs CLI commands (execSync) to simulate sync operations in a controlled environment.",
+          "Validates that SyncService correctly attaches previous semantic context on the second pass when drift is detected.",
+          "Tests that the sync process respects configuration flags, language lists, and file path mapping.",
+          "Ensures proper teardown of temporary resources and mock restoration after each test.",
+          "Exercises the integration between Manifest loading, SyncService execution, and LLM client interaction."
         ],
         "outOfScope": [
-          "Unit testing of individual SyncService methods in isolation.",
-          "Testing of production LLM client implementations (e.g., OpenAI, Anthropic).",
-          "Performance or load testing of the sync system."
+          "Production sync logic or service implementation details.",
+          "UI or documentation generation.",
+          "Network or real API call behavior (LLM calls are mocked)."
         ]
       },
       "Simplified Chinese": {
-        "role": "用于语义漂移检测和LLM客户端行为的Vitest集成测试套件，属于ArchSpine同步系统。",
+        "role": "用于ArchSpine同步系统中语义漂移检测的Vitest集成测试套件，专注于LLM客户端行为。",
         "responsibilities": [
-          "模拟LLMClient（DriftMockClient）以跟踪多次传递中的PreviousSemanticContext使用情况。",
-          "设置临时测试目录并在每个测试后清理。",
-          "通过execSync执行shell命令，在隔离环境中模拟CLI操作。",
-          "验证SyncService是否正确处理语义漂移场景。"
+          "使用DriftMockClient模拟LLMClient，跟踪并断言在同步传递中PreviousSemanticContext的使用情况。",
+          "为每个测试用例创建隔离的临时目录和模拟清单文件。",
+          "通过execSync运行CLI命令，在受控环境中模拟同步操作。",
+          "验证SyncService在检测到漂移时，能在第二次传递中正确附加先前语义上下文。",
+          "测试同步过程是否正确处理配置标志、语言列表和文件路径映射。",
+          "确保每次测试后正确清理临时资源并恢复模拟。",
+          "实现Manifest加载、SyncService执行和LLM客户端交互之间的集成演练。"
         ],
         "outOfScope": [
-          "单独测试SyncService方法的单元测试。",
-          "测试生产环境中的LLM客户端实现（例如OpenAI、Anthropic）。",
-          "同步系统的性能或负载测试。"
+          "生产同步逻辑或服务实现细节。",
+          "用户界面或文档生成。",
+          "网络或真实API调用行为（LLM调用已模拟）。"
         ]
       }
     }
   },
   "skeleton": {
-    "imports": [],
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/services/sync-service.js'",
+        "symbols": [
+          "SyncService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
     "exports": [],
     "declaredSymbols": [],
     "structuralHints": {
-      "importCount": 0,
+      "importCount": 10,
       "exportCount": 0,
       "isBarrel": false,
       "isTypeOnly": false
@@ -81,78 +164,53 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "vitest",
-        "relation": "import",
-        "symbols": [
-          "afterEach",
-          "beforeEach",
-          "describe",
-          "expect",
-          "it",
-          "vi"
-        ]
-      },
-      {
-        "targetPath": "fs",
-        "relation": "import",
-        "symbols": [
-          "*"
-        ]
-      },
-      {
-        "targetPath": "os",
-        "relation": "import",
-        "symbols": [
-          "*"
-        ]
-      },
-      {
-        "targetPath": "path",
-        "relation": "import",
-        "symbols": [
-          "*"
-        ]
-      },
-      {
-        "targetPath": "child_process",
-        "relation": "import",
-        "symbols": [
-          "execSync"
-        ]
-      },
-      {
-        "targetPath": "../src/services/sync-service.js",
+        "targetPath": "../src/services/sync-service.ts",
         "relation": "import",
         "symbols": [
           "SyncService"
         ]
       },
       {
-        "targetPath": "../src/infra/llm.js",
+        "targetPath": "../src/infra/manifest.ts",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "../src/infra/llm.ts",
         "relation": "import",
         "symbols": [
           "LLMClient",
           "PreviousSemanticContext"
         ]
-      },
-      {
-        "targetPath": "../src/infra/manifest.js",
-        "relation": "import",
-        "symbols": [
-          "Manifest"
-        ]
       }
     ],
     "dependedBy": [],
     "reverseIndexComplete": false,
-    "symbolEdges": []
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/semantic-drift.test.ts/_file_#",
+        "targetSymbol": "src/services/sync-service.ts/SyncService#",
+        "targetPath": "src/services/sync-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/semantic-drift.test.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getFileDocs#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T03:58:28.285Z",
+    "indexedAt": "2026-05-03T11:25:09.299Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "llm"
+      "fallback"
     ]
   }
 }

@@ -1,28 +1,23 @@
-<!-- spine-content-hash:efb7edaf35b20c4076ea2cff08421dc4f360b0f118c81a886363ebfa0332d154 -->
-# ArchSpine CLI Demo Script
+# ArchSpine CLI Demonstration Script Summary
 
 ## Purpose
-This document is a terminal recording script that produces a GIF demonstration of the ArchSpine project's core CLI workflow. It visually walks through building the project, running a sync, checking info, and performing a dry-run scan.
+This document is a terminal recording script (VHS tape) that visually demonstrates the core setup and diagnostic workflow of the ArchSpine project. It exists to give new users and evaluators an immediate, concrete sense of what it means to build and run ArchSpine from source, without requiring them to read through extensive documentation first.
 
-## Context & Audience
-Intended for developers, technical writers, or project maintainers who need a quick visual reference of how ArchSpine operates from the command line. It serves as both a demo for new users and a verification tool for existing contributors.
+## Target Audience
+The primary audience is developers or technical evaluators who want to see a live terminal walkthrough of ArchSpine before diving into written guides. The script assumes familiarity with Node.js build processes and CLI tools.
+
+## Decisions and Workflows Anchored
+- **Build verification:** The script confirms that ArchSpine can be built successfully from source using `npm run build`. This anchors the decision that the repository is ready for development or evaluation.
+- **CLI readiness:** By running `sync --fast`, `info`, and `scan --dry-run` in sequence, the script validates that the CLI is functional and that basic project introspection and scanning commands work as expected.
+- **First‐step orientation:** The demo illustrates the typical post‑clone workflow, anchoring the user’s next steps – syncing project state, inspecting configuration, and performing a dry‑run scan – all without external dependencies.
+
+## Demonstrated Workflows
+1. **Building from source** — `npm run build`
+2. **Fast synchronization** — `node dist/cli/index.js sync --fast`
+3. **Project information** — `node dist/cli/index.js info`
+4. **Dry‑run scanning** — `node dist/cli/index.js scan --dry-run`
 
 ## Key Takeaways
-- The script automates a full CLI demo from build to scan
-- Uses a specific terminal theme and typing speed for consistent visuals
-- Focuses on the sync, info, and scan commands as the primary workflow
-
-## File Role
-This is a demonstration script for generating a visual preview of the ArchSpine CLI workflow.
-
-## Key Responsibilities
-- Showcasing the build and execution sequence of ArchSpine CLI commands
-- Providing a reproducible terminal recording for documentation or onboarding
-
-## Notable Invariants & Negative Scope
-- No invariants are enforced by this script
-- This script does **not** provide detailed explanation of ArchSpine architecture or configuration
-- This script does **not** handle errors or edge cases
-
-## Exported / Externally Visible Behavior
-- This script has no public surface or exported symbols; it is intended to be run directly as a terminal recording
+- ArchSpine can be built and run with minimal setup; no external services are required.
+- The CLI offers three core commands that cover the typical “build‑sync‑inspect‑scan” cycle.
+- The demonstration is self‑contained and uses a standard terminal environment (zsh, Catppuccin Mocha theme with configurable speed and dimensions).

@@ -3,24 +3,24 @@
   "identity": {
     "filePath": "schemas/examples/spine-project-unit.example.json",
     "contentHash": "949e27b174b4537099a624487eaadcf5a73fb4e76b92ae93e1ffb941f1cb9d04",
-    "semanticHash": "6dd9a9bdd1e645eaa87f32be07fa1deea9adb096f7589cfd4c1604d820428c57",
+    "semanticHash": "11005aeb7a8a50799f001d56d8cdf5e1129a59dff969ad82644e78d5b2e4d8ad",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas/examples"
   },
   "semantic": {
-    "role": "Defines the project identity, module structure, and provenance metadata for the ArchSpine semantic indexing system.",
+    "role": "Defines the semantic identity, indexing pipeline configuration, and provenance metadata for the ArchSpine project knowledge graph.",
     "responsibilities": [
-      "Project metadata and schema versioning",
-      "Module directory layout and role assignment",
-      "Provenance tracking for indexing pipeline stages"
+      "Declares the project name and high-level role for semantic indexing.",
+      "Specifies module directories and their roles for structural awareness.",
+      "Records provenance (index timestamp, generator version, pipeline stages) for traceability and reproducibility."
     ],
     "outOfScope": [],
     "invariants": [
-      "schemaVersion must be a valid semver string",
-      "projectName must match the repository root identifier",
-      "provenance.indexedAt must be a valid ISO 8601 timestamp",
-      "pipelineStages must contain at least one stage"
+      "schemaVersion must be exactly '1.0.0' for compatibility with the current generator.",
+      "projectName must be a non-empty string identifying the repository.",
+      "modules array must contain at least one entry with a valid directory and role.",
+      "provenance.indexedAt must be a valid ISO 8601 timestamp and generatorVersion must match the current tool version."
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -31,28 +31,28 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Defines the project identity, module structure, and provenance metadata for the ArchSpine semantic indexing system.",
+        "role": "Semantic indexing and protocol tooling for repository knowledge graphs.",
         "parameter_definitions": {
-          "schemaVersion": "Controls compatibility with ArchSpine tooling; mismatched versions may cause parsing failures.",
-          "projectName": "Identifies the repository for cross-reference integrity; must match the root project name.",
-          "modules": "Declares source and documentation directories with their roles and file counts; affects indexing scope.",
-          "provenance.indexedAt": "Timestamp of last indexing; used for cache invalidation and staleness detection.",
-          "provenance.generatorVersion": "Version of the indexing tool that produced this file; critical for reproducibility.",
-          "provenance.pipelineStages": "Ordered list of processing stages (e.g., AST, LLM) that generated the index; affects downstream tool behavior."
+          "schemaVersion": "Controls the expected schema format; mismatches may cause parsing failures.",
+          "projectName": "Identifies the project; used to scope generated artifacts and cross-reference indices.",
+          "role": "Describes the functional purpose of this configuration in the indexing pipeline.",
+          "responsibility": "Defines the primary outcome this configuration drives; influences downstream documentation generation.",
+          "modules": "Specifies source directories and their roles; childCount helps allocate indexing resources and detect structural changes.",
+          "provenance": "Records when and how the index was built; critical for cache invalidation and audit trails."
         },
-        "stability_and_risks": "This file is the root configuration for the ArchSpine indexing pipeline. Incorrect schemaVersion or projectName can break cross-repository linking and toolchain compatibility. Missing or stale provenance timestamps may cause unnecessary re-indexing or missed updates. The module list defines the scope of semantic analysis; omitting directories can lead to incomplete knowledge graphs."
+        "stability_and_risks": "This file is the keystone for all ArchSpine indexing operations. If incorrectly configured, the system may fail to generate correct semantic contracts, produce inconsistent documentation, or lose provenance traceability. The schemaVersion and generatorVersion must remain aligned with the actual runtime version to prevent silent data corruption. Mislabeling modules or omitting childCount can lead to incomplete indexing or resource allocation errors."
       },
       "Simplified Chinese": {
-        "role": "定义 ArchSpine 语义索引系统的项目标识、模块结构和溯源元数据。",
+        "role": "语义索引与协议工具——用于仓库知识图谱的构建。",
         "parameter_definitions": {
-          "schemaVersion": "控制与 ArchSpine 工具的兼容性；版本不匹配可能导致解析失败。",
-          "projectName": "标识仓库以保持交叉引用完整性；必须与根项目名称一致。",
-          "modules": "声明源代码和文档目录及其角色和文件数量；影响索引范围。",
-          "provenance.indexedAt": "上次索引的时间戳；用于缓存失效和过时检测。",
-          "provenance.generatorVersion": "生成此文件的索引工具版本；对可重现性至关重要。",
-          "provenance.pipelineStages": "生成索引的处理阶段有序列表（例如 AST、LLM）；影响下游工具行为。"
+          "schemaVersion": "控制所预期的模式版本；不匹配可能导致解析失败，影响整个索引流程。",
+          "projectName": "标识项目名称，用于限定生成的构件和跨引用索引的范围。",
+          "role": "描述本配置文件在索引管线中的功能定位。",
+          "responsibility": "定义此配置驱动的主要产出，影响下游文档的生成方向。",
+          "modules": "指定源代码目录及其职责；childCount 有助于分配索引资源并检测结构变化。",
+          "provenance": "记录索引的构建时间、生成器版本和管线阶段，对缓存失效与审计追踪至关重要。"
         },
-        "stability_and_risks": "此文件是 ArchSpine 索引管道的根配置。错误的 schemaVersion 或 projectName 可能破坏跨仓库链接和工具链兼容性。缺失或过时的溯源时间戳可能导致不必要的重新索引或遗漏更新。模块列表定义了语义分析的范围；遗漏目录会导致知识图谱不完整。"
+        "stability_and_risks": "此文件是整个 ArchSpine 索引操作的核心。如果配置错误，系统可能无法生成正确的语义合约，产生不一致的文档，或丢失溯源信息。schemaVersion 和 generatorVersion 必须与实际运行时版本保持一致，以防止静默的数据损坏。模块标签错误或 childCount 遗漏会导致索引不完整或资源分配异常，从而影响系统稳定性。"
       }
     }
   },
@@ -74,7 +74,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:44:40.662Z",
+    "indexedAt": "2026-05-03T11:23:27.924Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

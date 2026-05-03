@@ -4,7 +4,7 @@
     "filePath": "src/services/view/view-registry.ts",
     "contentHash": "7ffff5b4bbfe3cc4b33e38a05eca773b705937134527121258ebde848d9db7e4",
     "skeletonHash": "5deb7435cede2407cbe3f56ddb6b8f48348b1081c7e4b880fb7db0605ae55101",
-    "semanticHash": "97604a904da2eea7b3aec80b9ff537a2cb75194ad0fdb0f640ffeb2a0f2ec94c",
+    "semanticHash": "74b97126d794b555b640b47cf109aa1224292e6b22e15277693cd31974997757",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/services/view"
@@ -14,28 +14,35 @@
     "responsibilities": [
       "Defines the ViewDefinition TypeScript interface specifying metadata for each architectural view (ID, title, description, enabled status, requirements, outputs).",
       "Maintains the VIEW_DEFINITIONS constant array as the canonical source of truth for all supported visualization outputs.",
-      "Provides derived data structures (VIEW_DEFINITION_MAP) for efficient O(1) lookups of view definitions by ID.",
-      "Exports utility functions to filter and retrieve view definitions (e.g., by defaultEnabled status)."
+      "Provides derived VIEW_DEFINITION_MAP for efficient O(1) lookup of view definitions by ID.",
+      "Exports isViewId() type guard to validate if a string is a known ViewId.",
+      "Exports getViewDefinition() to retrieve a single view definition by ID.",
+      "Exports getDefaultEnabledViewIds() to return an array of view IDs that are enabled by default.",
+      "Exports normalizeViewIds() to separate input strings into known ViewId[] and unknown string[] for safe downstream processing."
     ],
     "outOfScope": [
-      "Rendering or generating visualizations.",
-      "Orchestrating runtime services.",
-      "Handling user authentication or authorization.",
-      "Persisting view state or configurations."
+      "Does not render or generate the actual views (e.g., diagrams, tables).",
+      "Does not persist or manage view configuration at runtime.",
+      "Does not handle CLI commands or user input parsing.",
+      "Does not interact with external services or databases."
     ],
     "invariants": [
-      "VIEW_DEFINITIONS is the single source of truth for view metadata.",
-      "ViewDefinition interface is stable and exported for type safety across the system."
+      "All supported view IDs are defined in VIEW_DEFINITIONS and keys in VIEW_DEFINITION_MAP.",
+      "The interface ViewDefinition remains consistent across the codebase for type safety.",
+      "Utility functions (isViewId, getViewDefinition, getDefaultEnabledViewIds, normalizeViewIds) always rely on the canonical VIEW_DEFINITIONS/VIEW_DEFINITION_MAP."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a centralized, type-safe configuration layer for architectural views, enabling modular view discovery and dependency management.",
-      "recentChangeIntent": "No recent changes detected in this file; the git intent references CLI and core infra refactoring, which does not directly impact this view definition module."
+      "architecturalIntent": "Provide a single source of truth for all architectural visualization views, ensuring consistent identity and metadata across the system.",
+      "recentChangeIntent": "Establish the view registry as part of the v1.0.0 architectural governance layer, supporting semantic validation and safe view selection."
     },
     "publicSurface": [
-      "ViewDefinition interface",
-      "VIEW_DEFINITIONS constant array",
-      "VIEW_DEFINITION_MAP (likely exported constant)",
-      "Utility functions for filtering/view retrieval (e.g., getDefaultEnabledViews)"
+      "ViewDefinition (interface)",
+      "VIEW_DEFINITIONS (const)",
+      "VIEW_DEFINITION_MAP (const, inferred existence from usage)",
+      "isViewId()",
+      "getViewDefinition()",
+      "getDefaultEnabledViewIds()",
+      "normalizeViewIds()"
     ],
     "ruleViolations": [],
     "driftDetected": false,
@@ -46,14 +53,35 @@
         "responsibilities": [
           "Defines the ViewDefinition TypeScript interface specifying metadata for each architectural view (ID, title, description, enabled status, requirements, outputs).",
           "Maintains the VIEW_DEFINITIONS constant array as the canonical source of truth for all supported visualization outputs.",
-          "Provides derived data structures (VIEW_DEFINITION_MAP) for efficient O(1) lookups of view definitions by ID.",
-          "Exports utility functions to filter and retrieve view definitions (e.g., by defaultEnabled status)."
+          "Provides derived VIEW_DEFINITION_MAP for efficient O(1) lookup of view definitions by ID.",
+          "Exports isViewId() type guard to validate if a string is a known ViewId.",
+          "Exports getViewDefinition() to retrieve a single view definition by ID.",
+          "Exports getDefaultEnabledViewIds() to return an array of view IDs that are enabled by default.",
+          "Exports normalizeViewIds() to separate input strings into known ViewId[] and unknown string[] for safe downstream processing."
         ],
         "outOfScope": [
-          "Rendering or generating visualizations.",
-          "Orchestrating runtime services.",
-          "Handling user authentication or authorization.",
-          "Persisting view state or configurations."
+          "Does not render or generate the actual views (e.g., diagrams, tables).",
+          "Does not persist or manage view configuration at runtime.",
+          "Does not handle CLI commands or user input parsing.",
+          "Does not interact with external services or databases."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine系统中用于架构可视化视图的中央注册表和类型定义模块。",
+        "responsibilities": [
+          "定义 ViewDefinition TypeScript 接口，为每个架构视图指定元数据（ID、标题、描述、启用状态、要求、输出）。",
+          "维护 VIEW_DEFINITIONS 常量数组，作为所有支持的可视化输出的权威数据源。",
+          "提供派生的 VIEW_DEFINITION_MAP，实现按 ID 进行 O(1) 时间复杂度的视图定义查找。",
+          "导出 isViewId() 类型守卫函数，验证字符串是否为已知的 ViewId。",
+          "导出 getViewDefinition() 函数，按 ID 获取单条视图定义。",
+          "导出 getDefaultEnabledViewIds() 函数，返回默认启用的视图 ID 数组。",
+          "导出 normalizeViewIds() 函数，将输入的字符串数组区分为已知 ViewId[] 和未知 string[]，以便安全地进行下游处理。"
+        ],
+        "outOfScope": [
+          "不实际渲染或生成视图（如图表、表格）。",
+          "不持久化或管理运行时的视图配置。",
+          "不处理 CLI 命令或用户输入解析。",
+          "不与外部服务或数据库进行交互。"
         ]
       }
     }
@@ -136,18 +164,12 @@
         ]
       }
     ],
-    "dependedBy": [
-      {
-        "targetPath": "src/services/sync-service.ts",
-        "relation": "import",
-        "edgeProvenance": "ast",
-        "symbols": []
-      }
-    ],
-    "reverseIndexComplete": true
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:41.312Z",
+    "indexedAt": "2026-05-03T11:25:06.035Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

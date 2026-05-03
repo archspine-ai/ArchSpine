@@ -9,23 +9,28 @@ Chinese mirrors live under `docs/zh-CN/` using the same domain structure where a
 | Area                  | English path                                | Chinese path                                      | Status |
 | --------------------- | ------------------------------------------- | ------------------------------------------------- | ------ |
 | Home                  | `docs/index.md`                             | `docs/zh-CN/index.md`                             | mapped |
+| Tutorials Index       | `docs/tutorials/index.md`                   | `docs/zh-CN/tutorials/index.md`                   | mapped |
 | Quick Start           | `docs/tutorials/quick-start.md`             | `docs/zh-CN/tutorials/quick-start.md`             | mapped |
-| FAQ                   | `docs/how-to/FAQ.md`                        | `docs/zh-CN/how-to/FAQ.md`                        | mapped |
-| Cost & Usage          | `docs/explanation/COST-USAGE.md`            | `docs/zh-CN/explanation/COST-USAGE.md`            | mapped |
-| Current Capabilities  | `docs/reference/CURRENT-CAPABILITIES.md`    | `docs/zh-CN/reference/CURRENT-CAPABILITIES.md`    | mapped |
 | Demo                  | `docs/tutorials/DEMO.md`                    | `docs/zh-CN/tutorials/DEMO.md`                    | mapped |
-| MCP Integration       | `docs/how-to/MCP.md`                        | `docs/zh-CN/how-to/MCP.md`                        | mapped |
-| Powered by            | `docs/explanation/POWERED-BY.md`            | `docs/zh-CN/explanation/POWERED-BY.md`            | mapped |
 | Showcase              | `docs/tutorials/showcase.md`                | `docs/zh-CN/tutorials/showcase.md`                | mapped |
+| How-to Index          | `docs/how-to/index.md`                      | `docs/zh-CN/how-to/index.md`                      | mapped |
 | Runbook               | `docs/how-to/RUNBOOK.md`                    | `docs/zh-CN/how-to/RUNBOOK.md`                    | mapped |
+| MCP Integration       | `docs/how-to/MCP.md`                        | `docs/zh-CN/how-to/MCP.md`                        | mapped |
 | Local LLM             | `docs/how-to/LOCAL-LLM.md`                  | `docs/zh-CN/how-to/LOCAL-LLM.md`                  | mapped |
+| FAQ                   | `docs/how-to/FAQ.md`                        | `docs/zh-CN/how-to/FAQ.md`                        | mapped |
+| Reference Index       | `docs/reference/index.md`                   | `docs/zh-CN/reference/index.md`                   | mapped |
+| Current Capabilities  | `docs/reference/CURRENT-CAPABILITIES.md`    | `docs/zh-CN/reference/CURRENT-CAPABILITIES.md`    | mapped |
 | Protocol              | `docs/reference/PROTOCOL.md`                | `docs/zh-CN/reference/PROTOCOL.md`                | mapped |
 | Ignore Policy         | `docs/reference/IGNORE-POLICY.md`           | `docs/zh-CN/reference/IGNORE-POLICY.md`           | mapped |
 | LLM Benchmarks        | `docs/reference/LLM-BENCHMARKS.md`          | `docs/zh-CN/reference/LLM-BENCHMARKS.md`          | mapped |
-| Prompt Engine         | `docs/design/PROMPT-ENGINE.md`              | `docs/zh-CN/design/PROMPT-ENGINE.md`              | mapped |
+| Explanation Index     | `docs/explanation/index.md`                 | `docs/zh-CN/explanation/index.md`                 | mapped |
 | Architecture Overview | `docs/explanation/ARCHITECTURE-OVERVIEW.md` | `docs/zh-CN/explanation/ARCHITECTURE-OVERVIEW.md` | mapped |
-| Task Execution Model  | `docs/design/TASK-EXECUTION-MODEL.md`       | `docs/zh-CN/design/TASK-EXECUTION-MODEL.md`       | mapped |
+| View Layer            | `docs/explanation/VIEW-LAYER.md`            | `docs/zh-CN/explanation/VIEW-LAYER.md`            | mapped |
+| Cost & Usage          | `docs/explanation/COST-USAGE.md`            | `docs/zh-CN/explanation/COST-USAGE.md`            | mapped |
 | God Mode Guide        | `docs/explanation/GOD-MODE.md`              | `docs/zh-CN/explanation/GOD-MODE.md`              | mapped |
+| Powered by            | `docs/explanation/POWERED-BY.md`            | `docs/zh-CN/explanation/POWERED-BY.md`            | mapped |
+| Prompt Engine         | `docs/design/PROMPT-ENGINE.md`              | `docs/zh-CN/design/PROMPT-ENGINE.md`              | mapped |
+| Task Execution Model  | `docs/design/TASK-EXECUTION-MODEL.md`       | `docs/zh-CN/design/TASK-EXECUTION-MODEL.md`       | mapped |
 
 ## Internal but mirrored docs
 

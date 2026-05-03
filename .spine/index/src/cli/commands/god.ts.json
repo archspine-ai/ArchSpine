@@ -4,32 +4,33 @@
     "filePath": "src/cli/commands/god.ts",
     "contentHash": "eb5852e542698a8696c2876c0987f1975b56231532afdf54484aac9774bb0717",
     "skeletonHash": "928db9acaf4fe1e5756227c4b9aedd4f822097e073edadbe9db5cc9da76fa21b",
-    "semanticHash": "2cea5652dd3b3817442b8a8d01e98dfdae9f4cbc5e814192436327f01ec7b7bc",
+    "semanticHash": "69b5b2fae63ae014edd9115abeb8feab727245b208483076efda3768e535dd04",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli/commands"
   },
   "semantic": {
-    "role": "CLI command handler for the God Mode feature, providing user warnings and confirmation before delegating to the God engine.",
+    "role": "CLI command adapter for the God Mode feature, handling user warnings and confirmation before delegating to the God engine.",
     "responsibilities": [
-      "Defines the command-line interface options for the God Mode command via ExecuteGodCommandOptions interface.",
-      "Displays warnings about the non-production nature and overwrite behavior of God Mode.",
-      "Checks for the --force flag to bypass interactive confirmation.",
-      "Prompts the user for explicit confirmation before proceeding (unless forced).",
-      "Delegates execution to the God engine's runGodMode function."
+      "Defines the ExecuteGodCommandOptions interface to pass command arguments and root directory.",
+      "Logs warnings about God Mode being non-production and its overwrite behavior.",
+      "Checks for the --force flag to skip interactive confirmation.",
+      "Prompts the user for explicit confirmation via promptForExplicitConfirmation.",
+      "Delegates execution to runGodMode engine upon confirmation.",
+      "Logs cancellation message if user declines.",
+      "Catches errors from the engine and logs them."
     ],
     "outOfScope": [
-      "Implementing the core God Mode document generation logic (delegated to engine).",
-      "Persisting or reading generated documents.",
-      "Handling complex pipeline orchestration."
+      "Persistence or pipeline logic.",
+      "Business logic of God Mode beyond command initiation.",
+      "Direct file I/O or database operations."
     ],
     "invariants": [
-      "Must remain a thin adapter, delegating core logic to the God engine.",
-      "Must not absorb pipeline or persistence logic."
+      "[Rule: cli-entrypoint-separation] - This module must remain a thin command adapter; it must not absorb pipeline or persistence logic."
     ],
     "changeIntent": {
-      "architecturalIntent": "Separate CLI command routing from core engine logic to maintain reusability and testability.",
-      "recentChangeIntent": null
+      "architecturalIntent": "Provide a CLI-accessible gateway to the God Mode engine, enforcing user warnings and consent before proceeding.",
+      "recentChangeIntent": "Part of ArchSpine v1.0.0 governance release; no code changes detected for this file."
     },
     "publicSurface": [
       "ExecuteGodCommandOptions interface",
@@ -40,18 +41,37 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "CLI command handler for the God Mode feature, providing user warnings and confirmation before delegating to the God engine.",
+        "role": "CLI command adapter for the God Mode feature, handling user warnings and confirmation before delegating to the God engine.",
         "responsibilities": [
-          "Defines the command-line interface options for the God Mode command via ExecuteGodCommandOptions interface.",
-          "Displays warnings about the non-production nature and overwrite behavior of God Mode.",
-          "Checks for the --force flag to bypass interactive confirmation.",
-          "Prompts the user for explicit confirmation before proceeding (unless forced).",
-          "Delegates execution to the God engine's runGodMode function."
+          "Defines the ExecuteGodCommandOptions interface to pass command arguments and root directory.",
+          "Logs warnings about God Mode being non-production and its overwrite behavior.",
+          "Checks for the --force flag to skip interactive confirmation.",
+          "Prompts the user for explicit confirmation via promptForExplicitConfirmation.",
+          "Delegates execution to runGodMode engine upon confirmation.",
+          "Logs cancellation message if user declines.",
+          "Catches errors from the engine and logs them."
         ],
         "outOfScope": [
-          "Implementing the core God Mode document generation logic (delegated to engine).",
-          "Persisting or reading generated documents.",
-          "Handling complex pipeline orchestration."
+          "Persistence or pipeline logic.",
+          "Business logic of God Mode beyond command initiation.",
+          "Direct file I/O or database operations."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "God Mode 功能的 CLI 命令适配器，负责处理用户警告和确认，然后将控制权委托给 God 引擎。",
+        "responsibilities": [
+          "定义 ExecuteGodCommandOptions 接口以传递命令参数和根目录。",
+          "记录 God Mode 非生产环境及其覆盖行为的警告。",
+          "检查 --force 标志以跳过交互式确认。",
+          "通过 promptForExplicitConfirmation 提示用户进行显式确认。",
+          "在确认后委托 runGodMode 引擎执行。",
+          "如果用户取消则记录取消消息。",
+          "捕获引擎的错误并记录它们。"
+        ],
+        "outOfScope": [
+          "持久化或管道逻辑。",
+          "超出命令初始化的 God Mode 业务逻辑。",
+          "直接文件 I/O 或数据库操作。"
         ]
       }
     }
@@ -109,24 +129,41 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "../../engines/god.js",
+        "targetPath": "src/engines/god.ts",
         "relation": "import",
         "symbols": [
           "runGodMode"
         ]
       },
       {
-        "targetPath": "../../utils/confirm.js",
+        "targetPath": "src/utils/confirm.ts",
         "relation": "import",
         "symbols": [
           "promptForExplicitConfirmation"
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/god.ts/_file_#",
+        "targetSymbol": "src/utils/confirm.ts/promptForExplicitConfirmation#",
+        "targetPath": "src/utils/confirm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/god.ts/_file_#",
+        "targetSymbol": "src/engines/god.ts/runGodMode#",
+        "targetPath": "src/engines/god.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:36.288Z",
+    "indexedAt": "2026-05-03T11:25:01.188Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

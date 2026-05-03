@@ -4,50 +4,68 @@
     "filePath": "src/infra/config/supported-values.ts",
     "contentHash": "d3a6624c50bf055188a7286a6019c804967e25f404d7d7ca68cc11709691c824",
     "skeletonHash": "df9f84006b06a1a2f2b3d6b154e1fc3e19cfd2048e372c1e0504d64e2ff90d7b",
-    "semanticHash": "2fc9491e45d79171d0e962f409f6e10c1e992c95b9f072f4a469949488a5bb93",
+    "semanticHash": "acbb6b967d8fa768965c2e8a43ce9271211bd5ab8735a35bb3406dea03840661",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/config"
   },
   "semantic": {
-    "role": "Core TypeScript interface defining the contract for accessing supported configuration values within the ArchSpine system.",
+    "role": "Core TypeScript interface and utility functions defining the contract and operations for accessing and mutating supported configuration values in the ArchSpine system.",
     "responsibilities": [
       "Defines the type-safe interface for retrieving all user-configurable system parameters.",
-      "Centralizes the configuration access signature, ensuring consistency across config consumers.",
-      "Documents the available configuration options through method names (e.g., LLM settings, validation policies, hook modes)."
+      "Provides getter methods for configuration options such as LLM settings, validation policies, hook modes, artifact strategies, and git management flags.",
+      "Exposes setter methods (via the interface and the setSupportedValue function) for modifying configuration values.",
+      "Centralizes config access and mutation logic in the getSupportedValue and setSupportedValue functions, mapping each SupportedConfigKey to the appropriate accessor methods."
     ],
     "outOfScope": [
-      "Implementing configuration retrieval logic or storing values.",
-      "Orchestrating services, tasks, or engines.",
-      "Acting as an infrastructure facade or module."
+      "Does not implement actual configuration storage or retrieval.",
+      "Does not validate configuration values.",
+      "Does not handle configuration file parsing or environment variable reading."
     ],
     "invariants": [
-      "Must remain a pure TypeScript interface without implementation.",
-      "Must import only type definitions, not runtime modules.",
-      "Must define getter methods that return configuration values or undefined."
+      "The interface must be implemented by configuration provider classes that supply live values.",
+      "The getSupportedValue and setSupportedValue functions must only use methods defined on ConfigSupportedValueAccess.",
+      "No direct access to configuration files, environment variables, or external systems is performed here."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a stable, type-safe contract for configuration access to decouple consumers from implementation details.",
-      "recentChangeIntent": null
+      "architecturalIntent": "Establish a stable contract and utility layer for config value access and mutation, enabling consistent configuration handling across the ArchSpine system.",
+      "recentChangeIntent": "Support the v1.0.0 architectural governance and semantic layer by providing a well-typed, centralized configuration access surface ahead of AI-era orchestration."
     },
     "publicSurface": [
-      "ConfigSupportedValueAccess"
+      "ConfigSupportedValueAccess (interface)",
+      "getSupportedValue (function)",
+      "setSupportedValue (function)"
     ],
     "ruleViolations": [],
-    "driftDetected": false,
-    "driftReason": null,
+    "driftDetected": true,
+    "driftReason": "Previous semantic description only covered the interface, but the file now also exports two operational functions (getSupportedValue, setSupportedValue) that use the accessor contract.",
     "localized": {
       "English": {
-        "role": "Core TypeScript interface defining the contract for accessing supported configuration values within the ArchSpine system.",
+        "role": "Core interface and utility functions that define the contract and operations for accessing and mutating supported configuration values in the ArchSpine system.",
         "responsibilities": [
           "Defines the type-safe interface for retrieving all user-configurable system parameters.",
-          "Centralizes the configuration access signature, ensuring consistency across config consumers.",
-          "Documents the available configuration options through method names (e.g., LLM settings, validation policies, hook modes)."
+          "Provides getter methods for configuration options such as LLM settings, validation policies, hook modes, artifact strategies, and git management flags.",
+          "Exposes setter methods (via the interface and the setSupportedValue function) for modifying configuration values.",
+          "Centralizes config access and mutation logic in the getSupportedValue and setSupportedValue functions, mapping each SupportedConfigKey to the appropriate accessor methods."
         ],
         "outOfScope": [
-          "Implementing configuration retrieval logic or storing values.",
-          "Orchestrating services, tasks, or engines.",
-          "Acting as an infrastructure facade or module."
+          "Does not implement actual configuration storage or retrieval.",
+          "Does not validate configuration values.",
+          "Does not handle configuration file parsing or environment variable reading."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "定义和实现访问与修改系统支持配置值的核心接口和工具函数，为 ArchSpine 系统提供类型安全的配置访问契约。",
+        "responsibilities": [
+          "定义类型安全的接口，用于获取所有用户可配置的系统参数。",
+          "提供针对 LLM 设置、验证策略、钩子模式、工件策略和 Git 管理标志等配置选项的 getter 方法。",
+          "通过接口和 setSupportedValue 函数暴露 setter 方法，以修改配置值。",
+          "将 getSupportedValue 和 setSupportedValue 函数集中化，将每个 SupportedConfigKey 映射到对应的访问器方法。"
+        ],
+        "outOfScope": [
+          "不实现实际的配置存储或检索。",
+          "不验证配置值。",
+          "不处理配置文件解析或环境变量读取。"
         ]
       }
     }
@@ -112,7 +130,7 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "./types.js",
+        "targetPath": "'./types.js'",
         "relation": "import",
         "symbols": [
           "ArtifactStrategy",
@@ -122,10 +140,12 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:38.200Z",
+    "indexedAt": "2026-05-03T11:25:03.001Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

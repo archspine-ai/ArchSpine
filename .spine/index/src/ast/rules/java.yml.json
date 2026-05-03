@@ -3,21 +3,24 @@
   "identity": {
     "filePath": "src/ast/rules/java.yml",
     "contentHash": "e7a1b864c9d2a40de2af30ed514891c4cad4025f920c4c9fef689bad9fc5d567",
-    "semanticHash": "2058106917b2339ecec9c302851799f45c20dfcd6257009a06a7dbfe28c144a4",
+    "semanticHash": "49ab6a13e4fa4b6a903fdc1194345f13d0f5e399a8eca8e456bffab0b20a4314",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/ast/rules"
   },
   "semantic": {
-    "role": "Defines the syntax patterns for parsing Java-like source code within the ArchSpine mirror system.",
+    "role": "This document defines AST (Abstract Syntax Tree) extraction patterns for Java source code analysis within the ArchSpine mirror system. It specifies how imports, class declarations, interface declarations, and method call usages should be recognized from Java files.",
     "responsibilities": [
-      "Specifying import, class, interface, and method call patterns",
-      "Mapping code structures to semantic kinds (Class, Interface)",
-      "Providing the grammar for code usage detection"
+      "Defining import extraction patterns using a regex-like `import $SOURCE` pattern.",
+      "Defining class and public class export patterns with optional body capture.",
+      "Defining interface and public interface export patterns.",
+      "Defining method call and object instantiation usage patterns (call and new).",
+      "Providing a structured YAML format for language-specific AST rules that can be consumed by the ArchSpine scanner and aggregator engines."
     ],
     "outOfScope": [
-      "Language-specific runtime behavior or execution semantics",
-      "Non-Java language support or generic pattern matching"
+      "Other programming languages (e.g., Python, Rust, C++) – those have separate rule files.",
+      "Higher-level architectural rules or naming conventions – those are defined in separate `.yml` files under `.spine/rules/`.",
+      "Documentation generation or view rendering – this file is purely for code structure extraction."
     ],
     "invariants": [],
     "changeIntent": {
@@ -29,21 +32,25 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document establishes the pattern definitions used by ArchSpine to recognize and categorize Java code elements such as imports, classes, interfaces, and method calls. It serves as the grammar layer for structural code analysis.",
-        "context_and_audience": "Intended for developers and AI agents configuring or extending ArchSpine's code parsing capabilities. It is relevant for anyone who needs to define how source code constructs are identified and mapped to semantic roles within the mirror system.",
+        "purpose": "This document serves as a machine-readable ruleset that teaches ArchSpine how to parse Java source code into structured knowledge. By defining patterns for imports, exports (classes and interfaces), and usages (method calls and instantiations), it enables the system to build a detailed index of code dependencies, public API surfaces, and usage relationships. This is a foundational building block for ArchSpine’s ability to analyze, visualize, and govern codebases automatically.",
+        "context_and_audience": "This rules file is intended for developers contributing to ArchSpine’s language support, as well as for the ArchSpine runtime engine that reads these patterns to perform static analysis. It is not meant for end‑user consumption; rather, it is a configuration artifact within the `.spine/atlas` and `.spine/index` directories. The primary audience is the development team maintaining ArchSpine’s AST extraction capabilities and any contributors adding support for new languages.",
         "key_takeaways": [
-          "Patterns are defined for imports, classes (public and default), interfaces (public and default), and method calls.",
-          "Each pattern maps to a semantic kind (e.g., Class, Interface) for structured analysis.",
-          "Usage patterns detect method invocations and object instantiation."
+          "The file defines Java‑specific AST extraction rules in a compact YAML format.",
+          "It covers three categories: imports, exports (classes/interfaces), and usages (calls/instantiations).",
+          "Patterns use a template language with placeholders like `$NAME`, `$BODY`, and `$ARGS` to match code structures.",
+          "This file is one of many language‑specific rule files; each language (TypeScript, Python, Go, etc.) has its own corresponding YAML file.",
+          "Without such a rules file, ArchSpine cannot parse the corresponding language and thus cannot provide insight into that language’s codebase."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档定义了 ArchSpine 用于识别和分类 Java 代码元素（如导入、类、接口和方法调用）的模式规则。它是代码结构分析的语法层。",
-        "context_and_audience": "适用于配置或扩展 ArchSpine 代码解析功能的开发者和 AI 代理。任何需要定义源代码结构如何被识别并映射到镜像系统中语义角色的人都会用到此文档。",
+        "purpose": "本文档是一个机器可读的规则集，用于指导 ArchSpine 如何解析 Java 源代码并提取结构化知识。通过定义导入、导出（类和接口）以及使用（方法调用和实例化）的模式，它使系统能够构建代码依赖关系、公共 API 表面和使用关系的详细索引。这是 ArchSpine 自动分析、可视化和治理代码库的基础构建模块。",
+        "context_and_audience": "该规则文件面向为 ArchSpine 语言支持做出贡献的开发者，以及读取这些模式以执行静态分析的 ArchSpine 运行时引擎。它并非面向最终用户，而是 `.spine/atlas` 和 `.spine/index` 目录中的一个配置工件。主要受众是维护 ArchSpine AST 提取功能的开发团队以及任何为添加新语言支持做出贡献的人。",
         "key_takeaways": [
-          "定义了导入、类（公有和默认）、接口（公有和默认）以及方法调用的模式。",
-          "每个模式都映射到一个语义种类（例如 Class、Interface），用于结构化分析。",
-          "使用模式可检测方法调用和对象实例化。"
+          "该文件以紧凑的 YAML 格式定义了 Java 特定的 AST 提取规则。",
+          "它涵盖三个类别：导入（imports）、导出（exports，包括类和接口）和使用（usages，包括方法调用和实例化）。",
+          "模式使用模板语言，包含 `$NAME`、`$BODY` 和 `$ARGS` 等占位符来匹配代码结构。",
+          "该文件是众多语言特定规则文件之一；每种语言（TypeScript、Python、Go 等）都有其对应的 YAML 文件。",
+          "没有此类规则文件，ArchSpine 无法解析相应语言，因此无法提供该语言代码库的洞察。"
         ]
       }
     }
@@ -66,7 +73,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:44.970Z",
+    "indexedAt": "2026-05-03T11:25:29.688Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -1,43 +1,29 @@
-<!-- spine-content-hash:5b225a87d53d0d6e9145d758d0ef11810730c38104b5435b6ddaf17eceda04f6 -->
-# SpineRule Schema — ArchSpine Mirror System
+# ArchSpine Rule Document Configuration Summary
 
-## Role
-Defines the schema for individual SpineRule documents within the ArchSpine mirror system, specifying the structure and validation constraints for governance rules.
+## What It Controls
+This schema defines the structure of every rule document used by the ArchSpine system. It ensures that rules are consistently formatted, enforceable, and carry the metadata needed for static analysis, reporting, and automated remediation.
 
-## Key Responsibilities
-- **Rule document validation** — ensures every rule conforms to the required structure before entering the system.
-- **Enforcement severity classification** — categorizes rules by operational impact (advisory, warning, error).
-- **Rule applicability scoping** — restricts each rule to specific target subsystems or components.
-- **Schema versioning and compliance** — manages compatibility with the ArchSpine schema versioning system.
+## Key Parameters and Their Impact
 
-## Notable Invariants
-- All required fields (`schemaVersion`, `ruleId`, `title`, `summary`, `appliesTo`, `severity`, `enforceable`, `bodyMarkdown`) must be present.
-- `ruleId` must match the lowercase kebab-case pattern (e.g., `my-rule-id`).
-- `appliesTo` array must contain at least one non-empty string; empty arrays are rejected.
-- `severity` must be one of: `advisory`, `warning`, `error`.
-- No additional properties beyond the defined schema are permitted — strict validation prevents schema drift.
+- **`schemaVersion`** – Enables forward compatibility. Must be present to allow migration handling when the schema evolves.
+- **`ruleId`** – A unique, kebab-case identifier (`^[a-z0-9]+(?:-[a-z0-9]+)*$`). Used for rule referencing and deduplication. A misformed ID can cause the rule to be ignored or create conflicts.
+- **`title`** & **`summary`** – Human-readable fields displayed in dashboards and tooltips. They must be non-empty strings.
+- **`appliesTo`** – A non-empty array of file patterns or module paths. This determines where the rule is evaluated. An empty or missing value leads to runtime errors and potential bypass of the rule.
+- **`severity`** – Controls CI exit codes and alerting:
+  - `advisory` – informational only, does not block builds.
+  - `warning` – signals potential issues; may trigger warnings but not failures.
+  - `error` – must fix; blocks CI gates and triggers immediate alerts.
+  Overly broad `error` rules can block legitimate changes.
+- **`enforceable`** – A boolean that decides whether the system may automatically fix violations. Setting this to `true` on a widely scoped rule can lead to dangerous automatic modifications. Use with caution.
+- **`bodyMarkdown`** – The full Markdown body for human guidance. Must be non-empty; provides inline documentation.
+- **`rationale`** – Optional string or `null`. Explains *why* the rule exists. Helpful for reviewers but not required.
 
-## Negative Scope
-- This schema does **not** define how rules are executed or enforced at runtime.
-- It does **not** handle rule ordering, priority, or conflict resolution.
-- It does **not** specify storage or retrieval mechanisms for rule documents.
+## Stability and Operational Risks
 
-## Exported / Externally Visible Behavior
-- The schema is used to validate incoming SpineRule documents. Documents that fail validation are rejected outright, preventing incomplete or malformed rules from entering the system.
-- The `severity` enum ensures consistent enforcement levels across all rules, enabling predictable behavior in downstream enforcement systems.
-- The `appliesTo` array with `minItems:1` ensures rules are always scoped to at least one target, avoiding ambiguous or system-wide unintended effects.
-- The strict `additionalProperties` constraint prevents schema drift and unexpected behavior from unknown fields.
+- **Structural integrity**: The schema enforces `additionalProperties: false` and requires all mandatory fields. Any extra or missing properties cause validation failure, preventing malformed rules from entering the system.
+- **Enforcement misconfiguration**: An `enforceable: true` rule with a broad `appliesTo` can trigger automated changes that break the codebase. Always review the scope before enabling auto-fix.
+- **Severity misuse**: An `error`-level rule that is too broad may block routine commits. Use `advisory` or `warning` for low-confidence or informational rules to avoid false positives.
+- **Pattern mismatches**: Invalid `ruleId` patterns or empty strings in `appliesTo` can make the rule silently inactive or cause runtime exceptions.
+- **No stray fields**: The `additionalProperties: false` constraint ensures that unexpected fields do not corrupt parsing or enforcement logic.
 
-## Parameter Definitions
-- **schemaVersion**: Controls compatibility with the ArchSpine schema versioning system; mismatches can cause rule rejection or silent failures.
-- **ruleId**: Unique identifier in lowercase kebab-case; used for rule referencing and deduplication; collisions may cause unpredictable behavior.
-- **title**: Human-readable rule name; must be non-empty for clarity in reports and logs.
-- **summary**: Brief description of the rule's purpose; non-empty requirement ensures minimum documentation.
-- **appliesTo**: List of target subsystems or components the rule governs; empty arrays are rejected to prevent orphaned rules.
-- **severity**: Operational impact level: `advisory` for informational, `warning` for non-blocking violations, `error` for blocking violations that halt operations.
-- **enforceable**: Boolean flag indicating whether the rule can be automatically enforced; `false` means manual review required.
-- **rationale**: Optional justification string; `null` allowed when rationale is not provided.
-- **bodyMarkdown**: Full rule text in Markdown format; must be non-empty to ensure actionable content.
-
-## Stability and Risks
-This schema enforces structural integrity of governance rules. Missing required fields cause document rejection, preventing incomplete rules from entering the system. The severity enum ensures consistent enforcement levels across all rules. The strict `additionalProperties` constraint prevents schema drift and unexpected behavior from unknown fields. The `appliesTo` array with `minItems:1` ensures rules are always scoped to at least one target, avoiding ambiguous or system-wide unintended effects. Overall, this schema promotes system stability by enforcing a rigid contract for rule documents, reducing parsing errors and misconfigurations.
+Operators should treat this schema as a safety gate: it prevents inconsistent or dangerous rules from being loaded. Always validate rule documents against this schema before deploying them.

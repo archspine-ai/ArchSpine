@@ -1,4 +1,5 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/src/domain","role":"This directory contains the domain service for the User entity.","responsibility":"The components in this directory collectively define the User entity interface and implement in-memory storage, creation, and retrieval of user data.","children":[{"filePath":"examples/demo-project/src/domain/user-service.ts","role":"Domain Service isolating business logic for the User entity.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T03:58:41.798Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-## 领域层：用户实体
+此目录代表 **ArchSpine 系统中用于管理用户实体（User）的领域服务层**。它围绕一个单一、定义清晰的服务模块构建：
 
-`examples/demo-project/src/domain` 目录封装了与用户实体相关的核心业务逻辑。其中唯一的显著子模块是 `user-service.ts`，它作为领域服务，将用户创建、检索等操作与基础设施解耦。实现上采用内存存储模式，便于测试和原型开发。该目录没有其他子模块，领域边界严格限定在用户模型内。
+- **`user-service.ts`** – 实现用户实体的所有核心业务逻辑。定义包含 `id`、`name` 和 `email` 属性的用户接口，提供内存中的存储与 CRUD 操作，并包含自动生成 ID 的创建功能以及按 ID 检索功能。
+
+此目录仅包含这一个文件，没有其他子模块。最重要的实现领域是用户管理逻辑的领域隔离，确保实体定义和业务规则与基础设施关注点保持分离。

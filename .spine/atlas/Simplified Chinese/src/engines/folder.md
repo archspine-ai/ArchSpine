@@ -1,18 +1,29 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/engines","role":"Core engine and tooling for scanning, analyzing, and enforcing architectural rules in the ArchSpine mirror system.","responsibility":"Provides file scanning, dependency analysis, rule matching, violation detection and fixing, and reporting for the ArchSpine mirror system.","children":[{"filePath":"src/engines/aggregator.ts","role":"Core engine class for traversing the spine filesystem and aggregating index and atlas data into structured SpineUnit collections for downstream sync and view operations.","fileKind":"source"},{"filePath":"src/engines/check.ts","role":"Public API barrel module for the check subsystem, re-exporting core service and CLI runner.","fileKind":"source"},{"filePath":"src/engines/context-path-resolver.ts","role":"Path resolution utility for the scanning engine, specializing in resolving relative import targets within a source tree.","fileKind":"source"},{"filePath":"src/engines/context-relevance.ts","role":"Engine utility function for extracting and filtering keywords from architectural rule text.","fileKind":"source"},{"filePath":"src/engines/context.ts","role":"Architectural context resolution engine for dependency analysis and relevance scoring in the ArchSpine mirror system.","fileKind":"source"},{"filePath":"src/engines/fix-prompt.ts","role":"LLM prompt template generator for architectural violation fixes.","fileKind":"source"},{"filePath":"src/engines/fix.ts","role":"Public API facade barrel file for the fix service module.","fileKind":"source"},{"filePath":"src/engines/god.ts","role":"CLI command orchestrator for generating a comprehensive architectural dossier (God Mode report) from the .spine/index directory.","fileKind":"source"},{"filePath":"src/engines/info.ts","role":"CLI command module for checking project sync status, validating protected outputs, and reporting system health.","fileKind":"source"},{"filePath":"src/engines/rules.ts","role":"Core rule engine for loading, storing, and matching architectural rules against file paths within the ArchSpine system.","fileKind":"source"},{"filePath":"src/engines/scanner-git.ts","role":"Reusable engine utility providing a git command execution client for scanner modules.","fileKind":"source"},{"filePath":"src/engines/scanner-utils.ts","role":"Scanner engine utility module providing path and pattern normalization for file scanning operations.","fileKind":"source"},{"filePath":"src/engines/scanner.ts","role":"Core file system scanner engine that discovers, filters, and reports on repository files using layered ignore rules, git diff integration, and configurable scan policies.","fileKind":"source"},{"filePath":"src/engines/usage.ts","role":"ArchSpine CLI utility function generating formatted usage and audit reports from the manifest database.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-02T10:11:03.542Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src/engines` 目录包含 ArchSpine 镜像系统的核心引擎与工具集。它负责扫描源代码树、分析依赖关系、匹配架构规则、检测违规、应用修复以及生成报告。
+## 核心引擎（`engine/`）
 
-主要子系统包括：
+`engine/` 目录是 ArchSpine 的运行骨架，包含所有将原始文件系统数据转化为结构化架构知识、执行规则、生成诊断和报告的核心服务。各模块按关键实现区域逻辑分组如下：
 
-- **扫描** – `scanner.ts` 是主文件系统扫描器，利用分层忽略规则、Git diff 集成以及可配置扫描策略发现并过滤仓库文件。配套工具 `scanner-git.ts` 提供 Git 命令执行能力，`scanner-utils.ts` 处理路径和模式的正规化。
+### 扫描与发现
+- **`scanner.ts`** – 使用分层忽略规则（`.gitignore`、`.spineignore`、协议排除）以及可选的 git diff 集成，递归发现所有仓库文件，返回包含全部文件和变更文件的 `ScanResult`。
+- **`scanner-utils.ts`** – 提供路径标准化、基于 picomatch 的模式匹配、预览报告格式化以及扫描结果的按组分群计数。
+- **`scanner-git.ts`** – 定义 `ScannerGitClient` 接口及其同步执行 git 命令的默认实现，供扫描器检测变更文件。
 
-- **上下文与分析** – `context.ts` 为依赖分析和相关性评分解析架构上下文。`context-path-resolver.ts` 专用于解析相对导入路径，`context-relevance.ts` 从规则文本中提取和过滤关键词。
+### 聚合与索引管理
+- **`aggregator.ts`** – 遍历 `.spine/index` 和 `.spine/atlas` 目录，读取并验证脊柱索引文档，构建结构化的 `SpineUnit` 集合（`SpineFolderUnit`、`SpineProjectUnit`），供下游同步和视图生成使用，并集成大语言模型客户端进行语义增强。
 
-- **规则引擎** – `rules.ts` 负责加载、存储并根据文件路径匹配架构规则。
+### 规则引擎与上下文分析
+- **`rules.ts`** – 加载、存储架构规则（`SpineRuleDocument`），并利用 glob 模式（包括否定模式）将规则匹配到文件路径，提供公共 API 供下游执行。
+- **`context.ts`** – 解析相对导入目标为绝对路径，从文件骨架中提取架构规则关键词，计算依赖候选的相关性分数，并生成结构化诊断信息。
+- **`context-path-resolver.ts`** – 工具模块，将相对导入字符串解析为绝对文件系统路径，并查询语言扩展注册表以验证文件存在性。
+- **`context-relevance.ts`** – 使用规则关键词、符号证据和路径距离启发式算法，对依赖候选和目标路径进行评分，综合多个信号计算复合相关性分数。
 
-- **检查与修复** – `check.ts` 和 `fix.ts` 分别是检查与修复子系统的公共 API 外观模块。`fix-prompt.ts` 生成用于修复违规的 LLM 提示词模板。
+### 修复生成
+- **`fix.ts`** – 公开 API 门面模块，重新导出 `FixService`、`runFix` 和 `FixRunSummary`。
+- **`fix-prompt.ts`** – 为架构违规修复生成大语言模型提示模板，将违规上下文格式化为结构化的指令提示。
 
-- **聚合** – `aggregator.ts` 遍历 spine 文件系统，将索引和图谱数据整理为结构化的 `SpineUnit` 集合，供下游同步和视图操作使用。
+### 报告、诊断与治理
+- **`god.ts`** – 从 `.spine/index` 数据生成全面的架构档案（“上帝模式报告”），输出包含文件数量、角色分布和每个文件细节的 Markdown 报告。
+- **`info.ts`** – 生成系统信息与健康报告，加载项目清单、配置、密钥和 LLM 设置。通过 spine-gate 检查未授权的变更，报告同步状态、语言快照和使用统计。
+- **`usage.ts`** – 从清单数据存储生成格式化使用和审计报告，显示令牌数、估算成本和违规行，提供治理可见性。
+- **`check.ts`** – 检查子系统的公开 API 门面模块，重新导出 `CheckService`、`runCheck` 和 `ValidationSummary`。
 
-- **报告与信息** – `god.ts` 从 `.spine/index` 目录生成全面的架构报告（上帝模式）。`info.ts` 检查项目同步状态、验证受保护输出并报告系统健康状况。`usage.ts` 从清单数据库生成格式化的使用和审计报告。
-
-最关键的实现领域是扫描引擎、上下文解析引擎、规则引擎和聚合器，它们构成了架构规则强制与镜像生成的核心骨架。
+引擎模块按管道方式协同工作：扫描发现文件，聚合器构建结构化单元，规则引擎匹配约束，上下文分析解析依赖并评分相关性，修复生成提供自动纠正，报告模块输出来全面的诊断和治理洞察。

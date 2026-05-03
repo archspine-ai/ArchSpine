@@ -10,7 +10,7 @@ export async function executeStatusCommand({
 }: ExecuteStatusCommandOptions): Promise<void> {
   let status;
   try {
-    status = await runtimeService.getSyncService().status();
+    status = await runtimeService.getSyncStatusService().status();
   } catch (error) {
     throw toArchSpineError(
       error,

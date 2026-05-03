@@ -1,2 +1,9 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/cli/init","role":"This directory contains the initialization and bootstrapping subsystem for the ArchSpine project.","responsibility":"Collectively, these components handle the complete setup of an ArchSpine-managed repository, including configuration bootstrapping, runtime initialization, LLM credential setup, file scanning, language discovery, and git hook installation, all coordinated through shared type contracts.","children":[{"filePath":"src/cli/init/repository-bootstrap.ts","role":"CLI command adapter for bootstrapping an ArchSpine configuration and artifacts in a target repository.","fileKind":"source"},{"filePath":"src/cli/init/runtime-bootstrap.ts","role":"CLI runtime bootstrap orchestrator that initializes the ArchSpine system and triggers the build pipeline.","fileKind":"source"},{"filePath":"src/cli/init/types.ts","role":"TypeScript module defining shared type contracts for the ArchSpine initialization and repository bootstrapping subsystem.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T03:58:47.789Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src/cli/init` 目录构成了 ArchSpine 的初始化与引导子系统。该系统负责完整设置一个由 ArchSpine 管理的仓库，包括配置引导、运行时初始化、LLM 凭据配置、文件扫描、语言发现以及 Git 钩子安装。所有这些功能通过 `types.ts` 中定义的共享类型契约进行协调。两个主要操作模块是 `repository-bootstrap.ts`（作为 CLI 命令适配器，用于将配置和工件引导到目标仓库）和 `runtime-bootstrap.ts`（一个编排器，初始化 ArchSpine 运行时并触发构建管道）。这些组件共同确保了流畅的初始设置体验。
+`init/` 目录是 ArchSpine 的中央引导子系统，负责初始化仓库配置和运行时环境。它统筹完整的设置序列——从工件策略选择、规则模板安装，到 Git 钩子配置、LLM 凭据设置、文件系统扫描、语言发现、清单更新，最后交接给构建工作流。
+
+该目录将逻辑组织为三个具体子模块：
+
+- **repository-bootstrap.ts** —— CLI 命令适配器，引导用户完成仓库初始化。它提示用户选择或确认工件策略（index、atlas 或 hybrid），通过 repository-admin-service 安装推荐的规则模板，配置 Git 钩子以进行预提交完整性检查，并处理取消与回退逻辑。
+- **runtime-bootstrap.ts** —— 服务模块，在仓库设置完成后运行运行时引导序列。它协调 LLM 凭据设置和范围确认、触发 Scanner 引擎进行文件系统扫描、执行语言发现以检测代码库中的编程语言、将发现的语言快照更新到系统清单，并调用构建工作流命令。同时还提供用户驱动的初始同步确认提示。
+- **types.ts** —— 共享类型契约模块，定义接口（`InitSharedOptions`、`RepositoryBootstrapResult`）和类型别名（`LLMScope`、`HookSetupStatus`、`ArtifactStrategy`），确保 CLI 命令和服务层在整个设置过程中使用一致的数据结构。
+
+最重要的实现要点包括：仓库配置与运行时引导的分离、通过共享类型契约保证一致性，以及协调涉及用户提示、文件系统操作和服务编排的异步步骤。

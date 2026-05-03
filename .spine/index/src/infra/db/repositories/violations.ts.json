@@ -4,52 +4,68 @@
     "filePath": "src/infra/db/repositories/violations.ts",
     "contentHash": "02de2bea6657fea6927779a797250d454e4adc15a5492f83817b1a35de8bbc19",
     "skeletonHash": "2212a9c4f2c2856df0cde3a753d00ee248370fb3b816cf523e2af31ebd19a2ff",
-    "semanticHash": "5aed3bb0de4e3890fe8d3ddee1469660dd1878a85c0eed0a8a4f680b236b32c4",
+    "semanticHash": "41d68d8970d47224dbd9f7343511bc5e1d3f4368992df0571e526509f71121c4",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/db/repositories"
   },
   "semantic": {
-    "role": "Infrastructure Data Access Object (DAO) for persisting and querying architectural rule violation records in SQLite.",
+    "role": "Infrastructure Data Access Object (DAO) encapsulating SQLite CRUD operations for architectural rule violation records.",
     "responsibilities": [
-      "Inserts new violation records (file path, rule ID, severity, reason, timestamp) into the SQLite violations table.",
-      "Deletes all violation records associated with a specific file path.",
-      "Retrieves all violation records ordered by severity and detection time for reporting."
+      "Inserts a new violation record into the SQLite violations table, including file path, rule ID, severity, reason, and detection timestamp (ISO 8601).",
+      "Deletes all violation records associated with a given file path to support revalidation workflows.",
+      "Retrieves all active violation records ordered by severity (descending) and detection time (descending) for reporting and analysis."
     ],
     "outOfScope": [
-      "Orchestrating scanning or audit processes.",
-      "Enforcing architectural rules or performing validation.",
-      "Providing a high-level facade for other infrastructure services."
+      "SQLite schema creation and migration (e.g., CREATE TABLE statements).",
+      "Validation of input data or rule enforcement logic.",
+      "Cross-module orchestration or higher-level business processes.",
+      "Caching or result transformation beyond raw column sorting."
     ],
     "invariants": [
-      "Depends only on the SQLite driver (better-sqlite3) and internal types.",
-      "Exposes a stable, low-level data access interface for violation records.",
-      "Callers must provide an active database connection."
+      "Must only depend on low-level type definitions and the better-sqlite3 database driver.",
+      "Must not import from service, task, engine, or other high-level layers to preserve stable facade characteristics.",
+      "Public exports (recordViolation, clearViolations, getActiveViolations) serve as the sole public API for violation persistence."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a dedicated data persistence layer for audit results, isolating database logic from scanning and reporting engines.",
-      "recentChangeIntent": "No direct evidence of change in this file from the provided git intent. The commit 'refactor: modularize CLI and decouple core infra services' suggests broader modularization, but this DAO's role remains consistent."
+      "architecturalIntent": "Provide a stable, isolated persistence facade for architectural rule violation records as part of the ArchSpine governance system.",
+      "recentChangeIntent": "Aligns with the v1.0.0 release which introduced 'Architectural Governance & Semantic Layer for the AI Era'—this module remains foundational and unchanged."
     },
     "publicSurface": [
       "recordViolation(db, filePath, ruleId, severity, reason): void",
-      "deleteViolationsForFile(db, filePath): void",
-      "getAllViolations(db): ViolationRecord[]"
+      "clearViolations(db, filePath): void",
+      "getActiveViolations(db): ViolationRecord[]"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Infrastructure Data Access Object (DAO) for persisting and querying architectural rule violation records in SQLite.",
+        "role": "Infrastructure Data Access Object (DAO) encapsulating SQLite CRUD operations for architectural rule violation records.",
         "responsibilities": [
-          "Inserts new violation records (file path, rule ID, severity, reason, timestamp) into the SQLite violations table.",
-          "Deletes all violation records associated with a specific file path.",
-          "Retrieves all violation records ordered by severity and detection time for reporting."
+          "Inserts a new violation record into the SQLite violations table, including file path, rule ID, severity, reason, and detection timestamp (ISO 8601).",
+          "Deletes all violation records associated with a given file path to support revalidation workflows.",
+          "Retrieves all active violation records ordered by severity (descending) and detection time (descending) for reporting and analysis."
         ],
         "outOfScope": [
-          "Orchestrating scanning or audit processes.",
-          "Enforcing architectural rules or performing validation.",
-          "Providing a high-level facade for other infrastructure services."
+          "SQLite schema creation and migration (e.g., CREATE TABLE statements).",
+          "Validation of input data or rule enforcement logic.",
+          "Cross-module orchestration or higher-level business processes.",
+          "Caching or result transformation beyond raw column sorting."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施数据访问对象（DAO），封装了针对架构规则违规记录的 SQLite CRUD 操作。",
+        "responsibilities": [
+          "向 SQLite 的 violations 表中插入一条新违规记录，包含文件路径、规则 ID、严重级别、原因及检测时间戳（ISO 8601）。",
+          "删除与指定文件路径关联的所有违规记录，以支持重新验证的工作流。",
+          "按严重级别降序和检测时间降序的顺序检索所有活跃违规记录，用于报告和分析。"
+        ],
+        "outOfScope": [
+          "SQLite 表结构的创建与迁移（例如 CREATE TABLE 语句）。",
+          "输入数据的验证或规则执行逻辑。",
+          "跨模块编排或高层业务流程。",
+          "除原始列排序之外的缓存或结果转换。"
         ]
       }
     }
@@ -117,10 +133,12 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:38.624Z",
+    "indexedAt": "2026-05-03T11:25:03.394Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

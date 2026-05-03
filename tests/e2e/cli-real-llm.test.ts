@@ -228,7 +228,5 @@ describe('E2E: Real LLM integration', () => {
       // Plaintext key should never appear in config.json
       expect(configRaw).not.toContain('sk-test-plaintext-secret-12345');
     });
-
-    });
   });
 });

@@ -1,26 +1,30 @@
-# Document Summary Template — ArchSpine Mirror System
+# ArchSpine Document Summary
 
-## Why This Document Exists
+## Why ArchSpine Exists
 
-This document provides a standardized template for creating summaries of any project document within the ArchSpine mirror system. Its primary purpose is to ensure that every document clearly communicates its reason for existence, its intended audience, and the essential points readers should retain. By enforcing a consistent structure, this template anchors the workflow of documenting narrative purpose across the entire project.
+ArchSpine is a documentation mirror system that creates a parallel `.spine` directory structure alongside your source code. This `.spine` directory forms an "atlas" of architectural annotations, rules, and views that stay synchronized with the actual codebase. The system exists to solve the chronic problem of architecture documentation drifting away from the code it describes. By mirroring the file tree and storing annotations close to the source, ArchSpine makes architectural knowledge live, accurate, and accessible to both humans and AI agents.
 
-## Who Should Read This
+## Who Should Read This Document
 
-This template is designed for:
-- **Documentation architects** who create and maintain project documentation
-- **Project maintainers** who need to ensure narrative coherence across documents
-- **AI agents** that process document summaries in JSON format for automated workflows
+This document is intended for:
 
-All contributors to the ArchSpine project should use this template when writing document summaries to maintain consistency and readability.
+- **Developers** and **teams** who want to keep architectural documentation accurate without duplicating effort. They will learn how the mirror system works, what it covers, and how it integrates into their workflow.
+- **Technical writers** responsible for maintaining documentation deliverables that reflect the true state of the architecture.
+- **AI agents** that need to understand and interact with the ArchSpine documentation layer — for example, agents that detect drift, annotate code, or generate reports.
 
-## Key Takeaways
+Readers should be familiar with software architecture concepts and comfortable working in a project that uses a mirror documentation structure.
 
-- Every document summary must explicitly state its purpose, target audience, and key takeaways
-- The template enforces a uniform structure across all project documentation, supporting both human readers and machine processing
-- Summaries are output in dual formats (Markdown for humans, JSON for AI agents) to serve both audiences effectively
+## Core Concepts and Design Decisions
 
-## Decisions and Workflows Anchored by This Document
+The document anchors several key decisions and workflows:
 
-- **Document creation workflow**: This template is the starting point for writing any new document summary, ensuring all required sections are included
-- **Review and approval process**: Reviewers use the template to verify that each document meets the project's narrative standards
-- **AI agent integration**: The JSON output from this template feeds directly into automated systems that index, search, and cross-reference project documents
+- **Mirroring**: The `.spine` directory mirrors the project's file tree, storing architectural annotations directly beside the corresponding source files. This ensures documentation is never far from the code it refers to.
+- **Drift Detection**: The system automatically detects inconsistencies between code and documentation, alerting teams when architecture diverges from reality.
+- **Multi-Language Atlas**: The atlas supports multiple languages (e.g., English, Simplified Chinese) for documentation deliverables, allowing global teams to contribute and consume architecture docs in their preferred language.
+
+## Maintenance Boundaries
+
+To keep the system focused and manageable, the document clearly defines what is in scope and what is out of scope:
+
+- **In scope**: Documentation mirroring, architectural rules and annotations, views, drift detection, and the multi-language atlas.
+- **Out of scope**: Modification of source code, CI/CD configuration, detailed implementation or API reference of ArchSpine internals, and installation or usage instructions (which are covered in separate how-to documents).

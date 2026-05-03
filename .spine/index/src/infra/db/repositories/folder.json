@@ -1,37 +1,37 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/infra/db/repositories",
-  "role": "Persistence layer for the ArchSpine indexing system, providing SQLite-based data access objects for all core entities.",
-  "responsibility": "Provides a unified data access layer that handles CRUD operations for file metadata, symbol tables, semantic drift events, token usage metrics, and architectural violation records, ensuring reliable persistence and retrieval of all system state in SQLite.",
+  "role": "Data access layer (DAO) for persistent storage in the ArchSpine system.",
+  "responsibility": "Provides SQLite-based data access objects for CRUD operations on file metadata, semantic drift events, exported symbol caches, token usage metrics, and architectural violation records.",
   "children": [
     {
       "filePath": "src/infra/db/repositories/drift.ts",
-      "role": "Infrastructure data access function for persisting and retrieving semantic drift audit events in SQLite.",
+      "role": "Infrastructure data access layer for semantic drift audit events, providing parameterized insertion and query functions over a SQLite database using better-sqlite3.",
       "fileKind": "source"
     },
     {
       "filePath": "src/infra/db/repositories/files.ts",
-      "role": "Data Access Object (DAO) providing SQLite persistence operations for file metadata in the ArchSpine indexing system.",
+      "role": "SQLite Data Access Object (DAO) providing file metadata persistence operations for the ArchSpine indexing system.",
       "fileKind": "source"
     },
     {
       "filePath": "src/infra/db/repositories/symbols.ts",
-      "role": "Infrastructure Data Access Object (DAO) for SQLite symbol table persistence.",
+      "role": "Infrastructure Data Access Object (DAO) providing CRUD operations for a SQLite symbol table used for export resolution.",
       "fileKind": "source"
     },
     {
       "filePath": "src/infra/db/repositories/usage.ts",
-      "role": "Infrastructure Data Access Object (DAO) for persisting and querying token usage metrics in the SQLite database.",
+      "role": "Infrastructure Data Access Object (DAO) for persisting and querying token usage metrics in a SQLite database.",
       "fileKind": "source"
     },
     {
       "filePath": "src/infra/db/repositories/violations.ts",
-      "role": "Infrastructure Data Access Object (DAO) for persisting and querying architectural rule violation records in SQLite.",
+      "role": "Infrastructure Data Access Object (DAO) encapsulating SQLite CRUD operations for architectural rule violation records.",
       "fileKind": "source"
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-01T03:58:43.330Z",
+    "indexedAt": "2026-05-03T11:26:38.686Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

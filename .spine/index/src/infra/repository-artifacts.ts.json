@@ -4,64 +4,76 @@
     "filePath": "src/infra/repository-artifacts.ts",
     "contentHash": "3c984fb88ceabb373085aa613953ca1cc22f015d5d2d38e08fdee95bea338717",
     "skeletonHash": "a71115c8dde892ac2cd152814e580449192b4aeec123e0f916a6c2dc28139a8b",
-    "semanticHash": "4c7ef19ff0e39824f67c9c1627c3fee75dbc85727d5637d159caee9d5230924e",
+    "semanticHash": "5a474b5f173b7bd8261090396754aef5b846096cdaefa5be533af98724e42a4e",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra"
   },
   "semantic": {
-    "role": "Infrastructure utility module providing low-level file system and Git operations for managed block reading and repository state inspection.",
+    "role": "Infrastructure utility module providing low-level file system and Git operations for managed block reading and repository snapshot state inspection within the ArchSpine governance layer.",
     "responsibilities": [
       "Reads managed file blocks defined by start/end markers from the filesystem using synchronous file operations.",
-      "Executes Git commands synchronously via execFileSync to retrieve repository status and file lists.",
+      "Checks whether a managed block contains all required entries, returning a boolean.",
+      "Executes Git commands synchronously to retrieve tracked snapshot file paths under a root directory.",
+      "Determines whether snapshot output directories exist for a given root directory by checking multiple expected subdirectory paths.",
       "Provides path resolution and existence checks for repository files using path.join and fs.existsSync."
     ],
     "outOfScope": [
-      "Service orchestration or task execution logic.",
-      "Engine-level scanning or processing pipelines.",
-      "High-level business logic or domain-specific operations."
+      "Does not parse or modify file content beyond managed block extraction.",
+      "Does not handle asynchronous file operations or streaming.",
+      "Does not provide high-level orchestration of service/engine workflows.",
+      "Does not implement caching or state management for snapshot data."
     ],
     "invariants": [
-      "Must not import or depend on service, task, or engine modules to avoid absorbing orchestration concerns (per rule infra-facade-imports).",
-      "Must expose stable low-level capabilities and facades for callers."
+      "Must remain a pure infra facade, exposing stable low-level capabilities without absorbing orchestration concerns (per rule infra-facade-imports).",
+      "All exported functions should have stable signatures to minimize refactoring impact.",
+      "Must not import from service or engine layers."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a stable, low-level infrastructure utility for file system and Git operations, isolating these concerns from higher-level service and engine layers.",
-      "recentChangeIntent": "Refactor CLI to extract repository and LLM admin services, which may involve moving or consolidating utility functions like these into dedicated infrastructure modules."
+      "architecturalIntent": "Supports the ArchSpine architectural governance system by providing stable infrastructure utilities for managing spine-managed blocks and inspecting snapshot repository state.",
+      "recentChangeIntent": "No recent modifications; module remains stable as part of the v1.0.0 release."
     },
     "publicSurface": [
-      "ManagedBlockMarkers (interface)",
-      "readManagedFileBlock (function, inferred)",
-      "Git command execution functions (inferred)"
+      "readManagedFileBlock",
+      "managedBlockIncludesAll",
+      "listTrackedSnapshotFiles",
+      "snapshotOutputsPresent",
+      "ManagedBlockMarkers"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Infrastructure utility module providing low-level file system and Git operations for managed block reading and repository state inspection.",
+        "role": "Infrastructure utility module providing low-level file system and Git operations for managed block reading and repository snapshot state inspection within the ArchSpine governance layer.",
         "responsibilities": [
           "Reads managed file blocks defined by start/end markers from the filesystem using synchronous file operations.",
-          "Executes Git commands synchronously via execFileSync to retrieve repository status and file lists.",
+          "Checks whether a managed block contains all required entries, returning a boolean.",
+          "Executes Git commands synchronously to retrieve tracked snapshot file paths under a root directory.",
+          "Determines whether snapshot output directories exist for a given root directory by checking multiple expected subdirectory paths.",
           "Provides path resolution and existence checks for repository files using path.join and fs.existsSync."
         ],
         "outOfScope": [
-          "Service orchestration or task execution logic.",
-          "Engine-level scanning or processing pipelines.",
-          "High-level business logic or domain-specific operations."
+          "Does not parse or modify file content beyond managed block extraction.",
+          "Does not handle asynchronous file operations or streaming.",
+          "Does not provide high-level orchestration of service/engine workflows.",
+          "Does not implement caching or state management for snapshot data."
         ]
       },
       "Simplified Chinese": {
-        "role": "基础设施工具模块，提供底层文件系统和 Git 操作，用于读取受管理的文件块以及检查仓库状态。",
+        "role": "基础设施工具模块，提供低级别的文件系统和Git操作，用于管理受限块（managed block）的读取和仓库快照状态的检查，属于ArchSpine架构治理层。",
         "responsibilities": [
-          "通过同步文件操作读取由起始/结束标记定义的受管理文件块。",
-          "通过 execFileSync 同步执行 Git 命令以获取仓库状态和文件列表。",
-          "使用 path.join 和 fs.existsSync 提供仓库文件的路径解析和存在性检查。"
+          "通过同步文件操作读取由起始和结束标记定义的受限块内容。",
+          "检查受限块是否包含所有必需的条目，返回布尔值。",
+          "执行同步Git命令，获取指定根目录下被跟踪的快照文件路径列表。",
+          "通过检查多个预期的子目录是否存在，判断给定根目录的快照输出目录结构是否完整。",
+          "使用path.join和fs.existsSync提供文件路径解析和存在性检查。"
         ],
         "outOfScope": [
-          "服务编排或任务执行逻辑。",
-          "引擎级别的扫描或处理流水线。",
-          "高层业务逻辑或领域特定操作。"
+          "不解析或修改文件内容（受限块提取之外）。",
+          "不处理异步文件操作或流。",
+          "不提供服务/引擎工作流的高层编排。",
+          "不实现快照数据的缓存或状态管理。"
         ]
       }
     }
@@ -194,10 +206,12 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:40.357Z",
+    "indexedAt": "2026-05-03T11:25:05.131Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

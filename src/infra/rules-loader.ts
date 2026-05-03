@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import matter from 'gray-matter';
+import yaml from 'js-yaml';
 import { CURRENT_SCHEMA_VERSION, SpineRuleDocument } from '../types/protocol.js';
 
 interface LoadedRuleFile {
@@ -131,7 +132,74 @@ function parseYamlRuleBlocks(content: string): SpineRuleDocument[] {
 
 function parseYamlRules(filePath: string): SpineRuleDocument[] {
   const content = fs.readFileSync(filePath, 'utf-8');
-  return parseYamlRuleBlocks(content);
+  const structuredRules = parseStructuredYamlRules(content);
+  return structuredRules.length > 0 ? structuredRules : parseYamlRuleBlocks(content);
+}
+
+function getStringField(value: unknown): string | undefined {
+  return typeof value === 'string' && value.trim() !== '' ? value.trim() : undefined;
+}
+
+function getRuleScope(value: unknown): string | undefined {
+  if (typeof value === 'string' && value.trim() !== '') {
+    return value.trim();
+  }
+  if (Array.isArray(value)) {
+    return value.find((entry): entry is string => typeof entry === 'string' && entry.trim() !== '');
+  }
+  return undefined;
+}
+
+function parseStructuredYamlRules(content: string): SpineRuleDocument[] {
+  let parsed: unknown;
+  try {
+    parsed = yaml.load(content);
+  } catch {
+    return [];
+  }
+
+  if (!Array.isArray(parsed)) {
+    return [];
+  }
+
+  const rules: SpineRuleDocument[] = [];
+  for (const entry of parsed) {
+    if (typeof entry !== 'object' || entry === null || Array.isArray(entry)) {
+      continue;
+    }
+
+    const record = entry as Record<string, unknown>;
+    const title = getStringField(record.rule) || getStringField(record.title);
+    const scope = getRuleScope(record.scope) || getRuleScope(record.appliesTo);
+    if (!title || !scope) {
+      continue;
+    }
+
+    const constraint = getStringField(record.constraint);
+    const reason = getStringField(record.reason) || getStringField(record.rationale);
+    const summary = constraint || reason || title;
+    const bodyLines = [];
+    if (constraint) {
+      bodyLines.push(`Constraint: ${constraint}`);
+    }
+    if (reason) {
+      bodyLines.push(`Reason: ${reason}`);
+    }
+
+    rules.push({
+      schemaVersion: CURRENT_SCHEMA_VERSION,
+      ruleId: getStringField(record.ruleId) || slugifyRuleId(title),
+      title,
+      summary,
+      appliesTo: [scope],
+      severity: normalizeSeverity(getStringField(record.severity)),
+      enforceable: record.enforceable !== undefined ? Boolean(record.enforceable) : true,
+      rationale: reason || null,
+      bodyMarkdown: bodyLines.join('\n'),
+    });
+  }
+
+  return rules;
 }
 
 export function loadRulesFromDir(rulesDir: string): LoadedRuleFile[] {

@@ -3,27 +3,26 @@
   "identity": {
     "filePath": "AGENTS.md",
     "contentHash": "70d579b1891016b04d2ec47b65560b763beb6dc0322eba2fa5920b675161a121",
-    "semanticHash": "e39a354dd992f269c38c4f650f5eca0a1ccb36a4932a3fd647bbf8c5c50ce3e9",
+    "semanticHash": "fb627dbf1017c2a212a62c6f48ab2ac0802420fecb8810fd18bae2f79da37962",
     "language": "unsupported",
     "fileKind": "document",
     "scope": ""
   },
   "semantic": {
-    "role": "Developer reference guide for the ArchSpine repository",
+    "role": "Repository Guidelines for ArchSpine",
     "responsibilities": [
-      "Describing project structure and module organization under `src/`",
-      "Listing build, test, and development commands with Node.js 20+",
-      "Defining coding style, naming conventions, and linting expectations",
-      "Specifying testing guidelines using Vitest and bench fixtures",
-      "Recommending commit and pull request conventions (Conventional Commits)",
-      "Guiding documentation maintenance (English/Chinese alignment, public vs planning docs)",
-      "Providing ArchSpine-specific interaction rules (context files, protected outputs, sync workflow)"
+      "Documenting project structure and module organization under src/",
+      "Listing build, test, and development commands with Node.js requirements",
+      "Specifying coding style, naming conventions, and linting rules",
+      "Providing testing guidelines for Vitest and schema compliance",
+      "Outlining commit and pull request conventions (Conventional Commits)",
+      "Giving documentation maintenance instructions for English and Chinese",
+      "Embedding ArchSpine-specific instructions for AI agents and human contributors"
     ],
     "outOfScope": [
-      "Detailed API or protocol specifications",
-      "End-user product documentation or changelogs",
-      "Architecture deep dives or design rationales beyond summary level",
-      "External dependency version upgrade policy"
+      "End-user documentation for ArchSpine tool usage",
+      "Detailed API reference for every module",
+      "External contribution processes beyond the repository"
     ],
     "invariants": [],
     "changeIntent": {
@@ -35,25 +34,29 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "To provide a comprehensive set of guidelines for developers working on the ArchSpine repository, covering project structure, development workflow, coding conventions, and interaction with the ArchSpine system.",
-        "context_and_audience": "This document is intended for developers (human and AI) who contribute to the ArchSpine project. It assumes familiarity with TypeScript, Node.js, and basic repository management.",
+        "purpose": "This document exists to onboard developers and AI agents to the ArchSpine repository by explaining its directory layout, development workflow, coding conventions, and the ArchSpine context layer that governs AI interactions. It ensures consistency in contributions and helps maintainers enforce quality standards.",
+        "context_and_audience": "The intended audience includes software developers, maintainers, and AI agents (such as Claude or Copilot) who need to understand how to navigate, build, test, and contribute to the ArchSpine codebase. The document is a living reference that should be consulted before making changes.",
         "key_takeaways": [
-          "Understand the module organization under `src/`.",
-          "Follow the established coding style (ES modules, strict typing, 2-space indentation).",
-          "Use Conventional Commits for commits and PRs.",
-          "Keep English and Chinese documentation aligned.",
-          "Respect ArchSpine control-plane files and avoid direct modification of generated outputs."
+          "Source code is organized under src/ with cli, core, engines, services, infra, assets/templates, and ast/rules as key directories.",
+          "Node.js 20+ is required; use npm install, npm run build, npm test for standard workflows.",
+          "Strict TypeScript with ES modules, 2-space indentation, camelCase/PascalCase conventions are enforced via ESLint and Prettier.",
+          "Tests are run with Vitest; schema compliance and protocol validation are separate test suites.",
+          "Commits follow Conventional Commits format (e.g., fix:, feat:). PRs must include verification steps and links to issues.",
+          "Public docs have English and Chinese mirrors; docs/zh-CN/ must stay aligned.",
+          "ArchSpine context (in .spine/) is a control plane: .spine/atlas/ and .spine/view/pages/ provide semantic summaries, while .spine/index/ holds structured data. AI agents should prefer MCP server and never manually edit generated outputs."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "为在 ArchSpine 仓库工作的开发者提供一套全面的指南，涵盖项目结构、开发工作流、编码规范以及与 ArchSpine 系统的交互方式。",
-        "context_and_audience": "本文档面向参与 ArchSpine 项目的开发者（人类和 AI 代理），假定读者熟悉 TypeScript、Node.js 以及基本的仓库管理知识。",
+        "purpose": "本文档旨在为开发者和AI代理介绍ArchSpine仓库的目录结构、开发工作流、编码规范以及控制AI交互的ArchSpine上下文层，从而帮助新成员快速上手并保证贡献的一致性，同时支持维护者执行质量标准。",
+        "context_and_audience": "目标读者包括软件开发者、维护者以及需要理解如何浏览、构建、测试和贡献ArchSpine代码库的AI代理（如Claude或Copilot）。本文档是一份活的参考，在进行任何改动前应当查阅。",
         "key_takeaways": [
-          "理解 `src/` 下的模块组织结构。",
-          "遵循既定的编码风格（ES modules、严格类型、2个空格缩进）。",
-          "在提交和 PR 中使用 Conventional Commits 格式。",
-          "保持英文和中文文档的一致性。",
-          "尊重 ArchSpine 的控制平面文件，避免直接修改自动生成的输出文件。"
+          "源代码组织在src/下，关键目录包括cli、core、engines、services、infra、assets/templates和ast/rules。",
+          "需要Node.js 20+；使用npm install、npm run build、npm test执行标准工作流。",
+          "强制使用严格TypeScript、ES模块、2空格缩进、camelCase/PascalCase命名约定，并通过ESLint和Prettier执行。",
+          "测试使用Vitest运行；还提供了schema合规性和协议验证的独立测试套件。",
+          "提交遵循Conventional Commits格式（例如fix:、feat:）。PR必须包含验证步骤和相关issue链接。",
+          "公共文档配有英文和中文镜像；docs/zh-CN/必须保持同步。",
+          "ArchSpine上下文（位于.spine/）是控制面：.spine/atlas/和.spine/view/pages/提供语义摘要，而.spine/index/包含结构化数据。AI代理应优先使用MCP服务器，且绝不手动编辑生成的输出。"
         ]
       }
     }
@@ -76,7 +79,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-02T13:36:51.530Z",
+    "indexedAt": "2026-05-03T11:22:47.502Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

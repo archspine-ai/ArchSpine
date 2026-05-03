@@ -3,28 +3,29 @@
   "identity": {
     "filePath": "examples/demo-project/.spine/runtime/checkpoints/sync.json",
     "contentHash": "003960ae6498f00bd529e285183c402b1ae9adf3699433f6f0c54c57de41e0e2",
-    "semanticHash": "693dc130f7ea17a6addb02cb3954387cd069ecb8a62a87861e4eb60312371ef9",
+    "semanticHash": "f03f12079c6fbc62862cfcb4fb0c0f55fcc6116887bc0b28b80f0281f0e2dde9",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "examples/demo-project/.spine/runtime/checkpoints"
   },
   "semantic": {
-    "role": "Execution record for a synchronization run in the ArchSpine mirror system",
+    "role": "This JSON file is an execution checkpoint record for the ArchSpine sync pipeline. It logs the initiation, progress, and final state of a sync command run, including per-stage timestamps and item-level completion status. It is not a configuration file that alters system behavior; rather, it serves as an authoritative trace for resumption, debugging, and audit of a specific sync operation.",
     "responsibilities": [
-      "Tracking the lifecycle and status of a sync operation",
-      "Recording metadata about the sync run (full vs. incremental, hook mode, resume state)",
-      "Logging per-stage progress and completion timestamps",
-      "Capturing filtered file paths and affected directories during scan-cleanup",
-      "Recording AST extraction results per source file",
-      "Recording summarization results per configuration or documentation file"
+      "Tracks the lifecycle of a sync command run from start to completion",
+      "Records the status and timestamps of each pipeline stage (reconciliation, scan-cleanup, AST extraction, summarization)",
+      "Holds per-file item status within AST extraction and summarization stages",
+      "Stores metadata about whether the run was full, hook mode, or a resumed run",
+      "Provides the basis for resuming interrupted runs via 'resumedFromRunId'"
     ],
     "outOfScope": [],
     "invariants": [
-      "The 'status' field must be one of: 'pending', 'running', 'completed', 'failed'",
-      "The 'runId' must be unique per execution",
-      "All stage entries must have a 'status' and timestamps consistent with the run lifecycle",
-      "The 'metadata.full' flag determines whether the sync is a full or incremental run",
-      "The 'metadata.hookMode' flag must be false for normal runs; true indicates a hook-triggered run"
+      "schemaVersion must be exactly '1.0' to ensure compatibility",
+      "runId must be a unique string (typically timestamp-based) for each run",
+      "status must be one of 'completed', 'failed', 'running', or 'pending'",
+      "All stage and item objects must have valid ISO 8601 timestamps",
+      "startedAt must be before or equal to completedAt for each stage/item",
+      "metadata.full must be a boolean; hookMode and resumedFromRunId must be consistent with the run context",
+      "The stages object must contain at least the core pipeline stages: Reconcile State & Cache, scan-cleanup, ast-extraction, summarization"
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -35,46 +36,34 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Execution record for a synchronization run in the ArchSpine mirror system",
+        "role": "This JSON file is an execution checkpoint record for the ArchSpine sync pipeline. It logs the initiation, progress, and final state of a sync command run, including per-stage timestamps and item-level completion status. It is not a configuration file that alters system behavior; rather, it serves as an authoritative trace for resumption, debugging, and audit of a specific sync operation.",
         "parameter_definitions": {
-          "schemaVersion": "Version of the run record schema, used for backward compatibility",
-          "command": "The command that initiated this run (e.g., 'sync')",
-          "runId": "Unique identifier for this run, typically a timestamp-based ID",
-          "status": "Current status of the run: pending, running, completed, or failed",
-          "startedAt": "ISO timestamp when the run started",
-          "updatedAt": "ISO timestamp of the last status update",
-          "metadata.full": "Boolean flag indicating whether this is a full sync (true) or incremental (false)",
-          "metadata.hookMode": "Boolean flag indicating if the run was triggered by a hook (true) or manually (false)",
-          "metadata.resumedFromRunId": "If this run was resumed from a previous run, the previous run's ID",
-          "metadata.resumeCandidateCount": "Number of candidate runs that could be resumed from",
-          "stages": "Map of stage names to their execution details, including status and timestamps",
-          "stages.Reconcile State & Cache": "Stage that reconciles the current state with the cache; completes quickly if no changes",
-          "stages.scan-cleanup": "Stage that scans the workspace and filters files for processing; records filteredFiles and affectedDirs",
-          "stages.ast-extraction": "Stage that extracts AST (Abstract Syntax Tree) from source files; per-file status tracked in items",
-          "stages.summarization": "Stage that generates summaries for configuration and documentation files; per-file status tracked in items"
+          "schemaVersion": "Version identifier of the checkpoint schema. Must be '1.0' to ensure the parsing logic expects the correct field layout. Any deviation can cause misreading or rejection of the checkpoint.",
+          "command": "The ArchSpine CLI command that generated this checkpoint (e.g., 'sync'). Determines which pipeline stages are expected and how resumption logic will re-enter the process.",
+          "runId": "Unique identifier for this particular execution. Used by the runtime to correlate checkpoints, prevent duplicate processing, and support resumption via 'resumedFromRunId'.",
+          "status": "Overall run status ('completed', 'failed', 'running', 'pending'). Controls whether downstream processes treat the run as successful or if repair/resume logic should activate.",
+          "startedAt": "ISO 8601 timestamp marking the moment the sync command began execution. Used for time-bound diagnostics and to compute elapsed runtime.",
+          "updatedAt": "ISO 8601 timestamp of the last modification to this checkpoint. Important for detecting stale checkpoints and enforcing coherency in concurrent access.",
+          "metadata": "Object holding contextual flags: 'full' indicates a full sync vs incremental; 'hookMode' indicates the run was triggered by a git hook; 'resumedFromRunId' references a previous run being continued; 'resumeCandidateCount' tracks the number of viable resume points found.",
+          "stages": "Map of pipeline stage names to their status and timing. Each stage contains 'status', 'startedAt', 'completedAt', 'updatedAt', and optionally 'data' (for scan-cleanup) or 'items' (for AST extraction / summarization). Stages are executed sequentially; a failed stage blocks downstream stages from starting.",
+          "stages.items": "For AST extraction and summarization stages, a map of source file paths to item-level completion objects. Each item has status and timestamps. Missing items indicate work not yet attempted; failed items trigger retry or repair logic."
         },
-        "stability_and_risks": "This run record is a diagnostic artifact, not a configuration file. It does not directly affect system behavior. However, if the run record is corrupted or missing, the system may lose the ability to resume interrupted syncs or audit past operations. The 'resumedFromRunId' and 'resumeCandidateCount' fields are critical for recovery; if they are incorrect, the system may attempt to resume from an invalid state. The 'filteredFiles' list in scan-cleanup determines which files are processed; if it is empty or incorrect, critical files may be skipped. The per-file statuses in ast-extraction and summarization allow the system to detect partial failures; if a file is marked 'failed', the system should retry or alert."
+        "stability_and_risks": "This checkpoint file is a critical runtime artifact for ArchSpine's sync pipeline. Its integrity directly affects the system's ability to resume interrupted runs, avoid duplicate work, and provide accurate diagnostic information. If the file becomes corrupted or goes out of sync with actual pipeline progress, subsequent runs may skip stages, reprocess completed work, or incorrectly report status. The file should be treated as read-only during normal operation, updated atomically by the runtime, and never manually edited. High write concurrency or disk failures pose the greatest risk. The use of 'resumedFromRunId' and 'resumeCandidateCount' introduces a dependency on prior runs; if a referenced runId is missing or its checkpoint is corrupted, resumption may fail silently."
       },
       "Simplified Chinese": {
-        "role": "ArchSpine 镜像系统中同步运行的执行记录",
+        "role": "此 JSON 文件是 ArchSpine 同步管线的执行检查点记录。它记录了某次 sync 命令的启动、进度和最终状态，包括各阶段的时间戳和文件级完成情况。它不是改变系统行为的配置文件，而是用于恢复、调试和审计特定同步操作的可信追踪记录。",
         "parameter_definitions": {
-          "schemaVersion": "运行记录模式的版本号，用于向后兼容",
-          "command": "启动本次运行的命令（例如 'sync'）",
-          "runId": "本次运行的唯一标识符，通常基于时间戳生成",
-          "status": "运行的当前状态：pending（待处理）、running（运行中）、completed（已完成）或 failed（失败）",
-          "startedAt": "运行开始的 ISO 时间戳",
-          "updatedAt": "最后一次状态更新的 ISO 时间戳",
-          "metadata.full": "布尔标志，指示这是完整同步（true）还是增量同步（false）",
-          "metadata.hookMode": "布尔标志，指示运行是否由钩子触发（true）还是手动触发（false）",
-          "metadata.resumedFromRunId": "如果本次运行是从之前的运行恢复的，则记录之前运行的 ID",
-          "metadata.resumeCandidateCount": "可恢复的候选运行数量",
-          "stages": "阶段名称到执行细节的映射，包括状态和时间戳",
-          "stages.Reconcile State & Cache": "将当前状态与缓存进行协调的阶段；如果没有更改则快速完成",
-          "stages.scan-cleanup": "扫描工作区并过滤待处理文件的阶段；记录 filteredFiles 和 affectedDirs",
-          "stages.ast-extraction": "从源文件中提取抽象语法树（AST）的阶段；每个文件的状态记录在 items 中",
-          "stages.summarization": "为配置文件和文档文件生成摘要的阶段；每个文件的状态记录在 items 中"
+          "schemaVersion": "检查点模式的版本标识符，必须为 '1.0'，以确保解析逻辑识别正确的字段布局。任何偏差都可能导致检查点被误读或拒绝。",
+          "command": "生成此检查点的 ArchSpine CLI 命令（如 'sync'）。决定了期望的管线阶段以及恢复逻辑如何重新进入流程。",
+          "runId": "本次执行的唯一标识符。运行时使用此标识符关联检查点、防止重复处理，并通过 'resumedFromRunId' 支持恢复。",
+          "status": "运行的整体状态（'completed'、'failed'、'running'、'pending'）。控制下游进程是否将本次运行视为成功，或者是否需要触发修复/恢复逻辑。",
+          "startedAt": "标记 sync 命令开始执行的 ISO 8601 时间戳。用于基于时间的诊断和计算已用运行时长。",
+          "updatedAt": "此检查点最后修改的 ISO 8601 时间戳。对检测过时检查点以及在并发访问中强制一致性至关重要。",
+          "metadata": "包含上下文标志的对象：'full' 表示完整同步还是增量同步；'hookMode' 表示运行是否由 git 钩子触发；'resumedFromRunId' 引用被继续的先前运行；'resumeCandidateCount' 跟踪找到的可行恢复点数量。",
+          "stages": "管线阶段名称到其状态和时间的映射。每个阶段包含 'status'、'startedAt'、'completedAt'、'updatedAt'，以及可选的 'data'（用于扫描清理）或 'items'（用于 AST 提取/摘要）。阶段顺序执行；失败的阶段会阻止后续阶段启动。",
+          "stages.items": "对于 AST 提取和摘要阶段，这是源文件路径到文件级完成对象的映射。每个项目有状态和时间戳。缺失的项目表示尚未尝试的工作；失败的项目会触发重试或修复逻辑。"
         },
-        "stability_and_risks": "此运行记录是诊断性工件，而非配置文件。它不会直接影响系统行为。但是，如果运行记录损坏或丢失，系统可能无法恢复中断的同步或审计过去的操作。'resumedFromRunId' 和 'resumeCandidateCount' 字段对恢复至关重要；如果它们不正确，系统可能尝试从无效状态恢复。scan-cleanup 中的 'filteredFiles' 列表决定了哪些文件会被处理；如果列表为空或不正确，关键文件可能被跳过。ast-extraction 和 summarization 中的每个文件状态允许系统检测部分失败；如果某个文件标记为 'failed'，系统应重试或发出警报。"
+        "stability_and_risks": "此检查点文件是 ArchSpine 同步管线的关键运行时工件。其完整性直接影响系统恢复中断运行、避免重复工作以及提供准确诊断信息的能力。如果文件损坏或与实际管线进度不同步，后续运行可能跳过阶段、重复处理已完成的工作，或错误报告状态。正常操作期间应将该文件视为只读，由运行时原子更新，绝不应手动编辑。高写入并发或磁盘故障构成最大风险。使用 'resumedFromRunId' 和 'resumeCandidateCount' 引入了对先前运行的依赖；如果引用的 runId 丢失或其检查点损坏，恢复可能静默失败。"
       }
     }
   },
@@ -96,7 +85,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:44:35.098Z",
+    "indexedAt": "2026-05-03T11:23:14.138Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

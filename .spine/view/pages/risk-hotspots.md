@@ -1,6 +1,6 @@
 # Risk Hotspots Report
 
-> Generated: 2026-05-03T03:55:43.148Z
+> Generated: 2026-05-03T11:29:16.415Z
 > Top 12 risk hotspots ranked by a transparent additive score model.
 
 ## Top Risk Files
@@ -10,16 +10,16 @@
 
 | 1 | `src/infra/mcp/tools.ts` | `fan-out`, `surface-exposure`, `large-file`, `missing-adjacent-tests` | Likely localized impact with a few downstream touch points. | 61 |
 | 2 | `src/services/repository-admin-service.ts` | `semantic-change`, `fan-out`, `surface-exposure`, `large-file` | Likely localized impact with a few downstream touch points. | 56 |
-| 3 | `src/cli/commands/publish.ts` | `fan-out`, `semantic-change`, `rule-violations`, `surface-exposure` | Likely localized impact with a few downstream touch points. | 53 |
+| 3 | `src/engines/info.ts` | `fan-out`, `semantic-change`, `rule-violations`, `missing-adjacent-tests` | Likely localized impact with a few downstream touch points. | 53 |
 | 4 | `src/ast/lang-registry.ts` | `semantic-change`, `surface-exposure`, `large-file`, `fan-out` | Likely localized impact with a few downstream touch points. | 52 |
 | 5 | `src/infra/credentials/backend.ts` | `semantic-change`, `surface-exposure`, `fan-out`, `large-file` | Likely localized impact with a few downstream touch points. | 52 |
 | 6 | `src/infra/llm/providers/openai.ts` | `semantic-change`, `fan-out`, `large-file`, `missing-adjacent-tests` | Likely localized impact with a few downstream touch points. | 52 |
 | 7 | `src/infra/prompt-context.ts` | `semantic-change`, `surface-exposure`, `fan-out`, `missing-adjacent-tests` | Likely localized impact with a few downstream touch points. | 50 |
 | 8 | `src/types/protocol/languages.ts` | `semantic-change`, `rule-violations`, `surface-exposure`, `missing-adjacent-tests` | Likely localized impact with a few downstream touch points. | 49 |
-| 9 | `src/engines/scanner.ts` | `fan-out`, `surface-exposure`, `large-file`, `missing-adjacent-tests` | Likely localized impact with a few downstream touch points. | 48 |
-| 10 | `src/infra/mcp/server.ts` | `fan-out`, `cross-boundary-density`, `surface-exposure`, `missing-adjacent-tests` | Likely medium impact beyond the local directory. | 48 |
-| 11 | `src/engines/context.ts` | `fan-out`, `surface-exposure`, `large-file`, `missing-adjacent-tests` | Likely localized impact with a few downstream touch points. | 46 |
-| 12 | `src/tasks/validate.ts` | `fan-out`, `surface-exposure`, `fan-in`, `large-file` | Likely localized impact with a few downstream touch points. | 45 |
+| 9 | `src/engines/context-relevance.ts` | `semantic-change`, `surface-exposure`, `large-file`, `fan-out` | Likely localized impact with a few downstream touch points. | 48 |
+| 10 | `src/engines/scanner.ts` | `fan-out`, `surface-exposure`, `large-file`, `missing-adjacent-tests` | Likely localized impact with a few downstream touch points. | 48 |
+| 11 | `src/infra/mcp/server.ts` | `fan-out`, `cross-boundary-density`, `surface-exposure`, `missing-adjacent-tests` | Likely medium impact beyond the local directory. | 48 |
+| 12 | `src/utils/agent-instructions.sync.ts` | `semantic-change`, `surface-exposure`, `large-file`, `fan-out` | Likely localized impact with a few downstream touch points. | 48 |
 
 ## Detailed Analysis
 
@@ -49,15 +49,15 @@ Score: 56
 - `large-file` (8): File has 273 line(s), increasing change surface area.
 - `missing-adjacent-tests` (6): No adjacent test file was detected near a shared or exposed module.
 
-### 3. `src/cli/commands/publish.ts`
-CLI command handler orchestrating the publish workflow for the ArchSpine mirror system, coordinating preflight checks, sync, document backfill, and atlas state management; ranked due to fan-out, semantic-change.
+### 3. `src/engines/info.ts`
+Engine module for generating a comprehensive system info and health report for ArchSpine projects; ranked due to fan-out, semantic-change.
 Impact Radius: Likely localized impact with a few downstream touch points.
 Confidence: 0.69
 Score: 53
 
-- `fan-out` (16): File depends on 8 indexed file(s).
-- `surface-exposure` (7): File exposes 1 public-surface item(s) and 3 export(s).
-- `semantic-change` (16): The previous semantic contract did not include responsibilities for running DocumentBackfillTask or clearing stale atlas data via Manifest. The current implementation adds these pipeline/persistence operations, indicating semantic drift.
+- `fan-out` (18): File depends on 10 indexed file(s).
+- `surface-exposure` (5): File exposes 1 public-surface item(s) and 1 export(s).
+- `semantic-change` (16): Previous semantic described this module as a CLI command module, but the code resides in src/engines/ and exports an async function without any CLI argument parsing, confirming it is an engine module, not a CLI command.
 - `rule-violations` (8): File carries 1 active rule violation(s).
 - `missing-adjacent-tests` (6): No adjacent test file was detected near a shared or exposed module.
 
@@ -108,7 +108,7 @@ Score: 50
 - `fan-in` (4): File is depended on by 1 indexed file(s).
 - `fan-out` (8): File depends on 4 indexed file(s).
 - `cross-boundary-density` (4): File crosses 1 directory-boundary edge(s).
-- `surface-exposure` (12): File exposes 15 public-surface item(s) and 15 export(s).
+- `surface-exposure` (12): File exposes 15 public-surface item(s) and 0 export(s).
 - `semantic-change` (16): The previous semantic contract did not include exports for calculateSourcePromptBudgets, parseLLMMode, parsePromptPolicyTier, parseRelevanceDiagnosticsMode, parseValidatePolicy, defaultPromptTierForTask, defaultValidatePolicyForTask, resolvePromptPolicyTier, and resolveValidatePolicy. The facade has expanded to include budget calculation, parsing, and resolution functions.
 - `missing-adjacent-tests` (6): No adjacent test file was detected near a shared or exposed module.
 
@@ -118,13 +118,25 @@ Impact Radius: Likely localized impact with a few downstream touch points.
 Confidence: 0.67
 Score: 49
 
-- `surface-exposure` (12): File exposes 3 public-surface item(s) and 3 export(s).
+- `surface-exposure` (12): File exposes 3 public-surface item(s) and 0 export(s).
 - `semantic-change` (16): Previous semantic contract did not report violations of the interface-prefix rule, but all three interfaces violate it.
 - `rule-violations` (15): File carries 3 active rule violation(s).
 - `missing-adjacent-tests` (6): No adjacent test file was detected near a shared or exposed module.
 
-### 9. `src/engines/scanner.ts`
-Core file system scanner engine that discovers, filters, and reports on repository files using layered ignore rules, git diff integration, and configurable scan policies; ranked due to fan-out, surface-exposure.
+### 9. `src/engines/context-relevance.ts`
+Engine module for scoring the relevance of dependency candidates and target paths using rule-derived keywords, symbol evidence, and path distance heuristics; ranked due to semantic-change, surface-exposure.
+Impact Radius: Likely localized impact with a few downstream touch points.
+Confidence: 0.67
+Score: 48
+
+- `fan-out` (6): File depends on 3 indexed file(s).
+- `surface-exposure` (12): File exposes 3 public-surface item(s) and 3 export(s).
+- `semantic-change` (16): Previous semantic contract described only a utility for extracting keywords from rule text. This file now includes two additional scoring functions (scoreDependencyCandidate, scoreTargetPath) that compute composite relevance scores using symbol evidence, path distance, and keyword match, significantly expanding its architectural role.
+- `large-file` (8): File has 370 line(s), increasing change surface area.
+- `missing-adjacent-tests` (6): No adjacent test file was detected near a shared or exposed module.
+
+### 10. `src/engines/scanner.ts`
+Core file system scanner engine that discovers, filters, and reports repository files using layered ignore rules, git diff integration, and configurable scan policies; ranked due to fan-out, surface-exposure.
 Impact Radius: Likely localized impact with a few downstream touch points.
 Confidence: 0.67
 Score: 48
@@ -132,11 +144,11 @@ Score: 48
 - `fan-in` (4): File is depended on by 1 indexed file(s).
 - `fan-out` (14): File depends on 7 indexed file(s).
 - `cross-boundary-density` (4): File crosses 1 directory-boundary edge(s).
-- `surface-exposure` (12): File exposes 5 public-surface item(s) and 0 export(s).
+- `surface-exposure` (12): File exposes 3 public-surface item(s) and 3 export(s).
 - `large-file` (8): File has 379 line(s), increasing change surface area.
 - `missing-adjacent-tests` (6): No adjacent test file was detected near a shared or exposed module.
 
-### 10. `src/infra/mcp/server.ts`
+### 11. `src/infra/mcp/server.ts`
 Infrastructure facade implementing the Model Context Protocol (MCP) server to expose ArchSpine's internal resources and tools to external AI agents via stdio transport; ranked due to fan-out, cross-boundary-density.
 Impact Radius: Likely medium impact beyond the local directory.
 Confidence: 0.67
@@ -147,29 +159,16 @@ Score: 48
 - `surface-exposure` (12): File exposes 3 public-surface item(s) and 0 export(s).
 - `missing-adjacent-tests` (6): No adjacent test file was detected near a shared or exposed module.
 
-### 11. `src/engines/context.ts`
-Architectural context resolution engine for dependency analysis and relevance scoring in the ArchSpine mirror system; ranked due to fan-out, surface-exposure.
+### 12. `src/utils/agent-instructions.sync.ts`
+Centralized file I/O module for synchronizing and removing ArchSpine-managed configuration blocks in repository files (gitignore, gitattributes, agent instructions, search ignore, spine ignore, package.json scripts); ranked due to semantic-change, surface-exposure.
 Impact Radius: Likely localized impact with a few downstream touch points.
-Confidence: 0.66
-Score: 46
+Confidence: 0.67
+Score: 48
 
-- `fan-in` (4): File is depended on by 1 indexed file(s).
-- `fan-out` (12): File depends on 6 indexed file(s).
-- `cross-boundary-density` (4): File crosses 1 directory-boundary edge(s).
-- `surface-exposure` (12): File exposes 8 public-surface item(s) and 8 export(s).
-- `large-file` (8): File has 288 line(s), increasing change surface area.
-- `missing-adjacent-tests` (6): No adjacent test file was detected near a shared or exposed module.
-
-### 12. `src/tasks/validate.ts`
-ArchSpine validation task orchestrator for LLM-powered architectural rule compliance checking; ranked due to fan-out, surface-exposure.
-Impact Radius: Likely localized impact with a few downstream touch points.
-Confidence: 0.65
-Score: 45
-
-- `fan-in` (8): File is depended on by 2 indexed file(s).
-- `fan-out` (12): File depends on 6 indexed file(s).
-- `surface-exposure` (11): File exposes 2 public-surface item(s) and 3 export(s).
-- `large-file` (8): File has 379 line(s), increasing change surface area.
+- `fan-out` (6): File depends on 3 indexed file(s).
+- `surface-exposure` (12): File exposes 26 public-surface item(s) and 26 export(s).
+- `semantic-change` (16): Previous semantic contract omitted synchronization and removal of agent instructions files and package.json scripts. The current module now handles these artifact types, increasing its scope beyond the originally described set of configuration files.
+- `large-file` (8): File has 438 line(s), increasing change surface area.
 - `missing-adjacent-tests` (6): No adjacent test file was detected near a shared or exposed module.
 
 ---

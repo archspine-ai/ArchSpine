@@ -4,55 +4,73 @@
     "filePath": "src/services/runtime-session.ts",
     "contentHash": "663163db824f8166f327c12d5eac3fed6083e2a00a9f79dbde50d26b83901a2f",
     "skeletonHash": "65cf8a6c2eb0002ab34162ba13dcf06bda183234311957146f5bc8c3d5193d23",
-    "semanticHash": "790096eb0a0418479f98cf19f3c0eff54bec551f192a62ee973257b8394d80f5",
+    "semanticHash": "897fe9a3a27585bdbdc3ead39907b1d2f97f91383e518e4fbfab2346d147cfe8",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/services"
   },
   "semantic": {
-    "role": "Infrastructure orchestration service for managing resumable command execution sessions with checkpoint validation and protected output mutation detection.",
+    "role": "Runtime service orchestrator for resumable command execution sessions with checkpoint validation and protected output mutation safety.",
     "responsibilities": [
-      "Orchestrates runtime command sessions (sync, check, fix) with lifecycle management.",
-      "Validates and loads execution checkpoints to support resumable operations.",
-      "Detects and warns about protected output mutations via spine-gate integration.",
-      "Manages lock acquisition and release during task execution to prevent conflicts.",
-      "Validates runtime configuration and checkpoint state (from recent change intent)."
+      "Orchestrates command execution sessions (sync, check, fix) with full lifecycle management using checkpoint-based resumability.",
+      "Loads and validates execution checkpoints to support resuming interrupted operations from a safe state.",
+      "Detects and warns about protected output mutations via spine-gate integration before executing commands.",
+      "Manages lock acquisition and release via prepared task context to prevent concurrent conflicts.",
+      "Wraps session execution with protected output write access to guard critical output boundaries.",
+      "Delegates error handling and cleanup through onError and lock release mechanisms."
     ],
     "outOfScope": [
-      "Direct view rendering or UI logic.",
-      "Low-level file I/O or database operations (delegated to infra modules).",
-      "Business logic for specific tasks (delegated to task runtime)."
+      "Does not handle user interface rendering or view-specific orchestration.",
+      "Does not implement credential storage or retrieval; these are handled by infra modules.",
+      "Does not directly interact with external APIs or CLI input parsing."
     ],
     "invariants": [
-      "Depends on infra modules for checkpoint storage, mutation detection, I/O, and write access control.",
-      "Exports the RuntimeCommand type for command specification.",
-      "Orchestrates session lifecycle but does not implement core task logic."
+      "Session execution must be wrapped with protected output write access to prevent unintended mutations.",
+      "Resumable sessions require a valid checkpoint state loaded from ExecutionCheckpointStore.",
+      "Lock acquisition must occur before execution and release after completion or failure."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a resumable, safe orchestration layer for command execution with checkpoint validation and mutation protection.",
-      "recentChangeIntent": "Validate runtime config and checkpoint state."
+      "architecturalIntent": "Provides a reusable runtime session layer for executing commands (sync, check, fix) with checkpoint resumption and mutation safety, centralizing orchestration logic in the services layer.",
+      "recentChangeIntent": "Part of ArchSpine v1.0.0 establishing architectural governance and semantic layer for AI-era development, with explicit separation of service orchestration from infrastructure concerns."
     },
     "publicSurface": [
-      "RuntimeCommand type",
-      "RuntimeSessionOptions interface (inferred from header)"
+      "runWithRuntimeSession",
+      "RuntimeCommand"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Infrastructure orchestration service for managing resumable command execution sessions with checkpoint validation and protected output mutation detection.",
+        "role": "Runtime service orchestrator for resumable command execution sessions with checkpoint validation and protected output mutation safety.",
         "responsibilities": [
-          "Orchestrates runtime command sessions (sync, check, fix) with lifecycle management.",
-          "Validates and loads execution checkpoints to support resumable operations.",
-          "Detects and warns about protected output mutations via spine-gate integration.",
-          "Manages lock acquisition and release during task execution to prevent conflicts.",
-          "Validates runtime configuration and checkpoint state."
+          "Orchestrates command execution sessions (sync, check, fix) with full lifecycle management using checkpoint-based resumability.",
+          "Loads and validates execution checkpoints to support resuming interrupted operations from a safe state.",
+          "Detects and warns about protected output mutations via spine-gate integration before executing commands.",
+          "Manages lock acquisition and release via prepared task context to prevent concurrent conflicts.",
+          "Wraps session execution with protected output write access to guard critical output boundaries.",
+          "Delegates error handling and cleanup through onError and lock release mechanisms."
         ],
         "outOfScope": [
-          "Direct view rendering or UI logic.",
-          "Low-level file I/O or database operations.",
-          "Business logic for specific tasks."
+          "Does not handle user interface rendering or view-specific orchestration.",
+          "Does not implement credential storage or retrieval; these are handled by infra modules.",
+          "Does not directly interact with external APIs or CLI input parsing."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "运行时服务编排器，支持可恢复的命令执行会话，具备检查点验证和保护性输出变更安全能力。",
+        "responsibilities": [
+          "编排命令执行会话（同步、检查、修复），通过基于检查点的可恢复性实现完整的生命周期管理。",
+          "加载并验证执行检查点，支持从中断操作的安全状态恢复。",
+          "在执行命令前通过 spine-gate 集成检测并警告保护性输出变更。",
+          "通过准备的任务上下文管理锁的获取与释放，防止并发冲突。",
+          "将会话执行包裹在保护性输出写入访问内，以保护关键输出边界。",
+          "通过 onError 和锁释放机制委托错误处理与清理。"
+        ],
+        "outOfScope": [
+          "不处理用户界面渲染或视图特定的编排。",
+          "不实现凭证存储或检索；这些由基础设施模块处理。",
+          "不直接与外部 API 或 CLI 输入解析交互。"
         ]
       }
     }
@@ -160,30 +178,48 @@
         ]
       }
     ],
-    "dependedBy": [
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
       {
-        "targetPath": "src/services/check-service.ts",
-        "relation": "import",
-        "edgeProvenance": "ast",
-        "symbols": []
+        "sourceSymbol": "src/services/runtime-session.ts/_file_#",
+        "targetSymbol": "src/infra/writer-boundary.ts/withProtectedOutputsWriteAccess#",
+        "targetPath": "src/infra/writer-boundary.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
       },
       {
-        "targetPath": "src/services/fix-service.ts",
-        "relation": "import",
-        "edgeProvenance": "ast",
-        "symbols": []
+        "sourceSymbol": "src/services/runtime-session.ts/_file_#",
+        "targetSymbol": "src/infra/execution-checkpoint.ts/isResumableCheckpoint#",
+        "targetPath": "src/infra/execution-checkpoint.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
       },
       {
-        "targetPath": "src/services/sync-service.ts",
-        "relation": "import",
-        "edgeProvenance": "ast",
-        "symbols": []
+        "sourceSymbol": "src/services/runtime-session.ts/_file_#",
+        "targetSymbol": "src/infra/spine-gate.ts/formatProtectedOutputMutationWarning#",
+        "targetPath": "src/infra/spine-gate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/runtime-session.ts/_file_#",
+        "targetSymbol": "src/infra/spine-gate.ts/detectProtectedOutputMutations#",
+        "targetPath": "src/infra/spine-gate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/runtime-session.ts/_file_#",
+        "targetSymbol": "src/infra/execution-checkpoint.ts/ExecutionCheckpointStore#",
+        "targetPath": "src/infra/execution-checkpoint.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
       }
-    ],
-    "reverseIndexComplete": true
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:40.889Z",
+    "indexedAt": "2026-05-03T11:25:05.634Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

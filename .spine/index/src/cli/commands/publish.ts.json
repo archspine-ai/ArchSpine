@@ -4,81 +4,72 @@
     "filePath": "src/cli/commands/publish.ts",
     "contentHash": "53452e47c5aa276fa3a8d5816eef961a106e3d9cffadaa8fec5db50472871a94",
     "skeletonHash": "c937ea5595c5ffbedbce2b61d0830595c538e41c7a7db1a0563d6ddf21f8a02d",
-    "semanticHash": "8e1229a1025221400f0c59eb154888fccde9bce1631f5b57d5f5ff5f81806caf",
+    "semanticHash": "b7e3d92c573db429b05a385be159071fad29e7f8d2f87020010f1d84a4ca91dd",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli/commands"
   },
   "semantic": {
-    "role": "CLI command handler orchestrating the publish workflow for the ArchSpine mirror system, coordinating preflight checks, sync, document backfill, and atlas state management.",
+    "role": "CLI command handler orchestrating the publish workflow for the ArchSpine mirror system, coordinating preflight checks, sync, document backfill, and manifest state management.",
     "responsibilities": [
       "Validates publish preconditions via runtime baseline and snapshot readiness assertions.",
       "Warns if publishing from a local Git strategy to prevent unintended distribution.",
       "Executes the sync workflow to ensure the atlas is up-to-date before publishing.",
-      "Runs the DocumentBackfillTask to backfill missing documents before publishing.",
-      "Clears stale atlas data via Manifest.open(rootDir).clearAtlasStale() to ensure a clean publish state.",
-      "Coordinates with RuntimeService, Config, and runtime IO to execute the publish command."
+      "Runs DocumentBackfillTask to backfill missing documents before publishing.",
+      "Clears the stale flag from the manifest after publish to mark mirror as clean.",
+      "Orchestrates the full pipeline: preflight → sync → backfill → snapshot readiness → completion."
     ],
     "outOfScope": [
-      "Direct database or persistence layer operations (e.g., raw queries, index management).",
-      "LLM client resolution or model configuration details.",
-      "Language-specific translation or generation logic.",
-      "Snapshot creation or versioning logic."
+      "Runtime configuration persistence",
+      "LLM client resolution details",
+      "Document generation algorithms"
     ],
     "invariants": [
-      "CLI entrypoints must not absorb pipeline or persistence logic; they should delegate to services, core, engines, or infra layers.",
-      "Preflight checks must be performed before any publish operation.",
-      "The sync workflow must complete successfully before publishing."
+      "CLI module must delegate pipeline logic to services and tasks; must not implement any persistence or pipeline logic directly."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a CLI entrypoint for the publish workflow that orchestrates preflight checks, sync, document backfill, and atlas state management.",
-      "recentChangeIntent": "iZoy 's great commit - likely introduced or modified the publish command handler, possibly adding document backfill and atlas clearing logic."
+      "architecturalIntent": "Coordinate and execute the publish command workflow for ArchSpine mirror system, ensuring all preconditions are met and state is updated.",
+      "recentChangeIntent": "Incorporate ArchSpine v1.0.0 architectural governance and semantic layer into the publish command flow."
     },
     "publicSurface": [
-      "ExecutePublishCommandOptions (interface)"
+      "executePublishCommand",
+      "runPublishWorkflow",
+      "ExecutePublishCommandOptions"
     ],
-    "ruleViolations": [
-      {
-        "id": "cli-entrypoint-separation",
-        "severity": "error",
-        "reason": "The publish command handler directly imports and invokes DocumentBackfillTask (a task) and Manifest.open(rootDir).clearAtlasStale() (persistence logic). This violates the rule that CLI modules should stay as thin entrypoints and not absorb pipeline or persistence logic. These responsibilities should be delegated to a service or engine layer."
-      }
-    ],
-    "driftDetected": true,
-    "driftReason": "The previous semantic contract did not include responsibilities for running DocumentBackfillTask or clearing stale atlas data via Manifest. The current implementation adds these pipeline/persistence operations, indicating semantic drift.",
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
     "localized": {
       "English": {
-        "role": "CLI command handler orchestrating the publish workflow for the ArchSpine mirror system, coordinating preflight checks, sync, document backfill, and atlas state management.",
+        "role": "CLI command handler orchestrating the publish workflow for the ArchSpine mirror system, coordinating preflight checks, sync, document backfill, and manifest state management.",
         "responsibilities": [
           "Validates publish preconditions via runtime baseline and snapshot readiness assertions.",
           "Warns if publishing from a local Git strategy to prevent unintended distribution.",
           "Executes the sync workflow to ensure the atlas is up-to-date before publishing.",
-          "Runs the DocumentBackfillTask to backfill missing documents before publishing.",
-          "Clears stale atlas data via Manifest.open(rootDir).clearAtlasStale() to ensure a clean publish state.",
-          "Coordinates with RuntimeService, Config, and runtime IO to execute the publish command."
+          "Runs DocumentBackfillTask to backfill missing documents before publishing.",
+          "Clears the stale flag from the manifest after publish to mark mirror as clean.",
+          "Orchestrates the full pipeline: preflight → sync → backfill → snapshot readiness → completion."
         ],
         "outOfScope": [
-          "Direct database or persistence layer operations (e.g., raw queries, index management).",
-          "LLM client resolution or model configuration details.",
-          "Language-specific translation or generation logic.",
-          "Snapshot creation or versioning logic."
+          "Runtime configuration persistence",
+          "LLM client resolution details",
+          "Document generation algorithms"
         ]
       },
       "Simplified Chinese": {
-        "role": "ArchSpine 镜像系统发布工作流的 CLI 命令处理器，协调预检、同步、文档回填和 Atlas 状态管理。",
+        "role": "ArchSpine 镜像系统发布工作流程的命令行处理程序，协调预检、同步、文档回填和清单状态管理。",
         "responsibilities": [
           "通过运行时基线和快照就绪断言验证发布前置条件。",
           "如果从本地 Git 策略发布，则发出警告以防止意外分发。",
-          "执行同步工作流以确保 Atlas 在发布前是最新的。",
-          "运行 DocumentBackfillTask 来回填缺失的文档。",
-          "通过 Manifest.open(rootDir).clearAtlasStale() 清除过时的 Atlas 数据以确保干净的发布状态。",
-          "与 RuntimeService、Config 和运行时 IO 协调以执行发布命令。"
+          "执行同步工作流以确保发布前atlas 是最新的。",
+          "运行 `DocumentBackfillTask` 以在发布前回填缺失的文档。",
+          "发布后清除清单中的过时标记，将镜像标记为干净。",
+          "编排完整流水线：预检 → 同步 → 回填 → 快照就绪 → 完成。"
         ],
         "outOfScope": [
-          "直接的数据库或持久层操作（例如原始查询、索引管理）。",
-          "LLM 客户端解析或模型配置细节。",
-          "特定语言的翻译或生成逻辑。",
-          "快照创建或版本控制逻辑。"
+          "运行时配置持久化",
+          "LLM 客户端解析细节",
+          "文档生成算法"
         ]
       }
     }
@@ -249,10 +240,62 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/publish.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/displayUIBanner#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/publish.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/throwCliUsage#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/publish.ts/_file_#",
+        "targetSymbol": "src/services/publish-preflight.ts/warnIfPublishingFromLocalStrategy#",
+        "targetPath": "src/services/publish-preflight.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/publish.ts/_file_#",
+        "targetSymbol": "src/services/publish-preflight.ts/assertPublishRuntimeBaseline#",
+        "targetPath": "src/services/publish-preflight.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/publish.ts/_file_#",
+        "targetSymbol": "src/cli/commands/sync.ts/runSyncWorkflow#",
+        "targetPath": "src/cli/commands/sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/publish.ts/_file_#",
+        "targetSymbol": "src/services/publish-preflight.ts/assertPublishSnapshotReady#",
+        "targetPath": "src/services/publish-preflight.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/publish.ts/_file_#",
+        "targetSymbol": "src/tasks/document-backfill.ts/DocumentBackfillTask#",
+        "targetPath": "src/tasks/document-backfill.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:36.577Z",
+    "indexedAt": "2026-05-03T11:25:01.451Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

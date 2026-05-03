@@ -4,7 +4,7 @@
     "filePath": "src/cli/commands/languages.ts",
     "contentHash": "ab312cd25e97a5290cb5ac6cfb80370cf50fc2acb270a59b3cff0d2e969abd1b",
     "skeletonHash": "11a135ad73bf75504e942bf0324efa880f5b6fb1c88a875eb7d01d03243196d1",
-    "semanticHash": "5984f1ed63577fc64be86dcc0af47aa8e8183abaebccdaad365a4cb7994d5cb6",
+    "semanticHash": "c31ca5f413401531b4ddb50b93d04be0604f6bda3bd9f98ed78791844e338142",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli/commands"
@@ -12,26 +12,28 @@
   "semantic": {
     "role": "CLI command adapter for interactive documentation language configuration management in the ArchSpine system.",
     "responsibilities": [
-      "Presents an interactive prompt for users to select documentation languages from available choices.",
-      "Lists currently configured languages from the system configuration.",
-      "Loads and displays language snapshots from the manifest for user reference.",
-      "Saves updated language selections back to the configuration via the infra layer."
+      "Presents an interactive prompt using the 'prompts' library to let users select documentation languages from available choices defined by getDocumentLanguageChoices.",
+      "Displays currently configured languages from the Config object and shows language snapshot details from the Manifest.",
+      "Saves the updated language selection back to the Config via the infra layer (config.saveLanguages).",
+      "Prints language discovery information using the printLanguageDiscovery utility."
     ],
     "outOfScope": [
-      "Implementing core language discovery or validation logic (delegated to document-languages module).",
-      "Direct persistence operations (delegated to Config service).",
-      "Business logic for language processing or analysis."
+      "Handles only documentation language configuration; does not manage other configuration settings.",
+      "Does not implement language validation beyond the choices provided by getDocumentLanguageChoices.",
+      "Does not perform runtime execution or orchestrate non-language CLI commands.",
+      "Does not parse complex CLI arguments or subcommands other than its own command."
     ],
     "invariants": [
-      "Must remain a thin command adapter, delegating business logic and persistence to services and infra.",
-      "Must not contain pipeline, scanning, or data transformation logic."
+      "CLI modules must stay as entrypoints and command adapters and must not absorb pipeline or persistence logic. This file delegates infrastructure operations to infra/config and infra/manifest, respecting the rule."
     ],
     "changeIntent": {
-      "architecturalIntent": "Decouple CLI entrypoints from core services to improve testability and reuse, aligning with the recent refactor to modularize CLI and decouple core infra services.",
-      "recentChangeIntent": "Refactor to modularize CLI and decouple core infra services, ensuring CLI modules act as thin adapters."
+      "architecturalIntent": "Provide a clean CLI adapter for language configuration that separates presentation (prompts) from persistence and business logic, enabling testability and reuse outside the CLI.",
+      "recentChangeIntent": "Updated language command to support new interactive prompt flow and manifest snapshot display, aligning with ArchSpine v1.0.0 architectural governance."
     },
     "publicSurface": [
-      "ExecuteLanguagesCommandOptions interface"
+      "promptForDocumentationLanguages(currentLanguages: string[]): Promise<string[] | undefined>",
+      "executeLanguagesCommand(options: ExecuteLanguagesCommandOptions): Promise<void>",
+      "ExecuteLanguagesCommandOptions (interface)"
     ],
     "ruleViolations": [],
     "driftDetected": false,
@@ -40,15 +42,31 @@
       "English": {
         "role": "CLI command adapter for interactive documentation language configuration management in the ArchSpine system.",
         "responsibilities": [
-          "Presents an interactive prompt for users to select documentation languages from available choices.",
-          "Lists currently configured languages from the system configuration.",
-          "Loads and displays language snapshots from the manifest for user reference.",
-          "Saves updated language selections back to the configuration via the infrastructure layer."
+          "Presents an interactive prompt using the 'prompts' library to let users select documentation languages from available choices defined by getDocumentLanguageChoices.",
+          "Displays currently configured languages from the Config object and shows language snapshot details from the Manifest.",
+          "Saves the updated language selection back to the Config via the infra layer (config.saveLanguages).",
+          "Prints language discovery information using the printLanguageDiscovery utility."
         ],
         "outOfScope": [
-          "Implementing core language discovery or validation logic (delegated to the document-languages module).",
-          "Direct persistence operations (delegated to the Config service).",
-          "Business logic for language processing or analysis."
+          "Handles only documentation language configuration; does not manage other configuration settings.",
+          "Does not implement language validation beyond the choices provided by getDocumentLanguageChoices.",
+          "Does not perform runtime execution or orchestrate non-language CLI commands.",
+          "Does not parse complex CLI arguments or subcommands other than its own command."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 系统的交互式文档语言配置管理 CLI 命令适配器。",
+        "responsibilities": [
+          "使用 'prompts' 库提供交互式提示，让用户从 getDocumentLanguageChoices 定义的可用语言中选择。",
+          "显示当前配置的语言以及从 Manifest 加载的语言快照详情。",
+          "将更新后的语言选择保存回 Config（通过配置管理层）。",
+          "使用 printLanguageDiscovery 工具打印语言发现信息。"
+        ],
+        "outOfScope": [
+          "仅处理文档语言配置，不管理其他配置设置。",
+          "不实现除 getDocumentLanguageChoices 提供的选项之外的语言验证。",
+          "不执行运行时操作或编排非语言的 CLI 命令。",
+          "不解析复杂的 CLI 参数或子命令（仅处理自身命令）。"
         ]
       }
     }
@@ -175,10 +193,34 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/languages.ts/_file_#",
+        "targetSymbol": "src/cli/document-languages.ts/getDocumentLanguageChoices#",
+        "targetPath": "src/cli/document-languages.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/languages.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/printLanguageDiscovery#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/languages.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/state.ts/loadLanguageSnapshot#",
+        "targetPath": "src/infra/manifest/state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:36.467Z",
+    "indexedAt": "2026-05-03T11:25:01.353Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

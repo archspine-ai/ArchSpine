@@ -4,55 +4,73 @@
     "filePath": "src/infra/db/repositories/symbols.ts",
     "contentHash": "c0b6b4d82eeb7184246221a3a20ea9977bd4c1b77e48c06d3d6e193935914b8b",
     "skeletonHash": "c0de5278cfc86865882f564825ff6d22ed53073cc67f8e6e767e29808c2d053a",
-    "semanticHash": "c02567dfd7eb79aa3d02a8a2def8a62a9def65510c381302bc7897064cdb350c",
+    "semanticHash": "010b04552eb4b30641a9a0b486a684cfa69b7d530c1cd627177b39c347fb84ba",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/db/repositories"
   },
   "semantic": {
-    "role": "Infrastructure Data Access Object (DAO) for SQLite symbol table persistence.",
+    "role": "Infrastructure Data Access Object (DAO) providing CRUD operations for a SQLite symbol table used for export resolution.",
     "responsibilities": [
-      "Provides atomic operations to invalidate the entire symbol cache.",
-      "Inserts or ignores exported symbol names associated with a source file path.",
-      "Deletes symbols by file path.",
-      "Queries file paths by symbol name."
+      "Clears all entries from the symbols table to invalidate the entire cache.",
+      "Inserts a batch of exported symbol names associated with a file path, ignoring duplicates.",
+      "Removes all symbol entries for a given file path.",
+      "Resolves file paths for a given symbol name by querying the symbols table."
     ],
     "outOfScope": [
-      "Orchestrating service or task workflows.",
-      "Providing high-level business logic or application services.",
-      "Exposing a public facade beyond direct database operations."
+      "Does not handle database connection lifecycle, pooling, or transaction management beyond the provided transaction scope.",
+      "Does not implement caching, symbol resolution algorithms, or cross-table joins.",
+      "Does not validate symbol names or enforce naming conventions.",
+      "Does not expose any monitoring, logging, or error recovery capabilities."
     ],
     "invariants": [
-      "Exposes stable, low-level SQLite operations for the symbols table.",
-      "Callers must provide an active Database.Database instance.",
-      "Functions are atomic and transaction-aware where appropriate."
+      "All operations rely on a pre-initialized better-sqlite3 Database instance provided as argument.",
+      "The symbols table must exist with schema (name, file_path) before any function call.",
+      "addFileExports uses a transaction to batch inserts atomically.",
+      "Prepared statements are used for all queries, ensuring injection-safe parameters."
     ],
     "changeIntent": {
-      "architecturalIntent": "Encapsulate raw SQLite interactions for the symbol cache, providing a stable data access layer for infrastructure consumers.",
-      "recentChangeIntent": "Part of a broader refactor to modularize CLI and decouple core infra services, though no direct changes to this file's API are evident from the snippet."
+      "architecturalIntent": "Provide a stable low-level persistence façade for symbol table operations, isolating SQLite access patterns from higher-level services.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era: initial release of the symbol table DAO as part of the architecture governance infrastructure."
     },
     "publicSurface": [
-      "invalidateCache(db: Database.Database): void",
-      "addFileExports(db: Database.Database, filePath: string, exports: string[]): void",
-      "deleteSymbolsByFilePath(db: Database.Database, filePath: string): void",
-      "queryFilesBySymbol(db: Database.Database, symbol: string): string[]"
+      "invalidateCache",
+      "addFileExports",
+      "clearFileExports",
+      "resolveSymbol"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Infrastructure Data Access Object (DAO) for SQLite symbol table persistence.",
+        "role": "Infrastructure Data Access Object (DAO) providing CRUD operations for a SQLite symbol table used for export resolution.",
         "responsibilities": [
-          "Provides atomic operations to invalidate the entire symbol cache.",
-          "Inserts or ignores exported symbol names associated with a source file path.",
-          "Deletes symbols by file path.",
-          "Queries file paths by symbol name."
+          "Clears all entries from the symbols table to invalidate the entire cache.",
+          "Inserts a batch of exported symbol names associated with a file path, ignoring duplicates.",
+          "Removes all symbol entries for a given file path.",
+          "Resolves file paths for a given symbol name by querying the symbols table."
         ],
         "outOfScope": [
-          "Orchestrating service or task workflows.",
-          "Providing high-level business logic or application services.",
-          "Exposing a public facade beyond direct database operations."
+          "Does not handle database connection lifecycle, pooling, or transaction management beyond the provided transaction scope.",
+          "Does not implement caching, symbol resolution algorithms, or cross-table joins.",
+          "Does not validate symbol names or enforce naming conventions.",
+          "Does not expose any monitoring, logging, or error recovery capabilities."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "基础设施数据访问对象（DAO），为用于导出解析的SQLite符号表提供CRUD操作。",
+        "responsibilities": [
+          "清除符号表中的所有条目，使整个缓存失效。",
+          "将一批导出的符号名称与文件路径关联插入，忽略重复项。",
+          "删除指定文件路径的所有符号条目。",
+          "通过查询符号表解析符号名称对应的文件路径列表。"
+        ],
+        "outOfScope": [
+          "不处理数据库连接的生命周期、连接池管理或超出所提供事务范围的数据库事务管理。",
+          "不实现缓存机制、符号解析算法或跨表连接查询。",
+          "不验证符号名称或强制执行命名约定。",
+          "不暴露任何监控、日志记录或错误恢复能力。"
         ]
       }
     }
@@ -119,15 +137,15 @@
       {
         "targetPath": "better-sqlite3",
         "relation": "import",
-        "symbols": [
-          "Database"
-        ]
+        "symbols": []
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:38.553Z",
+    "indexedAt": "2026-05-03T11:25:03.329Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

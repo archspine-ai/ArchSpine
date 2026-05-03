@@ -1,14 +1,25 @@
-<!-- spine-content-hash:8284bb33192599f227cc151b55510c51b9020ae389655da165d2a8fe11a56bd4 -->
-# ArchSpine – Research Bench Workflow
+---MARKDOWN:Simplified Chinese---
+# ArchSpine 研究基准测试工作流
 
-## Purpose
-This document defines a GitHub Actions workflow called **Research Bench** that provides a controlled, manual-trigger environment for running research-level test suites. It ensures that experimental or exploratory tests can be executed in isolation without interfering with standard CI pipelines.
+## 目的
+本文档定义了一个 GitHub Actions 工作流，用于手动触发 ArchSpine 项目的研究基准测试。该工作流提供一个标准化、可复现的环境，以便对研究模块进行性能或正确性基准测试，确保不同次运行的结果具有一致性。
 
-## Context & Audience
-This workflow is intended for developers and researchers working on the ArchSpine project who need to run specialized test suites that are not part of the regular build or test process. It is designed for manual invocation via the GitHub UI or API, making it suitable for ad-hoc testing scenarios.
+## 适用读者
+- **项目维护者** – 需要验证研究模块性能或正确性的人员。
+- **贡献者** – 希望使用与官方测试相同的基准测试套件的人员。
+- **DevOps 工程师** – 负责更新 Node 版本、基准测试脚本或依赖关系的人员。
 
-## Key Takeaways
-- Workflow is manually triggered only (`workflow_dispatch`), not automatic
-- Runs on Ubuntu with Node.js 20 and npm dependency caching
-- Executes the research test suite via `npm run test:research`
-- Has a 15-minute timeout and cancels in-progress runs for the same workflow/ref
+## 关键决策与工作流锚点
+- **仅手动触发** – 通过 GitHub 界面或 API 的 `workflow_dispatch` 启动工作流。不采用自动触发（推送、拉取请求或定时计划），让用户完全控制基准测试的执行时机。
+- **Node.js 20 环境**，并使用 npm 缓存加快依赖安装速度。
+- **干净安装依赖** – 使用 `npm ci` 确保每次运行环境全新且可复现。
+- **单一基准测试命令** – `npm run test:research` 执行全部研究基准测试套件。
+- **维护指南** – 任何对 Node 版本、基准测试脚本或依赖版本的更新都应及时反映在此工作流中。
+
+## 工作流概要
+1. 检出仓库源代码。
+2. 设置 Node.js 20 并启用 npm 缓存。
+3. 使用 `npm ci` 安装依赖。
+4. 运行 `npm run test:research`。
+
+该工作流使用并发控制，取消同组中正在进行的运行，并在 `ubuntu-latest` 上执行，超时时间设置为 15 分钟。

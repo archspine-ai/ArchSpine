@@ -3,8 +3,8 @@
   "identity": {
     "filePath": "src/cli/commands/llm.ts",
     "contentHash": "2b0247da87d3e2aa96f08d91aacc9d92dbb8fc6de55c250cb272542ab591520b",
-    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
-    "semanticHash": "4be5ef008891c9ad898e2e51cdeac270055a053fe255d316db3b32bb60a2f476",
+    "skeletonHash": "cb8fca8dcd34b952e1b7f252780e774c365163cca650550add8376aa65000248",
+    "semanticHash": "428ee817436efdf290a1ab4cb13e0c34a1ef61717ce309999039d93b9999fe0e",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli/commands"
@@ -12,29 +12,42 @@
   "semantic": {
     "role": "CLI command adapter for interactive LLM provider, model, and runtime configuration.",
     "responsibilities": [
-      "Presents interactive prompts for selecting LLM provider, model, base URL, and API key.",
-      "Configures LLM runtime settings including prompt policy tier, validation policy, lite mode, and experimental split-stage validation.",
-      "Delegates persistence of LLM configuration and API secrets to the LLM admin service.",
-      "Exports type definitions for LLM configuration writers and command execution options."
+      "Resolves the LLM configuration scope (global or project-level) from raw command-line arguments.",
+      "Retrieves the current LLM target configuration via the LLM admin service.",
+      "Presents interactive prompts for selecting LLM provider, model, base URL, API key, prompt mode, and validation policy.",
+      "Maps provider presets (e.g., OpenAI, Anthropic) to default model and API URL settings.",
+      "Provides choices for prompt mode (standard, lite) and validation policy tiers.",
+      "Prints a formatted LLM configuration status view including provider, model, mode, and credential status.",
+      "Executes the overall LLM command flow: determines scope, decides whether to setup or display status, and delegates persistence to the LLM admin service.",
+      "Exports type definitions for LLM configuration writers and command execution options.",
+      "Exports helper functions for provider choice parsing and mode selection."
     ],
     "outOfScope": [
-      "Direct persistence or storage of LLM configuration data.",
-      "LLM inference, completion, or streaming logic.",
-      "Authentication or authorization of API keys.",
-      "Runtime execution of LLM calls."
+      "Direct access to file system or project configuration persistence.",
+      "Authentication or credential management beyond LLM API key handling.",
+      "Runtime invocation of LLM models or inference logic.",
+      "Project-specific file scanning or repository analysis."
     ],
     "invariants": [
-      "Must remain a thin CLI adapter delegating to services and infra modules.",
-      "Must not absorb pipeline or persistence logic (per cli-entrypoint-separation rule).",
-      "Must use prompts library for interactive user input."
+      "CLI modules must not absorb pipeline or persistence logic that belongs in services, core, engines, or infra."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide an interactive CLI workflow for configuring LLM providers, models, and runtime settings, keeping the CLI thin by delegating persistence and validation to service and infra layers.",
-      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, ensuring the CLI adapter remains clean and delegates properly."
+      "architecturalIntent": "Provide a thin CLI adapter that coordinates interactive LLM setup and status display by delegating all persistence and business logic to dedicated services and infra modules.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era. This file contributes the CLI command surface for LLM configuration, supporting global and project-scoped setup with interactive prompts and status views."
     },
     "publicSurface": [
-      "LLMConfigWriter type (Pick<Config, ...>)",
-      "Interactive prompt functions for LLM setup"
+      "resolveLLMScope(rawArgs: string[]): { scope: LLMScope; commandArgs: string[] }",
+      "getLLMTarget(options: { scope: LLMScope; rootDir: string; config: Config; secrets: Secrets; globalLLMConfig: GlobalLLMConfig; globalLLMSecrets: GlobalLLMSecrets })",
+      "promptForLLMSetup(configStore: LLMConfigWriter, secretsStore: LLMSecretsWriter, label: string)",
+      "printLLMStatus(options: { runtimeService: RuntimeService; globalLLMConfig: GlobalLLMConfig; globalLLMSecrets: GlobalLLMSecrets; config: Config; secrets: Secrets; rootDir: string; verbose?: boolean })",
+      "parseProviderChoices(): { title: string; value: string }[]",
+      "mapProviderPreset(selection: string): { provider: string; defaultModel?: string; defaultBaseURL?: string }",
+      "getModeChoices(selectedMode: LLMMode): { title: string; value: string }[]",
+      "executeLlmCommand(options: ExecuteLlmCommandOptions): Promise<void>",
+      "LLMConfigWriter type",
+      "LLMSecretsWriter type",
+      "LLMScope type",
+      "ExecuteLlmCommandOptions interface"
     ],
     "ruleViolations": [],
     "driftDetected": false,
@@ -43,43 +56,254 @@
       "English": {
         "role": "CLI command adapter for interactive LLM provider, model, and runtime configuration.",
         "responsibilities": [
-          "Presents interactive prompts for selecting LLM provider, model, base URL, and API key.",
-          "Configures LLM runtime settings including prompt policy tier, validation policy, lite mode, and experimental split-stage validation.",
-          "Delegates persistence of LLM configuration and API secrets to the LLM admin service.",
-          "Exports type definitions for LLM configuration writers and command execution options."
+          "Resolves the LLM configuration scope (global or project-level) from raw command-line arguments.",
+          "Retrieves the current LLM target configuration via the LLM admin service.",
+          "Presents interactive prompts for selecting LLM provider, model, base URL, API key, prompt mode, and validation policy.",
+          "Maps provider presets (e.g., OpenAI, Anthropic) to default model and API URL settings.",
+          "Provides choices for prompt mode (standard, lite) and validation policy tiers.",
+          "Prints a formatted LLM configuration status view including provider, model, mode, and credential status.",
+          "Executes the overall LLM command flow: determines scope, decides whether to setup or display status, and delegates persistence to the LLM admin service.",
+          "Exports type definitions for LLM configuration writers and command execution options.",
+          "Exports helper functions for provider choice parsing and mode selection."
         ],
         "outOfScope": [
-          "Direct persistence or storage of LLM configuration data.",
-          "LLM inference, completion, or streaming logic.",
-          "Authentication or authorization of API keys.",
-          "Runtime execution of LLM calls."
+          "Direct access to file system or project configuration persistence.",
+          "Authentication or credential management beyond LLM API key handling.",
+          "Runtime invocation of LLM models or inference logic.",
+          "Project-specific file scanning or repository analysis."
         ]
       },
       "Simplified Chinese": {
-        "role": "用于交互式LLM提供商、模型和运行时配置的CLI命令适配器。",
+        "role": "用于交互式 LLM 提供商、模型和运行时配置的 CLI 命令适配器。",
         "responsibilities": [
-          "提供交互式提示，用于选择LLM提供商、模型、基础URL和API密钥。",
-          "配置LLM运行时设置，包括提示策略层级、验证策略、精简模式和实验性分阶段验证。",
-          "将LLM配置和API密钥的持久化委托给LLM管理服务。",
-          "导出LLM配置写入器和命令执行选项的类型定义。"
+          "从原始命令行参数解析 LLM 配置作用域（全局或项目级别）。",
+          "通过 LLM 管理服务获取当前 LLM 目标配置。",
+          "提供交互式提示，用于选择 LLM 提供商、模型、基础 URL、API 密钥、提示模式和验证策略。",
+          "将提供商预设（例如 OpenAI、Anthropic）映射到默认模型和 API URL 设置。",
+          "提供提示模式（标准、精简）和验证策略等级的选择。",
+          "打印格式化的 LLM 配置状态视图，包括提供商、模型、模式和凭证状态。",
+          "执行整体的 LLM 命令流程：确定作用域，决定是设置还是显示状态，并将持久化委托给 LLM 管理服务。",
+          "导出 LLM 配置写入器和命令执行选项的类型定义。",
+          "导出提供商选择解析和模式选择的辅助函数。"
         ],
         "outOfScope": [
-          "直接持久化或存储LLM配置数据。",
-          "LLM推理、补全或流式逻辑。",
-          "API密钥的身份验证或授权。",
-          "LLM调用的运行时执行。"
+          "直接访问文件系统或项目配置持久化。",
+          "超出 LLM API 密钥处理的身份验证或凭证管理。",
+          "运行时调用 LLM 模型或推理逻辑。",
+          "项目特定的文件扫描或仓库分析。"
         ]
       }
     }
   },
   "skeleton": {
-    "imports": [],
-    "exports": [],
-    "declaredSymbols": [],
+    "imports": [
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/secrets.js'",
+        "symbols": [
+          "Secrets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/llm.js'",
+        "symbols": [
+          "assertResolvedLLMUsable",
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../services/runtime-service.js'",
+        "symbols": [
+          "RuntimeService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../services/llm-admin-service.js'",
+        "symbols": [
+          "buildLLMStatusViewModel",
+          "clearPersistedLLMApiKey",
+          "resolveLLMTarget",
+          "saveLLMSetup",
+          "setPersistedLLMValue"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/prompt-policy.js'",
+        "symbols": [
+          "parseLLMMode",
+          "LLMMode",
+          "PromptPolicyTier"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "normalizeOptionalString",
+          "printStep",
+          "throwCliUsage"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'prompts'",
+        "symbols": [
+          "prompts"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "resolveLLMScope",
+        "kind": "function",
+        "signature": "resolveLLMScope(rawArgs: string[])"
+      },
+      {
+        "name": "getLLMTarget",
+        "kind": "function",
+        "signature": "getLLMTarget(options: {\n  scope: LLMScope;\n  rootDir: string;\n  config: Config;\n  secrets: Secrets;\n  globalLLMConfig: GlobalLLMConfig;\n  globalLLMSecrets: GlobalLLMSecrets;\n})"
+      },
+      {
+        "name": "promptForLLMSetup",
+        "kind": "function",
+        "signature": "promptForLLMSetup(\n  configStore: LLMConfigWriter,\n  secretsStore: LLMSecretsWriter,\n  label: string,\n)"
+      },
+      {
+        "name": "printLLMStatus",
+        "kind": "function",
+        "signature": "printLLMStatus(options: {\n  runtimeService: RuntimeService;\n  globalLLMConfig: GlobalLLMConfig;\n  globalLLMSecrets: GlobalLLMSecrets;\n  config: Config;\n  secrets: Secrets;\n  rootDir: string;\n  verbose?: boolean;\n})"
+      },
+      {
+        "name": "parseProviderChoices",
+        "kind": "function",
+        "signature": "parseProviderChoices()"
+      },
+      {
+        "name": "mapProviderPreset",
+        "kind": "function",
+        "signature": "mapProviderPreset(selection: string)"
+      },
+      {
+        "name": "getModeChoices",
+        "kind": "function",
+        "signature": "getModeChoices(selectedMode: LLMMode = 'standard')"
+      },
+      {
+        "name": "executeLlmCommand",
+        "kind": "function",
+        "signature": "executeLlmCommand(options: ExecuteLlmCommandOptions)"
+      },
+      {
+        "name": "ExecuteLlmCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteLlmCommandOptions"
+      },
+      {
+        "name": "LLMConfigWriter",
+        "kind": "type",
+        "signature": "type LLMConfigWriter"
+      },
+      {
+        "name": "LLMSecretsWriter",
+        "kind": "type",
+        "signature": "type LLMSecretsWriter"
+      },
+      {
+        "name": "LLMScope",
+        "kind": "type",
+        "signature": "type LLMScope"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "resolveLLMScope",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/llm.ts#"
+      },
+      {
+        "name": "getLLMTarget",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/llm.ts#"
+      },
+      {
+        "name": "promptForLLMSetup",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/llm.ts#"
+      },
+      {
+        "name": "printLLMStatus",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/llm.ts#"
+      },
+      {
+        "name": "parseProviderChoices",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/llm.ts#"
+      },
+      {
+        "name": "mapProviderPreset",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/llm.ts#"
+      },
+      {
+        "name": "getModeChoices",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/llm.ts#"
+      },
+      {
+        "name": "executeLlmCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/llm.ts#"
+      },
+      {
+        "name": "ExecuteLlmCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/llm.ts#"
+      },
+      {
+        "name": "LLMConfigWriter",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/cli/commands/llm.ts#"
+      },
+      {
+        "name": "LLMSecretsWriter",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/cli/commands/llm.ts#"
+      },
+      {
+        "name": "LLMScope",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/cli/commands/llm.ts#"
+      }
+    ],
     "structuralHints": {
-      "importCount": 0,
-      "exportCount": 0,
-      "isBarrel": false,
+      "importCount": 8,
+      "exportCount": 12,
+      "isBarrel": true,
       "isTypeOnly": false
     }
   },
@@ -88,80 +312,146 @@
       {
         "targetPath": "../../infra/config.js",
         "relation": "import",
-        "symbols": [
-          "Config"
-        ]
+        "symbols": []
       },
       {
         "targetPath": "../../infra/secrets.js",
         "relation": "import",
-        "symbols": [
-          "Secrets"
-        ]
+        "symbols": []
       },
       {
         "targetPath": "../../infra/llm.js",
         "relation": "import",
-        "symbols": [
-          "assertResolvedLLMUsable",
-          "GlobalLLMConfig",
-          "GlobalLLMSecrets"
-        ]
+        "symbols": []
       },
       {
         "targetPath": "../../services/runtime-service.js",
         "relation": "import",
-        "symbols": [
-          "RuntimeService"
-        ]
+        "symbols": []
       },
       {
         "targetPath": "../../services/llm-admin-service.js",
         "relation": "import",
-        "symbols": [
-          "buildLLMStatusViewModel",
-          "clearPersistedLLMApiKey",
-          "resolveLLMTarget",
-          "saveLLMSetup",
-          "setPersistedLLMValue"
-        ]
+        "symbols": []
       },
       {
         "targetPath": "../../infra/prompt-policy.js",
         "relation": "import",
-        "symbols": [
-          "parseLLMMode",
-          "LLMMode",
-          "PromptPolicyTier"
-        ]
+        "symbols": []
       },
       {
         "targetPath": "../cli-utils.js",
         "relation": "import",
-        "symbols": [
-          "normalizeOptionalString",
-          "printStep",
-          "throwCliUsage"
-        ]
+        "symbols": []
       },
       {
         "targetPath": "prompts",
         "relation": "import",
-        "symbols": [
-          "prompts"
-        ]
+        "symbols": []
       }
     ],
     "dependedBy": [],
     "reverseIndexComplete": false,
-    "symbolEdges": []
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/llm.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/normalizeOptionalString#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/llm.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/throwCliUsage#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/llm.ts/_file_#",
+        "targetSymbol": "src/services/llm-admin-service.ts/setPersistedLLMValue#",
+        "targetPath": "src/services/llm-admin-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/llm.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/parseLLMMode#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/llm.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-policy.ts/parseLLMMode#",
+        "targetPath": "src/infra/prompt-policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/llm.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/parsers.ts/parseLLMMode#",
+        "targetPath": "src/infra/prompt-context/parsers.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/llm.ts/_file_#",
+        "targetSymbol": "src/services/llm-admin-service.ts/clearPersistedLLMApiKey#",
+        "targetPath": "src/services/llm-admin-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/llm.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/assertResolvedLLMUsable#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/llm.ts/_file_#",
+        "targetSymbol": "src/infra/llm/runtime.ts/assertResolvedLLMUsable#",
+        "targetPath": "src/infra/llm/runtime.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/llm.ts/_file_#",
+        "targetSymbol": "src/services/llm-admin-service.ts/resolveLLMTarget#",
+        "targetPath": "src/services/llm-admin-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/llm.ts/_file_#",
+        "targetSymbol": "src/services/llm-admin-service.ts/saveLLMSetup#",
+        "targetPath": "src/services/llm-admin-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/llm.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/printStep#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/llm.ts/_file_#",
+        "targetSymbol": "src/services/llm-admin-service.ts/buildLLMStatusViewModel#",
+        "targetPath": "src/services/llm-admin-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T03:57:41.091Z",
+    "indexedAt": "2026-05-03T11:25:01.386Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "llm"
+      "fallback"
     ]
   }
 }

@@ -1,50 +1,32 @@
-<!-- spine-content-hash:63ef3291e0e8d90eebfe8cf16f0263163dee1ebc6b8255f0e00a67023c0a4c4d -->
-# ArchSpine SpineManifest Schema
+# ArchSpine SpineManifest Configuration Summary
 
-## Role
+## Overview
 
-Defines the schema for the ArchSpine SpineManifest, a metadata manifest that tracks the synchronization state and indexed file inventory of a mirror repository.
+The **SpineManifest** is the authoritative sync index for the ArchSpine mirror system. It records the state of indexed source files, their documentation mappings across multiple locales, and synchronization metadata. This manifest serves as the single source of truth for operators managing documentation coverage and cross-locale consistency.
 
-## Key Responsibilities
+## Key Parameters
 
-- Declares the required structure and validation rules for `spine-manifest.json` files
-- Enforces mandatory fields: `schemaVersion`, `generatorVersion`, `createdAt`, `updatedAt`, `sync`, `files`
-- Governs the sync metadata block including last sync timestamp, mode, reverse index completeness, and indexed unit count
-- Governs the files inventory block mapping repo-relative paths to their content hash, file kind, last indexed timestamp, associated documentation locales, and source existence flag
-
-## Notable Invariants
-
-- The `sync` object must always include `lastSyncAt`, `lastSyncMode`, `reverseIndexComplete`, and `indexedUnitCount`
-- `lastSyncMode` must be one of: `'full'`, `'incremental'`, or `'unknown'`
-- `indexedUnitCount` must be a non-negative integer
-- Each file entry must include `contentHash`, `fileKind`, `lastIndexedAt`, `docs`, and `sourceExists`
-- The `files` object keys must conform to repo-relative path format
-- No additional properties are permitted at the root level or within sync or file entry objects
-
-## Negative Scope
-
-This schema does not define the actual synchronization logic, file indexing algorithms, or storage backend. It only defines the structure and validation rules for the manifest file itself.
-
-## Most Important Exported Behavior
-
-The schema enforces structural integrity of the spine manifest, which is critical for the mirror system's ability to track synchronization state and file inventory. Violations of the schema (e.g., missing required fields, invalid enum values, or negative counts) will cause validation failures, potentially halting sync operations or corrupting the manifest. The strict `additionalProperties: false` constraints prevent unexpected fields from being injected, reducing the risk of silent data corruption. The `reverseIndexComplete` flag is a safety invariant: if set to `false` while `indexedUnitCount > 0`, downstream tools may operate on incomplete data. The nullable `lastSyncAt` field allows graceful handling of never-synced repositories. Overall, strict adherence to this schema is essential for reliable mirror state management and recovery.
-
-## Parameter Definitions
-
-- **schemaVersion**: References the shared schema version definition; ensures compatibility with the expected schema revision.
-- **generatorVersion**: A non-empty string identifying the version of the tool that generated this manifest.
-- **createdAt**: ISO 8601 timestamp marking when this manifest was first created.
-- **updatedAt**: ISO 8601 timestamp marking the last modification time of this manifest.
-- **sync.lastSyncAt**: Nullable ISO 8601 timestamp of the most recent synchronization event; null indicates no sync has occurred.
-- **sync.lastSyncMode**: Enum field indicating the synchronization mode: `'full'`, `'incremental'`, or `'unknown'`.
-- **sync.reverseIndexComplete**: Boolean flag indicating whether the reverse index (mapping indexed units back to files) has been fully built.
-- **sync.indexedUnitCount**: Non-negative integer counting the total number of indexed units (e.g., documents or chunks) in the repository.
-- **files.\<path\>.contentHash**: Hash of the file's content, used to detect changes and ensure integrity.
-- **files.\<path\>.fileKind**: Classification of the file type (e.g., source, documentation, configuration) as defined by the shared fileKind schema.
-- **files.\<path\>.lastIndexedAt**: ISO 8601 timestamp of when this file was last indexed.
-- **files.\<path\>.docs**: Array of associated documentation entries, each with a locale and a repo-relative path.
-- **files.\<path\>.sourceExists**: Boolean indicating whether the original source file still exists on disk.
+- **schemaVersion**: The version of the manifest schema used. Ensures compatibility between tools and the manifest file.
+- **generatorVersion**: The version of the tool that generated this manifest. Helps track which software produced the manifest.
+- **createdAt / updatedAt**: ISO 8601 timestamps for when the manifest was first created and last updated. Operators can use these to gauge staleness.
+- **sync**: An object containing synchronization state:
+  - **lastSyncAt** (date-time or null): The timestamp of the last synchronization cycle.
+  - **lastSyncMode** (enum: `full`, `incremental`, `unknown`): Indicates whether the last sync was a full rebuild, an incremental update, or unknown.
+  - **reverseIndexComplete** (boolean): Whether the reverse index (mapping from documentation back to source) has been fully built.
+  - **indexedUnitCount** (non-negative integer): Total number of indexed units (source files) tracked.
+- **files**: A map from repo-relative source file paths to their indexing metadata. Each entry contains:
+  - **contentHash**: A checksum of the source file content for integrity checks.
+  - **fileKind**: The type or category of the file (e.g., plain, generated, etc.).
+  - **lastIndexedAt**: Timestamp when this file was last indexed.
+  - **docs**: An array of objects, each with a **locale** and a **path**, linking to the documentation files for that source file in different languages.
+  - **sourceExists** (boolean): Flag indicating whether the source file still exists in the repository.
 
 ## Stability and Risks
 
-This schema enforces structural integrity of the spine manifest, which is critical for the mirror system's ability to track synchronization state and file inventory. Violations of the schema (e.g., missing required fields, invalid enum values, or negative counts) will cause validation failures, potentially halting sync operations or corrupting the manifest. The strict `additionalProperties: false` constraints prevent unexpected fields from being injected, reducing the risk of silent data corruption. The `reverseIndexComplete` flag is a safety invariant: if set to `false` while `indexedUnitCount > 0`, downstream tools may operate on incomplete data. The nullable `lastSyncAt` field allows graceful handling of never-synced repositories. Overall, strict adherence to this schema is essential for reliable mirror state management and recovery.
+The manifest is a critical consistency point between source files and their documentation across multiple locales.
+
+- **Corruption or staleness** can lead to missed documentation updates, incorrect indexing, or broken localization links.
+- The **contentHash** field provides a mechanism for detecting drift between indexed and actual file content. A mismatch warns operators that the file has changed without being re-indexed.
+- The **reverseIndexComplete** flag signals whether all reverse linkages are established. If `false`, features like cross-locale navigation may be incomplete or missing.
+- The **indexedUnitCount** must match the actual number of entries in the `files` map. Any discrepancy suggests an incomplete or corrupted sync process.
+- **Operational recommendation**: Always validate this manifest against the actual repository state before using it for any operation. Tools should reject manifests with mismatched hashes or missing required fields to avoid data integrity issues.

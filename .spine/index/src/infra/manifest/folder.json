@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/infra/manifest",
-  "role": "Infrastructure layer for manifest state persistence, file integrity verification, and file status tracking.",
-  "responsibility": "Provides the core data persistence and integrity verification mechanisms for the ArchSpine mirror system, including file hashing, manifest state management, language snapshot I/O, and file status tracking.",
+  "role": "Infrastructure layer for manifest persistence, file integrity, and state management in the ArchSpine mirror system.",
+  "responsibility": "Provides core operations for file status tracking, SHA-256 hashing, deterministic file path resolution, manifest state persistence, and data type definitions to support the ArchSpine mirror synchronization and verification workflows.",
   "children": [
     {
       "filePath": "src/infra/manifest/facade.ts",
@@ -11,12 +11,12 @@
     },
     {
       "filePath": "src/infra/manifest/integrity.ts",
-      "role": "Utility function for generating SHA-256 file hashes with metadata validation and database integration.",
+      "role": "Infrastructure utility for computing SHA-256 file hashes with filesystem validation and SpineDB status integration.",
       "fileKind": "source"
     },
     {
       "filePath": "src/infra/manifest/io.ts",
-      "role": "Infrastructure utility module providing file path resolution, JSON file reading, and file status snapshot capabilities for the ArchSpine manifest and language snapshot system.",
+      "role": "Infrastructure utility module that provides deterministic file path resolution, JSON file reading with null safety, and filesystem status snapshots for the ArchSpine manifest and language snapshot subsystem.",
       "fileKind": "source"
     },
     {
@@ -31,7 +31,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-01T04:57:43.165Z",
+    "indexedAt": "2026-05-03T11:27:04.922Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/infra/llm",
-  "role": "LLM infrastructure layer providing abstracted client interfaces, configuration management, and provider adapters.",
-  "responsibility": "Collectively manages LLM provider interactions: defines client abstractions, handles global and runtime configuration, implements retry logic with exponential backoff, and instantiates provider-specific clients for generating semantic summaries in the ArchSpine mirror system.",
+  "role": "Infrastructure layer for LLM client abstraction, configuration, and resilient invocation within the ArchSpine mirror system.",
+  "responsibility": "Provides a comprehensive set of components for interacting with multiple LLM providers (OpenAI, Gemini, etc.), including interface definitions, a factory for client instantiation, global configuration file management, runtime resolution of settings from multiple sources, retry logic with exponential backoff for resilience, and concrete provider implementations. Collectively, these enable the system to generate semantic summaries and structured outputs from LLMs while handling configuration, credentials, error recovery, and provider abstraction.",
   "children": [
     {
       "filePath": "src/infra/llm/base.ts",
@@ -21,7 +21,7 @@
     },
     {
       "filePath": "src/infra/llm/providers",
-      "role": "Concrete LLM provider clients and utilities for generating structured semantic summaries.",
+      "role": "Provides concrete implementations and utilities for interfacing with various LLM providers (Gemini, OpenAI) and a mock provider for testing within the ArchSpine mirror system.",
       "fileKind": "folder"
     },
     {
@@ -31,12 +31,12 @@
     },
     {
       "filePath": "src/infra/llm/runtime.ts",
-      "role": "Infrastructure runtime configuration resolver and LLM provider client factory within the LLM subsystem.",
+      "role": "Infrastructure module for LLM runtime configuration resolution and provider client factory, strictly limited to merging configuration sources and instantiating LLM clients.",
       "fileKind": "source"
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-02T10:10:58.086Z",
+    "indexedAt": "2026-05-03T11:27:15.250Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -3,20 +3,22 @@
   "identity": {
     "filePath": "scripts/demo.tape",
     "contentHash": "237c9fe0c4705b49214cffc08c7056702d19015475676471e8f29a7b33a60f50",
-    "semanticHash": "d996cd32ef103dff3f0887f4488d4394f9e30be257acd0fcf44354cf76ce6432",
+    "semanticHash": "d650ab8c61ddab2af2026e77642031693357af0f1706165f1307962ae58af4d0",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "scripts"
   },
   "semantic": {
-    "role": "Demonstration script for the ArchSpine project's CLI workflow",
+    "role": "Demonstration script for ArchSpine CLI workflow",
     "responsibilities": [
-      "Showcasing the build, sync, check, and fix commands in sequence",
-      "Providing a reproducible demo for end-users or contributors"
+      "Showcase the ArchSpine build, sync, check, and fix commands in sequence",
+      "Illustrate the typical workflow of initializing a project's spine (index and atlas)",
+      "Provide a visual walkthrough for evaluating ArchSpine's capabilities"
     ],
     "outOfScope": [
-      "Detailed explanation of ArchSpine's architecture or configuration",
-      "Error handling or edge cases beyond the happy path"
+      "Detailed installation or configuration instructions",
+      "Comprehensive reference documentation for ArchSpine CLI flags",
+      "Explanation of underlying architecture or design principles"
     ],
     "invariants": [],
     "changeIntent": {
@@ -28,21 +30,23 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document is a terminal recording script that visually demonstrates the core CLI workflow of the ArchSpine project. It walks through building the project, cleaning up demo artifacts, and running sync, check, and fix commands using a mock provider.",
-        "context_and_audience": "Intended for developers evaluating ArchSpine, contributors setting up a demo environment, or anyone wanting a quick visual overview of how the tool operates from the command line.",
+        "purpose": "This document is a terminal recording script (demo tape) that walks through the core ArchSpine workflow: building the project, cleaning a demo project's spine data, then running 'sync', 'check', and 'fix' commands. It serves as a quick, visual introduction to how ArchSpine manages project documentation and governance.",
+        "context_and_audience": "Intended for developers and technical evaluators who want to see ArchSpine in action before reading deeper documentation. It is also useful for presenters or tutorial creators who need a repeatable demo scenario.",
         "key_takeaways": [
-          "The demo shows a complete cycle: build → clean → sync → check → fix.",
-          "Uses a mock provider (SPINE_PROVIDER=mock) to avoid external dependencies.",
-          "The script is designed to be replayed with tools like VHS or similar terminal recorders."
+          "ArchSpine sync generates and updates the spine index and atlas from source code",
+          "ArchSpine check detects violations (missing docs, architectural drift)",
+          "ArchSpine fix interactively repairs detected issues",
+          "The demo shows a complete 'clean slate to fixed state' cycle in seconds"
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档是一个终端录制脚本，用于直观展示 ArchSpine 项目的核心命令行工作流程。它依次演示了构建项目、清理演示产物，以及使用模拟提供程序执行同步、检查和修复命令的过程。",
-        "context_and_audience": "适用于评估 ArchSpine 的开发者、搭建演示环境的贡献者，或任何希望快速了解该工具在命令行下如何操作的用户。",
+        "purpose": "该文档是一个终端录制脚本（演示带），逐步展示 ArchSpine 的核心工作流程：构建项目、清理演示项目的脊柱数据，然后依次运行 sync、check 和 fix 命令。它作为快速、直观的入门演示，帮助了解 ArchSpine 如何管理项目文档与治理。",
+        "context_and_audience": "面向希望在深入阅读文档之前先亲眼看看 ArchSpine 实际操作的开发者与技术评估者。也适用于需要可重复演示场景的讲师或教程创作者。",
         "key_takeaways": [
-          "演示展示了完整流程：构建 → 清理 → 同步 → 检查 → 修复。",
-          "使用模拟提供程序（SPINE_PROVIDER=mock）避免外部依赖。",
-          "脚本设计为可通过 VHS 等终端录制工具回放。"
+          "ArchSpine 的 sync 命令能从源代码生成并更新脊柱索引与地图集",
+          "check 命令可检测文档缺失、架构漂移等违规",
+          "fix 命令能交互式地修复检测到的问题",
+          "整个演示在几秒内完成从“空白状态”到“修复完成”的完整循环"
         ]
       }
     }
@@ -65,7 +69,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:44:54.650Z",
+    "indexedAt": "2026-05-03T11:24:11.243Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

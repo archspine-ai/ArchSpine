@@ -3,24 +3,22 @@
   "identity": {
     "filePath": "src/ast/rules/cpp.yml",
     "contentHash": "f83341f245071223bf897a5e3c45b96e0947b425f9d2a428c2e9320a8cd50358",
-    "semanticHash": "1efabcef1eae5f15acf479fe51e114f15a2e15f3a40da32505129212bbc3abc3",
+    "semanticHash": "738e270ea3433c1a7c919f16812eac0730be4459828561146d2c8d50030aa272",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/ast/rules"
   },
   "semantic": {
-    "role": "Defines the syntax and rules for extracting structural metadata from C/C++ source code within the ArchSpine mirror system.",
+    "role": "Defines AST extraction patterns for C/C++ source code analysis",
     "responsibilities": [
-      "Specifying import patterns for include directives",
-      "Defining export patterns for functions, classes, structs, namespaces, and template classes",
-      "Defining usage patterns for function calls, scoped references, and method invocations",
-      "Mapping source code constructs to ArchSpine entity kinds (Function, Class, Type)"
+      "Define how to identify include directives as source imports",
+      "Define how to extract function definitions, class/struct definitions, namespace definitions, and template classes as exported symbols",
+      "Define how to detect function calls, scoped accesses (::), and method calls (.) as usages"
     ],
     "outOfScope": [
-      "Language-specific semantics beyond C/C++",
-      "Runtime behavior or execution logic",
-      "Build system configuration or compilation rules",
-      "Documentation generation or rendering"
+      "Does not cover C++ specific language features like lambdas, constexpr, or advanced template metaprogramming",
+      "Does not define extraction of macros, preprocessor directives beyond includes, or attribute annotations",
+      "Does not specify any architectural rules, naming conventions, or project-specific policies"
     ],
     "invariants": [],
     "changeIntent": {
@@ -32,25 +30,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document defines the extraction grammar used by ArchSpine to parse C/C++ source files and identify structural elements such as includes, functions, classes, structs, namespaces, and usage patterns. It serves as the bridge between raw source code and the mirror system's semantic model.",
-        "context_and_audience": "Intended for developers and AI agents who need to understand how ArchSpine maps C/C++ code constructs into its internal representation. This is essential for maintaining the accuracy of the code mirror and for extending the system to support additional patterns or languages.",
+        "purpose": "This document specifies the AST extraction rules for C/C++ languages used by the ArchSpine system to parse and index source code symbols.",
+        "context_and_audience": "Intended for developers and AI agents who need to understand how C/C++ code is analyzed for import detection, symbol export, and usage tracking within the ArchSpine knowledge graph.",
         "key_takeaways": [
-          "The document specifies both export patterns (what to extract) and usage patterns (how elements are referenced).",
-          "Each pattern uses a rule-based syntax to match specific AST nodes (e.g., function_definition, class_specifier).",
-          "Exports are categorized into kinds: Function, Class, and Type, which map to ArchSpine's entity model.",
-          "Usage patterns cover three common reference styles: direct calls, scoped access (::), and method calls (.).",
-          "The import pattern handles #include directives, which are critical for dependency tracking."
+          "Defines how to extract include declarations as imports",
+          "Defines how to extract functions, classes, structs, namespaces, and template classes as exports with their names and signatures",
+          "Defines three usage patterns: function calls, scoped access (::), and method calls (.)"
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档定义了 ArchSpine 用于解析 C/C++ 源代码的提取语法，用于识别包括指令、函数、类、结构体、命名空间以及使用模式等结构元素。它是原始源代码与镜像系统语义模型之间的桥梁。",
-        "context_and_audience": "适用于需要了解 ArchSpine 如何将 C/C++ 代码结构映射到其内部表示的开发者和 AI 代理。这对于维护代码镜像的准确性以及扩展系统以支持更多模式或语言至关重要。",
+        "purpose": "该文档定义了 ArchSpine 系统中用于解析和索引 C/C++ 源代码符号的 AST 提取规则。",
+        "context_and_audience": "适用于需要了解如何分析 C/C++ 代码以实现导入检测、符号导出和使用跟踪的开发者和 AI 代理，帮助构建 ArchSpine 知识图谱。",
         "key_takeaways": [
-          "文档同时指定了导出模式（提取什么）和使用模式（元素如何被引用）。",
-          "每个模式使用基于规则的语法来匹配特定的 AST 节点（例如 function_definition、class_specifier）。",
-          "导出被分类为 Function、Class 和 Type 三种类型，对应 ArchSpine 的实体模型。",
-          "使用模式涵盖了三种常见的引用风格：直接调用、作用域访问（::）和方法调用（.）。",
-          "导入模式处理 #include 指令，这对于依赖关系追踪至关重要。"
+          "定义了如何将 include 声明提取为导入项",
+          "定义了如何将函数、类、结构体、命名空间和模板类提取为导出项，包括它们的名称和签名",
+          "定义了三种使用模式：函数调用、作用域访问（::）和方法调用（.）"
         ]
       }
     }
@@ -73,7 +67,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:44.652Z",
+    "indexedAt": "2026-05-03T11:25:25.393Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

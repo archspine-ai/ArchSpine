@@ -1,23 +1,25 @@
-<!-- spine-content-hash:808cb76a458aef0e09e7f7d8359638113791edb10a4671741eca1f33cea0104c -->
 # ArchSpine Cache Schema Migration
 
+This document describes a low-level database migration script for the ArchSpine mirror system. It ensures the cache SQLite schema remains consistent across deployments and updates.
+
 ## Purpose
-This document is a lightweight database migration script that ensures the ArchSpine cache schema includes the `mtime` and `size` columns for tracking file metadata.
 
-## Context & Audience
-Intended for developers maintaining the ArchSpine mirror system who need to evolve the local SQLite cache schema without breaking existing installations.
+The script adds two essential columns (`mtime` and `size`) to the `files` table inside the cache database (`cache.db`). These columns are required for tracking file metadata during mirror operations. The script runs silently — it adds the columns if missing, and does nothing if they already exist.
 
-## Key Responsibilities
-- Adding `mtime` (modification time) column to the `files` table
-- Adding `size` column to the `files` table
-- Ensuring idempotent schema updates via try-catch blocks
+## Who Should Read This
 
-## Out of Scope
-- Data migration or backfilling of existing records
-- Schema creation or initial database setup
-- Querying or reading cached data
+- **Maintainers** of the ArchSpine storage layer.
+- **Developers** modifying the cache schema or debugging migration issues.
+- **Operators** deploying or updating ArchSpine who need to verify that the cache database is properly structured.
 
-## Key Takeaways
-- The script uses `ALTER TABLE` with try-catch to handle cases where columns already exist.
-- It targets the `.spine/cache.db` SQLite database used for file tracking.
-- The migration is additive and non-destructive, preserving existing data.
+## Key Decisions & Workflows Anchored by This Document
+
+- The migration uses `ALTER TABLE` wrapped in a `try/catch` block to avoid errors when columns are already present. This idempotent pattern is the standard for all future schema changes.
+- The script operates on `.spine/cache.db`, a SQLite database. This path is hardcoded and must exist before the script runs.
+- This migration is executed during ArchSpine initialization or after a schema update. It is **not** a user-facing feature; it is an internal maintenance tool.
+
+## Takeaways
+
+- Adds two integer columns to the `files` table: `mtime` (last modified time) and `size` (file size in bytes).
+- Uses graceful error handling to allow repeated runs without failure.
+- Only concerns the cache database — core mirroring logic remains unchanged.

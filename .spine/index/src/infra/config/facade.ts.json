@@ -3,115 +3,206 @@
   "identity": {
     "filePath": "src/infra/config/facade.ts",
     "contentHash": "5618ec2cd7d4aadcaf616c3f7873b797f31dcc4a9c4525bb6797a7a8d669aecb",
-    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
-    "semanticHash": "18029c4b87b9ac062a1d1733052a75e386fcd9f528fe97ffde94b7ce39f3272f",
+    "skeletonHash": "f72298ed88f9897aa39184739d00bf17ca79862a5556de134919a5f78ac5fd9c",
+    "semanticHash": "eee3ff39d443fdbb4f23c78f2bd960a2f8b007f51de96ed2e3831baf58812ad8",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/config"
   },
   "semantic": {
-    "role": "Infrastructure configuration manager providing centralized access and mutation for the ArchSpine project's runtime settings.",
+    "role": "Centralized configuration store for ArchSpine runtime settings, providing read/write access to persisted config data and LLM-specific configuration values, acting as a facade over lower-level infra modules.",
     "responsibilities": [
-      "Loads and validates configuration data from the filesystem using the config loader.",
-      "Resolves scan policies by delegating to the core scan-policy resolver.",
-      "Manages LLM configuration values including setting, clearing, and persisting changes.",
-      "Handles artifact and initialization state configuration sections.",
-      "Parses boolean environment variables for configuration resolution.",
-      "Resolves pre-commit hook settings via dedicated resolver."
+      "Loads and validates configuration data from the filesystem via loadConfigData.",
+      "Resolves scan policies by delegating to core scan-policy resolver, storing them in the config data.",
+      "Manages LLM configuration values (set, clear, persist changes) using the supported-values delegation and filesystem save.",
+      "Handles artifact strategy and initialization state configuration sections.",
+      "Implements ConfigSupportedValueAccess interface to support get/set of supported config keys with delegation.",
+      "Saves configuration changes to disk, including post-save cleanup or synchronous write."
     ],
     "outOfScope": [
-      "Direct filesystem I/O operations (delegated to FileSystemManager).",
-      "Core scan policy logic (delegated to core/scan-policy).",
-      "Low-level environment variable parsing (delegated to env.ts).",
-      "Pre-commit hook implementation details (delegated to precommit.ts)."
+      "Runtime orchestration or service lifecycle management.",
+      "Network communication or HTTP endpoint handling.",
+      "User interface or CLI command parsing.",
+      "Core domain logic beyond configuration management.",
+      "Direct interaction with external LLM services or credential authentication."
     ],
     "invariants": [
-      "Configuration data must be loaded and validated before any access.",
-      "Scan policies must be resolved through the core scan-policy resolver.",
-      "LLM configuration changes must be persisted to the filesystem.",
-      "All configuration access must go through the public facade methods."
+      "Config must rely only on stable infra facades (loader, env, precommit, supported-values) and core utilities; it must not import from service or engine layers.",
+      "Config must delegate set/get of known configuration keys to supported-values module, not implement them directly.",
+      "Config must not expose internal file paths or raw SpineConfig structure outside the config layer.",
+      "All mutations to LLM configuration must persist via the save method to maintain consistency."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a stable infrastructure facade for configuration management, isolating runtime settings from core orchestration logic.",
-      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, ensuring configuration manager adheres to project standards."
+      "architecturalIntent": "Provide a stable, facade-based configuration store that enables runtime setting management and LLM configuration changes for ArchSpine's architectural governance features, aligning with the v1.0.0 semantic layer.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era: This file integrates LLM config management and scan policy resolution into a unified store, supporting cross-cutting governance of prompt policies, model selection, and artifact strategies."
     },
     "publicSurface": [
-      "loadConfigData",
-      "resolveScanPolicy",
-      "parseBooleanEnv",
-      "resolvePreCommitSetting",
-      "SpineConfig",
-      "BooleanSettingResolution",
-      "HookSyncMode",
-      "ArtifactStrategy",
-      "SupportedConfigKey",
-      "PromptPolicyTier",
-      "LLMMode",
-      "ValidatePolicy"
+      "Config class (exported): constructor(configPath: string)",
+      "Config methods (inferred): load(), save(), getLLMValue(key), setLLMValue(key, value), clearLLMValue(key), getArtifactsConfig(), getInitStateConfig(), resolveScanPolicy(scanPolicy?)"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Infrastructure configuration manager providing centralized access and mutation for the ArchSpine project's runtime settings.",
+        "role": "Centralized configuration store for ArchSpine runtime settings, providing read/write access to persisted config data and LLM-specific configuration values, acting as a facade over lower-level infra modules.",
         "responsibilities": [
-          "Loads and validates configuration data from the filesystem using the config loader.",
-          "Resolves scan policies by delegating to the core scan-policy resolver.",
-          "Manages LLM configuration values including setting, clearing, and persisting changes.",
-          "Handles artifact and initialization state configuration sections.",
-          "Parses boolean environment variables for configuration resolution.",
-          "Resolves pre-commit hook settings via dedicated resolver."
+          "Loads and validates configuration data from the filesystem via loadConfigData.",
+          "Resolves scan policies by delegating to core scan-policy resolver, storing them in the config data.",
+          "Manages LLM configuration values (set, clear, persist changes) using the supported-values delegation and filesystem save.",
+          "Handles artifact strategy and initialization state configuration sections.",
+          "Implements ConfigSupportedValueAccess interface to support get/set of supported config keys with delegation.",
+          "Saves configuration changes to disk, including post-save cleanup or synchronous write."
         ],
         "outOfScope": [
-          "Direct filesystem I/O operations (delegated to FileSystemManager).",
-          "Core scan policy logic (delegated to core/scan-policy).",
-          "Low-level environment variable parsing (delegated to env.ts).",
-          "Pre-commit hook implementation details (delegated to precommit.ts)."
+          "Runtime orchestration or service lifecycle management.",
+          "Network communication or HTTP endpoint handling.",
+          "User interface or CLI command parsing.",
+          "Core domain logic beyond configuration management.",
+          "Direct interaction with external LLM services or credential authentication."
         ]
       },
       "Simplified Chinese": {
-        "role": "基础设施配置管理器，为 ArchSpine 项目的运行时设置提供集中访问和变更能力。",
+        "role": "ArchSpine 运行时设置的集中配置存储，提供对持久化配置数据和 LLM 特定配置值的读写访问，作为底层基础设施模块的门面。",
         "responsibilities": [
-          "通过配置加载器从文件系统加载并验证配置数据。",
-          "通过委托给核心扫描策略解析器来解析扫描策略。",
-          "管理 LLM 配置值，包括设置、清除和持久化变更。",
-          "处理工件和初始化状态配置部分。",
-          "解析布尔环境变量以进行配置解析。",
-          "通过专用解析器解析预提交钩子设置。"
+          "通过 loadConfigData 从文件系统加载并验证配置数据。",
+          "通过委托给核心扫描策略解析器来解析扫描策略，并将其存储在配置数据中。",
+          "使用 supported-values 委托和文件系统保存来管理 LLM 配置值（设置、清除、持久化更改）。",
+          "处理工件策略和初始化状态配置部分。",
+          "实现 ConfigSupportedValueAccess 接口，通过委托支持对已知配置键的获取和设置。",
+          "将配置更改保存到磁盘，包括保存后清理或同步写入。"
         ],
         "outOfScope": [
-          "直接的文件系统 I/O 操作（委托给 FileSystemManager）。",
-          "核心扫描策略逻辑（委托给 core/scan-policy）。",
-          "低级环境变量解析（委托给 env.ts）。",
-          "预提交钩子实现细节（委托给 precommit.ts）。"
+          "运行时编排或服务生命周期管理。",
+          "网络通信或 HTTP 端点处理。",
+          "用户界面或 CLI 命令解析。",
+          "超出配置管理范围的核心领域逻辑。",
+          "直接与外部 LLM 服务或凭据认证交互。"
         ]
       }
     }
   },
   "skeleton": {
-    "imports": [],
-    "exports": [],
-    "declaredSymbols": [],
+    "imports": [
+      {
+        "source": "'../../utils/fs.js'",
+        "symbols": [
+          "FileSystemManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../core/scan-policy.js'",
+        "symbols": [
+          "resolveScanPolicy",
+          "ScanPolicy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../types/protocol.js'",
+        "symbols": [
+          "MCPContextMode"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./types.js'",
+        "symbols": [
+          "SpineConfig",
+          "BooleanSettingResolution",
+          "HookSyncMode",
+          "ArtifactStrategy",
+          "SupportedConfigKey",
+          "PromptPolicyTier",
+          "LLMMode",
+          "ValidatePolicy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./loader.js'",
+        "symbols": [
+          "loadConfigData"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./env.js'",
+        "symbols": [
+          "parseBooleanEnv"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./precommit.js'",
+        "symbols": [
+          "resolvePreCommitSetting"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./supported-values.js'",
+        "symbols": [
+          "ConfigSupportedValueAccess",
+          "getSupportedValue as getDelegatedSupportedValue",
+          "setSupportedValue as setDelegatedSupportedValue"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "Config",
+        "kind": "class",
+        "signature": "class Config"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "Config",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/config/facade.ts#"
+      }
+    ],
     "structuralHints": {
-      "importCount": 0,
-      "exportCount": 0,
+      "importCount": 12,
+      "exportCount": 1,
       "isBarrel": false,
       "isTypeOnly": false
     }
   },
   "graph": {
     "dependsOn": [
-      {
-        "targetPath": "fs",
-        "relation": "import",
-        "symbols": []
-      },
-      {
-        "targetPath": "path",
-        "relation": "import",
-        "symbols": []
-      },
       {
         "targetPath": "../../utils/fs.js",
         "relation": "import",
@@ -168,18 +259,70 @@
         "symbols": [
           "resolvePreCommitSetting"
         ]
+      },
+      {
+        "targetPath": "./supported-values.js",
+        "relation": "import",
+        "symbols": [
+          "ConfigSupportedValueAccess",
+          "getSupportedValue as getDelegatedSupportedValue",
+          "setSupportedValue as setDelegatedSupportedValue"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
       }
     ],
     "dependedBy": [],
     "reverseIndexComplete": false,
-    "symbolEdges": []
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/config/facade.ts/_file_#",
+        "targetSymbol": "src/infra/config/loader.ts/loadConfigData#",
+        "targetPath": "src/infra/config/loader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/config/facade.ts/_file_#",
+        "targetSymbol": "src/core/scan-policy.ts/resolveScanPolicy#",
+        "targetPath": "src/core/scan-policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/config/facade.ts/_file_#",
+        "targetSymbol": "src/infra/config/precommit.ts/resolvePreCommitSetting#",
+        "targetPath": "src/infra/config/precommit.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/config/facade.ts/_file_#",
+        "targetSymbol": "src/infra/config/env.ts/parseBooleanEnv#",
+        "targetPath": "src/infra/config/env.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T03:57:57.047Z",
+    "indexedAt": "2026-05-03T11:25:02.901Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "llm"
+      "fallback"
     ]
   }
 }

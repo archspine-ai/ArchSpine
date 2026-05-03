@@ -4,48 +4,61 @@
     "filePath": "src/cli/commands/usage.ts",
     "contentHash": "336ea48d7cb3168eec98edf18f78d6d427c3b29064d92c9d788766052ccfe60a",
     "skeletonHash": "6a03b986ba974171db4b8a0b9a78628be7ca6e1c13637d3174b69e0827fa2894",
-    "semanticHash": "0e1426f1199687714205b576586b7ebdbb019801daa56bc9831457afd6c58336",
+    "semanticHash": "c3fca072a21c10b5605ea07eb7135373018dd4a954119b9bcd44bfadf0b81d64",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli/commands"
   },
   "semantic": {
-    "role": "CLI command entry point for executing usage reports.",
+    "role": "CLI command adapter for executing the usage report, defined as the usage command entry point.",
     "responsibilities": [
-      "Defines the command-line interface options for the usage command via the ExecuteUsageCommandOptions interface.",
-      "Delegates execution to the usage engine (runUsageReport) with the provided root directory and default runtime I/O."
+      "Defines the command-line options interface (ExecuteUsageCommandOptions) specifying the required root directory.",
+      "Invokes the usage report engine (runUsageReport) with the provided root directory and the default runtime I/O instance."
     ],
     "outOfScope": [
-      "Pipeline or persistence logic (belongs in engines, services, core, or infra).",
-      "Business logic for generating usage reports.",
-      "Runtime I/O implementation or configuration."
+      "Does not implement any usage report generation logic.",
+      "Does not handle CLI argument parsing or output formatting.",
+      "Does not touch persistence or pipeline orchestration."
     ],
     "invariants": [
-      "Must remain a thin adapter, delegating all substantive work to the usage engine.",
-      "Must not absorb pipeline, persistence, or business logic from engines or infra."
+      "Must remain a thin adapter; no usage business logic should be added.",
+      "Must not import or call services, core, or persistence layers directly.",
+      "The defaultRuntimeIO dependency ensures I/O abstraction."
     ],
     "changeIntent": {
-      "architecturalIntent": "Separate CLI command routing from core logic to keep runtime behavior reusable and testable outside the CLI.",
-      "recentChangeIntent": "No recent changes detected in this file; unrelated to the commit 'feat: restore llm-authored markdown generation'."
+      "architecturalIntent": "Thin CLI command entry point that delegates usage reporting to the engine layer, preserving separation of concerns.",
+      "recentChangeIntent": "Introduced in ArchSpine v1.0.0 to provide a dedicated CLI command for usage reports, following the CLI entrypoint separation rule."
     },
     "publicSurface": [
-      "ExecuteUsageCommandOptions interface",
-      "executeUsageCommand function"
+      "ExecuteUsageCommandOptions",
+      "executeUsageCommand"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "CLI command entry point for executing usage reports.",
+        "role": "CLI command adapter for executing the usage report, defined as the usage command entry point.",
         "responsibilities": [
-          "Defines the command-line interface options for the usage command via the ExecuteUsageCommandOptions interface.",
-          "Delegates execution to the usage engine (runUsageReport) with the provided root directory and default runtime I/O."
+          "Defines the command-line options interface (ExecuteUsageCommandOptions) specifying the required root directory.",
+          "Invokes the usage report engine (runUsageReport) with the provided root directory and the default runtime I/O instance."
         ],
         "outOfScope": [
-          "Pipeline or persistence logic (belongs in engines, services, core, or infra).",
-          "Business logic for generating usage reports.",
-          "Runtime I/O implementation or configuration."
+          "Does not implement any usage report generation logic.",
+          "Does not handle CLI argument parsing or output formatting.",
+          "Does not touch persistence or pipeline orchestration."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于执行使用情况报告的CLI命令适配器，作为 usage 命令的入口点。",
+        "responsibilities": [
+          "定义命令选项接口 (ExecuteUsageCommandOptions)，指定必需的根目录参数。",
+          "使用提供的根目录和默认运行时 IO 实例调用使用情况报告引擎 (runUsageReport)。"
+        ],
+        "outOfScope": [
+          "不实现任何使用情况报告的生成逻辑。",
+          "不处理 CLI 参数解析或输出格式化。",
+          "不涉及持久化或流程编排。"
         ]
       }
     }
@@ -103,24 +116,34 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "../../engines/usage.js",
+        "targetPath": "src/engines/usage.ts",
         "relation": "import",
         "symbols": [
           "runUsageReport"
         ]
       },
       {
-        "targetPath": "../../infra/runtime-io.js",
+        "targetPath": "src/infra/runtime-io.ts",
         "relation": "import",
         "symbols": [
           "defaultRuntimeIO"
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/usage.ts/_file_#",
+        "targetSymbol": "src/engines/usage.ts/runUsageReport#",
+        "targetPath": "src/engines/usage.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:36.823Z",
+    "indexedAt": "2026-05-03T11:25:01.691Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

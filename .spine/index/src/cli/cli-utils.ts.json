@@ -3,80 +3,225 @@
   "identity": {
     "filePath": "src/cli/cli-utils.ts",
     "contentHash": "41a669693d805c0df730adf6a730009250e749ec5eaf05b9702c239630a6511b",
-    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
-    "semanticHash": "f24792c0700336d201002186ce30d1ff5a2382d5d450b43d14697d895a889641",
+    "skeletonHash": "486d5453914f23e64110a2b5efc9f8175fe0104850d688383c688ae278ab5320",
+    "semanticHash": "69314628bd1220f043faa9a0055d762d9e791e40f232b9b7d5c0e30f764145da",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli"
   },
   "semantic": {
-    "role": "CLI UI presentation utility for formatting language discovery results, conditional banner rendering, and configuration value parsing.",
+    "role": "CLI UI presentation utility for formatting command output, banner display, configuration value parsing, and text wrapping.",
     "responsibilities": [
       "Formats a list of language names into a comma-separated string for display.",
-      "Determines whether to show the full ArchSpine banner based on the command (help, init, build) or mini banner (sync).",
+      "Determines whether to show the full ArchSpine banner (for help, init, build) or mini banner (for sync) or suppress output during internal hooks.",
       "Parses raw string configuration values into typed JavaScript primitives (booleans, numbers, null, undefined, JSON objects/arrays).",
-      "Provides conditional banner display logic to suppress output during internal hooks."
+      "Formats any JavaScript value back into a string for CLI display, handling special primitives and JSON serialization.",
+      "Throws a typed ArchSpineError with 'CliUsageInvalid' error code for invalid CLI usage.",
+      "Normalizes an optional string: returns undefined for undefined, trimmed string for non-empty, undefined for empty strings.",
+      "Prints a step message to stdout with optional inline formatting using kleur dim prefix.",
+      "Prints a language discovery report from a LanguageSnapshot object, listing detected languages and available statuses.",
+      "Displays the appropriate banner (full or mini) based on command context, respecting the SPINE_INTERNAL_HOOK environment variable to suppress output in hooks.",
+      "Wraps prompt text to a given width with optional indentation, using word-wrap logic."
     ],
     "outOfScope": [
-      "Pipeline or persistence logic (e.g., database access, file I/O, build orchestration).",
-      "Command routing or argument parsing beyond banner display decisions.",
-      "Core error handling or error code definitions."
+      "All business logic, pipeline processing, persistence operations, network requests, or file system access.",
+      "Command routing or argument parsing beyond simple banner decision functions.",
+      "Any logic that modifies the filesystem or executes subprocesses."
     ],
     "invariants": [
-      "CLI modules must remain thin entrypoints and command adapters, avoiding absorption of pipeline or persistence logic."
+      "Must not contain pipeline or persistence logic (rule cli-entrypoint-separation).",
+      "All functions are pure or side-effect-only to stdout (no state mutation beyond output).",
+      "Dependencies are limited to kleur for styling, core error types, protocol types, and banner print utilities."
     ],
     "changeIntent": {
-      "architecturalIntent": "Maintain a thin CLI presentation layer that formats output and controls banner visibility, keeping pipeline and persistence logic in services, core, engines, or infra.",
-      "recentChangeIntent": "Updated displayUIBanner to use the renamed _argsArr parameter, aligning with recent CLI argument handling changes."
+      "architecturalIntent": "Provide a centralized set of reusable CLI UI helpers to keep command handlers thin and presentation logic consistent across the CLI.",
+      "recentChangeIntent": "Part of the ArchSpine v1.0.0 stable release; no specific structural change to this file beyond general stabilization and possible addition of wrapPromptText and formatConfigValue."
     },
     "publicSurface": [
-      "formatLanguageList(languages: string[]): string",
-      "shouldShowFullBanner(cmd?: string, _argsArr?: string[]): boolean",
-      "shouldShowMiniBanner(cmd?: string): boolean",
-      "parseConfigValue(raw: string): unknown"
+      "parseConfigValue",
+      "formatConfigValue",
+      "throwCliUsage",
+      "normalizeOptionalString",
+      "printStep",
+      "printLanguageDiscovery",
+      "displayUIBanner",
+      "wrapPromptText"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "CLI UI presentation utility for formatting language discovery results, conditional banner rendering, and configuration value parsing.",
+        "role": "CLI UI presentation utility for formatting command output, banner display, configuration value parsing, and text wrapping.",
         "responsibilities": [
           "Formats a list of language names into a comma-separated string for display.",
-          "Determines whether to show the full ArchSpine banner based on the command (help, init, build) or mini banner (sync).",
+          "Determines whether to show the full ArchSpine banner (for help, init, build) or mini banner (for sync) or suppress output during internal hooks.",
           "Parses raw string configuration values into typed JavaScript primitives (booleans, numbers, null, undefined, JSON objects/arrays).",
-          "Provides conditional banner display logic to suppress output during internal hooks."
+          "Formats any JavaScript value back into a string for CLI display, handling special primitives and JSON serialization.",
+          "Throws a typed ArchSpineError with 'CliUsageInvalid' error code for invalid CLI usage.",
+          "Normalizes an optional string: returns undefined for undefined, trimmed string for non-empty, undefined for empty strings.",
+          "Prints a step message to stdout with optional inline formatting using kleur dim prefix.",
+          "Prints a language discovery report from a LanguageSnapshot object, listing detected languages and available statuses.",
+          "Displays the appropriate banner (full or mini) based on command context, respecting the SPINE_INTERNAL_HOOK environment variable to suppress output in hooks.",
+          "Wraps prompt text to a given width with optional indentation, using word-wrap logic."
         ],
         "outOfScope": [
-          "Pipeline or persistence logic (e.g., database access, file I/O, build orchestration).",
-          "Command routing or argument parsing beyond banner display decisions.",
-          "Core error handling or error code definitions."
+          "All business logic, pipeline processing, persistence operations, network requests, or file system access.",
+          "Command routing or argument parsing beyond simple banner decision functions.",
+          "Any logic that modifies the filesystem or executes subprocesses."
         ]
       },
       "Simplified Chinese": {
-        "role": "CLI 用户界面展示工具，用于格式化语言发现结果、条件性渲染横幅以及解析配置值。",
+        "role": "CLI 界面呈现工具集，用于格式化命令输出、横幅显示、配置值解析以及文本换行。",
         "responsibilities": [
-          "将语言名称列表格式化为逗号分隔的字符串以供显示。",
-          "根据命令（help、init、build）决定是否显示完整 ArchSpine 横幅，或为 sync 命令显示迷你横幅。",
-          "将原始字符串配置值解析为类型化的 JavaScript 原始值（布尔值、数字、null、undefined、JSON 对象/数组）。",
-          "提供条件性横幅显示逻辑，以在内部钩子执行期间抑制输出。"
+          "将语言名称列表格式化为逗号分隔的显示字符串。",
+          "判断是否显示完整的 ArchSpine 横幅（用于 help、init、build 命令）或迷你横幅（用于 sync 命令），并在内部钩子中抑制输出。",
+          "将原始字符串配置值解析为类型化的 JavaScript 基本类型（布尔值、数字、null、undefined、JSON 对象/数组）。",
+          "将任意 JavaScript 值格式化为 CLI 显示的字符串，处理特殊基本类型和 JSON 序列化。",
+          "对于无效的 CLI 用法，抛出带有 'CliUsageInvalid' 错误码的类型化 ArchSpineError。",
+          "规范化可选字符串：对 undefined 返回 undefined，非空字符串返回修剪后的字符串，空字符串返回 undefined。",
+          "向 stdout 打印步骤消息，支持使用 kleur 暗淡前缀的内联格式。",
+          "从 LanguageSnapshot 对象打印语言发现报告，列出检测到的语言及其可用状态。",
+          "根据命令上下文显示合适的横幅（完整或迷你），并遵循 SPINE_INTERNAL_HOOK 环境变量在钩子中抑制输出。",
+          "将提示文本按指定宽度换行，并支持可选缩进和自动换词逻辑。"
         ],
         "outOfScope": [
-          "管道或持久化逻辑（例如数据库访问、文件 I/O、构建编排）。",
-          "超出横幅显示决策的命令路由或参数解析。",
-          "核心错误处理或错误代码定义。"
+          "所有业务逻辑、流水线处理、持久化操作、网络请求或文件系统访问。",
+          "除简单横幅判断函数外的命令路由或参数解析。",
+          "任何修改文件系统或执行子进程的逻辑。"
         ]
       }
     }
   },
   "skeleton": {
-    "imports": [],
-    "exports": [],
-    "declaredSymbols": [],
+    "imports": [
+      {
+        "source": "'../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "LanguageSnapshot"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../utils/banner.js'",
+        "symbols": [
+          "printFullBanner",
+          "printMiniBanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'kleur'",
+        "symbols": [
+          "kleur"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "parseConfigValue",
+        "kind": "function",
+        "signature": "parseConfigValue(raw: string)"
+      },
+      {
+        "name": "formatConfigValue",
+        "kind": "function",
+        "signature": "formatConfigValue(value: unknown)"
+      },
+      {
+        "name": "throwCliUsage",
+        "kind": "function",
+        "signature": "throwCliUsage(message: string)"
+      },
+      {
+        "name": "normalizeOptionalString",
+        "kind": "function",
+        "signature": "normalizeOptionalString(value: string | undefined)"
+      },
+      {
+        "name": "printStep",
+        "kind": "function",
+        "signature": "printStep(message: string, options: { inline?: boolean } = {})"
+      },
+      {
+        "name": "printLanguageDiscovery",
+        "kind": "function",
+        "signature": "printLanguageDiscovery(snapshot: LanguageSnapshot)"
+      },
+      {
+        "name": "displayUIBanner",
+        "kind": "function",
+        "signature": "displayUIBanner(cmd?: string, _argsArr: string[] = [])"
+      },
+      {
+        "name": "wrapPromptText",
+        "kind": "function",
+        "signature": "wrapPromptText(text: string, width = 80, indent = 0)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "parseConfigValue",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/cli-utils.ts#"
+      },
+      {
+        "name": "formatConfigValue",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/cli-utils.ts#"
+      },
+      {
+        "name": "throwCliUsage",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/cli-utils.ts#"
+      },
+      {
+        "name": "normalizeOptionalString",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/cli-utils.ts#"
+      },
+      {
+        "name": "printStep",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/cli-utils.ts#"
+      },
+      {
+        "name": "printLanguageDiscovery",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/cli-utils.ts#"
+      },
+      {
+        "name": "displayUIBanner",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/cli-utils.ts#"
+      },
+      {
+        "name": "wrapPromptText",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/cli-utils.ts#"
+      }
+    ],
     "structuralHints": {
-      "importCount": 0,
-      "exportCount": 0,
-      "isBarrel": false,
+      "importCount": 4,
+      "exportCount": 8,
+      "isBarrel": true,
       "isTypeOnly": false
     }
   },
@@ -104,18 +249,54 @@
           "printFullBanner",
           "printMiniBanner"
         ]
+      },
+      {
+        "targetPath": "kleur",
+        "relation": "import",
+        "symbols": [
+          "kleur"
+        ]
       }
     ],
-    "dependedBy": [],
-    "reverseIndexComplete": false,
-    "symbolEdges": []
+    "dependedBy": [
+      {
+        "targetPath": "src/cli/commands/try.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/cli-utils.ts/_file_#",
+        "targetSymbol": "src/utils/banner.ts/printFullBanner#",
+        "targetPath": "src/utils/banner.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/cli-utils.ts/_file_#",
+        "targetSymbol": "src/utils/banner.ts/printMiniBanner#",
+        "targetPath": "src/utils/banner.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/cli-utils.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/ArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T03:57:38.988Z",
+    "indexedAt": "2026-05-03T11:25:00.989Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "llm"
+      "fallback"
     ]
   }
 }

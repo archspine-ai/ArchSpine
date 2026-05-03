@@ -1,8 +1,18 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":".github/workflows","role":"CI/CD workflow definitions for the ArchSpine project.","responsibility":"Automates the continuous integration and delivery pipeline, including linting, building, testing across Node.js versions, research-level test suites, documentation verification, and release readiness checks.","children":[{"filePath":".github/workflows/ci.yml","role":"Defines the automated CI pipeline for the ArchSpine project","fileKind":"document"},{"filePath":".github/workflows/research.yml","role":"CI workflow definition for running research-level test suites","fileKind":"document"},{"filePath":".github/workflows/test.yml","role":"Defines the continuous integration (CI) pipeline for the ArchSpine project, automating verification, testing, documentation building, and release readiness checks.","fileKind":"document"}],"provenance":{"indexedAt":"2026-05-01T07:20:45.763Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`.github/workflows` 目录包含了 ArchSpine 项目的完整 CI/CD 流水线定义。它自动化了持续集成和交付流程，涵盖代码质量检查、多版本 Node.js 构建、单元与集成测试、研究级测试套件、文档验证以及发布就绪性检查。该目录包含三个工作流文件：
+## .github/workflows — 持续集成与部署工作流
 
-- **`ci.yml`** – 核心 CI 流水线，负责代码检查、构建和基础测试。
-- **`research.yml`** – 专门运行研究级测试套件的工作流。
-- **`test.yml`** – 综合流水线，用于验证、测试、文档构建及发布就绪性检查。
+这个目录包含了 ArchSpine 项目的所有持续集成与部署工作流定义。该目录下的工作流在每次推送到主分支或创建拉取请求时自动执行代码检查、单元测试、构建以及研究基准测试，确保代码质量和发布就绪状态。
 
-这些工作流共同确保项目在开发过程中保持稳定，并为发布做好准备。
+### 主要子文件及其分组
+
+- **`ci.yml`** — 标准 CI 管道，在推送到主分支或创建拉取请求时触发。包含代码检出、Node.js 环境设置、依赖安装、代码检查、构建、测试以及包完整性检查。还配置了并发控制和权限管理。
+
+- **`test.yml`** — 多版本 CI 工作流，在多个 Node.js 版本上执行代码验证。包含用于质量保证的发布门禁作业、文档构建作业以及用于验证 npm 发布准备的包冒烟检查作业。
+
+- **`research.yml`** — 通过手动触发（`workflow_dispatch`）运行临时研究基准测试的工作流。设置 Node.js 20 并启用 npm 缓存，安装项目依赖，然后执行 `npm run test:research` 基准测试套件。
+
+### 关键实现领域
+
+- **代码检查与单元测试** — 通过 `ci.yml` 和 `test.yml` 在每次推送或拉取请求时强制执行。
+- **构建与包完整性** — 确保项目能够成功构建，并且 npm 包可以正常发布。
+- **Node.js 版本矩阵** — `test.yml` 在多个 Node.js 版本上进行测试，保证兼容性。
+- **手动基准测试触发器** — `research.yml` 允许按需进行性能评估，不影响标准 CI 流程。

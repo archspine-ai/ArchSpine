@@ -1,11 +1,35 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/services/view","role":"View layer for generating and rendering architectural visualizations and analysis reports.","responsibility":"Provides a unified subsystem for defining, generating, scoring, and rendering architectural views (such as architecture diagrams, risk hotspots, and public surface analysis) from indexed project metadata, with support for LLM-based specification generation and markdown report output.","children":[{"filePath":"src/services/view/arch-diagram-renderer.ts","role":"Pure rendering utility that transforms architectural diagram specifications into SVG markup.","fileKind":"source"},{"filePath":"src/services/view/architecture-diagram-view.ts","role":"ArchSpine view derivation service for generating and rendering interactive architecture diagrams from project metadata using LLM-based specification generation.","fileKind":"source"},{"filePath":"src/services/view/common.ts","role":"Pure utility module providing scoring and path suppression functions for the view layer.","fileKind":"source"},{"filePath":"src/services/view/index-loader.ts","role":"Infrastructure module that loads and caches indexed Spine units from the .spine/index directory for view layer consumption, particularly architecture diagram generation.","fileKind":"source"},{"filePath":"src/services/view/index.ts","role":"Public facade module for the view subsystem, centralizing exports for view-specific runtime and rendering components within the MCP (Model Context Protocol) resource layer.","fileKind":"source"},{"filePath":"src/services/view/public-surface-view.ts","role":"View generation scoring engine that ranks source files by their likelihood of being public API surface.","fileKind":"source"},{"filePath":"src/services/view/risk-hotspots-view.ts","role":"Pure view generator function that calculates architectural risk hotspots from indexed code units.","fileKind":"source"},{"filePath":"src/services/view/types.ts","role":"TypeScript interface defining a metadata wrapper for SpineUnit with line count, used by infrastructure components for index reading.","fileKind":"source"},{"filePath":"src/services/view/view-registry.ts","role":"Central registry and type definition module for architectural visualization views within the ArchSpine system.","fileKind":"source"},{"filePath":"src/services/view/view-renderer.ts","role":"View service module that renders architectural view artifacts (risk hotspots, CLI entries, MCP entries, module entries, public surface) into formatted markdown reports using filesystem-loaded templates.","fileKind":"source"},{"filePath":"src/services/view/view-runtime.ts","role":"Configuration resolution module for the experimental view layer and enabled views within the ArchSpine system.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T03:58:47.695Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src/services/view` 目录是 ArchSpine 的视图层，负责从索引的项目元数据中生成、评分和渲染架构可视化内容。它提供统一的子系统，结合基于 LLM 的规范生成与纯算法评分，产出架构图、风险热点图、公共表面分析以及结构化的 Markdown 报告。
+## ArchSpine 视图生成与渲染子系统
 
-目录中的文件按功能分为以下几组：
+此目录包含 ArchSpine 架构可视化与分析视图的生成与渲染子系统。它负责使用基于大型语言模型（LLM）的规范生成、评分算法和 Markdown 模板，生成、验证、持久化并渲染多种架构视图（如架构图、风险热点、公共表面等），同时管理视图注册表和运行时配置。
 
-- **核心视图生成器** – `architecture-diagram-view.ts`（基于 LLM 的图表规范生成）、`risk-hotspots-view.ts`（风险计算）、`public-surface-view.ts`（公共 API 表面排序）。它们产生原始视图数据。
-- **渲染工具** – `arch-diagram-renderer.ts`（将图表规范转换为 SVG）和 `view-renderer.ts`（利用模板将多种视图格式化为 Markdown 报告）。
-- **基础设施与配置** – `index-loader.ts`（缓存 Spine 单元）、`view-runtime.ts`（启用/禁用视图）、`view-registry.ts`（视图类型定义注册中心）。
-- **共享支持模块** – `common.ts`（评分与路径抑制函数）、`types.ts`（元数据包装类型）、`index.ts`（面向 MCP 资源层的公开外观）。
+### 显著子模块及分组方式
 
-值得注意的子模块包括：`architecture-diagram-view.ts` 通过 LLM 调用生成交互式图表规范，而 `risk-hotspots-view.ts` 仅依据代码结构计算风险评分。`index-loader.ts` 作为视图层与持久化索引间的桥梁，确保对项目元数据的高效访问。
+- **渲染与图表生成**  
+  - `arch-diagram-renderer.ts` – 纯渲染工具，将 `ArchDiagramSpec` 转换为 SVG 标记。它为每种节点类型（前端、后端、数据库等）定义视觉样式（填充、描边），按预设顺序排列图层，计算节点位置以避免重叠，并对标签进行 HTML 转义以确保安全。  
+  - `architecture-diagram-view.ts` – 视图编排服务，负责架构图的生成、验证与持久化。它通过 `ViewIndexLoader` 加载项目和文件夹单元，构造 LLM 提示，解析并验证 LLM 响应为 `ArchDiagramSpec`，使用 `ArchitectureDiagramRenderer` 将其渲染为 HTML，并分别保存 HTML 和原始规范。
+
+- **评分与风险分析**  
+  - `public-surface-view.ts` – 排序引擎，根据多种因子（语义公开声明、导出数量、内部消费者、重导出放大）对源文件进行评分，识别最可能为公共 API 表面的文件。它应用特定表面类型（CLI、MCP、配置、路由）的加成和纯类型文件的扣分。  
+  - `risk-hotspots-view.ts` – 风险热点生成函数。它通过分析扇入、扇出、跨边界边、公共表面暴露、语义漂移、规则违规、文件大小和相邻测试，为每个索引单元计算复合风险分数，并返回排名前 12 的热点条目。  
+  - `common.ts` – 纯工具模块，提供分数求和、置信度计算、路径抑制（基于正则匹配测试、示例、文档等目录）、边界提取和跨边界边计数功能。
+
+- **数据加载与缓存**  
+  - `index-loader.ts` – 从 `.spine/index` 目录加载并缓存 `SpineFolderUnit` 和 `SpineProjectUnit` JSON 文件。它验证 JSON 是否符合 `SpineUnit` 架构，对格式错误文件发出警告，并限制文件夹数量以保持图表清晰。
+
+- **注册表与配置**  
+  - `view-registry.ts` – 中央注册表，定义 `ViewDefinition` 元数据（ID、标题、描述、启用状态、要求、输出）。提供 `VIEW_DEFINITIONS` 数组、`VIEW_DEFINITION_MAP`、类型守卫 `isViewId()` 以及 `getViewDefinition()`、`getDefaultEnabledViewIds()`、`normalizeViewIds()` 等辅助函数。  
+  - `view-runtime.ts` – 从项目配置、环境变量或默认值解析实验性视图层和已启用视图的配置，并过滤未知视图 ID。
+
+- **Markdown 渲染与输出**  
+  - `view-renderer.ts` – 将视图产物（风险热点、CLI 条目、MCP 条目、模块条目、公共表面）使用从文件系统加载的模板渲染为格式化的 Markdown 报告。它处理严重性评分、详情格式、Markdown 转义和置信度显示。
+
+- **公共入口**  
+  - `index.ts` – 聚合并重新导出所有公共模块，为 MCP 客户端和外部调用者提供稳定的导入接口。
+
+### 最重要的实现领域
+
+- **基于 LLM 的规范生成**，用于架构图，并带有严格的验证和回退处理。  
+- **多因子评分引擎**，用于公共表面检测和风险热点排序，支持可配置的阈值和加成项。  
+- **视图注册表与配置解析**，控制哪些视图处于激活状态以及它们的默认启用方式。  
+- **Markdown 渲染流水线**，按需加载模板并对内容进行转义，确保输出安全。  
+- **层隔离**，将纯工具（评分、渲染）与编排逻辑（视图生成器、索引加载器）分离，使系统保持可测试性和模块化。

@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/engines",
-  "role": "Core engine module for the ArchSpine mirror system, providing file scanning, architectural rule enforcement, context resolution, and fix generation capabilities.",
-  "responsibility": "Orchestrates file discovery via layered ignore rules and git integration, aggregates spine index and atlas data into structured SpineUnit collections, loads and matches architectural rules against file paths, resolves dependency context and relevance for violation detection, generates fix prompts and reports (including God Mode dossiers and usage audits), and exposes programmatic APIs for check, fix, and info operations.",
+  "role": "Core engine directory providing services for scanning, aggregation, rule enforcement, context analysis, violation fixing, and reporting.",
+  "responsibility": "These modules collectively implement the operational backbone of ArchSpine, handling file system discovery, index and atlas aggregation, architectural rule matching, dependency context resolution, automated fix generation, and comprehensive system diagnostics.",
   "children": [
     {
       "filePath": "src/engines/aggregator.ts",
@@ -21,7 +21,7 @@
     },
     {
       "filePath": "src/engines/context-relevance.ts",
-      "role": "Engine utility function for extracting and filtering keywords from architectural rule text.",
+      "role": "Engine module for scoring the relevance of dependency candidates and target paths using rule-derived keywords, symbol evidence, and path distance heuristics.",
       "fileKind": "source"
     },
     {
@@ -46,7 +46,7 @@
     },
     {
       "filePath": "src/engines/info.ts",
-      "role": "CLI command module for checking project sync status, validating protected outputs, and reporting system health.",
+      "role": "Engine module for generating a comprehensive system info and health report for ArchSpine projects.",
       "fileKind": "source"
     },
     {
@@ -61,22 +61,22 @@
     },
     {
       "filePath": "src/engines/scanner-utils.ts",
-      "role": "Scanner engine utility module providing path and pattern normalization for file scanning operations.",
+      "role": "Scanner engine utility module providing path normalization, pattern matching with picomatch, and dry-run report formatting for scan operations.",
       "fileKind": "source"
     },
     {
       "filePath": "src/engines/scanner.ts",
-      "role": "Core file system scanner engine that discovers, filters, and reports on repository files using layered ignore rules, git diff integration, and configurable scan policies.",
+      "role": "Core file system scanner engine that discovers, filters, and reports repository files using layered ignore rules, git diff integration, and configurable scan policies.",
       "fileKind": "source"
     },
     {
       "filePath": "src/engines/usage.ts",
-      "role": "ArchSpine CLI utility function generating formatted usage and audit reports from the manifest database.",
+      "role": "ArchSpine engine module that generates formatted usage and audit reports from the Manifest data store, providing governance visibility without CLI coupling.",
       "fileKind": "source"
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-03T03:55:11.969Z",
+    "indexedAt": "2026-05-03T11:27:56.882Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

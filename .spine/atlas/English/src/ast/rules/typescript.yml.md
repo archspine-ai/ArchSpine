@@ -1,26 +1,27 @@
-<!-- spine-content-hash:910d8cc916f11a4bce4f9b92c7255ad544c34413509f9ba8ada6987c14a928fd -->
-# ArchSpine – Pattern Extraction Rules
+# ArchSpine TypeScript AST Extraction Rules
 
-## Purpose
-This document defines a set of pattern-based extraction rules used to parse TypeScript/JavaScript source code. It maps import, export, and usage patterns to structured symbol metadata for analysis and tooling.
+## Why This Document Exists
+This document is a configuration file that defines the Abstract Syntax Tree (AST) extraction patterns for TypeScript source code inside the ArchSpine project. It tells the ArchSpine analysis engine exactly how to identify and extract three categories of code structures:
+- **Import declarations** (named, default, namespace)
+- **Export declarations** (functions, classes, interfaces, types, variables, default exports, export lists)
+- **Usage references** (function calls, constructor invocations, property access)
 
-## Context & Audience
-Intended for developers and AI agents building or maintaining static analysis, code indexing, or refactoring tools that need to extract symbol-level information from source files without executing them.
+Without these patterns, the engine would not know which syntactic forms to capture, and the entire code index used for automated documentation, dependency tracking, and governance enforcement would be incomplete or incorrect.
 
-## Key Responsibilities
-- Specify import pattern templates: named, default, and namespace imports.
-- Specify export pattern templates: function, class, interface, type, const, let, var, default, and list exports.
-- Specify usage pattern templates: function calls, constructor calls (`new`), and property access.
-- Map matched patterns to semantic kinds: `Function`, `Class`, `Interface`, `Type`, `Variable`, `Unknown`.
+## Who Should Read It
+- **Developers** maintaining the ArchSpine AST extraction engine (located under `src/ast/`).
+- **AI agents** tasked with understanding how the metadata extraction pipeline works for TypeScript.
+- **Contributors** who wish to add or modify extraction capabilities for TypeScript.
 
-## Out of Scope
-- Runtime behavior or execution logic.
-- Build or bundler configuration.
-- Testing or validation rules.
-- Documentation generation or formatting.
+## What Workflows and Decisions It Anchors
+- **Extraction accuracy**: Any change to how imports, exports, or usages are captured must be reflected here.
+- **Grammar synchronization**: This file must stay in sync with the TypeScript grammar supported by the tree-sitter parser used by ArchSpine.
+- **Language‑specific isolation**: Other programming languages have their own rule files in the same directory; modifications to TypeScript rules do not affect other languages.
 
 ## Key Takeaways
-- Imports are matched by three patterns: named, default, and namespace.
-- Exports are matched by patterns for functions, classes, interfaces, types, and variables, each assigned a semantic kind.
-- Usages are matched by patterns for function calls, constructor calls, and property access.
-- The document is purely declarative — it defines rules, not logic.
+- The patterns are written using tree‑sitter query syntax.
+- Each pattern has an identifier and may optionally be assigned a category (e.g., `Function`, `Class`, `Variable`) for higher‑level analysis.
+- Import patterns cover the three standard forms: named, default, and namespace.
+- Export patterns handle a wide variety of TypeScript constructs, including default exports and export lists.
+- Usage patterns capture common references: function calls (`call`), object instantiation (`new`), and property access (`property`).
+- The rules are language‑specific; they apply only to TypeScript.

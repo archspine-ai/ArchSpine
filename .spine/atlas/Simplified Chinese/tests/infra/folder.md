@@ -1,2 +1,7 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"tests/infra","role":"This directory contains test suites for validating index-based recovery and LLM retry mechanisms.","responsibility":"Collectively, these tests ensure the ArchSpine system can recover from corrupted index states and correctly classify LLM errors for retry logic, maintaining data integrity and robust error handling.","children":[{"filePath":"tests/infra/index-recovery.test.ts","role":"Vitest test suite for validating index-based resume recovery and LLM retry mechanisms in the ArchSpine system.","fileKind":"source"},{"filePath":"tests/infra/llm","role":"Test suite for the LLM retry utility's error classification function.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T03:58:51.850Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`tests/infra` 目录是 ArchSpine 验证索引恢复与 LLM 重试机制的核心测试区域。它包含两个具体子模块：`index-recovery.test.ts`（基于 Vitest 的测试套件，用于验证从损坏索引状态恢复的连续性）和嵌套的 `llm` 子目录（专门测试重试工具中的错误分类函数）。这些测试共同确保系统在面对索引损坏或需要判断哪些 LLM 错误应该触发重试时，仍能保持数据完整性并实现健壮的错误处理。
+本目录包含 ArchSpine 镜像系统中基于索引的恢复与 LLM 重试机制的测试套件。通过模拟索引损坏和 LLM 摘要生成失败，验证系统的弹性和正确恢复行为。
+
+测试按功能分为两个具体部分：
+- **`index-recovery.test.ts`** — 测试从部分或损坏的索引状态中恢复的能力。每个测试用例使用独立的临时目录，并通过模拟 LLM 失败来验证重试逻辑，同时检查任务状态、遥测状态和协议版本控制的集成。
+- **`infra/llm/`** — 测试 LLM 重试工具的错误分类函数，确保可重试错误（如 socket 挂起、ECONNRESET、连接终止、HTTP 429）与不可重试错误（如 HTTP 400）被正确区分。
+
+关键实现关注点包括测试隔离、模拟恢复以及覆盖镜像系统错误边界的全面恢复工作流程。

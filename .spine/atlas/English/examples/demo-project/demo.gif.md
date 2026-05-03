@@ -1,22 +1,32 @@
-<!-- spine-content-hash:c77bae56955b600134390ecf338b69cc1f6c686c859739dc38eaf02e8a2b62b5 -->
-# ArchSpine — Project Narrative & Architectural Overview
+# ArchSpine Documentation Summary
 
 ## Purpose
-This document serves as the foundational narrative for the ArchSpine mirror system, explaining why the system exists and what core problems it solves. It articulates the architectural vision and the conceptual framework that guides development and maintenance.
+This document serves as the comprehensive project overview and narrative guide for the **ArchSpine mirror system**. ArchSpine addresses the problem of documentation drift in multi-language, multi-realm projects by creating a mirrored documentation layer (the "spine") that stays in sync with the actual codebase. The document explains the core philosophy, architecture, and usage, establishing a single source of truth for project structure and metadata.
 
-## Context & Audience
-The document is intended for both human readers (developers, architects, project stakeholders) and AI agents who need to understand the system's purpose and boundaries. It provides a high-level overview that bridges technical and non-technical understanding.
+## Audience
+- **Software architects** designing multi-language, polyglot codebases.
+- **Technical writers** responsible for maintaining synchronized documentation across languages.
+- **DevOps engineers** integrating documentation workflows into CI/CD pipelines.
+- **AI coding assistants** that need authoritative, machine-readable documentation context.
+
+## Core Architecture Concepts
+- **Spine**: The mirrored documentation layer that reflects the codebase structure.
+- **Atlas**: A multi-language and multi-rule-set organizational structure.
+- **Index**: The top-level layer for navigation and discovery.
+
+## Key Workflows and Decisions Anchored by This Document
+- **Maintenance of rules, schemas, and templates** to enforce consistent documentation quality and architectural policies.
+- **CLI commands** for initialization, scanning, checking, fixing, syncing, and viewing the spine.
+- **Build, sync, and validation automation** to detect and remedy drift.
 
 ## Key Takeaways
-- ArchSpine is a mirror system with a clear narrative purpose and architectural philosophy
-- The document defines what is in scope and what is explicitly out of scope for the project
-- Maintenance boundaries are clearly established to guide future development decisions
-- The system is designed to serve both human and AI agent audiences through structured documentation
+- ArchSpine creates a mirrored documentation layer (the “spine”) that stays in sync with the actual codebase.
+- The system uses an “atlas” structure to support multiple languages and rule sets.
+- Rules, schemas, and templates ensure consistent documentation quality and enforce architectural policies.
+- The CLI provides commands for initialization, scanning, checking, fixing, syncing, and viewing the spine.
+- Maintenance is facilitated through automated build, validation, and drift detection.
 
-## Scope & Boundaries
-This document is **not** a technical specification. It deliberately excludes:
-- Implementation details or code-level specifications
-- Specific API documentation or interface contracts
-- Operational deployment or infrastructure instructions
-
-Its role is to define the *why* and *what* of ArchSpine, leaving the *how* to other documents.
+## What Is Out of Scope
+- Low-level implementation details of specific CLI commands or internal engine logic.
+- Third-party API integrations beyond the built-in LLM providers.
+- Performance benchmarks or comparative analysis with other tools.

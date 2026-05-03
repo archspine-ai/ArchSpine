@@ -1,31 +1,31 @@
-<!-- spine-content-hash:9a6be5a8fb2d48f4401fa10d40e6ce44cfb5c63986d102595be72d01799d9617 -->
-# ArchSpine – Core Application Module Container
+# ArchSpine Config Summary
 
-## Role
-Defines the core application module container for the repository indexing pipeline.
+This configuration file defines structural metadata and indexing provenance for a source directory within the ArchSpine repository. It tells the system how to interpret the folder’s contents, assigns a high-level responsibility to the directory, and tracks which processing stages were applied during indexing.
 
-## Key Responsibilities
-- Groups source files that implement the repository indexing pipeline.
-- Coordinates authentication and synchronization modules.
+## What It Controls
 
-## Important Invariants
-- All source files must reside under the `src` directory.
-- Each child entry must have a valid `filePath` and `fileKind`.
-- Provenance metadata must include an `indexedAt` timestamp and a `generatorVersion`.
+- **schemaVersion** – Controls compatibility with the ArchSpine parser. Using an unsupported version may cause errors.
+- **directory** – Specifies the relative path of the directory being described. Must exist or the index may fail. In our example, this is `src`.
+- **role** – A natural-language description of the directory’s purpose. Here: “Core application module container.” AI agents use this to understand context.
+- **responsibility** – A high-level statement of what the directory is accountable for. Here: “Groups source files that implement the repository indexing pipeline.”
+- **children** – An array of file entries. Each entry’s integrity directly affects downstream indexing and querying. In this example, `src/auth.ts` and `src/sync.ts` are listed with their own roles and `fileKind: source`.
+- **filePath** – Relative path to a file within the directory. Must be valid and accessible.
+- **fileKind** – Categorizes the file type (e.g., `source`). Incorrect values may break parsers.
+- **provenance** – Metadata block certifying when and how this configuration was generated. Missing fields can lead to trust issues.
+  - **indexedAt** – Timestamp of the indexing run; used for cache invalidation and freshness checks.
+  - **generatorVersion** – Version of the ArchSpine tool that produced this file; ensures compatibility with the pipeline.
+  - **pipelineStages** – List of processing stages applied (e.g., `ast`, `llm`). Gaps can indicate incomplete indexing.
 
-## Negative Scope (Out of Scope)
-- No explicit out-of-scope items are defined.
+## Invariants
 
-## Exported / Externally Visible Behavior
-- No public surface is exposed; this module container is internal to the pipeline.
+- All `children` entries must specify a valid `filePath` and `fileKind`.
+- The `fileKind` value must be one of the recognized kinds (e.g., `source`).
+- The `provenance` block must include `indexedAt`, `generatorVersion`, and `pipelineStages` to ensure traceability.
+- The `directory` value must correspond to a real directory in the repository.
+- The `schemaVersion` must match a supported version (e.g., `1.0.0`).
 
-## Parameter Definitions
-- **schemaVersion**: Version identifier for the configuration schema format.
-- **directory**: Root directory path where source files are located.
-- **role**: Functional description of this configuration block.
-- **responsibility**: High-level responsibility statement for the module group.
-- **children**: Array of source file entries, each with `filePath`, `role`, and `fileKind`.
-- **provenance**: Metadata block recording indexing timestamp, generator version, and pipeline stages used.
+## Operational Risks & Stability Notes
 
-## Stability and Risks
-This configuration defines the structural layout of the core application. Misconfiguration of the directory path or missing children entries could break the indexing pipeline. The provenance metadata is critical for audit trails and reproducibility; missing or incorrect timestamps may cause versioning conflicts. The `pipelineStages` field must match the actual processing stages to avoid data integrity issues.
+This configuration file is a structural anchor for the indexing pipeline. If fields like `role` or `responsibility` are missing or inaccurate, AI agents may misinterpret the module’s purpose, leading to incorrect recommendations. The `children` list must be kept in sync with the actual file system – stale entries cause indexing mismatches. Provenance fields such as `generatorVersion` protect against pipeline version drift; omitting them risks silent incompatibility. Overall, this file is low-risk when auto-generated, but manual edits should be validated against the schema to avoid silent failures.
+
+---

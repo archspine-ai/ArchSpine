@@ -115,8 +115,17 @@ export class RuntimeService {
 
   private createSyncServiceOptions(
     overrides: LLMRuntimeOverrides = {},
+    options: { requireLLMClient?: boolean } = {},
   ): ConstructorParameters<typeof SyncService>[0] {
-    const runtime = this.createRuntimeDependencies(overrides);
+    const requireLLMClient = options.requireLLMClient !== false;
+    const runtime = requireLLMClient
+      ? this.createRuntimeDependencies(overrides)
+      : {
+          llmClient: undefined,
+          resolvedLLMSettings: this.getResolvedLLMSettings(overrides),
+          targetLocales: this.config.getLanguages(),
+          scanPolicy: this.config.getScanPolicy(),
+        };
     const profile = this.getResolvedExecutionProfile('sync', overrides);
     const experimentalViewLayer = resolveExperimentalViewLayer(this.config);
     const enabledViews = resolveEnabledViews(this.config);
@@ -146,6 +155,10 @@ export class RuntimeService {
 
   public getSyncService(overrides: LLMRuntimeOverrides = {}): SyncService {
     return new SyncService(this.createSyncServiceOptions(overrides));
+  }
+
+  public getSyncStatusService(overrides: LLMRuntimeOverrides = {}): SyncService {
+    return new SyncService(this.createSyncServiceOptions(overrides, { requireLLMClient: false }));
   }
 
   public getCheckService(overrides: LLMRuntimeOverrides = {}): CheckService {

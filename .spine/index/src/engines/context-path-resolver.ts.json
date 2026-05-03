@@ -4,7 +4,7 @@
     "filePath": "src/engines/context-path-resolver.ts",
     "contentHash": "eaaf5fb357f94e149096b03418d2ff5f798eed2f8156dbe3169a3cde8bd7a00a",
     "skeletonHash": "2cf13407c5e6897d222121ff8dcbb9ada21d3a0143796cdaeec223b09c1c9794",
-    "semanticHash": "ad87cf8e24a7cde9b0b3688dc7dd1889eee268e2a7e0eb78dc57e45753aa6610",
+    "semanticHash": "3398dd90832e0d7302b8c70224f5c1ff5a0dae30673f7682b74f0d30a5c9da65",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/engines"
@@ -13,25 +13,24 @@
     "role": "Path resolution utility for the scanning engine, specializing in resolving relative import targets within a source tree.",
     "responsibilities": [
       "Resolves relative import source strings to absolute file system paths given a root directory and containing directory.",
-      "Consults the language registry to determine valid source file extensions for existence checking.",
+      "Consults the LangRegistry to determine valid source file extensions for existence checking.",
       "Performs file existence and type validation (file vs. directory) for candidate paths.",
       "Returns the resolved relative path from the root directory if a valid source file is found, otherwise returns null."
     ],
     "outOfScope": [
-      "Handling non-relative imports (e.g., package imports).",
-      "Module bundling or dependency graph construction.",
-      "CLI argument parsing or user interaction.",
-      "Service-level orchestration or state management."
+      "CLI command implementation or entrypoint logic.",
+      "Service-level orchestration or runtime management.",
+      "Handling of absolute or bare specifier imports (only relative imports starting with '.').",
+      "Parsing or analyzing source code content beyond path resolution."
     ],
     "invariants": [
-      "Must only process import sources that start with '.'.",
-      "Must rely on the LangRegistry for language-specific source file extensions.",
-      "Must validate that the resolved path exists and is a file.",
-      "Must be decoupled from CLI entrypoints and presentation logic (aligned with engine-independence rule)."
+      "Must not import any module from CLI or service orchestration layers.",
+      "Must remain a pure utility function with no side effects beyond file system reads.",
+      "Must only accept relative import paths (starting with '.')."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a reusable, language-aware path resolution function for static analysis engines, ensuring engine modules remain independent of orchestration concerns.",
-      "recentChangeIntent": "Part of a broader refactoring to split scanner and context responsibilities within the engines, likely to improve modularity and separation of concerns."
+      "architecturalIntent": "Provide a reusable, engine-level path resolution function that decouples scanning logic from file system access details and language-specific extensions.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era: The function is part of the engine layer, intended to be reused across scanning and analysis modules without coupling to CLI or service layers."
     },
     "publicSurface": [
       "resolveRelativeImportTarget(rootDir: string, dir: string, source: string): string | null"
@@ -44,15 +43,30 @@
         "role": "Path resolution utility for the scanning engine, specializing in resolving relative import targets within a source tree.",
         "responsibilities": [
           "Resolves relative import source strings to absolute file system paths given a root directory and containing directory.",
-          "Consults the language registry to determine valid source file extensions for existence checking.",
+          "Consults the LangRegistry to determine valid source file extensions for existence checking.",
           "Performs file existence and type validation (file vs. directory) for candidate paths.",
           "Returns the resolved relative path from the root directory if a valid source file is found, otherwise returns null."
         ],
         "outOfScope": [
-          "Handling non-relative imports (e.g., package imports).",
-          "Module bundling or dependency graph construction.",
-          "CLI argument parsing or user interaction.",
-          "Service-level orchestration or state management."
+          "CLI command implementation or entrypoint logic.",
+          "Service-level orchestration or runtime management.",
+          "Handling of absolute or bare specifier imports.",
+          "Parsing or analyzing source code content beyond path resolution."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "扫描引擎的路径解析工具，专门用于解析源树中相对导入的目标路径。",
+        "responsibilities": [
+          "根据给定的根目录和包含目录，将相对导入源字符串解析为绝对文件系统路径。",
+          "通过 LangRegistry 查询有效的源文件扩展名进行存在性检查。",
+          "对候选路径执行文件存在性和类型验证（文件 vs 目录）。",
+          "如果找到有效的源文件，则返回从根目录计算的相对路径，否则返回 null。"
+        ],
+        "outOfScope": [
+          "CLI 命令的实现或入口点逻辑。",
+          "服务层的编排或运行时管理。",
+          "处理绝对导入或裸说明符（仅处理以 '.' 开头的相对导入）。",
+          "超出路径解析范围的源代码内容解析或分析。"
         ]
       }
     }
@@ -129,22 +143,20 @@
       {
         "targetPath": "fs",
         "relation": "import",
-        "symbols": [
-          "* as fs"
-        ]
+        "symbols": []
       },
       {
         "targetPath": "path",
         "relation": "import",
-        "symbols": [
-          "* as path"
-        ]
+        "symbols": []
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:37.457Z",
+    "indexedAt": "2026-05-03T11:25:02.308Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

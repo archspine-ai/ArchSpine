@@ -4,69 +4,66 @@
     "filePath": "src/infra/config/loader.ts",
     "contentHash": "f78619ac0c33c3b922a22d528e2f31492d80c315087d309bbf4ad6d534f7ecb9",
     "skeletonHash": "704cc33605a58c3c3ef2184f7da96415df606d29c71faf5fb0b64a307935a01d",
-    "semanticHash": "cb8eb674b145602c531ef2e4b9b5fb12592b0b13d3dbede392c18e1bc259e8e7",
+    "semanticHash": "07b6e3bf07eeef610897ce8909fb143df97a3cd9a7d042bb86d40bb953c8514e",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/config"
   },
   "semantic": {
-    "role": "Configuration loader and validator for the ArchSpine system, responsible for reading, parsing, validating, and merging configuration files with defaults.",
+    "role": "Infrastructure configuration loader and facade for the ArchSpine system, responsible for reading configuration from disk, parsing JSON, validating, and merging with defaults.",
     "responsibilities": [
-      "Reads configuration file from the filesystem using synchronous file operations.",
-      "Parses JSON configuration content and validates its structure against a schema.",
-      "Merges user-provided configuration overrides with system defaults using deep merge logic.",
-      "Generates and logs human-readable warnings for configuration parsing issues."
+      "Merges a user-provided overrides object with default configuration using a shallow/moderately deep merge (handles nested object merging but stops at arrays).",
+      "Loads configuration from a file path: checks existence, reads file content, parses JSON, validates payload structure, and merges with defaults.",
+      "Uses a runtime IO interface to emit human-readable warnings for configuration parse errors or structural issues.",
+      "Provides a stable public surface (loadConfigData) for other modules to obtain a fully resolved SpineConfig."
     ],
     "outOfScope": [
-      "Does not handle asynchronous file operations or streaming.",
-      "Does not manage runtime state or session lifecycle.",
-      "Does not perform network I/O or remote configuration fetching.",
-      "Does not enforce access control or authentication."
+      "Configuration file watch or hot-reload; this is a one-time synchronous load.",
+      "Advanced configuration transformations like environment variable interpolation.",
+      "Authentication, authorization, or network requests."
     ],
     "invariants": [
-      "Configuration file must be valid JSON and conform to the SpineConfig schema.",
-      "Defaults are always applied as a base; overrides are merged on top.",
-      "Parse warnings are generated for structural issues but do not halt execution."
+      "Infra modules must expose stable low-level capabilities and facades; this file does so by exporting loadConfigData as a public configuration loading facade.",
+      "The function mergeConfigWithDefaults must not be directly used from higher-level orchestration layers if loadConfigData is the intended facade."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a stable, validated configuration loading pipeline that separates concerns between file I/O, schema validation, and default merging.",
-      "recentChangeIntent": "Tighten schema handling and add try preview support, likely improving validation robustness and preview capabilities."
+      "architecturalIntent": "Centralized configuration loading and validation as a stable infra facade, keeping the rest of the system agnostic to file format and validation logic.",
+      "recentChangeIntent": "v1.0.0 release — architectural governance and semantic layer for AI era; configuration loader likely established or refined to support the new governance system."
     },
     "publicSurface": [
-      "mergeConfigWithDefaults"
+      "loadConfigData(configPath: string): SpineConfig",
+      "mergeConfigWithDefaults(defaults: Record<string, unknown>, overrides: unknown): Record<string, unknown>"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Configuration loader and validator for the ArchSpine system, responsible for reading, parsing, validating, and merging configuration files with defaults.",
+        "role": "Infrastructure configuration loader and facade for the ArchSpine system, responsible for reading configuration from disk, parsing JSON, validating, and merging with defaults.",
         "responsibilities": [
-          "Reads configuration file from the filesystem using synchronous file operations.",
-          "Parses JSON configuration content and validates its structure against a schema.",
-          "Merges user-provided configuration overrides with system defaults using deep merge logic.",
-          "Generates and logs human-readable warnings for configuration parsing issues."
+          "Merges a user-provided overrides object with default configuration using a shallow/moderately deep merge (handles nested object merging but stops at arrays).",
+          "Loads configuration from a file path: checks existence, reads file content, parses JSON, validates payload structure, and merges with defaults.",
+          "Uses a runtime IO interface to emit human-readable warnings for configuration parse errors or structural issues.",
+          "Provides a stable public surface (loadConfigData) for other modules to obtain a fully resolved SpineConfig."
         ],
         "outOfScope": [
-          "Does not handle asynchronous file operations or streaming.",
-          "Does not manage runtime state or session lifecycle.",
-          "Does not perform network I/O or remote configuration fetching.",
-          "Does not enforce access control or authentication."
+          "Configuration file watch or hot-reload; this is a one-time synchronous load.",
+          "Advanced configuration transformations like environment variable interpolation.",
+          "Authentication, authorization, or network requests."
         ]
       },
       "Simplified Chinese": {
-        "role": "ArchSpine 系统的配置加载与验证模块，负责读取、解析、验证配置文件，并将其与默认配置合并。",
+        "role": "ArchSpine 系统的基础设施配置加载器与外观模块，负责从磁盘读取配置、解析 JSON、校验结构，并与默认配置合并。",
         "responsibilities": [
-          "使用同步文件操作从文件系统读取配置文件。",
-          "解析 JSON 格式的配置内容，并依据模式验证其结构。",
-          "通过深度合并逻辑，将用户提供的配置覆盖与系统默认配置合并。",
-          "生成并记录人类可读的配置解析警告信息。"
+          "将用户提供的覆盖对象与默认配置进行浅/适度深度合并（处理嵌套对象合并，数组则直接覆盖）。",
+          "从文件路径加载配置：检查文件存在性、读取文件内容、解析 JSON、校验载荷结构，并与默认值合并。",
+          "利用运行时 IO 接口输出人类可读的警告信息，提示配置解析错误或结构问题。",
+          "提供稳定的公开接口（loadConfigData），供其他模块获取完整解析后的 SpineConfig 对象。"
         ],
         "outOfScope": [
-          "不处理异步文件操作或流式读取。",
-          "不管理运行时状态或会话生命周期。",
-          "不执行网络 I/O 或远程配置获取。",
-          "不实施访问控制或身份验证。"
+          "配置文件监听或热重载；本模块仅为一次性同步加载。",
+          "高级配置转换，例如环境变量插值。",
+          "身份验证、授权或网络请求。"
         ]
       }
     }
@@ -170,8 +167,8 @@
         "targetPath": "./validation.js",
         "relation": "import",
         "symbols": [
-          "buildConfigParseWarning",
-          "validateConfigPayload"
+          "validateConfigPayload",
+          "buildConfigParseWarning"
         ]
       },
       {
@@ -189,10 +186,34 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/config/loader.ts/_file_#",
+        "targetSymbol": "src/infra/config/defaults.ts/createDefaultConfig#",
+        "targetPath": "src/infra/config/defaults.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/config/loader.ts/_file_#",
+        "targetSymbol": "src/infra/config/validation.ts/validateConfigPayload#",
+        "targetPath": "src/infra/config/validation.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/config/loader.ts/_file_#",
+        "targetSymbol": "src/infra/config/validation.ts/buildConfigParseWarning#",
+        "targetPath": "src/infra/config/validation.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:38.129Z",
+    "indexedAt": "2026-05-03T11:25:02.936Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

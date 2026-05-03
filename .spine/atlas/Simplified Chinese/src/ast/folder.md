@@ -1,8 +1,22 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/ast","role":"AST parsing and language discovery layer for the ArchSpine mirror system.","responsibility":"Provides a unified pipeline for parsing source code into structured symbols and imports using language-specific AST rules, managing language registrations, and discovering language composition across file collections.","children":[{"filePath":"src/ast/extractor.ts","role":"AST parsing service that extracts structural symbols and imports from source code using language-specific rule sets loaded from YAML configuration files.","fileKind":"source"},{"filePath":"src/ast/lang-discovery.ts","role":"AST language discovery and lifecycle module that scans file collections, resolves programming languages via extension mapping, computes deltas between snapshots, and validates language support.","fileKind":"source"},{"filePath":"src/ast/lang-registry.ts","role":"Stateful language configuration registry and dynamic language loader for the ArchSpine code analysis pipeline, managing AST-grep language bindings and file-to-language resolution.","fileKind":"source"},{"filePath":"src/ast/rules","role":"Language-specific grammar definitions for parsing source code into structured symbols.","fileKind":"folder"}],"provenance":{"indexedAt":"2026-05-01T04:57:47.579Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src/ast` 目录是 ArchSpine 代码分析的核心——统一的 AST 解析和语言发现层。它使用语言特定的规则集，将源文件转换为结构化的符号和导入图。该目录包含四个主要子模块：
-- **`extractor.ts`** — 解析引擎，通过加载 YAML 格式的规则从源代码中提取符号和导入。
-- **`lang-discovery.ts`** — 负责扫描文件集、通过扩展名映射解析编程语言、计算快照之间的差异，并验证语言支持。
-- **`lang-registry.ts`** — 有状态的语言注册表，管理动态加载语言绑定并解析文件到语言的映射。
-- **`rules/`** — 存放每种支持语言的实际语法定义规则。
+## ArchSpine AST 模块概述
 
-关键实现领域包括**提取管道**（规则加载、符号提取）、**语言生命周期**（注册、发现、差异计算）以及**规则管理**（定义每种语言的 AST-grep 模式）。架构清晰地将语言规则与核心编排分离，使得通过将规则文件放入 `rules/` 即可轻松添加新语言。
+`src/ast` 目录是 ArchSpine 镜像系统的核心模块，负责基于抽象语法树的代码提取、语言发现以及语言配置管理。它为将源代码解析为结构化符号、根据文件扩展名识别编程语言以及管理语言特定的提取规则提供了基础层。
+
+### 关键子模块与分组
+
+- **`extractor.ts`** – 主要的 AST 解析服务。它加载语言特定的规则（来自 `rules/` 子目录下的 YAML 文件），通过语言注册表解析正确的语法，并使用 `ast-grep` 解析源代码。它会提取导出的符号（类、函数、变量、接口、类型）及其签名，同时收集导入语句。最终生成一个 `FileSkeleton` 对象，包含所有已提取的元数据。
+
+- **`lang-discovery.ts`** – 语言发现与生命周期模块。它扫描文件路径集合以识别扩展名，通过 `LangRegistry` 解析为编程语言，计算当前与之前语言快照之间的差异（`LanguageDelta`），并验证检测到的扩展名是否受支持。提供的函数包括 `resolveLanguage`（单文件解析）和差异计算（跟踪新增、移除和变化的语言）。
+
+- **`lang-registry.ts`** – 一个状态化的语言配置注册表和动态加载器。它管理 AST-grep 语言键到内部 `SourceLanguage` 类型的映射，支持带有去重和 Promise 缓存的动态注册，通过扩展名匹配解析文件路径到配置，并跟踪不可用的包和用户通知。它还提供 `getSourceExtensions` 来列出某个语言所有已注册的源码扩展名。
+
+- **`rules/`（子目录）** – 包含语言特定的 AST 提取规则定义（YAML 文件）。这些规则定义了如何识别每种受支持编程语言的导入、导出和引用，从而实现代码分析和依赖跟踪。`extractor.ts` 在运行时加载这个子目录中的规则集。
+
+### 最重要的实现领域
+
+- **语言规则加载与缓存** – 从磁盘高效加载 YAML 规则并按语言缓存，对性能至关重要。
+- **语法解析与动态注册** – 正确地将文件扩展名映射到 AST-grep 语法，包括处理不可用包时的用户友好通知。
+- **语言快照差异计算** – 用于跟踪代码库随时间的变化，对增量分析很重要。
+- **符号提取精度** – 所提取的导出、导入和签名的质量决定了后续依赖图和架构模型的准确性。
+
+这些组件共同构成了从原始源文件到架构镜像与分析所需结构化表示之间的桥梁。

@@ -1,12 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import * as fs from 'fs';
-import * as os from 'os';
-import * as path from 'path';
-import {
-  CredentialBackend,
-  MemoryCredentialBackend,
-  WindowsDPAPIBackend,
-} from '../src/infra/credentials/backend.js';
+import { CredentialBackend, WindowsDPAPIBackend } from '../src/infra/credentials/backend.js';
 import { CredentialStore } from '../src/infra/credentials/store.js';
 
 class UnreadableBackend implements CredentialBackend {

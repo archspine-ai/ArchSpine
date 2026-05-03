@@ -1,34 +1,30 @@
-# ArchSpine Risk Hotspots Report
+# Risk Hotspots Report
 
-## Purpose
+This document is a generated risk hotspots report for the ArchSpine system. It identifies and ranks files within the codebase that pose the highest risk to project health based on factors such as complexity, change frequency, dependency issues, and architectural violations. The report is experimental and is intended to provide a data-driven snapshot of current risk posture, refreshed on demand via the `spine sync` command.
 
-This document is a risk assessment report for the ArchSpine project. It identifies files that pose the highest maintenance or stability risks based on factors such as code complexity, change frequency, and dependency coupling. The report helps teams focus refactoring efforts and code review resources on the most fragile areas of the codebase.
+## Why This Document Exists
 
-## Audience
+The report exists to surface problematic areas of the codebase so that teams can prioritize refactoring, testing, and technical debt reduction. It ranks files by a composite risk score and includes detailed analysis for each high-risk file, enabling targeted improvement efforts. The report is part of the ArchSpine “view” system and is not automatically updated—teams run `spine sync` to generate a fresh snapshot.
 
-This report is intended for developers, tech leads, and maintainers who need to:
-- Prioritize refactoring and technical debt reduction
-- Allocate code review resources effectively
-- Identify fragile or high-risk areas in the codebase
+## Who Should Read It
 
-The report is automatically generated and should be refreshed regularly via `spine sync` to stay current.
+Primary audiences are:
+- **Developers** wanting to see which files need attention.
+- **Software architects** assessing architectural violations or coupling problems.
+- **Engineering managers** making resource allocation decisions.
+- **QA teams** focusing test coverage on high-risk areas.
 
-## Key Takeaways
+## Key Decisions and Workflows It Anchors
 
-- Files are ranked by a composite risk score that combines multiple factors
-- Each risk hotspot includes a breakdown of contributing risk factors and their impact
-- The report is experimental and requires manual refresh to remain up-to-date
+- **Prioritization of technical debt**: The risk ranking directly informs which files should be refactored or reviewed first.
+- **Test coverage planning**: Teams can use the high-risk file list to decide where to add or increase automated tests.
+- **Architecture compliance**: Detailed analysis often reveals rule violations or dependency issues that need architectural remediation.
+- **Refresh workflow**: The report is treated as a snapshot—run `spine sync` to regenerate it when the codebase changes. It does not auto-update.
 
-## Report Structure
+## How to Read This Report
 
-The report contains two main sections:
+The report consists of two main sections:
+1. **Top Risk Files** – a ranked table showing each file, its risk factors, impact level, and numerical score.
+2. **Detailed Analysis** – for each file listed, a deeper explanation of why it is considered high risk, including factors like complexity, churn, and specific rule violations.
 
-1. **Top Risk Files** – A ranked table of files with their risk factors, impact, and composite score
-2. **Detailed Analysis** – In-depth breakdown of each risk hotspot, including specific risk factor contributions
-
-## Workflow Anchors
-
-This report anchors the following decisions and workflows:
-- **Maintenance prioritization**: Teams use the risk rankings to decide which files to refactor first
-- **Code review scheduling**: High-risk files are flagged for mandatory review before changes
-- **Technical debt tracking**: The report provides a baseline for measuring risk reduction over time
+Use the rankings to focus improvement sprints and the detailed analysis to understand root causes before taking action.

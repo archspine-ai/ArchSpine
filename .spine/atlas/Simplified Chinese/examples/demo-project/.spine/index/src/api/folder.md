@@ -1,7 +1,0 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"examples/demo-project/.spine/index/src/api","role":"This directory contains metadata definitions for indexing and analyzing source code files within the ArchSpine mirror system.","responsibility":"Collectively, the components in this directory define the structural metadata schema for source code directories and files, including indexing provenance, dependency graphs, and architectural rule enforcement.","children":[{"filePath":"examples/demo-project/.spine/index/src/api/folder.json","role":"Defines the structural metadata and indexing provenance for a source code directory within the ArchSpine mirror system.","fileKind":"config"},{"filePath":"examples/demo-project/.spine/index/src/api/handler.ts.json","role":"Defines the semantic metadata, dependency graph, and structural skeleton for a single source file within the ArchSpine mirror system.","fileKind":"config"}],"provenance":{"indexedAt":"2026-05-01T03:58:34.797Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src/api` 目录在 ArchSpine 索引系统中负责定义源代码分析的核心元数据 schema。它描述了目录和文件的结构化元数据，包括索引来源、依赖关系和架构规则执行。该目录包含两个具体子模块：
-
-- **folder.json**：定义源代码目录的结构元数据及索引来源，作为镜像项目中文件夹描述的 schema。
-- **handler.ts.json**：为单个源文件（本例中为 `handler.ts`）定义完整的语义元数据、依赖关系和结构骨架，支持精细化的代码分析。
-
-该目录对索引流水线（AST + LLM 阶段）至关重要，并为 ArchSpine 其他部分理解项目结构与意图提供了契约。

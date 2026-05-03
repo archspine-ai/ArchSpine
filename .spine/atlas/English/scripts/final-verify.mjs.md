@@ -1,25 +1,17 @@
-<!-- spine-content-hash:09fd95cf959caf347b149d76693e9c4afd2bd8ad9869a71f297079f100852392 -->
-# ArchSpine ASTExtractor Verification Script
+---MARKDOWN:Simplified Chinese---
+# ArchSpine AST提取器验证脚本
 
-## Purpose
-This document is an automated test script that verifies the ASTExtractor component can correctly extract exported symbols from source code written in six different programming languages. It ensures the extractor handles inheritance, interfaces, generics, bounds, and other language-specific constructs accurately.
+## 目的
+该脚本是ASTExtractor组件的端到端验证工具。它会解析六种编程语言的预定义代码片段，并检查提取出的导出符号集合是否与预期名称一致。其目标是在提取器逻辑变更时捕获回归问题，确保多语言导出检测功能的持续可用性。
 
-## Context and Audience
-Intended for developers maintaining or extending the ArchSpine AST extraction pipeline. The test serves as a regression suite to confirm that changes to the extractor do not break multi-language support.
+## 受众
+适用于ArchSpine项目的开发者和测试工程师，尤其是那些维护或扩展AST提取管线的成员。持续集成系统和代码审查者也依赖此脚本在合并变更前验证提取器的正确性。
 
-## Key Responsibilities
-- Tests ASTExtractor against Java, C++, Rust, C, Python, and Go fixtures
-- Validates correct extraction of classes, interfaces, functions, structs, traits, and generics
-- Checks for missing or extra exports against expected lists
-- Reports per-language pass/fail status and detailed export signatures
+## 关键要点
+- 验证Java、C++、Rust、C、Python和Go语言的导出提取功能。
+- 测试继承、泛型、特质、接口以及公开/私有可见性处理。
+- 作为独立脚本运行，提供清晰的通过/失败输出。
+- 测试失败表明提取结果与预期导出之间存在差异。
 
-## Out of Scope
-- Does not test ASTExtractor error handling or edge cases beyond basic fixtures
-- Does not cover non-exported symbols or internal implementation details
-- Does not include performance or memory profiling
-
-## Key Takeaways
-- Covers Java, C++, Rust, C, Python, and Go with representative fixtures
-- Validates exports including classes, functions, interfaces, structs, traits, and generics
-- Reports missing or extra exports per language for quick debugging
-- Exits with non-zero code on any failure for CI integration
+## 它锚定的工作流
+该脚本是ArchSpine镜像系统回归测试套件的一部分。在CI管道中，每次AST提取器变更合并前都会自动执行。通过运行确认所有支持的语言正确导出符号；失败则会阻止合并并提醒开发人员回归。

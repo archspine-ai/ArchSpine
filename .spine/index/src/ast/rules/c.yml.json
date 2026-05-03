@@ -3,22 +3,22 @@
   "identity": {
     "filePath": "src/ast/rules/c.yml",
     "contentHash": "764067e49382a73c612f61a9787f7dbdccb062c9e49fdfbdef2d4e4c5ebe60c6",
-    "semanticHash": "365a759ad0c27d47487f0fb3a6b43665a89084f3c135102494a9c2222486f13c",
+    "semanticHash": "7f4c1dc630da1a229318332692c558775ae8dce41435c5e0e93a1038a582f318",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/ast/rules"
   },
   "semantic": {
-    "role": "Defines the structural grammar and pattern-matching rules for parsing C/C++ source code within the ArchSpine mirror system.",
+    "role": "AST extraction rule definition for C/C++ language within the ArchSpine mirror system",
     "responsibilities": [
-      "Specifying import patterns (e.g., #include directives)",
-      "Defining export patterns for functions, structs, and variables",
-      "Describing usage patterns for function calls, field access, and pointer field access"
+      "Define patterns for identifying C/C++ imports, exports (functions, structs, variables), and usages (calls, field access, pointer field access)",
+      "Provide the structural mapping rules used by the scanner to extract symbolic information from source code",
+      "Maintain language-specific extraction syntax for code analysis and indexing"
     ],
     "outOfScope": [
-      "Language-specific semantics beyond C/C++ syntax",
-      "Runtime behavior or execution logic",
-      "Project-specific business rules or domain logic"
+      "Other programming languages (e.g., TypeScript, Python, Rust) – those have separate rule files",
+      "High-level architectural policies or naming conventions",
+      "Runtime behavior or execution semantics beyond static analysis"
     ],
     "invariants": [],
     "changeIntent": {
@@ -30,23 +30,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document defines the pattern-based grammar rules used by ArchSpine to parse and mirror C/C++ source code structures. It specifies how imports, exports, and usages are identified and extracted from source files.",
-        "context_and_audience": "Intended for developers and AI agents working on the ArchSpine mirror system who need to understand or modify the source code parsing rules. It is also relevant for anyone integrating C/C++ code analysis into the ArchSpine framework.",
+        "purpose": "This document defines the exact syntactic patterns that the ArchSpine scanner uses to recognize C/C++ code constructs such as functions, structs, variables, includes, and usage references. It acts as a language rule set for the AST extraction engine.",
+        "context_and_audience": "Targeted at developers who maintain or extend the ArchSpine system's language support, particularly for C/C++ codebases. It is also consumed automatically by the scanner to perform static analysis and symbol extraction.",
         "key_takeaways": [
-          "The document defines three main categories: imports, exports, and usages.",
-          "Exports cover functions, structs (classes), and variables.",
-          "Usages cover function calls, field access, and pointer field access.",
-          "Patterns use a template syntax with placeholders like $NAME, $TYPE, $RET, etc."
+          "Patterns use a YAML-based DSL with placeholders like $NAME, $RET, $ARGS",
+          "Exports map code structures to symbolic kinds (Function, Class, Variable) for the index",
+          "Usages capture how symbols are referenced (calls, field access) for dependency tracking"
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档定义了 ArchSpine 用于解析和镜像 C/C++ 源代码结构的模式匹配规则。它规定了如何从源文件中识别和提取导入、导出和使用关系。",
-        "context_and_audience": "适用于 ArchSpine 镜像系统的开发者和 AI 代理，他们需要理解或修改源代码解析规则。也适用于任何将 C/C++ 代码分析集成到 ArchSpine 框架中的人员。",
+        "purpose": "该文档定义了ArchSpine扫描器用来识别C/C++代码结构（如函数、结构体、变量、包含指令以及使用引用）的精确语法模式。它作为AST提取引擎的语言规则集。",
+        "context_and_audience": "面向维护或扩展ArchSpine系统语言支持的开发者，特别是针对C/C++代码库。同时，它也会被扫描器自动读取，用于执行静态分析和符号提取。",
         "key_takeaways": [
-          "文档定义了三大类别：导入、导出和使用。",
-          "导出涵盖函数、结构体（类）和变量。",
-          "使用涵盖函数调用、字段访问和指针字段访问。",
-          "模式使用模板语法，包含 $NAME、$TYPE、$RET 等占位符。"
+          "模式使用基于YAML的DSL，包含$NAME、$RET、$ARGS等占位符",
+          "导出规则将代码结构映射到符号类型（函数、类、变量），以供索引使用",
+          "使用规则捕获符号如何被引用（调用、字段访问），用于依赖跟踪"
         ]
       }
     }
@@ -69,7 +67,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:44.933Z",
+    "indexedAt": "2026-05-03T11:25:09.795Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

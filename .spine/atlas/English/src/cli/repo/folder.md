@@ -1,2 +1,22 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/cli/repo","role":"CLI command adapter for managing repository artifact strategies.","responsibility":"Parses and validates artifact strategy input from CLI arguments, coordinates strategy checks and application via the repository admin service, provides user-facing console feedback, and integrates with system configuration for persisted and initialization strategies.","children":[{"filePath":"src/cli/repo/strategy.ts","role":"CLI command adapter for repository artifact strategy management within the ArchSpine system.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T03:58:47.342Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-The `src/cli/repo` directory is the CLI command adapter responsible for managing repository artifact strategies within the ArchSpine system. It contains a single notable submodule, `strategy.ts`, which handles parsing and validating artifact strategy input from CLI arguments, coordinating strategy checks and application via the repository admin service, providing user-facing console feedback, and integrating with system configuration for persisted and initialization strategies. The implementation areas that matter most include argument parsing, strategy validation logic, interaction with the admin service, and console output formatting.
+## Directory: Repository Artifact Strategy CLI Adapter
+
+This directory serves as the CLI command adapter layer for repository artifact strategy operations within the ArchSpine system. It provides the command-line interfaces to both **check** and **set** the artifact strategy (either `"local"` or `"distributable"`) for a given repository.
+
+### Structure and Grouping
+
+The directory contains a single primary module:
+
+- **`strategy.ts`** – The main entry point that orchestrates all CLI interactions. It parses and normalizes strategy input from command-line arguments, delegates to core logic via `checkRepositoryStrategy` and `applyRepositoryStrategy`, and displays step-by-step progress and results using a `printStep` callback.
+
+All logic is encapsulated in one file, keeping the adapter focused on input/output concerns while the core business rules remain in a separate domain layer.
+
+### Key Implementation Areas
+
+1. **Input Parsing** – Validates and normalizes the user-supplied strategy value (`"local"` or `"distributable"`) from CLI arguments.
+2. **Strategy Checking** – Calls `checkRepositoryStrategy` to report current strategy status, including warnings for missing or inconsistent strategies.
+3. **Strategy Setting** – Invokes `applyRepositoryStrategy` with a progress callback (`printStep`) to provide real-time feedback during the operation.
+4. **Configuration Reporting** – Reads system configuration (`Config`) to display the persisted artifact strategy and the initialization strategy back to the user.
+
+### Concrete Submodules
+
+- `strategy.ts` – The sole and complete CLI adapter for repository artifact strategy check/set commands.

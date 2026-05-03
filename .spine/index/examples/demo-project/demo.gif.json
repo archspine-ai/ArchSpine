@@ -3,22 +3,24 @@
   "identity": {
     "filePath": "examples/demo-project/demo.gif",
     "contentHash": "c77bae56955b600134390ecf338b69cc1f6c686c859739dc38eaf02e8a2b62b5",
-    "semanticHash": "8091f453be9b6c08cdb60fde7b4409dcceb6bc26648740fad77ed976a948513c",
+    "semanticHash": "3be432b70967357d58aee5b9c0c4cb48d0b2b39818481fa591e8d14bc3a89738",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "examples/demo-project"
   },
   "semantic": {
-    "role": "Project narrative and architectural overview for the ArchSpine mirror system",
+    "role": "This document serves as the comprehensive project overview and narrative guide for the ArchSpine mirror system, explaining its core philosophy, architecture, and usage.",
     "responsibilities": [
-      "Defining the core narrative concepts and design philosophy of ArchSpine",
-      "Documenting the system's maintenance boundaries and scope",
-      "Describing the intended audience and usage contexts for the document"
+      "Explaining the purpose of ArchSpine as a documentation mirror system",
+      "Defining the core concepts of spine, atlas, and index layers",
+      "Describing the multi-language documentation support (English, Simplified Chinese, etc.)",
+      "Covering the maintenance of rules, schemas, templates, and CLI commands",
+      "Detailing the build, sync, and validation workflows"
     ],
     "outOfScope": [
-      "Technical implementation details or code-level specifications",
-      "Specific API documentation or interface contracts",
-      "Operational deployment or infrastructure instructions"
+      "Low-level implementation details of specific CLI commands or internal engine logic",
+      "Third-party API integrations beyond the built-in LLM providers",
+      "Performance benchmarks or comparative analysis with other tools"
     ],
     "invariants": [],
     "changeIntent": {
@@ -30,23 +32,25 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document serves as the foundational narrative for the ArchSpine mirror system, explaining why the system exists and what core problems it solves. It articulates the architectural vision and the conceptual framework that guides development and maintenance.",
-        "context_and_audience": "The document is intended for both human readers (developers, architects, project stakeholders) and AI agents who need to understand the system's purpose and boundaries. It provides a high-level overview that bridges technical and non-technical understanding.",
+        "purpose": "This document provides the foundational narrative and architectural explanation for the ArchSpine project. It helps users understand why ArchSpine exists—to solve the problem of documentation drift in multi-language, multi-realm projects—and who it is for: developers, documentation maintainers, and AI agents who need a consistent and authoritative source of truth for a project's structure and metadata.",
+        "context_and_audience": "The intended audience includes software architects, technical writers, DevOps engineers, and AI coding assistants. The document assumes familiarity with repository structures and CI/CD pipelines. It is particularly relevant for teams working on large, polyglot codebases that require synchronized documentation across languages.",
         "key_takeaways": [
-          "ArchSpine is a mirror system with a clear narrative purpose and architectural philosophy",
-          "The document defines what is in scope and what is explicitly out of scope for the project",
-          "Maintenance boundaries are clearly established to guide future development decisions",
-          "The system is designed to serve both human and AI agent audiences through structured documentation"
+          "ArchSpine creates a mirrored documentation layer (the 'spine') that stays in sync with the actual codebase.",
+          "The system uses an 'atlas' structure to support multiple languages and rule sets.",
+          "Rules, schemas, and templates ensure consistent documentation quality and enforce architectural policies.",
+          "The CLI provides commands for initialization, scanning, checking, fixing, syncing, and viewing the spine.",
+          "Maintenance is facilitated through automated build, validation, and drift detection."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档是 ArchSpine 镜像系统的基础叙事文档，阐述了系统存在的原因以及它所解决的核心问题。它清晰地表达了架构愿景和指导开发与维护的概念框架。",
-        "context_and_audience": "本文档面向人类读者（开发者、架构师、项目利益相关者）以及需要理解系统目的和边界的 AI 代理。它提供了一个高层次的概述，弥合了技术与非技术理解之间的差距。",
+        "purpose": "本文档为 ArchSpine 镜像系统提供基础性叙事和架构说明。它帮助用户理解 ArchSpine 为何存在——为了解决多语言、多领域项目中文档漂移的问题——以及适用于谁：开发者、文档维护者以及需要一致且权威的项目结构和元数据真相源的 AI 智能体。",
+        "context_and_audience": "目标受众包括软件架构师、技术作家、DevOps 工程师和 AI 编程助手。本文档假设读者熟悉仓库结构和 CI/CD 流水线。对于需要跨语言同步文档的大型多语言代码库团队尤其相关。",
         "key_takeaways": [
-          "ArchSpine 是一个具有明确叙事目的和架构哲学的镜像系统",
-          "文档明确界定了项目的范围以及明确排除在外的内容",
-          "维护边界已清晰确立，以指导未来的开发决策",
-          "系统通过结构化文档设计，同时服务于人类和 AI 代理受众"
+          "ArchSpine 创建一个镜像文档层（‘脊骨’），与实际代码库保持同步。",
+          "系统使用‘地图集’结构支持多语言和规则集。",
+          "规则、模式和模板确保一致的文档质量并强制执行架构策略。",
+          "CLI 提供命令用于初始化、扫描、检查、修复、同步和查看脊骨。",
+          "通过自动化构建、验证和漂移检测来促进维护。"
         ]
       }
     }
@@ -69,7 +73,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:44:15.882Z",
+    "indexedAt": "2026-05-03T11:23:05.289Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

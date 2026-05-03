@@ -1,28 +1,24 @@
-<!-- spine-content-hash:237c9fe0c4705b49214cffc08c7056702d19015475676471e8f29a7b33a60f50 -->
-# ArchSpine CLI Demo Script
+# ArchSpine Demo Script – Overview
 
-## Purpose
-This document is a terminal recording script that visually demonstrates the core CLI workflow of the ArchSpine project. It walks through building the project, cleaning up demo artifacts, and running sync, check, and fix commands using a mock provider.
+This document is a terminal recording script (demo tape) that walks through the core ArchSpine workflow: building the project, cleaning a demo project's spine data, then running `sync`, `check`, and `fix` commands in sequence. It serves as a quick, visual introduction to how ArchSpine manages project documentation and governance.
 
-## Context and Audience
-Intended for developers evaluating ArchSpine, contributors setting up a demo environment, or anyone wanting a quick visual overview of how the tool operates from the command line.
+## Who Should Read This
 
-## Key Takeaways
-- The demo shows a complete cycle: build → clean → sync → check → fix.
-- Uses a mock provider (`SPINE_PROVIDER=mock`) to avoid external dependencies.
-- The script is designed to be replayed with tools like VHS or similar terminal recorders.
+- **Developers and technical evaluators** who want to see ArchSpine in action before reading deeper documentation.
+- **Presenters or tutorial creators** who need a repeatable demo scenario to showcase ArchSpine's features.
 
-## File Role
-This file serves as a demonstration script for the ArchSpine project's CLI workflow.
+## Key Workflows Anchored by This Document
 
-## Key Responsibilities
-- Showcasing the build, sync, check, and fix commands in sequence.
-- Providing a reproducible demo for end-users or contributors.
+| Workflow | What It Demonstrates |
+|----------|----------------------|
+| `sync`   | Generates and updates the spine index and atlas from source code |
+| `check`  | Detects violations (missing documentation, architectural drift) |
+| `fix`    | Interactively repairs detected issues |
 
-## Notable Invariants / Negative Scope
-- This script does **not** provide a detailed explanation of ArchSpine's architecture or configuration.
-- It does **not** handle error cases or edge cases beyond the happy path.
+The demo shows a complete "clean slate → fixed state" cycle that completes in seconds, illustrating how ArchSpine can be used to maintain documentation alignment with a project's architecture.
 
-## Exported / Externally Visible Behavior
-- The script is intended to be run as a terminal recording, not imported as a module.
-- It has no public API surface; its value is in the visual demonstration it produces.
+## Decisions This Document Anchors
+
+- Adoption of ArchSpine's CLI workflow for documentation governance.
+- Evaluation of ArchSpine's automatic detection and repair capabilities.
+- Understanding the typical interaction pattern (sync → check → fix) without needing full configuration knowledge.

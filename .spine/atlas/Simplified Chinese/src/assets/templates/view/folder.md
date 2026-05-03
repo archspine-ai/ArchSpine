@@ -1,9 +1,17 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/assets/templates/view","role":"This directory contains analysis and documentation files that describe the public surface and risk profile of the ArchSpine project.","responsibility":"Collectively, these files provide a machine-readable and human-readable inventory of all CLI commands, MCP endpoints, and exported module interfaces, alongside a ranked risk analysis of the most critical files in the codebase to support maintenance and review prioritization.","children":[{"filePath":"src/assets/templates/view/public-surface.md","role":"Public API surface inventory and entry point registry","fileKind":"document"},{"filePath":"src/assets/templates/view/risk-hotspots.md","role":"Risk analysis report for the ArchSpine project","fileKind":"document"}],"provenance":{"indexedAt":"2026-05-01T03:58:43.419Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src/assets/templates/view` 目录是 ArchSpine 项目的公共接口与风险概况的文档中心。该目录包含两份关键文档，共同构成全面的清单与评估：`public-surface.md` 和 `risk-hotspots.md`。
+# `analysis/` — 公共接口清单与风险评估中心
 
-- **`public-surface.md`** 是所有导出的 CLI 命令、MCP 端点以及模块接口的权威注册表，是理解项目 API 表面的机器可读与人类可读的入口点。
-- **`risk-hotspots.md`** 是一份按风险等级排序的分析报告，突出代码库中最关键的文件，以支持维护和审查优先级的确定。
+该目录汇聚了项目公共接口与代码库健康状况的自动生成清单和风险评估。它提供 `ArchSpine` 系统对外暴露的所有内容的单一事实来源 —— CLI 命令、MCP 工具以及导出的模块 —— 同时定位需要重构或重点测试的高风险文件。
 
-这两个文件是该目录仅有的子项，按照互补的职能分组：一个定义暴露的内容，另一个评估存在的风险。最重要的实现领域包括面向公共的命令行界面、MCP 协议层、导出的模块边界以及文件级风险评分方法。
+## 重要子文件
 
-具体引用的子模块包括 CLI 子命令、MCP 路由处理器和模块导出语句，所有这些都在这两个文件中进行了编目和评估。
+- **`public-surface.md`** — 所有公共入口的自动生成目录。列出 CLI 命令及其签名和描述、所有 MCP（模型上下文协议）工具与资源，以及每个导出模块及其公开符号。此文件通过 `spine sync` 命令刷新，以与实际实现保持同步，同时服务于人类读者和自动化工具。
+
+- **`risk-hotspots.md`** — 一份风险评估报告，根据复杂度、变更频率、依赖问题和架构违规等对文件进行排序。每个高风险文件都附有详细分析，有助于确定重构或测试的优先级。与 `public-surface.md` 一样，此快照也由 `spine sync` 重新生成。
+
+## 重点实施领域
+
+- **公共接口完整性** – 确保所有 CLI 命令、MCP 工具和模块导出被准确记录，并与代码库自动保持同步。
+- **风险优先级排序** – 利用定量和定性因素揭示最棘手的文件，指导有针对性的重构。
+- **自动刷新** – 两个文件均依赖 `spine sync` 命令来维持准确性，因此生成流水线是分析工作流的关键环节。
+
+这两个文件共同提供了系统对外暴露了什么以及应将维护工作重点放在哪里的简明而全面的视图。

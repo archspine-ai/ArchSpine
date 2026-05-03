@@ -1,36 +1,33 @@
-<!-- spine-content-hash:f0d70ca6d346612da6e4c70f044934103521cc1582fb5c4209daffe8f2fa6e63 -->
-# SpineFolderUnit 架构
+# ArchSpine 文件夹单元配置摘要
 
-## 角色
-定义 **SpineFolderUnit** 的架构，SpineFolderUnit 是 ArchSpine 镜像系统中的一个结构节点，代表具有特定角色和职责的目录。
+## 用途
 
-## 主要职责
-- 验证 ArchSpine 项目树中文件夹级别单元的结构
-- 强制执行必需的元数据字段（`schemaVersion`、`directory`、`role`、`responsibility`、`children`、`provenance`）
-- 定义文件夹单元内子文件条目的形状和约束
-- 跟踪溯源元数据，包括索引时间戳、生成器版本和流水线阶段
+`SpineFolderUnit` 模式定义了 ArchSpine 文档索引中文件夹级别的条目结构。它记录项目目录的角色、职责以及其中的子文件，同时包含来源元数据以追踪索引历史。
 
-## 不变约束
-- 对象**不得**包含超出明确定义之外的额外属性
-- 所有六个必填字段必须存在：`schemaVersion`、`directory`、`role`、`responsibility`、`children`、`provenance`
-- 每个子条目必须包含 `filePath`、`role` 和 `fileKind`
-- 溯源信息必须包含 `indexedAt`、`generatorVersion` 和 `pipelineStages`
+## 此配置控制的内容
 
-## 参数定义
-- **schemaVersion**：指定用于验证的架构版本，确保不同版本之间的兼容性。
-- **directory**：该单元所代表的目录在项目范围内的相对路径。
-- **role**：描述此文件夹单元在系统中功能角色的非空字符串。
-- **responsibility**：描述此文件夹单元职责或目的的非空字符串。
-- **children**：子文件条目数组，每个条目包含 `filePath`、`role` 和 `fileKind`，用于定义属于此文件夹单元的文件。
-- **provenance**：包含关于此单元何时以及如何被索引的元数据对象，包括 `indexedAt` 时间戳、`generatorVersion` 和 `pipelineStages` 数组。
+此配置控制文档索引中与目录相关的元数据。自动化系统使用这些数据进行规则验证、视图生成、变更检测和审计追踪。
 
-## 稳定性与风险
-此架构对文件夹单元实施严格的结构验证。如果文件夹单元验证失败（例如缺少必填字段或包含额外属性），整个单元可能被拒绝，从而可能破坏镜像树。溯源追踪确保了可审计性，但增加了对准确时间戳和版本数据的依赖。配置错误的子条目可能导致系统中出现孤立或错误分类的文件。
+## 关键参数
 
-## 负面范围（不在范围内）
-- 此架构未明确定义任何不在范围内的项目。
+- **schemaVersion**：该文件夹单元使用的模式版本。必须与有效模式版本匹配，以确保向前兼容。
+- **directory**：目录相对于仓库根目录的文件系统路径（限定作用域路径）。标识该单元描述的目录。
+- **role**：描述该目录在项目架构中功能角色的非空字符串（例如："source"、"docs"、"config"）。
+- **responsibility**：描述该目录职责或目的的非空字符串（例如："包含主要应用逻辑"）。
+- **children**：该目录下的文件条目数组。每个条目必须包含：
+  - **filePath**：相对于仓库根目录的路径。
+  - **role**：描述文件角色的非空字符串。
+  - **fileKind**：文件类型（例如：source、test、config）。
+- **provenance**：索引元数据，包含：
+  - **indexedAt**：ISO 8601 时间戳，表示单元被索引的时间。
+  - **generatorVersion**：创建该单元的索引工具版本字符串。
+  - **pipelineStages**：处理该单元的流水线阶段名称数组（例如：["validate", "transform"]）。
 
-## 导出的 / 外部可见行为
-- 该架构用于在文件夹单元添加到 ArchSpine 镜像树之前对其进行验证。
-- 验证失败会导致整个文件夹单元被拒绝。
-- 溯源数据是必需的，以确保可审计性和可追溯性。
+## 操作风险与稳定性注意事项
+
+- **结构严格**：模式强制执行严格的必填字段，并禁止额外属性。任何字段缺失或类型错误都会导致自动化处理失败，可能中断整个文档流水线，造成输出不完整。
+- **来源数据依赖**：`provenance` 块是必须的。缺少该块，系统将无法验证数据的新鲜度或追溯单元来源，可能妨碍调试和恢复。
+- **模式漂移风险**：引入新字段时不更新 `schemaVersion` 可能导致兼容性问题。`additionalProperties: false` 约束意味着任何不被识别的字段都会被拒绝。
+- **验证链影响**：对模式或通过 `$ref` 引用的共享定义的更改可能无声传播，导致下游验证失败，需要协调一致。
+
+操作人员应确保所有必填字段准确填充，特别是 `provenance.indexedAt` 和 `provenance.generatorVersion`，以保持可追溯性并支持自动数据新鲜度检查。

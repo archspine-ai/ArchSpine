@@ -28,7 +28,14 @@ export const DEFAULT_SCAN_POLICY: ScanPolicy = {
   // The entire .spine/ directory is a protocol-level hard exclusion.
   // RuleEngine and config readers access these files directly via fs,
   // so no scan-pipeline inclusion is needed or desired.
-  protocolExclusions: ['.spine/'],
+  protocolExclusions: [
+    '.spine/',
+    '**/.spine/',
+    'package-lock.json',
+    'pnpm-lock.yaml',
+    'yarn.lock',
+    'bun.lockb',
+  ],
   protocolInclusions: ['.spine/rules/', '.spine/config.json'],
 };
 

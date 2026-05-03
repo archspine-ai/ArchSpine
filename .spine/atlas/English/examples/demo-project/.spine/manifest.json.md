@@ -1,42 +1,39 @@
-<!-- spine-content-hash:12c8b567f15a43d187207ac6c3e019507bdfb4a50548331f7d1f7116b6edfc1a -->
-# ArchSpine Health & Sync Snapshot
+# ArchSpine Health-Check Config Summary
 
-## Role
-Provides a lightweight, read-only health-check view of the ArchSpine mirror system's synchronization state and constraint status.
+This document summarizes the configuration snapshot produced by the ArchSpine system. It is a lightweight, human-readable health check — **not** the authoritative state store (which resides in `.spine/cache.db`). Operators and CI systems can use this file to quickly assess synchronization health and project metadata.
 
-## Key Responsibilities
-- Tracks the last synchronization timestamp and mode (full or incremental).
-- Reports whether the reverse index is complete and how many units were indexed.
-- Exposes the LLM provider and model used during the last sync.
-- Reports the number of active constraint violations and the duration of the last sync.
+## What It Controls
 
-## Notable Invariants
-- `activeViolations` must be non-negative.
-- `lastSyncDurationMs` must be non-negative.
-- `indexedUnitCount` must be non-negative.
-- `reverseIndexComplete` must be a boolean.
+| Parameter | Description | Example Value from Latest Sync |
+|-----------|-------------|--------------------------------|
+| `schemaVersion` | Format version of this config file. Must be exactly `1.0.0` for toolchain compatibility. | `1.0.0` |
+| `generatorVersion` | Version of the ArchSpine generator that produced this file, used for traceability and upgrade decisions. | `archspine/1.0.0` |
+| `project` | Human‑readable project name for identification in multi‑project environments. | `demo-project` |
+| `sync.lastSyncAt` | ISO 8601 timestamp of the most recent full or incremental sync. A stale timestamp indicates the repository may be out of date. | `2026-04-26T03:53:07.598Z` |
+| `sync.lastSyncMode` | Whether the last sync was `full` or `incremental`. Affects how much state was rebuilt. | `full` |
+| `sync.reverseIndexComplete` | Boolean flag; when `false`, any operation relying on the reverse index (e.g., symbol search) may be incomplete. | `true` |
+| `sync.indexedUnitCount` | Number of source units successfully indexed. A lower than expected count may signal missing files or scan failures. | `7` |
+| `sync.llm.provider` | The LLM provider used for the last sync (e.g., `mock`, `openai`, `gemini`). Important for cost and consistency auditing. | `mock` |
+| `sync.llm.providerSource` | Where the provider selection originated (`project-config` or `global-config`), affecting override behavior. | `project-config` |
+| `sync.llm.model` | The specific model name used for LLM calls. | `deepseek-chat` |
+| `sync.llm.modelSource` | Where the model came from, enabling debugging of model resolution precedence. | `global-config` |
+| `health.activeViolations` | Current number of unaddressed rule violations. Zero is ideal; positive values require investigation. | `0` |
+| `health.lastSyncDurationMs` | Milliseconds taken by the last sync, useful for performance trend analysis. | `826` |
 
-## Negative Scope
-This file does not control system behavior directly. It is a derived, read-only snapshot. Core state is stored in `.spine/cache.db`.
+## Operational Risks & Stability Concerns
 
-## Exported / Externally Visible Behavior
-The file exposes a flat set of fields under `sync` and `health` namespaces. All values are informational and intended for monitoring, alerting, and debugging. No functions or classes are exported.
+- **Derived view, not primary state.** This file is a snapshot derived from the sync process. The authoritative state is in `.spine/cache.db`. A clean `activeViolations` value (0) does **not** guarantee that the underlying cache is uncorrupted or up‑to‑date.
+- **Timestamp staleness.** If `lastSyncAt` is significantly behind the current time, the repository may be out of sync. Always cross‑check with the actual repository state before making critical decisions.
+- **Index completeness guard.** The invariant `reverseIndexComplete === true` must hold before any index‑based operation (e.g., symbol search, dependency analysis) can be trusted. A `false` value may lead to incomplete results.
+- **Zero violations ≠ all clear.** Unresolved violations may exist in the cache that are not yet reflected in this snapshot. Always verify against the full manifest and cache for governance audits.
+- **Provider/model resolution.** Changes to `llm.provider` or `llm.model` between syncees can affect cost and output consistency. The `providerSource` and `modelSource` fields help debug unexpected overrides.
 
-## Parameter Definitions
-- `schemaVersion`: Version of the schema this file conforms to.
-- `generatorVersion`: Version of the ArchSpine generator that produced this file.
-- `project`: Name of the project this configuration belongs to.
-- `sync.lastSyncAt`: ISO 8601 timestamp of the most recent synchronization.
-- `sync.lastSyncMode`: Type of the last sync operation (e.g., full or incremental).
-- `sync.reverseIndexComplete`: Boolean indicating whether the reverse index was fully built during the last sync.
-- `sync.indexedUnitCount`: Number of units indexed during the last sync.
-- `sync.llm.provider`: LLM provider used during the last sync (e.g., mock, openai).
-- `sync.llm.providerSource`: Source of the LLM provider configuration (e.g., project-config, global-config).
-- `sync.llm.model`: LLM model used during the last sync (e.g., deepseek-chat).
-- `sync.llm.modelSource`: Source of the LLM model configuration (e.g., global-config).
-- `health.activeViolations`: Number of currently active constraint violations. Zero indicates a healthy state.
-- `health.lastSyncDurationMs`: Duration of the last sync operation in milliseconds.
-- `_note`: Informational note indicating that the core state is stored in `.spine/cache.db`.
+## Key Invariants for Operators
 
-## Stability and Risks
-This file is a derived, read-only snapshot. It does not control system behavior directly. However, if the values become stale or inconsistent with the cache database, monitoring and alerting systems may report false positives or miss real issues. A non-zero `activeViolations` count indicates constraint breaches that could affect downstream operations. A very high `lastSyncDurationMs` may signal performance degradation or resource contention. The LLM provider/model fields are informational; mismatches with actual runtime configuration could cause confusion during debugging.
+- `schemaVersion` must equal `1.0.0` to ensure protocol compatibility.
+- `generatorVersion` should match the expected ArchSpine version pattern.
+- `lastSyncAt` must be a valid ISO 8601 UTC timestamp to avoid time drift issues.
+- `reverseIndexComplete` must be `true` before using index‑based features.
+- `health.activeViolations` must be `0` for a clean bill of health.
+
+Treat this file as a quick diagnostic indicator. For critical operations, always validate against the authoritative state in `.spine/cache.db`.

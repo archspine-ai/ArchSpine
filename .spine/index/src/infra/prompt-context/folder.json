@@ -1,17 +1,17 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/infra/prompt-context",
-  "role": "This directory contains the core orchestration and configuration modules for the ArchSpine prompt policy system.",
-  "responsibility": "Collectively, these components manage the lifecycle of prompt generation, including policy resolution, budget calculation, content trimming, diagnostic generation, and type-safe configuration parsing, ensuring consistent and efficient prompt assembly for the LLM orchestration system.",
+  "role": "Infrastructure layer responsible for assembling source prompt artifacts, including policy resolution, budget calculation, trimming, diagnostics, and type definitions for the ArchSpine prompt system.",
+  "responsibility": "Resolves prompt policy and validation policy based on task mode; calculates token/line budgets; compacts structural skeletons; trims contextual content; generates dependency and rule block diagnostics; provides parsing utilities for configuration enums; defines centralized constants and type contracts for prompt generation and validation.",
   "children": [
     {
       "filePath": "src/infra/prompt-context/artifacts.ts",
-      "role": "Core orchestration service that assembles source prompt artifacts by coordinating policy resolution, budget calculation, content trimming, and diagnostic generation.",
+      "role": "Orchestration function that assembles source prompt artifacts by coordinating policy resolution, budget calculation, structural skeleton compaction, content trimming, and diagnostic generation.",
       "fileKind": "source"
     },
     {
       "filePath": "src/infra/prompt-context/budgets.ts",
-      "role": "Infrastructure utility function for calculating prompt token budgets based on task mode, validation policy, and source code artifacts.",
+      "role": "Infrastructure facade for resolving and computing prompt token budgets based on task mode, validation policy, and source artifacts.",
       "fileKind": "source"
     },
     {
@@ -21,22 +21,22 @@
     },
     {
       "filePath": "src/infra/prompt-context/diagnostics.ts",
-      "role": "Core diagnostic utility for analyzing rule block retention and filtering in prompt relevance processing.",
+      "role": "Diagnostic utility for analyzing rule block retention and dependency selection in prompt relevance processing within the ArchSpine infrastructure layer.",
       "fileKind": "source"
     },
     {
       "filePath": "src/infra/prompt-context/parsers.ts",
-      "role": "Infrastructure utility function for parsing and validating the PromptPolicyTier configuration value from raw string input.",
+      "role": "Infrastructure utility for parsing and validating typed configuration enums from raw string input.",
       "fileKind": "source"
     },
     {
       "filePath": "src/infra/prompt-context/policy.ts",
-      "role": "Infrastructure policy resolver providing default prompt and validation policies based on task mode.",
+      "role": "Infrastructure policy resolver providing default and overridable prompt tier and validation policy for task modes.",
       "fileKind": "source"
     },
     {
       "filePath": "src/infra/prompt-context/trim.ts",
-      "role": "Core utility module providing text trimming and formatting functions for the ArchSpine system.",
+      "role": "Core text formatting and trimming utility module for prompt construction in the ArchSpine system.",
       "fileKind": "source"
     },
     {
@@ -46,7 +46,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-01T03:58:47.637Z",
+    "indexedAt": "2026-05-03T11:27:12.131Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

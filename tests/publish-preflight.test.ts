@@ -18,6 +18,20 @@ function makeTempDir(): string {
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const builtCliPath = path.join(repoRoot, 'dist', 'cli', 'index.js');
 
+function buildIsolatedCliEnv(cwd: string): NodeJS.ProcessEnv {
+  return {
+    ...process.env,
+    XDG_CONFIG_HOME: path.join(cwd, '.test-xdg-config'),
+    SPINE_PROVIDER: '',
+    SPINE_API_KEY: '',
+    SPINE_MODEL: '',
+    SPINE_BASE_URL: '',
+    SPINE_MODE: '',
+    SPINE_PROMPT_TIER: '',
+    SPINE_VALIDATE_POLICY: '',
+  };
+}
+
 function makeRuntimeBaseline(rootDir: string): void {
   const spineDir = path.join(rootDir, '.spine');
   fs.mkdirSync(spineDir, { recursive: true });
@@ -45,6 +59,7 @@ function runBuiltCli(args: string[], cwd: string): string {
     cwd,
     encoding: 'utf-8',
     stdio: 'pipe',
+    env: buildIsolatedCliEnv(cwd),
   });
 }
 

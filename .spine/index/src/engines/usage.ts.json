@@ -4,54 +4,72 @@
     "filePath": "src/engines/usage.ts",
     "contentHash": "b163b8384e9f069b1a4dc2dd826586356c50e3a7894599286655832381245925",
     "skeletonHash": "afcb9569c30171a4b9bdfcd42a9282e9d239e1ec52977ee7d5ebcbad9effeb50",
-    "semanticHash": "98ad6115b119cd691ffe13ebf4991dc9c1bbdfc8f97ce56f859755926ce0f173",
+    "semanticHash": "74e27f12a3d19309e0048a45744012d95d0f55c33cc1bfdd936ef6a38cb44533",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/engines"
   },
   "semantic": {
-    "role": "ArchSpine CLI utility function generating formatted usage and audit reports from the manifest database.",
+    "role": "ArchSpine engine module that generates formatted usage and audit reports from the Manifest data store, providing governance visibility without CLI coupling.",
     "responsibilities": [
-      "Retrieves total usage statistics, summary breakdown, and active violations from the Manifest.",
-      "Formats and outputs a human-readable report to the runtime IO channel.",
-      "Handles empty data scenarios gracefully with appropriate messages.",
-      "Calculates and displays token counts and estimated costs."
+      "Opens the local Manifest using `Manifest.open(rootDir)` to load persistent state.",
+      "Retrieves total usage statistics (input/output tokens), summary breakdown, and active violations from the Manifest.",
+      "Formats and outputs a human-readable report section to the RuntimeIO channel, including token counts, estimated costs, and detailed violation rows.",
+      "Handles empty data sets gracefully by not printing any rows when the summary or violations arrays are empty.",
+      "Calculates total cost from token usage and displays it as a formatted decimal."
     ],
     "outOfScope": [
-      "Data persistence or modification of the manifest database.",
-      "User authentication or authorization.",
-      "Interactive command-line argument parsing.",
-      "Graphical user interface (GUI) rendering."
+      "Does not modify the Manifest or perform any write operations.",
+      "Does not authenticate or authorize users.",
+      "Does not interact with external APIs or databases beyond the local Manifest file.",
+      "Does not handle report generation for other domains (e.g., compliance, performance)."
     ],
     "invariants": [
-      "Depends on the Manifest interface for data retrieval.",
-      "Depends on the RuntimeIO interface for output formatting.",
-      "Assumes the manifest database is accessible at the provided root directory."
+      "Function is async and expects a valid `rootDir` path that contains a `.spine/manifest.json`.",
+      "The `runtimeIO` must provide an `info` method (or equivalent logging channel).",
+      "The Manifest object must expose `getTotalUsage()`, `getUsageSummary()`, and `getActiveViolations()` methods that return expected shapes."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a decoupled, reusable reporting function for CLI and other services to display usage and audit data.",
-      "recentChangeIntent": "Part of a broader refactor to modularize CLI and decouple core infrastructure services, as indicated by the git commit."
+      "architecturalIntent": "Provide a reusable engine for generating usage and audit reports to support architectural governance visibility in the ArchSpine system.",
+      "recentChangeIntent": "Initial creation of the report engine as part of ArchSpine v1.0.0 – Architectural Governance & Semantic Layer for the AI Era."
     },
     "publicSurface": [
-      "runUsageReport"
+      "runUsageReport(rootDir: string, runtimeIO?: RuntimeIO): Promise<void>"
     ],
     "ruleViolations": [],
-    "driftDetected": false,
-    "driftReason": null,
+    "driftDetected": true,
+    "driftReason": "Previous semantic categorized this as a 'CLI utility function', but the current code imports from infra layers and receives its IO channel via parameter, making it an engine module with no CLI dependency. The role is more aligned with a reusable analysis engine than a CLI utility.",
     "localized": {
       "English": {
-        "role": "ArchSpine CLI utility function generating formatted usage and audit reports from the manifest database.",
+        "role": "ArchSpine engine module that generates formatted usage and audit reports from the Manifest data store, providing governance visibility without CLI coupling.",
         "responsibilities": [
-          "Retrieves total usage statistics, summary breakdown, and active violations from the Manifest.",
-          "Formats and outputs a human-readable report to the runtime IO channel.",
-          "Handles empty data scenarios gracefully with appropriate messages.",
-          "Calculates and displays token counts and estimated costs."
+          "Opens the local Manifest using `Manifest.open(rootDir)` to load persistent state.",
+          "Retrieves total usage statistics (input/output tokens), summary breakdown, and active violations from the Manifest.",
+          "Formats and outputs a human-readable report section to the RuntimeIO channel, including token counts, estimated costs, and detailed violation rows.",
+          "Handles empty data sets gracefully by not printing any rows when the summary or violations arrays are empty.",
+          "Calculates total cost from token usage and displays it as a formatted decimal."
         ],
         "outOfScope": [
-          "Data persistence or modification of the manifest database.",
-          "User authentication or authorization.",
-          "Interactive command-line argument parsing.",
-          "Graphical user interface (GUI) rendering."
+          "Does not modify the Manifest or perform any write operations.",
+          "Does not authenticate or authorize users.",
+          "Does not interact with external APIs or databases beyond the local Manifest file.",
+          "Does not handle report generation for other domains (e.g., compliance, performance)."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 引擎模块，从 Manifest 数据存储生成格式化的使用统计和审计报告，提供治理可视性，无需 CLI 耦合。",
+        "responsibilities": [
+          "通过 `Manifest.open(rootDir)` 打开本地 Manifest 以加载持久化状态。",
+          "从 Manifest 中检索总使用量统计（输入/输出 token）、摘要分析以及活跃违规记录。",
+          "将包括 token 数量、预估成本以及详细违规行在内的信息格式化为可读报告并输出到 RuntimeIO 通道。",
+          "当摘要或违规数组为空时，优雅地处理空数据集（不打印任何行）。",
+          "根据 token 使用量计算总成本并以格式化小数显示。"
+        ],
+        "outOfScope": [
+          "不修改 Manifest 或执行任何写操作。",
+          "不进行用户认证或授权。",
+          "不接入外部 API 或本地 Manifest 文件以外的数据库。",
+          "不处理其他领域（如合规性、性能）的报告生成。"
         ]
       }
     }
@@ -114,10 +132,41 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [
+      {
+        "targetPath": "src/cli/commands/usage.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/engines/usage.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/usage.ts/getTotalUsage#",
+        "targetPath": "src/infra/db/repositories/usage.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/usage.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/usage.ts/getUsageSummary#",
+        "targetPath": "src/infra/db/repositories/usage.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/usage.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/getActiveViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:37.847Z",
+    "indexedAt": "2026-05-03T11:25:02.667Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

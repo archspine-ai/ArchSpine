@@ -4,7 +4,7 @@
     "filePath": "src/assets/templates/prompts/arch-diagram.ts",
     "contentHash": "e995858793c70d1bbe156f91dad757c1a2450db6f34a2967cda4e27caddd14c3",
     "skeletonHash": "32dcc65ed2baa26614b071f3902905a1c808d062a6819d90e1db63aaca0a9cf4",
-    "semanticHash": "a8a82a25c29c1dcd392348fcef0d203c2522c0774e60238e2260e56c7ed083d2",
+    "semanticHash": "0bb9e1a4b5caf8c345adf831216176ddf5e61fff9d642c584e10c57eef74a829",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/assets/templates/prompts"
@@ -12,29 +12,28 @@
   "semantic": {
     "role": "LLM prompt template for generating structured JSON architecture diagram specifications from project and folder summaries.",
     "responsibilities": [
-      "Defines the JSON schema structure for architecture diagram specifications",
-      "Constructs LLM prompt instructions for generating architecture diagrams",
-      "Formats project and folder summary context for diagram generation",
-      "Enforces constraints on node types, edge references, and summary card structure"
+      "Constructs a prompt for an LLM to generate an architecture diagram specification in JSON format.",
+      "Formats project summary (name, role, responsibility, modules) into a context block.",
+      "Formats folder summaries (directory, role, responsibility, children) into a context block.",
+      "Embeds a JSON schema (`archDiagramSchema`) defining the expected output structure (nodes, edges, summaryCards).",
+      "Provides explicit instructions: strict JSON output, allowed node types, node/edge constraints, mandatory summary cards."
     ],
     "outOfScope": [
-      "Rendering visual diagrams (SVG, Mermaid, etc.)",
-      "Executing LLM calls or managing AI model interactions",
-      "Storing or persisting generated diagram specifications"
+      "Does not validate or parse the LLM response.",
+      "Does not render diagrams visually (e.g., no SVG, Mermaid).",
+      "Does not implement LLM calling logic or response handling."
     ],
     "invariants": [
-      "Output must be strict JSON without Markdown, HTML, SVG, or code fences",
-      "Node types are restricted to: frontend, backend, database, cloud, security, messagebus, external",
-      "Every edge must reference an existing node id",
-      "Exactly three summaryCards with headings: Core Modules, Key Dependencies, System Boundaries"
+      "Always returns a concatenated string using `filter(Boolean).join('\\n')`.",
+      "Always uses exactly three context blocks: instructions, project summary, folder summaries.",
+      "Always uses `renderInstructionsBlock`, `renderContextBlock`, and `renderJSONSchemaBlock` from the imported index."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a deterministic template for generating architecture view assets (diagram specs) from structured project data.",
-      "recentChangeIntent": "Add deterministic rendering assets for view generation (aligned with commit 'feat(view): add deterministic rendering assets')."
+      "architecturalIntent": "Provide a standardised LLM prompt template for generating architecture diagram specifications from project and folder summaries, enforcing consistent output structure and constraints.",
+      "recentChangeIntent": "Establish the architectural governance layer (ArchSpine v1.0.0) by defining structured prompts for AI-driven diagram generation, enabling semantic consistency across the system."
     },
     "publicSurface": [
-      "archDiagramSchema (constant string)",
-      "Imported functions: renderContextBlock, renderInstructionsBlock, renderJSONSchemaBlock"
+      "generateArchitectureDiagramPrompt(project: SpineProjectUnit, folders: SpineFolderUnit[]): string"
     ],
     "ruleViolations": [],
     "driftDetected": false,
@@ -43,15 +42,31 @@
       "English": {
         "role": "LLM prompt template for generating structured JSON architecture diagram specifications from project and folder summaries.",
         "responsibilities": [
-          "Defines the JSON schema structure for architecture diagram specifications",
-          "Constructs LLM prompt instructions for generating architecture diagrams",
-          "Formats project and folder summary context for diagram generation",
-          "Enforces constraints on node types, edge references, and summary card structure"
+          "Constructs a prompt for an LLM to generate an architecture diagram specification in JSON format.",
+          "Formats project summary (name, role, responsibility, modules) into a context block.",
+          "Formats folder summaries (directory, role, responsibility, children) into a context block.",
+          "Embeds a JSON schema (`archDiagramSchema`) defining the expected output structure (nodes, edges, summaryCards).",
+          "Provides explicit instructions: strict JSON output, allowed node types, node/edge constraints, mandatory summary cards."
         ],
         "outOfScope": [
-          "Rendering visual diagrams (SVG, Mermaid, etc.)",
-          "Executing LLM calls or managing AI model interactions",
-          "Storing or persisting generated diagram specifications"
+          "Does not validate or parse the LLM response.",
+          "Does not render diagrams visually (e.g., no SVG, Mermaid).",
+          "Does not implement LLM calling logic or response handling."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "用于从项目和文件夹摘要生成结构化JSON架构图规格的LLM提示模板。",
+        "responsibilities": [
+          "构造一个提示，引导LLM以JSON格式生成架构图规格。",
+          "将项目摘要（名称、角色、职责、模块）格式化为上下文块。",
+          "将文件夹摘要（目录、角色、职责、子项）格式化为上下文块。",
+          "嵌入JSON模式（archDiagramSchema），定义预期输出结构（节点、边、摘要卡片）。",
+          "提供明确指令：严格JSON输出、允许的节点类型、节点/边约束、必填的摘要卡片。"
+        ],
+        "outOfScope": [
+          "不验证或解析LLM的响应。",
+          "不进行可视化渲染（如SVG、Mermaid）。",
+          "不实现LLM调用逻辑或响应处理。"
         ]
       }
     }
@@ -102,10 +117,55 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/assets/templates/prompts/arch-diagram.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/blocks.ts/renderInstructionsBlock#",
+        "targetPath": "src/assets/templates/prompts/blocks.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/assets/templates/prompts/arch-diagram.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/index.ts/renderInstructionsBlock#",
+        "targetPath": "src/assets/templates/prompts/index.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/assets/templates/prompts/arch-diagram.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/blocks.ts/renderContextBlock#",
+        "targetPath": "src/assets/templates/prompts/blocks.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/assets/templates/prompts/arch-diagram.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/index.ts/renderContextBlock#",
+        "targetPath": "src/assets/templates/prompts/index.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/assets/templates/prompts/arch-diagram.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/blocks.ts/renderJSONSchemaBlock#",
+        "targetPath": "src/assets/templates/prompts/blocks.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/assets/templates/prompts/arch-diagram.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/index.ts/renderJSONSchemaBlock#",
+        "targetPath": "src/assets/templates/prompts/index.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:12.735Z",
+    "indexedAt": "2026-05-03T11:24:27.783Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -4,7 +4,7 @@
     "filePath": "src/cli/commands/build.ts",
     "contentHash": "5e3c51e175495b2020cdc54f608520d7848de5462ea6ca22a5f90b2843b01670",
     "skeletonHash": "cfc2786a65f610761f653d432e282d0dfbebc9fa1406b4cae2c70efa107b6fa3",
-    "semanticHash": "1a653c9ffbb4e1273ea148a2dade66f59690a941d99ca1569d253d59488ab49e",
+    "semanticHash": "0d5f0932a172164c5bb56148f88e4a692825127e1dd32e31eae3a0508da6d8d1",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli/commands"
@@ -12,25 +12,27 @@
   "semantic": {
     "role": "CLI command adapter for the 'build' operation, orchestrating the build workflow and delegating to core services.",
     "responsibilities": [
-      "Defines the structured options interface for the build command.",
-      "Orchestrates the build workflow by delegating to runtime services and sync workflows.",
-      "Validates command-line arguments and provides usage feedback via CLI utilities."
+      "Defines the structured options interface (ExecuteBuildCommandOptions) for the build command.",
+      "Exports executeBuildCommand as the CLI entry point, which validates arguments and delegates to runBuildWorkflow.",
+      "Exports runBuildWorkflow to orchestrate the build process via RuntimeService and sync workflow.",
+      "Uses displayUIBanner and throwCliUsage from CLI utilities for user feedback and argument validation."
     ],
     "outOfScope": [
-      "Implementing core build logic or persistence (delegated to RuntimeService and other services).",
-      "Directly handling low-level file I/O or pipeline execution."
+      "Direct persistence logic (e.g., database queries, file writes outside of services).",
+      "Core domain logic (business rules not delegated to services).",
+      "Infrastructure setup (e.g., config loading, service instantiation)."
     ],
     "invariants": [
-      "Must remain a thin adapter, delegating all business logic to injected services.",
-      "Must not contain domain logic, pipeline orchestration, or data persistence implementations."
+      "Must remain a thin CLI adapter; all pipeline/persistence logic must be delegated to services, core, engines, or infra modules."
     ],
     "changeIntent": {
-      "architecturalIntent": "Separate CLI command routing from core business logic to ensure testability and reusability.",
-      "recentChangeIntent": "Unknown; no specific evidence from git intent matches this file."
+      "architecturalIntent": "Maintain architectural governance by ensuring CLI modules are thin adapters that delegate to services, aligned with the ArchSpine v1.0.0 governance layer.",
+      "recentChangeIntent": "Realign build command structure to enforce separation of concerns in the new architectural governance model."
     },
     "publicSurface": [
-      "ExecuteBuildCommandOptions",
-      "executeBuildCommand"
+      "executeBuildCommand",
+      "runBuildWorkflow",
+      "ExecuteBuildCommandOptions"
     ],
     "ruleViolations": [],
     "driftDetected": false,
@@ -39,13 +41,29 @@
       "English": {
         "role": "CLI command adapter for the 'build' operation, orchestrating the build workflow and delegating to core services.",
         "responsibilities": [
-          "Defines the structured options interface for the build command.",
-          "Orchestrates the build workflow by delegating to runtime services and sync workflows.",
-          "Validates command-line arguments and provides usage feedback via CLI utilities."
+          "Defines the structured options interface (ExecuteBuildCommandOptions) for the build command.",
+          "Exports executeBuildCommand as the CLI entry point, which validates arguments and delegates to runBuildWorkflow.",
+          "Exports runBuildWorkflow to orchestrate the build process via RuntimeService and sync workflow.",
+          "Uses displayUIBanner and throwCliUsage from CLI utilities for user feedback and argument validation."
         ],
         "outOfScope": [
-          "Implementing core build logic or persistence (delegated to RuntimeService and other services).",
-          "Directly handling low-level file I/O or pipeline execution."
+          "Direct persistence logic (e.g., database queries, file writes outside of services).",
+          "Core domain logic (business rules not delegated to services).",
+          "Infrastructure setup (e.g., config loading, service instantiation)."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "构建操作的CLI命令适配器，协调构建工作流并将核心逻辑委托给服务层。",
+        "responsibilities": [
+          "定义构建命令的结构化选项接口（ExecuteBuildCommandOptions）。",
+          "导出executeBuildCommand作为CLI入口点，负责校验参数并委托给runBuildWorkflow。",
+          "导出runBuildWorkflow通过RuntimeService和同步工作流协调构建过程。",
+          "使用CLI工具函数（displayUIBanner和throwCliUsage）实现用户反馈和参数校验。"
+        ],
+        "outOfScope": [
+          "直接的持久化逻辑（例如，服务层之外的数据库查询或文件写入）。",
+          "核心业务逻辑（未委托给服务的业务规则）。",
+          "基础设施设置（例如，配置加载、服务实例化）。"
         ]
       }
     }
@@ -156,10 +174,34 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/build.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/displayUIBanner#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/build.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/throwCliUsage#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/build.ts/_file_#",
+        "targetSymbol": "src/cli/commands/sync.ts/runSyncWorkflow#",
+        "targetPath": "src/cli/commands/sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:36.131Z",
+    "indexedAt": "2026-05-03T11:25:01.042Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

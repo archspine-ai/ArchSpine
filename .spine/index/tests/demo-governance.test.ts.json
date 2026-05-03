@@ -3,8 +3,8 @@
   "identity": {
     "filePath": "tests/demo-governance.test.ts",
     "contentHash": "eeb2acb68544c963938be12864f64a62efbb17a0068e1f0093efe135ca7df566",
-    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
-    "semanticHash": "66925f12aee58da2f1b51f59b475c89ba6760be5dbb87a8e4e5440e72b614326",
+    "skeletonHash": "2f020178eb9772ae9cd43fcb44a293f7642903e7e3a72a95e2abdfddd0a70255",
+    "semanticHash": "5d0be76870cf959a28cd9ed2f9ed3ae813074ffa8ece1619e2ca57576dcd16d3",
     "language": "typescript",
     "fileKind": "source",
     "scope": "tests"
@@ -18,20 +18,23 @@
       "Verifies the correctness of synchronization, architectural rule checking, and automated fix mechanisms."
     ],
     "outOfScope": [
-      "Unit testing of individual services or engines.",
-      "Integration testing with external LLM APIs (uses MockClient).",
-      "Performance or load testing."
+      "Unit tests for individual services or engines.",
+      "Integration tests with real LLM providers (uses mocks).",
+      "Performance or load testing.",
+      "Tests for other CLI commands not covered in the demo workflow."
     ],
     "invariants": [
-      "Test file must end with .test.ts or .spec.ts per the test-file-suffix rule."
+      "Test environment must be temporary and isolated (via os.tmpdir).",
+      "CLI must be pre-built at dist/cli/index.js before test execution.",
+      "Demo project source must exist under examples/demo-project.",
+      "Test data and state must not persist between runs."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a comprehensive acceptance test for the demo governance workflow to ensure CLI commands (sync, check, fix) work correctly end-to-end.",
-      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, ensuring the acceptance tests are stable and reliable."
+      "architecturalIntent": "Ensure the core governance workflow (sync → check → fix) operates correctly on a representative demo project, providing confidence for the ArchSpine v1.0.0 release.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era: introduces automated architectural enforcement through the sync/check/fix pipeline."
     },
     "publicSurface": [
-      "describe('demo governance acceptance')",
-      "runBuiltCli(command, args)"
+      "describe('demo governance acceptance', ...)"
     ],
     "ruleViolations": [],
     "driftDetected": false,
@@ -46,33 +49,147 @@
           "Verifies the correctness of synchronization, architectural rule checking, and automated fix mechanisms."
         ],
         "outOfScope": [
-          "Unit testing of individual services or engines.",
-          "Integration testing with external LLM APIs (uses MockClient).",
-          "Performance or load testing."
+          "Unit tests for individual services or engines.",
+          "Integration tests with real LLM providers (uses mocks).",
+          "Performance or load testing.",
+          "Tests for other CLI commands not covered in the demo workflow."
         ]
       },
       "Simplified Chinese": {
-        "role": "用于验证 ArchSpine 系统端到端演示治理工作流的 Vitest 验收测试套件。",
+        "role": "维特测试验收测试套件，用于验证 ArchSpine 系统的端到端演示治理工作流。",
         "responsibilities": [
-          "创建一个临时隔离的测试目录，复制演示项目结构。",
+          "创建临时隔离的测试目录，复制演示项目结构。",
           "将必要的演示项目源文件和配置复制到测试环境中。",
-          "使用测试目录作为目标，执行构建后的 ArchSpine CLI 命令（sync、check、fix）。",
+          "使用测试目录作为目标，执行已构建的 ArchSpine CLI 命令（sync、check、fix）。",
           "验证同步、架构规则检查和自动修复机制的正确性。"
         ],
         "outOfScope": [
-          "单个服务或引擎的单元测试。",
-          "与外部 LLM API 的集成测试（使用 MockClient）。",
-          "性能或负载测试。"
+          "各个服务或引擎的单元测试。",
+          "与真实 LLM 提供商的集成测试（使用模拟）。",
+          "性能或负载测试。",
+          "未在演示工作流中包含的其他 CLI 命令的测试。"
         ]
       }
     }
   },
   "skeleton": {
-    "imports": [],
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execSync",
+          "spawnSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/services/sync-service.js'",
+        "symbols": [
+          "SyncService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/engines/check.js'",
+        "symbols": [
+          "runCheck"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/engines/fix.js'",
+        "symbols": [
+          "runFix"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/__mocks__/llm.js'",
+        "symbols": [
+          "MockClient"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'prompts'",
+        "symbols": [
+          "prompts"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
     "exports": [],
     "declaredSymbols": [],
     "structuralHints": {
-      "importCount": 0,
+      "importCount": 15,
       "exportCount": 0,
       "isBarrel": false,
       "isTypeOnly": false
@@ -80,6 +197,26 @@
   },
   "graph": {
     "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execSync",
+          "spawnSync"
+        ]
+      },
       {
         "targetPath": "../src/services/sync-service.js",
         "relation": "import",
@@ -114,18 +251,110 @@
         "symbols": [
           "Manifest"
         ]
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "prompts",
+        "relation": "import",
+        "symbols": [
+          "prompts"
+        ]
       }
     ],
     "dependedBy": [],
     "reverseIndexComplete": false,
-    "symbolEdges": []
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/demo-governance.test.ts/_file_#",
+        "targetSymbol": "src/engines/check.ts/runCheck#",
+        "targetPath": "src/engines/check.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/demo-governance.test.ts/_file_#",
+        "targetSymbol": "src/services/check-service.ts/runCheck#",
+        "targetPath": "src/services/check-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/demo-governance.test.ts/_file_#",
+        "targetSymbol": "src/services/fix-service.ts/runFix#",
+        "targetPath": "src/services/fix-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/demo-governance.test.ts/_file_#",
+        "targetSymbol": "src/engines/fix.ts/runFix#",
+        "targetPath": "src/engines/fix.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/demo-governance.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/mock.ts/MockClient#",
+        "targetPath": "src/infra/llm/providers/mock.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/demo-governance.test.ts/_file_#",
+        "targetSymbol": "src/infra/__mocks__/llm.ts/MockClient#",
+        "targetPath": "src/infra/__mocks__/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/demo-governance.test.ts/_file_#",
+        "targetSymbol": "src/services/sync-service.ts/SyncService#",
+        "targetPath": "src/services/sync-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/demo-governance.test.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/getActiveViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T03:58:24.182Z",
+    "indexedAt": "2026-05-03T11:25:07.612Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "llm"
+      "fallback"
     ]
   }
 }

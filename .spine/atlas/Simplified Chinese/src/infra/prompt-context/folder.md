@@ -1,2 +1,21 @@
-<!-- spine-content-hash:folder:{"schemaVersion":"1.0.0","directory":"src/infra/prompt-context","role":"This directory contains the core orchestration and configuration modules for the ArchSpine prompt policy system.","responsibility":"Collectively, these components manage the lifecycle of prompt generation, including policy resolution, budget calculation, content trimming, diagnostic generation, and type-safe configuration parsing, ensuring consistent and efficient prompt assembly for the LLM orchestration system.","children":[{"filePath":"src/infra/prompt-context/artifacts.ts","role":"Core orchestration service that assembles source prompt artifacts by coordinating policy resolution, budget calculation, content trimming, and diagnostic generation.","fileKind":"source"},{"filePath":"src/infra/prompt-context/budgets.ts","role":"Infrastructure utility function for calculating prompt token budgets based on task mode, validation policy, and source code artifacts.","fileKind":"source"},{"filePath":"src/infra/prompt-context/constants.ts","role":"Centralized configuration module defining typed constants and budget profiles for the ArchSpine prompt policy system.","fileKind":"source"},{"filePath":"src/infra/prompt-context/diagnostics.ts","role":"Core diagnostic utility for analyzing rule block retention and filtering in prompt relevance processing.","fileKind":"source"},{"filePath":"src/infra/prompt-context/parsers.ts","role":"Infrastructure utility function for parsing and validating the PromptPolicyTier configuration value from raw string input.","fileKind":"source"},{"filePath":"src/infra/prompt-context/policy.ts","role":"Infrastructure policy resolver providing default prompt and validation policies based on task mode.","fileKind":"source"},{"filePath":"src/infra/prompt-context/trim.ts","role":"Core utility module providing text trimming and formatting functions for the ArchSpine system.","fileKind":"source"},{"filePath":"src/infra/prompt-context/types.ts","role":"Central TypeScript type definition module for prompt generation, validation, diagnostic configuration, and generation strategy within the ArchSpine LLM orchestration system.","fileKind":"source"}],"provenance":{"indexedAt":"2026-05-01T03:58:47.637Z","generatorVersion":"archspine/1.0.0","pipelineStages":["ast","llm"]}} -->
-`src/infra/prompt-context` 目录是 ArchSpine 提示策略系统的核心编排与配置模块。它负责提示生成的完整生命周期：根据任务模式解析合适的提示策略、计算 Token 预算、对内容进行裁剪以符合约束、生成诊断信息，并强制执行类型安全的配置解析。该目录主要围绕几个关键集群组织：核心编排层（`artifacts.ts`）、预算与策略工具（`budgets.ts`、`policy.ts`）、配置与类型定义（`constants.ts`、`types.ts`）以及辅助工具（`diagnostics.ts`、`parsers.ts`、`trim.ts`）。最重要的实现领域是由 `artifacts.ts` 管理的提示组装管道，它协调所有其他模块；`budgets.ts` 中的预算计算根据验证策略和任务模式动态分配 Token 限制；`diagnostics.ts` 中的诊断分析跟踪规则块的保留情况；以及 `policy.ts` 中的策略解析提供默认行为。具体子模块如 `constants.ts` 定义了类型化的预算配置文件和配置常量，而 `types.ts` 集中了所有关于提示生成、验证和诊断配置的 TypeScript 类型定义。`parsers.ts` 处理从原始字符串安全解析 `PromptPolicyTier` 值，`trim.ts` 则提供文本裁剪功能，对于将提示内容适配到 Token 预算内至关重要。
+# ArchSpine 提示基础设施层
+
+本目录（`src/infrastructure/prompt`）是 ArchSpine 提示系统的**组装与策略核心**，负责策略解析、令牌/行预算计算、结构骨架压缩、上下文内容裁剪、诊断生成以及类型契约定义，最终生成一个完整的 `SourcePromptArtifacts` 对象供下游 LLM 编排层使用。
+
+## 主要子模块及分组
+
+- **策略解析** — `policy.ts` 根据任务模式和可选覆盖来解析有效的提示策略层级和验证策略，提供无状态的、以默认值为驱动的决策函数。
+- **预算计算** — `budgets.ts` 选择合适的预算配置文件（严格或标准），并使用配置文件乘数和限制计算最终的预算分配（maxTokens, reservedTokens）。`constants.ts` 作为配置文件定义（跨层级和模式）的唯一数据源。
+- **工件组装** — `artifacts.ts` 编排整个流程：解析策略、计算预算、压缩文件骨架、裁剪先前的上下文、规则块和分段上下文，并生成依赖选择诊断和规则块诊断，最终返回完整的 `SourcePromptArtifacts`。
+- **裁剪工具** — `trim.ts` 提供核心文本格式化辅助函数：按行裁剪、按字符裁剪、在 `[Rule: ]` 标记处分割规则数据、压缩骨架和上下文段。
+- **诊断工具** — `diagnostics.ts` 从原始规则块中提取规则 ID，构建保留与丢弃的规则块及依赖选择的对比诊断，辅助调试上下文裁剪和相关性处理。
+- **解析工具** — `parsers.ts` 提供类型安全的归一化和枚举（PromptPolicyTier、ValidatePolicy、LLMMode、RelevanceDiagnosticsMode）解析，输入为原始字符串。
+- **类型定义** — `types.ts` 定义了所有 TypeScript 接口和类型模式，包括提示任务模式、策略层级、预算配置文件、诊断结构以及生成策略，作为跨模块通信的权威契约。
+
+## 关键实现领域
+
+- **策略解析与覆盖逻辑** — 确保每个任务模式下的默认行为正确（例如验证模式为 `'strict'`，其他为 `'default'`），同时允许显式覆盖。
+- **严格与标准预算分配** — 根据解析后的策略层级和模式调整令牌/行限制。
+- **多阶段内容裁剪** — 依次裁剪先前的语义上下文、规则块和分段上下文，以适应预算约束，同时保持结构完整性。
+- **诊断生成** — 提供裁剪过程中哪些规则块和依赖关系被保留或丢弃的可视化信息，对调试提示质量至关重要。
+- **集中化常量与枚举** — `constants.ts` 和 `types.ts` 确保所有提示相关模块的一致配置和类型安全。

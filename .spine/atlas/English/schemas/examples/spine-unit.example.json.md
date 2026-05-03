@@ -1,23 +1,13 @@
-<!-- spine-content-hash:dd0170bd06ba517ac9c85a319a4d09be661885daf052ce0c619bb02b28d20fd2 -->
-# ArchSpine – Authentication Entry Module
+This configuration file serves as a metadata document for the authentication source file 'src/auth.ts', capturing its identity, semantics, invariants, and structural information to enable automated indexing and validation.
 
-## Role
-This module serves as the **authentication entry point** for the ArchSpine system, exposing login and logout operations.
+**Key Parameters and Their Meanings:**
+- **schemaVersion**: Defines the schema version for compatibility; mismatched versions could cause parsing errors.
+- **identity.filePath**: Specifies the source file path; used for locating and verifying the file.
+- **identity.language**: Indicates the programming language; affects AST parsing and rule application.
+- **semantic.role**: Describes the functional role of the source module; influences how the system interprets its purpose.
+- **semantic.invariants**: Lists mandatory constraints; violations may indicate architecture breaches and potential security risks.
+- **skeleton.exports**: Records exported symbols; critical for dependency resolution and API surface analysis.
+- **provenance.generatorVersion**: Tracks the tool version that generated this metadata; important for upgrade compatibility.
 
-## Key Responsibilities
-- Provide `login` and `logout` functions for caller-supplied user identities.
-- Offer a minimal `AuthService` singleton as the central authentication service entry point.
-
-## Notable Invariants
-- **No direct database access**: This module must **never** import database adapters directly. This invariant is enforceable and critical to maintaining separation of concerns.
-
-## Negative Scope (Out of Scope)
-- This module does **not** handle database interactions, session storage, or any persistence logic.
-
-## Exported / Externally Visible Behavior
-- **`login(user, pass)`**: Initiates a login flow using the provided user identity and password.
-- **`logout()`**: Terminates the active session from the caller side.
-- **`AuthService`**: A singleton class that provides the authentication service entry point.
-
-## Stability & Risks
-This file defines the system's authentication entry point. Its lightweight design and prohibition on direct database access reduce coupling and improve testability. The primary risk is that any changes to the `login`/`logout` signatures or the `AuthService` interface could break all consumers. The invariant against database imports prevents accidental state persistence or data leaks from this layer.
+**Stability and Risks:**
+This configuration ensures the authentication module is correctly identified and its architectural constraints are documented. If the invariants are violated (e.g., unauthorized database imports), the system can detect and flag them, preventing architectural drift. The metadata also supports dependency analysis and impact assessment. A corrupt or missing configuration could lead to misclassification of the module, potentially allowing security vulnerabilities to go unnoticed.
