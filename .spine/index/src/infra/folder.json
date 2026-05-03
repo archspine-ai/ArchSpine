@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/infra",
-  "role": "Infrastructure layer providing foundational services for the ArchSpine mirror system, including configuration, persistence, LLM integration, credential management, prompt generation, and system utilities.",
-  "responsibility": "Provides centralized configuration loading, validation, and runtime access; manages SQLite database lifecycle, schema migration, and data access for indexing; handles LLM provider abstraction, client creation, and retry logic; implements secure credential storage with platform-specific backends; constructs structured prompts for AI agents; manages manifest state persistence and file integrity verification; enforces write protection on internal directories; and offers CLI utilities for interactive output, file hashing, and repair policy decisions.",
+  "role": "Infrastructure layer providing foundational services and abstractions for the ArchSpine mirror system.",
+  "responsibility": "Provides a cohesive set of infrastructure modules including configuration management, secure credential storage, database persistence, LLM provider interaction, prompt generation and rendering, manifest tracking, MCP server exposure, checkpoint retry, file output, rule loading, runtime I/O, and write protection for protected directories, collectively enabling the core indexing, audit, and repair functionality of the ArchSpine system.",
   "children": [
     {
       "filePath": "src/infra/__mocks__",
@@ -31,12 +31,12 @@
     },
     {
       "filePath": "src/infra/credentials",
-      "role": "Platform-specific credential storage and secure secret management infrastructure.",
+      "role": "Credential storage infrastructure for ArchSpine, providing secure platform-specific backends and managed credential stores.",
       "fileKind": "folder"
     },
     {
       "filePath": "src/infra/db",
-      "role": "Infrastructure persistence layer providing SQLite database lifecycle management, schema evolution, and data access for the ArchSpine indexing system.",
+      "role": "Infrastructure database layer providing SQLite-based persistence, lifecycle management, and data contracts for the ArchSpine indexing and audit system.",
       "fileKind": "folder"
     },
     {
@@ -81,7 +81,7 @@
     },
     {
       "filePath": "src/infra/mcp",
-      "role": "MCP infrastructure layer that gates context, exposes resources, and provides tools for external AI agent integration.",
+      "role": "Infrastructure layer for exposing ArchSpine's internal resources and tools to external AI agents via the Model Context Protocol (MCP) over stdio transport, with context-aware access control.",
       "fileKind": "folder"
     },
     {
@@ -166,7 +166,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-02T13:37:39.516Z",
+    "indexedAt": "2026-05-03T03:55:10.782Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/tasks",
-  "role": "Pipeline task orchestration and execution layer for the ArchSpine mirror system.",
-  "responsibility": "Implements and coordinates all pipeline stages including scanning, AST extraction, lightweight and full summarization, architectural validation, automated fixing, documentation backfill, reverse indexing, view derivation, and state commitment. Each task module encapsulates a specific stage, manages its lifecycle (checkpoints, concurrency, caching), and produces structured output for downstream stages.",
+  "role": "Pipeline stage tasks that orchestrate the core processing phases of the ArchSpine mirror system, from scanning and extraction to summarization, validation, and view derivation.",
+  "responsibility": "Collectively, these components implement the sequential stages of the ArchSpine pipeline: scanning and reconciling files, extracting ASTs, generating lightweight and full summaries, validating architectural rules, applying automated fixes, backfilling documentation, constructing reverse indices, committing state to the database, and deriving high-level architectural views (public surface, risk hotspots, architecture diagram).",
   "children": [
     {
       "filePath": "src/tasks/aggregate.ts",
@@ -56,7 +56,7 @@
     },
     {
       "filePath": "src/tasks/summarize.ts",
-      "role": "ArchSpine summarization pipeline task module that orchestrates LLM-based semantic summary generation from source code extraction outputs.",
+      "role": "ArchSpine summarization stage task module implementing SpineTask interface to orchestrate LLM-based semantic summary generation from extraction stage outputs.",
       "fileKind": "source"
     },
     {
@@ -71,7 +71,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-02T10:11:08.494Z",
+    "indexedAt": "2026-05-03T03:55:10.201Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
