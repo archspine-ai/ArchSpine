@@ -117,6 +117,4 @@ CLI 只负责解析参数、选择 service、呈现用户输出。
 
 ## 相关文档
 
-- [工程原则](ENGINEERING-PRINCIPLES)
 - [Prompt Engine](PROMPT-ENGINE)
-- [总体策略](STRATEGY)

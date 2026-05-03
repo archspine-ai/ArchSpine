@@ -5,16 +5,16 @@ hero:
   name: ArchSpine
   text: 中文文档入口
   tagline: 这里汇总 ArchSpine 当前可用的中文页面，方便按主题查找快速开始、Demo、MCP 与规格说明。
-  image:
-    src: /social-preview-zh.svg
-    alt: ArchSpine 中文社交预览图
   actions:
     - theme: brand
       text: 中文快速开始
-      link: quick-start
+      link: tutorials/quick-start
+    - theme: alt
+      text: MCP 接入
+      link: how-to/MCP
     - theme: alt
       text: 中文 Demo
-      link: examples/demo
+      link: tutorials/DEMO
     - theme: alt
       text: 查看英文主页
       link: ../index
@@ -36,16 +36,25 @@ features:
 
 ## 当前可用中文入口
 
-- [快速开始](quick-start)
-- [当前已实现能力](guides/CURRENT-CAPABILITIES)
-- [官方 Demo](examples/demo)
-- [MCP 接入指南](integrations/mcp)
-- [Runbook](guides/RUNBOOK)
-- [View Layer 指南](guides/VIEW-LAYER)
-- [God Mode 指南](guides/GOD-MODE) - 镜像版上帝文件笑话入口
-- [本地 LLM 接入指南](guides/LOCAL-LLM)
-- [规范导航](specs/)
-- [Showcase](showcase)
+- **入门与演示:**
+  - [快速开始](tutorials/quick-start)
+  - [官方 Demo](tutorials/DEMO)
+  - [Showcase](tutorials/showcase)
+- **指南与参考:**
+  - [当前已实现能力](reference/CURRENT-CAPABILITIES)
+  - [Runbook](how-to/RUNBOOK)
+  - [常见问题 (how-to/FAQ)](how-to/FAQ)
+  - [成本与消耗指南](explanation/COST-USAGE)
+  - [View Layer 指南](explanation/VIEW-LAYER)
+  - [God Mode 指南](explanation/GOD-MODE) - 镜像版上帝文件笑话入口
+  - [本地 LLM 接入指南](how-to/LOCAL-LLM)
+  - [MCP 接入指南](how-to/MCP)
+- **规范:**
+  - [规范导航](reference/)
+
+::: info 注意
+在 `v1.0.x` 版本中，`sync` 是面向机器优先的增量同步命令，而 `publish` 则是维护者更新 Atlas 等人类可读快照的刷新边界。另外，`.spine/view/**` 系列产物目前仍处于实验性阶段。
+:::
 
 ## 使用原则
 

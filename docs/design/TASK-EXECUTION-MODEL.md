@@ -117,6 +117,4 @@ Avoid reintroducing the old implicit pattern.
 
 ## Related docs
 
-- [Engineering Principles](ENGINEERING-PRINCIPLES)
 - [Prompt Engine](PROMPT-ENGINE)
-- [Strategy](STRATEGY)

@@ -32,8 +32,6 @@ Recent history follows Conventional Commits such as `fix: harden credential back
 
 When changing public docs, keep English and Chinese entry points aligned. User-facing docs belong in the public docs tree; planning and design material under `docs/design/`, `docs/planning/`, and `docs/archive/` should not be promoted into public navigation without intent.
 
-`docs/temporary-to-be-cleared/` is the temporary working area for recording each new feature and architecture change. When there is a change, record the details and timestamp there first. This directory is the source of truth for interim change notes, so new or modified functionality does not need to be synchronized into `docs/` one by one. A periodic cleanup/sync agent will later consolidate and move the relevant content into the formal docs.
-
 <!-- ARCHSPINE:BEGIN -->
 
 ## ArchSpine Instructions

@@ -5,19 +5,16 @@ hero:
   name: ArchSpine
   text: Deterministic context and architecture guardrails for AI coding agents.
   tagline: Upgrade your Git repo with a `.spine/` control plane for MCP, rule-based governance, and AI-friendly code navigation.
-  image:
-    src: /social-preview.svg
-    alt: ArchSpine social preview
   actions:
     - theme: brand
       text: Get Started
-      link: quick-start
+      link: tutorials/quick-start
     - theme: alt
       text: MCP Integration
-      link: integrations/mcp
+      link: how-to/MCP
     - theme: alt
       text: View Demo
-      link: examples/demo
+      link: tutorials/DEMO
 
 features:
   - title: Deterministic context
@@ -50,15 +47,23 @@ node ../../dist/cli/index.js fix
 node ../../dist/cli/index.js publish
 ```
 
-- Demo guide: [Official Demo](examples/demo)
-- Governance recording source: [`scripts/demo.tape`](https://github.com/iZoy/archSpine/blob/main/scripts/demo.tape)
-- Project capability recording source: [`scripts/project-demo.tape`](https://github.com/iZoy/archSpine/blob/main/scripts/project-demo.tape)
-- Deep docs: [Runbook](guides/RUNBOOK)
-- Note: in `v1.0.x`, `sync` is machine-first and `publish` is the Atlas refresh boundary; `.spine/view/**` remains experimental.
-- Deep docs: [Current Capabilities](guides/CURRENT-CAPABILITIES)
-- Deep docs: [View Layer Guide](guides/VIEW-LAYER)
-- Deep docs: [God Mode Guide](guides/GOD-MODE)
-- Chinese docs: [简体中文](zh-CN/)
+- **Demos & References:**
+  - [Official Demo](tutorials/DEMO)
+  - Governance recording source: [`scripts/demo.tape`](https://github.com/iZoy/archSpine/blob/main/scripts/demo.tape)
+  - Project capability recording source: [`scripts/project-demo.tape`](https://github.com/iZoy/archSpine/blob/main/scripts/project-demo.tape)
+- **Deep Docs:**
+  - [Runbook](how-to/RUNBOOK)
+  - [FAQ](how-to/FAQ)
+  - [Cost & Usage Guide](explanation/COST-USAGE)
+  - [Current Capabilities](reference/CURRENT-CAPABILITIES)
+  - [View Layer Guide](explanation/VIEW-LAYER)
+  - [God Mode Guide](explanation/GOD-MODE)
+- **Localization:**
+  - [简体中文 (Chinese docs)](zh-CN/)
+
+::: info Note
+In `v1.0.x`, `sync` is the machine-first synchronization step and `publish` is the Atlas refresh boundary. The `.spine/view/**` artifacts remain experimental.
+:::
 
 ## Why this matters
 

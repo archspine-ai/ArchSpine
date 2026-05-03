@@ -6,24 +6,26 @@ Chinese mirrors live under `docs/zh-CN/` using the same domain structure where a
 
 ## Public docs mapping
 
-| Area                  | English path                           | Chinese path                                 | Status |
-| --------------------- | -------------------------------------- | -------------------------------------------- | ------ |
-| Home                  | `docs/index.md`                        | `docs/zh-CN/index.md`                        | mapped |
-| Quick Start           | `docs/quick-start.md`                  | `docs/zh-CN/quick-start.md`                  | mapped |
-| Current Capabilities  | `docs/guides/CURRENT-CAPABILITIES.md`  | `docs/zh-CN/guides/CURRENT-CAPABILITIES.md`  | mapped |
-| Demo                  | `docs/examples/demo.md`                | `docs/zh-CN/examples/demo.md`                | mapped |
-| MCP Integration       | `docs/integrations/mcp.md`             | `docs/zh-CN/integrations/mcp.md`             | mapped |
-| Powered by            | `docs/community/powered-by.md`         | `docs/zh-CN/community/powered-by.md`         | mapped |
-| Showcase              | `docs/showcase.md`                     | `docs/zh-CN/showcase.md`                     | mapped |
-| Runbook               | `docs/guides/RUNBOOK.md`               | `docs/zh-CN/guides/RUNBOOK.md`               | mapped |
-| Local LLM             | `docs/guides/LOCAL-LLM.md`             | `docs/zh-CN/guides/LOCAL-LLM.md`             | mapped |
-| Protocol              | `docs/specs/PROTOCOL.md`               | `docs/zh-CN/specs/PROTOCOL.md`               | mapped |
-| Ignore Policy         | `docs/specs/IGNORE-POLICY.md`          | `docs/zh-CN/specs/IGNORE-POLICY.md`          | mapped |
-| LLM Benchmarks        | `docs/specs/LLM-BENCHMARKS.md`         | `docs/zh-CN/specs/LLM-BENCHMARKS.md`         | mapped |
-| Prompt Engine         | `docs/design/PROMPT-ENGINE.md`         | `docs/zh-CN/design/PROMPT-ENGINE.md`         | mapped |
-| Architecture Overview | `docs/design/ARCHITECTURE-OVERVIEW.md` | `docs/zh-CN/design/ARCHITECTURE-OVERVIEW.md` | mapped |
-| Task Execution Model  | `docs/design/TASK-EXECUTION-MODEL.md`  | `docs/zh-CN/design/TASK-EXECUTION-MODEL.md`  | mapped |
-| God Mode Guide        | `docs/guides/GOD-MODE.md`              | `docs/zh-CN/guides/GOD-MODE.md`              | mapped |
+| Area                  | English path                                | Chinese path                                      | Status |
+| --------------------- | ------------------------------------------- | ------------------------------------------------- | ------ |
+| Home                  | `docs/index.md`                             | `docs/zh-CN/index.md`                             | mapped |
+| Quick Start           | `docs/tutorials/quick-start.md`             | `docs/zh-CN/tutorials/quick-start.md`             | mapped |
+| FAQ                   | `docs/how-to/FAQ.md`                        | `docs/zh-CN/how-to/FAQ.md`                        | mapped |
+| Cost & Usage          | `docs/explanation/COST-USAGE.md`            | `docs/zh-CN/explanation/COST-USAGE.md`            | mapped |
+| Current Capabilities  | `docs/reference/CURRENT-CAPABILITIES.md`    | `docs/zh-CN/reference/CURRENT-CAPABILITIES.md`    | mapped |
+| Demo                  | `docs/tutorials/DEMO.md`                    | `docs/zh-CN/tutorials/DEMO.md`                    | mapped |
+| MCP Integration       | `docs/how-to/MCP.md`                        | `docs/zh-CN/how-to/MCP.md`                        | mapped |
+| Powered by            | `docs/explanation/POWERED-BY.md`            | `docs/zh-CN/explanation/POWERED-BY.md`            | mapped |
+| Showcase              | `docs/tutorials/showcase.md`                | `docs/zh-CN/tutorials/showcase.md`                | mapped |
+| Runbook               | `docs/how-to/RUNBOOK.md`                    | `docs/zh-CN/how-to/RUNBOOK.md`                    | mapped |
+| Local LLM             | `docs/how-to/LOCAL-LLM.md`                  | `docs/zh-CN/how-to/LOCAL-LLM.md`                  | mapped |
+| Protocol              | `docs/reference/PROTOCOL.md`                | `docs/zh-CN/reference/PROTOCOL.md`                | mapped |
+| Ignore Policy         | `docs/reference/IGNORE-POLICY.md`           | `docs/zh-CN/reference/IGNORE-POLICY.md`           | mapped |
+| LLM Benchmarks        | `docs/reference/LLM-BENCHMARKS.md`          | `docs/zh-CN/reference/LLM-BENCHMARKS.md`          | mapped |
+| Prompt Engine         | `docs/design/PROMPT-ENGINE.md`              | `docs/zh-CN/design/PROMPT-ENGINE.md`              | mapped |
+| Architecture Overview | `docs/explanation/ARCHITECTURE-OVERVIEW.md` | `docs/zh-CN/explanation/ARCHITECTURE-OVERVIEW.md` | mapped |
+| Task Execution Model  | `docs/design/TASK-EXECUTION-MODEL.md`       | `docs/zh-CN/design/TASK-EXECUTION-MODEL.md`       | mapped |
+| God Mode Guide        | `docs/explanation/GOD-MODE.md`              | `docs/zh-CN/explanation/GOD-MODE.md`              | mapped |
 
 ## Internal but mirrored docs
 
@@ -31,7 +33,6 @@ These stay out of the main public navigation, but they now also follow the Engli
 
 - `docs/design/**` <-> `docs/zh-CN/design/**`
 - `docs/planning/**` <-> `docs/zh-CN/planning/**`
-- `docs/validation_plan.md` <-> `docs/zh-CN/validation_plan.md`
 
 ## Maintenance rules
 

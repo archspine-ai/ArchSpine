@@ -70,7 +70,6 @@ src/
 - `.spine/` is dogfooding its own protocol — `config.json` and `rules/**` are human-reviewed control plane files
 - Never directly modify generated `.spine/index/**`, `.spine/atlas/**`, or `.spine/view/**`
 - Use `spine sync` to refresh generated outputs
-- When editing docs, record interim change notes in `docs/temporary-to-be-cleared/` first (a periodic sync agent consolidates later)
 - Design/planning docs under `docs/design/`, `docs/planning/`, `docs/archive/` should NOT be promoted into public nav
 
 ## Pipeline & Commit Discipline

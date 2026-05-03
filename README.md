@@ -23,10 +23,10 @@ It is not just another documentation generator. The goal is to make a codebase q
 
 Start here:
 
-- [Quick Start](./docs/quick-start.md)
-- [MCP Integration](./docs/integrations/mcp.md)
-- [Demo Walkthrough](./docs/examples/demo.md)
-- [Runbook](./docs/guides/RUNBOOK.md)
+- [Quick Start](./docs/tutorials/quick-start.md)
+- [MCP Integration](./docs/how-to/MCP.md)
+- [Demo Walkthrough](./docs/tutorials/DEMO.md)
+- [Runbook](./docs/how-to/RUNBOOK.md)
 
 ## Why I Built ArchSpine
 
@@ -176,7 +176,7 @@ And call these MCP capabilities:
 - `spine_preview_scan`
 - `spine_get_drift_history`
 
-For the public integration guide, see [docs/integrations/mcp.md](./docs/integrations/mcp.md).
+For the public integration guide, see [docs/how-to/MCP.md](./docs/how-to/MCP.md).
 
 ## CLI Capabilities
 
@@ -204,9 +204,13 @@ spine hook off
 spine hook set-mode heavy
 spine languages show
 spine languages set
+spine repo check
+spine repo strategy set <mode>
 spine usage
 spine info
 spine mcp start
+spine god (Experimental)
+spine view (Experimental)
 ```
 
 See the full operational guide in [docs/guides/RUNBOOK.md](./docs/guides/RUNBOOK.md). In `v1.0.x`, `sync` remains the machine-first JSON refresh path, `publish` remains the Atlas backfill boundary, and `.spine/view/**` remains experimental. For the public docs path, start from [docs/index.md](./docs/index.md); the Chinese public entry is [docs/zh-CN/index.md](./docs/zh-CN/index.md).
@@ -215,13 +219,13 @@ See the full operational guide in [docs/guides/RUNBOOK.md](./docs/guides/RUNBOOK
 
 - [English Docs Home](./docs/index.md)
 - [Chinese Docs Home](./docs/zh-CN/index.md)
-- [English Runbook](./docs/guides/RUNBOOK.md)
-- [God Mode Guide](./docs/guides/GOD-MODE.md)
+- [English Runbook](./docs/how-to/RUNBOOK.md)
+- [God Mode Guide](./docs/explanation/GOD-MODE.md)
 - [Documentation Inventory](./docs/README.md)
-- [Protocol Specification v1.0.0](./docs/specs/PROTOCOL.md)
-- [MCP Integration](./docs/integrations/mcp.md)
-- [Official Demo](./docs/examples/demo.md)
-- [Powered by ArchSpine](./docs/community/powered-by.md)
+- [Protocol Specification v1.0.0](./docs/reference/PROTOCOL.md)
+- [MCP Integration](./docs/how-to/MCP.md)
+- [Official Demo](./docs/tutorials/DEMO.md)
+- [Powered by ArchSpine](./docs/explanation/POWERED-BY.md)
 
 ## Community
 
