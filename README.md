@@ -13,69 +13,107 @@
   <img alt="license" src="https://img.shields.io/badge/license-Apache%202.0-1f2937" />
 </p>
 
-ArchSpine is an open-source protocol and toolchain that builds a physical `.spine/` structured control plane inside your Git repository. Through direct **local file access** and CLI workflows, this architectural context can be understood safely, rapidly, and at low cost by AI coding assistants like Cursor and Claude.
+**Don't let your codebase become an unmanageable black box in the AI era.**
 
-It is not just another documentation generator. The goal is to make a codebase queryable, governable, and auditable for AI-assisted engineering:
+Your repo now has a physical control plane—
+**Git manages source code versions, ArchSpine governs engineering semantics.**
 
-- `Local-First`: eliminates complex integration barriers. Agents can read the local control plane directly in the workspace at maximum speed, removing the dependency on middleware.
-- `Deterministic context`: give agents a stable architectural map instead of dumping the whole repository into a prompt.
-- `Architecture guardrails`: define rules under `.spine/rules/` and statically enforce boundaries.
+ArchSpine is an open-source protocol and toolchain that builds a physical `.spine/` structured control plane in your Git repository. It provides a stable, compressible, and enforceable architectural context for AI coding assistants via direct **local file access**.
 
-Start here:
+Transform your codebase into an AI-queryable, enforceable, and auditable engineering system:
 
-- [Quick Start](./docs/tutorials/quick-start.md)
-- [MCP Integration](./docs/how-to/MCP.md)
-- [Demo Walkthrough](./docs/tutorials/DEMO.md)
-- [Runbook](./docs/how-to/RUNBOOK.md)
+- `Local-First`: Agents read the local control plane directly in the workspace with zero integration overhead.
+- `Deterministic context`: Provides a stable, compressed architectural map instead of blind repo-dumping.
+- `Architecture guardrails`: Define redlines in `.spine/rules/` and statically enforce boundaries.
+
+---
+
+## 14.89M Tokens, Only $0.17: Extreme Performance Snapshot
+
+The ArchSpine repository is fully dogfooding—we governed our own codebase and successfully identified and eliminated early god files.
+
+The current `src/` directory consists of ~200+ files and ~20k lines of code. Running the full baseline reconstruction command `spine build` takes ~7.5 minutes, consuming **14.89M** Input Tokens and 2.47M Output Tokens. Costing merely **$0.17** (using DeepSeek V3), this low-cost investment provides long-term architectural safety, backed by thoughtful design and extreme optimization on the semantic boundary layer.
+
+(Performance results can be seen directly in this repository's `.spine/atlas/` structural mirrors and `.spine/view/` macro summaries.)
+
+---
 
 ## Why I Built ArchSpine
 
-**As a student who wants to understand codebases:** I started learning programming in elementary school and have been doing it for eight years. I've always wanted to thoroughly understand codebases. AI made that possible, but before ArchSpine, I had to manually copy-paste code to get explanations, constantly losing context. It was incredibly frustrating. I started wondering: is there a way to get a panoramic semantic view all at once?
+**As a student wanting to understand codebases**
+I've been programming for eight years and always wanted to thoroughly understand codebases—AI made that possible. But before ArchSpine, I had to manually copy-paste for explanations, constantly losing context. I wondered: could I get a panoramic semantic view all at once?
 
-**As a vibe coder who wants to control codebase growth:** In 2025, while developing a game, I officially used vibe-coding to assist development. I found myself letting the agent "run first, review later," and gradually lost control over how the codebase "reproduced." I started wondering: is there a way for the agent and me to jointly read a controllable code mirror folder—a folder that records semantic evolution?
+**As a Vibe Coder wanting to control Vibe code**
+In 2025, while developing with vibe-coding, I let agents "run first, review later." I gradually lost control over the "proliferation" of the codebase—cross-layer calls and messy interfaces. I wondered: could agents and I jointly read a controllable folder recording semantic changes?
 
-**As a coding agent (written by GPT-4.5 Pro!):** Facing a massive, unfamiliar repository, where do I find dependencies? Should I modify this underlying library? In the past, this was all guesswork. With ArchSpine, I can directly pull the local `.spine/` control plane. It gives me a stable global view, module boundaries, and bottom-line constraints. It prevents me from going off-track and helps me understand human intentions more accurately, letting me safely and efficiently write code within red lines.
+**As a Coding Agent** _(Written by a Model)_
+Facing a massive, unfamiliar repository, where do I find dependencies? Should I modify the core library? It used to be guesswork. With ArchSpine, I pull the local `.spine/` control plane—global vision, module boundaries, and hard constraints. I stay on track and understand human intention more accurately.
 
-**As a non-technical project manager who wants to track progress (this one's a mock!):** I don't need to understand the underlying code logic, but I can read the module architecture and responsibility maps generated in `.spine/`! Through regular `spine status` and `spine history` audits, as long as it reports 0 violations and module core responsibilities haven't drifted off course, I know the architecture is still healthy. I can use these tangible artifacts to verify the dev team is heading in the right direction.
+**As a Non-technical PM (or Tech Lead)**
+I don't need to understand code logic, but I can read the architecture and responsibility maps in `.spine/`! Through regular `spine status` and `spine history` audits, if there are 0 violations and core responsibilities haven't drifted, I know the architecture is healthy. I use these tangible artifacts to verify the team is on the right track.
 
-## From `AGENT.md` To Repo-Scale Understanding
+---
 
-Many teams have already seen that a single Markdown file like `AGENT.md` can materially shape agent behavior. Even one explicit instruction surface reduces drift.
+## The AI Technical Debt Crisis
 
-ArchSpine extends that idea from one file to the whole repository. **So why do we need to place a physical `.spine/` folder directly in the project directory?**
+AI is writing code faster than ever, but a hidden problem is spreading: **invisible technical debt**. When you let agents run loose, they inevitably break module boundaries. This seems harmless once, but accumulates into an uncontrollable mess. The root cause: **agents lack stable, enforceable architectural context.**
 
-Because **local direct read is always the fastest path**. Instead of blocking AI with complex middleware or extra integrations, having the whole-repo context resting locally means Agents can use their native file-reading abilities to ingest structured assets. Built upon this physical control plane, ArchSpine enables three core mechanics of AI engineering collaboration:
+Traditional solutions (like prompt files or RAG) provide "advice," but advice is optional. Agents can simply ignore them.
 
-- **Semantic Baseline**: scans and consolidates the real architectural boundaries and module responsibilities, establishing a true source of codebase context.
-- **Semantic Change Tracking**: instead of just tracking line-level text diffs, it persistently tracks semantic drift across architecture and module dimensions.
-- **Semantic Audit**: when an AI modifies code or triggers a merge, it evaluates these actions against customized redlines to automatically intercept and review boundary violations.
+ArchSpine's answer: **build a physical Semantic Baseline locally**. This isn't a documentation file; it's a machine-verifiable control plane. Agents read boundaries and redlines before acting; humans audit architectural drift before merging.
 
-That gives the agent more than advice. It gives the agent an engineering environment with strict context and enforceable boundaries.
+## Three Core Mechanisms: From Baseline to Governance
+
+ArchSpine's engineering collaboration capabilities are built on three progressive mechanisms that form a closed-loop governance system:
+
+- **Semantic Baseline — Auditing Debt**: Consolidates the real architectural boundaries and module responsibilities, establishing a true source of codebase context.
+- **Semantic Change Tracking — Early Warning**: Instead of just tracking line-level diffs, it persistently tracks semantic drift across architecture and module dimensions.
+- **Semantic Audit — Intercepting Violations**: When an AI modifies code or triggers a merge, it evaluates these actions against customized redlines in `.spine/rules/` to automatically intercept violations.
+
+Agents no longer face a pile of discrete source code and a "please follow" suggestion; they operate within an engineering system with strict context and clear constraints.
+
+## Workflow: build → sync → publish
+
+Three core commands cover the full lifecycle from initial baseline to daily maintenance:
+
+<p align="center">
+  <img src="./docs/public/spine-build.gif" alt="ArchSpine Build Demo" width="100%" />
+</p>
+
+| Command         | Position         | When to use                                   | Output                                                |
+| --------------- | ---------------- | --------------------------------------------- | ----------------------------------------------------- |
+| `spine build`   | Full Baseline    | First init, `.spine/` corruption, or recovery | `.spine/index/**` + baseline + cache                |
+| `spine sync`    | Daily Refresh    | High-frequency use during development         | `.spine/index/**` updates (no Atlas docs by default) |
+| `spine publish` | Pre-release Docs | Before version release or merge windows       | `.spine/atlas/**` Markdown docs + view artifacts    |
+
+Decision Tree:
+
+| Symptom                                          | Command                          |
+| ------------------------------------------------ | -------------------------------- |
+| Just ran `spine init`, no semantic mirror yet    | `spine build`                    |
+| Atlas docs outdated/missing, but index exists    | `spine publish`                  |
+| Some files failed to sync                        | `spine sync --retry-failed`      |
+| Protected artifacts edited externally            | `spine sync --repair-violations` |
+| Runtime baseline incomplete or corrupted         | `spine build` (Full rebuild)     |
+
+**Boundary Model**: `sync` is machine-first (fast JSON refresh), `publish` is human-first (Atlas Markdown backfill), and `build` is for initialization and recovery. Each has a clear purpose and is not a substitute for the others.
 
 ## Mental Model
 
-This diagram shows where ArchSpine sits in the AI collaboration stack: not as generic chat memory, and not as plain project instructions, but as the structured codebase layer that stays close to real engineering workflow.
+This diagram shows ArchSpine's position in the AI collaboration stack: it is deeply integrated into the "Structured Codebase Representation" and "Engineering Workflow" layers.
 
 <p align="center">
-  <img src="./docs/public/ai-collab-codebase-understanding-layered-map-en.svg" alt="Layered map of codebase understanding in AI collaboration, showing ArchSpine in the structured codebase and workflow-aligned region" width="100%" />
+  <img src="./docs/public/ai-collab-codebase-understanding-layered-map-en.svg" alt="Layered map of codebase understanding in AI collaboration" width="100%" />
 </p>
 <p align="center">
   <sub>ArchSpine lives closer to the structured codebase layer: rules, responsibilities, indexes, and repository context become a queryable governance plane.</sub>
 </p>
 
-## Why ArchSpine
-
-- **Make large repositories legible to AI**: ArchSpine derives a semantic mirror across files, folders, and responsibilities so agents can navigate with less context drift.
-- **Put guardrails before codegen**: agents can inspect invariants and module boundaries before editing code.
-- **Built for real workflows**: incremental sync, rule enforcement, Git Hooks, MCP querying, and interactive fix suggestions are part of the core experience.
-
 ## Recommended Adoption Mode
 
-For the current `v1.0.x` stage, ArchSpine's product focus is: **local-first, fastest impact**.
+For the current `v1.0.x` phase, the most effective path is: **Local-First, Instant Impact**. Running `try` → `init` → `build` → `check` → `fix` directly in the workspace is the most efficient zero-config method. `.spine/` is a local physical asset that agents read directly, just like code.
 
-The best first-use path for individual developers is to run ArchSpine directly in the repository with `try`, `init`, `build`, `check`, and `fix`. Your `.spine/` directory is a local physical asset that Agents can read and understand directly, just like any regular code file. **This is the most efficient method and requires zero extra configuration.**
-
-ArchSpine also fully supports exposing context via MCP, which provides a standardized access method for complex client ecosystems and specific environments. For the current phase, our mainline flow focuses on the direct local-read workflow—allowing AI to understand your `.spine/` through native file access—while MCP operates alongside it as a seamless protocol extension.
+MCP exists as a seamless protocol extension for complex client ecosystems requiring standardized access.
 
 ## 30-Second Quick Start
 
@@ -86,52 +124,24 @@ npx --yes archspine@latest build
 npx --yes archspine@latest check
 ```
 
-<p align="center">
-  <img src="./docs/public/spine-build.gif" alt="ArchSpine Build Demo" width="100%" />
-</p>
+- `Node.js >= 20` (LTS recommended)
+- `spine init` only bootstraps config; run `spine build` for the first semantic mirror
+- `spine init` supports Git artifact strategies: `local` (runtime state kept out of Git) and `distributable` (snapshots kept in Git and marked as generated)
+- For full `sync / check / fix` capabilities, run `spine llm setup` after `spine init`
 
-Recommended environment:
+## God Mode
 
-- `Node.js >= 20`
-- A current LTS release
-- `npx --yes archspine@latest try` is the recommended first-touch path for cloned repositories because it is read-only and zero-install
-- Configure the LLM during `spine init`, or run `spine llm setup` later for full `sync / check / fix` semantics
-- ArchSpine supports additional documentation languages such as Vietnamese and Russian; some multilingual outputs require stronger models for stable quality, so review the generated docs and upgrade the model when needed
-- `spine init` only bootstraps configuration; run `spine build` to build the first semantic mirror
-- `spine init` now also selects how `.spine` artifacts should be managed in Git:
-  `local` keeps runtime state and generated snapshots out of Git by default, while `distributable` keeps generated snapshots reviewable in Git and marks them in `.gitattributes`
-- Use `spine init --artifact-strategy distributable` when you want a non-interactive distributable snapshot setup
-- `init` no longer injects package.json helper scripts by default; when you opt in, the helpers call `npx --yes archspine@latest ...`
-- If repository strategy needs to change later, re-running `spine init --artifact-strategy <mode>` is the supported transitional path today
-- Run `spine remove` when you want to remove ArchSpine initialization from a repository in one step; use `spine remove --yes` to skip confirmation
-
-## Read the .spine/ in this repo
-
-You can navigate directly to the `.spine/atlas/` directory in this repository to read its structural mirror and code semantics, or check the `.spine/view/` directory for macro summaries and risk diagnostics.
-The ArchSpine repository is completely **dogfooding** its own design. In the v0.9.0 iteration, we relied on the `.spine/view/` risk analysis feature to accurately identify potential architecture risks, eliminated "God files", ruthlessly split files with overlapping responsibilities, and re-established extremely clear module boundaries.
-
-**Performance snapshot:**
-The `src/` directory of this repo (the actual build scope also includes `test/`, etc.) currently consists of:
-
-> Total: 206 files, 18640 code lines, 267 comments, 2488 blanks, 21395 lines tracking
-
-At this scale, **running the full-repo baseline reconstruction command `spine build`—even configured to simultaneously output both English and Simplified Chinese architecture mirrors—took only ~7.5 minutes to complete. This "semantic investment" providing long-term architecture safety cost a total of ~14.89 million Input Tokens and ~2.47 million Output Tokens (costing merely 1.22 RMB / ~$0.17 using DeepSeek V3).**
-
-Behind this impressive performance lies thoughtful architecture design and extreme optimization on the semantic boundary layer.
+`spine god` generates a single-file semantic archive `.spine/<repo-name>-god.md`—compressing the entire repository state into one Markdown file containing summaries, file lists, responsibilities, dependencies, and drift states. Designed for human review, demos, and experiments.
 
 ## MCP Integration
 
 ArchSpine can expose the local `.spine` control plane over a STDIO MCP server:
 
-Boundary note: MCP is a read-only semantic surface in ArchSpine and does not write official `.spine` artifacts.
-
 ```bash
 spine mcp start
 ```
 
-### Claude Desktop
-
-Add this to `claude_desktop_config.json`:
+**Claude Desktop**: Add to `claude_desktop_config.json`:
 
 ```json
 {
@@ -144,105 +154,90 @@ Add this to `claude_desktop_config.json`:
 }
 ```
 
-### Cursor
-
-Add a `stdio` MCP server in `Settings -> Features -> MCP`:
-
-```json
-{
-  "name": "ArchSpine",
-  "type": "stdio",
-  "command": "node",
-  "args": ["/absolute/path/to/archspine/dist/cli/index.js", "mcp", "start"]
-}
-```
-
-### Claude Code / CLI
+**Claude Code / CLI**:
 
 ```bash
 claude mcp add archspine node /absolute/path/to/archspine/dist/cli/index.js mcp start
 ```
 
-Agents can then read:
+**Cursor**: Add a `stdio` server in `Settings -> Features -> MCP`.
 
-- `spine://project`
-- `spine://folder/{path}`
-- `spine://file/{filePath}`
-
-And call these MCP capabilities:
-
-- `spine_query_invariants`
-- `spine_query_responsibilities`
-- `spine_preview_scan`
-- `spine_get_drift_history`
-
-For the public integration guide, see [docs/how-to/MCP.md](./docs/how-to/MCP.md).
+Agents can read `spine://project`, `spine://folder/{path}`, `spine://file/{filePath}`, and call capabilities like `spine_query_invariants`, `spine_query_responsibilities`, etc. Full guide: [docs/how-to/MCP.md](./docs/how-to/MCP.md).
 
 ## CLI Capabilities
 
-Current stable commands:
+Commands grouped by function. Full guide: [RUNBOOK](./docs/guides/RUNBOOK.md).
 
-```bash
-spine init
-spine try
-spine remove
-spine remove --yes
-spine llm setup
-spine sync
-spine sync --hook
-spine sync --retry-failed
-spine sync --repair-violations
-spine build
-spine check
-spine fix
-spine status
-spine history
-spine scan --dry-run
-spine publish
-spine hook on
-spine hook off
-spine hook set-mode heavy
-spine languages show
-spine languages set
-spine repo check
-spine repo strategy set <mode>
-spine usage
-spine info
-spine mcp start
-spine god (Experimental)
-spine view (Experimental)
-```
+**Configuration**
 
-See the full operational guide in [docs/guides/RUNBOOK.md](./docs/guides/RUNBOOK.md). In `v1.0.x`, `sync` remains the machine-first JSON refresh path, `publish` remains the Atlas backfill boundary, and `.spine/view/**` remains experimental. For the public docs path, start from [docs/index.md](./docs/index.md); the Chinese public entry is [docs/zh-CN/index.md](./docs/zh-CN/index.md).
+| Command                                 | Description                                             |
+| --------------------------------------- | ------------------------------------------------------- |
+| `spine try`                             | Read-only preview (zero install, no changes)            |
+| `spine init`                            | Init `.spine/` dir, config, rules, and hooks            |
+| `spine init --artifact-strategy <mode>` | Specify Git strategy (`local` or `distributable`)       |
+| `spine remove`                          | Remove `.spine/` and all managed configs                |
+| `spine llm setup`                       | Configure LLM providers                                 |
+| `spine languages show/set`              | View/Set output language                                |
+| `spine repo check`                      | Detect drift between config and managed files           |
+
+**Build & Sync**
+
+| Command                          | Description                               |
+| -------------------------------- | ----------------------------------------- |
+| `spine build`                    | Full rebuild (First init / Recovery)      |
+| `spine sync`                     | Daily refresh (Machine-first, JSON)       |
+| `spine sync --hook`              | Lightweight Hook mode (for pre-commit)    |
+| `spine publish`                  | Generate human-readable Atlas docs        |
+
+**Audit & Fix**
+
+| Command                | Description                                 |
+| ---------------------- | ------------------------------------------- |
+| `spine check`          | Check violations based on `.spine/rules/`   |
+| `spine fix`            | Propose and apply fixes for violations      |
+| `spine scan --dry-run` | Pre-scan without writing changes            |
+
+**Information**
+
+| Command                | Description                                 |
+| ---------------------- | ------------------------------------------- |
+| `spine status`         | View current baseline status                |
+| `spine usage`          | View Token consumption and costs            |
+| `spine history <file>` | View semantic history of a specific file    |
+
+**Hook Management**
+
+| Command                     | Description                         |
+| --------------------------- | ----------------------------------- |
+| `spine hook on/off`         | Install/Uninstall pre-commit hooks  |
+| `spine hook set-mode heavy` | Set hook to heavy mode              |
 
 ## Docs
 
 - [English Docs Home](./docs/index.md)
 - [Chinese Docs Home](./docs/zh-CN/index.md)
-- [English Runbook](./docs/how-to/RUNBOOK.md)
+- [Quick Start](./docs/tutorials/quick-start.md)
+- [Runbook](./docs/how-to/RUNBOOK.md)
 - [God Mode Guide](./docs/explanation/GOD-MODE.md)
-- [Documentation Inventory](./docs/README.md)
-- [Protocol Specification v1.0.0](./docs/reference/PROTOCOL.md)
 - [MCP Integration](./docs/how-to/MCP.md)
-- [Official Demo](./docs/tutorials/DEMO.md)
+- [Demo Walkthrough](./docs/tutorials/DEMO.md)
+- [Protocol Specification v1.0.0](./docs/reference/PROTOCOL.md)
 - [Powered by ArchSpine](./docs/explanation/POWERED-BY.md)
 
 ## Community
-
-Join our community to get support, share ideas, and help shape the future of ArchSpine:
 
 [![Discord](https://img.shields.io/discord/1310167660993085481?color=5865F2&logo=discord&logoColor=white&label=Discord)](https://discord.gg/RjfSVKfRzH)
 [![QQ Group](https://img.shields.io/badge/QQ%20Group-1098273420-12b7f5?logo=tencent-qq&logoColor=white)](https://jq.qq.com/?_wv=1027&k=RjfSVKfRzH)
 
 ## Support And Security
 
-- Usage questions, setup problems, and documentation gaps: start with [SUPPORT.md](./SUPPORT.md)
-- Security vulnerabilities: report privately through [SECURITY.md](./SECURITY.md)
+- Usage questions and setup problems: see [SUPPORT.md](./SUPPORT.md)
+- Security vulnerabilities: report via [SECURITY.md](./SECURITY.md)
 - Community expectations: see [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
 
 ## Contributing
 
-If you plan to change runtime behavior, protocol assets, or docs structure, start with [CONTRIBUTING.md](./CONTRIBUTING.md). Contributions are expected to follow the [Code of Conduct](./CODE_OF_CONDUCT.md).
+Read [CONTRIBUTING.md](./CONTRIBUTING.md) before changing runtime, protocol, or docs.
 
 ## License
 
