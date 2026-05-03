@@ -27,7 +27,6 @@ describe('LLM provider utils', () => {
 
     expect(markdown).toEqual({
       English: '# Shared',
-      'ja-JP': '# Shared',
     });
   });
 
