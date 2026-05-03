@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-05-02T13:38:18.702Z",
+  "generatedAt": "2026-05-03T03:55:43.143Z",
   "experimental": true,
   "viewType": "public-surface",
   "summary": "Top 24 high-confidence public entry surfaces derived from index and graph signals.",
@@ -16,13 +16,13 @@
         "HIGH_CAPACITY_LANGUAGE_SEPARATOR",
         "DOCUMENT_LANGUAGE_QUALITY_NOTE"
       ],
-      "summary": "CLI-facing entry: Configuration module defining types and constants for document language selection in multilingual documentation tiers.",
+      "summary": "CLI-facing entry: Configuration module defining types, constants, and a dynamic builder function for document language selection in a multilingual documentation system.",
       "confidence": 0.75,
       "scoreBreakdown": [
         {
           "factor": "semantic-public-surface",
           "score": 32,
-          "reason": "File declares 4 semantically exposed symbol(s)."
+          "reason": "File declares 5 semantically exposed symbol(s)."
         },
         {
           "factor": "explicit-cli-entry",
@@ -38,6 +38,40 @@
     },
     {
       "id": "entry-2",
+      "entrypoint": "src/cli/repo/strategy.ts",
+      "kind": "cli",
+      "symbols": [
+        "parseArtifactStrategy",
+        "runRepoCheck",
+        "runRepoStrategySet"
+      ],
+      "summary": "CLI-facing entry: CLI command adapter for repository artifact strategy operations (check and set) within the ArchSpine system.",
+      "confidence": 0.76,
+      "scoreBreakdown": [
+        {
+          "factor": "semantic-public-surface",
+          "score": 27,
+          "reason": "File declares 3 semantically exposed symbol(s)."
+        },
+        {
+          "factor": "explicit-cli-entry",
+          "score": 26,
+          "reason": "Path pattern indicates a CLI entry surface."
+        },
+        {
+          "factor": "exported-symbols",
+          "score": 6,
+          "reason": "File exports 3 symbol(s)."
+        },
+        {
+          "factor": "barrel-shape",
+          "score": 6,
+          "reason": "Barrel files often form a public aggregation surface."
+        }
+      ]
+    },
+    {
+      "id": "entry-3",
       "entrypoint": "src/cli/init/types.ts",
       "kind": "cli",
       "symbols": [
@@ -78,7 +112,7 @@
       ]
     },
     {
-      "id": "entry-3",
+      "id": "entry-4",
       "entrypoint": "src/infra/mcp/tools.ts",
       "kind": "mcp",
       "symbols": [
@@ -110,7 +144,7 @@
       ]
     },
     {
-      "id": "entry-4",
+      "id": "entry-5",
       "entrypoint": "src/cli/commands/build.ts",
       "kind": "cli",
       "symbols": [
@@ -142,7 +176,7 @@
       ]
     },
     {
-      "id": "entry-5",
+      "id": "entry-6",
       "entrypoint": "src/cli/commands/hook.ts",
       "kind": "cli",
       "symbols": [
@@ -174,7 +208,7 @@
       ]
     },
     {
-      "id": "entry-6",
+      "id": "entry-7",
       "entrypoint": "src/cli/cli-utils.ts",
       "kind": "cli",
       "symbols": [],
@@ -194,7 +228,7 @@
       ]
     },
     {
-      "id": "entry-7",
+      "id": "entry-8",
       "entrypoint": "src/cli/commands/init.ts",
       "kind": "cli",
       "symbols": [
@@ -216,7 +250,7 @@
       ]
     },
     {
-      "id": "entry-8",
+      "id": "entry-9",
       "entrypoint": "src/cli/index.ts",
       "kind": "cli",
       "symbols": [],
@@ -236,7 +270,7 @@
       ]
     },
     {
-      "id": "entry-9",
+      "id": "entry-10",
       "entrypoint": "src/infra/mcp/resources.ts",
       "kind": "mcp",
       "symbols": [
@@ -268,7 +302,7 @@
       ]
     },
     {
-      "id": "entry-10",
+      "id": "entry-11",
       "entrypoint": "src/cli/commands/languages.ts",
       "kind": "cli",
       "symbols": [
@@ -300,7 +334,7 @@
       ]
     },
     {
-      "id": "entry-11",
+      "id": "entry-12",
       "entrypoint": "src/cli/commands/publish.ts",
       "kind": "cli",
       "symbols": [
@@ -332,47 +366,13 @@
       ]
     },
     {
-      "id": "entry-12",
+      "id": "entry-13",
       "entrypoint": "src/cli/commands/view.ts",
       "kind": "cli",
       "symbols": [
         "view"
       ],
       "summary": "CLI-facing entry: CLI command adapter for the 'view' subcommand, handling view selection, validation, and orchestration of protected output writes within the ArchSpine system.",
-      "confidence": 0.7,
-      "scoreBreakdown": [
-        {
-          "factor": "semantic-public-surface",
-          "score": 17,
-          "reason": "File declares 1 semantically exposed symbol(s)."
-        },
-        {
-          "factor": "explicit-cli-entry",
-          "score": 26,
-          "reason": "Path pattern indicates a CLI entry surface."
-        },
-        {
-          "factor": "exported-symbols",
-          "score": 6,
-          "reason": "File exports 3 symbol(s)."
-        },
-        {
-          "factor": "barrel-shape",
-          "score": 6,
-          "reason": "Barrel files often form a public aggregation surface."
-        }
-      ]
-    },
-    {
-      "id": "entry-13",
-      "entrypoint": "src/cli/repo/strategy.ts",
-      "kind": "cli",
-      "symbols": [
-        "parseArtifactStrategy",
-        "runRepoCheck",
-        "runRepoStrategySet"
-      ],
-      "summary": "CLI-facing entry: CLI command adapter for repository artifact strategy management within the ArchSpine system.",
       "confidence": 0.7,
       "scoreBreakdown": [
         {

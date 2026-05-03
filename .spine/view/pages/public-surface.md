@@ -1,6 +1,6 @@
 # Public Surface Map
 
-> Generated: 2026-05-02T13:38:18.702Z
+> Generated: 2026-05-03T03:55:43.143Z
 > Top 24 high-confidence public entry surfaces derived from index and graph signals.
 
 ## CLI Entry Points
@@ -9,7 +9,13 @@
 Kind: CLI
 Symbols: `getDocumentLanguageChoices`, `DocumentLanguageChoice`, `HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE`, `HIGH_CAPACITY_LANGUAGE_SEPARATOR`, `DOCUMENT_LANGUAGE_QUALITY_NOTE`
 Confidence: 0.75
-CLI-facing entry: Configuration module defining types and constants for document language selection in multilingual documentation tiers.
+CLI-facing entry: Configuration module defining types, constants, and a dynamic builder function for document language selection in a multilingual documentation system.
+
+### `src/cli/repo/strategy.ts`
+Kind: CLI
+Symbols: `parseArtifactStrategy`, `runRepoCheck`, `runRepoStrategySet`
+Confidence: 0.76
+CLI-facing entry: CLI command adapter for repository artifact strategy operations (check and set) within the ArchSpine system.
 
 ### `src/cli/init/types.ts`
 Kind: CLI
@@ -64,12 +70,6 @@ Kind: CLI
 Symbols: `view`
 Confidence: 0.70
 CLI-facing entry: CLI command adapter for the 'view' subcommand, handling view selection, validation, and orchestration of protected output writes within the ArchSpine system.
-
-### `src/cli/repo/strategy.ts`
-Kind: CLI
-Symbols: `parseArtifactStrategy`, `runRepoCheck`, `runRepoStrategySet`
-Confidence: 0.70
-CLI-facing entry: CLI command adapter for repository artifact strategy management within the ArchSpine system.
 
 ### `src/cli/commands/check.ts`
 Kind: CLI

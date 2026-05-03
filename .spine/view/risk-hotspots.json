@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-05-02T13:38:18.710Z",
+  "generatedAt": "2026-05-03T03:55:43.148Z",
   "experimental": true,
   "viewType": "risk-hotspots",
   "summary": "Top 12 risk hotspots ranked by a transparent additive score model.",
@@ -58,6 +58,47 @@
     },
     {
       "id": "hotspot-2",
+      "hotspotPath": "src/services/repository-admin-service.ts",
+      "riskFactors": [
+        "semantic-change",
+        "fan-out",
+        "surface-exposure",
+        "large-file"
+      ],
+      "summary": "Service orchestration module for managing repository artifact strategies, synchronization of managed configuration files, agent instructions, and package scripts within the ArchSpine project; ranked due to semantic-change, fan-out.",
+      "impactRadiusHint": "Likely localized impact with a few downstream touch points.",
+      "confidence": 0.71,
+      "totalScore": 56,
+      "scoreBreakdown": [
+        {
+          "factor": "fan-out",
+          "score": 14,
+          "reason": "File depends on 7 indexed file(s)."
+        },
+        {
+          "factor": "surface-exposure",
+          "score": 12,
+          "reason": "File exposes 12 public-surface item(s) and 12 export(s)."
+        },
+        {
+          "factor": "semantic-change",
+          "score": 16,
+          "reason": "Module was previously categorized as infrastructure but now resides under src/services/, indicating a reclassification to service orchestration."
+        },
+        {
+          "factor": "large-file",
+          "score": 8,
+          "reason": "File has 273 line(s), increasing change surface area."
+        },
+        {
+          "factor": "missing-adjacent-tests",
+          "score": 6,
+          "reason": "No adjacent test file was detected near a shared or exposed module."
+        }
+      ]
+    },
+    {
+      "id": "hotspot-3",
       "hotspotPath": "src/cli/commands/publish.ts",
       "riskFactors": [
         "fan-out",
@@ -98,7 +139,7 @@
       ]
     },
     {
-      "id": "hotspot-3",
+      "id": "hotspot-4",
       "hotspotPath": "src/ast/lang-registry.ts",
       "riskFactors": [
         "semantic-change",
@@ -144,7 +185,48 @@
       ]
     },
     {
-      "id": "hotspot-4",
+      "id": "hotspot-5",
+      "hotspotPath": "src/infra/credentials/backend.ts",
+      "riskFactors": [
+        "semantic-change",
+        "surface-exposure",
+        "fan-out",
+        "large-file"
+      ],
+      "summary": "Infrastructure facade providing platform-specific credential storage backends for secure secret persistence across macOS, Linux, and Windows, with an in-memory fallback; ranked due to semantic-change, surface-exposure.",
+      "impactRadiusHint": "Likely localized impact with a few downstream touch points.",
+      "confidence": 0.69,
+      "totalScore": 52,
+      "scoreBreakdown": [
+        {
+          "factor": "fan-out",
+          "score": 10,
+          "reason": "File depends on 5 indexed file(s)."
+        },
+        {
+          "factor": "surface-exposure",
+          "score": 12,
+          "reason": "File exposes 6 public-surface item(s) and 6 export(s)."
+        },
+        {
+          "factor": "semantic-change",
+          "score": 16,
+          "reason": "Previous semantic limited to macOS Keychain backend; the code now includes Linux, Windows DPAPI, and in-memory backends, significantly expanding platform coverage."
+        },
+        {
+          "factor": "large-file",
+          "score": 8,
+          "reason": "File has 290 line(s), increasing change surface area."
+        },
+        {
+          "factor": "missing-adjacent-tests",
+          "score": 6,
+          "reason": "No adjacent test file was detected near a shared or exposed module."
+        }
+      ]
+    },
+    {
+      "id": "hotspot-6",
       "hotspotPath": "src/infra/llm/providers/openai.ts",
       "riskFactors": [
         "semantic-change",
@@ -190,7 +272,7 @@
       ]
     },
     {
-      "id": "hotspot-5",
+      "id": "hotspot-7",
       "hotspotPath": "src/infra/prompt-context.ts",
       "riskFactors": [
         "semantic-change",
@@ -236,7 +318,7 @@
       ]
     },
     {
-      "id": "hotspot-6",
+      "id": "hotspot-8",
       "hotspotPath": "src/types/protocol/languages.ts",
       "riskFactors": [
         "semantic-change",
@@ -272,7 +354,7 @@
       ]
     },
     {
-      "id": "hotspot-7",
+      "id": "hotspot-9",
       "hotspotPath": "src/engines/scanner.ts",
       "riskFactors": [
         "fan-out",
@@ -318,48 +400,7 @@
       ]
     },
     {
-      "id": "hotspot-8",
-      "hotspotPath": "src/infra/credentials/backend.ts",
-      "riskFactors": [
-        "semantic-change",
-        "fan-out",
-        "surface-exposure",
-        "large-file"
-      ],
-      "summary": "Infrastructure facade providing a platform-specific credential storage backend for secure secret persistence on macOS; ranked due to semantic-change, fan-out.",
-      "impactRadiusHint": "Likely localized impact with a few downstream touch points.",
-      "confidence": 0.67,
-      "totalScore": 48,
-      "scoreBreakdown": [
-        {
-          "factor": "fan-out",
-          "score": 10,
-          "reason": "File depends on 5 indexed file(s)."
-        },
-        {
-          "factor": "surface-exposure",
-          "score": 8,
-          "reason": "File exposes 2 public-surface item(s) and 0 export(s)."
-        },
-        {
-          "factor": "semantic-change",
-          "score": 16,
-          "reason": "The previous semantic contract described a file-based fallback backend, but the current source code only contains the MacOSKeychainBackend class. The file-based backend has been removed, indicating a narrowing of scope."
-        },
-        {
-          "factor": "large-file",
-          "score": 8,
-          "reason": "File has 259 line(s), increasing change surface area."
-        },
-        {
-          "factor": "missing-adjacent-tests",
-          "score": 6,
-          "reason": "No adjacent test file was detected near a shared or exposed module."
-        }
-      ]
-    },
-    {
-      "id": "hotspot-9",
+      "id": "hotspot-10",
       "hotspotPath": "src/infra/mcp/server.ts",
       "riskFactors": [
         "fan-out",
@@ -386,42 +427,6 @@
           "factor": "surface-exposure",
           "score": 12,
           "reason": "File exposes 3 public-surface item(s) and 0 export(s)."
-        },
-        {
-          "factor": "missing-adjacent-tests",
-          "score": 6,
-          "reason": "No adjacent test file was detected near a shared or exposed module."
-        }
-      ]
-    },
-    {
-      "id": "hotspot-10",
-      "hotspotPath": "src/tasks/summarize.ts",
-      "riskFactors": [
-        "fan-out",
-        "surface-exposure",
-        "large-file",
-        "missing-adjacent-tests"
-      ],
-      "summary": "ArchSpine summarization pipeline task module that orchestrates LLM-based semantic summary generation from source code extraction outputs; ranked due to fan-out, surface-exposure.",
-      "impactRadiusHint": "Likely localized impact with a few downstream touch points.",
-      "confidence": 0.67,
-      "totalScore": 48,
-      "scoreBreakdown": [
-        {
-          "factor": "fan-out",
-          "score": 18,
-          "reason": "File depends on 9 indexed file(s)."
-        },
-        {
-          "factor": "surface-exposure",
-          "score": 12,
-          "reason": "File exposes 4 public-surface item(s) and 0 export(s)."
-        },
-        {
-          "factor": "large-file",
-          "score": 12,
-          "reason": "File has 668 line(s), increasing change surface area."
         },
         {
           "factor": "missing-adjacent-tests",
