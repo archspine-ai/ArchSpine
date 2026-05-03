@@ -2,73 +2,79 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/cli/document-languages.ts",
-    "contentHash": "1711226429b4a81647eafa4846aea73dc79c74e2c8b61ea44d774a17760f9fe9",
+    "contentHash": "6210016ff939d1db3db9e1d8f80d91eca4ad038618d57a817b9ae5ec5bcecb14",
     "skeletonHash": "b06438f1e5dcb8e3b548654968b1512ce57108c8c05bd06856a1d5d8c70ddba7",
-    "semanticHash": "8ac6930cabb43b699e8e13fbde2e415564fae494d0d76738da60f605466cc28e",
+    "semanticHash": "c4e443dcc9b0da51be866e4a83d08b67c0d112e828c2d69a4e2590bd136608b8",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli"
   },
   "semantic": {
-    "role": "Configuration module defining types and constants for document language selection in multilingual documentation tiers.",
+    "role": "Configuration module defining types, constants, and a dynamic builder function for document language selection in a multilingual documentation system.",
     "responsibilities": [
-      "Defines the DocumentLanguageChoice interface for language selection options with title, value, and UI state flags.",
-      "Provides constant values for default and high-capacity language sets (implied from usage patterns).",
-      "Exports separator constants (HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE, HIGH_CAPACITY_LANGUAGE_SEPARATOR) for UI grouping of language tiers.",
-      "Exports a documentation quality note constant (DOCUMENT_LANGUAGE_QUALITY_NOTE) for user guidance."
+      "Defines the DocumentLanguageChoice interface with fields for title, value, selected, and disabled.",
+      "Exports a constant HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE for UI separation of high-capacity languages.",
+      "Exports a display string HIGH_CAPACITY_LANGUAGE_SEPARATOR labeling the high-capacity language tier.",
+      "Exports an empty DOCUMENT_LANGUAGE_QUALITY_NOTE (placeholder for future guidance).",
+      "Exports the function getDocumentLanguageChoices that builds and returns an ordered list of DocumentLanguageChoice objects based on default and high-capacity language values, honoring a provided array of selected languages."
     ],
     "outOfScope": [
-      "CLI command routing or argument parsing.",
-      "Pipeline orchestration or task execution logic.",
-      "Persistence or database access.",
-      "UI rendering or component logic."
+      "UI rendering or presentation logic.",
+      "Persistence or retrieval of language preferences from storage.",
+      "LLM or AI model invocations.",
+      "CLI command handling or argument parsing."
     ],
     "invariants": [
-      "Must remain a pure data/type definition layer with no side effects or runtime logic.",
-      "Must not import from services, core, engines, or infra layers."
+      "The order of language choices must be: default languages first, then the high-capacity separator, then high-capacity languages.",
+      "The separator constant value is fixed to '__separator_high_capacity_languages__'.",
+      "The separator label text is fixed and must not be translated or altered.",
+      "The DOCUMENT_LANGUAGE_QUALITY_NOTE is currently an empty string (may be populated later)."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a centralized, typed configuration surface for multilingual documentation tier language selection, enabling UI components to render language options with tier-based grouping and quality guidance.",
-      "recentChangeIntent": "Introduced the DocumentLanguageChoice interface and associated constants to support language selection in documentation tiers, aligning with the tier documentation language selection feature."
+      "architecturalIntent": "Provide a centralized, consistent source of language selection options for all documentation UI tiers, separating standard languages from those requiring stronger multilingual models.",
+      "recentChangeIntent": "Added a dynamic builder function (getDocumentLanguageChoices) to generate language choice lists with selection state, replacing static constant lists."
     },
     "publicSurface": [
       "DocumentLanguageChoice",
       "HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE",
       "HIGH_CAPACITY_LANGUAGE_SEPARATOR",
-      "DOCUMENT_LANGUAGE_QUALITY_NOTE"
+      "DOCUMENT_LANGUAGE_QUALITY_NOTE",
+      "getDocumentLanguageChoices"
     ],
     "ruleViolations": [],
-    "driftDetected": false,
-    "driftReason": null,
+    "driftDetected": true,
+    "driftReason": "Previous semantic contract only covered interfaces and constants; the addition of the function getDocumentLanguageChoices expands the module's role from pure configuration to a dynamic choice builder.",
     "localized": {
       "English": {
-        "role": "Configuration module defining types and constants for document language selection in multilingual documentation tiers.",
+        "role": "Configuration module defining types, constants, and a dynamic builder function for document language selection in a multilingual documentation system.",
         "responsibilities": [
-          "Defines the DocumentLanguageChoice interface for language selection options with title, value, and UI state flags.",
-          "Provides constant values for default and high-capacity language sets (implied from usage patterns).",
-          "Exports separator constants (HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE, HIGH_CAPACITY_LANGUAGE_SEPARATOR) for UI grouping of language tiers.",
-          "Exports a documentation quality note constant (DOCUMENT_LANGUAGE_QUALITY_NOTE) for user guidance."
+          "Defines the DocumentLanguageChoice interface with fields for title, value, selected, and disabled.",
+          "Exports a constant HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE for UI separation of high-capacity languages.",
+          "Exports a display string HIGH_CAPACITY_LANGUAGE_SEPARATOR labeling the high-capacity language tier.",
+          "Exports an empty DOCUMENT_LANGUAGE_QUALITY_NOTE (placeholder for future guidance).",
+          "Exports the function getDocumentLanguageChoices that builds and returns an ordered list of DocumentLanguageChoice objects based on default and high-capacity language values, honoring a provided array of selected languages."
         ],
         "outOfScope": [
-          "CLI command routing or argument parsing.",
-          "Pipeline orchestration or task execution logic.",
-          "Persistence or database access.",
-          "UI rendering or component logic."
+          "UI rendering or presentation logic.",
+          "Persistence or retrieval of language preferences from storage.",
+          "LLM or AI model invocations.",
+          "CLI command handling or argument parsing."
         ]
       },
       "Simplified Chinese": {
-        "role": "配置模块，定义多语言文档层级中语言选择的类型和常量。",
+        "role": "定义文档语言选择模块，提供类型、常量和动态构建器，用于多语言文档系统中的语言选项生成。",
         "responsibilities": [
-          "定义 DocumentLanguageChoice 接口，包含标题、值和 UI 状态标志，用于语言选择选项。",
-          "提供默认语言集和高容量语言集的常量值（从使用模式推断）。",
-          "导出分隔符常量（HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE、HIGH_CAPACITY_LANGUAGE_SEPARATOR），用于 UI 中语言层级的分组。",
-          "导出文档质量说明常量（DOCUMENT_LANGUAGE_QUALITY_NOTE），用于用户指导。"
+          "定义 DocumentLanguageChoice 接口，包含 title、value、selected 和 disabled 字段。",
+          "导出常量 HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE，用于 UI 中分隔高容量语言。",
+          "导出显示字符串 HIGH_CAPACITY_LANGUAGE_SEPARATOR，标记高容量语言层级。",
+          "导出一个空的 DOCUMENT_LANGUAGE_QUALITY_NOTE（供未来使用）。",
+          "导出函数 getDocumentLanguageChoices，根据默认语言和高容量语言值生成有序的 DocumentLanguageChoice 对象列表，并处理选定状态。"
         ],
         "outOfScope": [
-          "CLI 命令路由或参数解析。",
-          "管道编排或任务执行逻辑。",
-          "持久化或数据库访问。",
-          "UI 渲染或组件逻辑。"
+          "UI 渲染或展示逻辑。",
+          "语言偏好数据的持久化或读取。",
+          "LLM 或 AI 模型调用。",
+          "CLI 命令处理或参数解析。"
         ]
       }
     }
@@ -143,14 +149,16 @@
   },
   "graph": {
     "dependsOn": [],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:36.894Z",
+    "indexedAt": "2026-05-03T03:53:54.417Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "fallback"
+      "llm"
     ]
   }
 }

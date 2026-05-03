@@ -2,92 +2,201 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/tasks/summarize.ts",
-    "contentHash": "f6d13151caa484955a2da150b4c980aebf2af0812d328fa1d0c8729c7e1f25df",
-    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
-    "semanticHash": "ef6eb01c43388d36148c02779374a5d978745936ba99b47daac2357c1f2348b8",
+    "contentHash": "132a733d98d26c4078fdc5568ce7b6f222ddc41cba74036ee870c0a698d2acdd",
+    "skeletonHash": "4e535a6c60a963d0c8acd2cce504a69ba3549111bd0bbf746cd6c4fa936727e5",
+    "semanticHash": "76e77e02811727d5f0cbf466aca45ae855cd245a650da49dc73de80074cd4f48",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/tasks"
   },
   "semantic": {
-    "role": "ArchSpine summarization pipeline task module that orchestrates LLM-based semantic summary generation from source code extraction outputs.",
+    "role": "ArchSpine summarization stage task module implementing SpineTask interface to orchestrate LLM-based semantic summary generation from extraction stage outputs.",
     "responsibilities": [
-      "Implements the SpineTask interface to drive the summarization stage of the pipeline, consuming ExtractionStageOutput and producing SummarizationStageOutput.",
-      "Filters and processes selected source files from extraction stage outputs, skipping unsupported or non-source files via LangRegistry.isSourceFile.",
-      "Builds prompt artifacts for each file using buildSourcePromptArtifacts to provide relevant context to the LLM.",
-      "Manages concurrency with pLimit to control parallel summarization tasks.",
-      "Constructs SpineSemantic and SpineSkeleton objects with proper schema versioning and generator metadata.",
-      "Resolves previous semantic context for drift detection during summarization."
+      "Implements the SummarizationTask class extending SpineTask to drive the summarization pipeline stage, consuming ExtractionStageOutput and producing SummarizationStageOutput.",
+      "Filters and processes selected source files from extraction stage outputs, skipping non-source files via LangRegistry.isSourceFile.",
+      "Builds LLM prompt artifacts for each file using buildSourcePromptArtifacts to provide relevant context and previous summaries to the model.",
+      "Manages concurrent summarization tasks using pLimit to control parallel LLM requests and respect rate limits.",
+      "Tracks task progress, drifts, diagnostics, and failures using task-state utilities (e.g., markTaskProcessedFile, addTaskDriftWarning, pushSummarizeDiagnostics, incrementTaskFailed, queueTaskCommit).",
+      "Commit summarized results to the pipeline via queueTaskCommit and manages pending commits for synchronization."
     ],
     "outOfScope": [
-      "CLI command parsing or argument handling.",
-      "Direct file system traversal or discovery of source files.",
-      "Language-specific AST extraction or parsing logic.",
-      "Service orchestration beyond the summarization pipeline stage."
+      "Direct CLI argument parsing or command routing.",
+      "Non-summarization pipeline stages (extraction, indexing, verification).",
+      "LLM model specific configuration or provider selection."
     ],
     "invariants": [
-      "Must implement the SpineTask interface from core/task.js.",
-      "Must consume ExtractionStageOutput and produce SummarizationStageOutput.",
-      "Must use LangRegistry to validate source file types before processing.",
-      "Must respect the task-stage-boundary rule by focusing on stage-local work."
+      "Must implement SpineTask contract with name, checkpointId, and run method.",
+      "Must respect stage boundaries and not take over other stages' responsibilities.",
+      "Must use LangRegistry for file type filtering."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a reusable, concurrency-controlled task module for the summarization pipeline stage that integrates with core contracts and supports drift detection via previous semantic context.",
-      "recentChangeIntent": "Resolve lint errors and finalize pipeline fixes before v1.0, ensuring the summarization task module aligns with the core task interface and protocol types."
+      "architecturalIntent": "Provides the summarization stage within the ArchSpine pipeline, transforming extracted source code artifacts into semantic summaries via LLM integration, with concurrency management and progress tracking.",
+      "recentChangeIntent": "Optimized LLM summarization pipeline to improve concurrency control, reliability, and integration with credential store hardening."
     },
     "publicSurface": [
-      "SpineTask interface implementation",
-      "SummarizationStageOutput type",
-      "buildSourcePromptArtifacts function",
-      "LangRegistry.isSourceFile method"
+      "SummarizationTask"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "ArchSpine summarization pipeline task module that orchestrates LLM-based semantic summary generation from source code extraction outputs.",
+        "role": "ArchSpine summarization stage task module implementing SpineTask interface to orchestrate LLM-based semantic summary generation from extraction stage outputs.",
         "responsibilities": [
-          "Implements the SpineTask interface to drive the summarization stage of the pipeline, consuming ExtractionStageOutput and producing SummarizationStageOutput.",
-          "Filters and processes selected source files from extraction stage outputs, skipping unsupported or non-source files via LangRegistry.isSourceFile.",
-          "Builds prompt artifacts for each file using buildSourcePromptArtifacts to provide relevant context to the LLM.",
-          "Manages concurrency with pLimit to control parallel summarization tasks.",
-          "Constructs SpineSemantic and SpineSkeleton objects with proper schema versioning and generator metadata.",
-          "Resolves previous semantic context for drift detection during summarization."
+          "Implements the SummarizationTask class extending SpineTask to drive the summarization pipeline stage, consuming ExtractionStageOutput and producing SummarizationStageOutput.",
+          "Filters and processes selected source files from extraction stage outputs, skipping non-source files via LangRegistry.isSourceFile.",
+          "Builds LLM prompt artifacts for each file using buildSourcePromptArtifacts to provide relevant context and previous summaries to the model.",
+          "Manages concurrent summarization tasks using pLimit to control parallel LLM requests and respect rate limits.",
+          "Tracks task progress, drifts, diagnostics, and failures using task-state utilities (e.g., markTaskProcessedFile, addTaskDriftWarning, pushSummarizeDiagnostics, incrementTaskFailed, queueTaskCommit).",
+          "Commit summarized results to the pipeline via queueTaskCommit and manages pending commits for synchronization."
         ],
         "outOfScope": [
-          "CLI command parsing or argument handling.",
-          "Direct file system traversal or discovery of source files.",
-          "Language-specific AST extraction or parsing logic.",
-          "Service orchestration beyond the summarization pipeline stage."
+          "Direct CLI argument parsing or command routing.",
+          "Non-summarization pipeline stages (extraction, indexing, verification).",
+          "LLM model specific configuration or provider selection."
         ]
       },
       "Simplified Chinese": {
-        "role": "ArchSpine 摘要流水线任务模块，负责协调基于 LLM 的语义摘要生成，输入为源代码提取阶段的输出。",
+        "role": "ArchSpine 摘要生成阶段任务模块，实现了 SpineTask 接口，用于编排从提取阶段输出生成基于 LLM 的语义摘要。",
         "responsibilities": [
-          "实现 SpineTask 接口，驱动流水线的摘要阶段，消费 ExtractionStageOutput 并生成 SummarizationStageOutput。",
-          "从提取阶段输出中筛选并处理选定的源文件，通过 LangRegistry.isSourceFile 跳过不支持或非源文件。",
-          "使用 buildSourcePromptArtifacts 为每个文件构建提示工件，为 LLM 提供相关上下文。",
-          "使用 pLimit 管理并发，控制并行摘要任务的数量。",
-          "构建带有正确模式版本和生成器元数据的 SpineSemantic 和 SpineSkeleton 对象。",
-          "解析先前的语义上下文，用于摘要过程中的漂移检测。"
+          "实现 SummarizationTask 类继承 SpineTask，驱动摘要 pipeline 阶段，消费 ExtractionStageOutput 并产生 SummarizationStageOutput。",
+          "过滤并处理提取阶段输出中的选中源文件，通过 LangRegistry.isSourceFile 跳过非源文件。",
+          "为每个文件使用 buildSourcePromptArtifacts 构建 LLM prompt 工件，为模型提供相关上下文和先前摘要。",
+          "使用 pLimit 管理并发摘要任务，以控制并行 LLM 请求并遵守速率限制。",
+          "使用 task-state 工具（如 markTaskProcessedFile、addTaskDriftWarning、pushSummarizeDiagnostics、incrementTaskFailed、queueTaskCommit）跟踪任务进度、漂移、诊断信息和失败情况。",
+          "通过 queueTaskCommit 将摘要结果提交到 pipeline，并管理待处理的提交以实现同步。"
         ],
         "outOfScope": [
-          "CLI 命令解析或参数处理。",
-          "直接的文件系统遍历或源文件发现。",
-          "特定语言的 AST 提取或解析逻辑。",
-          "超出摘要流水线阶段的服务编排。"
+          "直接的 CLI 参数解析或命令路由。",
+          "非摘要生成管道阶段（提取、索引、验证）。",
+          "LLM 模型具体配置或提供商选择。"
         ]
       }
     }
   },
   "skeleton": {
-    "imports": [],
-    "exports": [],
-    "declaredSymbols": [],
+    "imports": [
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext",
+          "TaskContextFor"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "FileKind",
+          "RuleViolation",
+          "SpineSemantic",
+          "SpineSkeleton",
+          "SpineUnit",
+          "SymbolDependencyEdge",
+          "SymbolKind",
+          "CURRENT_SCHEMA_VERSION",
+          "GENERATOR_VERSION"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/lang-registry.js'",
+        "symbols": [
+          "LangRegistry"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/prompt-context.js'",
+        "symbols": [
+          "buildSourcePromptArtifacts",
+          "RelevanceDiagnosticsSnapshot"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/task-state.js'",
+        "symbols": [
+          "addTaskDriftWarning",
+          "addTaskUsage",
+          "incrementTaskFailed",
+          "incrementTaskSkipped",
+          "markTaskProcessedFile",
+          "pushSummarizeDiagnostics",
+          "queueTaskCommit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/llm/retry.js'",
+        "symbols": [
+          "isRetryableError"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../utils/footprint.js'",
+        "symbols": [
+          "calculateSemanticFootprint",
+          "calculateStructuralFootprint"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'p-limit'",
+        "symbols": [
+          "pLimit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "SummarizationTask",
+        "kind": "class",
+        "signature": "class SummarizationTask"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "SummarizationTask",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/tasks/summarize.ts#"
+      }
+    ],
     "structuralHints": {
-      "importCount": 0,
-      "exportCount": 0,
+      "importCount": 12,
+      "exportCount": 1,
       "isBarrel": false,
       "isTypeOnly": false
     }
@@ -95,35 +204,12 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "fs",
-        "relation": "import",
-        "symbols": []
-      },
-      {
-        "targetPath": "path",
-        "relation": "import",
-        "symbols": []
-      },
-      {
-        "targetPath": "p-limit",
-        "relation": "import",
-        "symbols": []
-      },
-      {
         "targetPath": "../core/task.js",
         "relation": "import",
         "symbols": [
           "SpineTask",
           "TaskContext",
           "TaskContextFor"
-        ]
-      },
-      {
-        "targetPath": "../core/task-types.js",
-        "relation": "import",
-        "symbols": [
-          "ExtractionStageOutput",
-          "SummarizationStageOutput"
         ]
       },
       {
@@ -142,33 +228,164 @@
         ]
       },
       {
-        "targetPath": "../ast/extractor.js",
-        "relation": "import",
-        "symbols": [
-          "FileSkeleton"
-        ]
-      },
-      {
-        "targetPath": "../infra/llm.js",
-        "relation": "import",
-        "symbols": [
-          "PreviousSemanticContext"
-        ]
-      },
-      {
         "targetPath": "../ast/lang-registry.js",
         "relation": "import",
         "symbols": [
           "LangRegistry"
         ]
+      },
+      {
+        "targetPath": "../infra/prompt-context.js",
+        "relation": "import",
+        "symbols": [
+          "buildSourcePromptArtifacts",
+          "RelevanceDiagnosticsSnapshot"
+        ]
+      },
+      {
+        "targetPath": "../core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "addTaskDriftWarning",
+          "addTaskUsage",
+          "incrementTaskFailed",
+          "incrementTaskSkipped",
+          "markTaskProcessedFile",
+          "pushSummarizeDiagnostics",
+          "queueTaskCommit"
+        ]
+      },
+      {
+        "targetPath": "../infra/llm/retry.js",
+        "relation": "import",
+        "symbols": [
+          "isRetryableError"
+        ]
+      },
+      {
+        "targetPath": "../utils/footprint.js",
+        "relation": "import",
+        "symbols": [
+          "calculateSemanticFootprint",
+          "calculateStructuralFootprint"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "p-limit",
+        "relation": "import",
+        "symbols": [
+          "pLimit"
+        ]
       }
     ],
     "dependedBy": [],
     "reverseIndexComplete": false,
-    "symbolEdges": []
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/queueTaskCommit#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/incrementTaskSkipped#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/markTaskProcessedFile#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/incrementTaskFailed#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/infra/llm/retry.ts/isRetryableError#",
+        "targetPath": "src/infra/llm/retry.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/buildSourcePromptArtifacts#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/artifacts.ts/buildSourcePromptArtifacts#",
+        "targetPath": "src/infra/prompt-context/artifacts.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/pushSummarizeDiagnostics#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/addTaskUsage#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/addTaskDriftWarning#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/clearViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/integrity.ts/calculateHash#",
+        "targetPath": "src/infra/manifest/integrity.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getFileDocs#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T03:58:23.917Z",
+    "indexedAt": "2026-05-03T03:54:40.056Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

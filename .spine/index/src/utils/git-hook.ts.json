@@ -2,91 +2,192 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/utils/git-hook.ts",
-    "contentHash": "c6248d699a7f3fe2b89203d82d765b7eeb66392f4f0d93085b74895781b0e03f",
-    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
-    "semanticHash": "af6f6f683731336021deb4ac1ec669d9d80ffc72cb3164525b235a4e88e91a09",
+    "contentHash": "0017ff4cf25d4c92e9e307f67b338858d40990369be92981e9e6b7c50280ddbf",
+    "skeletonHash": "630eabcf8fe0fd99159928b9c1fa65711efb983415d4ad6d78b900a157aa4914",
+    "semanticHash": "c53db3d4fcd2d16e42666da5a7e253e9a0fe36b2b11d1be20c2b0327b3ef77bf",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/utils"
   },
   "semantic": {
-    "role": "Infrastructure utility module for generating and managing the ArchSpine pre-commit Git hook shell script block.",
+    "role": "Infrastructure utility module for managing the ArchSpine pre-commit Git hook installation lifecycle.",
     "responsibilities": [
       "Defines the `InstallGitHookResult` discriminated union type to represent outcomes of Git hook installation operations.",
-      "Implements `getManagedHookBlock()` to generate the standardized shell script block for the ArchSpine pre-commit hook, including logic to locate the `spine` CLI command."
+      "Implements `installGitHook()` to create, update, or standardize the ArchSpine pre-commit hook file at `.git/hooks/pre-commit` with a managed shell script block that delegates to the spine CLI.",
+      "Implements `uninstallGitHook()` to remove the managed ArchSpine pre-commit hook block from the hook file, restoring any original hook logic if present.",
+      "Generates the managed hook shell script block (`getManagedHookBlock`) that locates the spine CLI in node_modules, PATH, or dist directory.",
+      "Uses `FileSystemManager.backupFile` and `FileSystemManager.safeWriteFile` for safe file operations, ensuring atomicity and rollback on failure.",
+      "Checks for an existing pre-commit hook and either appends the ArchSpine block, replaces an existing managed block, or overwrites the file if it only contained the managed block.",
+      "Sets executable permissions on the hook file after installation or update.",
+      "Returns descriptive result types (installed, updated, appended, standardized, skipped-no-git-root) to allow callers to react appropriately."
     ],
     "outOfScope": [
-      "Actual installation, update, or removal of the hook file in the `.git/hooks` directory.",
-      "Validation of the Git repository root or file system operations beyond generating the hook script content."
+      "Runtime execution of the pre-commit hook (the actual invocation of spine CLI is delegated to the shell script).",
+      "Initialization of the .git directory or Git repository creation.",
+      "Management of Git hooks other than pre-commit.",
+      "Handling of credential storage or LLM summarization logic."
     ],
     "invariants": [
-      "The generated hook block must always include the ArchSpine marker comments (`# >>> ArchSpine pre-commit >>>` and `# <<< ArchSpine pre-commit <<<`).",
-      "The hook block must attempt to use `./node_modules/.bin/spine` first, then fall back to a globally installed `spine`, then to `dist/cli/index.js`."
+      "The generated hook block is always enclosed by markers '# >>> ArchSpine pre-commit >>>' and '# <<< ArchSpine pre-commit <<<' to allow identification and replacement.",
+      "The hook file is always made executable after installation or update.",
+      "The module will only modify a hook file if it contains the managed ArchSpine block; otherwise it appends to existing hooks or creates a new file."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a reusable, standardized mechanism for generating the ArchSpine pre-commit hook script content, ensuring consistent hook behavior across projects.",
-      "recentChangeIntent": "No direct evidence of recent changes related to lint errors or pipeline fixes; the module remains a stable utility for hook script generation."
+      "architecturalIntent": "Provide a self-contained, idempotent mechanism for installing and uninstalling the ArchSpine pre-commit hook, separating hook lifecycle management from other initialization concerns and ensuring safe file operations.",
+      "recentChangeIntent": "No direct evidence of the recent commit intent ('harden credential store and optimize LLM summarization pipeline') in this file; the module's functionality is unchanged in scope."
     },
     "publicSurface": [
       "InstallGitHookResult (type export)",
-      "getManagedHookBlock (function export)"
+      "installGitHook (function export)",
+      "uninstallGitHook (function export)"
     ],
     "ruleViolations": [],
-    "driftDetected": false,
-    "driftReason": null,
+    "driftDetected": true,
+    "driftReason": "Previous semantic contract described the module as only defining the result type and generating the hook block string. The current module additionally exports `installGitHook` and `uninstallGitHook` functions that perform actual file system operations (reading, writing, appending, replacing, setting permissions, backups). This expands the module's responsibility from a pure utility to a full lifecycle manager.",
     "localized": {
       "English": {
-        "role": "Infrastructure utility module for generating and managing the ArchSpine pre-commit Git hook shell script block.",
+        "role": "Infrastructure utility module for managing the ArchSpine pre-commit Git hook installation lifecycle.",
         "responsibilities": [
           "Defines the `InstallGitHookResult` discriminated union type to represent outcomes of Git hook installation operations.",
-          "Implements `getManagedHookBlock()` to generate the standardized shell script block for the ArchSpine pre-commit hook, including logic to locate the `spine` CLI command."
+          "Implements `installGitHook()` to create, update, or standardize the ArchSpine pre-commit hook file at `.git/hooks/pre-commit` with a managed shell script block that delegates to the spine CLI.",
+          "Implements `uninstallGitHook()` to remove the managed ArchSpine pre-commit hook block from the hook file, restoring any original hook logic if present.",
+          "Generates the managed hook shell script block (`getManagedHookBlock`) that locates the spine CLI in node_modules, PATH, or dist directory.",
+          "Uses `FileSystemManager.backupFile` and `FileSystemManager.safeWriteFile` for safe file operations, ensuring atomicity and rollback on failure.",
+          "Checks for an existing pre-commit hook and either appends the ArchSpine block, replaces an existing managed block, or overwrites the file if it only contained the managed block.",
+          "Sets executable permissions on the hook file after installation or update.",
+          "Returns descriptive result types (installed, updated, appended, standardized, skipped-no-git-root) to allow callers to react appropriately."
         ],
         "outOfScope": [
-          "Actual installation, update, or removal of the hook file in the `.git/hooks` directory.",
-          "Validation of the Git repository root or file system operations beyond generating the hook script content."
+          "Runtime execution of the pre-commit hook (the actual invocation of spine CLI is delegated to the shell script).",
+          "Initialization of the .git directory or Git repository creation.",
+          "Management of Git hooks other than pre-commit.",
+          "Handling of credential storage or LLM summarization logic."
         ]
       },
       "Simplified Chinese": {
-        "role": "基础设施工具模块，用于生成和管理 ArchSpine 预提交 Git 钩子的 shell 脚本块。",
+        "role": "基础设施工具模块，用于管理 ArchSpine 预提交 Git Hook 的安装生命周期。",
         "responsibilities": [
-          "定义 `InstallGitHookResult` 联合类型，表示 Git 钩子安装操作的结果。",
-          "实现 `getManagedHookBlock()` 函数，生成 ArchSpine 预提交钩子的标准化 shell 脚本块，包括定位 `spine` CLI 命令的逻辑。"
+          "定义 `InstallGitHookResult` 联合类型，表示 Git Hook 安装操作的结果。",
+          "实现 `installGitHook()` 函数，用于在 `.git/hooks/pre-commit` 创建、更新或标准化 ArchSpine 预提交钩子文件，其中包含委托给 spine CLI 的管理 Shell 脚本块。",
+          "实现 `uninstallGitHook()` 函数，从钩子文件中移除受管理的 ArchSpine 预提交钩子块，并恢复任何原有的钩子逻辑。",
+          "生成受管理的钩子 Shell 脚本块（`getManagedHookBlock`），用于在 node_modules、PATH 或 dist 目录中定位 spine CLI。",
+          "使用 `FileSystemManager.backupFile` 和 `FileSystemManager.safeWriteFile` 进行安全的文件操作，确保原子性并在失败时回滚。",
+          "检查现有预提交钩子，根据需要追加 ArchSpine 块、替换现有的受管理块，或覆盖仅包含受管理块的文件。",
+          "安装或更新后设置钩子文件的可执行权限。",
+          "返回描述性结果类型（installed、updated、appended、standardized、skipped-no-git-root），以便调用者做出适当响应。"
         ],
         "outOfScope": [
-          "实际在 `.git/hooks` 目录中安装、更新或删除钩子文件。",
-          "验证 Git 仓库根目录或执行超出生成钩子脚本内容的文件系统操作。"
+          "预提交钩子的运行时执行（实际调用 spine CLI 委托给 Shell 脚本）。",
+          ".git 目录的初始化或 Git 仓库的创建。",
+          "预提交钩子之外的 Git 钩子管理。",
+          "凭据存储或 LLM 摘要管线的处理。"
         ]
       }
     }
   },
   "skeleton": {
-    "imports": [],
-    "exports": [],
-    "declaredSymbols": [],
+    "imports": [
+      {
+        "source": "'./fs.js'",
+        "symbols": [
+          "FileSystemManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "installGitHook",
+        "kind": "function",
+        "signature": "installGitHook()"
+      },
+      {
+        "name": "uninstallGitHook",
+        "kind": "function",
+        "signature": "uninstallGitHook()"
+      },
+      {
+        "name": "InstallGitHookResult",
+        "kind": "type",
+        "signature": "type InstallGitHookResult"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "installGitHook",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/git-hook.ts#"
+      },
+      {
+        "name": "uninstallGitHook",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/git-hook.ts#"
+      },
+      {
+        "name": "InstallGitHookResult",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/git-hook.ts#"
+      }
+    ],
     "structuralHints": {
-      "importCount": 0,
-      "exportCount": 0,
-      "isBarrel": false,
+      "importCount": 5,
+      "exportCount": 3,
+      "isBarrel": true,
       "isTypeOnly": false
     }
   },
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "fs",
-        "relation": "import",
-        "symbols": []
-      },
-      {
-        "targetPath": "path",
-        "relation": "import",
-        "symbols": []
-      },
-      {
         "targetPath": "./fs.js",
         "relation": "import",
         "symbols": [
           "FileSystemManager"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
         ]
       }
     ],
@@ -95,7 +196,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T03:58:19.274Z",
+    "indexedAt": "2026-05-03T03:54:25.997Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

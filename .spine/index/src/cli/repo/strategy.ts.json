@@ -2,54 +2,71 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/cli/repo/strategy.ts",
-    "contentHash": "af11cf4c189a12d47d81301e8a419f8813c157174f1f65aabaa47133f1c5f475",
+    "contentHash": "632e6321680463ceddb63ea12c9d8a99d3f22e07af42d1c95617625f2c2c3e5b",
     "skeletonHash": "8ee9e3f44ecf45629433586226bd998d078359abd4cb75ac14c0a11d4a8e8e98",
-    "semanticHash": "27911e98727743ba66bb1ede5bdbe215ec4ca36ae13f378aa25cb9faa74dad17",
+    "semanticHash": "79a8a64f8e574b5fd210521cff5baaf28b1ac7383d016378fbb48db6ee60cd30",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli/repo"
   },
   "semantic": {
-    "role": "CLI command adapter for repository artifact strategy management within the ArchSpine system.",
+    "role": "CLI command adapter for repository artifact strategy operations (check and set) within the ArchSpine system.",
     "responsibilities": [
-      "Parses and validates the artifact strategy input from CLI arguments.",
-      "Coordinates repository strategy checks and application by delegating to the repository admin service.",
-      "Provides user-facing console output for strategy operations, including warnings and step-by-step feedback.",
-      "Integrates with the system configuration to retrieve persisted and initialization artifact strategies."
+      "Parses and normalizes the artifact strategy input from CLI arguments to valid values ('local' or 'distributable').",
+      "Executes repository strategy checks by delegating to `checkRepositoryStrategy` and displays findings, including warnings for absent or inconsistent strategies.",
+      "Performs repository strategy setting by delegating to `applyRepositoryStrategy`, providing step-by-step progress feedback via the `printStep` callback.",
+      "Reads system configuration (Config) to report the current persisted artifact strategy and the initialization strategy to the user."
     ],
     "outOfScope": [
-      "Implementing repository strategy logic (handled by repository-admin-service)",
-      "Persisting configuration changes (handled by config infra)",
-      "Direct file system operations for artifact management"
+      "Low-level persistence or transformation of artifact strategy configuration; that responsibility belongs to the repository admin service.",
+      "Validation of artifact strategy values beyond the two allowed choices (local/distributable) — invalid values are silently ignored.",
+      "Any logic related to credential storage or LLM summarization pipeline, as those are handled by other subsystems."
     ],
     "invariants": [
-      "Must remain a thin command adapter, delegating core logic to services.",
-      "Must not contain business logic for repository strategy evaluation or application.",
-      "Must provide clear console feedback for CLI users."
+      "CLI module must remain a thin adapter and must not absorb business logic that belongs in services, core, engines, or infra (rule cli-entrypoint-separation).",
+      "All strategy business logic must be delegated to the repository admin service.",
+      "Console output (console.log/warn) is used for user-facing feedback; all other output is channeled through the supplied `printStep` callback.",
+      "Artifact strategy input is case-insensitively normalized to lowercase."
     ],
     "changeIntent": {
-      "architecturalIntent": "Separate CLI command routing from core repository strategy logic, ensuring testability and reuse.",
-      "recentChangeIntent": "Refinement of artifact strategy parsing and user feedback output (based on git status showing modifications in CLI-related tests and scanner engines)."
+      "architecturalIntent": "Provide CLI commands for checking and setting repository artifact strategies, keeping the command logic thin and delegating core operations to the service layer.",
+      "recentChangeIntent": "The recent git intent (harden credential store, optimize LLM summarization pipeline) does not directly affect this CLI artifact strategy module; the code remains stable as a focused command adapter."
     },
     "publicSurface": [
-      "parseArtifactStrategy(value: string | undefined): ArtifactStrategy | undefined"
+      "parseArtifactStrategy(value: string | undefined): ArtifactStrategy | undefined",
+      "runRepoCheck(repoRoot: string, cfg: Config): void",
+      "runRepoStrategySet(rootDir: string, config: Config, nextStrategy: ArtifactStrategy, printStep: (message: string, options?: { inline?: boolean }) => void): void"
     ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "CLI command adapter for repository artifact strategy management within the ArchSpine system.",
+        "role": "CLI command adapter for repository artifact strategy operations (check and set) within the ArchSpine system.",
         "responsibilities": [
-          "Parses and validates the artifact strategy input from CLI arguments.",
-          "Coordinates repository strategy checks and application by delegating to the repository admin service.",
-          "Provides user-facing console output for strategy operations, including warnings and step-by-step feedback.",
-          "Integrates with the system configuration to retrieve persisted and initialization artifact strategies."
+          "Parses and normalizes the artifact strategy input from CLI arguments to valid values ('local' or 'distributable').",
+          "Executes repository strategy checks by delegating to `checkRepositoryStrategy` and displays findings, including warnings for absent or inconsistent strategies.",
+          "Performs repository strategy setting by delegating to `applyRepositoryStrategy`, providing step-by-step progress feedback via the `printStep` callback.",
+          "Reads system configuration (Config) to report the current persisted artifact strategy and the initialization strategy to the user."
         ],
         "outOfScope": [
-          "Implementing repository strategy logic (handled by repository-admin-service)",
-          "Persisting configuration changes (handled by config infra)",
-          "Direct file system operations for artifact management"
+          "Low-level persistence or transformation of artifact strategy configuration; that responsibility belongs to the repository admin service.",
+          "Validation of artifact strategy values beyond the two allowed choices (local/distributable) — invalid values are silently ignored.",
+          "Any logic related to credential storage or LLM summarization pipeline, as those are handled by other subsystems."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine系统中用于仓库构件策略操作（检查和设置）的CLI命令适配器。",
+        "responsibilities": [
+          "解析并标准化从CLI参数传入的构件策略值，使其变为有效的策略（'local'或'distributable'）。",
+          "通过委托 `checkRepositoryStrategy` 执行仓库策略检查，并展示检查结果，包括针对缺失或不一致策略的警告。",
+          "通过委托 `applyRepositoryStrategy` 执行仓库策略设置，并利用 `printStep` 回调提供逐步执行进度反馈。",
+          "读取系统配置（Config）以向用户报告当前持久化的构件策略以及初始化策略。"
+        ],
+        "outOfScope": [
+          "构件策略配置的低层持久化或转换；该职责属于仓库管理服务。",
+          "对超出两个允许选项（local/distributable）的构件策略值的验证——无效值会被静默忽略。",
+          "与凭据存储或LLM摘要管道相关的任何逻辑，这些由其他子系统处理。"
         ]
       }
     }
@@ -150,14 +167,52 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/repo/strategy.ts/_file_#",
+        "targetSymbol": "src/services/repository-admin-service.ts/checkRepositoryStrategy#",
+        "targetPath": "src/services/repository-admin-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/repo/strategy.ts/_file_#",
+        "targetSymbol": "src/services/repository-admin-service.ts/applyRepositoryStrategy#",
+        "targetPath": "src/services/repository-admin-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/repo/strategy.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/printStep#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/repo/strategy.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/ArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/repo/strategy.ts/_file_#",
+        "targetSymbol": "src/infra/repository-artifacts.ts/snapshotOutputsPresent#",
+        "targetPath": "src/infra/repository-artifacts.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:37.104Z",
+    "indexedAt": "2026-05-03T03:54:08.445Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "fallback"
+      "llm"
     ]
   }
 }

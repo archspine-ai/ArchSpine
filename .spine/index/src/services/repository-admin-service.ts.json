@@ -2,61 +2,84 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/services/repository-admin-service.ts",
-    "contentHash": "0a61eb606355f9f438f29e3c095b034fc1d70ffee5127bf71fb77f9e8cd70fce",
+    "contentHash": "fd8b014da5a63a9487bf90babbc7878e5bb3f0e6a2b86ace00cd6c8e7b1096ea",
     "skeletonHash": "545f5d40cbb359377da3035a2344566a70f6182b94e451d7f21fd63b2565e8c8",
-    "semanticHash": "3d375aa4d34921e43a800cee5af18fe13762ce450317ce63a867bd30d375f0fe",
+    "semanticHash": "ddfc6ce7bbac4b526dc140f6b8137113cb85bd97c2fda42f70ac0ae6f5601a08",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/services"
   },
   "semantic": {
-    "role": "Infrastructure module defining interfaces and orchestration logic for repository artifact management and initialization strategies.",
+    "role": "Service orchestration module for managing repository artifact strategies, synchronization of managed configuration files, agent instructions, and package scripts within the ArchSpine project.",
     "responsibilities": [
-      "Defines result interfaces for repository strategy checks, application, rule template installation, agent instructions synchronization, managed file operations, and package script injection.",
-      "Orchestrates validation of managed repository files (e.g., .gitattributes, .gitignore) against expected templates using imported utility functions.",
-      "Coordinates synchronization of ArchSpine-specific configuration files and agent instructions into the target repository via imported sync functions.",
-      "Provides logic to determine and apply artifact strategies (e.g., distributable vs. init) based on configuration from Config."
+      "Check the current repository artifact strategy by reading managed Git attributes and Git ignore blocks and comparing against expected templates to report issues.",
+      "Apply a new artifact strategy by updating configuration and synchronizing the associated managed files.",
+      "Install recommended rule template files into the target repository.",
+      "Synchronize agent instructions configuration for a selected agent guidance file.",
+      "Synchronize managed repository files (Git attributes, Git ignore, search ignore, spine ignore) according to the artifact strategy.",
+      "Inject or update ArchSpine-related package scripts (e.g., build and benchmark) into the target repository's package.json."
     ],
     "outOfScope": [
-      "Direct file system I/O (delegated to imported utilities)",
-      "View-specific rendering or UI logic",
-      "HTTP request handling or API endpoints",
-      "Low-level Git operations"
+      "Directly performing low-level file system operations (delegated to infra and utils modules).",
+      "Handling user authentication or credential management.",
+      "Interacting with external LLM providers or summarization pipelines."
     ],
     "invariants": [
-      "Relies on Config for artifact strategy configuration.",
-      "Depends on utility modules for file synchronization and block management.",
-      "Exports only interface definitions for strategy results, not concrete implementations."
+      "Repository strategy operations always rely on Config and sync functions from infra and utils modules.",
+      "The module is located under src/services/, consistent with its role as an orchestrator."
     ],
     "changeIntent": {
-      "architecturalIntent": "Encapsulate repository initialization and artifact management logic behind well-typed interfaces, separating strategy from concrete file operations.",
-      "recentChangeIntent": "Refactoring to extract repository and LLM admin services (as per git intent), though this specific file appears to be an infrastructure module defining strategy interfaces, not a service itself."
+      "architecturalIntent": "Provide a centralized service layer for repository initialization and artifact strategy management, decoupling orchestration logic from infrastructure utilities.",
+      "recentChangeIntent": "No direct evidence in this file of the recent commit hardening credential store or optimizing LLM summarization pipeline."
     },
     "publicSurface": [
-      "RepositoryStrategyCheckResult",
-      "RepositoryStrategyApplyResult",
-      "RuleTemplateInstallResult",
-      "AgentInstructionsSyncResult",
-      "ManagedRepositoryFilesResult",
-      "InjectPackageScriptsResult"
+      "interface RepositoryStrategyCheckResult",
+      "interface RepositoryStrategyApplyResult",
+      "interface RuleTemplateInstallResult",
+      "interface AgentInstructionsSyncResult",
+      "interface ManagedRepositoryFilesResult",
+      "interface InjectPackageScriptsResult",
+      "function checkRepositoryStrategy(rootDir: string, config: Config): RepositoryStrategyCheckResult",
+      "function applyRepositoryStrategy(rootDir: string, config: Config, nextStrategy: ArtifactStrategy): RepositoryStrategyApplyResult",
+      "function installRecommendedRuleTemplates(rootDir: string): RuleTemplateInstallResult",
+      "function syncAgentInstructionsConfiguration(rootDir: string, config: Config, selectedAgentInstructionsFile: string): AgentInstructionsSyncResult",
+      "function syncManagedRepositoryFiles(rootDir: string, config: Config, artifactStrategy: ArtifactStrategy): ManagedRepositoryFilesResult",
+      "function injectRepositoryPackageScripts(rootDir: string, config: Config): InjectPackageScriptsResult"
     ],
     "ruleViolations": [],
-    "driftDetected": false,
-    "driftReason": null,
+    "driftDetected": true,
+    "driftReason": "Module was previously categorized as infrastructure but now resides under src/services/, indicating a reclassification to service orchestration.",
     "localized": {
       "English": {
-        "role": "Infrastructure module defining interfaces and orchestration logic for repository artifact management and initialization strategies.",
+        "role": "Service orchestration module for managing repository artifact strategies, synchronization of managed configuration files, agent instructions, and package scripts within the ArchSpine project.",
         "responsibilities": [
-          "Defines result interfaces for repository strategy checks, application, rule template installation, agent instructions synchronization, managed file operations, and package script injection.",
-          "Orchestrates validation of managed repository files (e.g., .gitattributes, .gitignore) against expected templates using imported utility functions.",
-          "Coordinates synchronization of ArchSpine-specific configuration files and agent instructions into the target repository via imported sync functions.",
-          "Provides logic to determine and apply artifact strategies (e.g., distributable vs. init) based on configuration from Config."
+          "Check the current repository artifact strategy by reading managed Git attributes and Git ignore blocks and comparing against expected templates to report issues.",
+          "Apply a new artifact strategy by updating configuration and synchronizing the associated managed files.",
+          "Install recommended rule template files into the target repository.",
+          "Synchronize agent instructions configuration for a selected agent guidance file.",
+          "Synchronize managed repository files (Git attributes, Git ignore, search ignore, spine ignore) according to the artifact strategy.",
+          "Inject or update ArchSpine-related package scripts (e.g., build and benchmark) into the target repository's package.json."
         ],
         "outOfScope": [
-          "Direct file system I/O (delegated to imported utilities)",
-          "View-specific rendering or UI logic",
-          "HTTP request handling or API endpoints",
-          "Low-level Git operations"
+          "Directly performing low-level file system operations (delegated to infra and utils modules).",
+          "Handling user authentication or credential management.",
+          "Interacting with external LLM providers or summarization pipelines."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "ArchSpine 项目中用于管理仓库工件策略、托管控件文件同步、代理指令和包脚本的服务编排模块。",
+        "responsibilities": [
+          "通过读取受管理的 Git 属性和 Git 忽略块，并与预期模板进行比较，以报告当前仓库工件策略的问题。",
+          "通过更新配置并同步相关托管控件文件，应用新的工件策略。",
+          "将推荐的规则模板文件安装到目标仓库中。",
+          "为选定的代理指导文件同步代理指令配置。",
+          "根据工件策略同步托管的仓库文件（Git 属性、Git 忽略、搜索忽略、Spine 忽略）。",
+          "将 ArchSpine 相关的包脚本（例如构建和基准测试）注入或更新到目标仓库的 package.json 中。"
+        ],
+        "outOfScope": [
+          "直接执行底层文件系统操作（委托给基础设施和工具模块）。",
+          "处理用户身份验证或凭据管理。",
+          "与外部 LLM 提供商或摘要流水线交互。"
         ]
       }
     }
@@ -353,25 +376,105 @@
         "targetPath": "fs",
         "relation": "import",
         "symbols": [
-          "* as fs"
+          "*"
         ]
       },
       {
         "targetPath": "path",
         "relation": "import",
         "symbols": [
-          "* as path"
+          "*"
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/infra/repository-artifacts.ts/readManagedFileBlock#",
+        "targetPath": "src/infra/repository-artifacts.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/infra/repository-artifacts.ts/managedBlockIncludesAll#",
+        "targetPath": "src/infra/repository-artifacts.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncGitIgnoreFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncGitAttributesFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/infra/repository-artifacts.ts/snapshotOutputsPresent#",
+        "targetPath": "src/infra/repository-artifacts.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/infra/repository-artifacts.ts/listTrackedSnapshotFiles#",
+        "targetPath": "src/infra/repository-artifacts.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeManagedGitAttributesFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncAgentInstructionsFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncSpineIgnoreFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncSearchIgnoreFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/injectArchSpineScripts#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:40.748Z",
+    "indexedAt": "2026-05-03T03:54:33.128Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "fallback"
+      "llm"
     ]
   }
 }

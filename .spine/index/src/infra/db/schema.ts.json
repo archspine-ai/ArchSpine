@@ -2,49 +2,65 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/infra/db/schema.ts",
-    "contentHash": "1fefda5eca3bf5793d9eb3e80f6cd0294a945cdd4092f1ad3cead07c45f89963",
+    "contentHash": "c386fbaf3a4ded43c2ed18546c07b599b9b611081bffa8469da718c19a0706d5",
     "skeletonHash": "f4d6cfd9132f3217b774aa5ceff60f21d12918571aff5e4a33514ef0d1e69e33",
-    "semanticHash": "395b4ba42448f78b889b9ebd8f85b333f150f0bb3a8b084d764786b5d83f38bb",
+    "semanticHash": "7b5b92029ca6f00165aabb7fb77c50c0890f204e72c1e1ad61cb0ac731d27c9d",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/db"
   },
   "semantic": {
-    "role": "Database infrastructure utility for SQLite schema migration error handling and safe column addition.",
+    "role": "Database schema initialization utility for the runtime, creating the core 'files' table and enabling WAL journal mode.",
     "responsibilities": [
-      "Detects SQLite duplicate column errors by analyzing error messages.",
-      "Safely adds columns to SQLite tables, catching and ignoring duplicate column errors.",
-      "Provides low-level error handling for database schema evolution operations."
+      "Set 'journal_mode = WAL' pragma on the SQLite database to enable Write-Ahead Logging.",
+      "Create the 'files' table with columns (path, hash, kind, lastIndexedAt, docs, is_authoritative, mtime, size) if it does not already exist."
     ],
     "outOfScope": [
-      "Orchestrating multi-step schema migrations",
-      "Managing database connections or transactions",
-      "Providing a high-level facade for database operations"
+      "Migration logic, such as adding or altering columns after table creation.",
+      "Error handling for duplicate column or constraint violations during schema modifications.",
+      "Querying or updating the 'files' table after initialization.",
+      "Connecting to the database or managing connection lifecycle."
     ],
     "invariants": [
-      "Must remain a pure utility with no side effects beyond the provided database instance.",
-      "Must not absorb service, task, or engine orchestration concerns."
+      "The function must only be called once per database per runtime session (safe to call multiple times due to IF NOT EXISTS).",
+      "The caller must provide an open better-sqlite3 database instance.",
+      "The infrastructure layer must not absorb orchestration concerns (maintains stability and separation of concerns)."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide stable, low-level error handling for SQLite schema evolution to prevent migration failures from duplicate column errors.",
-      "recentChangeIntent": "No recent changes detected in this file; recent commit 'validate runtime config and checkpoint state' does not relate to this utility."
+      "architecturalIntent": "Provide a low-level, idempotent schema initialization routine that bootstraps the file indexing table and enables WAL mode for write performance and concurrency.",
+      "recentChangeIntent": "Harden credential store and optimize LLM summarization pipeline – this file supports the broader optimization by ensuring database schema is correctly initialized."
     },
-    "publicSurface": [],
+    "publicSurface": [
+      "initializeRuntimeSchema"
+    ],
     "ruleViolations": [],
-    "driftDetected": false,
-    "driftReason": null,
+    "driftDetected": true,
+    "driftReason": "Previous semantic contract described error handling for migration (duplicate column detection and safe column addition), but this file only handles initial schema creation; it does not include any error detection or migration operations.",
     "localized": {
       "English": {
-        "role": "Database infrastructure utility for SQLite schema migration error handling and safe column addition.",
+        "role": "Database schema initialization utility for the runtime, creating the core 'files' table and enabling WAL journal mode.",
         "responsibilities": [
-          "Detects SQLite duplicate column errors by analyzing error messages.",
-          "Safely adds columns to SQLite tables, catching and ignoring duplicate column errors.",
-          "Provides low-level error handling for database schema evolution operations."
+          "Set 'journal_mode = WAL' pragma on the SQLite database to enable Write-Ahead Logging.",
+          "Create the 'files' table with columns (path, hash, kind, lastIndexedAt, docs, is_authoritative, mtime, size) if it does not already exist."
         ],
         "outOfScope": [
-          "Orchestrating multi-step schema migrations",
-          "Managing database connections or transactions",
-          "Providing a high-level facade for database operations"
+          "Migration logic, such as adding or altering columns after table creation.",
+          "Error handling for duplicate column or constraint violations during schema modifications.",
+          "Querying or updating the 'files' table after initialization.",
+          "Connecting to the database or managing connection lifecycle."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "运行时数据库模式初始化工具，创建核心“文件”表并启用WAL日志模式。",
+        "responsibilities": [
+          "在SQLite数据库上设置“journal_mode = WAL”编译指示以启用预写日志记录。",
+          "如果不存在，则创建包含列（path、hash、kind、lastIndexedAt、docs、is_authoritative、mtime、size）的“files”表。"
+        ],
+        "outOfScope": [
+          "迁移逻辑，例如在表创建后添加或更改列。",
+          "模式修改期间重复列或约束违规的错误处理。",
+          "初始化后查询或更新“files”表。",
+          "连接数据库或管理连接生命周期。"
         ]
       }
     }
@@ -83,14 +99,16 @@
         ]
       }
     ],
-    "reverseIndexComplete": false
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:38.696Z",
+    "indexedAt": "2026-05-03T03:54:02.780Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "fallback"
+      "llm"
     ]
   }
 }

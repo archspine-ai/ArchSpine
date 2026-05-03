@@ -2,30 +2,30 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "package.json",
-    "contentHash": "dac7393aae1f201164518950789b40518bc4e83516fdff65288df0bbb22aab50",
-    "semanticHash": "97de72bffb422cca63dce1bca0e5cbfdad59c4cfb190b0eb46c9af6ae4d8e94d",
+    "contentHash": "b6fa22d146fef430aaf3e83a2810325f4e6ba2119e682ac0dc63044018d48a91",
+    "semanticHash": "0d2078abb020bcaae54bb58649eaacb34490434519469d1085aa558779c5551b",
     "language": "unsupported",
     "fileKind": "config",
     "scope": ""
   },
   "semantic": {
-    "role": "Defines the ArchSpine package as an executable CLI tool for architectural governance and semantic analysis in AI-era codebases.",
+    "role": "Package manifest for the ArchSpine project, defining the project metadata, CLI entry points, build/test/release scripts, and dependency tree.",
     "responsibilities": [
-      "Specifies CLI entry points (spine, archspine) and binary executables",
-      "Sets Node.js engine compatibility to >=20 and module system to ESM",
-      "Controls packaging scope via files whitelist (excludes maps, mocks, source maps)",
-      "Declares runtime dependencies for core functionality (semantic parsing, AST analysis, MCP integration)",
-      "Declares devDependencies for build, test, lint, and documentation toolchains",
-      "Defines npm scripts for building, testing, validating, publishing, and daily operations"
+      "CLI entry points and command routing (spine, archspine)",
+      "Build pipeline compilation and development workflows",
+      "Unit, e2e, schema validation test suites",
+      "Release gating and publishing placeholders",
+      "Documentation generation via vitepress",
+      "Node.js runtime environment constraints",
+      "Published file whitelist for npm distribution"
     ],
     "outOfScope": [],
     "invariants": [
-      "Node.js engine must be >=20 (lower versions will reject installation)",
-      "Module type must be 'module' (ESM) – all .js files are treated as ES modules",
-      "License must be Apache-2.0 – governs redistribution and attribution",
-      "Main entry must resolve to 'dist/cli/index.js' – all CLI logic starts here",
-      "Binaries must map to the same compiled entry point",
-      "Files shipped to npm must match the 'files' whitelist; maps and mocks are excluded"
+      "Node.js version must be >=20",
+      "Package type is ES module (type: module)",
+      "Only files in dist/, schemas/, docs/, README*, LICENSE, CHANGELOG.md, CONTRIBUTING.md are published",
+      "All CLI scripts must be built before execution",
+      "CI pipeline requires successful build, unit, schema, and e2e tests"
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -36,40 +36,38 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Configures the ArchSpine package as an executable Node.js CLI tool. It defines the binary names (spine, archspine), the entry point, required Node.js version, package type (ESM), dependency sets, and scripts for development and release. This configuration is critical for correct installation, execution, and packaging of the governance system.",
+        "role": "Package manifest for the ArchSpine project, defining the project metadata, CLI entry points, build/test/release scripts, and dependency tree.",
         "parameter_definitions": {
-          "name": "Package identifier 'archspine' – used for publishing and dependency resolution.",
-          "version": "Semantic version 1.0.2 – determines compatibility and release tracking.",
-          "description": "Human-readable summary of the package's purpose as a governance and semantic layer.",
-          "main": "Primary entry point 'dist/cli/index.js' – loaded when the package is required.",
-          "bin": "Defines two CLI commands 'spine' and 'archspine' that execute the compiled index.",
-          "type": "Set to 'module' – forces ES module semantics for all .js files in the package.",
-          "engines": "Requires Node >= 20 – prevents installation on incompatible runtimes.",
-          "files": "Whitelist of files to include in npm package; excludes internal mocks and source maps for security and size.",
-          "scripts": "Maps common tasks (build, test, docs, lint, publish) to executable commands; used by CI and developers.",
-          "dependencies": "Runtime packages required for the tool to function (e.g., AST parser, DB, MCP).",
-          "devDependencies": "Tooling dependencies for development, testing, and documentation; not shipped to end users.",
-          "license": "Apache-2.0 – governs usage, modification, and distribution rights."
+          "name": "Unique package identifier, used by npm for publishing and dependency resolution.",
+          "version": "Semantic version controlling release lifecycle; changes trigger CI and publishing gates.",
+          "description": "Human-readable project purpose, appears in npm search and documentation.",
+          "main": "Primary module entry point for programmatic usage; affects how other modules import this package.",
+          "bin": "Defines two CLI commands (`spine` and `archspine`) linked to the same built script, enabling user interaction.",
+          "type": "Sets module system to ES modules, affecting import/export syntax compatibility with Node.js.",
+          "engines": "Declares minimum Node.js version; npm will warn or block installation on incompatible runtimes.",
+          "files": "Whitelist of files/folders included in npm publish, controlling distribution size and excluding internal artifacts.",
+          "scripts": "Defines 20+ lifecycle hooks controlling build, test, validation, release, and CLI operations; misconfiguration breaks the entire pipeline.",
+          "dependencies": "Runtime packages required for operation; each addition or update affects audit, size, and security surface.",
+          "devDependencies": "Development-only tools (TypeScript, ESLint, Vitest, etc.); not shipped to users but critical for CI reliability."
         },
-        "stability_and_risks": "Misconfiguration of the engines field could allow installation on unsupported Node versions, leading to runtime failures. Incorrect bin paths would make CLI commands unavailable. Omitting critical dependencies would break core functionality (e.g., AST analysis, SQLite storage). Overly permissive files whitelist could inadvertently ship internal mocks or maps, increasing package size and potential attack surface. The ESM module type requires all importing code to use ES module syntax, which may cause compatibility issues with CommonJS-only consumers. The version string must be managed carefully to avoid breaking releases. Script configurations that fail (e.g., missing build step) can halt CI pipelines."
+        "stability_and_risks": "This package.json is the single source of truth for the project's build, test, and release pipeline. Any inconsistency between scripts and actual tooling (e.g., missing dependencies, wrong Node version) will break CI and developer workflows. The locked Node engine (>=20) ensures modern features but may cause incompatibility with older deployment environments. The files whitelist prevents accidental leakage of internal tests or source maps, but must be kept in sync with actual build output. Dependency ranges are not pinned (no lockfile shown), increasing risk of breaking changes from transitive updates. The extensive script suite provides high automation but demands careful version coordination between tools (e.g., vitest, TypeScript, ESLint)."
       },
       "Simplified Chinese": {
-        "role": "将 ArchSpine 包配置为可执行的 Node.js CLI 工具。定义了二进制命令名称 (spine, archspine)、入口文件、所需的 Node.js 版本、包类型 (ESM)、依赖项集合以及开发和发布脚本。该配置对于治理系统的正确安装、执行和打包至关重要。",
+        "role": "ArchSpine 项目的包清单，定义项目元数据、CLI 入口点、构建/测试/发布脚本以及依赖树。",
         "parameter_definitions": {
-          "name": "包标识符 'archspine'，用于发布和依赖解析。",
-          "version": "语义版本 1.0.2，决定兼容性和发布跟踪。",
-          "description": "包用途的可读摘要，描述其为治理和语义层。",
-          "main": "主要入口点 'dist/cli/index.js'，当 require 本包时加载。",
-          "bin": "定义两个 CLI 命令 'spine' 和 'archspine'，执行编译后的入口文件。",
-          "type": "设置为 'module'，强制包内所有 .js 文件使用 ES 模块语义。",
-          "engines": "要求 Node >= 20，防止在不兼容的运行时上安装。",
-          "files": "包含在 npm 包中的文件白名单；排除内部模拟文件和源映射以确保安全性和减小体积。",
-          "scripts": "将常见任务（构建、测试、文档、检查、发布）映射到可执行命令，供 CI 和开发者使用。",
-          "dependencies": "工具运行时所需的依赖包（如 AST 解析器、数据库、MCP 集成）。",
-          "devDependencies": "用于开发、测试和文档的工具依赖，不随包发布给终端用户。",
-          "license": "Apache-2.0 许可证，规定使用、修改和分发权。"
+          "name": "唯一的包标识符，用于 npm 发布和依赖解析。",
+          "version": "语义化版本号控制发布生命周期；版本变化会触发 CI 和发布门禁。",
+          "description": "人类可读的项目用途说明，显示在 npm 搜索和文档中。",
+          "main": "程序化使用的主模块入口点，影响其他模块如何导入此包。",
+          "bin": "定义两个 CLI 命令（`spine` 和 `archspine`）链接到同一构建脚本，使用户可以交互。",
+          "type": "将模块系统设置为 ES 模块，影响与 Node.js 的 import/export 语法兼容性。",
+          "engines": "声明最低 Node.js 版本；在不兼容的运行时上 npm 会警告或阻止安装。",
+          "files": "npm 发布时包含的文件/文件夹白名单，控制分发包大小并排除内部工件。",
+          "scripts": "定义 20 多个生命周期钩子，控制构建、测试、验证、发布和 CLI 操作；配置错误会破坏整个流水线。",
+          "dependencies": "运行所需的依赖包；每次添加或更新都会影响审计、大小和安全面。",
+          "devDependencies": "开发工具（TypeScript、ESLint、Vitest 等）；不随用户包发布，但对 CI 可靠性至关重要。"
         },
-        "stability_and_risks": "engines 字段配置错误可能导致在不支持的 Node 版本上安装，引发运行时故障。bin 路径错误会使 CLI 命令不可用。遗漏关键依赖会破坏核心功能（如 AST 分析、SQLite 存储）。files 白名单过于宽泛可能意外包含内部模拟文件或映射，增加包体积和攻击面。ESM 模块类型要求所有导入代码使用 ES 模块语法，可能与仅支持 CommonJS 的消费者发生兼容问题。版本号需谨慎管理以避免破坏性发布。脚本配置失败（如缺少构建步骤）可能导致 CI 流水线中断。"
+        "stability_and_risks": "此 package.json 是项目构建、测试和发布流水线的唯一真相来源。脚本与实际工具之间的任何不一致（例如缺少依赖、Node 版本错误）都会破坏 CI 和开发者工作流。锁定的 Node 引擎（>=20）确保现代特性，但可能与较旧的部署环境不兼容。文件白名单防止内部测试或源映射意外泄漏，但必须与实际的构建输出保持同步。依赖范围未固定（未显示 lockfile），增加了来自传递更新的破坏性变更风险。广泛的脚本套件提供了高度自动化，但要求工具（如 vitest、TypeScript、ESLint）之间的版本协调必须精确。"
       }
     }
   },
@@ -91,7 +89,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-02T13:37:00.523Z",
+    "indexedAt": "2026-05-03T03:53:53.134Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

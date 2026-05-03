@@ -2,49 +2,73 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/core/config-schema.ts",
-    "contentHash": "c5f7465f64621bc4abe9afd24a859280652f2847552eef6846b773bb0f9ab45e",
+    "contentHash": "525b6c7172561c1b0f7be5ce32752c57fc6dbcb7f2138b3300de3a187a419e41",
     "skeletonHash": "e0abe00c747d1f9c52cabc26f9d5147653c0496fbb316b87ad9fa9fad3f116ae",
-    "semanticHash": "306488d43bcb85ce988f73abad51fd85025ab542045ee3dcc5bca025f8363722",
+    "semanticHash": "aa545a30899601db87f4056bf51eb54681bcadd4f9645d17ada57a8c15c9f969",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/core"
   },
   "semantic": {
-    "role": "Core validation contract and constants definition for the ArchSpine configuration schema.",
+    "role": "Core configuration validation module providing runtime predicates for the SpineConfig schema.",
     "responsibilities": [
-      "Defines the SpineConfigValidationResult interface for structured validation output.",
-      "Declares constant sets of allowed values for key configuration fields (LLM modes, prompt tiers, validation policies, etc.)."
+      "Defines the `SpineConfigValidationResult` interface to structure validation output.",
+      "Defines canonical Sets of allowed values for all configurable enums (LLM modes, prompt tiers, validation policies, MCP context modes, hook sync modes, artifact strategies, file sources).",
+      "Exports `resolveSpineConfig` as the primary validation function that parses an unknown input, runs field-specific checks using helper predicates (`isRecord`, `expectString`, `expectEnum`), and returns either a valid `SpineConfig` or a list of issues.",
+      "Exports `validateSpineConfig` as a thin convenience wrapper around `resolveSpineConfig`.",
+      "Uses helper functions to perform type-safe validation of each configuration field, ensuring conformance to defined constants."
     ],
     "outOfScope": [
-      "Implementing validation logic (handled by separate modules like config-validation.ts).",
-      "CLI command entry or user interaction.",
-      "Reading or parsing configuration files."
+      "File I/O or configuration loading from filesystem.",
+      "Schema definition of SpineConfig (defined in '../types/protocol.js').",
+      "CLI argument parsing or command-line invocation."
     ],
     "invariants": [
-      "Provides centralized allowed value sets for configuration validation.",
-      "Exports a typed result structure for validation consistency across the pipeline."
+      "All enum-based configuration fields must be validated against canonical constant sets.",
+      "Validation result always contains an `issues` array, even if `config` is null.",
+      "Validation does not mutate the input value."
     ],
     "changeIntent": {
-      "architecturalIntent": "Establish a shared vocabulary and contract for configuration validation across the ArchSpine pipeline.",
-      "recentChangeIntent": "Potential tightening of schema handling and addition of preview capabilities, as indicated by git commit."
+      "architecturalIntent": "Centralize configuration validation logic to enforce schema constraints and provide consistent error reporting across the pipeline.",
+      "recentChangeIntent": "Matches the core hardening theme of the recent commit; this module was likely refined to improve validation accuracy or add new constant sets."
     },
     "publicSurface": [
-      "SpineConfigValidationResult interface"
+      "resolveSpineConfig",
+      "validateSpineConfig",
+      "SpineConfigValidationResult"
     ],
     "ruleViolations": [],
-    "driftDetected": false,
-    "driftReason": null,
+    "driftDetected": true,
+    "driftReason": "Previous semantic omitted the core validation functions `resolveSpineConfig` and `validateSpineConfig`, which are the primary API of this module. The previous role also did not mention the validation predicates or the constant sets as responsibilities.",
     "localized": {
       "English": {
-        "role": "Core validation contract and constants definition for the ArchSpine configuration schema.",
+        "role": "Core configuration validation module providing runtime predicates for the SpineConfig schema.",
         "responsibilities": [
-          "Defines the SpineConfigValidationResult interface for structured validation output.",
-          "Declares constant sets of allowed values for key configuration fields (LLM modes, prompt tiers, validation policies, etc.)."
+          "Defines the `SpineConfigValidationResult` interface to structure validation output.",
+          "Defines canonical Sets of allowed values for all configurable enums (LLM modes, prompt tiers, validation policies, MCP context modes, hook sync modes, artifact strategies, file sources).",
+          "Exports `resolveSpineConfig` as the primary validation function that parses an unknown input, runs field-specific checks using helper predicates (`isRecord`, `expectString`, `expectEnum`), and returns either a valid `SpineConfig` or a list of issues.",
+          "Exports `validateSpineConfig` as a thin convenience wrapper around `resolveSpineConfig`.",
+          "Uses helper functions to perform type-safe validation of each configuration field, ensuring conformance to defined constants."
         ],
         "outOfScope": [
-          "Implementing validation logic (handled by separate modules like config-validation.ts).",
-          "CLI command entry or user interaction.",
-          "Reading or parsing configuration files."
+          "File I/O or configuration loading from filesystem.",
+          "Schema definition of SpineConfig (defined in '../types/protocol.js').",
+          "CLI argument parsing or command-line invocation."
+        ]
+      },
+      "Simplified Chinese": {
+        "role": "核心配置验证模块，为SpineConfig模式提供运行时校验谓词。",
+        "responsibilities": [
+          "定义 `SpineConfigValidationResult` 接口以结构化管理验证输出。",
+          "定义所有可配置枚举（LLM模式、提示层、验证策略、MCP上下文模式、钩子同步模式、工件策略、文件来源）的允许值规范集合。",
+          "导出 `resolveSpineConfig` 作为主要验证函数，解析未知输入，使用辅助谓词（`isRecord`、`expectString`、`expectEnum`）进行字段级检查，返回有效的 `SpineConfig` 或问题列表。",
+          "导出 `validateSpineConfig` 作为 `resolveSpineConfig` 的便捷包装器。",
+          "使用辅助函数对每个配置字段进行类型安全的验证，确保符合定义的常量集合。"
+        ],
+        "outOfScope": [
+          "不包括文件I/O或从文件系统加载配置。",
+          "不包括SpineConfig的模式定义（在 '../types/protocol.js' 中定义）。",
+          "不包括CLI参数解析或命令行调用。"
         ]
       }
     }
@@ -115,22 +139,24 @@
         ]
       }
     ],
-    "dependedBy": [
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
       {
-        "targetPath": "tests/config-validation.test.ts",
-        "relation": "import",
-        "edgeProvenance": "ast",
-        "symbols": []
+        "sourceSymbol": "src/core/config-schema.ts/_file_#",
+        "targetSymbol": "src/infra/config-validation.ts/resolveSpineConfig#",
+        "targetPath": "src/infra/config-validation.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
       }
-    ],
-    "reverseIndexComplete": true
+    ]
   },
   "provenance": {
-    "indexedAt": "2026-05-01T02:45:37.138Z",
+    "indexedAt": "2026-05-03T03:54:07.308Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "fallback"
+      "llm"
     ]
   }
 }

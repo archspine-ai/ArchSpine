@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "scripts/validate-protocol-assets.mjs",
+    "contentHash": "cb7d32cee1525d4b990e2664233de8733455c7a9305b346c35bae70c91a99b4d",
+    "semanticHash": "faf72c5a2688961c760ae6ee27a7ad6b8b3271307e055d47af8195f32c3942a3",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": "scripts"
+  },
+  "semantic": {
+    "role": "Validation script for protocol assets in ArchSpine project",
+    "responsibilities": [
+      "Schema loading and registration from schemas directory",
+      "Validation of JSON examples against their corresponding schemas using AJV",
+      "Validation of Markdown rule documents (with gray-matter frontmatter) against the rules schema",
+      "Reporting validation failures and exiting with appropriate status codes"
+    ],
+    "outOfScope": [
+      "Unit testing of the validation logic itself",
+      "Schema authoring guidelines or best practices",
+      "Handling of non-protocol asset files"
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This script ensures that all protocol asset examples and rule documents in the ArchSpine project conform to their defined JSON schemas, maintaining data integrity and consistency.",
+        "context_and_audience": "Intended for developers and maintainers who work with the .spine/atlas directory, schema definitions, and example files. It is typically run as part of the CI pipeline or during development to catch structural errors early.",
+        "key_takeaways": [
+          "All JSON examples are mapped to specific schemas and validated automatically.",
+          "Markdown rule documents are parsed using gray-matter and validated against the spine-rules schema.",
+          "Any validation failure results in a non-zero exit code, making the script suitable for automated testing.",
+          "The script requires all schemas to be valid JSON Schema 2020-12 and uses ajv-formats for format validation."
+        ]
+      },
+      "Simplified Chinese": {
+        "purpose": "该脚本用于验证 ArchSpine 项目中所有协议资产示例和规则文档是否符合其定义的 JSON Schema，确保数据的完整性和一致性。",
+        "context_and_audience": "适用于维护 .spine/atlas 目录、Schema 定义和示例文件的开发者和维护人员。通常在 CI 流水线或开发过程中运行，以便及早发现结构错误。",
+        "key_takeaways": [
+          "所有 JSON 示例都映射到特定的 Schema 并自动进行验证。",
+          "Markdown 规则文档通过 gray-matter 解析，提取元数据和正文，然后对照 spine-rules Schema 进行校验。",
+          "任何验证失败都会导致非零退出码，适合集成到自动化测试中。",
+          "脚本要求所有 Schema 均为有效的 JSON Schema 2020-12，并使用 ajv-formats 进行格式验证。"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-03T03:53:46.229Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}
