@@ -3,34 +3,26 @@
   "identity": {
     "filePath": "examples/demo-project/.spine/config.json",
     "contentHash": "0b29a82af58e08dce738047947abb37345f3b6612b135a84b9798a6387d5098c",
-    "semanticHash": "f09ae9d4c35bfc767d659c32b47e12598a34a5ca42191a5c6981c2c16a4c70b2",
+    "semanticHash": "c80a83279fa58fb7683a2428a876944fe30f1d1527e7f98b4a82e6581355b39b",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "examples/demo-project/.spine"
   },
   "semantic": {
-    "role": "Central configuration file for the ArchSpine system, controlling project metadata, LLM provider, MCP context mode, pre-commit hooks, and scan policy including ignore chains and protocol boundaries.",
+    "role": "Configuration for the ArchSpine system demo project, defining scanning, hook, and LLM provider settings.",
     "responsibilities": [
-      "Defining project name and supported locales",
-      "Configuring the LLM provider (e.g., mock provider)",
-      "Setting MCP context mode (on/off)",
-      "Enabling or disabling pre-commit hooks and sync mode",
-      "Specifying the file scan source (git-tracked or filesystem)",
-      "Managing ignore chain: inherited .gitignore, project .spineignore, local .spineignore.local",
-      "Defining protocol exclusions and inclusions to control which paths are scanned"
+      "File scanning and ignore policy",
+      "Pre-commit hooks and sync mode",
+      "LLM provider selection",
+      "MCP context mode"
     ],
     "outOfScope": [],
     "invariants": [
-      "schemaVersion must be a valid semantic version string",
-      "project.locales must contain at least one supported locale",
-      "llm.provider must be a recognized provider string (e.g., 'mock', 'openai', 'gemini')",
-      "mcp.contextMode must be 'on' or 'off'",
-      "hooks.preCommit must be boolean",
-      "hooks.syncMode must be either 'hook' or 'auto'",
-      "scanPolicy.fileSource must be 'git-tracked' or 'filesystem'",
-      "scanPolicy.ignoreChain.inheritGitIgnore must be boolean",
-      "protocolExclusions and protocolInclusions must be arrays of path patterns",
-      "The sum of protocolExclusions and protocolInclusions must not create conflicting rules"
+      "The .spine/ directory is excluded from scans except for .spine/rules/ and .spine/config.json",
+      "Git-tracked files are the source for scanning",
+      "The project ignore file must be .spineignore",
+      "The local ignore file must be .spineignore.local",
+      "Static analysis hooks are disabled (preCommit: false)"
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -41,38 +33,24 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "This configuration file sets the foundational parameters for the ArchSpine mirror system. It determines how the system identifies the project, which LLM engine drives documentation generation, how MCP context is managed, whether pre-commit hooks are active, and most importantly, which files are scanned and indexed. The scan policy controls the entire data pipeline, making this file critical for accurate and secure indexing.",
+        "role": "Configuration for the ArchSpine system demo project, defining scanning, hook, and LLM provider settings.",
         "parameter_definitions": {
-          "schemaVersion": "Specifies the version of the configuration schema. Must be exactly '1.0.0' for this release.",
-          "project.name": "Identifies the project within ArchSpine; used for artifact naming and telemetry.",
-          "project.locales": "List of active locales for multilingual documentation generation. Each locale must be registered in the system.",
-          "llm.provider": "Selects the language model backend. 'mock' is a safe test provider; switching to a real provider (e.g., 'openai') sends prompts externally.",
-          "mcp.contextMode": "Toggles the MCP (Model Context Protocol) integration. 'off' means no external context sharing; 'on' enables it.",
-          "hooks.preCommit": "When true, ArchSpine runs checks before each commit. Disabling reduces safety but speeds up commits.",
-          "hooks.syncMode": "Controls whether synchronization happens via a git hook ('hook') or automatically ('auto').",
-          "scanPolicy.fileSource": "Determines which files are eligible for scanning: 'git-tracked' only scans versioned files; 'filesystem' scans all files.",
-          "scanPolicy.ignoreChain": "A layered ignore mechanism: inherits .gitignore, then applies .spineignore, then .spineignore.local for local overrides.",
-          "scanPolicy.protocolExclusions": "Paths that are always excluded from indexing, e.g., '.spine/' to avoid indexing internal artifacts.",
-          "scanPolicy.protocolInclusions": "Paths that are always included even if they would be excluded by ignore rules, e.g., '.spine/rules/'."
+          "scanPolicy": "Controls file inclusion and exclusion during scanning, ensuring only relevant files are analyzed and sensitive directories like .spine/ are protected.",
+          "hooks": "Manages pre-commit hook and sync mode; currently hooks are disabled, meaning no automatic validation on commit.",
+          "llm": "Selects the LLM provider; set to 'mock' for testing without real AI dependencies.",
+          "mcp": "Manages Model Context Protocol; disabled to prevent external context inference."
         },
-        "stability_and_risks": "Misconfiguring the scan policy (e.g., missing protocol inclusions) can lead to incomplete indexing, causing missing rule enforcement or stale views. Using a real LLM provider with untrusted prompts may expose sensitive code. Disabling pre-commit hooks removes a safety gate for committing violations. The MCP context mode, if enabled without proper authentication, could leak internal context to external services. The ignore chain must be carefully maintained; a missing .spineignore file defaults to no project-level ignore, potentially scanning large irrelevant directories. Protocol exclusions/inclusions must not overlap; conflicting rules can break the scanner."
+        "stability_and_risks": "This configuration ensures safe file scanning by respecting git ignore rules and excluding the .spine/ directory except for essential files. The use of mock LLM provider avoids external API dependencies. Disabling hooks reduces immediate validation but may allow inconsistent states. Overall, the configuration prioritizes safety and minimal external dependencies, suitable for development or demo environments."
       },
       "Simplified Chinese": {
-        "role": "该配置文件为 ArchSpine 镜像系统设置基础参数。它决定了系统如何标识项目、哪个 LLM 引擎用于文档生成、MCP 上下文如何管理、预提交钩子是否启用，以及最重要的——哪些文件会被扫描和索引。扫描策略控制整个数据管道，因此此文件对准确和安全的索引至关重要。",
+        "role": "ArchSpine 系统演示项目的配置文件，定义了扫描、钩子和大语言模型（LLM）提供商的设置。",
         "parameter_definitions": {
-          "schemaVersion": "指定配置架构的版本。此版本必须为 '1.0.0'。",
-          "project.name": "在 ArchSpine 中标识项目，用于工件命名和遥测。",
-          "project.locales": "多语言文档生成的活动语言列表。每个语言必须在系统中注册。",
-          "llm.provider": "选择语言模型后端。'mock' 是安全的测试提供者；切换为真实提供者（如 'openai'）会将提示发送到外部。",
-          "mcp.contextMode": "切换 MCP（模型上下文协议）集成。'off' 表示不共享外部上下文；'on' 启用共享。",
-          "hooks.preCommit": "若为 true，ArchSpine 将在每次提交前运行检查。禁用会降低安全性但加快提交速度。",
-          "hooks.syncMode": "控制同步是通过 git 钩子（'hook'）还是自动（'auto'）进行。",
-          "scanPolicy.fileSource": "决定哪些文件可被扫描：'git-tracked' 仅扫描版本控制文件；'filesystem' 扫描所有文件。",
-          "scanPolicy.ignoreChain": "分层忽略机制：继承 .gitignore，然后应用 .spineignore，最后使用 .spineignore.local 进行本地覆盖。",
-          "scanPolicy.protocolExclusions": "始终排除在索引之外的路径，例如 '.spine/' 以避免索引内部工件。",
-          "scanPolicy.protocolInclusions": "即使被忽略规则排除也始终包含的路径，例如 '.spine/rules/'。"
+          "scanPolicy": "控制扫描期间的文件包含与排除，确保只分析相关文件，并保护 .spine/ 等敏感目录。",
+          "hooks": "管理预提交钩子和同步模式；当前钩子已禁用，即提交时不进行自动验证。",
+          "llm": "选择 LLM 提供商；设为 'mock' 以便在无真实 AI 依赖的情况下进行测试。",
+          "mcp": "管理模型上下文协议；已禁用以防止外部上下文推断。"
         },
-        "stability_and_risks": "扫描策略配置错误（例如遗漏协议包含项）可能导致不完整的索引，从而造成规则执行缺失或视图陈旧。使用真实的 LLM 提供者且提示不可信时可能会泄露敏感代码。禁用预提交钩子会移除提交违规的安全门。MCP 上下文模式若在未正确认证的情况下启用，可能将内部上下文泄露给外部服务。忽略链必须仔细维护；缺少 .spineignore 文件将默认为无项目级忽略，可能扫描大量无关目录。协议排除/包含项不得重叠；冲突规则会破坏扫描器。"
+        "stability_and_risks": "此配置通过遵循 git 忽略规则并排除 .spine/ 目录（必需文件除外）来确保安全的文件扫描。使用模拟 LLM 提供商避免了外部 API 依赖。禁用钩子减少了即时验证，但可能导致不一致状态。总体而言，该配置优先考虑安全性和最小外部依赖，适合开发或演示环境。"
       }
     }
   },
@@ -94,7 +72,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:22:55.600Z",
+    "indexedAt": "2026-05-03T12:14:54.144Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

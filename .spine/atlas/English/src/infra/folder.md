@@ -1,30 +1,46 @@
-# `src/infra` – Infrastructure Foundation of ArchSpine
+# `src/infra` – Core Infrastructure Layer
 
-This directory forms the **infrastructure layer** of the ArchSpine mirror system. It provides the core services — configuration management, LLM client abstraction, credential storage, database lifecycle, manifest persistence, MCP server integration, prompt assembly and rendering, runtime I/O utilities, and output management — that all higher-level operations depend on.
+The `src/infra` directory provides the foundational services that power the entire ArchSpine mirror system. It implements configuration resolution, SQLite database lifecycle, multi-provider LLM client abstraction, credential storage, file integrity tracking, an MCP server for external AI agents, prompt assembly, runtime I/O, and governance utilities.
 
-## Notable Submodules & Grouping
+## Notable Children and Grouping
 
-The components are organized into logical groups:
+- **`config/`** – Configuration management subsystem. Key modules:  
+  `config-validation.ts` (facade for `resolveSpineConfig` and `validateSpineConfig`), `config.ts` (public API barrel).
 
-| Area | Key files / subdirectories | Purpose |
-|------|----------------------------|---------|
-| **Configuration** | `config/`, `config.ts`, `config-validation.ts` | Loads, validates, and resolves environment variables and defaults; provides a stable API for `resolveSpineConfig` and `validateSpineConfig`. |
-| **Credentials** | `credentials/`, `secrets.ts` | Pluggable credential storage with platform-specific backends (macOS Keychain, Linux secret-tool, Windows DPAPI, in-memory) for secure LLM API key management. |
-| **Database** | `db/`, `db.ts`, `execution-checkpoint.ts` | Manages the SQLite runtime database lifecycle (WAL journal, schema init, drift detection, stale recovery). Includes `db.ts` as a unified DAO repository for files, drift events, symbol caches, token usage, and violations. |
-| **LLM Integration** | `llm/`, `llm.ts` | Client abstraction, factory, global config file management, retry with exponential backoff, and concrete provider implementations (OpenAI, Gemini, etc.). |
-| **Manifest** | `manifest/`, `manifest.ts` | File status tracking, SHA-256 hashing, deterministic path resolution, and state persistence for synchronization and verification. |
-| **MCP Server** | `mcp/` | Implements the Model Context Protocol (MCP) server with stdio transport, exposing project metadata, file contents, scanning, rules, and drift history to external AI agents. |
-| **Prompt Generation** | `prompt/`, `prompt-context/`, `prompt.ts`, `prompt-policy.ts`, `prompt-rendering.ts`, `lite-prompt.ts` | Fluent prompt builders, policy resolution, budget calculation, trimming, diagnostics, and specialized generators for markdown, source code, config, document, folder, and project prompts. Also includes `lite-prompt.ts` for token-constrained “Lite Mode” prompts. |
-| **Runtime I/O & Utilities** | `runtime-io.ts`, `ui.ts`, `renderer.ts`, `index-reader.ts`, `output.ts`, `rules-loader.ts`, `writer-boundary.ts`, `spine-gate.ts`, `repository-artifacts.ts`, `repair-policy.ts`, `auth.ts` | Standardized logging/warnings/errors, foldable console UI, markdown documentation rendering, index file reading with schema validation, output DAO for .spine JSON files, rule document loading, write-protection boundaries, mutation detection, repository snapshot utilities, and repair-action decision logic. |
-| **Mocking** | `__mocks__/` | Provides a stable public export of `MockClient` for testing LLM provider interactions. |
+- **`db/`** – SQLite database infrastructure. Key file: `db.ts` (unified facade for file tracking, symbol export, LLM metrics, rule violations, batch commits).
 
-## Most Important Implementation Areas
+- **`llm/`** – LLM client abstraction layer. Key file: `llm.ts` (facade exporting `createResolvedLLMClient`, `resolveLLMSettings`, provider utilities).
 
-- **Configuration & Credentials** – The foundational setup that controls all other infrastructure behavior.
-- **Database (db/)** – The persistence backbone for file metadata, audit events, and system status.
-- **LLM Abstraction (llm/)** – Decouples the system from specific providers and handles resilience.
-- **Prompt System (prompt/ + prompt-context/)** – Generates structured, localized, and validated prompts that drive ArchSpine’s AI interactions.
-- **MCP Server (mcp/)** – Enables external AI agents to consume ArchSpine resources and tools directly.
-- **Runtime I/O (runtime-io.ts, ui.ts)** – Ensures consistent user interaction and testability across the application.
+- **`credentials/`** – Platform-agnostic credential storage with backends for macOS keychain, Linux secret-tool, Windows DPAPI, and in-memory.
 
-All these components coalesce into a unified infrastructure layer that supports the entire ArchSpine mirror system.
+- **`manifest/`** – File system interaction and integrity verification. Key file: `manifest.ts` (public API for `Manifest` class and `hasManifestBaseline`).
+
+- **`mcp/`** – Model Context Protocol server exposing internal resources and tools to external AI agents.
+
+- **`prompt/`** – Prompt assembly and orchestration. Key files: `prompt.ts` (public facade), `renderer.ts` (markdown generation), `repository-artifacts.ts` (Git and file operations).
+
+- **`prompt-context/`** – Prompt policy and construction infrastructure. Key file: `prompt-context.ts` (exports budget profiles, validation policies, artifact builders).
+
+- **Other notable files** in `src/infra/`:
+  - `runtime-io.ts` – Standardized I/O interface for logging, warnings, errors, confirmations.
+  - `spine-gate.ts` – Unauthorized mutation detection in protected output directories.
+  - `repair-policy.ts` – Decision logic for repair actions based on violation reports.
+  - `secrets.ts` – Secure LLM credential retrieval facade.
+  - `output.ts` – DAO for reading/writing Spine index JSON files.
+  - `execution-checkpoint.ts` – Checkpoint state manager for retry system.
+  - `index-reader.ts` – Index document reading and validation with schema compatibility.
+  - `lite-prompt.ts` – Token-constrained prompt builder for Lite Mode.
+  - `writer-boundary.ts` – Write protection for `.spine/` directories.
+  - `rules-loader.ts` – Rule document loading and parsing.
+  - `ui.ts` – CLI foldable console output utility.
+
+## Key Implementation Areas
+
+1. **Configuration Management** – Secure resolution and validation of all settings.
+2. **Database Operations** – SQLite lifecycle, atomic batch commits, drift detection.
+3. **LLM Integration** – Unified multi-provider client with retry and configuration merging.
+4. **Credential Storage** – Cross-platform secure secret persistence.
+5. **File System Manifest** – SHA-256 hashing, drift tracking, baseline detection.
+6. **MCP Server** – Context-gated access to internal resources for external AI agents.
+7. **Prompt Assembly** – Fluent builder, policy tiers, budget calculation, localization.
+8. **Governance Utilities** – Mutation detection (`spine-gate.ts`), repair policy (`repair-policy.ts`), write protection (`writer-boundary.ts`), rule loading (`rules-loader.ts`).

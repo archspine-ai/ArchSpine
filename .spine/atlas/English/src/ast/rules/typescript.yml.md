@@ -1,27 +1,17 @@
-# ArchSpine TypeScript AST Extraction Rules
+# ArchSpine Code Pattern Configuration: Summary
 
-## Why This Document Exists
-This document is a configuration file that defines the Abstract Syntax Tree (AST) extraction patterns for TypeScript source code inside the ArchSpine project. It tells the ArchSpine analysis engine exactly how to identify and extract three categories of code structures:
-- **Import declarations** (named, default, namespace)
-- **Export declarations** (functions, classes, interfaces, types, variables, default exports, export lists)
-- **Usage references** (function calls, constructor invocations, property access)
+## Purpose
+This document defines the pattern-matching rules that enable the ArchSpine static analysis engine to recognize imports, exports, and usages in JavaScript/TypeScript source code. By specifying the exact syntax for each pattern type, it provides the foundation for automated extraction of symbols and their dependencies—supporting the broader code mirroring and dependency tracking capabilities of the ArchSpine system.
 
-Without these patterns, the engine would not know which syntactic forms to capture, and the entire code index used for automated documentation, dependency tracking, and governance enforcement would be incomplete or incorrect.
-
-## Who Should Read It
-- **Developers** maintaining the ArchSpine AST extraction engine (located under `src/ast/`).
-- **AI agents** tasked with understanding how the metadata extraction pipeline works for TypeScript.
-- **Contributors** who wish to add or modify extraction capabilities for TypeScript.
-
-## What Workflows and Decisions It Anchors
-- **Extraction accuracy**: Any change to how imports, exports, or usages are captured must be reflected here.
-- **Grammar synchronization**: This file must stay in sync with the TypeScript grammar supported by the tree-sitter parser used by ArchSpine.
-- **Language‑specific isolation**: Other programming languages have their own rule files in the same directory; modifications to TypeScript rules do not affect other languages.
+## Who Should Read This
+- **Developers and maintainers** of the ArchSpine static analysis engine who need to understand, modify, or extend the recognition rules for different code structures.
+- **Contributors** integrating new pattern types (e.g., additional import or export forms) or adjusting existing ones to accommodate evolving language features or project conventions.
 
 ## Key Takeaways
-- The patterns are written using tree‑sitter query syntax.
-- Each pattern has an identifier and may optionally be assigned a category (e.g., `Function`, `Class`, `Variable`) for higher‑level analysis.
-- Import patterns cover the three standard forms: named, default, and namespace.
-- Export patterns handle a wide variety of TypeScript constructs, including default exports and export lists.
-- Usage patterns capture common references: function calls (`call`), object instantiation (`new`), and property access (`property`).
-- The rules are language‑specific; they apply only to TypeScript.
+1. **Import patterns** cover three standard forms: named imports (`import { ... } from ...`), default imports (`import X from ...`), and namespace imports (`import * as X from ...`).
+2. **Export patterns** handle a wide range of constructs: functions, classes (including default exports), interfaces, types, variables (`const`, `let`, `var`), default exports, and list exports (`export { ... }`). Each export is classified with a symbolic kind (e.g., `Function`, `Class`, `Variable`) for consistent analysis.
+3. **Usage patterns** capture three essential operations: function calls, constructor invocations (`new X(...)`), and property accesses (`obj.prop`).
+4. Every pattern is assigned a unique identifier and, where applicable, a kind label. These identifiers serve as the canonical references throughout the analysis pipeline, ensuring that downstream tools (dependency graphs, mirror generation, etc.) process symbols uniformly.
+
+## Workflow Anchors
+This configuration acts as a single source of truth for the static analysis phase. Any change to recognized syntax (e.g., adding support for re-exports or dynamic imports) must be reflected here first. The definitions directly feed into the pattern‑matching engine that scans codebases, so engineers modifying recognition logic should consult this document to align new rules with existing conventions.

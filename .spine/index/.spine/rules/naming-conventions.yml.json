@@ -3,24 +3,22 @@
   "identity": {
     "filePath": ".spine/rules/naming-conventions.yml",
     "contentHash": "2224edc5dd0f88b0db274a7ae49f86788ce16da076fec2aa2c21c22ef9447dd1",
-    "semanticHash": "27bdc8b652579f25b98e1a0337362d0792a1e62ad2b3c89e869eedcdb8e7c43e",
+    "semanticHash": "3f285a61076d15efdc9f59f3df48236c9b84d1688134336838bb4d4af134d3c5",
     "language": "unsupported",
     "fileKind": "document",
     "scope": ".spine/rules"
   },
   "semantic": {
-    "role": "Defines codebase naming conventions for consistency within a monorepo.",
+    "role": "Define naming conventions for the codebase to ensure consistency and facilitate automated enforcement.",
     "responsibilities": [
-      "Interface prefix naming rule",
-      "Test file suffix naming rule",
-      "Scope constraints for each rule",
-      "Severity levels (Warning, Error)",
-      "Rationale behind each convention"
+      "Specify the requirement for internal interfaces to be prefixed with 'I' (e.g., IUserRepository).",
+      "Specify the requirement for test files to end with .test.ts or .spec.ts.",
+      "Document severity levels for each rule (Warning for interface prefix, Error for test file suffix)."
     ],
     "outOfScope": [
-      "Other coding standards such as formatting or architecture",
-      "Language-specific conventions beyond TypeScript",
-      "Detailed implementation of enforcement mechanisms"
+      "Naming conventions for classes, enums, or non-interface types.",
+      "File naming outside of types and tests directories.",
+      "General coding style or formatting rules."
     ],
     "invariants": [],
     "changeIntent": {
@@ -32,21 +30,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "To establish and enforce naming conventions that ensure consistency across a large monorepo.",
-        "context_and_audience": "This document is intended for developers working in a TypeScript monorepo who need to adhere to naming standards for interfaces and test files. It is part of the ArchSpine rules system maintained by the development team.",
+        "purpose": "This document exists to establish and enforce a set of naming conventions across a large monorepo, ensuring code style consistency and improving developer productivity by making code patterns predictable.",
+        "context_and_audience": "Intended for developers working on the monorepo, especially those adding new interfaces or test files. It serves as a reference for both manual code review and automated linting rules.",
         "key_takeaways": [
-          "Interfaces in src/types/**/*.ts must be prefixed with 'I'.",
-          "Test files must end with .test.ts or .spec.ts.",
-          "Violations are flagged as warnings for interface prefixes and errors for test file suffixes."
+          "All internal interfaces in src/types/**/*.ts must be prefixed with 'I'.",
+          "All test files in tests/** must end with .test.ts or .spec.ts.",
+          "Violations of the prefix rule produce a warning; violations of the suffix rule produce an error."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "规定代码库中的命名规范，确保在大型单一代码库中保持风格统一。",
-        "context_and_audience": "本文档面向在 TypeScript 单一代码库中工作的开发者，他们需要遵循接口和测试文件的命名标准。本文档是 ArchSpine 规则系统的一部分，由开发团队维护。",
+        "purpose": "本文档旨在为大型 monorepo 建立并强制执行一套命名约定，确保代码风格一致性，并通过可预测的代码模式提升开发效率。",
+        "context_and_audience": "适用于在 monorepo 中工作的开发人员，特别是添加新接口或测试文件的开发者。该文档可作为代码审查和自动化 lint 规则的参考。",
         "key_takeaways": [
-          "src/types/**/*.ts 中的接口必须以 'I' 开头。",
-          "测试文件必须以 .test.ts 或 .spec.ts 结尾。",
-          "违反接口前缀规范会触发警告，违反测试文件后缀规范会触发错误。"
+          "所有位于 src/types/**/*.ts 中的内部接口必须以 'I' 开头。",
+          "所有位于 tests/** 中的测试文件必须以 .test.ts 或 .spec.ts 结尾。",
+          "违反前缀规则会触发警告；违反后缀规则会触发错误。"
         ]
       }
     }
@@ -69,7 +67,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:22:19.359Z",
+    "indexedAt": "2026-05-03T12:14:39.521Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

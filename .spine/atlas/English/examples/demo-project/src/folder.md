@@ -1,9 +1,7 @@
-This directory is a sample project that demonstrates the ArchSpine architecture by implementing a minimal user management system. It is organized into three primary submodules that correspond to the architectural layers: **API**, **Domain**, and **Infrastructure**.
+The `examples/demo-project/src` directory is the backend application source for the demo project. It follows a layered architecture with three main subdirectories:
 
-- **`api/`** – The HTTP entry point that receives user creation requests and delegates to the domain service. This layer also directly manages the database connection lifecycle, which intentionally illustrates a common deviation from the intended layered architecture.
+- **`api`**: HTTP entry point for user creation requests. Handles incoming requests and delegates to the domain layer while managing database connections.
+- **`domain`**: Contains the business logic for User entities, including creation and retrieval, using an in-memory store.
+- **`infra`**: A stub for database connection management, providing a minimal `Database` class that simulates SQLite or PostgreSQL connection state.
 
-- **`domain/`** – The domain service layer that defines the `User` entity interface (with `id`, `name`, and `email` properties) and provides in-memory storage and management of users, including auto-generated IDs and retrieval by ID.
-
-- **`infra/`** – The database infrastructure layer, which exports a `Database` class that handles connection state and exposes a `connect` method for establishing connections to SQLite or PostgreSQL.
-
-The most important implementation areas are the boundary between the API and domain layers (where the architectural deviation occurs) and the placeholder nature of the infrastructure layer, which is designed for easy replacement with a real database adapter.
+The most important implementation areas are user creation and retrieval, which span all three layers. The `api` module provides the endpoint, the `domain` module encapsulates business rules, and `infra` handles connectivity. This clean separation makes the system easy to extend or replace components.

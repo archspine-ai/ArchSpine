@@ -1,16 +1,16 @@
-The `src/` directory is the source code root for the ArchSpine mirror system. It holds all modules needed to implement the complete system: configuration and AST analysis, CLI commands, service orchestration, pipeline tasks, infrastructure support, type definitions, and utility functions.  
+The `src/` directory is the complete source tree of the ArchSpine mirror system, containing all core modules and supporting assets required for code analysis, architectural enforcement, and mirror synchronization.
 
-The directory is organized into twelve primary subdirectories, each focused on a distinct area:  
+The directory is organized into nine principal functional groups, each with a clear responsibility:
 
-- **assets** – Template definitions for documentation blueprints, AI prompt schemas, architectural rules, and view inventories.  
-- **ast** – Core AST-based code extraction, language discovery and resolution, and extraction rules for imports/exports/usages.  
-- **cli** – User-facing CLI entry point with command routing, help text, UI formatting, initialization, and repository configuration.  
-- **core** – Foundational runtime infrastructure: configuration validation, error definitions, pipeline orchestration, task state management, scanning policies, and type contracts for pipeline stages and dependency injection.  
-- **engines** – Operational backbone: scanning, aggregation (index/atlas), rule enforcement, dependency context analysis, automated fix generation, and system diagnostics.  
-- **infra** – Infrastructure services: configuration management, LLM integration, persistence, credentials, prompt generation, MCP server integration, and output management.  
-- **services** – Service orchestration coordinating multi-stage pipelines (scan, AST extract, validate, LLM correct, summarize, view generate) with session management, checkpoint/resume, and error handling.  
-- **tasks** – Individual pipeline stage tasks: scanning, reconciliation, AST extraction, summarization, validation, fix generation, aggregation, reverse indexing, view derivation, and state commitment.  
-- **types** – Canonical type contracts for configuration, documents, languages, manifests, rules, versioning, and views, ensuring data consistency across all subsystems.  
-- **utils** – Utility modules for atomic file operations, git hook lifecycle, file locking, SHA‑256 fingerprinting, agent instruction synchronization, path normalization, interactive prompts, and branded CLI banners.  
+- **`src/assets/`** – Houses reusable template assets (documentation, prompt engineering, configuration standards, public API surface docs) that underpin consistent development and operations.
+- **`src/ast/`** – Provides the parsing and language discovery infrastructure, including AST construction, symbol/import extraction, language detection from file extensions, and language-specific configuration and rule sets.
+- **`src/cli/`** – Implements the command-line interface layer: argument parsing, command routing, help system, UI utilities, and adapters for subcommands such as `build`, `sync`, and `init`.
+- **`src/core/`** – Defines the foundational contracts and runtime orchestration backbone: type definitions, configuration validation schemas, error codes, pipeline orchestrator, scanning policies, task state factories/mutators, and dependency injection context types.
+- **`src/engines/`** – Contains the core operational logic: file-system scanning (with ignore rules and git diff integration), architectural rule loading/matching, dependency and relevance analysis using path heuristics and symbol evidence, diagnostic context resolution, violation fix prompt generation, reporting, health/usage reporting, and spine index aggregation.
+- **`src/infra/`** – Delivers the infrastructure layer: configuration management, SQLite database lifecycle, multi-provider LLM client abstraction, platform-agnostic credential storage, file integrity/manifest tracking, Model Context Protocol (MCP) server, prompt assembly, runtime I/O, and governance utilities for unauthorized mutation detection and repair.
+- **`src/services/`** – Orchestrates multi-stage pipelines (check, fix, sync, LLM admin, repository management, runtime profiles, architectural view generation), including session lifecycle management and checkpoint resumability.
+- **`src/tasks/`** – Encodes the end-to-end pipeline stages: scanning, AST extraction, summarization, validation, aggregation, reverse indexing, view derivation, documentation backfill, state commitment, and cleanup.
+- **`src/types/`** – Provides all shared interfaces and data contracts (e.g., SpineUnit, SpineIdentity, SpineConfig, language support, synchronization manifests, architectural rules, version management, and view artifacts) along with a stable public import facade in `protocol.ts` and view type contracts in `view.ts`.
+- **`src/utils/`** – Supplies reusable utility modules: file synchronization, template generation, terminal interaction, cryptographic fingerprinting, safe file I/O, git hook management, and system-level locking.
 
-The most critical implementation areas are the pipeline execution core (`core`, `engines`, `services`, `tasks`), which drives the entire mirror workflow; the CLI (`cli`) as the primary user interaction point; and the template definitions (`assets`) that define the system’s structural contracts.
+The most critical implementation areas are the AST parsing engine (`ast/`), the core runtime orchestration (`core/`), the scanning and rule enforcement engines (`engines/`), the infrastructure layer with LLM and database integration (`infra/`), and the service pipeline orchestration (`services/`). Together, these modules form the complete ArchSpine pipeline from code discovery to mirror synchronization.

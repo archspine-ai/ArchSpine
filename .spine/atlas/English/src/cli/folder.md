@@ -1,26 +1,18 @@
-# `src/cli` — Command‑Line Interface & Entry Point
+---MARKDOWN:Simplified Chinese---
+`src/cli` 目录是 ArchSpine 语义镜像系统的命令行界面层，负责处理用户交互、参数解析、命令路由、帮助显示、输出格式化和 UI 呈现。该目录以 `index.ts` 作为主入口，包含通用工具模块（`cli-utils.ts`、`document-languages.ts`、`help.ts`），以及三个子目录来分组管理特定命令族的适配器和引导逻辑。
 
-The `src/cli` directory is the primary user‑facing entry point for the ArchSpine mirror system. It handles all terminal‑based operations, from project initialization and repository configuration to daily synchronization and system diagnostics.
+- **`index.ts`** 是主 CLI 路由器：配置全局代理设置，引导运行时服务（Config、Secrets、GlobalLLMConfig、RuntimeService），解析 `process.argv` 并将执行分派到相应的子命令模块（如 init、sync、build、publish、check、fix、scan、history 等），同时提供帮助和用法错误处理。
 
-## Notable Children
+- **`cli-utils.ts`** 提供展示工具：横幅显示（完整版 vs. 精简版）、步骤打印、语言发现报告格式化、文本换行、配置值解析与格式化，以及针对无效 CLI 用法的类型化错误生成。
 
-- **`index.ts`** – The main command router. It bootstraps the runtime (configuration, secrets, LLM setup), parses `process.argv`, and dispatches execution to the appropriate handler module (e.g., `init`, `sync`, `build`, `publish`, `check`, `fix`, `scan`, `history`). Also configures global HTTP proxy and displays system banners.
+- **`document-languages.ts`** 定义了多语言文档选择的类型和构建函数，包括高容量语言等级的分离器。
 
-- **`cli-utils.ts`** – A set of UI presentation helpers for consistent command output: banner display (full/mini/suppressed), text wrapping, value parsing, error formatting, and step‑by‑step progress messages.
+- **`help.ts`** 渲染通用帮助（按类别列出所有命令）以及特定命令（init、try、sync 等）的详细帮助。
 
-- **`help.ts`** – Renders general help (list of all commands grouped by category) and detailed per‑command help for operations such as `init`, `sync`, `view`, etc.
+- **`src/cli/commands/`** 包含每个子命令（build、check、config、fix、god、history、hook、info、init、languages、llm、mcp、publish、remove、repo、scan、status、sync、try、usage、view）的独立命令适配器模块，每个适配器处理参数验证并委托执行给核心服务。
 
-- **`document-languages.ts`** – Defines the `DocumentLanguageChoice` type and logic for building a list of supported document languages, including a separator for high‑capacity languages.
+- **`src/cli/init/`** 实现仓库和运行时的引导：制品策略选择、LLM 凭据配置、文件扫描、语言发现、清单更新以及 Git 钩子安装。
 
-- **`commands/`** – Houses dedicated handler modules for each CLI subcommand; the router in `index.ts` delegates to these modules after argument parsing.
+- **`src/cli/repo/`** 通过 `check` 和 `set` 命令管理制品策略操作，解析策略输入、提供进度反馈并读取系统配置。
 
-- **`init/`** – Orchestrates the full project initialization sequence: artifact strategy selection, rule template installation, Git hooks, LLM credential setup, file‑system scanning, language discovery, manifest updates, and handoff to the build workflow.
-
-- **`repo/`** – Provides CLI adapters for checking and setting repository artifact strategies, with progress feedback and result display.
-
-## Key Implementation Areas
-
-- **Command Routing & Help** – Central argument parsing and dispatcher (`index.ts`) combined with comprehensive help text (`help.ts`) that stays current with experimental commands.
-- **UI Formatting** – A consistent look and feel for all terminal output, handled by `cli-utils.ts`.
-- **Initialization Flow** – A multi‑step bootstrap that prepares an ArchSpine project from scratch (`init/`).
-- **Repository Configuration** – Interactive management of artifact strategies via the `repo/` adapters.
+需要关注的关键实现区域：`index.ts` 中的代理配置和服务引导顺序；`cli-utils.ts` 中尊重 `SPINE_INTERNAL_HOOK` 环境变量的双横幅系统；以及将命令适配器分离到 `commands/` 下的独立文件中以实现模块化和可测试性。

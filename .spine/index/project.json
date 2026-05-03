@@ -1,302 +1,302 @@
 {
   "schemaVersion": "1.0.0",
   "projectName": "archspine",
-  "role": "ArchSpine is a mirror system that provides AI-augmented architectural governance, automated validation, and intelligent documentation for software projects.",
-  "responsibility": "The system integrates multiple modules orchestrated through a pipeline: configuration and scanning policies (.spine, rules) drive file discovery; AST extraction engines parse source code to detect dependencies and exports; architectural rules enforce layering and naming conventions; LLM infrastructure generates semantic summaries and structured outputs; CLI commands and MCP server expose operations for initialization, synchronization, fixing, scanning, publishing, and view generation; services manage session lifecycle with checkpoint/resume; infrastructure layers handle database persistence, credentials, prompt assembly, and manifest tracking; templates define contracts for atlas, prompts, rules, and risk views; tests ensure reliability across unit, integration, and end-to-end scenarios.",
+  "role": "ArchSpine is a semantic mirror system that empowers developers to create and sustain an AI-augmented, structured representation of their codebase for architectural analysis, documentation generation, and intelligent code understanding.",
+  "responsibility": "ArchSpine orchestrates a multi-stage pipeline: scanning file systems with git-aware ignore rules, parsing source code via AST extraction across multiple languages, generating semantic summaries using LLMs, enforcing architectural rules (layer isolation, naming conventions), tracking file integrity and synchronization state, and exposing capabilities through CLI commands, MCP server, and customizable views. Core modules include the CLI layer for user interaction, core pipeline orchestration, scanning engines, infrastructure services (config, DB, LLM, credentials, manifest, MCP), service orchestrators, task executors, and a comprehensive test suite.",
   "modules": [
     {
       "directory": ".github",
-      "role": "Defines contribution guidelines and automated workflows for the ArchSpine project.",
+      "role": "This directory contains GitHub-specific configuration files and templates for the ArchSpine mirror system, including issue templates, pull request template, and CI/CD workflows.",
       "childCount": 3
     },
     {
       "directory": ".github/ISSUE_TEMPLATE",
-      "role": "Directory containing GitHub issue templates for bug reports, feature requests, and documentation improvements.",
+      "role": "This directory contains issue templates for the ArchSpine mirror system, providing structured forms for bug reports, documentation improvements, and feature requests.",
       "childCount": 3
     },
     {
       "directory": ".github/workflows",
-      "role": "Defines CI/CD workflows for the ArchSpine project.",
+      "role": "This directory contains the CI/CD workflow definitions for the ArchSpine mirror system.",
       "childCount": 3
     },
     {
       "directory": ".spine",
-      "role": "Root directory of the ArchSpine project mirror system, containing core configuration and architectural rules.",
+      "role": "Root directory of the ArchSpine mirror system project.",
       "childCount": 2
     },
     {
       "directory": ".spine/rules",
-      "role": "Defines architectural constraints and naming conventions for the ArchSpine codebase.",
+      "role": "This directory defines architectural and naming conventions for the ArchSpine mirror system.",
       "childCount": 2
     },
     {
       "directory": "examples",
-      "role": "Contains demonstration projects and architectural rule definitions that illustrate the usage and principles of the ArchSpine mirror system.",
+      "role": "Contains example configurations and rule definitions for the ArchSpine mirror system.",
       "childCount": 2
     },
     {
       "directory": "examples/demo-project",
-      "role": "Demonstration project directory for the ArchSpine mirror system.",
+      "role": "Root configuration and state management directory for the ArchSpine mirror system.",
       "childCount": 3
     },
     {
       "directory": "examples/demo-project/.spine",
-      "role": "Central configuration and state directory for the ArchSpine system within a demo project.",
+      "role": "Root configuration and state management directory for the ArchSpine mirror system.",
       "childCount": 5
     },
     {
       "directory": "examples/demo-project/.spine/rules",
-      "role": "Directory containing the ArchSpine architecture rule definition file.",
+      "role": "This directory contains the architectural rules and configuration for the ArchSpine project.",
       "childCount": 1
     },
     {
       "directory": "examples/demo-project/.spine/runtime",
-      "role": "Checkpoint records directory for the ArchSpine sync pipeline execution.",
+      "role": "This directory stores execution records of synchronization runs for the ArchSpine mirror system.",
       "childCount": 1
     },
     {
       "directory": "examples/demo-project/.spine/runtime/checkpoints",
-      "role": "Contains execution checkpoint records for the ArchSpine sync pipeline.",
+      "role": "Contains execution records of synchronization runs.",
       "childCount": 1
     },
     {
       "directory": "examples/demo-project/src",
-      "role": "A sample project that demonstrates the ArchSpine architecture with API, domain, and infrastructure layers.",
+      "role": "The source directory for the demo-project's backend application, organized into API, domain, and infrastructure layers.",
       "childCount": 3
     },
     {
       "directory": "examples/demo-project/src/api",
-      "role": "HTTP entry point handling user creation requests and delegating to the UserService domain service.",
+      "role": "API entry point for user creation requests.",
       "childCount": 1
     },
     {
       "directory": "examples/demo-project/src/domain",
-      "role": "Domain service layer for managing User entities in the ArchSpine system.",
+      "role": "Provides the domain service for managing User entities.",
       "childCount": 1
     },
     {
       "directory": "examples/demo-project/src/infra",
-      "role": "Provides the database infrastructure layer for ArchSpine, including a placeholder connection class.",
+      "role": "A placeholder infrastructure stub for database connection management.",
       "childCount": 1
     },
     {
       "directory": "examples/rules",
-      "role": "Defines the architectural and naming conventions that enforce codebase consistency and layering rules.",
+      "role": "Defines architecture and naming rules for the ArchSpine system.",
       "childCount": 2
     },
     {
       "directory": "schemas",
-      "role": "Defines the core schemas for metadata indexing, configuration, and governance of the ArchSpine mirror system.",
+      "role": "Schema definitions for all ArchSpine mirror system data components.",
       "childCount": 7
     },
     {
       "directory": "schemas/examples",
-      "role": "This directory contains the core metadata, indexing configuration, and architectural governance rules for the ArchSpine mirror system.",
+      "role": "Contains example configuration files for the ArchSpine repository indexing and rule enforcement system.",
       "childCount": 6
     },
     {
       "directory": "scripts",
-      "role": "Root directory of the ArchSpine project, containing build automation scripts, demonstration workflows, verification tools, and release management utilities.",
+      "role": "Automation scripts for building, testing, validating, and publishing the ArchSpine project.",
       "childCount": 9
     },
     {
       "directory": "src",
-      "role": "Source code directory containing all modules of the ArchSpine mirror system.",
+      "role": "Source code directory of the ArchSpine mirror system containing all core modules and supporting assets.",
       "childCount": 10
     },
     {
       "directory": "src/assets",
-      "role": "This directory contains all template definitions for the ArchSpine mirror system, including foundational documentation, AI prompt schemas, architectural rules, and view inventories.",
+      "role": "Central template assets for the ArchSpine mirror system, providing reusable foundational documentation, prompt engineering components, configuration standards, and public API surface documentation.",
       "childCount": 1
     },
     {
       "directory": "src/assets/templates",
-      "role": "This directory contains all template definitions for the ArchSpine mirror system, including foundational documentation, AI prompt schemas, architectural rules, and view inventories.",
+      "role": "Central template assets for the ArchSpine mirror system, providing reusable foundational documentation, prompt engineering components, configuration standards, and public API surface documentation.",
       "childCount": 4
     },
     {
       "directory": "src/assets/templates/atlas",
-      "role": "This directory contains the foundational documentation and templates for the ArchSpine mirror system, defining its purpose, configuration, and architectural contracts.",
+      "role": "Defines the foundational documentation for the ArchSpine mirror system, encompassing its architecture, configuration, component interfaces, and operational guidelines.",
       "childCount": 5
     },
     {
       "directory": "src/assets/templates/prompts",
-      "role": "Directory providing prompt template schemas, rendering utilities, and examples for generating structured architecture diagrams and semantic summaries within the ArchSpine system.",
+      "role": "This directory provides the prompt engineering toolkit for ArchSpine, including templates, rendering blocks, examples, and schemas used to generate structured semantic summaries via LLM.",
       "childCount": 5
     },
     {
       "directory": "src/assets/templates/rules",
-      "role": "Defines the architectural constraints and naming conventions for the ArchSpine codebase.",
+      "role": "Central directory for ArchSpine project configuration standards, including layered architecture constraints and naming conventions.",
       "childCount": 2
     },
     {
       "directory": "src/assets/templates/view",
-      "role": "Aggregates auto-generated inventories and risk assessments of the project's public interface and codebase health.",
+      "role": "This directory contains the public API surface documentation and risk hotspot analysis for the ArchSpine mirror system.",
       "childCount": 2
     },
     {
       "directory": "src/ast",
-      "role": "Core module for AST-based code extraction, language discovery, and language configuration in the ArchSpine mirror system.",
+      "role": "AST parsing and language discovery module for code analysis.",
       "childCount": 4
     },
     {
       "directory": "src/ast/rules",
-      "role": "Contains language-specific AST extraction rule definitions for the ArchSpine mirror system.",
+      "role": "Directory contains language-specific configuration files for defining pattern-based extraction rules for code structure analysis.",
       "childCount": 7
     },
     {
       "directory": "src/cli",
-      "role": "Entry point and user-facing interface for all command-line operations in the ArchSpine system.",
+      "role": "Command-line interface layer for the ArchSpine semantic mirror system, handling user interaction, argument parsing, command routing, and output formatting.",
       "childCount": 7
     },
     {
       "directory": "src/cli/commands",
-      "role": "Entry point for all CLI subcommands, routing each command to its dedicated handler.",
+      "role": "CLI command adapters for the ArchSpine system, each handling a specific subcommand's interface and delegation to core services.",
       "childCount": 21
     },
     {
       "directory": "src/cli/init",
-      "role": "Core directory responsible for initializing and bootstrapping both the repository configuration and the runtime environment of an ArchSpine project.",
+      "role": "Directory containing the initialization and bootstrapping modules for ArchSpine repository and runtime setup.",
       "childCount": 3
     },
     {
       "directory": "src/cli/repo",
-      "role": "CLI command adapter for repository artifact strategy operations",
+      "role": "CLI command adapter for managing repository artifact strategies (check and set) within the ArchSpine system.",
       "childCount": 1
     },
     {
       "directory": "src/core",
-      "role": "Core runtime infrastructure providing configuration validation, error definitions, pipeline orchestration, and task execution state management for the ArchSpine system.",
+      "role": "Core contracts and runtime orchestration module for the ArchSpine mirror system.",
       "childCount": 7
     },
     {
       "directory": "src/engines",
-      "role": "Core engine directory providing services for scanning, aggregation, rule enforcement, context analysis, violation fixing, and reporting.",
+      "role": "Core engine module providing scanning, context resolution, rule enforcement, and reporting capabilities for the ArchSpine mirror system.",
       "childCount": 14
     },
     {
       "directory": "src/infra",
-      "role": "Infrastructure layer providing core services for configuration management, LLM integration, persistence, credentials, and prompt generation for the ArchSpine mirror system.",
+      "role": "Provides the core infrastructure layer for the ArchSpine mirror system, including configuration management, database operations, LLM integration, credential storage, file system manifest, MCP server, and prompt assembly.",
       "childCount": 32
     },
     {
       "directory": "src/infra/__mocks__",
-      "role": "Facade module for LLM provider mocking infrastructure.",
+      "role": "Public facade for LLM mocking infrastructure.",
       "childCount": 1
     },
     {
       "directory": "src/infra/config",
-      "role": "Configuration management and defaults for the ArchSpine mirror system.",
+      "role": "Configuration management layer for the ArchSpine system.",
       "childCount": 8
     },
     {
       "directory": "src/infra/credentials",
-      "role": "Provides a pluggable credential storage system with platform-specific backends and scoped store factories for secure secret persistence.",
+      "role": "Platform-agnostic credential storage infrastructure with multiple backends (macOS keychain, Linux secret-tool, Windows DPAPI, in-memory).",
       "childCount": 2
     },
     {
       "directory": "src/infra/db",
-      "role": "Infrastructure layer for SQLite database management in the ArchSpine mirror system, providing the core persistence foundation for file metadata, audit events, and system status.",
+      "role": "Infrastructure layer for SQLite database management in the ArchSpine system.",
       "childCount": 7
     },
     {
       "directory": "src/infra/db/repositories",
-      "role": "Data access layer (DAO) for persistent storage in the ArchSpine system.",
+      "role": "Data access layer (DAO) for the ArchSpine SQLite database, providing CRUD operations for drift events, file metadata, symbols, token usage, and violations.",
       "childCount": 5
     },
     {
       "directory": "src/infra/llm",
-      "role": "Infrastructure layer for LLM client abstraction, configuration, and resilient invocation within the ArchSpine mirror system.",
+      "role": "Infrastructure layer for LLM client abstraction, configuration, and execution.",
       "childCount": 6
     },
     {
       "directory": "src/infra/llm/providers",
-      "role": "Provides concrete implementations and utilities for interfacing with various LLM providers (Gemini, OpenAI) and a mock provider for testing within the ArchSpine mirror system.",
+      "role": "Directory containing concrete LLM provider implementations and utility modules for the ArchSpine mirror system.",
       "childCount": 4
     },
     {
       "directory": "src/infra/manifest",
-      "role": "Infrastructure layer for manifest persistence, file integrity, and state management in the ArchSpine mirror system.",
+      "role": "Provides the infrastructure layer for file system interaction, integrity verification, and manifest state persistence in the ArchSpine mirror system.",
       "childCount": 5
     },
     {
       "directory": "src/infra/mcp",
-      "role": "MCP integration layer for exposing ArchSpine's resources and tools to external AI agents.",
+      "role": "Infrastructure directory for Model Context Protocol (MCP) integration, providing context gating, resource management, server setup, and tool exposure for external AI agents.",
       "childCount": 4
     },
     {
       "directory": "src/infra/prompt",
-      "role": "Prompt assembly and generation layer for ArchSpine's AI interaction system.",
+      "role": "Prompt assembly and orchestration layer for ArchSpine's AI agent interactions.",
       "childCount": 6
     },
     {
       "directory": "src/infra/prompt-context",
-      "role": "Infrastructure layer responsible for assembling source prompt artifacts, including policy resolution, budget calculation, trimming, diagnostics, and type definitions for the ArchSpine prompt system.",
+      "role": "This directory provides the prompt policy and construction infrastructure for the ArchSpine system, including budget calculation, trimming, diagnostics, and type definitions.",
       "childCount": 8
     },
     {
       "directory": "src/services",
-      "role": "Service orchestration layer that coordinates and manages the core analysis, fix, synchronization, LLM configuration, and view generation pipelines for the ArchSpine mirror system.",
+      "role": "Service orchestration layer that coordinates core operations for the ArchSpine mirror system.",
       "childCount": 13
     },
     {
       "directory": "src/services/view",
-      "role": "Directory containing the view generation and rendering subsystem for ArchSpine's architectural visualization and analysis views.",
+      "role": "This directory contains the view subsystem of ArchSpine, responsible for generating, rendering, and managing architectural visualization views.",
       "childCount": 11
     },
     {
       "directory": "src/tasks",
-      "role": "Pipeline stage tasks that implement specific processing steps in the ArchSpine execution graph.",
+      "role": "Core pipeline execution tasks for the ArchSpine mirror system.",
       "childCount": 13
     },
     {
       "directory": "src/types",
-      "role": "Core data types and type contracts for the ArchSpine mirror system.",
+      "role": "This directory contains the core type definitions and data contracts for the ArchSpine mirror system, defining shared interfaces for data model, configuration, and infrastructure.",
       "childCount": 3
     },
     {
       "directory": "src/types/protocol",
-      "role": "This directory defines the core data structures and type contracts for the ArchSpine mirror system, including configuration, documents, languages, manifests, rules, and versioning.",
+      "role": "Core type definitions and data contracts for the ArchSpine mirror system's data model, configuration, and infrastructure.",
       "childCount": 7
     },
     {
       "directory": "src/utils",
-      "role": "Utility modules providing file sync, fingerprinting, CLI UI, and infrastructure support for ArchSpine.",
+      "role": "Shared utility modules providing common infrastructure for the ArchSpine CLI and core operations.",
       "childCount": 10
     },
     {
       "directory": "tests",
-      "role": "Contains the complete test suite for the ArchSpine mirror system, including unit, integration, end-to-end, and acceptance tests.",
+      "role": "Test suite for the ArchSpine system.",
       "childCount": 67
     },
     {
       "directory": "tests/e2e",
-      "role": "End-to-end integration test suite for the ArchSpine Command-Line Interface (CLI) commands and workflows.",
+      "role": "This directory contains end-to-end integration tests for the ArchSpine CLI commands, covering various scenarios such as initialization, pipeline execution, and rule violation detection using isolated git repositories and mocked prompts.",
       "childCount": 8
     },
     {
       "directory": "tests/engines",
-      "role": "Contains integration tests for the Scanner engine.",
+      "role": "Test suite for the ArchSpine Scanner engine, verifying file discovery and exclusion logic.",
       "childCount": 1
     },
     {
       "directory": "tests/helpers",
-      "role": "This directory contains utilities for testing concurrency control via lock management.",
+      "role": "Directory containing a utility script for testing LockManager acquire/release behavior.",
       "childCount": 1
     },
     {
       "directory": "tests/infra",
-      "role": "Test suite for validating index-based resume recovery and LLM retry mechanisms in the ArchSpine mirror system.",
+      "role": "Test suite for validating index-based resume recovery and LLM retry mechanisms in ArchSpine.",
       "childCount": 2
     },
     {
       "directory": "tests/infra/llm",
-      "role": "Test suite for the LLM retry utility's error classification function.",
+      "role": "Tests for the LLM retry utility's error classification function.",
       "childCount": 1
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-03T11:29:16.331Z",
+    "indexedAt": "2026-05-03T12:20:51.629Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

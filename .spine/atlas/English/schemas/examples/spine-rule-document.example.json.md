@@ -1,26 +1,26 @@
----MARKDOWN:Simplified Chinese---
-# ArchSpine 配置摘要：规则 `no-direct-db-import`
+# ArchSpine Configuration Summary: `no-direct-db-import` Rule
 
-## 作用
-此规则为 ArchSpine 镜像系统定义导入限制，禁止非数据库层（服务层和中间层）直接导入数据库适配器模块。目的是通过强制架构治理，保持领域边界清晰，防止业务逻辑与存储实现紧耦合。
+This architectural rule enforces clean domain boundaries by prohibiting application code from directly importing modules in the database layer.
 
-## 参数定义
-| 参数 | 说明 |
-|------|------|
-| `schemaVersion` | 规则结构的版本号，用于确保与规则引擎的兼容性。 |
-| `ruleId` | 规则的唯一标识符，供报告和修复功能引用。 |
-| `title` | 规则的可读短名称，显示在违规消息中。 |
-| `summary` | 规则的简要说明，帮助快速理解规则所强制的内容。 |
-| `appliesTo` | Glob 模式，指定哪些源文件受规则约束；支持包含和排除（通过 `!` 前缀）。 |
-| `severity` | 违规的严重级别：`error` 会阻塞流水线，`warning` 仅通知但不阻塞，`info` 提供信息性反馈。 |
-| `enforceable` | 布尔标志，指示规则是否可自动执行，或仅为建议性。 |
-| `rationale` | 规则的业务或技术理由，帮助开发者理解规则存在的原因。 |
-| `bodyMarkdown` | 规则的完整 Markdown 文档，包含允许和禁止的代码模式示例。 |
+## What It Controls
 
-## 稳定性与风险
-该规则通过强制层隔离，直接影响到系统稳定性，防止业务逻辑与存储实现之间的紧密耦合。如果配置不当（例如 `appliesTo` 模式错误或严重级别过低），关键依赖违规可能被遗漏，导致架构腐化。`enforceable` 标志确保在 CI/CD 流水线中进行自动检查；禁用该标志会增加回归风险。规则的 `rationale` 和 `bodyMarkdown` 为开发者提供了必要的上下文以自行修正，减少误报带来的挫败感。总体而言，正确配置有助于长期维护系统的可维护性并减少技术债务。
+The rule is defined by the following key parameters in your configuration:
 
-**运维提示：**
-- 当前配置为 `severity: "error"` 且 `enforceable: true`，即违规会阻塞流水线——对于关键治理规则是合适的设置。
-- `appliesTo` 模式（`src/**/*.ts` 排除 `!src/db/**`）确保数据库层本身不受规则约束，避免自冲突。
-- 确保所有团队成员理解 `bodyMarkdown` 中的修正指导，避免浪费调试时间。
+| Parameter | Value | Meaning |
+|-----------|-------|---------|
+| `schemaVersion` | `1.0.0` | Schema version for interpretation; upgrade only if rule structure changes. |
+| `ruleId` | `no-direct-db-import` | Unique identifier used by all tooling (linters, CI checks). |
+| `title` | "Prohibit direct database layer import" | Human-readable name for dashboards and reports. |
+| `summary` | Services and middleware layers must not directly depend on low‑level database adapters. | Core principle of the rule. |
+| `appliesTo` | `["src/**/*.ts", "!src/db/**"]` | Glob pattern: all TypeScript files under `src/` **except** those inside `src/db/` itself. |
+| `severity` | `error` | Violations **block builds** and prevent CI pipeline from passing. |
+| `enforceable` | `true` | The rule is automatically checked by static analysis or linting. |
+| `rationale` | Keep domain boundaries clear, avoid coupling business logic to low‑level storage implementation. | Why the rule exists. |
+| `bodyMarkdown` | (Markdown content with examples) | Detailed documentation of allowed/disallowed import patterns. |
+
+## Operational Risks & Stability Concerns
+
+- **Stability benefit:** By enforcing this rule you prevent business logic from becoming tightly coupled to database internals. This preserves the ability to refactor storage (e.g., switch from PostgreSQL to a different adapter) without touching application services.
+- **Risk of misconfiguration:** The `appliesTo` glob must match your actual project structure. If `src/db/` is renamed or restructured, the exclusion may no longer apply, causing false negatives. Conversely, if the exclusion pattern is too broad, legitimate imports from `src/db/` utilities (if any) could be blocked.
+- **Gradual erosion:** Repeated violations (even if unintentional) degrade domain isolation over time, making future testing and separation of concerns extremely difficult. The rule’s `error` severity ensures early detection in CI.
+- **Recommendation:** Periodically audit the `appliesTo` pattern to ensure it aligns with the current folder layout, and review `bodyMarkdown` for updated examples.

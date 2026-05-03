@@ -3,23 +3,22 @@
   "identity": {
     "filePath": "examples/demo-project/.spine/languages.json",
     "contentHash": "a54cef3e2b83284c936367b354112264dbef01ab58b78af9c7c8edc350bc32af",
-    "semanticHash": "7f2aa8de655db3ee83aa164b6e688f21a9735fcfdf63e6f6080d774ecf77b23f",
+    "semanticHash": "aba4943d8dfe75727a201515e042948a6949f26741fd03f39540aa4ac0380ec3",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "examples/demo-project/.spine"
   },
   "semantic": {
-    "role": "This configuration file defines the file extension detection and language support settings for the ArchSpine analysis system.",
+    "role": "Declares detected file extensions and available language support for the ArchSpine mirror system.",
     "responsibilities": [
-      "Controls which file extensions are recognized by the scanner and indexer.",
-      "Defines available programming languages for AST extraction and rule enforcement.",
-      "Maps language identifiers to their associated file extensions."
+      "File type detection based on registered extensions",
+      "Language availability tracking (e.g., TypeScript)"
     ],
     "outOfScope": [],
     "invariants": [
-      "The schemaVersion must be 1 to ensure forward compatibility with the processing pipeline.",
-      "The detectedExtensions array must include all file extensions present in the repository to avoid missing files.",
-      "Each entry in the languages map must have a 'status' field; an unsupported status will disable that language's analysis."
+      "schemaVersion must be 1 (no other versions defined)",
+      "detectedExtensions must be an array of unique file extensions",
+      "Each language entry must specify extensions and status"
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -30,24 +29,26 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "This configuration file defines the file extension detection and language support settings for the ArchSpine analysis system.",
+        "role": "Declares detected file extensions and available language support for the ArchSpine mirror system.",
         "parameter_definitions": {
-          "schemaVersion": "Version of the configuration schema; must be 1 for current compatibility. Changing this could break reading of the file.",
-          "detectedExtensions": "List of file extensions the system will scan and analyze. Adding or removing extensions alters the scope of file processing and may affect performance or completeness.",
-          "languages.typescript.extensions": "File extensions associated with TypeScript. Currently only '.ts' is defined; missing '.tsx' may cause React TSX files to be excluded from TypeScript analysis.",
-          "languages.typescript.status": "Indicates whether TypeScript analysis is enabled. 'available' means active; other values disable it and skip AST extraction for TypeScript files."
+          "schemaVersion": "Defines the version of the configuration schema; currently locked to 1.",
+          "detectedExtensions": "List of file extensions that the system recognizes, affecting file indexing and processing.",
+          "languages": "Map of programming languages with their associated extensions and availability status. Determines language-specific tooling and analysis.",
+          "languages.typescript.extensions": "File extensions registered for TypeScript (only .ts). Controls TypeScript file detection.",
+          "languages.typescript.status": "Indicates whether TypeScript support is available ('available' or 'unavailable'). Enables or disables TypeScript features."
         },
-        "stability_and_risks": "Misconfiguration of this file can cause critical scanning errors, incomplete indexing, or runtime crashes if unsupported extensions are added. The system's stability depends on accurately reflecting the project's actual file types and language support. Safety limits include ensuring that only well-known extensions are added to prevent processing of irrelevant or malicious files."
+        "stability_and_risks": "Incorrect extension lists may cause files to be missed or misclassified. Language status mismatches could enable unsupported features or disable required ones. Schema version must be strictly 1 to avoid parsing failures."
       },
       "Simplified Chinese": {
-        "role": "该配置文件定义了 ArchSpine 分析系统中文件扩展名检测和语言支持的设置。",
+        "role": "声明ArchSpine镜像系统检测到的文件扩展名和可用的语言支持。",
         "parameter_definitions": {
-          "schemaVersion": "配置模式的版本，必须为 1 以保持兼容性。更改此值可能导致文件无法被正确读取。",
-          "detectedExtensions": "系统将扫描和分析的文件扩展名列表。添加或移除扩展名会改变文件处理的范围，可能影响性能或完整性。",
-          "languages.typescript.extensions": "与 TypeScript 关联的文件扩展名。当前仅定义了 '.ts'；缺少 '.tsx' 可能导致 React TSX 文件被排除在 TypeScript 分析之外。",
-          "languages.typescript.status": "指示是否启用 TypeScript 分析。'available' 表示已启用；其他值会禁用该功能，并跳过 TypeScript 文件的 AST 提取。"
+          "schemaVersion": "定义配置模式的版本；当前固定为1。",
+          "detectedExtensions": "系统识别的文件扩展名列表，影响文件索引和处理。",
+          "languages": "编程语言的映射，包含关联的扩展名和可用状态。决定语言特定的工具和分析。",
+          "languages.typescript.extensions": "为TypeScript注册的文件扩展名（仅.ts）。控制TypeScript文件检测。",
+          "languages.typescript.status": "指示TypeScript支持是否可用（'available'或'unavailable'）。启用或禁用TypeScript功能。"
         },
-        "stability_and_risks": "该配置文件的错误设置可能导致严重的扫描错误、不完整的索引，或在添加不支持的扩展名时引发运行时崩溃。系统的稳定性依赖于该配置准确反映项目的实际文件类型和语言支持情况。安全性限制包括仅添加已知的扩展名，以防止处理无关或恶意文件。"
+        "stability_and_risks": "不正确的扩展名列表可能导致文件被遗漏或分类错误。语言状态不匹配可能启用不支持的功能或禁用必需的功能。模式版本必须严格为1，以避免解析失败。"
       }
     }
   },
@@ -69,7 +70,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:22:38.467Z",
+    "indexedAt": "2026-05-03T12:14:37.838Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

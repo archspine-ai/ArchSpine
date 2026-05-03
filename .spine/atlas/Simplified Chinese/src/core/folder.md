@@ -1,23 +1,11 @@
-# 核心运行时基础设施（`src/runtime`）
+`core/` 目录是 ArchSpine 镜像系统的结构与行为核心，包含了所有基础约定定义、运行时编排逻辑以及协调任务执行的依赖注入上下文。该模块按职责划分为七个关键子模块：
 
-该目录承载 ArchSpine 镜像系统的运行时基础框架，负责配置验证、错误定义、管道编排、扫描策略契约以及任务执行状态管理。文件按以下六个实现领域分组：
+- **配置验证**（`config-schema.ts`）——提供运行时类型守卫和完整的验证函数 `resolveSpineConfig`，确保输入的 `SpineConfig` 符合预定义的枚举值集合，并导出便捷包装 `validateSpineConfig`。
+- **错误码基础设施**（`errors.ts`）——定义了一套规范化的字符串错误码（按 CLI、运行时、发布、配置领域分组），以及 `ArchSpineErrorCode` 类型和 `ArchSpineErrorOptions` 接口，支持类型安全的、结构化的错误构造。
+- **流水线执行编排器**（`pipeline.ts`）——实现运行时引擎，通过 `TaskContext` 实例驱动 `SpineTask` 的生命周期，借助 `executionCheckpoint` 记录阶段检查点，并通过 `recordTaskStageMetric` 采集性能指标（耗时、内存）。
+- **扫描策略约定**（`scan-policy.ts`）——定义了 `FileSource` 联合类型（git‑tracked、git‑tracked‑plus‑untracked、filesystem）以及 `ScanPolicy` 接口（包含忽略链配置和协议包含/排除列表），同时提供 `PartialScanPolicy` 支持部分覆盖。
+- **任务状态管理**（`task-state.ts`）——提供工厂函数（`createTaskArtifactsState`、`createTaskTelemetryState`、`createTaskState`）初始化流水线状态对象，并包含重置状态、追踪 LLM 用量、记录分阶段指标、维护运行时缓存和递增文件计数器的修改器，还处理摘要和验证阶段的漂移警告与诊断快照。
+- **类型定义约定**（`task-types.ts`）——作为所有跨阶段数据接口的中心枢纽：统计指标（`TaskStats`、`TaskStageMetric`）、状态容器（诊断、选择、制品、遥测）以及阶段输入/输出类型（Scan、Extraction、Fix、Commit、ViewDerivation）。
+- **依赖注入上下文**（`task.ts`）——定义了 `TaskContext` 接口，为任务实现提供共享引擎（Scanner、Aggregator、ContextEngine、RuleEngine、ASTExtractor）和基础设施（Manifest、OutputManager）的访问，同时包含 LLM 客户端、提示策略、运行时 I/O 和执行检查点的类型引用。
 
-1. **配置验证** – `config-schema.ts`  
-   提供运行时谓词，以及核心的 `resolveSpineConfig` 函数（附带便捷封装 `validateSpineConfig`），用于解析并验证 `SpineConfig` 架构，检查各枚举字段是否满足预设的允许值集合。返回验证通过的配置或问题列表。
-
-2. **错误定义** – `errors.ts`  
-   集中管理所有错误码常量（CLI、运行时、发布、配置领域），形成联合类型 `ArchSpineErrorCode`，并定义 `ArchSpineErrorOptions` 接口以支持结构化错误构造。
-
-3. **管道编排** – `pipeline.ts`  
-   任务执行的核心编排器，运行泛型 `SpineTask` 实例，具备完整的生命周期管理（开始、完成、失败检查点）、性能遥测（耗时、内存），并通过 `runtimeIO` 接口记录日志。
-
-4. **扫描策略** – `scan-policy.ts`  
-   定义 `FileSource` 联合类型，以及 `ScanPolicy` / `PartialScanPolicy` 接口，用于规定文件来源、忽略链配置以及协议包含/排除列表。
-
-5. **任务状态管理** – `task-state.ts`  
-   导出工厂函数（`createTaskArtifactsState`、`createTaskTelemetryState`、`createTaskState`）以初始化管道状态对象，并提供状态重置、LLM 用量追踪、性能指标记录、运行时缓存管理以及文件计数（处理/跳过/失败）增量等变更辅助工具。此外还包含漂移警告和诊断快照的记录功能。
-
-6. **类型契约** – `task-types.ts` 和 `task.ts`  
-   `task-types.ts` 定义了统计接口（`TaskStats`、`TaskStageMetric`）、状态容器以及所有管道阶段的输入/输出契约。`task.ts` 定义了 `TaskContext` 接口，为任务执行提供共享引擎（Scanner、Aggregator、ContextEngine、RuleEngine、ASTExtractor）和基础设施（Manifest、OutputManager）的依赖注入。
-
-最关键的实现领域包括：配置验证（确保系统启动时的完整性）、带遥测的管道编排（提供可观测性与生命周期控制）、以及任务状态管理（多阶段执行追踪的骨干）。这些子模块是所有高层镜像操作依赖的核心契约点。
+最关键的实现领域包括：类型安全的验证流水线、用于结构化失败处理的集中式错误码目录、感知生命周期的流水线编排器，以及覆盖全部五个阶段的指标、缓存和诊断的状态工厂系统。

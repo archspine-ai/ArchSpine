@@ -3,25 +3,22 @@
   "identity": {
     "filePath": "scripts/release-gate.mjs",
     "contentHash": "6764ce6dd821ade05be4bb30eb164fdfe5af7fa0c6805e4b41f493c20302d9ac",
-    "semanticHash": "a2a541e290f55ace02ae6b825db1491039ebe5bef70d9cb24267b4b3dcfbcef0",
+    "semanticHash": "c92c1d40c95214a0127b81d001d9316413f2f04649fae2538fb3160a82ac888a",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "scripts"
   },
   "semantic": {
-    "role": "Automated release gate script for validating software build, tests, and packaging before release.",
+    "role": "Automated release gate script that enforces a sequence of quality checks before deployment.",
     "responsibilities": [
-      "Running the build process",
-      "Executing unit tests",
-      "Running schema validation tests",
-      "Performing protocol validation",
-      "Checking package integrity via pack check"
+      "Defines and orchestrates a pipeline of gates (build, unit tests, schema tests, protocol validation, packaging check).",
+      "Executes each gate command sequentially and halts on failure.",
+      "Logs pass/fail status for each gate for debugging and CI visibility."
     ],
     "outOfScope": [
-      "Manual release steps",
-      "Deployment or rollout",
-      "Rollback procedures",
-      "Environmental setup"
+      "Actual deployment or release publication steps.",
+      "Configuration of individual tools (e.g., test frameworks, linters).",
+      "Version bumping or changelog generation."
     ],
     "invariants": [],
     "changeIntent": {
@@ -33,21 +30,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This script automates the sequence of quality gates required before a release: it runs build, unit tests, schema tests, protocol validation, and pack check sequentially, failing fast if any step fails.",
-        "context_and_audience": "This script is part of the continuous integration pipeline. Its intended audience is developers and release managers who need a reliable, repeatable validation process before publishing a new version.",
+        "purpose": "This document provides a deterministic, scripted release gate process to ensure code quality and consistency before a release. It codifies a series of mandatory checks that every candidate release must pass.",
+        "context_and_audience": "Written for developers and release managers maintaining the ArchSpine mirror system. It is intended for hands-on automation and CI/CD pipeline integration, not for end users or general documentation readers.",
         "key_takeaways": [
-          "Executes five gates in order: build, unit-tests, schema-tests, protocol-validate, pack-check.",
-          "Fails immediately if any gate fails, providing clear output.",
-          "Intended to be run as part of a release pipeline or manually by maintainers."
+          "The script runs five sequential gates: build, unit tests, schema tests, protocol validation, and packaging verification.",
+          "Any gate failure stops the entire pipeline immediately.",
+          "The script is meant to be executed in a root-level Node.js environment using `npm run` commands."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "此脚本自动化了发布前所需的一系列质量关卡：依次执行构建、单元测试、模式验证、协议验证和打包检查，并在任何步骤失败时立即停止。",
-        "context_and_audience": "该脚本是持续集成流水线的一部分，面向需要可靠、可重复的验证流程的开发者与发布管理员，确保发布新版本前的代码质量。",
+        "purpose": "本文档定义了一个确定性的发布门禁脚本，用于在发布前确保代码质量和一致性。它将一系列强制检查固化为每个候选发布必须通过的流程。",
+        "context_and_audience": "面向维护 ArchSpine 镜像系统的开发者和发布管理人员。用于自动化操作和 CI/CD 流水线集成，不面向最终用户或通用文档读者。",
         "key_takeaways": [
-          "按顺序执行五个关卡：构建、单元测试、模式验证、协议验证和打包检查。",
-          "任一关卡失败即立即终止，并提供清晰的输出信息。",
-          "可作为发布流水线的一部分运行，也可由维护人员手动执行。"
+          "脚本依次运行五个门禁：构建、单元测试、模式测试、协议验证和打包检查。",
+          "任何门禁失败会立即终止整个流水线。",
+          "该脚本需在根级 Node.js 环境中通过 `npm run` 命令执行。"
         ]
       }
     }
@@ -70,7 +67,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:24:28.876Z",
+    "indexedAt": "2026-05-03T12:16:31.411Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "tests",
-  "role": "Contains the complete test suite for the ArchSpine mirror system, including unit, integration, end-to-end, and acceptance tests.",
-  "responsibility": "Validates the ArchSpine system's correctness, reliability, and architectural integrity through comprehensive testing of CLI commands, configuration, LLM integration, database operations, security, error handling, and core workflows.",
+  "role": "Test suite for the ArchSpine system.",
+  "responsibility": "Validates all core subsystems including CLI commands, configuration management, LLM integration, sync workflows, repository bootstrap, credential storage, database operations, error handling, and architectural boundary enforcement through isolated integration tests, unit tests, and end-to-end workflows.",
   "children": [
     {
       "filePath": "tests/agent-host-init.test.ts",
@@ -71,12 +71,12 @@
     },
     {
       "filePath": "tests/e2e",
-      "role": "End-to-end integration test suite for the ArchSpine Command-Line Interface (CLI) commands and workflows.",
+      "role": "This directory contains end-to-end integration tests for the ArchSpine CLI commands, covering various scenarios such as initialization, pipeline execution, and rule violation detection using isolated git repositories and mocked prompts.",
       "fileKind": "folder"
     },
     {
       "filePath": "tests/engines",
-      "role": "Contains integration tests for the Scanner engine.",
+      "role": "Test suite for the ArchSpine Scanner engine, verifying file discovery and exclusion logic.",
       "fileKind": "folder"
     },
     {
@@ -106,7 +106,7 @@
     },
     {
       "filePath": "tests/helpers",
-      "role": "This directory contains utilities for testing concurrency control via lock management.",
+      "role": "Directory containing a utility script for testing LockManager acquire/release behavior.",
       "fileKind": "folder"
     },
     {
@@ -116,7 +116,7 @@
     },
     {
       "filePath": "tests/infra",
-      "role": "Test suite for validating index-based resume recovery and LLM retry mechanisms in the ArchSpine mirror system.",
+      "role": "Test suite for validating index-based resume recovery and LLM retry mechanisms in ArchSpine.",
       "fileKind": "folder"
     },
     {
@@ -341,7 +341,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-03T11:28:38.978Z",
+    "indexedAt": "2026-05-03T12:20:00.529Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

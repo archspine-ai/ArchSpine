@@ -3,23 +3,19 @@
   "identity": {
     "filePath": "examples/demo-project/.spine/rules/arch.yml",
     "contentHash": "b232b63b058af9e6010f5e6a32ee62b47ed7e27556020041042280be988bf01d",
-    "semanticHash": "6db86d1b8cec7f95b8169efd29734b3452cb3227134e17dfcbe5219c5012c664",
+    "semanticHash": "c04018248b1c3e2663540ccd167c6d07959f38a0237d22c69f829c81a9dd71bf",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "examples/demo-project/.spine/rules"
   },
   "semantic": {
-    "role": "Rule definition document for the ArchSpine demo project, enforcing specific architectural constraints.",
+    "role": "Defines architectural rules and constraints for the ArchSpine demo project",
     "responsibilities": [
-      "Define a Layer Isolation rule preventing API layer from directly importing infrastructure modules.",
-      "Define a Documentation rule requiring TSDoc comments for public domain classes and methods.",
-      "Specify severity levels (error, warning) and rationale for each rule.",
-      "Provide scoped targets (src/api/**, src/domain/**) for rule application."
+      "Layer isolation: enforce that API handlers can import from domain but not infrastructure directly",
+      "Documentation standards: require TSDoc comments on public domain classes and methods"
     ],
     "outOfScope": [
-      "Global or cross-project architecture rules.",
-      "Rules for layers beyond API and domain (e.g., infrastructure, tests, deployment).",
-      "Detailed implementation patterns for fixing violations."
+      "Other architectural concerns such as testing, deployment, performance, or infrastructure configuration"
     ],
     "invariants": [],
     "changeIntent": {
@@ -31,21 +27,19 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "To codify specific architectural boundaries and documentation expectations for the demo project under ArchSpine, ensuring consistent enforcement by both humans and automated tools.",
-        "context_and_audience": "Intended for project developers and AI agents maintaining the demo project. These rules guide code changes and reviews within the project scope.",
+        "purpose": "This document establishes two foundational rules for the ArchSpine demo project to ensure clean architecture and readable domain contracts.",
+        "context_and_audience": "Intended for developers working on the ArchSpine demo, especially those adding or modifying API handlers and domain classes. It guides them in maintaining proper layer isolation and documentation habits.",
         "key_takeaways": [
-          "API handlers must not directly import from src/infra/; use domain layer as intermediary.",
-          "All public domain classes and methods must have TSDoc comments.",
-          "Violations of Layer Isolation are errors; missing documentation is a warning."
+          "API handlers must not import directly from infrastructure modules; use the domain layer as an intermediary.",
+          "All public classes and methods in src/domain should have TSDoc comments to keep architecture contracts clear."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "为 ArchSpine 演示项目确立具体的架构边界和文档规范，确保人工与自动化工具一致地执行这些约束。",
-        "context_and_audience": "面向维护该演示项目的开发者与 AI 代理。这些规则在项目范围内指导代码变更与审查。",
+        "purpose": "本文档为 ArchSpine 演示项目制定了两条基础规则，以确保清晰的架构层次和可读的领域契约。",
+        "context_and_audience": "面向参与 ArchSpine 演示项目的开发者，特别是那些需要添加或修改 API 处理器和领域类的人员。帮助他们维护适当的层隔离并养成良好的文档习惯。",
         "key_takeaways": [
-          "API 处理程序不得直接导入 src/infra/；应通过领域层进行中转。",
-          "所有公开的领域类和方法必须包含 TSDoc 注释。",
-          "违反层隔离规则视为错误；缺少文档则作为警告处理。"
+          "API 处理器不得直接导入基础设施模块；应通过领域层进行交互。",
+          "src/domain 下的所有公共类和方法应包含 TSDoc 注释，以保持架构契约的清晰性。"
         ]
       }
     }
@@ -68,7 +62,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:22:29.425Z",
+    "indexedAt": "2026-05-03T12:14:38.391Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

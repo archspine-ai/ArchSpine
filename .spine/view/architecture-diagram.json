@@ -1,12 +1,66 @@
 {
   "title": "ArchSpine",
-  "subtitle": "AI-augmented architectural governance mirror system with automated validation and documentation",
+  "subtitle": "Semantic mirror system for AI-augmented codebase analysis, documentation, and architectural enforcement",
   "nodes": [
     {
       "id": "cli",
       "label": "CLI",
       "sublabel": "Command-line interface",
+      "type": "frontend"
+    },
+    {
+      "id": "core",
+      "label": "Core Orchestrator",
+      "sublabel": "Runtime orchestration",
       "type": "backend"
+    },
+    {
+      "id": "scanner-engine",
+      "label": "Scanner Engine",
+      "sublabel": "File system scanning",
+      "type": "backend"
+    },
+    {
+      "id": "rule-engine",
+      "label": "Rule Engine",
+      "sublabel": "Architectural rules",
+      "type": "backend"
+    },
+    {
+      "id": "context-resolver",
+      "label": "Context Resolver",
+      "sublabel": "Architectural diagnostics",
+      "type": "backend"
+    },
+    {
+      "id": "service-orchestrator",
+      "label": "Service Orchestrator",
+      "sublabel": "Pipeline coordination",
+      "type": "backend"
+    },
+    {
+      "id": "task-pipeline",
+      "label": "Task Pipeline",
+      "sublabel": "Execution tasks",
+      "type": "backend"
+    },
+    {
+      "id": "llm-client",
+      "label": "LLM Client",
+      "sublabel": "Provider abstraction",
+      "type": "backend"
+    },
+    {
+      "id": "sqlite-db",
+      "label": "SQLite Database",
+      "sublabel": "State and metadata",
+      "type": "database"
+    },
+    {
+      "id": "credential-store",
+      "label": "Credential Store",
+      "sublabel": "Secure storage",
+      "type": "security"
     },
     {
       "id": "mcp-server",
@@ -15,81 +69,27 @@
       "type": "backend"
     },
     {
-      "id": "core",
-      "label": "Core Runtime",
-      "sublabel": "Pipeline orchestration & state",
+      "id": "file-manifest",
+      "label": "File Manifest",
+      "sublabel": "Integrity tracking",
       "type": "backend"
     },
     {
-      "id": "services",
-      "label": "Services",
-      "sublabel": "Session & pipeline coordination",
+      "id": "config-manager",
+      "label": "Config Manager",
+      "sublabel": "Settings resolution",
       "type": "backend"
     },
     {
-      "id": "tasks",
-      "label": "Tasks",
-      "sublabel": "Pipeline stage implementations",
-      "type": "backend"
-    },
-    {
-      "id": "engines",
-      "label": "Engines",
-      "sublabel": "Scanning, rules, fixing, reporting",
-      "type": "backend"
-    },
-    {
-      "id": "ast-engine",
-      "label": "AST Engine",
-      "sublabel": "Code extraction & language discovery",
+      "id": "prompt-assembler",
+      "label": "Prompt Assembler",
+      "sublabel": "LLM prompt construction",
       "type": "backend"
     },
     {
       "id": "view-generator",
       "label": "View Generator",
-      "sublabel": "Architecture diagrams & risk views",
-      "type": "backend"
-    },
-    {
-      "id": "templates",
-      "label": "Templates",
-      "sublabel": "Atlas, prompts, rules, view contracts",
-      "type": "backend"
-    },
-    {
-      "id": "db",
-      "label": "Database",
-      "sublabel": "SQLite",
-      "type": "database"
-    },
-    {
-      "id": "llm-client",
-      "label": "LLM Client",
-      "sublabel": "Provider abstraction & invocation",
-      "type": "backend"
-    },
-    {
-      "id": "llm-providers",
-      "label": "LLM Providers",
-      "sublabel": "Gemini, OpenAI",
-      "type": "external"
-    },
-    {
-      "id": "credential-store",
-      "label": "Credential Store",
-      "sublabel": "Secure secret persistence",
-      "type": "security"
-    },
-    {
-      "id": "config-manager",
-      "label": "Config Manager",
-      "sublabel": "Defaults, env, loading, validation",
-      "type": "backend"
-    },
-    {
-      "id": "manifest",
-      "label": "Manifest",
-      "sublabel": "File integrity & state persistence",
+      "sublabel": "Architecture views",
       "type": "backend"
     }
   ],
@@ -97,103 +97,85 @@
     {
       "from": "cli",
       "to": "core",
-      "label": "triggers operations",
-      "style": "solid"
-    },
-    {
-      "from": "mcp-server",
-      "to": "services",
-      "label": "exposes resources/tools",
+      "label": "commands",
       "style": "solid"
     },
     {
       "from": "core",
-      "to": "services",
-      "label": "orchestrates pipeline",
+      "to": "scanner-engine",
+      "label": "invokes",
       "style": "solid"
     },
     {
-      "from": "services",
-      "to": "tasks",
-      "label": "coordinates stages",
+      "from": "core",
+      "to": "rule-engine",
+      "label": "invokes",
       "style": "solid"
     },
     {
-      "from": "services",
-      "to": "engines",
-      "label": "calls scanning/rules",
+      "from": "core",
+      "to": "context-resolver",
+      "label": "invokes",
       "style": "solid"
     },
     {
-      "from": "tasks",
-      "to": "engines",
-      "label": "uses engines",
+      "from": "core",
+      "to": "service-orchestrator",
+      "label": "invokes",
       "style": "solid"
     },
     {
-      "from": "tasks",
-      "to": "ast-engine",
-      "label": "triggers extraction",
+      "from": "core",
+      "to": "task-pipeline",
+      "label": "invokes",
       "style": "solid"
     },
     {
-      "from": "services",
-      "to": "view-generator",
-      "label": "generates views",
-      "style": "solid"
-    },
-    {
-      "from": "view-generator",
-      "to": "templates",
-      "label": "uses contracts",
-      "style": "solid"
-    },
-    {
-      "from": "view-generator",
+      "from": "service-orchestrator",
       "to": "llm-client",
-      "label": "requests LLM specs",
+      "label": "uses",
       "style": "solid"
     },
     {
-      "from": "llm-client",
-      "to": "llm-providers",
-      "label": "invokes external AI",
-      "style": "dashed"
+      "from": "service-orchestrator",
+      "to": "sqlite-db",
+      "label": "queries",
+      "style": "solid"
     },
     {
-      "from": "llm-client",
+      "from": "service-orchestrator",
       "to": "credential-store",
-      "label": "retrieves secrets",
+      "label": "reads",
       "style": "solid"
     },
     {
-      "from": "core",
+      "from": "service-orchestrator",
+      "to": "mcp-server",
+      "label": "manages",
+      "style": "solid"
+    },
+    {
+      "from": "service-orchestrator",
+      "to": "file-manifest",
+      "label": "reads/writes",
+      "style": "solid"
+    },
+    {
+      "from": "service-orchestrator",
       "to": "config-manager",
-      "label": "loads configuration",
+      "label": "reads",
       "style": "solid"
     },
     {
-      "from": "services",
-      "to": "config-manager",
-      "label": "resolves policy",
+      "from": "service-orchestrator",
+      "to": "prompt-assembler",
+      "label": "assembles",
       "style": "solid"
     },
     {
-      "from": "tasks",
-      "to": "db",
-      "label": "persists metadata",
-      "style": "solid"
-    },
-    {
-      "from": "services",
-      "to": "manifest",
-      "label": "manages state",
-      "style": "solid"
-    },
-    {
-      "from": "ast-engine",
-      "to": "config-manager",
-      "label": "reads language config",
+      "from": "service-orchestrator",
+      "to": "view-generator",
+      "label": "generates",
       "style": "solid"
     }
   ],
@@ -201,25 +183,25 @@
     {
       "heading": "Core Modules",
       "points": [
-        "CLI and MCP Server expose commands and AI agent integration",
-        "Engine layer provides scanning, rule enforcement, and fixing",
-        "Service and Task layers coordinate resumable pipeline execution"
+        "CLI and Core Orchestrator for user interaction and pipeline control",
+        "Scanning, Rule, and Context Engines for file analysis and enforcement",
+        "Service Orchestration, Task Pipeline, and View Generation for end-to-end execution"
       ]
     },
     {
       "heading": "Key Dependencies",
       "points": [
-        "SQLite for persistent metadata and audit events",
-        "LLM providers (Gemini, OpenAI) for semantic summaries and specs",
-        "Secure credential store for API keys and secrets"
+        "LLM Client abstraction for multi-provider generative summaries",
+        "SQLite Database for persistent state and metadata",
+        "Credential Store and MCP Server for secure storage and AI agent integration"
       ]
     },
     {
       "heading": "System Boundaries",
       "points": [
-        "External LLM providers are accessed via abstracted client",
-        "User interaction limited to CLI commands and MCP protocol",
-        "All configuration and rules reside in .spine directory within project"
+        "File system scanning with git-aware ignore rules",
+        "External AI agents via MCP protocol",
+        "CLI as the primary human interface"
       ]
     }
   ]

@@ -3,24 +3,23 @@
   "identity": {
     "filePath": "src/ast/rules/python.yml",
     "contentHash": "a42746ecb518eb1bfce2c6a98bb878edff7650b2e13fdaa3ae3234a56cfda574",
-    "semanticHash": "60291c36a03538b0639d1d2e2d88f18754124359c0bd95e8628c73266bc130f3",
+    "semanticHash": "67f7e14f82b8eafdfdb5d1369f2b6f6ef9621d0a597db451fcd920db477fd65d",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/ast/rules"
   },
   "semantic": {
-    "role": "AST extraction rules for Python language support in ArchSpine",
+    "role": "Define pattern-based rules for identifying imports, exports, and usages in Python code within the ArchSpine mirror system.",
     "responsibilities": [
-      "Define patterns for recognizing Python import statements (from/import, simple imports)",
-      "Define patterns for capturing exports (function, class, async function, variable, __all__ list)",
-      "Define patterns for detecting usage of symbols (function calls, property access)",
-      "Provide the foundation for ArchSpine's Python code analysis pipeline"
+      "Specifying import patterns (from ... import, import ...)",
+      "Specifying export patterns (function, class, async function, variable, __all__)",
+      "Specifying usage patterns (calls, property access)",
+      "Defining placeholders for code elements such as $NAME, $$$SYMBOLS, $VAL"
     ],
     "outOfScope": [
-      "Other programming languages (e.g., TypeScript, Go, Rust)",
-      "Runtime behavior or execution of Python code",
-      "Documentation generation or narrative description",
-      "Configuration of other ArchSpine subsystems (e.g., CLI, views)"
+      "Non-Python languages",
+      "Runtime behavior or execution semantics",
+      "Documentation or comments"
     ],
     "invariants": [],
     "changeIntent": {
@@ -32,23 +31,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document defines the syntactic patterns the ArchSpine scanner uses to extract imports, exports, and usage relationships from Python source files. It acts as the language-specific rule set that enables ArchSpine to build a semantic index of Python projects.",
-        "context_and_audience": "Maintained by developers contributing to ArchSpine's AST extraction module, and by project leads who want to customize or extend Python language support. The rules align with typical Python coding conventions (e.g., PEP 8 style imports, function definitions).",
+        "purpose": "This document establishes a pattern language for parsing Python code entities, enabling the ArchSpine mirror system to understand and replicate code structures.",
+        "context_and_audience": "Created for developers and AI agents maintaining the ArchSpine mirror system, which requires automated extraction and mapping of code imports, exports, and usages.",
         "key_takeaways": [
-          "Covers all common Python export constructs: functions, classes, async functions, and module-level variables.",
-          "Handles both standard imports (import X) and from-imports (from A import B).",
-          "Usage detection is limited to direct calls and attribute access; dynamic or reflected usage is not captured.",
-          "The rules are written in a YAML pattern DSL and can be extended by adding new pattern entries."
+          "Patterns cover imports, exports, and usages.",
+          "Placeholders like $NAME and $$$SYMBOLS allow flexible matching against concrete code.",
+          "Focus is exclusively on Python code syntax for static analysis."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档定义了 ArchSpine 扫描器用于从 Python 源文件中提取导入、导出和使用关系的语法模式。它作为语言特定的规则集，使 ArchSpine 能够构建 Python 项目的语义索引。",
-        "context_and_audience": "由参与 ArchSpine AST 提取模块开发的维护者维护，也面向希望自定义或扩展 Python 语言支持的项目负责人。这些规则遵循典型的 Python 编码约定（如 PEP 8 风格的导入、函数定义）。",
+        "purpose": "本文档定义了一套模式语言，用于解析Python代码实体，使ArchSpine镜像系统能够理解和复制代码结构。",
+        "context_and_audience": "面向维护ArchSpine镜像系统的开发者和AI代理，该系统需要自动提取和映射代码的导入、导出及使用关系。",
         "key_takeaways": [
-          "覆盖了所有常见的 Python 导出结构：函数、类、异步函数和模块级变量。",
-          "处理标准导入（import X）和 from 导入（from A import B）两种形式。",
-          "使用检测仅限于直接调用和属性访问，不捕获动态或反射的使用方式。",
-          "规则以 YAML 模式 DSL 编写，可以通过添加新的模式条目来扩展。"
+          "模式涵盖了导入、导出和使用三类操作。",
+          "占位符（如$NAME、$$$SYMBOLS）支持灵活匹配实际代码。",
+          "专注Python代码语法，用于静态分析。"
         ]
       }
     }
@@ -71,7 +68,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:25:28.346Z",
+    "indexedAt": "2026-05-03T12:17:35.040Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -1,37 +1,28 @@
-# ArchSpine Release Gate Script
+# ArchSpine Release Gate Script: Document Summary
 
-## Why This Document Exists
+## Purpose
+This document describes a deterministic, scripted release gate process that enforces a sequence of quality checks before any deployment into the ArchSpine mirror system. It exists to codify mandatory checks (build, unit tests, schema tests, protocol validation, packaging) that every candidate release must pass, providing a single automated gate to block releases that fail any step.
 
-This document describes **ArchSpine's automated release gate script** — the final quality checkpoint before any release can be published. It codifies the exact sequence of validations that must pass: build, unit tests, schema tests, protocol validation, and pack check. Without this script, releases would rely on manual, error-prone steps.
+## Audience
+Developers and release managers who maintain or integrate with the ArchSpine mirror system’s CI/CD pipeline. The document is written for hands-on automation teams, not for end users or general readers.
 
-## Who Should Read It
+## Core Workflow Anchored by This Document
+The script defines five sequential gates executed in a root-level Node.js environment via `npm run` commands:
+1. **build** – `npm run build`
+2. **unit-tests** – `npm run test:unit`
+3. **schema-tests** – `npm run test:schema`
+4. **protocol-validate** – `npm run validate`
+5. **pack-check** – `npm run pack:check`
 
-- **Developers** who need to run the release gate locally or understand why a release was blocked.
-- **Release Managers** who oversee the release pipeline and depend on a repeatable, fail-fast validation process.
-- **CI/CD Engineers** who maintain or extend the continuous integration workflow.
+Any gate failure immediately stops the entire pipeline, ensuring no release proceeds with unresolved quality issues. The script logs start/pass for each gate for debugging and CI visibility.
 
-## Workflow & Decisions Anchored by This Script
-
-The script defines a **five‑gate pipeline** executed in strict order:
-
-1. **Build** — ensures the project compiles (`npm run build`).
-2. **Unit Tests** — runs all unit tests.
-3. **Schema Tests** — validates schema changes.
-4. **Protocol Validation** — checks protocol invariants.
-5. **Pack Check** — verifies package integrity.
-
-If any gate fails, the script exits immediately with a clear error message. This "fail‑fast" design prevents incomplete or broken builds from proceeding to release.
-
-The script is intended to run either:
-- As part of a **CI/CD pipeline** on every release candidate.
-- **Manually** by a maintainer who wants a pre‑flight check.
+## Key Decisions and Workflows
+- **Go/No-Go Before Release**: This script is the decision point for whether a release candidate can proceed to actual deployment. It does not perform deployment or publication itself.
+- **Failure Handling**: The pipeline halts on first failure, forcing the team to fix issues before retrying.
+- **Tool Integration**: The script is designed to be called within CI systems; individual tools (test frameworks, linters) are configured separately.
+- **No Versioning or Changelog**: Version bumps and changelog generation are out of scope and handled by other processes.
 
 ## Out of Scope
-
-- Manual release steps (e.g., version bumping, changelog generation).
-- Deployment, rollout, or rollback procedures.
-- Environmental setup (the script assumes the environment is already configured).
-
----
-
-**Key Takeaway:** This script acts as the **single source of truth** for what must pass before a release. It is both a documentation artifact and an executable gate.
+- Actual deployment or release publication steps
+- Configuration of individual testing/linting tools
+- Version bumping or changelog generation

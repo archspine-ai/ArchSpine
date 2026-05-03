@@ -1,12 +1,1 @@
-`schemas/examples` 目录定义了 ArchSpine 镜像系统的核心模式框架，为元数据索引、配置和治理提供了基础数据模型。该目录包含六个关键模式文件，共同构建了一个统一的验证、溯源追踪和策略执行体系。
-
-主要子文件：
-
-- **`shared.schema.json`**：提供可复用的基础类型定义（如版本字符串、时间戳、文件路径、内容哈希），确保所有模式中的类型一致性。
-- **`spine-folder-unit.schema.json`**：定义目录级元数据的模式，捕获角色、职责、子文件条目以及溯源信息（索引时间戳、生成器版本、流水线阶段）。
-- **`spine-manifest.schema.json`**：记录已索引源文件的同步状态、各语言文档映射，并通过内容哈希实现完整性验证。追踪同步模式（全量/增量）、反向索引完成情况和总索引单元数。
-- **`spine-project-unit.schema.json`**：结构化项目元数据、模块分解（目录、角色、子模块数量）以及生成溯源信息。
-- **`spine-rules.schema.json`**：管理架构和编码规则定义，包含 ID、标题、严重级别、可执行性、适用范围（`appliesTo`）以及供人工阅读的 Markdown 正文。
-- **`spine-unit.schema.json`**：SpineUnit 文档的总体模式，强制要求 `schemaVersion`、`identity`、`semantic`、`skeleton`、`graph` 和 `provenance` 等必需字段，以及不变条件和变更意图的嵌套结构。
-
-这些模式紧密整合，支持 ArchSpine 系统的核心职责：索引目录结构和文件元数据、跨语言同步文档、执行架构规则，以及追踪所有索引和生成过程的溯源。共享模式作为基础，而专用单元模式涵盖了文件夹、项目、清单和规则领域。它们共同实现了整个镜像系统的一致性验证、增量更新和完整性检查。最重要的实现领域包括验证一致性、索引与生成过程的溯源追踪、基于规则的策略执行以及同步完整性管理。
+此目录包含 ArchSpine 镜像系统所有数据组件的规范 JSON Schema 定义。这些模式是结构约束、验证规则和类型安全的唯一事实来源，覆盖仓库索引、清单追踪、项目配置和规则编排等关键领域。模式按组件组织：`shared.schema.json` 定义可复用基础类型（版本、时间戳、路径、哈希、区域设置等）；`spine-folder-unit.schema.json` 验证 SpineFolderUnit 目录元数据；`spine-manifest.schema.json` 确保同步状态和文件索引的一致性；`spine-project-unit.schema.json` 管理自包含的项目配置；`spine-rules.schema.json` 保证规则文档的语法和结构正确性；`spine-unit.schema.json` 处理代码单元标识和元数据。`examples/` 子目录提供示例配置以说明使用模式。关键实现领域包括数据验证管道、基于模式的代码生成以及跨组件一致性保障。

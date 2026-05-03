@@ -3,21 +3,22 @@
   "identity": {
     "filePath": "src/assets/templates/rules/naming-conventions.yml",
     "contentHash": "4a4bd7f139cf95424d4829c3369b7e04d197411be0840bdf99aec10d7aae113b",
-    "semanticHash": "8ae41515ff5a6c5537ab6faffc262dad83cc552139d0999b9b61f68e072e8cb5",
+    "semanticHash": "f2df1db12a3a2a02d8bf165049a9f6ace2afbd9024cfb960057779330f863e63",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/assets/templates/rules"
   },
   "semantic": {
-    "role": "Define naming conventions for the codebase",
+    "role": "Define and document project-specific naming conventions for code consistency in a monorepo environment.",
     "responsibilities": [
-      "Define interface naming prefix (must start with 'I') for TypeScript types",
-      "Define test file naming suffix (must end with .test.ts or .spec.ts) for test files"
+      "Enforce interface naming rules (prefix 'I') for TypeScript type files under src/types/**/*.ts",
+      "Enforce test file naming rules (suffix .test.ts or .spec.ts) for test files under tests/**",
+      "Provide severity levels (Warning/Error) to guide automated checks"
     ],
     "outOfScope": [
-      "Other coding style rules (e.g., formatting, indentation)",
-      "Architecture rules (e.g., layered structure)",
-      "Non-naming conventions (e.g., dependency management, comment styles)"
+      "General code formatting and style rules not related to naming",
+      "Naming conventions for constants, functions, classes, or directories",
+      "Any conventions outside the specified file scopes"
     ],
     "invariants": [],
     "changeIntent": {
@@ -29,19 +30,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "Establish consistent naming conventions for interfaces and test files across the codebase.",
-        "context_and_audience": "This document is intended for all developers working in the repository, particularly within a monorepo where style uniformity is critical for maintainability and readability. It serves as a governance rule set within the ArchSpine project.",
+        "purpose": "This document establishes clear naming rules to maintain a consistent and predictable codebase, especially within a large monorepo.",
+        "context_and_audience": "It is intended for all developers contributing to the ArchSpine project, providing them with explicit standards for interface and test file naming to reduce ambiguity and improve maintainability.",
         "key_takeaways": [
-          "All internal TypeScript interfaces must be prefixed with 'I' (e.g., IUserRepository).",
-          "All test files must use the suffix .test.ts or .spec.ts for consistent test runner matching."
+          "All internal interfaces must start with 'I' to distinguish them from types and classes.",
+          "All test files must end with .test.ts or .spec.ts to ensure compatibility with test runners.",
+          "These rules are enforced with automated tooling as defined by the severity levels."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "为整个代码库建立统一的接口和测试文件命名规范。",
-        "context_and_audience": "本文档面向仓库中的所有开发者，尤其适用于大型 monorepo 项目，在这种项目中，风格一致性对可维护性和可读性至关重要。它是 ArchSpine 项目治理规则的一部分。",
+        "purpose": "本文档规定了明确的命名规则，以维护大型 monorepo 中代码库的一致性和可预测性。",
+        "context_and_audience": "适用于所有参与 ArchSpine 项目的开发者，为他们提供接口和测试文件命名的明确标准，从而减少歧义并提高可维护性。",
         "key_takeaways": [
-          "所有内部 TypeScript 接口必须以 'I' 作为前缀（例如 IUserRepository）。",
-          "所有测试文件必须以 .test.ts 或 .spec.ts 作为后缀，以确保与测试运行器匹配一致。"
+          "所有内部接口必须以 'I' 开头，以区别于类型和类。",
+          "所有测试文件必须以 .test.ts 或 .spec.ts 结尾，以确保与测试运行器的兼容性。",
+          "这些规则通过自动化工具强制执行，由严重级别定义。"
         ]
       }
     }
@@ -64,7 +67,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:24:52.026Z",
+    "indexedAt": "2026-05-03T12:16:57.961Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

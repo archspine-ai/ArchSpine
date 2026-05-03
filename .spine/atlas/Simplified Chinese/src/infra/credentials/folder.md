@@ -1,1 +1,6 @@
-`credential` 目录实现了一个可插拔的安全秘密存储系统，包含平台特定的后端和范围化的存储工厂。该目录主要由两个核心模块组成：`backend.ts` 通过可扩展的 `CredentialBackend` 接口提供底层安全持久化层，具体实现了 macOS 钥匙串、Linux secret-tool、Windows DPAPI 以及内存回退方案；`store.ts` 提供高层工厂函数（`createProjectLLMCredentialStore`、`createGlobalLLMCredentialStore`），利用这些后端管理 LLM API 密钥和其他凭据。关键实现领域包括：平台感知的后端选择、基于文件路径的确定性秘密命名、凭据验证与修剪，以及针对项目级和全局存储的范围化访问控制。
+本目录包含 ArchSpine 镜像系统的跨平台凭据存储基础设施。它支持多种后端（macOS 钥匙串、Linux secret-tool、Windows DPAPI 以及内存存储），用于安全持久化和检索 LLM API 密钥等机密信息。文件分为两个核心子模块：
+
+- `backend.ts` — 定义了 `CredentialBackend` 接口，并实现了各平台专属的后端，同时提供工厂函数 `createDefaultCredentialBackend` 用于自动选择合适后端。
+- `store.ts` — 提供工厂函数 `createProjectLLMCredentialStore` 和 `createGlobalLLMCredentialStore`，使用可插拔的后端管理作用域凭据存储，并采用确定性的密钥命名方式。
+
+重点实现领域包括平台检测、密钥验证、条件性警告以及统一接口封装，以屏蔽操作系统特定细节。

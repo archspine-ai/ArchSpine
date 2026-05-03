@@ -3,22 +3,23 @@
   "identity": {
     "filePath": "scripts/demo.tape",
     "contentHash": "237c9fe0c4705b49214cffc08c7056702d19015475676471e8f29a7b33a60f50",
-    "semanticHash": "d650ab8c61ddab2af2026e77642031693357af0f1706165f1307962ae58af4d0",
+    "semanticHash": "35ed3a6c69e92b8d61827761b282e2239d29a863475515468087f50be21f0db6",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "scripts"
   },
   "semantic": {
-    "role": "Demonstration script for ArchSpine CLI workflow",
+    "role": "Demonstration script for terminal recording showing ArchSpine CLI workflow",
     "responsibilities": [
-      "Showcase the ArchSpine build, sync, check, and fix commands in sequence",
-      "Illustrate the typical workflow of initializing a project's spine (index and atlas)",
-      "Provide a visual walkthrough for evaluating ArchSpine's capabilities"
+      "Running build",
+      "Clearing cache",
+      "Demonstrating sync, check, fix commands",
+      "Using mock provider"
     ],
     "outOfScope": [
-      "Detailed installation or configuration instructions",
-      "Comprehensive reference documentation for ArchSpine CLI flags",
-      "Explanation of underlying architecture or design principles"
+      "Detailed documentation of ArchSpine architecture",
+      "User manual",
+      "API references"
     ],
     "invariants": [],
     "changeIntent": {
@@ -30,23 +31,23 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document is a terminal recording script (demo tape) that walks through the core ArchSpine workflow: building the project, cleaning a demo project's spine data, then running 'sync', 'check', and 'fix' commands. It serves as a quick, visual introduction to how ArchSpine manages project documentation and governance.",
-        "context_and_audience": "Intended for developers and technical evaluators who want to see ArchSpine in action before reading deeper documentation. It is also useful for presenters or tutorial creators who need a repeatable demo scenario.",
+        "purpose": "This document is a terminal recording script used to generate a demo GIF illustrating the typical workflow of the ArchSpine CLI.",
+        "context_and_audience": "Intended for developers and users who want a visual demonstration of how to use ArchSpine's sync, check, and fix commands with a mock provider, including clearing cache and building.",
         "key_takeaways": [
-          "ArchSpine sync generates and updates the spine index and atlas from source code",
-          "ArchSpine check detects violations (missing docs, architectural drift)",
-          "ArchSpine fix interactively repairs detected issues",
-          "The demo shows a complete 'clean slate to fixed state' cycle in seconds"
+          "Run 'npm run build' first",
+          "Remove .spine cache files before sync",
+          "Use SPINE_PROVIDER=mock for testing",
+          "Commands: sync, check, fix"
         ]
       },
       "Simplified Chinese": {
-        "purpose": "该文档是一个终端录制脚本（演示带），逐步展示 ArchSpine 的核心工作流程：构建项目、清理演示项目的脊柱数据，然后依次运行 sync、check 和 fix 命令。它作为快速、直观的入门演示，帮助了解 ArchSpine 如何管理项目文档与治理。",
-        "context_and_audience": "面向希望在深入阅读文档之前先亲眼看看 ArchSpine 实际操作的开发者与技术评估者。也适用于需要可重复演示场景的讲师或教程创作者。",
+        "purpose": "此文档是一个终端录制脚本，用于生成展示 ArchSpine CLI 典型工作流程的演示 GIF。",
+        "context_and_audience": "适用于希望直观了解如何使用 ArchSpine 的 sync、check 和 fix 命令（包括清理缓存和构建步骤）的开发者及用户。",
         "key_takeaways": [
-          "ArchSpine 的 sync 命令能从源代码生成并更新脊柱索引与地图集",
-          "check 命令可检测文档缺失、架构漂移等违规",
-          "fix 命令能交互式地修复检测到的问题",
-          "整个演示在几秒内完成从“空白状态”到“修复完成”的完整循环"
+          "先运行 npm run build",
+          "同步前需删除 .spine 缓存文件",
+          "使用 SPINE_PROVIDER=mock 进行测试",
+          "命令包括 sync、check、fix"
         ]
       }
     }
@@ -69,7 +70,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:24:11.243Z",
+    "indexedAt": "2026-05-03T12:16:08.056Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

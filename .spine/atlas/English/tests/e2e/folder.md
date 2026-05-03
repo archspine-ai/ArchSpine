@@ -1,19 +1,26 @@
-This directory is the **end-to-end integration test suite** for the ArchSpine Command-Line Interface (CLI). It validates every major CLI command and workflow by running the built binary in isolated temporary environments and checking stdout, stderr, exit codes, and file‑system side effects.
+## Integration Tests for ArchSpine CLI (`tests/integration/`)
 
-The test files are grouped by the specific command or scenario they cover:
+This directory contains the end‑to‑end integration test suite for the ArchSpine CLI. All tests are written in TypeScript using [Vitest](https://vitest.dev/) and validate the CLI binary by spawning it in isolated, temporary environments. They simulate real user interactions, assert correct output and exit codes, and clean up all artifacts after each run.
 
-- **Core command tests**  
-  - `cli-config.test.ts` – general CLI orchestration, configuration, and argument handling.  
-  - `cli-init-advanced.test.ts` – the `init` command with interactive prompt simulation (user input injected via wrapper scripts).  
-  - `cli-readonly.test.ts` – read‑only commands such as inventory and generation, plus JSON output validation.  
-  - `cli-remove.test.ts` – the `remove` command, including prompt mocking and git workflow validation.  
-  - `cli-repo.test.ts` – repository‑level commands (`init`, `build`) in a temporary git repository.
+### Notable Children and Grouping
 
-- **Pipeline & LLM tests**  
-  - `cli-pipeline-mock.test.ts` – end‑to‑end pipeline execution with the prompts module intercepted.  
-  - `cli-real-llm.test.ts` – real LLM integration tests (requires an API key) to verify generation against a live model.
+The test files are grouped by the CLI command or scenario they exercise:
 
-- **Rule violation detection**  
-  - `cli-real-violation.test.ts` – tests that enforce rule violations are correctly detected and reported, including exit code assertions.
+- **`cli-config.test.ts`** – General CLI configuration and output validation (37 tests across 7 files).  
+- **`cli-init-advanced.test.ts`** – Advanced `init` command behaviors, including interactive prompt simulation.  
+- **`cli-pipeline-mock.test.ts`** – End‑to‑end pipeline flow with a mocked prompt module.  
+- **`cli-readonly.test.ts`** – Read‑only commands (inventory, validation) and file generation output.  
+- **`cli-real-llm.test.ts`** – Real LLM integration in a temporary git repository.  
+- **`cli-real-violation.test.ts`** – Rule violation detection using a bare git repository.  
+- **`cli-remove.test.ts`** – `remove` and related commands with prompt mocking.  
+- **`cli-repo.test.ts`** – Repository‑level commands (`init`, `build`) in a child process.
 
-All tests leverage Vitest, `child_process.spawnSync`/`execFileSync`, and `fs.mkdtempSync` to guarantee isolation and reproducibility. The most important implementation areas are the automated prompt‑simulation wrappers, the ephemeral directory lifecycle (setup/teardown with `beforeAll`/`afterEach`), and the precise assertion of CLI behavior against expected error messages and file‑system outcomes.
+### Key Implementation Areas
+
+- **Isolated Git Repositories** – Each test creates a temporary directory (via `fs.mkdtempSync`) and often initializes a git repo with a fixed branch and user configuration to guarantee a clean, reproducible environment.
+- **Prompt Mocking** – To simulate interactive input, tests write wrapper scripts that intercept or stub the `prompts` module, allowing automated non‑interactive execution.
+- **Binary Spawning** – All tests use `child_process.spawnSync` or `execFileSync` to run the built CLI binary (`dist/cli/index.js`) with controlled arguments.
+- **Lifecycle Management** – Using Vitest’s `beforeAll` and `afterEach` hooks, tests set up scaffolding (e.g., `archspine.json`) and clean up temporary directories to prevent disk pollution.
+- **Assertion of Side Effects** – Tests verify not only stdout and stderr but also file creation, directory structure, and JSON output of CLI commands.
+
+These suites collectively ensure the reliability of ArchSpine’s CLI across initialization, generation, removal, pipeline execution, and violation detection workflows.

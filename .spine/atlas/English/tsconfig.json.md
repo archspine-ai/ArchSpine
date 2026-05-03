@@ -1,30 +1,30 @@
 # ArchSpine TypeScript Configuration Summary
 
-This configuration defines how TypeScript source files in the `./src` directory are compiled into JavaScript. It controls the output language version, module system, type-checking strictness, and file processing rules. Operators should understand the implications of each setting for build stability, runtime compatibility, and debugging.
+This configuration defines how TypeScript source code for the **ArchSpine** project is compiled into JavaScript for execution on Node.js. It enforces strict type safety and modern Node.js ESM compatibility.
 
-## Key Parameters
+## What It Controls
 
-| Parameter | Value | Description |
-|-----------|-------|-------------|
-| `target` | `ESNext` | Uses the latest ECMAScript syntax features. May not run on older Node.js versions; verify runtime compatibility. |
-| `module` | `NodeNext` | Generates ES modules as per Node.js native support. Requires `"type": "module"` in `package.json`. |
-| `moduleResolution` | `NodeNext` | Mimics Node.js resolution for ES modules, ensuring imports resolve correctly. |
-| `outDir` | `./dist` | Output directory for compiled JavaScript. Must match deployment path. |
-| `rootDir` | `./src` | Root of TypeScript source files. All source code must reside under this directory. |
-| `strict` | `true` | Enables all strict type-checking options. Improves code safety but may increase compile-time errors and require more annotations. |
-| `esModuleInterop` | `true` | Allows default imports from CommonJS modules, simplifying interop with legacy packages. |
-| `skipLibCheck` | `true` | Skips type checking of declaration files (`.d.ts`). Speeds up compilation but can hide type errors from dependencies. |
-| `forceConsistentCasingInFileNames` | `true` | Ensures file name casing consistency across the project, preventing issues on case-sensitive file systems. |
-| `types` | `["node"]` | Includes Node.js API type declarations for editor support and type checking. |
-| `sourceMap` | `true` | Generates source map files for debugging (maps compiled JS back to original TS). |
-| `include` | `["src/**/*"]` | Glob pattern specifying which files to compile. All TypeScript files under `src/` are included. |
+The configuration is set via `tsconfig.json` with the following key parameters:
 
-## Stability and Risks
+- **`target`**: `"ESNext"` — Uses the latest ECMAScript features. Requires Node.js >= 22.
+- **`module`**: `"NodeNext"` — Enables Node.js native ESM with `.mjs`/`.cjs` extensions.
+- **`moduleResolution`**: `"NodeNext"` — Follows the Node.js ESM resolution algorithm.
+- **`outDir`**: `"./dist"` — Output directory for compiled JavaScript files.
+- **`rootDir`**: `"./src"` — Root directory of input TypeScript source.
+- **`strict`**: `true` — Enables full strict type-checking. Improves code safety but may introduce many type errors initially.
+- **`esModuleInterop`**: `true` — Allows default imports from CommonJS modules, smoothing interop between ESM and CJS.
+- **`skipLibCheck`**: `true` — Skips type-checking of `.d.ts` files. Speeds compilation but can hide library type errors.
+- **`forceConsistentCasingInFileNames`**: `true` — Enforces consistent file-naming casing across all files, preventing issues on case-insensitive systems.
+- **`types`**: `["node"]` — Includes Node.js built-in type definitions (e.g., `process`, `fs`).
+- **`sourceMap`**: `true` — Generates source maps for debugging. Increases output size but aids development.
+- **`include`**: `["src/**/*"]` — Only compiles files under the `src/` directory.
 
-- **Strict mode** (`strict: true`) is a double-edged sword: it catches many potential runtime errors at compile time, but can slow builds and require more type annotations. Teams should balance strictness against development velocity.
-- **ESNext target** enables modern syntax but may not be supported by older Node.js runtimes (pre v22 or so). Ensure your deployment environment can run the output.
-- **skipLibCheck** speeds up builds significantly but may mask type errors in third-party libraries. Use with caution if dependencies are frequently updated.
-- **sourceMap** is essential for debugging but increases the size of the `dist` output. Consider disabling in production builds if size is a concern.
-- **File casing consistency** prevents cross-platform errors (e.g., between macOS and Linux). Always enforce this in a team setting.
+## Stabilty and Risks
 
-Overall, this configuration promotes a robust, type-safe build pipeline suitable for a modern Node.js project. Monitor the trade-off between strictness and build performance as the codebase grows.
+This configuration enforces **strict type safety** and **modern Node.js ESM compatibility**, which enhances code reliability but may cause build failures if the codebase is not fully typed or uses legacy patterns. The `skipLibCheck` option reduces compilation time but can mask type issues in third-party libraries. The use of `"ESNext"` target might not be supported by older Node.js runtimes, potentially causing runtime errors. Overall, this setup is **stable for new development with up-to-date Node.js (>=22)**, but migration from older configurations may require adjustments.
+
+Operators should:
+
+- Ensure the Node.js runtime is v22 or later.
+- Address all TypeScript strict errors before deployment.
+- Periodically review any skipped type checks if third-party libraries update.

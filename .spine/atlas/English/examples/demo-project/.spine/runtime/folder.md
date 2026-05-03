@@ -1,3 +1,7 @@
-The `checkpoints` directory, located at `.spine/runtime/checkpoints` within a project's ArchSpine runtime, holds execution checkpoint records for the sync pipeline. Its primary responsibility is to track the lifecycle of sync command runs from initiation to completion, recording per-stage timestamps and item-level completion status. This enables reliable resumption of interrupted runs and provides an authoritative audit trail.
+This directory, located at `examples/demo-project/.spine/runtime/checkpoints`, stores execution records of synchronization runs for the ArchSpine mirror system. Each checkpoint captures the full lifecycle and outcome of a sync command, including:
 
-The directory contains one or more checkpoint files, each representing a single sync run. Notable children include checkpoint files named by run ID or timestamp, which internal modules like the checkpoint manager read and write. Implementation areas that matter most include checkpoint creation (writing status at each stage), checkpoint retrieval (loading state to resume an interrupted run), and checkpoint cleanup (removing stale records after successful completion or after a retention period). Concrete submodules involved are the checkpoint manager (responsible for all checkpoint I/O) and the sync runner (which interacts with checkpoints to determine resumption points).
+- Pipeline stage status and timing
+- Processed file lists for traceability
+- Metadata for resumption and hook behavior
+
+The records are grouped by individual sync runs, enabling both human review of sync history and agent-based analysis of pipeline performance. Key implementation areas include checkpoint creation, stage monitoring, and resume-logic metadata. No subdirectories are defined; all records reside at this level as independent checkpoint files.

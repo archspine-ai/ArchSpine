@@ -1,35 +1,20 @@
-# ArchSpine Python AST Extraction Rules
+# ArchSpine Pattern Language for Python Code Analysis
 
-## Purpose
+## Why This Document Exists
+This document defines a pattern‑based language used by the ArchSpine mirror system to statically analyze Python source code. It specifies how to identify imports, exports, and usages (calls and property access) through concrete patterns and placeholders. The goal is to enable automated extraction and mapping of code entities so that ArchSpine can replicate code structures across mirrors.
 
-This document defines the syntactic patterns that the ArchSpine scanner uses to extract **imports**, **exports**, and **usage relationships** from Python source files. It is the language‑specific rule set that powers ArchSpine’s ability to build a semantic index of Python projects. Without these rules, the scanner would not know how to recognise the building blocks of Python code – from `import` statements to `def` and `class` definitions.
+## Who Should Read It
+Developers and AI agents who maintain or extend the ArchSpine mirror system. It is also relevant for anyone contributing to the static analysis rules that parse Python import/export/usage relationships.
 
-## Who Should Read This
-
-- **Developers contributing to ArchSpine’s AST extraction module** – this document is the source of truth for how Python is analysed.  
-- **Project leads who want to customise or extend Python language support** – the rules are written in a YAML pattern DSL that can be added to or modified without touching core scanner logic.  
-
-The rules align with typical Python coding conventions (PEP 8 style imports, function definitions, etc.).
-
-## Key Decisions Anchored by This Document
-
-- The scanner handles both **standard imports** (`import X`) and **from‑imports** (`from A import B`).  
-- All common Python export constructs are covered: **functions**, **classes**, **async functions**, and **module‑level variables**. The special `__all__` list pattern is also included.  
-- Usage detection is limited to **direct calls** and **attribute access**; dynamic or reflected uses (e.g., `getattr`) are explicitly out of scope.  
-- The set of patterns is open for extension – new pattern entries can be added to support additional syntactic forms.
-
-## Workflows Anchored
-
-- **Code analysis pipeline** – the extraction rules are the first step in ArchSpine’s Python analysis workflow, producing a semantic index of imports, exports, and usages.  
-- **Dependency graph generation** – the extracted relationships feed into ArchSpine’s mirror‑system visualisation and query tools.  
-- **Rule maintenance** – any change to Python syntax support (e.g., adding pattern for decorators) starts with updating this document.
+## Key Decisions and Workflows Anchored
+- The pattern language is limited to Python syntax only. Non‑Python languages, runtime behavior, and documentation are explicitly out of scope.
+- Placeholders such as `$NAME`, `$$$SYMBOLS`, `$$$ARGS`, `$VAL`, and `$OBJ` allow flexible matching against concrete code.
+- Three categories of patterns: imports (from_import, simple_import), exports (function, class, async_function, variable, `__all__`), and usages (call, property).
+- These patterns drive the parsing engine within ArchSpine’s code analysis pipeline, informing decisions about dependency tracking and structure mirroring.
 
 ## Pattern Overview
+- **Import Patterns**: `from $SOURCE import $$$SYMBOLS` and `import $$$SYMBOLS` capture both explicit and wildcard imports.
+- **Export Patterns**: Cover top‑level definitions: functions (including async), classes, variables, and the `__all__` list.
+- **Usage Patterns**: Identify function calls and attribute/property accesses via `$NAME($$$ARGS)` and `$OBJ.$NAME`.
 
-The rules are organised into three categories:
-
-- **Imports** – `from_import` (`from $SOURCE import $$$SYMBOLS`) and `simple_import` (`import $$$SYMBOLS`).  
-- **Exports** – `function`, `class`, `async_function`, `variable`, and the `__all__` list.  
-- **Usages** – `call` (`$NAME($$$ARGS)`) and `property` (`$OBJ.$NAME`).
-
-These patterns are expressed in a small DSL that uses `$`‑prefixed placeholders and `$$$` for multi‑part captures. No other programming languages (TypeScript, Go, Rust, etc.) are covered; runtime behaviour or documentation generation are also outside the scope of this document.
+This document serves as the single source of truth for how ArchSpine interprets Python code boundaries.

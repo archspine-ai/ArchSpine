@@ -1,18 +1,20 @@
 # ArchSpine Layered Architecture Constraints
 
 ## Purpose
-This document establishes and enforces a layered architecture for the ArchSpine project. It defines clear boundaries between CLI, services, core, tasks, engines, and infra layers, ensuring that each layer adheres to its prescribed role: CLI as thin entrypoints, services for orchestration, core for pipeline contracts, tasks for stage-local work, engines for analysis and transformation, and infra for low-level capabilities.
 
-## Audience
-All developers contributing to the ArchSpine codebase. This document serves as a reference for understanding the project's architectural vision, preventing architectural drift, and guiding code placement during development and code review.
+This document defines explicit dependency constraints for each architectural layer of the ArchSpine mirror system. Its goal is to enforce a reusable, testable, and maintainable layered architecture by preventing harmful cross-layer dependencies.
 
-## Key Architectural Constraints
-- **CLI Entrypoint Separation (Error)**: CLI modules must stay thin; they cannot absorb pipeline or persistence logic from lower layers. This keeps runtime behavior reusable outside the CLI.
-- **Service Runtime Boundary (Warning)**: Services orchestrate core/tasks/engines/infra, but view-specific service code belongs under `src/services/view/` to keep structure obvious.
-- **Core Pipeline Isolation (Error)**: Core modules define pipeline contracts without depending on CLI entry code, ensuring stability regardless of invocation method.
-- **Task Stage Boundary (Warning)**: Tasks implement stage-local work on core contracts and engines; they must not take over CLI parsing or unrelated orchestration.
-- **Engine Independence (Error)**: Engines provide reusable analysis logic without importing CLI entrypoints, remaining decoupled from service orchestration.
-- **Infra Facade Imports (Warning)**: Prefer public infra facades over deep private implementation paths to make refactors safer.
+## Who Should Read This
 
-## Workflow Anchors
-This document anchors code placement decisions during development and code review. Violations flagged as Error must be fixed to pass CI; Warning violations should be reviewed for architectural alignment. The layered model guides the evolution of the codebase, ensuring that new modules are placed correctly and dependencies remain acyclic.
+All developers and contributors to the ArchSpine project. Understanding these rules is essential to avoid architectural erosion and maintain modular separation of concerns.
+
+## Key Architectural Decisions & Workflows Anchored Here
+
+- **CLI as thin entrypoints** – CLI modules must not absorb pipeline or persistence logic; they remain command adapters only.
+- **Service orchestration boundaries** – Services orchestrate core, tasks, engines, and infra. View-specific service code lives under `src/services/view/`, not in infra.
+- **Core pipeline independence** – Core modules define pipeline contracts and shared state without depending on CLI code.
+- **Task stage isolation** – Tasks implement stage-local work on core contracts and engines; they don’t handle CLI parsing or unrelated service orchestration.
+- **Engine decoupling** – Engines provide reusable analysis and transformation logic with no dependency on CLI or service-level orchestration.
+- **Infra facades** – Infra modules expose stable low-level capabilities; callers should prefer public facades over deep internal paths.
+
+These rules are enforced as either **Error** (must not be violated) or **Warning** (strongly recommended). Each rule includes a severity level and rationale to guide consistent application across the codebase.

@@ -1,30 +1,45 @@
-# `src/infra` – ArchSpine 的基础设施层
+# `src/infra` – 核心基础设施层
 
-该目录是 ArchSpine 镜像系统的基础设施层，提供配置管理、LLM 客户端抽象、数据库操作、凭证存储、清单持久化、MCP 服务器集成和提示生成等核心服务，所有高层操作均依赖于此层。
+`src/infra` 目录为整个 ArchSpine 镜像系统提供了基础服务，涵盖配置管理、SQLite 数据库生命周期、多供应商大语言模型（LLM）客户端抽象、凭据存储、文件完整性追踪、面向外部 AI 代理的 MCP 服务器、提示词组装、运行时输入输出以及治理工具。
 
-## 主要子模块及其分组
+## 主要子模块及分组
 
-各组件按逻辑领域组织如下：
+- **`config/`** – 配置管理子系统。核心文件：`config-validation.ts`（`resolveSpineConfig` 与 `validateSpineConfig` 的门面）、`config.ts`（公开 API 总出口）。
 
-| 领域 | 关键文件/子目录 | 用途 |
-|------|-----------------|------|
-| **配置管理** | `config/`、`config.ts`、`config-validation.ts` | 加载、验证并解析环境变量与默认值；提供 `resolveSpineConfig` 和 `validateSpineConfig` 的稳定 API。 |
-| **凭证存储** | `credentials/`、`secrets.ts` | 可插拔的凭证存储系统，支持平台特定后端（macOS Keychain、Linux secret-tool、Windows DPAPI、内存）以安全管理 LLM API 密钥。 |
-| **数据库** | `db/`、`db.ts`、`execution-checkpoint.ts` | 管理 SQLite 运行时数据库生命周期（WAL 日志模式、模式初始化、漂移检测、陈旧文件恢复）。`db.ts` 提供统一的 DAO 仓库，支持文件、漂移事件、符号缓存、令牌用量和违规记录的 CRUD 操作。 |
-| **LLM 集成** | `llm/`、`llm.ts` | 客户端抽象、工厂模式、全局配置文件管理、指数退避重试机制以及具体提供商实现（OpenAI、Gemini 等）。 |
-| **清单管理** | `manifest/`、`manifest.ts` | 文件状态追踪、SHA-256 哈希、确定性路径解析以及同步验证所需的状态持久化。 |
-| **MCP 服务器** | `mcp/` | 实现模型上下文协议（MCP）服务器，使用 stdio 传输，向外部 AI 代理暴露项目元数据、文件内容、扫描、规则和历史漂移信息。 |
-| **提示生成** | `prompt/`、`prompt-context/`、`prompt.ts`、`prompt-policy.ts`、`prompt-rendering.ts`、`lite-prompt.ts` | 流式提示构建器、策略解析、预算计算、裁剪、诊断工具以及针对 Markdown、源代码、配置、文档、文件夹和项目的专用提示生成器。`lite-prompt.ts` 提供令牌受限的“精简模式”提示。 |
-| **运行时 I/O 与工具** | `runtime-io.ts`、`ui.ts`、`renderer.ts`、`index-reader.ts`、`output.ts`、`rules-loader.ts`、`writer-boundary.ts`、`spine-gate.ts`、`repository-artifacts.ts`、`repair-policy.ts`、`auth.ts` | 标准化的日志/警告/错误处理、可折叠的终端 UI、Markdown 文档渲染、索引文件读取与模式验证、`.spine` JSON 文件的输出 DAO、规则文档加载、写保护边界、未授权变更检测、仓库快照工具以及修复操作决策逻辑。 |
-| **测试模拟** | `__mocks__/` | 提供 `MockClient` 的稳定公共导出，用于在测试中模拟 LLM 提供商交互。 |
+- **`db/`** – SQLite 数据库基础设施。核心文件：`db.ts`（统一门面，提供文件追踪、符号导出、LLM 指标、规则违规记录、批量提交等功能）。
 
-## 重点实现领域
+- **`llm/`** – LLM 客户端抽象层。核心文件：`llm.ts`（门面，导出 `createResolvedLLMClient`、`resolveLLMSettings` 及供应商工具函数）。
 
-- **配置与凭证** – 控制其他所有基础设施行为的基础设置。
-- **数据库（db/）** – 文件元数据、审计事件和系统状态的持久化核心。
-- **LLM 抽象（llm/）** – 将系统与特定提供商解耦，并处理容错恢复。
-- **提示系统（prompt/ + prompt-context/）** – 生成结构化、本地化且经过验证的提示，驱动 ArchSpine 的 AI 交互。
-- **MCP 服务器（mcp/）** – 允许外部 AI 代理直接消费 ArchSpine 的资源与工具。
-- **运行时 I/O（runtime-io.ts、ui.ts）** – 在整个应用程序中确保一致的用户交互体验与可测试性。
+- **`credentials/`** – 跨平台凭据存储，支持 macOS 钥匙串、Linux secret-tool、Windows DPAPI 及内存后端。
 
-所有这些组件整合为一个统一的基础设施层，支撑着整个 ArchSpine 镜像系统的运行。
+- **`manifest/`** – 文件系统交互与完整性校验。核心文件：`manifest.ts`（公开 API，提供 `Manifest` 类和 `hasManifestBaseline` 查询）。
+
+- **`mcp/`** – 模型上下文协议（MCP）服务器，向外部 AI 代理暴露内部资源与工具。
+
+- **`prompt/`** – 提示词组装与编排。核心文件：`prompt.ts`（公开门面）、`renderer.ts`（Markdown 生成）、`repository-artifacts.ts`（Git 与文件操作）。
+
+- **`prompt-context/`** – 提示词策略与构建基础设施。核心文件：`prompt-context.ts`（导出预算配置、验证策略、构建器函数）。
+
+- **`src/infra/` 下的其他重要文件**：
+  - `runtime-io.ts` – 标准化的 I/O 接口，用于日志、警告、错误、用户确认。
+  - `spine-gate.ts` – 检测受保护输出目录中的未授权变更。
+  - `repair-policy.ts` – 根据违规报告决定修复操作的逻辑。
+  - `secrets.ts` – 安全获取 LLM 凭据的门面。
+  - `output.ts` – 读写 Spine 索引 JSON 文件的数据访问对象。
+  - `execution-checkpoint.ts` – 重试系统的检查点状态管理器。
+  - `index-reader.ts` – 索引文档读取与校验，包含模式兼容性检查。
+  - `lite-prompt.ts` – 面向低精度「精简模式」的令牌受限提示词构建器。
+  - `writer-boundary.ts` – 对 `.spine/` 目录的写保护。
+  - `rules-loader.ts` – 规则文档的加载与解析。
+  - `ui.ts` – CLI 可折叠控制台输出工具。
+
+## 关键实现领域
+
+1. **配置管理** – 所有设置的安全解析与校验。
+2. **数据库操作** – SQLite 生命周期、原子批量提交、语义漂移检测。
+3. **大语言模型集成** – 统一的多供应商客户端，含重试与配置合并。
+4. **凭据存储** – 跨平台安全秘密持久化。
+5. **文件系统清单** – SHA-256 哈希、漂移追踪、基线检测。
+6. **MCP 服务器** – 为外部 AI 代理提供带上下文门控的内部资源访问。
+7. **提示词组装** – 流畅构建器、策略层级、预算计算、本地化支持。
+8. **治理工具** – 变更检测（`spine-gate.ts`）、修复策略（`repair-policy.ts`）、写保护（`writer-boundary.ts`）、规则加载（`rules-loader.ts`）。

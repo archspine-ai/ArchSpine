@@ -3,24 +3,23 @@
   "identity": {
     "filePath": ".prettierrc.json",
     "contentHash": "31eef325938108b2b10e35bd28fdcac03dddea723333292ea371d4d48d5c3731",
-    "semanticHash": "a00f239422b2bd04314b5f75bee4ebcaf4d9f6766fab57484a5e104b1bc37482",
+    "semanticHash": "a3b0e44e56c0e914cb35e4122bf3c464da88ce2d254b1ccf74abb93f467e1a88",
     "language": "unsupported",
     "fileKind": "config",
     "scope": ""
   },
   "semantic": {
-    "role": "Defines code formatting rules for the project using Prettier, ensuring consistent style across the codebase.",
+    "role": "Code formatting standard for the ArchSpine project",
     "responsibilities": [
-      "Controls maximum line width for code wrapping",
-      "Enforces single or double quote usage",
-      "Manages semicolon inclusion",
-      "Configures trailing comma placement"
+      "Enforces consistent code style across all source files",
+      "Ensures readability and adherence to project conventions"
     ],
     "outOfScope": [],
     "invariants": [
-      "printWidth must be a positive integer (default 80, here 100)",
-      "singleQuote, semi must be boolean values",
-      "trailingComma must be one of 'none', 'es5', or 'all'"
+      "printWidth must not exceed 100 characters",
+      "Single quotes must be used for strings",
+      "Statements must end with semicolons",
+      "Trailing commas are required wherever possible"
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -31,24 +30,24 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Defines code formatting rules for the project using Prettier, ensuring consistent style across the codebase.",
+        "role": "Code formatting standard for the ArchSpine project",
         "parameter_definitions": {
-          "printWidth": "Specifies the maximum line length before wrapping. Higher values reduce line breaks but may cause horizontal scrolling. Here set to 100, which is wider than the default 80.",
-          "singleQuote": "When true, prefers single quotes over double quotes for strings. Reduces visual noise in codebases that adopt this convention.",
-          "semi": "When true, ensures semicolons are added at the end of statements. Promotes consistency especially in mixed JS/TS projects.",
-          "trailingComma": "Controls trailing commas in object/array literals. 'all' adds them wherever possible, enabling cleaner diffs in version control."
+          "printWidth": "Maximum line length before wrapping; set to 100 to balance readability and compact code.",
+          "singleQuote": "Forces single quotes instead of double quotes; reduces visual clutter.",
+          "semi": "Requires semicolons at end of statements; prevents common JavaScript errors.",
+          "trailingComma": "Enables trailing commas in multi-line arrays and objects; simplifies diffs and reordering."
         },
-        "stability_and_risks": "This configuration has low operational risk. Misconfiguration (e.g., invalid trailingComma value) can cause Prettier to error and block formatting or CI. Values are all safe and standard. The higher printWidth may cause longer lines in code review, but it is a common project preference."
+        "stability_and_risks": "This configuration standardizes formatting across the ArchSpine codebase. Deviations could cause merge conflicts or inconsistent style. No direct operational risk, but failure to enforce may lead to code quality degradation."
       },
       "Simplified Chinese": {
-        "role": "使用 Prettier 定义项目的代码格式化规则，确保整个代码库风格一致。",
+        "role": "ArchSpine项目的代码格式化标准",
         "parameter_definitions": {
-          "printWidth": "指定换行前的最大行长度。较高的值减少换行但可能导致水平滚动。此处设为 100，比默认的 80 更宽。",
-          "singleQuote": "如果为 true，则优先使用单引号而非双引号表示字符串。采用此约定的代码库可减少视觉干扰。",
-          "semi": "如果为 true，则在语句末尾添加分号。在混合 JS/TS 项目中促进一致性。",
-          "trailingComma": "控制对象/数组字面量中的尾逗号。'all' 尽可能添加尾逗号，使版本控制中的差异更清晰。"
+          "printWidth": "最大行宽，设定为100字符以平衡可读性和紧凑性。",
+          "singleQuote": "强制使用单引号而非双引号，减少视觉杂乱。",
+          "semi": "要求语句末尾使用分号，防止常见JavaScript错误。",
+          "trailingComma": "在多行数组和对象末尾添加逗号，简化差异对比和重排。"
         },
-        "stability_and_risks": "此配置的运行风险较低。错误配置（如无效的 trailingComma 值）可能导致 Prettier 报错并阻塞格式化或 CI。所有值均为安全且标准的。较高的 printWidth 可能导致代码审查中出现较长行，但这是常见的项目偏好。"
+        "stability_and_risks": "此配置将ArchSpine代码库的格式化统一化。偏离可能导致合并冲突或风格不一致。无直接运行风险，但不遵守可能降低代码质量。"
       }
     }
   },
@@ -70,7 +69,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:22:02.781Z",
+    "indexedAt": "2026-05-03T12:14:11.270Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

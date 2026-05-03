@@ -1,19 +1,26 @@
-此目录是 **ArchSpine 命令行接口（CLI）的端到端集成测试套件**。它通过在隔离的临时环境中运行编译后的 CLI 二进制文件，验证所有主要 CLI 命令和工作流的正确性，包括标准输出、标准错误、退出代码以及文件系统副作用。
+## ArchSpine CLI 集成测试目录 (`tests/integration/`)
 
-测试文件按覆盖的命令或场景分组：
+本目录包含 ArchSpine CLI 的端到端集成测试套件。所有测试均使用 TypeScript 编写，基于 [Vitest](https://vitest.dev/) 框架，通过在临时隔离环境中运行编译后的 CLI 二进制文件进行验证。测试模拟真实的用户交互，检查正确的输出和退出码，并在每次运行后清理所有测试产物。
 
-- **核心命令测试**  
-  - `cli-config.test.ts` – 通用 CLI 编排、配置与参数处理。  
-  - `cli-init-advanced.test.ts` – `init` 命令，通过包装脚本模拟用户交互输入。  
-  - `cli-readonly.test.ts` – 只读命令（如 inventory 和 generation），以及 JSON 输出验证。  
-  - `cli-remove.test.ts` – `remove` 命令，包含提示模拟与 Git 工作流验证。  
-  - `cli-repo.test.ts` – 仓库级命令（`init`、`build`），在临时 Git 仓库中执行。
+### 主要子文件及其分组
 
-- **管道与 LLM 测试**  
-  - `cli-pipeline-mock.test.ts` – 端到端管道执行，拦截 prompts 模块以模拟用户输入。  
-  - `cli-real-llm.test.ts` – 真实 LLM 集成测试（需要 API 密钥），验证在真实模型下的生成行为。
+测试文件根据所测试的 CLI 命令或场景进行分组：
 
-- **规则违规检测**  
-  - `cli-real-violation.test.ts` – 强制验证规则违规被正确检测并报告，包括退出码断言。
+- **`cli-config.test.ts`** – 通用 CLI 配置与输出验证（共 7 个文件，37 个测试用例）。  
+- **`cli-init-advanced.test.ts`** – `init` 命令的高级行为，包括交互式提示模拟。  
+- **`cli-pipeline-mock.test.ts`** – 使用模拟提示模块的端到端流水线流程。  
+- **`cli-readonly.test.ts`** – 只读命令（清单、验证）及文件生成输出测试。  
+- **`cli-real-llm.test.ts`** – 在临时 Git 仓库中集成真实大语言模型（LLM）的测试。  
+- **`cli-real-violation.test.ts`** – 使用裸 Git 仓库检测规则违规的测试。  
+- **`cli-remove.test.ts`** – `remove` 及相关命令的测试，配合提示模拟。  
+- **`cli-repo.test.ts`** – 仓库级命令（`init`、`build`）在子进程中的测试。
 
-所有测试均使用 Vitest、`child_process.spawnSync`/`execFileSync` 和 `fs.mkdtempSync` 确保隔离性与可重现性。最重要的实现领域包括：自动化的提示模拟包装脚本、临时目录的生命周期管理（通过 `beforeAll`/`afterEach` 进行设置与清理），以及针对预期错误信息和文件系统结果的 CLI 行为精确断言。
+### 关键实现领域
+
+- **隔离的 Git 仓库** – 每个测试通过 `fs.mkdtempSync` 创建临时目录，并经常初始化一个指定分支和用户配置的 Git 仓库，确保干净、可重复的环境。
+- **提示模拟** – 为模拟交互式输入，测试编写包装脚本以拦截或替代 `prompts` 模块，实现自动化非交互执行。
+- **二进制程序启动** – 所有测试使用 `child_process.spawnSync` 或 `execFileSync` 运行编译好的 CLI 二进制文件（`dist/cli/index.js`），并传入受控参数。
+- **生命周期管理** – 借助 Vitest 的 `beforeAll` 和 `afterEach` 钩子，测试搭建初始脚手架（如 `archspine.json`）并在每次测试后清理临时目录，避免磁盘污染。
+- **副作用断言** – 测试不仅验证标准输出和错误输出，还检查文件创建、目录结构以及 CLI 命令的 JSON 输出。
+
+这些套件共同确保了 ArchSpine CLI 在初始化、生成、移除、流水线执行及违规检测等各项工作流程中的可靠性。

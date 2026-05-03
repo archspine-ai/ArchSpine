@@ -3,23 +3,23 @@
   "identity": {
     "filePath": "scripts/publish-placeholder.mjs",
     "contentHash": "010e30e58bfecc216211079b26b2d57461cdf5698a7a4a1c802bf3b060aac9d7",
-    "semanticHash": "9ba380d9eaecbe9c7cd162943bcf3454caba8f3672c21ed589399001030f37f3",
+    "semanticHash": "8167ebaeee87df70ffb4c8983b201e6d6a6af9c84e3f5723e21d9c5521a07384",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "scripts"
   },
   "semantic": {
-    "role": "Defines the automated placeholder publishing step to reserve the ArchSpine npm package name before real releases.",
+    "role": "Defines the automated process for publishing the initial placeholder version of the ArchSpine package to the official npm registry.",
     "responsibilities": [
-      "Verifying package.json name and version matches placeholder expectations",
-      "Checking if the package name is already taken on the npm registry",
-      "Running the release gate script before publishing",
-      "Publishing a placeholder version 0.0.1 to secure the package name"
+      "Describes the placeholder publishing workflow",
+      "Validates package metadata before publishing",
+      "Checks for existing published package to avoid name collisions",
+      "Runs a release gate before publishing"
     ],
     "outOfScope": [
-      "Handling actual version bumps or stable releases",
-      "User interaction or error recovery procedures",
-      "Publishing to registries other than npmjs.org"
+      "Actual source code or architecture of the ArchSpine project",
+      "Documentation of features or usage",
+      "Long-term maintenance or update processes"
     ],
     "invariants": [],
     "changeIntent": {
@@ -31,21 +31,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document is a CI script that automates the placeholder publishing process for the ArchSpine npm package. Its goal is to secure the package name on the official npm registry before any real releases begin, ensuring the name is not taken by another publisher.",
-        "context_and_audience": "This script is intended for maintainers and CI pipeline developers working on the ArchSpine project. It is run as a one-time setup step before the first real release, or whenever the package name needs to be reserved again.",
+        "purpose": "This document provides the script and logic for securely publishing the ArchSpine placeholder package (version 0.0.1) to npm, ensuring that no existing package with the same name is overwritten and that all pre-release checks pass.",
+        "context_and_audience": "Developers responsible for initializing the ArchSpine project on npm, particularly the first-time publishing workflow.",
         "key_takeaways": [
-          "The script strictly enforces a placeholder version (0.0.1) to prevent accidental exposure of real code.",
-          "It performs a registry lookup to avoid publishing over an existing package with the same name.",
-          "It integrates with the project's release gate to ensure quality checks pass before publishing."
+          "The script enforces a strict placeholder version check (0.0.1).",
+          "It verifies the package name is not already taken on npm.",
+          "A release gate command (npm run release:gate) must pass before publishing."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档是一个CI脚本，用于自动化ArchSpine npm包的占位发布过程。其主要目的是在实际发布开始之前，在官方npm注册表上锁定包名，确保该名称不会被其他发布者占用。",
-        "context_and_audience": "该脚本面向ArchSpine项目的维护者和CI流水线开发者。它作为首次发布前的一次性设置步骤运行，或当需要重新保留包名时使用。",
+        "purpose": "本文档提供了安全地将 ArchSpine 占位包（版本 0.0.1）发布到 npm 的脚本和逻辑，确保不会覆盖已存在的同名包，并且所有发布前检查均通过。",
+        "context_and_audience": "负责在 npm 上初始化 ArchSpine 项目的开发者，特别是首次发布工作流的执行者。",
         "key_takeaways": [
-          "脚本严格执行占位版本（0.0.1），防止意外暴露真实代码。",
-          "通过注册表查询避免发布到已存在的同名包。",
-          "与项目的发布门控集成，确保发布前通过质量检查。"
+          "脚本强制检查占位版本 0.0.1。",
+          "会验证该包名在 npm 上是否已被占用。",
+          "发布前必须通过 release gate 命令（npm run release:gate）。"
         ]
       }
     }
@@ -68,7 +68,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:24:27.649Z",
+    "indexedAt": "2026-05-03T12:16:28.834Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

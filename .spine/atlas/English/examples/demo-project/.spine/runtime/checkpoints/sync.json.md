@@ -1,37 +1,25 @@
-# ArchSpine Sync Pipeline Checkpoint Configuration Summary
+# ArchSpine Sync Run Record – Configuration Summary
 
-This document summarizes the execution checkpoint record used by the ArchSpine sync pipeline. Unlike a traditional configuration file that modifies system behavior, this checkpoint file is an authoritative trace of a specific sync command run. It logs initiation, progress, and final state, including per-stage timestamps and per-file completion status. Operators rely on it for resumption, debugging, and audit.
+This document describes the structure and meaning of a run record produced by the ArchSpine mirror system after executing a synchronization operation. Operators use these records to verify the success of syncs, debug failures, and understand system behavior.
 
-## What This Configuration Controls
+## What the Configuration Controls
 
-The checkpoint itself does not control pipeline behavior; it records the outcome of a pipeline execution. However, the parameters within it determine how the system interprets past runs and whether it can recover from interruptions. The key parameters to monitor are:
+The `command` field dictates the operation performed. When `"sync"` is present, the full synchronization pipeline runs. The `status` field shows the final outcome: `"completed"` means the pipeline finished without error. A non‑completed status (e.g., `"failed"`, `"aborted"`) indicates a problem that likely requires investigation before dependent processes can proceed.
 
-- **schemaVersion**: Must always be `"1.0"`. Any deviation will cause the runtime to misread or reject the checkpoint.
-- **command**: Identifies which CLI command produced this checkpoint (e.g., `"sync"`). This tells the runtime which pipeline stages to expect and how to re-enter during resumption.
-- **runId**: A unique string (often timestamp-based) that correlates this checkpoint to a specific execution. Used to prevent duplicate processing and to support resumption via `resumedFromRunId`.
-- **status**: The overall run status — `"completed"`, `"failed"`, `"running"`, or `"pending"`. This flag drives downstream logic: a `"failed"` status may trigger repair/resume workflows; `"running"` may block new runs.
-- **startedAt / updatedAt**: ISO 8601 timestamps marking when the run started and when the checkpoint was last modified. Essential for time-bound diagnostics, detecting stale checkpoints, and ensuring coherency under concurrent access.
-- **metadata**: Contains contextual flags:
-  - `full` – whether this was a full sync or incremental.
-  - `hookMode` – whether triggered by a git hook.
-  - `resumedFromRunId` – the previous run being continued.
-  - `resumeCandidateCount` – number of viable resume points found. A zero count may indicate a clean start or a failure to locate a previous checkpoint.
-- **stages**: A map of pipeline stage names (e.g., `"Reconcile State & Cache"`, `"scan-cleanup"`, `"ast-extraction"`, `"summarization"`) to their status and timing. Each stage records its own `status`, `startedAt`, `completedAt`, and `updatedAt`. The `scan-cleanup` stage may include `data` (filtered files and affected directories). The `ast-extraction` and `summarization` stages include `items` — a per-file map of completion objects (status, timestamps). Stages execute sequentially; a failed stage blocks downstream stages.
+The `metadata` section contains three critical switches:
 
-## Operational Risks and Stability Concerns
+- **`full`** – When `true`, the system performs a full state reconciliation instead of an incremental update. A full sync is resource‑intensive but safe; it catches all changes. Operators should be aware that frequent full syncs may degrade performance.
+- **`hookMode`** – When `false`, the run was initiated manually or programmatically. If `true`, it was triggered by a file‑system hook. This matters for audit and for deciding whether to re‑trigger hooks.
+- **`resumedFromRunId`** – If present, this run continues the work of a prior run (e.g., after a crash). This supports crash recovery and avoids duplicate processing. Operators should verify that the resumed run’s start time is later than the original’s, and note any missing files.
 
-This file is a critical runtime artifact. Its integrity directly affects the system’s ability to:
+The `stages` object tracks each pipeline phase: reconciliation, cleanup, AST extraction, and summarization. Each stage has its own timestamps and status. A failure in any stage aborts the whole run. The `items` under AST extraction and summarization list exactly which files were processed and their individual statuses.
 
-- Resume interrupted runs without skipping or repeating work
-- Provide accurate diagnostic information
-- Avoid duplicate processing or incorrect status reporting
+## Operational Risks & Stability Concerns
 
-**Corruption or inconsistency** is the primary risk. If the checkpoint file becomes corrupted or falls out of sync with actual pipeline progress (e.g., due to disk failure or non-atomic writes), subsequent runs may skip stages, reprocess completed work, or misreport status. **Never edit this file manually**; the runtime must always update it atomically.
+- **Recovery logic** – The presence of `resumedFromRunId` indicates the system can recover from interruptions. However, if the resumption logic is faulty, files may be skipped or processed twice. Always cross‑check the file list against expectations.
+- **Full sync resource usage** – `full: true` means a complete scan of the state, which is safe but can be heavy on I/O and memory. Monitor system load when full syncs run.
+- **Stage‑wise failure** – Because the pipeline aborts on any stage failure, a single slow or broken stage can block the entire sync. Watch stage timestamps for unusually long durations.
+- **Filtered files** – The `scan‑cleanup` stage outputs a `filteredFiles` list. This list is used for audit and for later processing. If filtering rules are incorrect, essential files may be excluded. Validate that the list contains all expected files and omits only intentionally skipped ones.
+- **Time ordering** – Each stage’s `startedAt` must precede its `completedAt`, and stages must execute in order. Any deviation (e.g., overlapping timestamps) may indicate a bug or data corruption.
 
-**Concurrency and write contention**: High write concurrency can lead to partial updates. The runtime should use file locking or atomic write patterns. Disk failures pose the greatest danger.
-
-**Dependency on prior runs**: The `resumedFromRunId` and `resumeCandidateCount` fields create a chain of dependency. If a referenced `runId` is missing or its checkpoint is corrupted, resumption will silently fail — the system may start a fresh run or behave unexpectedly. Operators should monitor that prior checkpoints remain accessible and valid.
-
-**All timestamps must be valid ISO 8601** and satisfy `startedAt ≤ completedAt` for every stage and item. Violations can confuse diagnostics and may indicate a bug or data corruption.
-
-In summary, treat this checkpoint file as a read-only record during normal operation, updated atomically by the runtime, and routinely backed up to guard against the risks described above.
+This record provides full transparency into a sync run and is the primary source for monitoring system health and diagnosing anomalies.

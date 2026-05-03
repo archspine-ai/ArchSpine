@@ -3,26 +3,23 @@
   "identity": {
     "filePath": "schemas/examples/spine-rule-document.example.json",
     "contentHash": "0091b0a51af342ef54f9e690cbfd5389df755cf4a7e5d74cf048ed33b24b2d3b",
-    "semanticHash": "0577c70ff8cf2bebe8d86a9fe701547256af7ad97f7a4b405e9f31d0fb2bf20c",
+    "semanticHash": "c44cbd799c25adaede0c43876dc3fd36d1a562e1828bd2c71a2c5a4e70073834",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas/examples"
   },
   "semantic": {
-    "role": "Definitions of architectural governance rules for the ArchSpine mirror system, specifying policy constraints on code structure and dependencies.",
+    "role": "Defines an architectural rule that prohibits direct imports from the database layer in application code, enforcing clean domain boundaries.",
     "responsibilities": [
-      "Import dependency enforcement between architectural layers",
-      "Prevention of direct access to low-level database adapters from service and intermediate layers",
-      "Pattern-based file inclusion/exclusion for rule applicability",
-      "Severity and enforceability control for rule violations",
-      "Documentation of rule rationale and remediation guidance"
+      "Enforce separation of concerns between application services and database adapters",
+      "Prevent business logic from coupling to low-level storage implementation",
+      "Maintain modularity and testability of the source code"
     ],
     "outOfScope": [],
     "invariants": [
-      "Rule severity must be 'error' when enforceable is true",
-      "The 'appliesTo' patterns must exclude the database layer itself (e.g., '!src/db/**') to avoid self-conflict",
-      "Every rule must have a non-empty 'ruleId' and 'title'",
-      "The 'bodyMarkdown' field must contain actionable allowed/not-allowed examples"
+      "All TypeScript files under `src/**/*.ts` (except those under `src/db/`) must never import from `src/db/*`.",
+      "The rule severity is `error`, meaning any violation blocks the build or CI pipeline.",
+      "The rule is marked `enforceable = true`, implying automated checks are in place."
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -33,34 +30,34 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Defines an import restriction rule for the ArchSpine mirror system that prohibits non-database layers from directly importing database adapter modules.",
+        "role": "Defines an architectural rule that prohibits direct imports from the database layer in application code, enforcing clean domain boundaries.",
         "parameter_definitions": {
-          "schemaVersion": "Version of the rule schema to ensure compatibility with the rule engine",
-          "ruleId": "Unique identifier for the rule, used for reference in reports and fixes",
-          "title": "Human-readable short name of the rule, displayed in violation messages",
-          "summary": "Concise explanation of what the rule enforces, used for quick understanding",
-          "appliesTo": "Glob patterns specifying which source files are subject to the rule; supports inclusion and exclusion via '!' prefix",
-          "severity": "Error level of violations: 'error' blocks pipelines, 'warning' notifies without blocking, 'info' provides informational feedback",
-          "enforceable": "Boolean flag indicating whether the rule can be automatically enforced or is advisory only",
-          "rationale": "Business or technical justification for the rule, aids developers in understanding why it exists",
-          "bodyMarkdown": "Full markdown documentation of the rule, including examples of allowed and disallowed code patterns"
+          "schemaVersion": "Version of the rule schema (1.0.0) used for interpretation.",
+          "ruleId": "Unique identifier `no-direct-db-import` referencing this rule in tooling.",
+          "title": "Human-readable title: '禁止直接导入数据库层' (Prohibit direct database layer import).",
+          "summary": "Brief description: Services and middleware layers must not directly depend on low-level database adapters.",
+          "appliesTo": "Glob patterns `['src/**/*.ts', '!src/db/**']` defining which files are subject to the rule.",
+          "severity": "Set to `error` — violations are treated as blocking errors.",
+          "enforceable": "Boolean `true` indicating the rule is automatically verified (e.g., via linting or static analysis).",
+          "rationale": "Chinese rationale: '保持领域边界清晰，避免业务层耦合底层存储实现' (Keep domain boundaries clear, avoid coupling business layer to low-level storage).",
+          "bodyMarkdown": "Markdown content providing rule details and examples of allowed/disallowed patterns."
         },
-        "stability_and_risks": "This rule directly impacts system stability by enforcing layer isolation, preventing tight coupling between business logic and storage implementations. If misconfigured (e.g., incorrect 'appliesTo' patterns or severity set too low), critical dependency violations may go undetected, leading to architectural erosion. The enforceable flag ensures automated checks in CI/CD pipelines; disabling it increases risk of regressions. The rule's rationale and bodyMarkdown provide necessary context for developers to self-correct, reducing false-positive frustration. Overall, proper configuration maintains long-term system maintainability and reduces technical debt."
+        "stability_and_risks": "This rule directly contributes to long-term stability by enforcing architectural layering. If violated repeatedly, the system risks tight coupling between business logic and database internals, making future refactoring, testing, and separation of concerns extremely difficult. Enforcing the rule prevents gradual erosion of the domain model and keeps the codebase maintainable. A potential risk is over-restriction if the rule's glob patterns are misconfigured, which could block legitimate imports. Regular audits of the `appliesTo` patterns are recommended to ensure they match the actual project structure."
       },
       "Simplified Chinese": {
-        "role": "为 ArchSpine 镜像系统定义导入限制规则，禁止非数据库层直接导入数据库适配器模块。",
+        "role": "定义一条架构规则，禁止应用代码直接导入数据库层，以此强制维护清晰的领域边界。",
         "parameter_definitions": {
-          "schemaVersion": "规则结构的版本号，用于确保与规则引擎的兼容性",
-          "ruleId": "规则的唯一标识符，供报告和修复功能引用",
-          "title": "规则的可读短名称，显示在违规消息中",
-          "summary": "规则的简要说明，帮助快速理解规则所强制的内容",
-          "appliesTo": "Glob 模式，指定哪些源文件受规则约束；支持包含和排除（通过 '!' 前缀）",
-          "severity": "违规的严重级别：'error' 会阻塞流水线，'warning' 仅通知但不阻塞，'info' 提供信息性反馈",
-          "enforceable": "布尔标志，指示规则是否可自动执行，或仅为建议性",
-          "rationale": "规则的业务或技术理由，帮助开发者理解规则存在的原因",
-          "bodyMarkdown": "规则的完整 Markdown 文档，包含允许和禁止的代码模式示例"
+          "schemaVersion": "规则模式的版本号（1.0.0），用于解释规则结构。",
+          "ruleId": "唯一标识符 `no-direct-db-import`，供工具链引用本规则。",
+          "title": "人类可读的标题：「禁止直接导入数据库层」。",
+          "summary": "简要说明：服务层和中间层不得直接依赖底层数据库适配器。",
+          "appliesTo": "Glob 模式 `['src/**/*.ts', '!src/db/**']`，定义哪些文件受本规则约束。",
+          "severity": "设置为 `error` —— 违规被视为阻断性错误。",
+          "enforceable": "布尔值 `true`，表示该规则会被自动校验（例如通过 lint 或静态分析）。",
+          "rationale": "中文原文：保持领域边界清晰，避免业务层耦合底层存储实现。",
+          "bodyMarkdown": "Markdown 格式的详细说明，包括规则的违规示例和允许模式。"
         },
-        "stability_and_risks": "该规则通过强制层隔离，直接影响到系统稳定性，防止业务逻辑与存储实现之间的紧密耦合。如果配置不当（例如 'appliesTo' 模式错误或严重级别过低），关键依赖违规可能被遗漏，导致架构腐化。enforceable 标志确保在 CI/CD 流水线中进行自动检查；禁用该标志会增加回归风险。规则的 rationale 和 bodyMarkdown 为开发者提供了必要的上下文以自行修正，减少误报带来的挫败感。总体而言，正确配置有助于长期维护系统的可维护性并减少技术债务。"
+        "stability_and_risks": "本规则通过强制架构分层直接促进系统的长期稳定性。如果反复违反，业务逻辑将与数据库实现深度耦合，导致未来重构、测试和关注点分离变得极其困难。执行该规则可防止领域模型逐渐退化，保持代码库的可维护性。一个潜在风险是如果 Glob 模式配置不当，可能过度限制某些合法导入。建议定期检查 `appliesTo` 模式是否与实际项目结构匹配。"
       }
     }
   },
@@ -82,7 +79,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:24:06.308Z",
+    "indexedAt": "2026-05-03T12:15:40.150Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

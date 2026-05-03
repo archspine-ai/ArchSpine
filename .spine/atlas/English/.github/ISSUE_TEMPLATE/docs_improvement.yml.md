@@ -1,19 +1,17 @@
-# Documentation Improvement Template for ArchSpine
+# Docs Improvement Template — ArchSpine
 
-## Purpose
-This template exists to streamline community contributions to ArchSpine's documentation. By providing a clear, structured format, it helps users and contributors report documentation problems, suggest edits, and track improvements consistently. It ensures that every suggestion is actionable and includes the necessary context.
+**Purpose**  
+This template provides a standardized format for anyone to report problems or suggest enhancements to any ArchSpine documentation, including README files, official docs, examples, or website copy. It streamlines the reporting process so that maintainers can quickly understand what needs to change and why.
 
-## Who Should Read
-- **Contributors** who want to help improve README, user guides, code examples, or website copy.
-- **Users** who encounter unclear, missing, or outdated documentation and wish to report it effectively.
-- **Maintainers** who review documentation issues and prioritize changes.
+**Who should read this**  
+Contributors, users, and maintainers of the ArchSpine project who encounter missing, outdated, or unclear documentation and want to propose a concrete improvement.
 
-## Decisions and Workflows Anchored
-1. **Problem Reporting**: The template separates documentation issues from bug reports and feature requests, ensuring each category uses its own channel.
-2. **Precise Guidance**: By requiring a link to the specific page and a description of the desired change, the template enforces specificity, saving time for both reporters and reviewers.
-3. **Quality Maintenance**: The structured fields (`Which page needs work?` and `What should change?`) directly map to actions, making it easy to assign, triage, and implement fixes.
+**Key decisions and workflow anchors**  
+- Use this template to report *documentation issues only* — not code bugs or feature requests.  
+- Always include a direct link to the page or file path that needs work.  
+- Clearly describe the specific edit, missing content, or unclear section you want changed.  
+- The template automatically adds the `documentation` label and structures the issue body with two required fields:  
+  1. Which page needs work? (link + description of the problem)  
+  2. What should change? (exact edit or missing content)  
 
-## Key Takeaways
-- Reporters can pinpoint the exact document page or file needing improvement.
-- Reporters must describe the edit, missing content, or unclear section in detail.
-- The template reinforces ArchSpine’s commitment to high-quality, community-driven documentation.
+Submitting an issue through this template ensures your suggestion reaches the right people and contains all the information needed to act on it.

@@ -1,29 +1,28 @@
-# ArchSpine Naming Convention Rules
+ArchSpine Naming Conventions – Document Summary
+The content is already fully provided in the markdown block above. Ensure no extra text is added.---MARKDOWN:English---
+# ArchSpine Naming Conventions – Document Summary
 
-## Purpose
+## Why This Document Exists
+In a large monorepo, consistent naming conventions are essential for readability, maintainability, and automated enforcement. This document codifies the required patterns for interface names and test file suffixes, so that every developer works with predictable, uniform code. It also serves as the authoritative reference for both manual code review and automated linting rules.
 
-This document establishes and enforces naming conventions for TypeScript code within a large monorepo. It exists to ensure that interfaces and test files follow a predictable, consistent pattern, reducing cognitive load for developers and preventing style drift across hundreds of modules.
-
-## Intended Audience
-
-Any developer contributing TypeScript code to the ArchSpine monorepo should read this rule set. It is particularly relevant for:
-
-- Frontend and backend engineers writing interfaces in `src/types/`
-- Testing engineers creating or updating files under `tests/`
-- Code reviewers who need to enforce naming standards
+## Who Should Read It
+All developers contributing to the monorepo, especially:
+- Those adding or modifying interfaces inside `src/types/`
+- Those creating or renaming test files inside `tests/`
+- Anyone involved in code review or setting up CI linting pipelines
 
 ## Key Decisions Anchored Here
+| Rule | Scope | Constraint | Severity |
+|------|-------|------------|----------|
+| Interface Prefix | `src/types/**/*.ts` | Internal interfaces must start with `I` (e.g., `IUserRepository`) | Warning |
+| Test File Suffix | `tests/**` | Test files must end with `.test.ts` or `.spec.ts` | Error |
 
-- **Interface Prefix (`I`)** – All interfaces inside `src/types/**/*.ts` must begin with an uppercase `I` (e.g., `IUserRepository`). Violations produce a **Warning**, signaling that the style is recommended but not blocking.
-- **Test File Suffix** – All test files in `tests/` must end with `.test.ts` or `.spec.ts`. Violations produce an **Error**, meaning the build or lint process will fail if this rule is broken.
+## Workflows This Document Anchors
+- **Code review**: Reviewers verify that new interfaces follow the `I` prefix and test files use the correct suffix. The severity levels guide whether a PR should be blocked (error) or simply flagged (warning).
+- **Automated linting**: Linter configuration references these rules to raise warnings or errors. The document ensures that linting rules have a clear, human-readable justification.
+- **New developer onboarding**: This document is the single source of truth for naming expectations, reducing the need for ad‑hoc explanations.
 
-## Workflow Impact
-
-This rule set is enforced by an automated linter configured in the monorepo’s CI pipeline. When a developer creates a new file, the linter checks both rules immediately. For interface-prefix warnings, developers can override the rule with an inline comment if there is a strong reason. For test-file suffix errors, the CI blocks the pull request until the file is renamed.
-
-## Why These Conventions Matter
-
-- **Interface prefix** distinguishes type shapes from concrete classes and type aliases at a glance.
-- **Test file suffix** ensures test runners can discover files without custom configuration, and keeps production code separate from test code.
-
-Both conventions are lightweight and widely adopted in the TypeScript ecosystem, reducing onboarding friction for new team members.
+## Key Takeaways
+- All internal interfaces in `src/types/**/*.ts` must be prefixed with `I`.
+- All test files in `tests/**` must end with `.test.ts` or `.spec.ts`.
+- Violations of the prefix rule produce a **warning**; violations of the suffix rule produce an **error**.

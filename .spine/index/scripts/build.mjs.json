@@ -3,24 +3,23 @@
   "identity": {
     "filePath": "scripts/build.mjs",
     "contentHash": "dab4ff9d929aa40e91305f7a0b3f6e649e0bec095309ecba61d1a37460194f82",
-    "semanticHash": "91c7e9e4c6d7f3b3feb15f01c4249b67bae33abfd03c68fdebb4a590cc7982f9",
+    "semanticHash": "3e7976c7a827b86c66324b93662d2dde801cc4883a3ad8d8661ef968d1c42068",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "scripts"
   },
   "semantic": {
-    "role": "Build automation script for the ArchSpine project.",
+    "role": "Build and distribution automation script for the ArchSpine project",
     "responsibilities": [
-      "Compile TypeScript source to JavaScript using the TypeScript compiler (tsc).",
-      "Copy AST language rule files (YAML) from source to dist directory.",
-      "Copy asset templates (prompts, schemas, views, etc.) to dist directory while excluding __mocks__ directories.",
-      "Remove all __mocks__ directories from the resulting dist folder to avoid shipping test-only code.",
-      "Set executable permissions on the CLI entry point (dist/cli/index.js)."
+      "Describes the process of compiling TypeScript source code into JavaScript",
+      "Specifies which source directories (rules, assets) are copied into the distribution folder",
+      "Handles cleanup by removing mock directories from the output",
+      "Sets executable permissions on the CLI entry point"
     ],
     "outOfScope": [
-      "Any runtime logic of ArchSpine itself.",
-      "Testing or verification steps.",
-      "User-facing documentation or instructions."
+      "Does not document business logic or user-facing features",
+      "Does not cover runtime behavior or configuration",
+      "Does not address testing or development workflows"
     ],
     "invariants": [],
     "changeIntent": {
@@ -32,23 +31,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This script is the authoritative build pipeline for the ArchSpine project. It orchestrates compilation, asset copying, and cleanup steps necessary to produce a ready-to-run distribution package.",
-        "context_and_audience": "Written for developers and maintainers of ArchSpine who need to build the project from source. It assumes familiarity with Node.js, TypeScript, and the project's directory structure.",
+        "purpose": "This document is the build script that transforms the ArchSpine source tree into a ready-to-distribute package. It automates the steps of compiling TypeScript, copying necessary asset and rule files, removing test stubs (mocks), and ensuring the CLI tool is executable.",
+        "context_and_audience": "This script is part of the ArchSpine project's build pipeline. It is intended for developers who need to understand or modify the distribution process, typically maintainers of the project's infrastructure or contributors working on the build chain. The content is written as a Node.js module with import/export syntax.",
         "key_takeaways": [
-          "Executes 'tsc' to compile TypeScript into JavaScript.",
-          "Copies AST rule files (YAML) and all assets to the dist directory.",
-          "__mocks__ directories are excluded both during copy and removed post-copy to keep the distribution clean.",
-          "The CLI entry point is made executable (0o755)."
+          "The script uses tsc for compilation and performs manual file copies for non-TypeScript assets.",
+          "Mock directories (__mocks__) are explicitly removed from the dist folder to prevent test artifacts from leaking.",
+          "The CLI entry point is given execute permission (chmod 755) after assembly."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "该脚本是 ArchSpine 项目的权威构建流水线。它协调编译、资产复制和清理步骤，以生成可直接运行的发布包。",
-        "context_and_audience": "面向需要从源码构建 ArchSpine 的开发者与维护者。使用者需熟悉 Node.js、TypeScript 及项目目录结构。",
+        "purpose": "该文档是 ArchSpine 项目的构建脚本，负责将源代码树转换为可供分发的包。它自动执行 TypeScript 编译、复制必要的资产和规则文件、移除测试存根（mocks）以及确保 CLI 工具可执行等步骤。",
+        "context_and_audience": "此脚本是 ArchSpine 项目构建流水线的一部分。面向需要理解或修改分发流程的开发者，通常是项目基础设施的维护者或参与构建链的贡献者。内容以 Node.js 模块形式编写，使用 import/export 语法。",
         "key_takeaways": [
-          "运行 'tsc' 命令将 TypeScript 编译为 JavaScript。",
-          "将 AST 规则文件（YAML）及所有资产复制到 dist 目录。",
-          "复制过程中排除 __mocks__ 目录，并在复制后将其从 dist 中删除，确保发布包洁净。",
-          "CLI 入口文件被设置为可执行权限（0o755）。"
+          "脚本使用 tsc 进行编译，并通过手动文件复制处理非 TypeScript 资产。",
+          "明确移除 `__mocks__` 目录以防测试工件泄漏到 dist 文件夹中。",
+          "CLI 入口点在组装后被赋予可执行权限（chmod 755）。"
         ]
       }
     }
@@ -71,7 +68,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:24:23.306Z",
+    "indexedAt": "2026-05-03T12:16:10.874Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

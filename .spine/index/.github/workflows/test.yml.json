@@ -3,23 +3,23 @@
   "identity": {
     "filePath": ".github/workflows/test.yml",
     "contentHash": "38b6a6a201d2cb18f2b269a116d0d782ea3edc524ccedf707b8de92fbf0790f2",
-    "semanticHash": "3341dd8736961f321a6f3452f4af312260865dac6ece4b621d3e421a8ab54a64",
+    "semanticHash": "abbe7ea67ac9d415d2ace59de1dafbed3f0c921fee7d3e67da2a3121d06f2b3c",
     "language": "unsupported",
     "fileKind": "document",
     "scope": ".github/workflows"
   },
   "semantic": {
-    "role": "CI workflow definition for the ArchSpine project",
+    "role": "CI/CD pipeline configuration for the ArchSpine project",
     "responsibilities": [
-      "Defines continuous integration jobs for code verification across multiple Node.js versions",
-      "Contains a release gate job for quality assurance",
-      "Includes a documentation build job",
-      "Includes a package smoke check job to verify npm publish readiness"
+      "Automated verification (build, unit test, protocol asset validation) for multiple Node.js versions",
+      "Release gate execution (readiness check for releases)",
+      "Documentation build validation",
+      "Package smoke check (verify npm publish snapshot)"
     ],
     "outOfScope": [
-      "Deployment or release automation",
-      "Manual testing or approval steps",
-      "Cross-platform or non-Linux build environments"
+      "Deployment to production or staging environments",
+      "Secrets management or credential handling",
+      "Manual approval or review processes"
     ],
     "invariants": [],
     "changeIntent": {
@@ -31,23 +31,23 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document defines the continuous integration pipeline for the ArchSpine project. It automates code verification, release readiness checks, documentation building, and packaging validation in response to pushes to main/master branches and pull requests.",
-        "context_and_audience": "ArchSpine developers and repository maintainers who need to understand the automated CI checks and guarantees. The workflow runs on every push and PR, ensuring that changes meet project quality standards before merge.",
+        "purpose": "This document defines the continuous integration workflow for the ArchSpine project. It ensures that every push or pull request to the main branches triggers a series of automated checks: building the project, running unit tests, validating protocol assets, executing a release gate, building documentation, and verifying the package structure.",
+        "context_and_audience": "The document is intended for developers and maintainers of the ArchSpine mirror system. It describes the automated processes that guarantee code quality, release readiness, and documentation consistency. New contributors can use it to understand how changes are validated before merging.",
         "key_takeaways": [
-          "Verifies code on Node.js 20 and 22",
-          "Executes a release gate that performs deeper validation before a release",
-          "Builds documentation to ensure no broken references",
-          "Smoke-tests the npm package to catch packaging issues early"
+          "The pipeline runs on pushes to main/master and on pull requests.",
+          "Node.js versions 20 and 22 are tested in parallel.",
+          "A release gate step verifies that the project is ready for a new release.",
+          "Smoke checking the package ensures it can be published to npm without issues."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档定义了 ArchSpine 项目的持续集成流水线。它自动执行代码验证、发布就绪检查、文档构建以及打包验证，这些操作针对主分支、master 分支的推送以及拉取请求触发。",
-        "context_and_audience": "面向 ArchSpine 的开发者与仓库维护者，帮助其了解自动化的 CI 检查与保障措施。该工作流在每次推送和 PR 时运行，确保变更在合并前满足项目质量标准。",
+        "purpose": "本文档定义了 ArchSpine 项目的持续集成流程。每次向主干分支的推送或拉取请求都会触发一系列自动化检查：构建项目、运行单元测试、验证协议资产、执行发布门控、构建文档以及验证包结构。",
+        "context_and_audience": "本文档面向 ArchSpine 镜像系统的开发者和维护者。它描述了确保代码质量、发布就绪状态和文档一致性的自动化过程。新贡献者可以通过它了解在合并前变更如何被验证。",
         "key_takeaways": [
-          "在 Node.js 20 和 22 上验证代码",
-          "执行发布门控，在发布前进行更深度的验证",
-          "构建文档以确保没有损坏的引用",
-          "对 npm 包进行冒烟测试，尽早发现打包问题"
+          "流水线在推送到 main/master 以及拉取请求时触发。",
+          "并行测试 Node.js 20 和 22 两个版本。",
+          "发布门控步骤验证项目是否已准备好进行新版本发布。",
+          "包的冒烟检查确保它可以在 npm 上顺利发布。"
         ]
       }
     }
@@ -70,7 +70,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:21:58.121Z",
+    "indexedAt": "2026-05-03T12:14:01.494Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

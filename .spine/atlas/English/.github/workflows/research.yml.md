@@ -1,25 +1,32 @@
----MARKDOWN:Simplified Chinese---
-# ArchSpine 研究基准测试工作流
+# ArchSpine Research Bench Workflow
 
-## 目的
-本文档定义了一个 GitHub Actions 工作流，用于手动触发 ArchSpine 项目的研究基准测试。该工作流提供一个标准化、可复现的环境，以便对研究模块进行性能或正确性基准测试，确保不同次运行的结果具有一致性。
+## Overview
+This document defines a GitHub Actions workflow that lets developers manually run the ArchSpine research benchmark suite. It guarantees a consistent, isolated environment using Node.js 20 and cached dependencies, ensuring reproducible results every time.
 
-## 适用读者
-- **项目维护者** – 需要验证研究模块性能或正确性的人员。
-- **贡献者** – 希望使用与官方测试相同的基准测试套件的人员。
-- **DevOps 工程师** – 负责更新 Node 版本、基准测试脚本或依赖关系的人员。
+## Why This Document Exists
+The research bench is a specialized, on‑demand workflow. It is not part of the standard CI pipeline; instead, it exists to validate performance or functional aspects under controlled conditions. Triggering it manually (via `workflow_dispatch`) prevents accidental or unnecessary runs and gives researchers full control over when tests execute.
 
-## 关键决策与工作流锚点
-- **仅手动触发** – 通过 GitHub 界面或 API 的 `workflow_dispatch` 启动工作流。不采用自动触发（推送、拉取请求或定时计划），让用户完全控制基准测试的执行时机。
-- **Node.js 20 环境**，并使用 npm 缓存加快依赖安装速度。
-- **干净安装依赖** – 使用 `npm ci` 确保每次运行环境全新且可复现。
-- **单一基准测试命令** – `npm run test:research` 执行全部研究基准测试套件。
-- **维护指南** – 任何对 Node 版本、基准测试脚本或依赖版本的更新都应及时反映在此工作流中。
+## Who Should Read This
+- **ArchSpine developers and researchers** who need to run the research test suite outside the regular commit cycle.
+- **QA engineers** who want isolated, reproducible benchmark runs for debugging or validation.
+- **Anyone maintaining or modifying the workflow** – understanding its concurrency model and dependency setup is essential.
 
-## 工作流概要
-1. 检出仓库源代码。
-2. 设置 Node.js 20 并启用 npm 缓存。
-3. 使用 `npm ci` 安装依赖。
-4. 运行 `npm run test:research`。
+## Key Workflows & Decisions Anchored Here
 
-该工作流使用并发控制，取消同组中正在进行的运行，并在 `ubuntu-latest` 上执行，超时时间设置为 15 分钟。
+### Manual Trigger Only
+The workflow uses `workflow_dispatch`, meaning it **must be initiated via the GitHub UI or API**. It never runs automatically, preserving CI resources for integration tests.
+
+### Concurrency Management
+The `concurrency` block groups runs by workflow name and Git ref. If a new run is started while one is already in progress for the same branch, the older run is cancelled. This prevents redundant tests and keeps the queue clean.
+
+### Reproducible Environment
+- **Node.js 20** is pinned via `actions/setup-node`.
+- **npm cache** is enabled to speed up installs.
+- `npm ci` ensures exact dependency versions from `package‑lock.json`, eliminating version drift.
+
+### Orchestration Only
+The workflow does **not** contain test logic itself. It simply runs the project’s `npm run test:research` script. All test definitions live in the ArchSpine codebase; this file is only the orchestration wrapper.
+
+---
+
+**Out of scope:** Deployment, integration tests, scheduled runs, or any production monitoring. This workflow exists purely for on‑demand research benchmarking.

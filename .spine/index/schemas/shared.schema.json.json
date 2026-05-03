@@ -3,25 +3,44 @@
   "identity": {
     "filePath": "schemas/shared.schema.json",
     "contentHash": "c9cb1ce6d5d97a05a3783e17f4c68854472c69abfdc4ec0f9e978cf1fb03e7d9",
-    "semanticHash": "7eeb6ad9b528bd80e87fdc50a2ca46eb61309691454d7988ba5bfc6890253aff",
+    "semanticHash": "1c37f56944282c8d8fd0a0eeb3cbabd3c9366908982d85c1220ba49fc70aa428",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas"
   },
   "semantic": {
-    "role": "Defines shared data type definitions used across all ArchSpine schemas to ensure type consistency and validation.",
+    "role": "Defines reusable validation types and structural constraints for all ArchSpine data components, ensuring consistent formatting and type safety across the system.",
     "responsibilities": [
-      "Provide reusable type definitions (e.g., version strings, timestamps, file paths, content hashes) for other schemas.",
-      "Enforce format constraints through regular expressions and enumerations.",
-      "Serve as the single source of truth for base types like locale codes, pipeline stages, and symbol kinds."
+      "Version string validation (semver)",
+      "Timestamp format enforcement (ISO 8601)",
+      "Repository-relative path sanitization",
+      "Scope path normalization",
+      "Content hash integrity (SHA-256)",
+      "Locale code validation (BCP 47)",
+      "Language selection key constraints",
+      "Source language enumeration",
+      "File kind classification",
+      "Symbol kind categorization",
+      "Dependency relation typing",
+      "Edge provenance tracking",
+      "Pipeline stage identification",
+      "Non-empty string guarantee",
+      "String array shape",
+      "Localized content map structure"
     ],
     "outOfScope": [],
     "invariants": [
-      "All version strings must follow semver pattern (major.minor.patch).",
-      "Repository-relative paths must not be absolute, must not contain backslashes or double slashes.",
-      "Content hashes must be exactly 64 lowercase hex characters.",
-      "Locale strings must conform to IETF BCP 47 pattern (e.g., en, zh-CN).",
-      "Source language, file kind, symbol kind, dependency relation, edge provenance, and pipeline stage are restricted to predefined enum values."
+      "All version strings MUST conform to semantic versioning pattern (e.g., 1.0.0).",
+      "All timestamps MUST be valid ISO 8601 date-time strings.",
+      "All repo-relative paths MUST NOT start with '/', './', or '../', and MUST NOT contain backslashes or double slashes.",
+      "Scope paths MUST NOT start with '/', './', or '../' but an empty string is allowed.",
+      "Content hashes MUST be exactly 64 lowercase hexadecimal characters (SHA-256).",
+      "Locale codes MUST follow IETF BCP 47 format.",
+      "Language selection keys MUST be non-empty strings.",
+      "Source language, file kind, symbol kind, dependency relation, edge provenance, and pipeline stage MUST be one of the defined enum values.",
+      "Non-empty strings MUST have at least one character.",
+      "String arrays MUST only contain string items.",
+      "Localized content maps MUST have keys that are valid language selection keys."
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -32,48 +51,48 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Defines shared data type definitions used across all ArchSpine schemas to ensure type consistency and validation.",
+        "role": "This schema file defines reusable validation types and structural constraints for all ArchSpine data components, ensuring consistent formatting and type safety across the system. It acts as the foundational contract for how data is shaped and verified throughout the entire pipeline.",
         "parameter_definitions": {
-          "schemaVersion": "Enforces semantic versioning compliance; malformed versions cause schema validation failures.",
-          "isoTimestamp": "Requires ISO 8601 date-time format; critical for ordering events and caching.",
-          "repoRelativePath": "Ensures paths are relative, safe, and cross-platform; blocks absolute or escaped paths that could cause traversal attacks.",
-          "scopePath": "Similar to repoRelativePath but allows an empty string for root scope.",
-          "contentHash": "SHA-256 integrity check; prevents data corruption and ensures cache consistency.",
-          "locale": "Validates BCP 47 language tags; misconfiguration leads to incorrect localization lookups.",
-          "languageSelectionKey": "Non-empty string key for multilingual content; missing key breaks atlas merging.",
-          "sourceLanguage": "Restricts AST parsing to known languages; 'unsupported' flags unknown sources without processing.",
-          "fileKind": "Categorizes files for indexing; misclassification may affect governance rules.",
-          "symbolKind": "Defines symbol types for dependency analysis; missing kinds cause incorrect usage graphs.",
-          "dependencyRelation": "Differentiates import types; wrong relation skews dependency weight calculations.",
-          "edgeProvenance": "Tracks whether an edge came from AST or inference; affects confidence scoring.",
-          "pipelineStage": "Records which pipeline produced data; stale stages may invalidate downstream tasks.",
-          "nonEmptyString": "Guarantees at least one character; prevents blank fields in metadata.",
-          "stringArray": "Ensures consistent array of strings; misused arrays may break iterative operations.",
-          "localizedContentMap": "Maps language keys to content objects; structural misalignment causes atlas corruption."
+          "schemaVersion": "Enforces that all version strings follow semantic versioning (e.g., 1.0.0). Impacts compatibility checks and schema migration.",
+          "isoTimestamp": "Validates ISO 8601 date-time strings. Affects event ordering, audit trails, and synchronization.",
+          "repoRelativePath": "Sanitizes file paths relative to repository root. Prevents path traversal or malformed references.",
+          "scopePath": "Normalizes scope identifiers; empty string allowed for root scope. Affects module resolution.",
+          "contentHash": "Enforces SHA-256 hex digest length (64 chars). Critical for cache invalidation and integrity verification.",
+          "locale": "Validates BCP 47 locale codes (e.g., en-US). Controls internationalization matching.",
+          "languageSelectionKey": "Non-empty string used as key for multilingual content maps. Ensures every entry is addressable.",
+          "sourceLanguage": "Restricts source code language to known types. Prevents unsupported language entries from entering analysis.",
+          "fileKind": "Categorizes files as source, config, document, or other. Enforces processing rules per type.",
+          "symbolKind": "Classifies symbols (class, function, variable, interface, type, enum, unknown). Drives dependency graph semantics.",
+          "dependencyRelation": "Defines relation type between modules (import, reexport, type-import). Affects build order and tree shaking.",
+          "edgeProvenance": "Marks how dependency edges were discovered (ast, inferred). Distinguishes certain vs heuristic relationships.",
+          "pipelineStage": "Indicates which analysis stage produced data (ast, llm, lite-ast, lite-llm, fallback). Enables stage-specific processing and fallback logic.",
+          "nonEmptyString": "Guarantees string values have at least one character. Prevents empty fields in critical data.",
+          "stringArray": "Defines a simple array of strings. Ensures homogeneous array content.",
+          "localizedContentMap": "Stores multilingual content as a map keyed by locale code. Enables localized configuration and UI strings."
         },
-        "stability_and_risks": "This schema is foundational: any change to shared definitions propagates to all dependent schemas and runtime validators. Tightly coupled with schema versioning; backward-incompatible changes require a major version bump. Relaxing constraints (e.g., making enums open-ended) increases flexibility but sacrifices validation rigidity — careful consideration needed. The strict patterns prevent injection and path-traversal attacks but may reject legitimate edge cases if not updated (e.g., new language codes). Regular audits ensure enum values stay aligned with supported features."
+        "stability_and_risks": "This schema establishes strong invariants that prevent malformed data from propagating through the system. Risks include overly strict patterns that may reject valid edge cases (e.g., non-standard version formats or future locale patterns). Enum values may become outdated as languages or analysis methods evolve. Regular schema audits are recommended to accommodate new requirements without breaking existing data."
       },
       "Simplified Chinese": {
-        "role": "定义所有 ArchSpine 模式中使用的共享数据类型定义，以确保类型一致性和验证。",
+        "role": "此模式文件定义了 ArchSpine 所有数据组件的可复用验证类型和结构约束，确保整个系统中格式一致和类型安全。它作为数据如何塑造和验证的基础契约，贯穿整个流水线。",
         "parameter_definitions": {
-          "schemaVersion": "强制遵循语义化版本格式；格式错误会导致模式验证失败。",
-          "isoTimestamp": "要求符合 ISO 8601 日期时间格式；对事件排序和缓存管理至关重要。",
-          "repoRelativePath": "确保路径为相对路径、安全且跨平台；阻止绝对路径或转义路径，防止路径遍历攻击。",
-          "scopePath": "与 repoRelativePath 类似，但允许空字符串表示根作用域。",
-          "contentHash": "SHA-256完整性校验；防止数据损坏并确保缓存一致性。",
-          "locale": "验证BCP 47语言标签；配置错误会导致本地化查找失败。",
-          "languageSelectionKey": "多语言内容的非空字符串键；缺失键会破坏atlas合并。",
-          "sourceLanguage": "将AST解析限制为已知语言；'unsupported'标记未知源而不进行处理。",
-          "fileKind": "为索引对文件分类；错误分类可能影响治理规则。",
-          "symbolKind": "定义用于依赖分析的类型；缺失类型会导致依赖图不准确。",
-          "dependencyRelation": "区分导入类型；错误的关系会扭曲依赖权重计算。",
-          "edgeProvenance": "记录边来自AST还是推断；影响置信度评分。",
-          "pipelineStage": "记录数据由哪个阶段产生；过时阶段可能使下游任务失效。",
-          "nonEmptyString": "确保至少一个字符；防止元数据中出现空字段。",
-          "stringArray": "确保一致的字符串数组；误用可能破坏迭代操作。",
-          "localizedContentMap": "将语言键映射到内容对象；结构错位会导致atlas损坏。"
+          "schemaVersion": "强制版本字符串遵循语义化版本格式（例如 1.0.0）。影响兼容性检查和模式迁移。",
+          "isoTimestamp": "验证 ISO 8601 日期时间字符串。影响事件排序、审计追踪和同步。",
+          "repoRelativePath": "清理相对于仓库根目录的文件路径。防止路径遍历或格式错误的引用。",
+          "scopePath": "规范化作用域标识符；允许空字符串表示根作用域。影响模块解析。",
+          "contentHash": "强制 SHA-256 十六进制摘要长度为 64 个字符。对缓存失效和完整性验证至关重要。",
+          "locale": "验证 BCP 47 区域代码（例如 zh-CN）。控制国际化匹配。",
+          "languageSelectionKey": "用作多语言内容映射键的非空字符串。确保每个条目都可寻址。",
+          "sourceLanguage": "限制源代码语言为已知类型。防止不受支持的语言条目进入分析。",
+          "fileKind": "将文件分类为源代码、配置、文档或其他。按类型强制执行处理规则。",
+          "symbolKind": "对符号进行分类（类、函数、变量、接口、类型、枚举、未知）。驱动依赖图语义。",
+          "dependencyRelation": "定义模块之间的关系类型（导入、重导出、类型导入）。影响构建顺序和摇树优化。",
+          "edgeProvenance": "标记依赖边是如何发现的（AST、推断）。区分确定性关系与推测性关系。",
+          "pipelineStage": "指示数据由哪个分析阶段生成（AST、LLM、轻量AST、轻量LLM、回退）。支持按阶段处理及回退逻辑。",
+          "nonEmptyString": "确保字符串值至少有一个字符。防止关键数据中出现空字段。",
+          "stringArray": "定义一个简单的字符串数组。确保数组内容同质。",
+          "localizedContentMap": "以区域代码为键存储多语言内容。支持本地化配置和 UI 字符串。"
         },
-        "stability_and_risks": "此模式是基础性的：对共享定义的任何更改都会传播到所有依赖的模式和运行时验证器。与模式版本紧密耦合；不兼容的向后更改需要主版本号升级。放宽约束（例如使枚举开放）会增加灵活性但牺牲验证刚性——需谨慎考虑。严格的模式可防止注入和路径遍历攻击，但如果未及时更新（例如新的语言代码），可能会拒绝合法的边缘情况。定期审计可确保枚举值与支持的特性保持同步。"
+        "stability_and_risks": "此模式建立了强不变量，防止格式错误的数据在系统中传播。风险包括过于严格的模式可能拒绝有效的边缘情况（例如非标准版本格式或未来的区域模式）。随着语言或分析方法的发展，枚举值可能过时。建议定期审查模式以适应新需求而不破坏现有数据。"
       }
     }
   },
@@ -95,7 +114,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:23:49.522Z",
+    "indexedAt": "2026-05-03T12:16:06.060Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

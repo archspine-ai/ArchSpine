@@ -3,25 +3,27 @@
   "identity": {
     "filePath": "tsconfig.json",
     "contentHash": "0e5c4b2152da8ae2fbaf9c642a032447aab868c798faefa922bee1dfcb4af953",
-    "semanticHash": "9d7fdaa6465a0b84b9af0339718bf85ffc5d2d4f77b33b91d249d7237b11de27",
+    "semanticHash": "85f8ee8a60446a1e76a8e01bebf626220934673050e5ec0bedb3fa9e8b31914d",
     "language": "unsupported",
     "fileKind": "config",
     "scope": ""
   },
   "semantic": {
-    "role": "Configures compilation of TypeScript source code into JavaScript for the ArchSpine project, defining target output, module system, strictness, and file inclusion.",
+    "role": "TypeScript compiler configuration for ArchSpine project, defining how TypeScript source code is compiled into JavaScript for Node.js execution.",
     "responsibilities": [
-      "Sets the ECMAScript target version and module system for compiled output.",
-      "Controls module resolution strategy and output directory structure.",
-      "Enables or disables TypeScript strictness, interop, and library checking.",
-      "Defines source file inclusion and source map generation."
+      "Set ECMAScript target and module system",
+      "Control module resolution strategy",
+      "Enforce type-checking strictness",
+      "Manage output directory and source file inclusion",
+      "Generate source maps for debugging",
+      "Specify type definitions to include (Node.js built-ins)"
     ],
     "outOfScope": [],
     "invariants": [
-      "rootDir must point to the source directory (./src) and outDir to distribution (./dist).",
-      "strict must be true to enforce full type safety.",
-      "module must be 'NodeNext' to align with Node.js ECMAScript module handling.",
-      "include must cover all intended source files (src/**/*)."
+      "Strict type-checking mode must remain enabled to maintain code safety",
+      "NodeNext module and moduleResolution ensure compatibility with Node.js ESM",
+      "Force consistent file name casing prevents cross-platform issues",
+      "Source files must reside under ./src and output under ./dist"
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -32,40 +34,40 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Defines the TypeScript compiler settings for ArchSpine, controlling how source TypeScript files are transpiled to JavaScript, which module system is used, the level of type-checking strictness, and output locations.",
+        "role": "TypeScript compiler configuration for ArchSpine project, defining how TypeScript source code is compiled into JavaScript for Node.js execution.",
         "parameter_definitions": {
-          "target": "ECMAScript target version (ESNext) – enables latest JS syntax but may limit compatibility with older runtimes.",
-          "module": "Module code generation (NodeNext) – aligns with Node.js native ES module support; requires appropriate package.json configuration.",
-          "moduleResolution": "Module resolution strategy (NodeNext) – mimics Node.js resolution for ES modules.",
-          "outDir": "Directory for compiled JavaScript output (./dist). Must be consistent with project deployment.",
-          "rootDir": "Root directory of TypeScript source files (./src). All source must reside under this path.",
-          "strict": "Enable all strict type-checking options – improves code safety but may introduce additional compile-time errors.",
-          "esModuleInterop": "Allow default imports from CommonJS modules – simplifies interop with legacy packages.",
-          "skipLibCheck": "Skip type checking of declaration files – speeds up compilation but may hide type errors from dependencies.",
-          "forceConsistentCasingInFileNames": "Ensure file name casing consistency across the project – prevents cross-platform issues.",
-          "types": "List of type declaration packages to include ([\"node\"]) – provides Node.js API types.",
-          "sourceMap": "Generate source map files – facilitates debugging by mapping JS back to TS.",
-          "include": "Glob patterns for files to compile ([\"src/**/*\"]) – controls which files are processed."
+          "target": "Sets the ECMAScript target version. 'ESNext' uses the latest features, which may require Node.js >= 22.",
+          "module": "Specifies the module system. 'NodeNext' enables Node.js native ESM with .mjs/.cjs extensions.",
+          "moduleResolution": "Defines how modules are resolved. 'NodeNext' follows Node.js ESM resolution algorithm.",
+          "outDir": "Output directory for compiled JavaScript files. Set to './dist'.",
+          "rootDir": "Root directory of input TypeScript source. Set to './src'.",
+          "strict": "Enables full strict type-checking. Improves code safety but may cause many type errors initially.",
+          "esModuleInterop": "Allows default imports from CommonJS modules. Smooths interop between ESM and CJS.",
+          "skipLibCheck": "Skips type checking of .d.ts files. Speeds compilation but can hide library type errors.",
+          "forceConsistentCasingInFileNames": "Enforces consistent file name casing across all files. Prevents issues on case-insensitive systems.",
+          "types": "Includes Node.js built-in type definitions (process, fs, etc.).",
+          "sourceMap": "Generates source maps for debugging. Increases output size but aids in development.",
+          "include": "Glob pattern for files to compile. Only includes files under 'src/'."
         },
-        "stability_and_risks": "Enabling strict mode significantly reduces potential runtime defects but increases compilation time and may require more type annotations. Using ESNext target means the output JavaScript may not run on older Node.js versions; ensure runtime compatibility. skipLibCheck speeds up builds but can mask type errors in third-party libraries. sourceMap aids debugging but increases build output size. Consistent file casing prevents errors on case-sensitive file systems. Overall, these settings promote a robust, safe build pipeline, but the trade-off between strictness and developer velocity should be monitored."
+        "stability_and_risks": "This configuration enforces strict type safety and modern Node.js ESM compatibility, which enhances code reliability but may introduce build failures if the codebase is not fully typed or uses legacy patterns. The 'skipLibCheck' option reduces compilation time but can mask type issues in third-party libraries. The use of 'ESNext' target might not be supported by older Node.js runtimes, potentially causing runtime errors. Overall, this setup is stable for new development with up-to-date Node.js, but migration from older configurations may require adjustments."
       },
       "Simplified Chinese": {
-        "role": "为 ArchSpine 项目配置 TypeScript 编译器的各项设置，控制 TypeScript 源码如何转换为 JavaScript、采用何种模块系统、类型检查的严格程度以及输出位置。",
+        "role": "ArchSpine 项目的 TypeScript 编译器配置，定义了如何将 TypeScript 源代码编译为适用于 Node.js 的 JavaScript。",
         "parameter_definitions": {
-          "target": "ECMAScript 目标版本（ESNext）——启用最新 JavaScript 语法，但可能不兼容较旧的运行环境。",
-          "module": "模块代码生成方式（NodeNext）——与 Node.js 原生 ES 模块支持对齐，需要配合 package.json 中的相应配置。",
-          "moduleResolution": "模块解析策略（NodeNext）——模拟 Node.js 对 ES 模块的解析行为。",
-          "outDir": "编译后 JavaScript 的输出目录（./dist）——必须与项目部署路径一致。",
-          "rootDir": "TypeScript 源码的根目录（./src）——所有源码必须位于该路径下。",
-          "strict": "启用所有严格类型检查选项——提升代码安全性，但可能引入更多编译期错误。",
-          "esModuleInterop": "允许从 CommonJS 模块进行默认导入——简化与遗留包的交互。",
-          "skipLibCheck": "跳过声明文件的类型检查——加快编译速度，但可能隐藏依赖包中的类型错误。",
-          "forceConsistentCasingInFileNames": "确保项目中文件名称大小写一致——防止跨平台问题。",
-          "types": "需要包含的类型声明包列表（[\"node\"]）——提供 Node.js API 的类型定义。",
-          "sourceMap": "生成 source map 文件——通过将 JS 映射回 TS 来协助调试。",
-          "include": "需要编译的文件 glob 模式（[\"src/**/*\"]）——控制哪些文件被处理。"
+          "target": "设置 ECMAScript 目标版本。'ESNext' 使用最新特性，可能需要 Node.js >= 22。",
+          "module": "指定模块系统。'NodeNext' 启用 Node.js 原生 ESM，支持 .mjs/.cjs 扩展名。",
+          "moduleResolution": "定义模块解析方式。'NodeNext' 遵循 Node.js ESM 解析算法。",
+          "outDir": "编译后 JavaScript 文件的输出目录，设为 './dist'。",
+          "rootDir": "TypeScript 源文件的根目录，设为 './src'。",
+          "strict": "启用完整严格类型检查。提升代码安全性，但初期可能导致大量类型错误。",
+          "esModuleInterop": "允许从 CommonJS 模块进行默认导入。平滑 ESM 与 CJS 互操作。",
+          "skipLibCheck": "跳过对 .d.ts 文件的类型检查。加快编译速度，但可能隐藏库的类型错误。",
+          "forceConsistentCasingInFileNames": "强制所有文件使用一致的命名大小写。防止不区分大小写的系统上的问题。",
+          "types": "包含 Node.js 内置类型定义（如 process、fs 等）。",
+          "sourceMap": "生成源码映射文件，便于调试。增加输出体积，但有助于开发。",
+          "include": "需要编译的文件匹配模式。仅包含 'src/' 目录下的文件。"
         },
-        "stability_and_risks": "启用严格模式可以大幅减少潜在的运行时缺陷，但会增加编译时间并可能需要更多类型注解。使用 ESNext 目标意味着输出的 JavaScript 可能无法在较旧版本的 Node.js 上运行，需确保运行时兼容性。skipLibCheck 可加快构建，但可能掩盖第三方库中的类型错误。sourceMap 有助于调试，但会增加构建输出体积。文件大小写一致性防止了在大小写敏感文件系统上出错。总之，这些设置有助于打造健壮、安全的构建流程，但需权衡严格程度与开发效率之间的关系。"
+        "stability_and_risks": "该配置强制严格类型安全和现代 Node.js ESM 兼容性，增强了代码可靠性，但如果代码库未完全类型化或使用旧模式，可能会导致构建失败。'skipLibCheck' 选项减少了编译时间，但可能掩盖第三方库的类型问题。'ESNext' 目标可能不被旧版 Node.js 运行时支持，从而引起运行时错误。总体而言，此设置适用于最新 Node.js 的新开发，但从旧配置迁移时可能需要调整。"
       }
     }
   },
@@ -87,7 +89,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:25:51.994Z",
+    "indexedAt": "2026-05-03T12:17:50.160Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

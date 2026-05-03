@@ -1,9 +1,11 @@
-该目录包含了 ArchSpine 镜像系统的核心元数据、索引配置和架构治理规则。其内容主要分为以下三组：
+该目录包含 ArchSpine 仓库索引与规则执行系统的示例配置文件。示例可分为三类：**单元定义**（spine-folder-unit.example.json、spine-project-unit.example.json、spine-unit.example.json）、**索引元数据**（spine-manifest.example.json）以及**架构规则**（spine-rule-document.example.json、spine-rule.example.md）。  
 
-1. **结构元数据单元** – 例如 *spine-folder-unit.example.json*、*spine-project-unit.example.json* 和 *spine-unit.example.json*，它们定义了源目录和文件的标识、语义角色及溯源信息。这些文件使系统能够识别模块分组、追踪索引管线的处理阶段，并验证结构不变性。
+重要实现领域涵盖仓库索引流水线（文件夹单元和项目单元定义模块容器及溯源追踪）、同步与文件清单（清单文件跟踪同步状态、内容哈希并支持反向索引）以及领域边界强制（规则禁止应用代码直接导入数据库层）。  
 
-2. **索引清单与状态快照** – *spine-manifest.example.json* 文件维护了所有已索引源文件的注册表，包括内容哈希、按语言环境关联的文档信息以及同步元数据。它为运行时操作和同步工作流提供了一个轻量级的状态快照。
-
-3. **架构治理规则** – *spine-rule-document.example.json* 和 *spine-rule.example.md* 共同实施关注点分离，通过限制架构层级间的导入依赖、禁止从服务层直接访问底层适配器，并定义基于模式的适用范围（含严重程度和可执行性控制），来维护清晰的架构边界。这些规则附有明确的原理说明和修复指南。
-
-最关键的实现领域包括：索引管线的配置（溯源跟踪与变更检测）、结构标识的分配（为目录和文件赋予语义角色），以及策略执行（维护整洁架构的边界）。需要关注的具体子模块包括：溯源元数据的模式定义、清单中反向索引的完整性校验，以及基于规则的导入验证引擎。
+具体子模块包括：  
+- **spine-folder-unit.example.json** – 定义索引流水线的应用模块容器。  
+- **spine-manifest.example.json** – 提供同步元数据、文件清单及反向索引查找。  
+- **spine-project-unit.example.json** – 描述项目元数据、模块结构（src/docs）和生成溯源。  
+- **spine-rule-document.example.json** – 强制禁止直接导入数据库层的规则。  
+- **spine-rule.example.md** – 规定带有作用域、严重级别和理由的强制规则。  
+- **spine-unit.example.json** – 模拟包含登录/注销功能的认证入口模块。

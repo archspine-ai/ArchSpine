@@ -1,39 +1,40 @@
-# ArchSpine SpineUnit Schema — Configuration Summary
+# ArchSpine SpineUnit Configuration Summary
 
-This schema defines the structure of every **SpineUnit** document in the ArchSpine mirror system. A SpineUnit represents a single source code unit (file) and carries all metadata needed for indexing, validation, dependency analysis, and governance enforcement. Operators must ensure that every SpineUnit conforms to this schema to maintain system integrity.
+This schema defines the structure and constraints for a SpineUnit, the core metadata unit in the ArchSpine mirror system. Each SpineUnit captures the identity, semantic role, invariants, change intent, and public surface of a code entity.
 
-## What the Configuration Controls
+## What This Configuration Controls
 
-The schema governs the validity of six required top-level properties:
+- **Code Unit Identity Tracking:** Enforces required fields such as `filePath`, `contentHash`, `language`, `fileKind`, and `scope` to uniquely identify and trace source files.
+- **Semantic Metadata Management:** Requires a `role`, list of `responsibilities`, explicit `outOfScope` boundaries, `invariants`, `changeIntent`, and `publicSurface` to document the unit's purpose and contract.
+- **Invariant Enforcement:** All invariant entries must have an `id`, `description`, and `enforceable` flag, enabling automated rule validation.
+- **Change Intent Documentation:** Captures architectural intent and reason for recent changes for auditability.
+- **Public API Surface Documentation:** Explicit symbols and descriptions for interface stability monitoring.
 
-- **`schemaVersion`** — Must match the version declared in the shared schema. Schema mismatches are the most common cause of ingestion failures.
-- **`identity`** — Uniquely identifies the unit via `filePath` (repo-relative), `contentHash`, `skeletonHash`, `semanticHash`, `language`, `fileKind`, and `scope`. The hashes must be valid content hashes; the file path must be non‑empty and repo‑relative.
-- **`semantic`** — The core governance metadata. Contains:
-  - `role` and `responsibilities` (descriptive arrays).
-  - `outOfScope` (list of explicitly excluded responsibilities).
-  - `invariants` — each has an `id` (kebab‑case), `description`, and `enforceable` boolean. These invariants are critical for enforcement engines.
-  - `changeIntent` — `architecturalIntent` and `recentChangeIntent` (nullable strings). Missing intent can block automated change‑impact analysis.
-  - `publicSurface` — exported symbols (`symbolName` + `description`). Required for API surface tracking.
-- **`skeleton`** — Structural outline (imports/exports). Used by dependency resolvers.
-- **`graph`** — Stores derived dependency and call‑graph edges.
-- **`provenance`** — Origin and history (timestamps, generation context). Vital for auditing and rollback decisions.
+## Key Parameters to Understand
 
-## Parameters That Matter Most
+| Parameter | Importance |
+|-----------|------------|
+| `schemaVersion` | Ensures compatibility by locking the schema version used for validation. |
+| `identity.filePath` | Absolute repo-relative path for tracing; mandatory. |
+| `identity.contentHash` | Cryptographic hash for integrity and change detection. |
+| `identity.skeletonHash` | Hash of structural signature for change detection. |
+| `identity.semanticHash` | Hash of semantic metadata to detect semantic drift. |
+| `identity.language` | Programming language for language-specific analysis. |
+| `identity.fileKind` | Categorizes file (source, test, config) for filtering. |
+| `identity.scope` | Namespace/module scope for resolving naming conflicts. |
+| `semantic.role` | High-level functional description for architectural reasoning. |
+| `semantic.responsibilities` | List of responsibilities for dependency analysis. |
+| `semantic.outOfScope` | Explicitly states what the unit does NOT do, preventing scope creep. |
+| `semantic.invariants` | Enforceable constraints critical for safety and correctness. |
+| `semantic.changeIntent` | Documents architectural intent and change reasons. |
+| `semantic.publicSurface` | Explicit API surface for interface contracts and stability monitoring. |
 
-| Parameter | Why It Matters |
-|-----------|----------------|
-| `schemaVersion` | Must match the system‑wide active schema. A mismatch causes immediate rejection. |
-| `identity.contentHash` | Primary deduplication key. Incorrect or stale hashes break incremental indexing. |
-| `semantic.invariants[].id` | Must be kebab‑case and unique. Used by policy engines to enforce rules. |
-| `semantic.changeIntent` | Two nullable string fields. If left `null`, automated reasoning about change rationale is unavailable. |
-| `publicSurface[].symbolName` | Drives API‑compliance checks. Missing or misspelled symbols generate false governance alerts. |
+## Operational Risks and Stability Considerations
 
-## Operational Risks and Stability Concerns
+- **Validation Failures for Legacy Files:** All SpineUnits must include the required top-level fields and identity fields. Legacy files lacking these will fail validation until upgraded.
+- **Hash Coupling:** Changes to hashing logic for `contentHash`, `skeletonHash`, or `semanticHash` require coordinated migration across the system.
+- **Over-Constraining Invariants:** Invariants can be overly strict and reject valid edge cases. Carefully review invariant descriptions and enforceability.
+- **No Additional Properties:** The schema forbids extra properties at the top level and in nested objects, preventing silent additions that could break downstream tools.
+- **Structural Integrity:** Strict adherence to this schema stabilises the metadata layer and prevents architectural rot.
 
-- **Schema version drift**: If the system updates to a new schema version without migrating existing SpineUnits, all older documents become unreadable. **Always upgrade documents in a staging environment first.**
-- **Missing required fields**: Any SpineUnit that lacks one of the six top‑level properties will be rejected at ingestion. Validate documents before bulk import.
-- **Invariant enforcement**: The `enforceable` flag is a boolean. If set to `true`, the system must attempt to verify that invariant programmatically. Turning invariants on without corresponding verification logic produces false negatives.
-- **Hash correctness**: Hashes (`contentHash`, `skeletonHash`, `semanticHash`) must be computed consistently. Changing the hash algorithm without re‑scanning invalidates all existing documents.
-- **Backward compatibility**: The schema does not allow `additionalProperties`. Adding new fields in future versions will break compatibility unless the schema is explicitly revised. Use the `$schema` versioning mechanism to manage transitions.
-
-Keep the schema as the single source of truth for SpineUnit validation. Any deviation between generated documents and this schema will ripple across the entire ArchSpine pipeline, causing indexing failures, broken dependency graphs, and inconsistent governance reports.
+This schema enforces structural integrity across all SpineUnits. By requiring mandatory fields and forbidding extra properties, it prevents silent additions that could break downstream tools. The invariant system allows automated enforcement of business rules (e.g., "every public function must have a doc comment"). Overall, strict adherence to this schema stabilises the metadata layer and prevents architectural rot.

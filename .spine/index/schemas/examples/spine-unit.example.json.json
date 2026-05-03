@@ -3,23 +3,21 @@
   "identity": {
     "filePath": "schemas/examples/spine-unit.example.json",
     "contentHash": "dd0170bd06ba517ac9c85a319a4d09be661885daf052ce0c619bb02b28d20fd2",
-    "semanticHash": "9a6bb3601bb3f879a61ab08f01a590aa0db59cb18c1697c90fb69c2ff781284c",
+    "semanticHash": "c2588bbb54a092941a3973147fb5a2e65439922b09b456301f08d2645897e969",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas/examples"
   },
   "semantic": {
-    "role": "Metadata document for the authentication source file, describing its identity, structure, semantics, and constraints to support system indexing and validation.",
+    "role": "Authentication entry module for login and logout operations.",
     "responsibilities": [
-      "Records the file path, language, and content hash for identity verification.",
-      "Defines the functional role and responsibilities of the source module.",
-      "Specifies architectural invariants that must be enforced (e.g., no direct database access).",
-      "Documents the public surface (exported symbols) and their signatures.",
-      "Provides dependency graph and provenance metadata for traceability."
+      "Expose login and logout functions.",
+      "Provide a minimal AuthService singleton entry point."
     ],
     "outOfScope": [],
     "invariants": [
-      "This module must not import database adapters directly."
+      "This module must not import database adapters directly.",
+      "Keep authentication entry points lightweight and side-effect limited."
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -30,30 +28,28 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "This configuration file serves as a metadata document for the authentication source file 'src/auth.ts', capturing its identity, semantics, invariants, and structural information to enable automated indexing and validation.",
+        "role": "Authentication entry module for login and logout operations.",
         "parameter_definitions": {
-          "schemaVersion": "Defines the schema version for compatibility; mismatched versions could cause parsing errors.",
-          "identity.filePath": "Specifies the source file path; used for locating and verifying the file.",
-          "identity.language": "Indicates the programming language; affects AST parsing and rule application.",
-          "semantic.role": "Describes the functional role of the source module; influences how the system interprets its purpose.",
-          "semantic.invariants": "Lists mandatory constraints; violations may indicate architecture breaches and potential security risks.",
-          "skeleton.exports": "Records exported symbols; critical for dependency resolution and API surface analysis.",
-          "provenance.generatorVersion": "Tracks the tool version that generated this metadata; important for upgrade compatibility."
+          "schemaVersion": "Defines the metadata schema version; ensures compatibility and validation across the ArchSpine mirror system.",
+          "identity": "Identifies the source file path, content hash, language, and scope; used for integrity checks and linking to other metadata records.",
+          "semantic": "Describes the intended role, responsibilities, invariants, and change intent of the module; guides automated analysis and enforcement of architectural rules.",
+          "skeleton": "Provides a structural overview of exports, imports, and declared symbols; used for dependency analysis and API surface validation.",
+          "graph": "Records dependency relationships (dependsOn, dependedBy); incomplete graphs (reverseIndexComplete false) may cause inaccurate impact analysis.",
+          "provenance": "Tracks when and how this metadata was generated and which pipeline stages were involved; affects trustworthiness and auditability."
         },
-        "stability_and_risks": "This configuration ensures the authentication module is correctly identified and its architectural constraints are documented. If the invariants are violated (e.g., unauthorized database imports), the system can detect and flag them, preventing architectural drift. The metadata also supports dependency analysis and impact assessment. A corrupt or missing configuration could lead to misclassification of the module, potentially allowing security vulnerabilities to go unnoticed."
+        "stability_and_risks": "This configuration file defines metadata for a core authentication module. Its primary impact on system stability lies in the accuracy of dependency tracking and invariant enforcement. If the graph data is incomplete (reverseIndexComplete: false), downstream automated reindexing or impact analysis may miss dependencies, leading to stale references. The invariant prohibiting direct database access prevents accidental side effects, but if not enforced, it could introduce security vulnerabilities. The provenance information helps detect stale or inconsistent metadata, but relying on outdated generator versions may cause schema mismatches. Overall, this file is stable as long as it is kept in sync with the actual source code and reindexed promptly after source changes."
       },
       "Simplified Chinese": {
-        "role": "此配置文件作为认证源文件“src/auth.ts”的元数据文档，记录其身份、语义、不变量和结构信息，以支持自动索引和验证。",
+        "role": "用于登录和注销操作的认证入口模块。",
         "parameter_definitions": {
-          "schemaVersion": "定义架构兼容性版本；版本不匹配可能导致解析错误。",
-          "identity.filePath": "指定源文件路径，用于定位和验证文件。",
-          "identity.language": "指示编程语言，影响AST解析和规则应用。",
-          "semantic.role": "描述源模块的功能角色，影响系统对其目的的解读。",
-          "semantic.invariants": "列出强制性约束条件，违反可能表明架构违规和潜在安全风险。",
-          "skeleton.exports": "记录导出的符号，对依赖解析和API表面分析至关重要。",
-          "provenance.generatorVersion": "跟踪生成此元数据的工具版本，对升级兼容性很重要。"
+          "schemaVersion": "定义元数据的模式版本，确保在 ArchSpine 镜像系统中的兼容性和验证。",
+          "identity": "标识源文件的路径、内容哈希、语言和作用域，用于完整性检查以及与其他元数据记录的关联。",
+          "semantic": "描述模块的预期角色、职责、不变条件和变更意图，指导自动化分析并强制执行架构规则。",
+          "skeleton": "提供导出、导入和声明符号的结构概览，用于依赖分析和 API 表面验证。",
+          "graph": "记录依赖关系（dependsOn, dependedBy）；不完整的图（reverseIndexComplete 为 false）可能导致不准确的变更影响分析。",
+          "provenance": "追踪该元数据的生成时间、方式和所经历的流水线阶段，影响可信度和可审计性。"
         },
-        "stability_and_risks": "此配置文件确保认证模块被正确识别并记录其架构约束。如果违反不变量（例如未授权的数据库导入），系统可以检测并标记它们，防止架构偏离。元数据还支持依赖分析和影响评估。配置损坏或缺失可能导致模块分类错误，从而可能使安全漏洞被忽视。"
+        "stability_and_risks": "该配置文件定义了一个核心认证模块的元数据。其对系统稳定性的主要影响在于依赖追踪的准确性和不变条件的执行。如果图数据不完整（reverseIndexComplete 为 false），下游的自动重索引或影响分析可能会遗漏依赖，导致引用陈旧。禁止直接数据库访问的不变条件可防止意外副作用，但若未强制执行，可能引入安全漏洞。来源信息有助于检测陈旧或不一致的元数据，但依赖过时的生成器版本可能导致模式不匹配。总体而言，只要该文件与实际源代码保持同步并在源更改后及时重新索引，它就是稳定的。"
       }
     }
   },
@@ -75,7 +71,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:24:18.173Z",
+    "indexedAt": "2026-05-03T12:15:57.174Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

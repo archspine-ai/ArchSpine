@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/infra",
-  "role": "Infrastructure layer providing core services for configuration management, LLM integration, persistence, credentials, and prompt generation for the ArchSpine mirror system.",
-  "responsibility": "Combines database management, LLM client abstraction, credential storage, configuration resolution, manifest persistence, MCP server integration, prompt assembly and rendering, runtime I/O utilities, and output management to form the foundational support for the ArchSpine mirror system's operations.",
+  "role": "Provides the core infrastructure layer for the ArchSpine mirror system, including configuration management, database operations, LLM integration, credential storage, file system manifest, MCP server, and prompt assembly.",
+  "responsibility": "This directory collectively implements the foundational services that support the entire ArchSpine system: secure configuration resolution, SQLite database lifecycle and operations, multi-provider LLM client abstraction, platform-agnostic credential storage, file integrity and manifest tracking, Model Context Protocol server for external AI agents, prompt construction and policy management, runtime I/O, and governance utilities for detecting unauthorized mutations and managing repair actions.",
   "children": [
     {
       "filePath": "src/infra/__mocks__",
-      "role": "Facade module for LLM provider mocking infrastructure.",
+      "role": "Public facade for LLM mocking infrastructure.",
       "fileKind": "folder"
     },
     {
@@ -16,7 +16,7 @@
     },
     {
       "filePath": "src/infra/config",
-      "role": "Configuration management and defaults for the ArchSpine mirror system.",
+      "role": "Configuration management layer for the ArchSpine system.",
       "fileKind": "folder"
     },
     {
@@ -31,12 +31,12 @@
     },
     {
       "filePath": "src/infra/credentials",
-      "role": "Provides a pluggable credential storage system with platform-specific backends and scoped store factories for secure secret persistence.",
+      "role": "Platform-agnostic credential storage infrastructure with multiple backends (macOS keychain, Linux secret-tool, Windows DPAPI, in-memory).",
       "fileKind": "folder"
     },
     {
       "filePath": "src/infra/db",
-      "role": "Infrastructure layer for SQLite database management in the ArchSpine mirror system, providing the core persistence foundation for file metadata, audit events, and system status.",
+      "role": "Infrastructure layer for SQLite database management in the ArchSpine system.",
       "fileKind": "folder"
     },
     {
@@ -61,7 +61,7 @@
     },
     {
       "filePath": "src/infra/llm",
-      "role": "Infrastructure layer for LLM client abstraction, configuration, and resilient invocation within the ArchSpine mirror system.",
+      "role": "Infrastructure layer for LLM client abstraction, configuration, and execution.",
       "fileKind": "folder"
     },
     {
@@ -71,7 +71,7 @@
     },
     {
       "filePath": "src/infra/manifest",
-      "role": "Infrastructure layer for manifest persistence, file integrity, and state management in the ArchSpine mirror system.",
+      "role": "Provides the infrastructure layer for file system interaction, integrity verification, and manifest state persistence in the ArchSpine mirror system.",
       "fileKind": "folder"
     },
     {
@@ -81,7 +81,7 @@
     },
     {
       "filePath": "src/infra/mcp",
-      "role": "MCP integration layer for exposing ArchSpine's resources and tools to external AI agents.",
+      "role": "Infrastructure directory for Model Context Protocol (MCP) integration, providing context gating, resource management, server setup, and tool exposure for external AI agents.",
       "fileKind": "folder"
     },
     {
@@ -91,12 +91,12 @@
     },
     {
       "filePath": "src/infra/prompt",
-      "role": "Prompt assembly and generation layer for ArchSpine's AI interaction system.",
+      "role": "Prompt assembly and orchestration layer for ArchSpine's AI agent interactions.",
       "fileKind": "folder"
     },
     {
       "filePath": "src/infra/prompt-context",
-      "role": "Infrastructure layer responsible for assembling source prompt artifacts, including policy resolution, budget calculation, trimming, diagnostics, and type definitions for the ArchSpine prompt system.",
+      "role": "This directory provides the prompt policy and construction infrastructure for the ArchSpine system, including budget calculation, trimming, diagnostics, and type definitions.",
       "fileKind": "folder"
     },
     {
@@ -166,7 +166,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-03T11:28:02.206Z",
+    "indexedAt": "2026-05-03T12:19:35.278Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

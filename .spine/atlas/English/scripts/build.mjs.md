@@ -1,14 +1,41 @@
----MARKDOWN:Simplified Chinese---
-# ArchSpine 构建脚本摘要
+# ArchSpine Build and Distribution Script
 
-## 目的
-该脚本是 ArchSpine 项目的权威构建流水线。它协调编译、资产复制和清理步骤，以生成可直接运行的发布包。
+## Why This Document Exists
 
-## 背景与读者
-面向需要从源码构建 ArchSpine 的开发者与维护者。使用者需熟悉 Node.js、TypeScript 及项目目录结构。
+This document describes the automated build script that transforms ArchSpine’s TypeScript source tree into a ready-to-distribute package. It exists to centralize and codify the build pipeline steps, ensuring consistency and reproducibility across releases. It anchors the workflow that every maintainer or contributor must follow when preparing a distribution.
 
-## 要点
-- 运行 `tsc` 命令将 TypeScript 编译为 JavaScript。
-- 将 AST 规则文件（YAML）及所有资产复制到 dist 目录。
-- 复制过程中排除 `__mocks__` 目录，并在复制后将其从 dist 中删除，确保发布包洁净。
-- CLI 入口文件被设置为可执行权限（0o755）。
+## Who Should Read It
+
+- **Project maintainers** responsible for publishing ArchSpine releases.
+- **Infrastructure contributors** who need to modify the build chain (e.g., adding new asset types, changing compilation flags, or adjusting cleanup logic).
+- **Developers debugging distribution issues** who want to understand exactly what happens between source code and the final `dist/` folder.
+
+## Key Decisions and Workflows
+
+The script is written as a Node.js module using ES module syntax (`import/export`). It is intended to be run directly or invoked programmatically.
+
+### Compilation
+
+- TypeScript compilation is performed via `tsc` (the standard TypeScript compiler). The command runs from the repository root and inherits `stdio` so that compilation errors are visible.
+
+### File Copying
+
+- Non-TypeScript assets (e.g., rule files in `src/ast/rules/` and the entire `src/assets/` directory) are manually copied into `dist/` using `fs.copyFileSync` and a recursive directory copy function (`copyDir`).
+- The copy logic respects an exclusion function (`shouldExcludeDistEntry`) that filters out any path containing `__mocks__` to prevent test stubs from leaking into the distribution.
+
+### Cleanup
+
+- The script explicitly removes all `__mocks__` directories from `dist/` after the initial copy. This is a safety net in case any mock files were inadvertently copied.
+- Before anything, the entire `dist/` directory is deleted to avoid mixing old artifacts.
+
+### Executable Permissions
+
+- The CLI entry point (`dist/cli/index.js`) is given executable permission (`chmod 755`) so that users can invoke it directly without needing to run through `node`.
+
+## How to Use
+
+Run the script as a standalone command (it checks `process.argv[1]` against its own URL). Typically this is done via an npm script or a continuous integration job.
+
+```bash
+node build.js
+```

@@ -3,26 +3,27 @@
   "identity": {
     "filePath": "AGENTS.md",
     "contentHash": "70d579b1891016b04d2ec47b65560b763beb6dc0322eba2fa5920b675161a121",
-    "semanticHash": "fb627dbf1017c2a212a62c6f48ab2ac0802420fecb8810fd18bae2f79da37962",
+    "semanticHash": "9a045c0eae29703569bfcb383408ab7f55fcad6dd0549526b031cb85cb23b441",
     "language": "unsupported",
     "fileKind": "document",
     "scope": ""
   },
   "semantic": {
-    "role": "Repository Guidelines for ArchSpine",
+    "role": "Repository guidelines for the ArchSpine mirror system, including project structure, development conventions, and AI agent interaction protocols.",
     "responsibilities": [
-      "Documenting project structure and module organization under src/",
-      "Listing build, test, and development commands with Node.js requirements",
-      "Specifying coding style, naming conventions, and linting rules",
-      "Providing testing guidelines for Vitest and schema compliance",
-      "Outlining commit and pull request conventions (Conventional Commits)",
-      "Giving documentation maintenance instructions for English and Chinese",
-      "Embedding ArchSpine-specific instructions for AI agents and human contributors"
+      "Project structure and module organization",
+      "Build, test, and development commands",
+      "Coding style and naming conventions",
+      "Testing guidelines",
+      "Commit and pull request guidelines",
+      "Documentation and configuration notes (including English/Chinese alignment)",
+      "ArchSpine system context and AI agent instructions (spine/atlas, spine/view, MCP, etc.)"
     ],
     "outOfScope": [
-      "End-user documentation for ArchSpine tool usage",
-      "Detailed API reference for every module",
-      "External contribution processes beyond the repository"
+      "Technical implementation details of individual modules",
+      "API reference or interface specifications",
+      "Architecture decision records",
+      "User-facing feature documentation (beyond alignment notes)"
     ],
     "invariants": [],
     "changeIntent": {
@@ -34,29 +35,27 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document exists to onboard developers and AI agents to the ArchSpine repository by explaining its directory layout, development workflow, coding conventions, and the ArchSpine context layer that governs AI interactions. It ensures consistency in contributions and helps maintainers enforce quality standards.",
-        "context_and_audience": "The intended audience includes software developers, maintainers, and AI agents (such as Claude or Copilot) who need to understand how to navigate, build, test, and contribute to the ArchSpine codebase. The document is a living reference that should be consulted before making changes.",
+        "purpose": "This document provides comprehensive guidelines for developing and maintaining the ArchSpine repository. It covers project structure, build and test commands, coding standards, commit conventions, and, critically, the rules for interacting with the ArchSpine mirror system—a context-aware layer that assists AI agents in understanding the codebase.",
+        "context_and_audience": "The intended audience includes human developers contributing to the project and AI agents (e.g., code assistants) that need to navigate the repository effectively. The document establishes a shared understanding of conventions and protocols, particularly the 'ArchSpine Instructions' block that outlines how agents should prioritize context files, use MCP services, and respect generated output boundaries.",
         "key_takeaways": [
-          "Source code is organized under src/ with cli, core, engines, services, infra, assets/templates, and ast/rules as key directories.",
-          "Node.js 20+ is required; use npm install, npm run build, npm test for standard workflows.",
-          "Strict TypeScript with ES modules, 2-space indentation, camelCase/PascalCase conventions are enforced via ESLint and Prettier.",
-          "Tests are run with Vitest; schema compliance and protocol validation are separate test suites.",
-          "Commits follow Conventional Commits format (e.g., fix:, feat:). PRs must include verification steps and links to issues.",
-          "Public docs have English and Chinese mirrors; docs/zh-CN/ must stay aligned.",
-          "ArchSpine context (in .spine/) is a control plane: .spine/atlas/ and .spine/view/pages/ provide semantic summaries, while .spine/index/ holds structured data. AI agents should prefer MCP server and never manually edit generated outputs."
+          "The repository is organized into src/, tests/, research/, docs/, schemas/, and examples/ with specific roles.",
+          "Node.js 20+ required; use npm run build, test, test:schema, validate, docs:dev.",
+          "TypeScript ES modules with strict typing, 2-space indentation, and explicit .js import suffixes.",
+          "Follow Conventional Commits; PRs must include behavior changes and verification steps.",
+          "Keep English and Chinese docs aligned; .spine/ directories are generated and should not be manually edited.",
+          "AI agents must prioritize .spine/atlas/ and .spine/view/pages/ over broad search, use MCP, and avoid modifying generated content."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档旨在为开发者和AI代理介绍ArchSpine仓库的目录结构、开发工作流、编码规范以及控制AI交互的ArchSpine上下文层，从而帮助新成员快速上手并保证贡献的一致性，同时支持维护者执行质量标准。",
-        "context_and_audience": "目标读者包括软件开发者、维护者以及需要理解如何浏览、构建、测试和贡献ArchSpine代码库的AI代理（如Claude或Copilot）。本文档是一份活的参考，在进行任何改动前应当查阅。",
+        "purpose": "本文档为ArchSpine仓库的开发和维护提供全面指导。它涵盖项目结构、构建与测试命令、编码规范、提交约定，以及最重要的——与ArchSpine镜像系统交互的规则。ArchSpine是一个上下文感知层，旨在帮助AI代理理解代码库。",
+        "context_and_audience": "目标受众包括参与项目的开发者以及需要高效浏览仓库的AI代理（如代码助手）。文档建立了约定和协议的共同理解，特别是'ArchSpine Instructions'区块，该区块概述了代理应如何优先使用上下文文件、利用MCP服务以及尊重生成输出的边界。",
         "key_takeaways": [
-          "源代码组织在src/下，关键目录包括cli、core、engines、services、infra、assets/templates和ast/rules。",
-          "需要Node.js 20+；使用npm install、npm run build、npm test执行标准工作流。",
-          "强制使用严格TypeScript、ES模块、2空格缩进、camelCase/PascalCase命名约定，并通过ESLint和Prettier执行。",
-          "测试使用Vitest运行；还提供了schema合规性和协议验证的独立测试套件。",
-          "提交遵循Conventional Commits格式（例如fix:、feat:）。PR必须包含验证步骤和相关issue链接。",
-          "公共文档配有英文和中文镜像；docs/zh-CN/必须保持同步。",
-          "ArchSpine上下文（位于.spine/）是控制面：.spine/atlas/和.spine/view/pages/提供语义摘要，而.spine/index/包含结构化数据。AI代理应优先使用MCP服务器，且绝不手动编辑生成的输出。"
+          "仓库组织为src/、tests/、research/、docs/、schemas/和examples/，各有特定用途。",
+          "需要Node.js 20+；使用npm run build、test、test:schema、validate、docs:dev。",
+          "TypeScript ES模块，严格类型检查，2空格缩进，导入使用显式.js后缀。",
+          "遵循常规提交规范；PR必须包含行为变更和验证步骤。",
+          "保持英文和中文文档一致；.spine/目录为生成内容，不应手动编辑。",
+          "AI代理应优先使用.spine/atlas/和.spine/view/pages/而非全局搜索，使用MCP，避免修改生成内容。"
         ]
       }
     }
@@ -79,7 +78,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:22:47.502Z",
+    "indexedAt": "2026-05-03T12:15:34.714Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

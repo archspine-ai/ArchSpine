@@ -1,1 +1,5 @@
-The `database/` directory serves as the database infrastructure layer for ArchSpine. It contains a single module, `database.ts`, which provides a placeholder connection class designed to be replaced by an actual database adapter in the future. The module exports a `Database` class that manages a boolean connection state and offers a public `connect` method that logs a connection message and updates the internal state. The primary implementation area here is the stub logic for establishing connections to either SQLite or PostgreSQL, making it a foundational but non‑final component.
+The `db/` directory is a placeholder infrastructure stub responsible for database connection management. It contains a single, minimal concrete module:
+
+- **database.ts** – Exports a `Database` class that simulates SQLite or PostgreSQL connection setup and state tracking. It provides a `connect()` method to log a connection message and update an internal boolean connection state.
+
+This directory is grouped as a standalone infrastructure layer, not yet wired into any real database driver. The key implementation areas are connection lifecycle management (connect, disconnect) and connection state inspection (e.g., `isConnected`). Future development should replace the stub with actual adapter logic for a chosen database backend.

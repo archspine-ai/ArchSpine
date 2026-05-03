@@ -3,26 +3,25 @@
   "identity": {
     "filePath": ".github/workflows/research.yml",
     "contentHash": "8284bb33192599f227cc151b55510c51b9020ae389655da165d2a8fe11a56bd4",
-    "semanticHash": "438b7d4f7aec003390d741a54b0073bc3b317bf28960d630e458d4efd3cb70dd",
+    "semanticHash": "e3380b92c154e79ed19dc768b96f99eb8bfd6c007475e0932cea4c7d16eec27d",
     "language": "unsupported",
     "fileKind": "document",
     "scope": ".github/workflows"
   },
   "semantic": {
-    "role": "Define an automated workflow for ad-hoc research benchmark execution in the ArchSpine project",
+    "role": "Automated workflow to execute the research test suite for the ArchSpine project on demand.",
     "responsibilities": [
-      "Manual trigger via workflow_dispatch (GitHub UI or API)",
-      "Checkout repository source code",
-      "Set up Node.js 20 with npm caching",
-      "Install project dependencies using npm ci",
-      "Run the `npm run test:research` benchmark suite",
-      "Maintenance scope: update Node version, benchmark scripts, or dependency versions as needed"
+      "Triggering the research bench test job manually via workflow_dispatch",
+      "Managing concurrency to cancel in-progress runs for the same workflow and ref",
+      "Setting up a Node.js 20 environment with npm cache",
+      "Installing project dependencies using npm ci",
+      "Running the research test suite via npm run test:research"
     ],
     "outOfScope": [
-      "Automated or scheduled triggers (pull request, push, schedule)",
-      "Integration or unit test execution",
-      "Production deployment or release workflows",
-      "Cross-platform or multiple Node version matrix testing"
+      "Deployment or release processes",
+      "Integration or end-to-end tests",
+      "Scheduled or continuous testing (only manual trigger)",
+      "Production environment configuration or monitoring"
     ],
     "invariants": [],
     "changeIntent": {
@@ -34,21 +33,23 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document defines a GitHub Actions workflow for manually triggering research benchmark tests on the ArchSpine project.",
-        "context_and_audience": "It is intended for project maintainers and contributors who need to run performance or correctness benchmarks on the research module of ArchSpine. It provides a standardized, reproducible environment (Node 20, clean install) to ensure consistent results.",
+        "purpose": "This document defines a GitHub Actions workflow that enables developers to manually run the research benchmark suite for the ArchSpine project. It ensures a consistent and isolated test environment with Node.js 20 and cached dependencies.",
+        "context_and_audience": "This workflow is intended for ArchSpine developers and researchers who need to validate performance or functional aspects of the system under controlled conditions. It is triggered on demand and not part of the standard CI pipeline.",
         "key_takeaways": [
-          "Triggered manually via GitHub UI or API.",
-          "Runs on Node 20 with npm cache for faster installs.",
-          "Executes npm run test:research after clean dependency installation."
+          "The research bench is a manual workflow, not automatic — it must be triggered via the GitHub UI or API.",
+          "It uses Node 20 and npm ci to guarantee reproducible dependency installation.",
+          "Concurrency is configured to cancel any previous in-progress run of the same workflow and branch, preventing redundant test runs.",
+          "The actual test logic resides in the project's test:research script; this workflow is merely the orchestration wrapper."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "此文档定义了一个GitHub Actions工作流，用于手动触发ArchSpine项目的研究基准测试。",
-        "context_and_audience": "面向需要运行ArchSpine研究模块性能或正确性基准测试的项目维护者和贡献者。它提供了一个标准化、可复现的环境（Node 20，干净安装），以确保结果的一致性。",
+        "purpose": "本文件定义了一个 GitHub Actions 工作流，使开发者能够手动运行 ArchSpine 项目的研究基准测试套件。它确保在 Node.js 20 和缓存依赖项下提供一致且隔离的测试环境。",
+        "context_and_audience": "此工作流面向 ArchSpine 的开发者和研究人员，他们需要在受控条件下验证系统的性能或功能方面。它按需触发，不属于标准 CI 流程的一部分。",
         "key_takeaways": [
-          "通过GitHub界面或API手动触发。",
-          "在Node 20上运行，并使用npm缓存加快安装速度。",
-          "安装依赖后执行npm run test:research。"
+          "研究基准测试是手动工作流，不会自动运行——必须通过 GitHub UI 或 API 触发。",
+          "使用 Node 20 和 npm ci 保证依赖安装的可重复性。",
+          "并发配置为取消同一工作流和分支之前的正在进行的运行，防止冗余测试。",
+          "实际测试逻辑位于项目的 test:research 脚本中；此工作流仅作为编排包装。"
         ]
       }
     }
@@ -71,7 +72,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:22:26.011Z",
+    "indexedAt": "2026-05-03T12:14:08.604Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

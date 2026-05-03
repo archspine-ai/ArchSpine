@@ -3,30 +3,26 @@
   "identity": {
     "filePath": "schemas/spine-unit.schema.json",
     "contentHash": "ae56ce0e9fd00bb0f356b279daba9e74b457a9dcdd4df7a46724835b30ff8bdd",
-    "semanticHash": "22cdbd98ce75c0a9f21624b7b1d559263aa293ac9e1160c244c87f788bca5ec1",
+    "semanticHash": "b38a5d09ddc5e4173f74e23dc678d93f284e350d4246b21c05a2b71d6007862d",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas"
   },
   "semantic": {
-    "role": "Defines the structural schema for ArchSpine SpineUnit documents, ensuring consistency and validity of unit metadata across the system.",
+    "role": "Schema definition for ArchSpine SpineUnit metadata",
     "responsibilities": [
-      "Schema validation for all spine unit instances generated during indexing and scanning.",
-      "Enforcement of required fields (schemaVersion, identity, semantic, skeleton, graph, provenance).",
-      "Definition of nested structures for identity, semantic metadata, invariants, change intent, and public surface."
+      "Code unit identity tracking",
+      "Semantic metadata management",
+      "Invariant enforcement",
+      "Change intent documentation",
+      "Public API surface documentation"
     ],
     "outOfScope": [],
     "invariants": [
-      "The unit must include all required top-level properties: schemaVersion, identity, semantic, skeleton, graph, provenance.",
-      "File path must be a valid repo-relative path (non-empty string).",
-      "Content hash, skeleton hash, semantic hash must be valid content hashes.",
-      "Language must be a recognized source language.",
-      "File kind must be one of the allowed file kinds.",
-      "Scope must be a valid scope path.",
-      "Semantic object must include role, responsibilities, outOfScope, invariants, changeIntent, publicSurface.",
-      "Each invariant must have an id (kebab-case), description, and enforceable boolean.",
-      "Change intent must include architecturalIntent and recentChangeIntent (nullable strings).",
-      "Public surface items must have symbolName and description."
+      "All SpineUnits must include required fields: schemaVersion, identity, semantic, skeleton, graph, provenance",
+      "Invariant entries must have id, description, and enforceable flag",
+      "Additional properties are forbidden at the top level",
+      "Identity must include filePath, contentHash, language, fileKind, and scope"
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -37,28 +33,44 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Defines the structural schema for ArchSpine SpineUnit documents, ensuring consistency and validity of unit metadata across the system.",
+        "role": "Defines the structure and constraints for a SpineUnit, a core metadata unit in the ArchSpine mirror system. Each SpineUnit captures the identity, semantic role, invariants, change intent, and public surface of a code entity.",
         "parameter_definitions": {
-          "schemaVersion": "Specifies the schema version to ensure compatibility across different releases.",
-          "identity": "Uniquely identifies a spine unit by file path, content hashes, language, file kind, and scope.",
-          "semantic": "Captures the unit's role, responsibilities, invariants, change intent, and public surface—core metadata for governance.",
-          "skeleton": "Describes the structural outline of the source code (e.g., imports, exports), used for dependency analysis.",
-          "graph": "Stores dependency relationships and call graphs derived from the unit.",
-          "provenance": "Records origin and history of the unit, including timestamps and generation context."
+          "schemaVersion": "Ensures compatibility by locking the schema version used for validation.",
+          "identity.filePath": "Absolute repository-relative path to the source file; used for tracing and linking.",
+          "identity.contentHash": "Cryptographic hash of file content to detect modifications and ensure integrity.",
+          "identity.skeletonHash": "Hash of the skeleton (structural signature) for change detection.",
+          "identity.semanticHash": "Hash of semantic metadata to detect semantic drift without full re-parsing.",
+          "identity.language": "Identifies the programming language of the unit, enabling language-specific analysis.",
+          "identity.fileKind": "Categorizes the file (e.g., source, test, config) for filtering and policy enforcement.",
+          "identity.scope": "Namespace or module scope to resolve naming conflicts and determine visibility.",
+          "semantic.role": "High-level functional description of the unit's purpose; used for architectural reasoning.",
+          "semantic.responsibilities": "List of responsibilities the unit fulfills; helps in dependency analysis.",
+          "semantic.outOfScope": "Explicitly states what the unit does NOT do, preventing scope creep.",
+          "semantic.invariants": "Enforceable constraints that must hold true; critical for safety and correctness guarantees.",
+          "semantic.changeIntent": "Documents architectural intent and the reason for recent changes, aiding review and auditing.",
+          "semantic.publicSurface": "Explicit API surface (symbols and descriptions) for interface contracts and stability monitoring."
         },
-        "stability_and_risks": "This schema is foundational to ArchSpine's indexing and validation pipeline. Incorrect schema versions or missing required fields can cause indexing failures or inconsistent metadata. The invariants enforcement ensures data integrity. Changes to this schema must be backward-compatible or require migration of all existing spine unit documents to avoid system-wide inconsistencies."
+        "stability_and_risks": "This schema enforces structural integrity across all SpineUnits. By requiring mandatory fields and forbidding extra properties, it prevents silent additions that could break downstream tools. The invariant system allows automated enforcement of business rules (e.g., 'every public function must have a doc comment'). Risks include: (1) legacy files lacking required fields will fail validation until upgraded; (2) tight coupling of identity/semantic fields means changes to hashing logic require coordinated migration; (3) over-constraining invariants may reject valid edge cases. Overall, strict adherence to this schema stabilises the metadata layer and prevents architectural rot."
       },
-      "Simplified Chinese": {
-        "role": "定义 ArchSpine SpineUnit 文档的结构模式，确保系统范围内单元元数据的一致性和有效性。",
+      "zh-CN": {
+        "role": "定义 ArchSpine 镜像系统中 SpineUnit 的结构与约束。每个 SpineUnit 捕获代码单元的标识、语义角色、不变量、变更意图和对外接口。",
         "parameter_definitions": {
-          "schemaVersion": "指定模式版本，确保不同版本间的兼容性。",
-          "identity": "通过文件路径、内容哈希、语言、文件种类和范围唯一标识一个 spine 单元。",
-          "semantic": "捕获单元的角色、职责、不变量、变更意图和公共接口——治理的核心元数据。",
-          "skeleton": "描述源代码的结构轮廓（例如导入、导出），用于依赖分析。",
-          "graph": "存储从单元派生的依赖关系和调用图。",
-          "provenance": "记录单元的来源和历史，包括时间戳和生成上下文。"
+          "schemaVersion": "锁定用于验证的 schema 版本，确保向前兼容。",
+          "identity.filePath": "源码文件的仓库相对路径，用于追踪和链接。",
+          "identity.contentHash": "文件内容的加密哈希值，用于检测修改并保证完整性。",
+          "identity.skeletonHash": "骨架（结构签名）的哈希值，用于变更检测。",
+          "identity.semanticHash": "语义元数据的哈希值，无需全面重解析即可检测语义漂移。",
+          "identity.language": "标识代码单元的编程语言，支持语言特定的分析。",
+          "identity.fileKind": "对文件进行分类（如源码、测试、配置），便于过滤和策略实施。",
+          "identity.scope": "命名空间或模块作用域，用于解决命名冲突和确定可见性。",
+          "semantic.role": "单元功能的高级描述，用于架构推理。",
+          "semantic.responsibilities": "该单元负责的职责列表，辅助依赖分析。",
+          "semantic.outOfScope": "明确声明单元不做什么，防止范围蔓延。",
+          "semantic.invariants": "必须成立的可强制执行约束，对安全性和正确性保证至关重要。",
+          "semantic.changeIntent": "记录架构意图和最近变更的原因，辅助代码审查和审计。",
+          "semantic.publicSurface": "明确的 API 接口（符号名与描述），用于接口契约和稳定性监控。"
         },
-        "stability_and_risks": "此模式是 ArchSpine 索引和验证管道的基础。错误的模式版本或缺少必需字段可能导致索引失败或元数据不一致。不变量强制执行确保数据完整性。对此模式的更改必须向后兼容，或者需要迁移所有现有的 spine 单元文档，以避免系统范围的不一致。"
+        "stability_and_risks": "该 schema 强制所有 SpineUnit 的结构完整性。通过要求必填字段并禁止额外属性，防止静默添加导致下游工具出错。不变量系统支持自动执行业务规则（如“每个公开函数必须有文档注释”）。风险包括：（1）遗留文件如果不包含所需字段，在升级前会校验失败；（2）标识和语义字段紧密耦合，修改哈希逻辑需要协调迁移；（3）约束过于严格可能拒绝合法边界情况。总体而言，严格遵循此 schema 可稳定元数据层，防止架构腐烂。"
       }
     }
   },
@@ -80,7 +92,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:24:18.361Z",
+    "indexedAt": "2026-05-03T12:16:39.468Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

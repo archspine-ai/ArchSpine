@@ -3,28 +3,27 @@
   "identity": {
     "filePath": "schemas/spine-rules.schema.json",
     "contentHash": "5b225a87d53d0d6e9145d758d0ef11810730c38104b5435b6ddaf17eceda04f6",
-    "semanticHash": "cfbc58afa1e613344d02645dc1af86349e4505b4072565df0552193f5ba314d8",
+    "semanticHash": "8463a8198d30e8d9a4dd0017dd1d5c6a84b6a9231c8277ed274268c4732fd9e1",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas"
   },
   "semantic": {
-    "role": "Defines the schema for ArchSpine rule documents, ensuring consistency and enforceability of architectural and coding rules.",
+    "role": "Defines the canonical structure and validation rules for SpineRule documents, which encode actionable policies within the ArchSpine mirror orchestration system.",
     "responsibilities": [
-      "Governs the structure of rule definitions used by the ArchSpine system for static analysis and enforcement.",
-      "Validates rule metadata such as ID, title, severity, and enforceability.",
-      "Controls which rules apply to which parts of the codebase via the appliesTo field.",
-      "Ensures rule documents contain a full Markdown body (bodyMarkdown) for human-readable guidance."
+      "Rule validation against a fixed JSON Schema to guarantee syntactic correctness",
+      "Enforcement of required metadata (ruleId, title, summary, severity, etc.)",
+      "Classification of rule severity and enforceability for downstream processing",
+      "Pattern-based constraint on rule identifiers to ensure naming consistency"
     ],
     "outOfScope": [],
     "invariants": [
-      "All required fields (schemaVersion, ruleId, title, summary, appliesTo, severity, enforceable, bodyMarkdown) must be present.",
-      "ruleId must match pattern ^[a-z0-9]+(?:-[a-z0-9]+)*$.",
-      "severity must be one of: advisory, warning, error.",
-      "appliesTo must be a non-empty array of non-empty strings.",
-      "enforceable must be a boolean.",
-      "bodyMarkdown and other string fields must be non-empty (referenced from shared.schema.json).",
-      "No additional properties are allowed (additionalProperties: false)."
+      "All SpineRule documents must include the following mandatory fields: schemaVersion, ruleId, title, summary, appliesTo, severity, enforceable, bodyMarkdown",
+      "The ruleId field must match the pattern ^[a-z0-9]+(?:-[a-z0-9]+)*$ (lowercase, hyphen-separated, no leading/trailing hyphens)",
+      "severity must be one of the enum values: advisory, warning, error",
+      "appliesTo must be a non-empty array of non-empty strings",
+      "No additional properties beyond those defined in the schema are permitted",
+      "The bodyMarkdown field must contain non-empty Markdown-formatted rule body text"
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -35,34 +34,34 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Defines the schema for ArchSpine rule documents, ensuring consistency and enforceability of architectural and coding rules.",
+        "role": "Defines the canonical structure and validation rules for SpineRule documents, which encode actionable policies within the ArchSpine mirror orchestration system.",
         "parameter_definitions": {
-          "schemaVersion": "Version identifier for the schema; ensures forward compatibility and migration handling.",
-          "ruleId": "Unique, kebab-case identifier for the rule; used for referencing and deduplication.",
-          "title": "Short human-readable name of the rule, displayed in reports and dashboards.",
-          "summary": "One-line description of the rule's intent, used in tooltips and summaries.",
-          "appliesTo": "List of file patterns or module paths the rule applies to; empty or missing would cause runtime errors.",
-          "severity": "Impact level: 'advisory' (informational), 'warning' (potential issue), 'error' (must fix). Controls CI exit codes and alerting.",
-          "enforceable": "Boolean flag indicating whether the system may automatically fix violations. False means only advisory checking.",
-          "rationale": "Optional complementary text explaining why the rule exists; may be null.",
-          "bodyMarkdown": "Full rule text in Markdown format, used for documentation and inline guidance."
+          "schemaVersion": "Version identifier for the schema; ensures compatibility with the consuming parser.",
+          "ruleId": "Unique identifier for the rule; must be lowercase with hyphens. Used for referencing and update operations.",
+          "title": "Human-readable short name of the rule; required to provide quick context.",
+          "summary": "One-line description clarifying the rule's intent and scope.",
+          "appliesTo": "List of subsystem names or component identifiers that the rule targets; must contain at least one valid entry.",
+          "severity": "Determines the rule's criticality: 'advisory' for recommendations, 'warning' for potential issues, 'error' for strict violations.",
+          "enforceable": "Boolean flag indicating whether the rule can be automatically enforced or is informational only.",
+          "rationale": "Optional justification text explaining why the rule exists; may be null.",
+          "bodyMarkdown": "Detailed rule body in Markdown format; non-empty content expected for actionable interpretation."
         },
-        "stability_and_risks": "This schema enforces structural integrity of rule documents. Misconfigurations such as invalid severity, missing appliesTo, or incorrect ruleId pattern can cause rules to be ignored or produce false enforcement results. The enforceable flag directly impacts automated remediation: setting it to true on a broad rule may trigger dangerous automatic changes. Severity levels affect CI gate behavior; an 'error' rule that is too broad may block legitimate changes. The schema's additionalProperties: false ensures no stray fields compromise parsing. Overall, this schema is a safety gate: it prevents malformed rules from entering the system, reducing risk of inconsistent enforcement and system instability."
+        "stability_and_risks": "This schema enforces structural integrity across all SpineRule documents. Violations (e.g., missing mandatory fields or pattern mismatches) cause immediate parsing failure, preventing inconsistent or ambiguous rules from being applied. Risk: over-constraining rule authors may discourage flexible policy expressions, but the trade-off ensures deterministic enforcement across distributed mirror nodes."
       },
       "Simplified Chinese": {
-        "role": "定义ArchSpine规则文档的架构，确保架构和编码规则的一致性和可执行性。",
+        "role": "定义 SpineRule 文档的标准结构和验证规则，这些文档编码 ArchSpine 镜像编排系统中的可执行策略。",
         "parameter_definitions": {
-          "schemaVersion": "架构版本标识符，确保向前兼容和迁移处理。",
-          "ruleId": "唯一的、短横线分隔的小写标识符，用于引用和去重。",
-          "title": "规则的简短人类可读名称，显示在报告和仪表盘中。",
-          "summary": "规则意图的单行描述，用于工具提示和摘要。",
-          "appliesTo": "规则所适用的文件模式或模块路径列表；为空或缺失会导致运行时错误。",
-          "severity": "影响级别：'advisory'（信息性）、'warning'（潜在问题）、'error'（必须修复）。控制CI退出代码和告警行为。",
-          "enforceable": "布尔标志，指示系统是否可以自动修复违反。False仅表示建议性检查。",
-          "rationale": "可选补充文本，解释规则存在的原因；可以为null。",
-          "bodyMarkdown": "规则完整文本（Markdown格式），用于文档和内联指导。"
+          "schemaVersion": "架构版本标识符，确保与解析器的兼容性。",
+          "ruleId": "规则的唯一标识符，必须为小写字母加连字符。用于引用和更新操作。",
+          "title": "规则的人类可读短名称，必须提供以快速提供上下文。",
+          "summary": "规则意图和作用范围的一行描述。",
+          "appliesTo": "规则所适用的子系统名称或组件标识符列表，至少包含一个有效条目。",
+          "severity": "决定规则的严重级别：'advisory' 表示建议，'warning' 表示潜在问题，'error' 表示严格违规。",
+          "enforceable": "布尔标志，指示规则是否可以自动执行，还是仅提供信息。",
+          "rationale": "可选的规则理由文本，解释规则存在的原因；可以为 null。",
+          "bodyMarkdown": "规则的详细内容（Markdown 格式），非空内容以确保可操作的解释。"
         },
-        "stability_and_risks": "此架构强制要求规则文档的结构完整性。配置错误（如无效的severity、缺少appliesTo或ruleId模式不正确）可能导致规则被忽略或产生错误的执行结果。enforceable标志直接影响自动修复：在广泛的规则上设置为true可能触发危险性的自动更改。severity级别影响CI门控行为：过于宽泛的'error'规则可能阻塞合法的变更。additionalProperties:false确保没有多余字段破坏解析。总体而言，此架构是一道安全门：防止格式错误的规则进入系统，降低不一致执行和系统不稳定的风险。"
+        "stability_and_risks": "该架构确保所有 SpineRule 文档的结构完整性。违反规则（如缺少必填字段或模式不匹配）会导致立即解析失败，防止不一致或模糊的规则被应用。风险：过度约束可能限制规则作者的灵活表达，但此权衡确保了分布式镜像节点间的确定性执行。"
       }
     }
   },
@@ -84,7 +83,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:24:00.581Z",
+    "indexedAt": "2026-05-03T12:16:10.792Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

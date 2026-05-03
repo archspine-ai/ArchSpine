@@ -1,41 +1,38 @@
-# ArchSpine Root Configuration Summary
+# ArchSpine Configuration Summary
 
-## Role
+This configuration defines the operational boundaries and defaults for the ArchSpine mirror system. It controls scanning policy, artifact generation, hook behavior, and initial state management for agent instructions and ignore files.
 
-Root configuration for the ArchSpine project mirror system, defining core operational parameters, scanning policy, artifact generation, hooks, and initialization defaults.
+## Key Parameters and Their Roles
 
-## Parameter Definitions
+### Scanning Policy
+- **`scanPolicy.fileSource`**: Must be `"git-tracked"` to restrict scanning to version-controlled files only. Any other value risks scanning untracked or generated files.
+- **`scanPolicy.ignoreChain`**: Inherits `.gitignore` patterns by default (`inheritGitIgnore: true`) and uses `.spineignore` for project-specific exclusions, with an optional local override `.spineignore.local`. This chain prevents unwanted files from entering the mirror.
+- **`scanPolicy.protocolExclusions`**: The directory `.spine/` is excluded from scanning, but specific subpaths (`.spine/rules/`, `.spine/config.json`) are explicitly included via `protocolInclusions`. Ensure these lists remain accurate to avoid leaking internal configuration or missing required files.
 
-| Parameter | Description |
-|-----------|-------------|
-| `schemaVersion` | Defines the version of the configuration schema; must follow semver for compatibility. |
-| `project.name` | The canonical name of the project being mirrored; used for identity in all subsystems. |
-| `project.locales` | List of supported locales for atlas documentation; currently English and Simplified Chinese. |
-| `llm` | LLM provider configuration; empty in this snippet, but can be populated with model endpoints. |
-| `mcp.contextMode` | Determines context aggregation mode for MCP server; `'off'` means no context enrichment. |
-| `hooks.preCommit` | Enables or disables pre-commit hook integration; `false` means hook is not active. |
-| `hooks.syncMode` | Defines how sync operations are triggered; `'hook'` means via git hooks. |
-| `artifacts.strategy` | Artifact distribution model; `'distributable'` means artifacts can be published separately. |
-| `artifacts.experimentalViewLayer` | Enables experimental view layer for advanced rendering of architecture views. |
-| `artifacts.enabledViews` | List of view types to generate: public-surface, risk-hotspots, architecture-diagram. |
-| `scanPolicy.fileSource` | Determines which files the scanner considers; `'git-tracked'` only scans files in git index. |
-| `scanPolicy.ignoreChain.inheritGitIgnore` | Whether to inherit patterns from the repository's `.gitignore`. |
-| `scanPolicy.ignoreChain.projectIgnore` | Path to a project-level ignore file (`.spineignore`). |
-| `scanPolicy.ignoreChain.localIgnore` | Path to a local override ignore file (`.spineignore.local`). |
-| `scanPolicy.protocolExclusions` | Paths excluded from scanning by default; protects internal spine directories. |
-| `scanPolicy.protocolInclusions` | Paths re-included from exclusions; ensures critical spine config is scanned. |
-| `initState.artifactStrategy` | Initial artifact strategy used during first initialization. |
-| `initState.agentInstructionsFile` | Name of the agent instructions file (default `AGENTS.md`). |
-| `initState.agentInstructionsCreatedByArchSpine` | Flag indicating whether `AGENTS.md` was auto-generated. |
-| `initState.spineIgnoreManaged` | Whether `.spineignore` is managed by ArchSpine. |
-| `initState.spineIgnoreCreatedByArchSpine` | Flag indicating whether `.spineignore` was auto-generated. |
-| `initState.searchIgnoreManaged` | Whether search ignore files are managed. |
-| `initState.searchIgnoreCreatedByArchSpine` | Flag for auto-generation of search ignore. |
-| `initState.gitIgnoreManaged` | Whether `.gitignore` is managed by ArchSpine. |
-| `initState.gitIgnoreCreatedByArchSpine` | Flag for auto-generation of `.gitignore`. |
-| `initState.gitAttributesManaged` | Whether `.gitattributes` is managed by ArchSpine. |
-| `initState.gitAttributesCreatedByArchSpine` | Flag for auto-generation of `.gitattributes`. |
+### MCP Context Mode
+- **`mcp.contextMode`**: Must be `"off"` to disable MCP context injection. Enabling this mode could introduce security vulnerabilities or unintended context exposure. This is a critical safety invariant.
 
-## Stability and Risks
+### Hooks
+- **`hooks.preCommit`**: Set to `false` to avoid unintended automation. Enabling pre-commit hooks may cause sync loops or block commits.
+- **`hooks.syncMode`**: Set to `"hook"` meaning synchronization is triggered by hooks. Changing this could alter the sync behavior unexpectedly.
 
-This configuration file controls the core scanning and artifact pipeline. Misconfiguring `scanPolicy` (e.g., removing `protocolExclusions`) may cause ArchSpine to index its own internal files, leading to recursive loops and data corruption. Setting `hooks.preCommit` to true without proper testing can block commits unexpectedly. The `artifacts.experimentalViewLayer` feature is marked experimental; enabling it may introduce rendering instability. The `initState` flags are critical for upgrade and migration workflows; incorrect values may cause the system to overwrite user-managed files or fail to update managed files. The `mcp.contextMode` value `'off'` disables all context enrichment, which reduces LLM overhead but also reduces response quality for agent interactions. Overall, this file must be reviewed carefully during setup and upgrades.
+### Artifact Strategy
+- **`artifacts.strategy`**: Must be `"distributable"` for consistent, package-ready artifact output. Other strategies may produce non‑standard results.
+- **`artifacts.experimentalViewLayer`**: Currently enabled (`true`) for new UI features, but considered potentially unstable. Monitor for regressions.
+- **`artifacts.enabledViews`**: The views `public-surface`, `risk-hotspots`, and `architecture-diagram` are selected. Adding or removing views changes artifact content.
+
+### Initial State Management
+The `initState` booleans indicate whether ArchSpine or the user manages specific configuration files:
+- **`agentInstructionsCreatedByArchSpine`**: `false` means the `AGENTS.md` file is user-managed; modifying it by ArchSpine could overwrite user content.
+- **`spineIgnoreManaged`, `searchIgnoreManaged`, `gitIgnoreManaged`, `gitAttributesManaged`**: All `true` — ArchSpine will manage these files. User edits may be overwritten during upgrades. If you need customizations, set these to `false` or use local ignore overrides.
+- **`artifactStrategy`**: Must match `artifacts.strategy` (`"distributable"`). Inconsistency can break initialization.
+
+## Stability and Operational Risks
+
+- **Incorrect `mcp.contextMode`** or **`hooks.preCommit`** can introduce security gaps or automation conflicts.
+- **Misaligned protocol exclusions/inclusions** may cause essential files to be omitted from the mirror or expose internal directories.
+- **Changing `scanPolicy.fileSource`** from `"git-tracked"` risks scanning non‑Git files, potentially leaking secrets or configuration.
+- **Editing managed files** (e.g., `.gitignore`, `.spineignore`) when `*Managed` is `true` will be overwritten by ArchSpine. Use local ignore files for customization.
+- **Upgrade safety** depends on the `initState` settings: if you rely on user-managed files, ensure the corresponding `*Managed` booleans are `false`.
+
+Review this configuration carefully before deployment, especially the exclusion/inclusion lists and hook settings.

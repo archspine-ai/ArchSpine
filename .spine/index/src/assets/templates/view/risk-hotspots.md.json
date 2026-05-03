@@ -3,23 +3,22 @@
   "identity": {
     "filePath": "src/assets/templates/view/risk-hotspots.md",
     "contentHash": "f22d537550c0339c2e0acbc6121d044cac8eef007ef5e5d1137c684297f882cb",
-    "semanticHash": "cacbc6b512ef4161177cd61028e5a366c58231b92588c6b2b9e4a6a0e4a875b2",
+    "semanticHash": "262bb057d30395aa01a15ce384c77dc64d71848e3f43e8a0a49bd6a337248260",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/assets/templates/view"
   },
   "semantic": {
-    "role": "Risk assessment report for the ArchSpine project, identifying and detailing high-risk files within the codebase.",
+    "role": "Risk hotspot report documentation for the ArchSpine codebase, highlighting files with highest risk to aid prioritization.",
     "responsibilities": [
-      "Ranking files by risk factors such as complexity, change frequency, dependency issues, or architectural violations.",
-      "Providing detailed analysis for each high-risk file to aid in prioritization of refactoring or testing.",
-      "Serving as a snapshot of current risk posture, refreshed by the `spine sync` command."
+      "Identifying top risk files ranked by risk factors, impact, and composite score.",
+      "Providing detailed analysis for each risk hotspot, including specific risk factors and impact descriptions.",
+      "Offering a dynamically generated overview of codebase risk distribution to support maintenance decisions."
     ],
     "outOfScope": [
-      "General performance metrics or profiling data.",
-      "Feature roadmap, changelogs, or release notes.",
-      "Security vulnerability scanning (unless integrated as a risk factor).",
-      "User stories or requirements documentation."
+      "Non-risk code quality metrics, such as performance or style violations.",
+      "Historical trend analysis of risk over time.",
+      "Manual editing or curation of risk data; this is an auto-generated experimental view."
     ],
     "invariants": [],
     "changeIntent": {
@@ -31,23 +30,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document is a generated risk hotspots report for the ArchSpine system. It surfaces files that pose the highest risk to project health based on factors like complexity, churn, and rule violations. The report is experimental and intended to help teams focus improvement efforts.",
-        "context_and_audience": "Target audience includes developers, software architects, engineering managers, and quality assurance teams who need a data-driven view of problematic areas in the codebase. It is part of the ArchSpine 'view' system and generated via `spine sync`.",
+        "purpose": "The Risk Hotspots Report serves as a decision-support tool for prioritizing codebase maintenance by surfacing files with the highest composite risk scores derived from risk factors and impact.",
+        "context_and_audience": "This document is intended for developers, technical leads, and maintainers of the ArchSpine project who need to focus refactoring and testing efforts on the most critical areas. It is auto-generated and updated via the `spine sync` command, providing an experimental view into codebase risk.",
         "key_takeaways": [
-          "Provides a ranked table of risk files with scores and impact levels.",
-          "Includes a detailed analysis section for each high-risk file.",
-          "Refreshed on demand; does not automatically update.",
-          "Use this to prioritize technical debt reduction or increased test coverage."
+          "Top risk files are ranked by a composite score balancing risk factors and impact.",
+          "Each detailed analysis explains why a file is flagged and suggests attention areas.",
+          "The report is experimental and refreshed on demand; it should not be treated as a permanent audit."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档是 ArchSpine 系统生成的风险热点报告，用于展示那些因复杂性、频繁变更或违反架构规则等因素而带来较高风险的文件。该报告为实验性质，旨在帮助团队聚焦需要优先改进的代码区域。",
-        "context_and_audience": "目标读者包括开发者、软件架构师、工程管理者和质量保障团队，他们需要基于数据的视角了解代码库中的问题区域。本文档属于 ArchSpine 的“视图”系统，通过 `spine sync` 命令生成。",
+        "purpose": "《风险热点报告》旨在通过汇总风险因子和影响评估，将代码库中综合风险得分最高的文件突出显示，为维护优先级决策提供依据。",
+        "context_and_audience": "本文档面向 ArchSpine 项目的开发者、技术负责人及维护者，帮助他们将重构和测试资源集中于最关键的代码区域。报告由系统自动生成并可通过 `spine sync` 命令刷新，属于实验性视图，用于辅助代码风险评估。",
         "key_takeaways": [
-          "提供按风险分数和影响等级排序的文件排名表。",
-          "每个高风险文件都附带详细分析说明。",
-          "由于按需刷新，不会自动更新：请重新运行 `spine sync` 获取最新报告。",
-          "可用于优先处理技术债务或增强测试覆盖的决策依据。"
+          "风险文件按风险因子与影响综合得分排序，分数最高者排在首位。",
+          "每个风险文件的详细分析说明了被标记的原因及建议关注方向。",
+          "该报告为实验性功能，按需刷新，不应被视为永久审计结果。"
         ]
       }
     }
@@ -70,7 +67,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:25:00.904Z",
+    "indexedAt": "2026-05-03T12:17:10.403Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

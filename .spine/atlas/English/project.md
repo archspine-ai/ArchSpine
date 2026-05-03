@@ -1,39 +1,38 @@
-ArchSpine is a mirror system that provides AI-augmented architectural governance, automated validation, and intelligent documentation for software projects. It maintains codebase integrity and generates living documentation by combining modular analysis pipelines with LLM-based reasoning.
+ArchSpine is a semantic mirror system that helps developers create and maintain an AI-augmented, structured representation of their codebase. It is designed for architectural analysis, documentation generation, and intelligent code understanding. The system orchestrates a multi-stage pipeline that covers everything from file system scanning to rule enforcement and view generation.
 
-**Core Modules and Integration**
+### Core Modules and How They Work Together
 
-The system is driven by a pipeline orchestrated through several key layers:
+1. **CLI Layer (`src/cli`)** – The command-line interface handles user interaction, argument parsing, and command routing. It provides subcommands like `build`, `sync`, `init`, `view`, and `check`, delegating each request to the appropriate core service.
 
-1. **Configuration and Scanning Policies** – The `.spine` directory and rule files define scanning strategies, language detection mappings, and ignoring patterns. These policies instruct the system which files to discover and how to interpret them.
+2. **Core Pipeline Orchestration (`src/core`)** – This module defines the execution contracts, error codes, and the pipeline orchestrator. It manages the lifecycle of a synchronous task run, coordinating scanning, parsing, summarization, validation, and state commitment.
 
-2. **AST Extraction Engines** – Located in `src/ast`, these engines parse source code using language-specific rules to detect imports, exports, and usages. They build a dependency graph from the codebase, enabling further analysis.
+3. **Scanning Engines (`src/engines`)** – The scanner uses git-aware ignore rules to discover files. Together with context resolvers and rule enforcers, it loads architectural rules (e.g., layer isolation, naming conventions) and checks for violations. The reporting engine generates health, usage, and violation reports.
 
-3. **Architectural Rules Engine** – Rules defined in `.spine/rules` enforce layering, naming conventions, and dependency flow. The engine (`src/engines`) matches extracted dependencies against these rules, flagging violations such as reverse layer dependencies or missing documentation.
+4. **Infrastructure Services (`src/infra`)** – These provide the foundational support:
+   - **Config** – Loads, validates, and stores configuration settings.
+   - **Database** – Manages SQLite lifecycle, schema, and repositories for drift, file status, symbols, and violations.
+   - **LLM** – Abstracts multiple LLM providers (Gemini, OpenAI, mock) with retry logic, credential handling, and prompt assembly.
+   - **Credentials** – Platform-agnostic secure storage for API keys.
+   - **Manifest** – Handles file hashing, integrity verification, and state persistence.
+   - **MCP Server** – Exposes ArchSpine’s internal resources and tools to external AI agents via the Model Context Protocol.
 
-4. **LLM Infrastructure** – The system integrates with multiple LLM providers (OpenAI, Gemini) via `src/infra/llm`. It constructs prompts using templates (`src/assets/templates/prompts`) to generate semantic summaries of files, architecture diagrams, and structured outputs. The prompt context system manages budget calculation, trimming, and policy resolution.
+5. **Service Orchestrators (`src/services`)** – These coordinate high-level workflows such as check, fix, sync, and view generation. They manage session lifecycles, checkpoint resumability, and cross-service integration.
 
-5. **CLI and MCP Interface** – The CLI (`src/cli/commands`) exposes operations: `init`, `sync`, `fix`, `scan`, `publish`, `view`. The MCP server (`src/infra/mcp`) provides the same capabilities to external AI agents via the Model Context Protocol, with context-aware gating.
+6. **Task Executors (`src/tasks`)** – They implement the end-to-end pipeline stages: scanning, AST extraction, semantic summarization (via LLM), validation, aggregation, reverse indexing, view derivation, documentation backfill, and cleanup.
 
-6. **Service Orchestration** – Services in `src/services` manage the lifecycle of pipeline runs, including checkpoint/resume. They coordinate scanning, AST extraction, validation, LLM correction, summarization, and view generation. Session state is persisted in checkpoints, allowing interrupted runs to resume reliably.
+7. **Type System (`src/types`)** – Defines shared contracts like `SpineUnit`, `SpineConfig`, manifest, rules, and view artifacts. This ensures consistency across all modules.
 
-7. **Infrastructure Layer** – This includes SQLite database persistence (`src/infra/db`) for file metadata, drift events, and violations; credential storage with platform-specific backends (`src/infra/credentials`); manifest tracking (`src/infra/manifest`); and prompt assembly (`src/infra/prompt`). These components provide the data foundation for all operations.
+8. **Test Suite (`tests/`)** – Includes unit, integration, and end-to-end tests to validate CLI commands, configuration, LLM integration, sync workflows, error handling, and rule enforcement.
 
-8. **Templates and Views** – Templates in `src/assets/templates/atlas`, `prompts`, `rules`, and `view` define the contracts for mirroring documentation, AI interactions, architectural constraints, and generated risk assessments. The view subsystem (`src/services/view`) generates architecture diagrams, risk hotspots, and public surface inventories.
+### Practical Workflow
 
-9. **Task Pipeline** – Individual pipeline stages (`src/tasks`) implement specific steps: scanning, reconciliation, AST extraction, summarization, validation, fix generation, aggregation, reverse indexing, view derivation, and state commitment. They execute in order and support resumability based on checkpoint state.
+A typical `sync` command triggers the following flow:
+- The CLI parses arguments and initiates a pipeline via the core orchestrator.
+- The scanner reads ignored patterns (from `.gitignore` and `.spine/rules`) and discovers source files.
+- AST parsers extract symbols, imports, and exports for each file.
+- For each file, a semantic summary is generated by calling the configured LLM provider.
+- Architectural rules (layer isolation, naming conventions) are evaluated against the parsed code and summaries.
+- Results are stored in the SQLite database, and the manifest tracks file integrity and sync state.
+- Views (architecture diagrams, risk hotspots, public surface) can be rendered from the collected data.
 
-**Practical Workflow Example**
-
-When a developer runs `archspine sync`, the system:
-- Reads `.spine` configuration and loads rules.
-- Scans the file system, ignoring patterns from policies.
-- Parses source files with AST engines to extract dependencies and exports.
-- Validates dependencies against architectural rules, recording violations.
-- Generates LLM-based summaries for each file using prompt templates.
-- Produces aggregated views (architecture diagram, risk assessment).
-- Persists all results in the SQLite database and updates manifests.
-- Saves checkpoints at each stage to enable resumption.
-
-The same workflow can be triggered from an AI agent via MCP, with context access controlled by priming state and operational mode.
-
-Testing across unit, integration, and end-to-end scenarios ensures reliability. The demo project in `examples/` provides a concrete illustration of the system’s behavior, including intentional violation detection.
+This pipeline allows developers to continuously monitor architecture quality, automatically generate documentation, and expose structured code intelligence to AI agents through the MCP server.

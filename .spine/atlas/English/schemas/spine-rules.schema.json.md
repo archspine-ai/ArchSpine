@@ -1,29 +1,34 @@
-# ArchSpine Rule Document Configuration Summary
+# ArchSpine SpineRule Configuration Summary
 
-## What It Controls
-This schema defines the structure of every rule document used by the ArchSpine system. It ensures that rules are consistently formatted, enforceable, and carry the metadata needed for static analysis, reporting, and automated remediation.
+This configuration defines the **canonical structure and validation rules** for **SpineRule documents**—the actionable policy units within the ArchSpine mirror orchestration system. Every policy that controls mirror behavior must be expressed as a valid SpineRule.
 
-## Key Parameters and Their Impact
+## What the Configuration Controls
 
-- **`schemaVersion`** – Enables forward compatibility. Must be present to allow migration handling when the schema evolves.
-- **`ruleId`** – A unique, kebab-case identifier (`^[a-z0-9]+(?:-[a-z0-9]+)*$`). Used for rule referencing and deduplication. A misformed ID can cause the rule to be ignored or create conflicts.
-- **`title`** & **`summary`** – Human-readable fields displayed in dashboards and tooltips. They must be non-empty strings.
-- **`appliesTo`** – A non-empty array of file patterns or module paths. This determines where the rule is evaluated. An empty or missing value leads to runtime errors and potential bypass of the rule.
-- **`severity`** – Controls CI exit codes and alerting:
-  - `advisory` – informational only, does not block builds.
-  - `warning` – signals potential issues; may trigger warnings but not failures.
-  - `error` – must fix; blocks CI gates and triggers immediate alerts.
-  Overly broad `error` rules can block legitimate changes.
-- **`enforceable`** – A boolean that decides whether the system may automatically fix violations. Setting this to `true` on a widely scoped rule can lead to dangerous automatic modifications. Use with caution.
-- **`bodyMarkdown`** – The full Markdown body for human guidance. Must be non-empty; provides inline documentation.
-- **`rationale`** – Optional string or `null`. Explains *why* the rule exists. Helpful for reviewers but not required.
+- **Rule document validity** – Only documents that pass JSON Schema validation are accepted.
+- **Mandatory metadata** – Every rule must supply `schemaVersion`, `ruleId`, `title`, `summary`, `appliesTo`, `severity`, `enforceable`, and `bodyMarkdown`.
+- **Naming consistency** – The `ruleId` must be lowercase with hyphens only (e.g., `my-rule`).
+- **Severity classification** – Rules are categorized as `advisory`, `warning`, or `error`, which governs downstream enforcement behavior.
+- **Target selection** – The `appliesTo` array lists which subsystems or components the rule affects; at least one entry is required.
+- **Enforceability** – The `enforceable` boolean tells the system whether the rule can be applied automatically or is informational only.
 
-## Stability and Operational Risks
+## Key Parameters
 
-- **Structural integrity**: The schema enforces `additionalProperties: false` and requires all mandatory fields. Any extra or missing properties cause validation failure, preventing malformed rules from entering the system.
-- **Enforcement misconfiguration**: An `enforceable: true` rule with a broad `appliesTo` can trigger automated changes that break the codebase. Always review the scope before enabling auto-fix.
-- **Severity misuse**: An `error`-level rule that is too broad may block routine commits. Use `advisory` or `warning` for low-confidence or informational rules to avoid false positives.
-- **Pattern mismatches**: Invalid `ruleId` patterns or empty strings in `appliesTo` can make the rule silently inactive or cause runtime exceptions.
-- **No stray fields**: The `additionalProperties: false` constraint ensures that unexpected fields do not corrupt parsing or enforcement logic.
+| Parameter      | Description                                                                 |
+|----------------|-----------------------------------------------------------------------------|
+| `schemaVersion` | Ensures compatibility with the consuming parser.                           |
+| `ruleId`       | Unique, hyphen-separated, lowercase identifier for referencing and updates. |
+| `title`        | Short human-readable name for quick context.                               |
+| `summary`      | One-line description of the rule’s intent.                                 |
+| `appliesTo`    | Array of target subsystem/component names; must be non-empty.              |
+| `severity`     | Criticality level: `advisory` (recommendation), `warning` (potential issue), `error` (strict violation). |
+| `enforceable`  | Boolean flag: `true` if the rule can be enforced automatically.            |
+| `rationale`    | Optional justification (string or null).                                   |
+| `bodyMarkdown` | Full rule body in Markdown; must be non-empty for actionable use.          |
 
-Operators should treat this schema as a safety gate: it prevents inconsistent or dangerous rules from being loaded. Always validate rule documents against this schema before deploying them.
+## Stability and Risks
+
+- **Strict validation** – Any missing required field, pattern mismatch, or extra property causes **immediate parsing failure**. This prevents ambiguous or malformed rules from entering the system.
+- **Risk of over-constraint** – The rigid schema may limit flexible policy expressions, but the trade-off guarantees **deterministic enforcement across all distributed mirror nodes**. Operators should ensure rule authors are aware of the required fields and patterns to avoid rejections.
+- **Version compatibility** – The `schemaVersion` field must match the version expected by the parser; using an outdated version will cause failure.
+
+---

@@ -1,17 +1,18 @@
-# ArchSpine Pull Request Template – Summary
+---MARKDOWN:Simplified Chinese---
+# ArchSpine 拉取请求模板
 
-## Purpose
-This document is a standardized pull request template designed to guide contributors in describing their changes to the ArchSpine project. It exists to ensure that every PR includes a clear summary, motivation, testing evidence, and documentation impact assessment – creating a consistent and reviewable record of all contributions.
+## 文档目的
 
-## Audience
-This template is intended for all developers contributing to ArchSpine, including both human maintainers and AI agents. Anyone who opens a pull request should use this template to structure their description.
+本文档为 ArchSpine 项目中的拉取请求描述提供了一个标准化的模板。它确保每一次贡献都能清晰地传达变更内容、背后的动机以及必要的验证证据。
 
-## Key Workflows Anchored
-- **PR Submission**: The template defines required sections (Summary, Motivation, Testing, Docs impact) that must be filled out for every contribution.
-- **Review Process**: It provides a checklist for testing (`npm run build`, `npm test`, `npm run validate`) and a documentation impact checkbox, making reviews faster and more reliable.
-- **Change Documentation**: By forcing explicit motivation and testing evidence, the template anchors the workflow of linking code changes back to user-facing problems or feature requirements.
+## 面向的读者
 
-## Key Takeaways
-- Every PR must include a summary and motivation.
-- Testing checklist ensures changes are verified before merging.
-- Documentation impact must be assessed and indicated in the pull request.
+所有向 ArchSpine 仓库提交贡献的开发者。无论你是发起拉取请求还是进行审查，这个模板都会引导你完成关键部分：简洁的摘要、变更动机、测试步骤及证据，以及文档影响说明。
+
+## 锚定的决策与工作流程
+
+- **描述一致性：** 使用本模板写出 2‑5 句话的摘要和明确的动机。
+- **测试证据：** 模板提示你运行核心检查（`npm run build`、`npm test`、`npm run validate`），并提供你自己的测试结果。
+- **文档影响：** 你必须指明是否更新了 README 或其他文档，或者不需要任何文档变更。
+
+该模板将每个拉取请求锚定为一个自包含、便于审查的提交，从而规范了整个贡献的工作流程。

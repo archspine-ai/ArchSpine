@@ -3,24 +3,29 @@
   "identity": {
     "filePath": "package.json",
     "contentHash": "f7da7d36eb7dbe5f6a533e0a4b5923e6fe484ae2fbe10c6e50613e0b7cc249de",
-    "semanticHash": "8693ea6905080ec7929acd65ed14bd7795ce8ee8fc55a8fc3a399ed41ff714c4",
+    "semanticHash": "8789af8d96b9277a3fcfa48d616b92c323bfc6dfc9aca3560dae576fad7c44fa",
     "language": "unsupported",
     "fileKind": "config",
     "scope": ""
   },
   "semantic": {
-    "role": "Project package manifest for the ArchSpine CLI tool, defining metadata, entry points, scripts, and dependencies.",
+    "role": "Defines the project metadata, entry points, scripts, dependency declarations, and publishing artifacts for the ArchSpine CLI toolchain.",
     "responsibilities": [
-      "Registers the 'spine' and 'archspine' binary commands for CLI invocation",
-      "Defines build, test, lint, and documentation scripts",
-      "Specifies Node.js engine compatibility constraints",
-      "Controls npm publishing file set"
+      "Declare the package identity, version, authorship, license, and repository links.",
+      "Configure executable entry points (`spine` and `archspine` commands).",
+      "Specify Node.js engine version constraints for runtime compatibility.",
+      "List files to be included in the npm distribution.",
+      "Define build, test, lint, documentation, and release scripts.",
+      "Pin development dependencies and their allowed versions."
     ],
     "outOfScope": [],
     "invariants": [
-      "Node engine must be >=20.18.1 <21 or >=22 – no other versions",
-      "Required development dependencies must be present for building and testing",
-      "All CLI subcommands are expected to be defined under 'spine' and 'archspine' binaries"
+      "Node engine must be >=20.18.1 <21 or >=22.",
+      "The package type is `module` (ESM) which enforces module semantics.",
+      "The `main` field points to the compiled CLI entry point (`dist/cli/index.js`).",
+      "Both `spine` and `archspine` command names are registered in `bin`.",
+      "Distribution includes directories `dist/`, `schemas/`, and documentation files.",
+      "The project is licensed under Apache-2.0."
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -31,30 +36,38 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "This package.json file serves as the root configuration for the ArchSpine project. It declares the project name, version, CLI entry points, and all available npm scripts. It also enforces Node.js version constraints and lists the files to be published to npm.",
+        "role": "Defines the metadata, entry points, build scripts, dependency declarations, and publishing artifacts for the ArchSpine CLI toolchain.",
         "parameter_definitions": {
-          "name": "Sets the package name to 'archspine' – used for npm registry identification.",
-          "bin": "Maps 'spine' and 'archspine' commands to the same CLI entry point, making the tool accessible from the terminal.",
-          "engines": "Restricts runtime to Node.js versions 20.18.1–20.x or 22.x, preventing compatibility issues with unsupported versions.",
-          "scripts": "Defines automation for building, testing, linting, documentation, and release processes – influences pipeline stability and CI/CD reliability.",
-          "files": "Restricts the published npm package to only necessary directories and documentation, minimizing attack surface and package size.",
-          "license": "Apache-2.0 license governs legal usage and redistribution.",
-          "dependencies": "Lists runtime dependencies required for the CLI operation; missing or incorrect versions can break the tool."
+          "name": "Package name used for npm registry identification and project referencing.",
+          "version": "Semantic version that influences dependency resolution and release compatibility.",
+          "description": "Human-readable summary of the project's purpose.",
+          "main": "Entry module loaded when the package is required; must exist after build.",
+          "bin": "Maps command names to executable scripts; defines the CLI interface.",
+          "type": "\"module\" forces ESM; affects how imports/exports are resolved.",
+          "engines": "Constrains the Node.js runtime version; mismatches cause installation or runtime failures.",
+          "files": "Controls which files are shipped to npm; influences package size and security.",
+          "scripts": "Defines automation for build, test, lint, docs, and release workflows.",
+          "devDependencies": "Pin the exact or minimum versions of development tools; outdated or incompatible versions break CI.",
+          "license": "Determines legal use, distribution, and contribution terms."
         },
-        "stability_and_risks": "The package.json defines the fundamental contract for the project’s runtime environment. The Node engine restriction prevents accidental usage on untested versions, reducing stability risks. The bin entries ensure the CLI can be invoked reliably. Incorrect script definitions or missing dependencies could break the build or test pipeline, impacting overall system reliability."
+        "stability_and_risks": "The package.json serves as the project's contract with the Node.js runtime and npm ecosystem. The engine constraint protects against unstable or incompatible Node versions. Scripts ensure reproducible builds and tests. The `files` field prevents sensitive data from being published. The `devDependencies` list must be kept updated to avoid security vulnerabilities or build breaks. Misconfiguration of `bin` or `main` can make the CLI unusable. All default and CI workflows depend on the accuracy of these definitions."
       },
       "Simplified Chinese": {
-        "role": "此package.json文件是ArchSpine项目的根配置文件，声明了项目名称、版本、CLI入口点以及所有可用的npm脚本。同时，它对Node.js版本进行了约束，并定义了要发布到npm的文件列表。",
+        "role": "定义ArchSpine CLI工具链的项目元数据、入口点、构建脚本、依赖声明以及发布工件。",
         "parameter_definitions": {
-          "name": "将包名称设置为'archspine'，用于npm注册表识别。",
-          "bin": "将'spine'和'archspine'命令映射到同一个CLI入口点，使得该工具可以在终端中直接调用。",
-          "engines": "限制运行环境为Node.js 20.18.1–20.x或22.x版本，避免与不受支持的版本出现兼容性问题。",
-          "scripts": "定义了构建、测试、代码检查、文档编写和发布的自动化流程，影响着流水线的稳定性和CI/CD的可靠性。",
-          "files": "限制npm发布的包只包含必要的目录和文档，最小化攻击面和包体积。",
-          "license": "Apache-2.0许可证规定了法律使用和重新分发规则。",
-          "dependencies": "列出了CLI运行所需的运行时依赖项；缺失或版本错误可能会导致工具无法正常工作。"
+          "name": "包名，用于npm注册表识别和项目引用。",
+          "version": "语义化版本号，影响依赖解析和发布兼容性。",
+          "description": "项目用途的人类可读摘要。",
+          "main": "包被引用时加载的入口模块；构建后必须存在。",
+          "bin": "命令名到可执行脚本的映射；定义CLI接口。",
+          "type": "\"module\"强制ES模块，影响导入/导出的解析方式。",
+          "engines": "约束Node.js运行时版本；不匹配会导致安装或运行失败。",
+          "files": "控制哪些文件随npm发布；影响包大小和安全性。",
+          "scripts": "定义构建、测试、格式化、文档、发布等工作流的自动化。",
+          "devDependencies": "锁定开发工具的确切或最低版本；过时或冲突的版本会破坏CI。",
+          "license": "决定法律使用、分发和贡献条款。"
         },
-        "stability_and_risks": "该package.json定义了项目运行时环境的基本契约。Node引擎限制防止在未经测试的版本上意外使用，降低了稳定性风险。bin条目确保CLI可以被可靠地调用。错误的脚本定义或缺失的依赖项可能会破坏构建或测试流水线，从而影响整体系统的可靠性。"
+        "stability_and_risks": "package.json是项目与Node.js运行时及npm生态的契约。引擎约束提供了对不稳定或不适配Node版本的防护。脚本确保了可重现的构建和测试流程。`files`字段防止敏感数据被发布。`devDependencies`列表必须保持更新以避免安全漏洞或构建失败。`bin`或`main`配置错误会导致CLI不可用。所有默认和CI工作流都依赖于此文件的准确性。"
       }
     }
   },
@@ -76,7 +89,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:23:16.657Z",
+    "indexedAt": "2026-05-03T12:15:43.894Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

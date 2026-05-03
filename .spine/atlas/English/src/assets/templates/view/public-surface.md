@@ -1,24 +1,22 @@
-# Public Surface Map — Summary
+# ArchSpine Public Surface Map – Summary
 
 ## Purpose
-
-This document is an **auto-generated inventory** of the ArchSpine project's public interface. It lists every CLI command, MCP tool, and exported module, providing a single source of truth for what the system exposes externally. Because it is automatically refreshed via `spine sync`, it always reflects the current implementation without manual effort.
+This document provides a comprehensive map of the ArchSpine public surface, enumerating all CLI commands, MCP tools, and exported modules that are considered stable and part of the official interface. It serves as the single authoritative reference for external consumers.
 
 ## Audience
-
-- **Developers** who need to quickly discover available commands and APIs.
-- **CI pipelines** that verify the documented surface matches the actual code.
-- **AI agents** consuming the system's API and requiring a machine-readable catalog.
-- **Maintainers** who want to confirm that all public entry points are accounted for.
+Developers, integrators, and maintainers who need to know exactly what commands, tools, and modules are available for external use. The document is auto-generated and should be refreshed after any public API changes via `spine sync`.
 
 ## Key Takeaways
+- Single authoritative reference for ArchSpine's public surface.
+- Coverage includes CLI, MCP, and exported modules.
+- Refresh via `spine sync` to keep in sync with actual implementation.
+- Experimental view — review before relying on it in production.
 
-- The document is **auto-generated** — never edit it manually. Any changes to CLI, MCP, or module exports are captured by running `spine sync`.
-- It serves dual purpose: a human-friendly overview for quick reference and a machine-parseable index for automated workflows.
-- Consult this map as the **authoritative list** of public interfaces before integrating with or extending ArchSpine.
+## Workflows Anchored
+- **API discovery**: consult this map to understand available entry points.
+- **Integration planning**: use the map to determine which CLI commands or MCP tools to depend on.
+- **Change management**: after adding or modifying a public API, regenerate the map to maintain accuracy.
 
-## How It Anchors Workflows
+---
 
-- **Onboarding** — new team members and agents can learn the full public surface in one place.
-- **Syncing** — the `spine sync` command regenerates the map, ensuring documentation stays in lockstep with code.
-- **Quality checks** — CI can compare this map against generated binding or client stubs to catch accidental API changes.
+*This summary is derived from the auto-generated Public Surface Map document.*

@@ -1,10 +1,7 @@
-The `src/types/protocol` directory serves as the type foundation for the entire ArchSpine mirror system. It defines the canonical schemas and interfaces that govern all core data structures — covering configuration, documents, languages, manifests, rules, versioning, and views. These contracts ensure data consistency and interoperability across every subsystem.
+The `src/types/` directory houses the core type definitions and data contracts for the ArchSpine mirror system. It defines all shared interfaces that ensure consistent data structures across mirror units (e.g., `SpineUnit`, `SpineIdentity`), project configuration (`SpineConfig`), language support, synchronization manifests, architectural rules, and version management.  
 
-The notable children are organized into two main areas:
+Notable children are grouped as:  
+- **`protocol.ts`** – A public facade module that re‑exports all protocol type definitions from the internal `./protocol/index.js` module, providing a stable, decoupled import path for external consumers.  
+- **`view.ts`** – Establishes type contracts for view artifacts in the ArchSpine view generation system, including architecture diagram specifications (nodes, edges, summary cards), public surface view items, and risk hotspot view items.  
 
-- **`protocol.ts`**: A public facade module that provides a single, stable import path for all protocol types. It re-exports everything from the internal `./protocol/index.js` module, decoupling external consumers from the internal module structure.
-- **`view.ts`**: A dedicated type definition module that establishes the contract for view artifacts in the view generation system. It defines TypeScript interfaces for view envelopes, content structures, identifiers (ViewId, ViewType), architecture diagram specifications (nodes, edges, summary cards), and specific view item types (public surface, risk hotspot).
-
-Internally, the `protocol/` subdirectory (accessed via `protocol.ts` and `./protocol/index.js`) groups type definitions for configuration, documents, languages, manifests, rules, and versioning. This modular separation makes the type system both extensible and maintainable.
-
-The most critical implementation areas are: (1) the protocol facade ensuring a stable API surface, (2) the view type contracts that drive the generation of architecture diagrams and risk summaries, and (3) the canonical schemas for rules and manifests that underpin validation and mirroring workflows.
+The most important implementation areas are the shared data model interfaces, configuration contracts, synchronization protocols, and the view‑artifact schema that together enable consistent mirror behavior and tooling integration.

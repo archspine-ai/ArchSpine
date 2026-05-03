@@ -1,46 +1,26 @@
-# ArchSpine Semantic Configuration Summary
+# ArchSpine Configuration Summary
 
-This configuration file defines the semantic identity, indexing pipeline, and provenance metadata for the **ArchSpine** project knowledge graph. It is the keystone for all indexing operations – if incorrectly set, the system may fail to generate correct semantic contracts, produce inconsistent documentation, or lose provenance traceability.
+This configuration defines the project metadata, module structure, and provenance pipeline for **ArchSpine** — a system that performs semantic indexing and generates documentation from repository knowledge graphs. It is consumed by both runtime pipelines (indexing, document generation) and tooling that validates repository consistency.
 
-## What This Configuration Controls
+## Key Parameters and Their Significance
 
-The file declares the project name, high-level role, module directories, and indexing provenance. It tells ArchSpine *what* to index, *how* to interpret source directories, and *when* the index was built.
-
-### Key Parameters and Their Importance
-
-| Parameter | Description | Operational Notes |
-|-----------|-------------|-------------------|
-| `schemaVersion` | Expected schema format (`"1.0.0"` must match current generator). | Mismatches cause parsing failures; must remain aligned with the runtime version to prevent silent data corruption. |
-| `projectName` | Identifier for the repository (e.g., `"archspine"`). | Used to scope generated artifacts and cross-reference indices. Must be a non‑empty string. |
-| `role` | Functional purpose of this configuration in the indexing pipeline (e.g., *Semantic indexing and protocol tooling for repository knowledge graphs*). | Describes the overall system intent – influences which pipeline stages are activated. |
-| `responsibility` | Primary outcome this configuration drives (e.g., *Builds machine‑readable semantic contracts and derived documentation under `.spine`*). | Affects downstream documentation generation; misalignment can produce irrelevant or broken outputs. |
-| `modules` | List of source directories and their roles. Each entry has `directory`, `role`, and `childCount`. | `childCount` helps allocate indexing resources and detect structural changes. Omitting or mislabeling modules leads to incomplete indexing or resource allocation errors. |
-| `provenance` | Records when (`indexedAt`), how (`generatorVersion`), and through which pipeline stages the index was built (e.g., `["ast", "llm"]`). | Critical for cache invalidation and audit trails. `indexedAt` must be a valid ISO 8601 timestamp; `generatorVersion` must match the current tool version. |
-
-### Example from Supporting Context
-
-```yaml
-projectName: archspine
-schemaVersion: "1.0.0"
-role: "Semantic indexing and protocol tooling for repository knowledge graphs."
-modules:
-  - directory: src
-    role: "Runtime and indexing pipeline implementation."
-    childCount: 14
-  - directory: docs
-    role: "Specification and strategy assets."
-    childCount: 4
-provenance:
-  indexedAt: "2026-04-02T10:00:00Z"
-  generatorVersion: "archspine/1.0.0"
-  pipelineStages: ["ast", "llm"]
-```
+| Parameter | Value / Constraint | Purpose |
+|---|---|---|
+| `schemaVersion` | Must be `"1.0.0"` | Ensures backward compatibility; used by downstream consumers to interpret the configuration format. |
+| `projectName` | Must be `"archspine"` | Identifies the project for routing and validation; cannot be changed without breaking integration. |
+| `modules` | Exactly two entries: `src` (14 children) and `docs` (4 children) | Declares which top‑level directories are recognized. `src` holds the indexing pipeline, `docs` holds specification and strategy assets. The `childCount` is used for structural integrity checks. |
+| `provenance.indexedAt` | ISO 8601 timestamp (e.g. `2026-04-02T10:00:00Z`) | Records when the index was last generated – critical for cache invalidation, incremental builds, and audit trails. |
+| `provenance.generatorVersion` | Must be `"archspine/1.0.0"` | Pins the exact version of the generator that produced this configuration, enabling reproducibility. |
+| `provenance.pipelineStages` | Ordered list `["ast", "llm"]` | Defines the processing stages (abstract syntax tree analysis, then LLM processing). The order determines the dependency chain and cannot be altered without changing the pipeline implementation. |
 
 ## Operational Risks and Stability Concerns
 
-- **Schema/Generator version mismatch:** The `schemaVersion` and `generatorVersion` must align with the actual runtime version of the ArchSpine generator. A mismatch can silently corrupt indexed data or break the entire pipeline.
-- **Module misconfiguration:** Incorrect `directory` paths, roles, or omitted `childCount` values cause incomplete indexing and resource allocation errors. The system uses `childCount` to decide how many workers to assign per module.
-- **Provenance inconsistency:** If `indexedAt` is not a valid ISO timestamp, or `generatorVersion` does not match the tool, audit trails become unreliable and cache invalidation may not work.
-- **Missing invariants:** The `modules` array must contain at least one entry; `projectName` must be a non‑empty string; `schemaVersion` must be exactly `"1.0.0"`. Violating any of these invariants will prevent the index from being built at all.
+- **Strict version enforcement**: `schemaVersion` and `generatorVersion` are locked to exact values. Changing them (or omitting them) will cause downstream tooling to reject the configuration or produce unpredictable results. Always update tooling in lockstep with schema changes.
 
-Operators should treat this file as a critical control plane – any change should be reviewed, validated, and tested against a non‑production environment first.
+- **Module structure requirements**: The `modules` array must contain exactly the required directories with the specified child counts. Missing `src` or `docs` will lead to incomplete index generation – and because such failures may be silent (e.g., an empty index file is created), they are hard to detect. Validation should be run as part of your CI pipeline.
+
+- **Provenance timestamps**: An incorrect or stale `indexedAt` can trick caching systems into using an outdated index or triggering unnecessary full rebuilds. For incremental builds, ensure the timestamp is updated each time the index is regenerated.
+
+- **Pipeline stage ordering**: The `pipelineStages` list is ordered and must include both `"ast"` and `"llm"` in that sequence. Changing the order or removing a stage will break the dependency chain of the indexing pipeline and may cause data inconsistency in the generated documentation.
+
+In summary, this configuration acts as a contract between the repository structure and the ArchSpine tooling. Any deviation from the enforced invariants can compromise the reliability of the semantic knowledge graph and the documentation it produces.

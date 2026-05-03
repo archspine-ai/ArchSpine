@@ -1,66 +1,19 @@
-# Repository Guidelines for ArchSpine
+---MARKDOWN:Simplified Chinese---
+# ArchSpine 仓库指南摘要
 
-## Purpose
+## 目的
+本文档是开发和维护 ArchSpine 镜像系统仓库的权威参考。它定义了项目结构、开发规范、构建和测试命令、编码标准，以及 AI 代理交互的关键协议。ArchSpine 镜像系统是一个上下文感知层，旨在帮助 AI 代理理解代码库，因此本文档对于人类开发者与 AI 助手之间的一致性协作至关重要。
 
-This document exists to onboard both human developers and AI agents to the ArchSpine repository. It provides a single source of truth for the project's directory layout, development workflow, coding conventions, and the ArchSpine context layer that governs AI interactions. By centralizing this information, the document ensures consistency across contributions and helps maintainers enforce quality standards.
+## 目标读者
+指南主要面向两类群体：
+- **人类开发者**：贡献于 ArchSpine 项目，包括修改 CLI、核心引擎、服务、基础设施、文档或架构图的开发者。
+- **AI 代理**（如代码助手）：需要高效浏览仓库，并遵循关于上下文检索、MCP 使用和输出保护既定协议的代理。
 
-## Audience
-
-The intended audience includes:
-
-- **Software developers** who need to understand how to navigate, build, test, and contribute to the ArchSpine codebase.
-- **Maintainers** responsible for reviewing contributions and enforcing repository standards.
-- **AI agents** (such as Claude or Copilot) that require structured guidance on how to interact with the repository, including the ArchSpine control plane and protected outputs.
-
-This is a living reference that should be consulted before making any changes.
-
-## Key Decisions and Workflows Anchored by This Document
-
-The following decisions and workflows are explicitly defined and should be followed by all contributors:
-
-### Project Structure
-
-- Source code lives under `src/` with key directories: `cli`, `core`, `engines`, `services`, `infra`, `assets/templates`, and `ast/rules`.
-- Tests reside in `tests/` (for Vitest) and research/benchmark assets in `research/bench/`.
-- Public documentation has English and Chinese mirrors; `docs/zh-CN/` must stay aligned with English.
-- JSON schemas are in `schemas/`, and `examples/demo-project/` serves as the reference demo.
-
-### Development Workflow
-
-- Node.js 20+ is required.
-- Standard commands: `npm install`, `npm run build`, `npm test`.
-- Additional commands: `npm run test:schema`, `npm run validate`, `npm run docs:dev`, and direct CLI execution via `node dist/cli/index.js`.
-
-### Coding Style & Conventions
-
-- Strict TypeScript with ES modules, explicit `.js` import suffixes, `strict` typing, and 2-space indentation.
-- Naming: `camelCase` for variables/functions, `PascalCase` for classes/types, kebab-case for docs/assets.
-- Linting and formatting enforced via ESLint, Prettier, and EditorConfig; run `npm run lint` and `npm run format:check` before submitting.
-
-### Testing Guidelines
-
-- Vitest is the test runner, configured in `vitest.config.ts`.
-- Test files follow `*.test.ts` pattern in `tests/`.
-- Add or update tests for every behavior change, especially CLI flows, schema validation, and runtime services.
-- Separate test suites exist for schema compliance and protocol validation.
-
-### Commit & Pull Request Conventions
-
-- Commits must follow the Conventional Commits format (e.g., `fix:`, `feat:`, `feat(cli):`).
-- PRs must include a description of behavior change, verification steps, and links to related issues.
-- For changes to docs, demos, or CLI UX, include screenshots or terminal output.
-
-### ArchSpine Context for AI Agents
-
-- The `.spine/` directory acts as a control plane:
-  - `.spine/atlas/` for file-level semantic summaries.
-  - `.spine/view/pages/` for system-level architecture summaries.
-  - `.spine/index/` for precise structured data.
-- AI agents should prefer reading from the MCP server over manual file search.
-- Never manually edit generated output in `.spine/atlas/`, `.spine/view/`, or `.spine/index/`; instead, use `spine sync` to refresh.
-- `.spine/config.json` and `.spine/rules/` are the human-reviewed control-plane files.
-
-### Documentation Maintenance
-
-- Public docs must keep English and Chinese entry points aligned.
-- Planning and design material under `docs/design/`, `docs/planning/`, and `docs/archive/` should not be promoted into public navigation without intent.
+## 本文档锚定的关键决策与工作流
+- **项目结构**：仓库组织为 `src/`、`tests/`、`research/`、`docs/`、`schemas/` 和 `examples/`，各有特定用途。理解此布局对于定位代码和添加新功能至关重要。
+- **开发命令**：需要 Node.js 20+。标准命令包括 `npm run build`、`npm test`、`npm run test:schema`、`npm run validate` 和 `npm run docs:dev`，构成核心开发工作流。
+- **编码规范**：TypeScript ES 模块，严格类型检查，2 空格缩进，导入使用显式 `.js` 后缀，以及特定的命名约定（`camelCase`、`PascalCase`、`kebab-case`）。这确保代码一致性。
+- **测试指南**：基于 Vitest 的测试必须伴随行为变更，特别是 CLI 流程、架构验证和运行时服务。
+- **提交和 PR 约定**：采用常规提交风格（例如 `fix:`、`feat:`），可选作用域。PR 描述必须包括行为变更、验证步骤和问题链接。
+- **文档对齐**：英文和中文文档必须保持一致；`.spine/` 目录为生成内容，不得手动编辑。
+- **AI 代理协议**：代理应优先使用 `.spine/atlas/` 和 `.spine/view/pages/` 而非全局搜索，使用本地 MCP 服务器，并避免修改生成内容。使用 `spine sync` 命令刷新托管输出。

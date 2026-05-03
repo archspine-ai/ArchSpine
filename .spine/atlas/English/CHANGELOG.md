@@ -1,21 +1,15 @@
-# ArchSpine Changelog Summary
+# ArchSpine Release Notes Summary
 
-## Purpose of This Document
-This changelog is the official public record of all notable changes to the ArchSpine project. It exists to give developers, users, and contributors a clear, chronological overview of new features, improvements, and bug fixes across releases. By reading it, you can quickly determine what has changed between versions without diving into commit logs or internal tickets.
+The ArchSpine changelog exists to provide a concise public record of all release history and notable changes. It details what new features were added, what reliability improvements were made, and which documentation updates accompanied each version.
 
-## Who Should Read It
-- **Developers** who integrate or extend ArchSpine workflows.
-- **Users** who need to understand what capabilities or fixes are available in a given release.
-- **Contributors** who want to track project evolution and ensure their work aligns with the latest state.
+**Who should read it:** This document is intended for users and developers of ArchSpine who need to track version changes and understand new capabilities. Whether you are adopting the CLI, integrating the local `.spine/` control plane, or evaluating the project’s maturity, the changelog gives you a clear view of what each release delivers.
 
-## Workflows and Decisions Anchored by This Document
-- **Core CLI workflows** – `spine try`, `init`, `build`, `sync`, `publish`, `check`, `fix`, and `mcp start` – are introduced in version 1.0.0 and form the foundation of all ArchSpine operations.
-- **Reliability guarantees** (atomic writes, lock-based mutual exclusion, sync recovery) are documented per release, informing upgrade decisions and deployment planning.
-- **Documentation availability** in English and Simplified Chinese is tracked here, helping multilingual audiences find the right entry points.
-- Version 1.0.0 marks the initial open-source release, which anchors the project’s commitment to transparent, community-driven development.
+**Decisions and workflows anchored:** The changelog anchors the definition of the core workflow commands: `try`, `init`, `build`, `sync`, `publish`, `check`, `fix`, and `mcp start`. It also establishes the reliability guarantees that the project commits to: protected output boundaries, atomic file writes, and lock-based mutual exclusion. For version 1.0.0, the initial open-source release, these include repository artifact strategies, architecture rule templates, schema assets, Atlas documentation generation, and experimental view outputs, as well as global and project-level LLM configuration with secure credential storage.
 
-## Key Takeaways (from Version 1.0.0)
-- First public release of the ArchSpine CLI and `.spine/` local control plane.
-- Seven core workflows plus experimental features (e.g., `spine mcp start`).
-- Built-in reliability: protected writes, lock-based exclusion, and sync recovery.
-- Full documentation in English and Simplified Chinese – README, protocols, runbooks, MCP, LLM config, cost management, and God Mode capabilities.
+**Key takeaways:**
+- Initial open-source release of ArchSpine CLI and local `.spine/` control plane.
+- Core workflows include `try`, `init`, `build`, `sync`, `publish`, `check`, `fix`, and `mcp start`.
+- Reliability features: protected output boundaries, atomic file writes, lock-based mutual exclusion.
+- Documentation available in English and Simplified Chinese, with supporting docs on protocol, runbook, MCP, local LLM, cost, God Mode, and current capabilities.
+
+The changelog is the single source of truth for understanding what each version of ArchSpine introduces and how it evolves.

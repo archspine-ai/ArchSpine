@@ -1,32 +1,18 @@
 # ArchSpine SpineManifest 配置摘要
 
-## 概述
-
-**SpineManifest** 是 ArchSpine 镜像系统的权威同步索引。它记录了已索引源文件的状态、跨语言文档映射以及同步元数据。该清单作为运营者管理文档覆盖范围和跨语言一致性的单一事实来源。
+该 JSON Schema 定义了 ArchSpine SpineManifest 文件的结构与校验规则，确保同步状态记录和文件索引的一致性与正确性。清单包含必要的元数据（`schemaVersion`、`generatorVersion`、`createdAt`、`updatedAt`）、同步状态对象以及文件索引。
 
 ## 关键参数
 
-- **schemaVersion**：使用的清单模式版本号，确保工具与清单文件之间的兼容性。
-- **generatorVersion**：生成此清单的工具版本号，用于追踪由哪个软件版本产生。
-- **createdAt / updatedAt**：清单首次创建和最近一次更新的 ISO 8601 时间戳。运营者可凭此判断清单新旧程度。
-- **sync**：包含同步状态的对象：
-  - **lastSyncAt**（日期时间或 null）：上次同步周期的时间戳。
-  - **lastSyncMode**（枚举：`full`、`incremental`、`unknown`）：上次同步是完整重建、增量更新还是未知。
-  - **reverseIndexComplete**（布尔值）：反向索引（从文档到源文件的映射）是否已完整构建。
-  - **indexedUnitCount**（非负整数）：已索引的总单元数（即源文件数量）。
-- **files**：从源文件相对路径到其索引元数据的映射。每个条目包含：
-  - **contentHash**：源文件内容的校验和，用于完整性检查。
-  - **fileKind**：文件类型或类别（例如普通、生成等）。
-  - **lastIndexedAt**：上次索引该文件的时间戳。
-  - **docs**：对象数组，每个对象包含 **locale**（语言）和 **path**（路径），指向该源文件在不同语言下的文档文件。
-  - **sourceExists**（布尔值）：标示源文件是否仍存在于仓库中。
+- `schemaVersion` 和 `generatorVersion` – 必须符合共享定义；不匹配会导致不兼容。
+- `sync.lastSyncAt` – 记录最近一次同步的时间戳，影响数据新鲜度检查。
+- `sync.lastSyncMode` – 取值为 `"full"`、`"incremental"` 或 `"unknown"`，决定后续同步策略。
+- `sync.reverseIndexComplete` – 布尔标志，表示反向索引是否构建完成，影响查询完整性。
+- `sync.indexedUnitCount` – 非负整数，用于进度监控和一致性校验。
+- `files.<路径>.contentHash` – 文件内容的哈希值，用于完整性校验和变更检测。
+- `files.<路径>.sourceExists` – 标识源文件是否仍然存在，影响重建决策。
+- `files.<路径>.docs` – 对象数组，每个对象包含 `locale` 和 `path`，引用相关文档。
 
-## 稳定性与风险
+## 稳定性与操作风险
 
-本清单是源文件与多语言文档之间一致性的关键连接点。
-
-- **清单损坏或过时**会导致文档更新遗漏、索引错误或本地化链接失效。
-- **contentHash** 字段提供了一种检测已索引内容与实际文件内容之间漂移的机制。哈希不匹配表示文件已更改但未重新索引。
-- **reverseIndexComplete** 标志指示反向链接是否已全部建立。若为 `false`，则跨语言导航等功能可能不完整或缺失。
-- **indexedUnitCount** 必须与 `files` 映射中的实际条目数匹配；不一致表明同步过程不完整或清单已损坏。
-- **运营建议**：在将清单用于任何操作之前，务必对照实际仓库状态进行验证。工具应拒绝哈希不匹配或缺失必填字段的清单，以避免数据完整性问题。
+该 Schema 对清单文件实施严格校验。数据不完整或枚举值无效（如同步模式未知）可能导致同步失败或索引损坏。非负计数和正确的时间戳等不变量能够防止逻辑冲突。`schemaVersion` 不匹配可能导致生成器与消费者之间不兼容。操作人员应确保数据完整性，并在同步过程中监控校验错误。

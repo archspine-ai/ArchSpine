@@ -1,24 +1,18 @@
-# ArchSpine Demo Script – Overview
+## Purpose
 
-This document is a terminal recording script (demo tape) that walks through the core ArchSpine workflow: building the project, cleaning a demo project's spine data, then running `sync`, `check`, and `fix` commands in sequence. It serves as a quick, visual introduction to how ArchSpine manages project documentation and governance.
+This document is a terminal recording script used to generate a demonstrative GIF that showcases the typical workflow of the ArchSpine CLI. It exists to provide a quick, visual introduction to the command-line interface without requiring the reader to install or configure the tool.
 
-## Who Should Read This
+## Audience
 
-- **Developers and technical evaluators** who want to see ArchSpine in action before reading deeper documentation.
-- **Presenters or tutorial creators** who need a repeatable demo scenario to showcase ArchSpine's features.
+The script is intended for developers and users who want a visual walkthrough of how to use ArchSpine's core commands — `sync`, `check`, and `fix` — within a mock provider environment. It assumes basic familiarity with the terminal but no deep knowledge of ArchSpine internals.
 
-## Key Workflows Anchored by This Document
+## Key Workflows and Decisions
 
-| Workflow | What It Demonstrates |
-|----------|----------------------|
-| `sync`   | Generates and updates the spine index and atlas from source code |
-| `check`  | Detects violations (missing documentation, architectural drift) |
-| `fix`    | Interactively repairs detected issues |
+- **Build first**: The demo begins by building the project (`npm run build`) to ensure the CLI is ready.
+- **Clean state**: Before syncing, the script explicitly removes `.spine` cache files (`index`, `atlas`, `cache.db`, `manifest.json`, `languages.json`, `.lock`). This decision anchors the workflow around a fresh, reproducible start.
+- **Mock provider**: The environment variable `SPINE_PROVIDER=mock` is used to isolate testing from real storage backends, making the demo self-contained.
+- **Command sequence**: After clearing cache, the script runs `sync`, then `check`, then `fix` with user confirmation (`y`). This sequence mirrors the typical ArchSpine workflow: synchronize data, validate it, then apply automated fixes.
 
-The demo shows a complete "clean slate → fixed state" cycle that completes in seconds, illustrating how ArchSpine can be used to maintain documentation alignment with a project's architecture.
+## Why This Document Matters
 
-## Decisions This Document Anchors
-
-- Adoption of ArchSpine's CLI workflow for documentation governance.
-- Evaluation of ArchSpine's automatic detection and repair capabilities.
-- Understanding the typical interaction pattern (sync → check → fix) without needing full configuration knowledge.
+This recording script anchors the demonstration and onboarding workflow for ArchSpine. It defines the exact steps potential users will see in the demo GIF, ensuring consistency between what is documented and what is shown. It also serves as a replicable test scenario for developers verifying CLI behavior.

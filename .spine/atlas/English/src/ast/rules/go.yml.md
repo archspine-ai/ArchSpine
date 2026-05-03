@@ -1,29 +1,33 @@
-# Document Summary: Go AST Extraction Rules for ArchSpine
+# ArchSpine Mirror System Pattern Configuration
 
 ## Purpose
 
-This document defines the Go language pattern definitions used by the ArchSpine AST extractor to identify imports, exports, and usages in Go source code. It is part of a multi-language rule set that enables the mirror system to build structural awareness of projects.
+This document serves as the pattern configuration for ArchSpine's mirror system, enabling automated extraction of structural and relational information from Go source files. It defines the rules and patterns used to parse Go code and identify semantic elements such as imports, exports, and usages.
 
-## Audience
+## Intended Audience
 
-This file is intended for developers maintaining the ArchSpine AST engine and contributors adding or updating language extraction rules. It should be reviewed whenever new Go syntax or idioms need to be supported.
+This document is intended for developers maintaining ArchSpine or integrating its parsing capabilities. It is a technical specification that maps Go syntax constructs to a universal model, driving code analysis and documentation generation workflows.
 
-## Key Decisions & Workflows Anchored
+## Key Takeaways
 
-- **Import Detection**: Single imports (`import $SOURCE`) and grouped imports (using parentheses) are captured via two distinct patterns (`import` and `import_group`).
-- **Export Extraction**: Exports are extracted from:
-  - Functions (`func $NAME...`)
-  - Structs (`type $NAME struct...`) – mapped to kind `Class`
-  - Interfaces (`type $NAME interface...`) – kind `Interface`
-  - Type aliases (`type $NAME = $VAL`) – kind `Type`
-  - Variables (`var $NAME = $VAL`) – kind `Variable`
-  - Constants (`const $NAME = $VAL`) – kind `Variable`
-- **Usage Capture**: Two patterns cover call expressions (`$NAME(...)`) and selector expressions (`$OBJ.$NAME`), enabling detection of function calls and method/field access.
-- **Pattern Syntax**: All rules use a YAML-based template matching syntax with named capture groups (e.g., `$NAME`, `$$$SYMBOLS`), consistent across the multi-language framework.
+- The configuration uses a pattern-based DSL to describe Go code constructs.
+- **Imports**, **exports**, and **usages** are the three core categories of extracted elements.
+- Each pattern defines an identifier, a regex-like template, and an optional kind classification.
+- The system supports both single and grouped import declarations.
+- Export patterns cover all major Go declaration types: functions, structs, interfaces, type aliases, variables, and constants.
 
-## Out of Scope
+## Decisions and Workflows Anchored by This Document
 
-- Other programming languages (TypeScript, Python, Java, etc.)
-- Higher-level architecture or naming convention rules
-- Runtime behavior or execution semantics
-- Code transformation or repair logic
+- **Pattern Definitions**: The exact templates for matching import statements (`import $SOURCE`), grouped imports, function declarations, struct types, interfaces, type aliases, variables, constants, function calls, and selector expressions are specified in the supporting context. These patterns are the basis for all extraction logic.
+- **Classification**: Each export pattern includes a `kind` field (e.g., Function, Class, Interface, Type, Variable) that determines how extracted elements are categorized in the universal model.
+- **Out-of-Scope Boundaries**: This document explicitly excludes language grammar beyond Go, runtime behavior, project-specific logic, and documentation presentation/styling, ensuring focus on parsing rules only.
+
+## Pattern Overview
+
+The supporting context defines the following pattern groups:
+
+- **Imports**: Two patterns — single import (`import $SOURCE`) and grouped import (`import ( $$$SYMBOLS )`).
+- **Exports**: Six patterns — functions, structs, interfaces, type aliases, variables, and constants, each with a distinct identifier and template.
+- **Usages**: Two patterns — function calls (`$NAME($$$ARGS)`) and selector expressions (`$OBJ.$NAME`).
+
+These patterns are the foundation for automated code analysis and documentation generation within the ArchSpine ecosystem.

@@ -1,25 +1,15 @@
----MARKDOWN:Simplified Chinese---
-# ArchSpine：禁止直接导入数据库层规则
+# ArchSpine Architecture Rule: No Direct Database Import
 
-## 目的
+## Purpose
+This document defines a mandatory architectural constraint for the ArchSpine project: application services and middleware must **never** import from the database adapter layer (`src/db/*`). The rule exists to preserve clean domain boundaries and prevent business logic from becoming tightly coupled to a specific storage implementation. Enforcing this division improves long-term maintainability, testability, and the project's ability to swap out storage backends without rewriting business logic.
 
-本文档定义了一条架构治理规则，禁止应用服务层直接导入数据库层（`src/db/*`），以确保清晰的架构边界，并保持关注点分离。
+## Audience
+All developers contributing to ArchSpine must read and follow this rule, especially those implementing service or middleware layers. It is equally essential for code reviewers and architects who are responsible for ensuring that the project's architectural invariants are respected. The rule applies to every TypeScript file under `src/` (except files within `src/db/` itself) and is treated as a hard violation (error severity).
 
-## 目标读者
+## Key Rules and Decision Anchors
+- **Prohibition**: Do not write `import ... from 'src/db/*'` in any service or middleware file.  
+- **Allowed alternative**: Use service abstractions (e.g., repository interfaces) to access data.  
+- **Enforcement**: The rule is enforced automatically by the project's rule engine; violations are flagged as errors.  
+- **Rationale**: Decoupling business logic from storage specifics keeps the domain layer independent and adaptable.
 
-本规则面向 ArchSpine 代码库的开发者与架构师，特别是编写服务层代码的人员。对于执行架构约束的代码审查者同样重要。
-
-## 关键决策与工作流
-
-- **强制导入规则**：应用服务（`src/**/*.ts` 文件，但排除 `src/db/**`）不得直接从 `src/db/*` 导入。
-- **允许的替代方案**：使用服务抽象或仓储接口代替直接依赖数据库层。
-- **原理**：保持领域边界清晰，避免业务逻辑与具体存储实现耦合，提升可测试性和可维护性。
-- **执行方式**：规则可强制执行，严重级别为 `error`，在开发或 CI 过程中捕获违规行为。
-
-## 范围
-
-规则适用于 `src/` 下所有 TypeScript 文件，但排除 `src/db/` 内部文件。它不规定如何实现抽象或仓储接口，也不涉及数据库层本身的数据访问模式。
-
-## 总结
-
-该规则锚定了应用服务与数据存储交互的架构决策。遵循此规则可以保持清晰的层次架构，让存储后端的演进不影响业务逻辑。
+This rule anchors the project's commitment to a layered architecture where the domain and application layers remain unaware of persistence details. It drives the workflow of always introducing an abstraction when crossing from application logic to data access.

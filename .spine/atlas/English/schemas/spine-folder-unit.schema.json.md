@@ -1,33 +1,31 @@
-# ArchSpine Folder Unit Configuration Summary
+### ArchSpine SpineFolderUnit Configuration Summary
 
-## Purpose
+The **SpineFolderUnit** schema defines a structured representation of a directory within the ArchSpine mirror system. Each instance describes a folder’s identity, its purpose, and the metadata of files it contains. This configuration is critical for operators who manage the indexing, validation, and traceability of directory units across pipeline stages.
 
-The `SpineFolderUnit` schema defines the structure for a folder-level entry in the ArchSpine documentation index. It captures the role, responsibility, and children (files) of a directory within the project, along with provenance metadata to track indexing history.
+#### What This Configuration Controls
 
-## What This Configuration Controls
+- **structural contract** – Every SpineFolderUnit must include all six required fields: `schemaVersion`, `directory`, `role`, `responsibility`, `children`, and `provenance`. Omitting any will cause validation failures.
+- **directory identity** – The `directory` field provides the relative path within the project scope, anchoring the unit to a specific location.
+- **semantic role** – `role` and `responsibility` convey why the folder exists (e.g., configuration, source, documentation) and what it is accountable for. These strings must be non-empty but are otherwise free-form; operators should apply consistent naming conventions to avoid confusion.
+- **child file metadata** – The `children` array lists every file under this folder, each with a `filePath`, `role`, and `fileKind`. This enables hierarchical consistency and type‑based processing (e.g., only process files with `fileKind: "config"`).
+- **provenance tracking** – The `provenance` object records when the unit was indexed (`indexedAt` as ISO timestamp), which tool version created it (`generatorVersion`), and which pipeline stages processed it (`pipelineStages` as an array). This is essential for auditability and debugging.
 
-This configuration controls the metadata associated with a directory in the documentation index. It is used by automated systems for rule validation, view generation, change detection, and audit trails.
+#### Which Parameters Matter Most
 
-## Key Parameters
+| Parameter | Importance |
+|-----------|------------|
+| `directory`, `role`, `responsibility` | Define the folder’s identity and context; incorrect values can mislead downstream tools. |
+| `children[*].filePath`, `role`, `fileKind` | Drive automated file processing; missing or inaccurate entries can break pipelines. |
+| `provenance.indexedAt`, `generatorVersion`, `pipelineStages` | Provide the unit’s history; stale or false data erodes trust and complicates forensic analysis. |
 
-- **schemaVersion**: The version of the schema used for this folder unit. Must match a valid schema version to ensure forward compatibility.
-- **directory**: Filesystem path of the directory, relative to the repository root (scoped path). Identifies which directory the unit describes.
-- **role**: A non-empty string describing the functional role of this directory within the project architecture (e.g., "source", "docs", "config").
-- **responsibility**: A non-empty string describing the responsibility or purpose of the directory (e.g., "contains primary application logic").
-- **children**: An array of file entries belonging to this directory. Each entry must include:
-  - **filePath**: Path relative to the repository root.
-  - **role**: Non-empty string describing the file's role.
-  - **fileKind**: Type of file (e.g., source, test, config).
-- **provenance**: Indexing metadata containing:
-  - **indexedAt**: ISO 8601 timestamp of when the unit was indexed.
-  - **generatorVersion**: Version string of the indexing tool that created this unit.
-  - **pipelineStages**: Array of pipeline stage names that processed this unit (e.g., ["validate", "transform"]).
+#### Operational Risks and Stability Concerns
 
-## Operational Risks & Stability Concerns
+1. **Validation failures** – Because the schema rejects additional properties and enforces required fields, any misconfiguration (e.g., a typo in a property name, a missing `fileKind`) will cause the unit to be rejected. Ensure all instances are generated or written against the latest schema (`https://archspine.dev/schema/v1.0.0/spine-folder-unit.schema.json`).
 
-- **Rigid structure**: The schema enforces strict required fields and disallows additional properties. Any missing or incorrectly typed field will cause automated processing to fail, potentially breaking the entire documentation pipeline and leading to incomplete outputs.
-- **Provenance dependency**: The `provenance` block is mandatory. Without it, the system cannot verify data freshness or trace the origin of the unit, which may hinder debugging and recovery.
-- **Schema drift risk**: Introducing new fields without updating `schemaVersion` could cause compatibility issues. The `additionalProperties: false` constraint means any unrecognized field will be rejected.
-- **Validation chain**: Changes to the schema or to shared definitions referenced via `$ref` may propagate silently and cause downstream validation failures if not coordinated.
+2. **Data integrity failures** – If `provenance` fields are not populated correctly (e.g., wrong timestamp or generator version), downstream systems that rely on them for ordering or trust validation may produce erroneous results. Treat provenance as a first‑class concern, not an optional annotation.
 
-Operators should ensure that all required fields are populated accurately, especially `provenance.indexedAt` and `provenance.generatorVersion`, to maintain traceability and enable automated freshness checks.
+3. **Downstream dependency** – Many pipeline stages assume the `children` array is complete and accurate. An incomplete list can cause files to be overlooked; an incorrect `fileKind` can route a file to the wrong processor. Validate the `children` array against the actual file system during indexing.
+
+4. **Schema version drift** – The `schemaVersion` field references a versioned schema. Using an outdated version could lead to incompatibility with newer tools. Always synchronise the generator version with the expected schema.
+
+**Bottom line**: Strict adherence to this schema improves system consistency and reduces integration errors. Operators should treat every SpineFolderUnit as a critical metadata record and validate it against the schema before committing to any pipeline.

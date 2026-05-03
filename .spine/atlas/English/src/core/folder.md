@@ -1,23 +1,11 @@
-# Core Runtime Infrastructure (`src/runtime`)
+The `core/` directory is the structural and behavioral heart of the ArchSpine mirror system. It holds all foundational contract definitions, runtime orchestration logic, and the dependency injection context that coordinates task execution. The module is organized into seven key submodules, each addressing a distinct concern of the pipeline:
 
-This directory holds the foundational runtime scaffolding for the ArchSpine mirror system. It is responsible for configuration validation, error definition, pipeline orchestration, scan policy contracts, and task execution state management. The files are grouped into six implementation areas:
+- **Configuration validation** (`config-schema.ts`) – provides runtime type guards and a full validation function (`resolveSpineConfig`) to ensure any incoming `SpineConfig` conforms to a canonical set of allowed enum values. Exports a convenience wrapper `validateSpineConfig`.
+- **Error code infrastructure** (`errors.ts`) – defines a centralized catalog of string error codes (grouped by CLI, runtime, publish, and config domains) as well as the `ArchSpineErrorCode` type and `ArchSpineErrorOptions` interface, enabling type-safe, structured error creation.
+- **Pipeline execution orchestrator** (`pipeline.ts`) – implements the runtime engine that instantiates with a `TaskContext`, drives `SpineTask` instances through their lifecycle, records stage checkpoints via `executionCheckpoint`, and captures performance metrics (duration, memory) via `recordTaskStageMetric`.
+- **Scanning policy contracts** (`scan-policy.ts`) – establishes the `FileSource` union (git‑tracked, git‑tracked‑plus‑untracked, filesystem) and the `ScanPolicy` interface (with ignore‑chain and inclusion/exclusion lists). Also provides `PartialScanPolicy` for optional overrides.
+- **Task state management** (`task-state.ts`) – supplies factory functions (`createTaskArtifactsState`, `createTaskTelemetryState`, `createTaskState`) to initialize pipeline state objects, plus mutators for resetting state, tracking LLM usage, recording per‑stage metrics, maintaining runtime caches, and incrementing file counters. Also handles drift warnings and diagnostic snapshots for the summarize and validate stages.
+- **Type definitions for contracts** (`task-types.ts`) – serves as the central hub for all cross‑stage data interfaces: statistical metrics (`TaskStats`, `TaskStageMetric`), state containers (diagnostics, selection, artifacts, telemetry), and stage input/output types (Scan, Extraction, Fix, Commit, ViewDerivation).
+- **Dependency injection context** (`task.ts`) – defines the `TaskContext` interface that provides task implementations with access to shared engines (Scanner, Aggregator, ContextEngine, RuleEngine, ASTExtractor) and infrastructure (Manifest, OutputManager), along with type‑only references to LLM clients, prompt policies, runtime I/O, and execution checkpoints.
 
-1. **Configuration Validation** – `config-schema.ts`  
-   Provides runtime predicates and the primary `resolveSpineConfig` function (with a thin `validateSpineConfig` wrapper) that parses and validates the `SpineConfig` schema against canonical sets of allowed enum values. Returns a validated config or a list of issues.
-
-2. **Error Definitions** – `errors.ts`  
-   Centralizes all error code constants into a union type (`ArchSpineErrorCode`) for CLI, runtime, publish, and config domains, and defines the `ArchSpineErrorOptions` interface for structured error construction.
-
-3. **Pipeline Orchestration** – `pipeline.ts`  
-   The main task executor that runs generic `SpineTask` instances with full lifecycle management (start, completion, failure checkpoints), performance telemetry (duration, memory), and logging through the `runtimeIO` interface.
-
-4. **Scanning Policy** – `scan-policy.ts`  
-   Defines the `FileSource` union type and the `ScanPolicy` / `PartialScanPolicy` interfaces that govern file origins, ignore chains, and protocol inclusion/exclusion lists for mirror scanning.
-
-5. **Task State Management** – `task-state.ts`  
-   Exports factory functions (`createTaskArtifactsState`, `createTaskTelemetryState`, `createTaskState`) to initialize pipeline state objects, plus mutation helpers for resetting state, tracking LLM usage, recording performance metrics, managing runtime caches, and incrementing file counters (processed/skipped/failed). Also provides drift warning and diagnostic snapshot utilities.
-
-6. **Type Contracts** – `task-types.ts` and `task.ts`  
-   `task-types.ts` establishes statistical interfaces (`TaskStats`, `TaskStageMetric`), state containers, and input/output contracts for all pipeline stages. `task.ts` defines the `TaskContext` interface that supplies shared engines (Scanner, Aggregator, ContextEngine, RuleEngine, ASTExtractor) and infrastructure (Manifest, OutputManager) for dependency injection in task execution.
-
-The most critical implementation areas are configuration validation (ensuring system integrity at startup), pipeline orchestration with telemetry (providing observability and lifecycle control), and task state management (the backbone for multi-stage execution tracking). These submodules are the core contract points that all higher-level mirror operations depend on.
+The most impactful implementation areas are the type‑safe validation pipeline, the centralized error‑code catalog for structured failures, the lifecycle‑aware pipeline orchestrator, and the comprehensive state‑factory system that tracks metrics, caches, and diagnostics across all five stages.

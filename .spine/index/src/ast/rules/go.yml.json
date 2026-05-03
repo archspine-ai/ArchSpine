@@ -3,24 +3,24 @@
   "identity": {
     "filePath": "src/ast/rules/go.yml",
     "contentHash": "da10fedffd58638c6fcfd783590fd567b3de663411b19d272e5522401480b2b8",
-    "semanticHash": "db38f49d09d6c389834b297f9c29ec3cec5674d07e93afa9d870acd8dd7c7258",
+    "semanticHash": "4c2a4e9f61a023ed9dfebbf1f081904c5c0932513406cb449d4f2c1dc30867df",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/ast/rules"
   },
   "semantic": {
-    "role": "Define Go language AST extraction rules for the ArchSpine mirror system's code analysis pipeline.",
+    "role": "Defines extraction and mapping rules for ArchSpine's mirror system to parse Go source code and identify semantic elements.",
     "responsibilities": [
-      "Specify import detection patterns (single and grouped).",
-      "Define export extraction patterns for functions, structs, interfaces, type aliases, variables, and constants.",
-      "Capture usage patterns such as function calls and selector expressions.",
-      "Serve as the Go-specific language descriptor within the multi-language AST extraction framework."
+      "Specify patterns for import statements (single and grouped)",
+      "Define patterns for export declarations: functions, structs, interfaces, type aliases, variables, constants",
+      "Outline patterns for usage references: function calls and selector expressions",
+      "Provide a configuration that drives automatic code analysis and documentation generation"
     ],
     "outOfScope": [
-      "Other programming languages (e.g., TypeScript, Python, Java).",
-      "Higher-level architecture or naming convention rules.",
-      "Runtime behavior or execution semantics.",
-      "Code transformation or repair logic."
+      "Language-specific grammar beyond Go",
+      "Runtime behavior or execution semantics",
+      "Specific project code or application logic",
+      "Presentation or styling of generated documentation"
     ],
     "invariants": [],
     "changeIntent": {
@@ -32,23 +32,25 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document provides the Go language pattern definitions used by the ArchSpine AST extractor to identify imports, exports, and usages in Go source code. It is part of a multi-language rule set that enables the mirror system to build structural awareness of projects.",
-        "context_and_audience": "This file is intended for developers maintaining the ArchSpine AST engine and contributors adding or updating language extraction rules. It should be reviewed whenever new Go syntax or idioms need to be supported.",
+        "purpose": "This document serves as the pattern configuration for ArchSpine's mirror system, enabling automated extraction of structural and relational information from Go source files.",
+        "context_and_audience": "Intended for developers maintaining ArchSpine or integrating its parsing capabilities. The document is a technical specification for rules that map Go syntax to a universal model of imports, exports, and usages.",
         "key_takeaways": [
-          "Go exports are extracted from function, struct, interface, type alias, variable, and constant declarations.",
-          "Import groups with parentheses are handled by the import_group pattern.",
-          "Usages cover both direct function calls and method/field selectors.",
-          "Patterns use a YAML-based template matching syntax with named capture groups."
+          "The configuration uses a pattern-based DSL to describe Go code constructs",
+          "Imports, exports, and usages are the three core categories of extracted elements",
+          "Each pattern defines an identifier, a regex-like template, and an optional kind classification",
+          "The system supports both single and grouped import declarations",
+          "Export patterns cover all major Go declaration types: functions, structs, interfaces, type aliases, variables, and constants"
         ]
       },
       "Simplified Chinese": {
-        "purpose": "该文档定义了 ArchSpine 抽象语法树提取器用于解析 Go 源代码的导入、导出和引用的语言模式。它是多语言规则集的一部分，帮助镜像系统建立项目的结构性认知。",
-        "context_and_audience": "本文件面向 ArchSpine 抽象语法树引擎的维护者以及添加或更新语言提取规则的贡献者。每当需要支持新的 Go 语法或惯用法时应对其进行审查。",
+        "purpose": "本文档定义了 ArchSpine 镜像系统的模式配置，用于从 Go 源代码中自动提取结构和关系信息。",
+        "context_and_audience": "面向维护 ArchSpine 或集成其解析能力的开发者。这是一份技术规范，描述了将 Go 语法映射到通用模型（导入、导出和使用）的规则。",
         "key_takeaways": [
-          "Go 的导出项通过函数、结构体、接口、类型别名、变量和常量声明提取。",
-          "带括号的导入分组通过 import_group 模式处理。",
-          "引用模式覆盖直接函数调用和方法/字段选择器。",
-          "规则采用基于 YAML 的模板匹配语法，支持命名捕获组。"
+          "配置使用基于模式的 DSL 来描述 Go 代码结构",
+          "导入、导出和使用是提取的三个核心类别",
+          "每个模式包含标识符、类似正则的模板以及可选的类型分类",
+          "系统支持单行和分组两种导入声明",
+          "导出模式涵盖了 Go 的主要声明类型：函数、结构体、接口、类型别名、变量和常量"
         ]
       }
     }
@@ -71,7 +73,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:25:22.904Z",
+    "indexedAt": "2026-05-03T12:17:24.171Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/infra/llm",
-  "role": "Infrastructure layer for LLM client abstraction, configuration, and resilient invocation within the ArchSpine mirror system.",
-  "responsibility": "Provides a comprehensive set of components for interacting with multiple LLM providers (OpenAI, Gemini, etc.), including interface definitions, a factory for client instantiation, global configuration file management, runtime resolution of settings from multiple sources, retry logic with exponential backoff for resilience, and concrete provider implementations. Collectively, these enable the system to generate semantic summaries and structured outputs from LLMs while handling configuration, credentials, error recovery, and provider abstraction.",
+  "role": "Infrastructure layer for LLM client abstraction, configuration, and execution.",
+  "responsibility": "Provides a unified interface for interacting with multiple LLM providers, including abstract client definitions, provider-specific implementations, global configuration management, credential handling, retry logic with exponential backoff, runtime settings resolution, and factory instantiation. This layer enables the mirror system to generate semantic summaries for different file types by orchestrating LLM calls with consistent error handling and configuration merging.",
   "children": [
     {
       "filePath": "src/infra/llm/base.ts",
@@ -21,7 +21,7 @@
     },
     {
       "filePath": "src/infra/llm/providers",
-      "role": "Provides concrete implementations and utilities for interfacing with various LLM providers (Gemini, OpenAI) and a mock provider for testing within the ArchSpine mirror system.",
+      "role": "Directory containing concrete LLM provider implementations and utility modules for the ArchSpine mirror system.",
       "fileKind": "folder"
     },
     {
@@ -36,7 +36,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-03T11:27:15.250Z",
+    "indexedAt": "2026-05-03T12:18:53.430Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

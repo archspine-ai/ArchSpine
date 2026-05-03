@@ -1,9 +1,10 @@
-This directory implements the infrastructure layer for the ArchSpine mirror system, focusing on manifest persistence, file integrity verification, and state management. The modules are organized around five key areas:
+The `infrastructure` directory provides the foundational layer for file system interaction, integrity verification, and manifest state persistence within the ArchSpine mirror system. Its role is to abstract low-level operations such as computing SHA-256 file hashes, resolving file paths to well-known manifest and language snapshot files, reading and writing JSON-based state files, and managing file metadata snapshots.
 
-- **Data Types** (`types.ts`) – Defines the `FileSnapshot` interface, providing a consistent contract for file metadata (modification time and size) used throughout the system.
-- **File I/O** (`io.ts`) – Handles deterministic path resolution for the `.spine/manifest.json` and `.spine/languages.json` files, JSON reading with null safety, and filesystem status snapshots via `fs.statSync`.
-- **Integrity Verification** (`integrity.ts`) – Computes SHA-256 hashes with filesystem validation and retrieves current file status from SpineDB, throwing descriptive errors for missing or non-regular files.
-- **State Management** (`state.ts`) – Provides persistence for manifest runtime state (including reverse index tracking), baseline detection, and language snapshot I/O. Defines `ManifestRuntimeState` and `ManifestStatusSource` interfaces.
-- **Facade** (`facade.ts`) – Encapsulates SpineDB operations into a unified interface for manifest state persistence, file status tracking, drift history management, and batch commits.
+The directory groups its components by responsibility:
 
-The most critical implementation areas are manifest baseline detection and virgin state checks (`state.ts`), SHA-256 hashing with filesystem validation (`integrity.ts`), and the facade’s integration of all submodules for synchronization and verification workflows.
+- **Integrity verification** – `integrity.ts` computes SHA-256 hashes for files, validates file existence, and integrates with SpineDB status tracking.
+- **File I/O and path resolution** – `io.ts` resolves absolute paths to the spine manifest and language snapshot files, reads JSON with null safety, and captures filesystem status snapshots (mtime, size).
+- **State persistence and management** – `state.ts` defines runtime state interfaces, loads/saves manifest and language snapshot JSON files, and tracks reverse index completion and baseline detection. `facade.ts` wraps these operations into a higher-level interface for batch commits, file status tracking, drift history, and manifest baseline handling.
+- **Type definitions** – `types.ts` provides a TypeScript interface for file metadata snapshots (mtime, size), ensuring consistent data contracts across the codebase.
+
+Together, these modules form the backbone for reliable file status tracking, manifest baseline detection, and persistent mirror state, enabling the rest of ArchSpine to reason about file integrity and changes over time.

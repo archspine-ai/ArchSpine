@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/cli",
-  "role": "Entry point and user-facing interface for all command-line operations in the ArchSpine system.",
-  "responsibility": "Provides command routing, help text, UI formatting, initialization, and repository configuration operations to manage the mirror system from the terminal.",
+  "role": "Command-line interface layer for the ArchSpine semantic mirror system, handling user interaction, argument parsing, command routing, and output formatting.",
+  "responsibility": "Provides the CLI entrypoint, help system, UI utilities, and adapters for all subcommands (build, sync, init, etc.), coordinating with core services to execute user requests and display results.",
   "children": [
     {
       "filePath": "src/cli/cli-utils.ts",
@@ -11,7 +11,7 @@
     },
     {
       "filePath": "src/cli/commands",
-      "role": "Entry point for all CLI subcommands, routing each command to its dedicated handler.",
+      "role": "CLI command adapters for the ArchSpine system, each handling a specific subcommand's interface and delegation to core services.",
       "fileKind": "folder"
     },
     {
@@ -31,17 +31,17 @@
     },
     {
       "filePath": "src/cli/init",
-      "role": "Core directory responsible for initializing and bootstrapping both the repository configuration and the runtime environment of an ArchSpine project.",
+      "role": "Directory containing the initialization and bootstrapping modules for ArchSpine repository and runtime setup.",
       "fileKind": "folder"
     },
     {
       "filePath": "src/cli/repo",
-      "role": "CLI command adapter for repository artifact strategy operations",
+      "role": "CLI command adapter for managing repository artifact strategies (check and set) within the ArchSpine system.",
       "fileKind": "folder"
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-03T11:27:42.079Z",
+    "indexedAt": "2026-05-03T12:19:23.794Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

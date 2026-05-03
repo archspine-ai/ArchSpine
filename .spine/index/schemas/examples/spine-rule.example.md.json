@@ -3,22 +3,23 @@
   "identity": {
     "filePath": "schemas/examples/spine-rule.example.md",
     "contentHash": "18231edd62f334e91aab6d1cfcce55a2c77689ca3dbbe959cac476d429713d96",
-    "semanticHash": "58917d36466165876c6030b6523d492bb14f653e32e5d42a2baf7c6feb771b37",
+    "semanticHash": "884ad9cd96db29a728fd57a10f56f9c563f88058906edfa36cddb905e6d0cf89",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "schemas/examples"
   },
   "semantic": {
-    "role": "An architectural governance rule that enforces separation of concerns by prohibiting direct imports of database adapters from application services.",
+    "role": "Defines a mandatory architecture rule prohibiting direct database-layer imports in service/middleware code.",
     "responsibilities": [
-      "Defines the rule and its scope (applies to src/**/*.ts, excluding src/db/**)",
-      "Provides rationale for maintaining clean architecture boundaries",
-      "Specifies allowed alternatives like service abstractions or repository interfaces"
+      "Enforces clean domain boundaries by preventing business logic from coupling to storage implementations.",
+      "Specifies the file scopes where the rule applies (src/**/*.ts, excluding src/db/**).",
+      "Declares severity as error and indicates enforceability.",
+      "Provides rationale for the rule: maintain domain boundaries and avoid coupling."
     ],
     "outOfScope": [
-      "Does not cover database access patterns within the database layer itself",
-      "Does not address specific implementation details of the database adapters",
-      "Does not prescribe how to implement abstractions or repository interfaces"
+      "Other architecture rules not defined in this document.",
+      "Implementation details of allowed service abstractions or repository interfaces.",
+      "Database layer internals themselves."
     ],
     "invariants": [],
     "changeIntent": {
@@ -30,21 +31,23 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document establishes a rule to prevent direct imports from the database layer (src/db/*) in application services, ensuring clean architecture boundaries.",
-        "context_and_audience": "Targeted at developers and architects working on the codebase, particularly those writing service-layer code. The rule helps maintain separation of concerns by requiring use of abstractions.",
+        "purpose": "This document establishes a critical architectural constraint for the ArchSpine project: application services and middleware must not directly import from the database adapter layer (`src/db/*`). It exists to preserve clean domain boundaries and prevent business logic from becoming tightly coupled to a specific storage implementation, thereby improving maintainability and testability.",
+        "context_and_audience": "The intended audience includes all developers working on the ArchSpine project, particularly those implementing service or middleware layers. It is also relevant for code reviewers and architects who enforce architectural invariants. The rule applies to TypeScript files under `src/` (except `src/db/` itself) and is treated as a hard violation with error severity.",
         "key_takeaways": [
-          "Direct imports from src/db/* are prohibited in application services",
-          "Use service abstractions or repository interfaces instead",
-          "Rationale: keep domain boundaries clear and avoid coupling business logic to storage implementation"
+          "Never import from `src/db/*` in service or middleware code.",
+          "Use service abstractions or repository interfaces to access data.",
+          "Violations are considered errors and are enforced by the project's rule engine.",
+          "The rationale is to decouple business logic from storage specifics."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档定义了一条架构规则，禁止应用服务层直接导入数据库层（src/db/*），以确保清晰的架构边界。",
-        "context_and_audience": "面向代码库的开发者与架构师，特别是编写服务层代码的人员。该规则通过要求使用抽象接口来保持关注点分离。",
+        "purpose": "本文档为ArchSpine项目定义了一条关键的架构约束：应用服务层和中间层不得直接导入数据库适配器层（`src/db/*`）。其目的是保持清晰的领域边界，防止业务逻辑与特定存储实现紧密耦合，从而提升可维护性和可测试性。",
+        "context_and_audience": "目标读者包括ArchSpine项目的所有开发者，尤其是实现服务层或中间层的开发者。同时适用于执行架构约束的代码审查人员和架构师。该规则适用于`src/`下的TypeScript文件（`src/db/`自身除外），违反被视为错误级别的违规。",
         "key_takeaways": [
-          "禁止在应用服务中直接导入 src/db/*",
-          "应使用服务抽象或仓储接口替代",
-          "原理：保持领域边界清晰，避免业务逻辑与存储实现耦合"
+          "禁止在服务或中间层代码中从 `src/db/*` 导入。",
+          "应使用服务抽象或仓库接口来访问数据。",
+          "违反该规则将被视为错误，并由项目的规则引擎强制执行。",
+          "其根本原因是将业务逻辑与存储细节解耦。"
         ]
       }
     }
@@ -67,7 +70,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:24:02.688Z",
+    "indexedAt": "2026-05-03T12:15:28.645Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

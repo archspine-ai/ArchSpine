@@ -1,37 +1,37 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "examples/demo-project/.spine",
-  "role": "Central configuration and state directory for the ArchSpine system within a demo project.",
-  "responsibility": "This directory collectively provides project-level settings (provider, scan policy, ignore chains), language detection mappings, sync health snapshots, architecture rule enforcement, and runtime checkpoint tracking to manage the ArchSpine analysis pipeline.",
+  "role": "Root configuration and state management directory for the ArchSpine mirror system.",
+  "responsibility": "Collectively defines system settings (scanning, hooks, LLM providers), file extension language support, synchronization health and sync-state snapshots, architectural rule enforcement (layer isolation, documentation standards), and runtime execution records (pipeline stages, file processing, hook behavior) to enable mirroring and maintain architectural integrity.",
   "children": [
     {
       "filePath": "examples/demo-project/.spine/config.json",
-      "role": "Central configuration file for the ArchSpine system, controlling project metadata, LLM provider, MCP context mode, pre-commit hooks, and scan policy including ignore chains and protocol boundaries.",
+      "role": "Configuration for the ArchSpine system demo project, defining scanning, hook, and LLM provider settings.",
       "fileKind": "config"
     },
     {
       "filePath": "examples/demo-project/.spine/languages.json",
-      "role": "This configuration file defines the file extension detection and language support settings for the ArchSpine analysis system.",
+      "role": "Declares detected file extensions and available language support for the ArchSpine mirror system.",
       "fileKind": "config"
     },
     {
       "filePath": "examples/demo-project/.spine/manifest.json",
-      "role": "Provides a lightweight, human-readable health-check snapshot of the ArchSpine synchronization state and project metadata. It is not the authoritative state store (which lives in cache.db) but serves as a quick overview for operators and CI systems.",
+      "role": "Health-check and sync-state snapshot for the ArchSpine mirror system. This file provides a quick, human-readable view of the last synchronization activity and system health metrics while the authoritative state resides in `.spine/cache.db`.",
       "fileKind": "config"
     },
     {
       "filePath": "examples/demo-project/.spine/rules",
-      "role": "Directory containing the ArchSpine architecture rule definition file.",
+      "role": "This directory contains the architectural rules and configuration for the ArchSpine project.",
       "fileKind": "folder"
     },
     {
       "filePath": "examples/demo-project/.spine/runtime",
-      "role": "Checkpoint records directory for the ArchSpine sync pipeline execution.",
+      "role": "This directory stores execution records of synchronization runs for the ArchSpine mirror system.",
       "fileKind": "folder"
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-03T11:27:01.637Z",
+    "indexedAt": "2026-05-03T12:18:49.728Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

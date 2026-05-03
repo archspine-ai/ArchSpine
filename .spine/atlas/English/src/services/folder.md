@@ -1,16 +1,29 @@
-The `src/services` directory implements the service orchestration layer of the ArchSpine mirror system. It coordinates multi-stage pipelines for scanning, AST extraction, validation, LLM-driven correction, synchronization, summarization, and view generation. This layer bridges CLI commands with infrastructure components by managing runtime sessions that support checkpoints, resume, error handling, and configuration resolution.
+---MARKDOWN:Simplified Chinese---
+# 服务编排层 (`services/`)
 
-Key submodules include:
-- **check-service**: Orchestrates the check pipeline (scan, AST extraction, validation) with session lifecycle and usage recording.
-- **fix-service**: Manages the fix pipeline with retry logic (up to 2 attempts), recheck passes, and runtime session integration.
-- **sync-service**: Coordinates the full synchronization pipeline (reconciliation, scanning, AST extraction, summarization, state commit, post-commit derivation) and integrates with the view service registry.
-- **llm-admin-service**: Bridges CLI commands for LLM configuration with config/secrets stores and resolves status views.
-- **runtime-service**: Central facade that resolves LLM settings, execution profiles, view configurations, and constructs `CheckService`, `FixService`, and `SyncService` instances.
-- **view-service** (inside `src/services/view`): Generates and renders architectural views (architecture diagrams, risk hotspots, public surface) from indexed codebase data using LLM specifications and markdown templates.
-- **task-runtime**: Factory that prepares a fully configured task context, including scanner, aggregator, AST extractor, rule engine, context engine, and output manager.
-- **repository-admin-service**: Manages repository artifact strategies, agent instructions, and syncing of managed files (git attributes, git ignore, package scripts).
-- **runtime-session**: Provides resumable command execution sessions with checkpoint validation, lock management, and protected output mutation safety.
-- **publish-preflight**: Validates pre-publish conditions (directory presence, manifest integrity, lock file validity, snapshot readiness).
-- **runtime-execution-profile**: Resolves execution profiles from LLM settings and runtime commands, handling defaults and command-specific overrides.
+`services/` 目录是 ArchSpine 镜像系统的核心编排层，负责协调检查、修复、同步、LLM 管理、仓库管理、运行时执行配置以及架构视图生成等多阶段流水线。该层管理会话生命周期、基于检查点的可恢复性以及跨服务集成，确保所有命令可靠且一致地执行。
 
-These components together ensure consistent, resumable, and policy-compliant operations across the entire ArchSpine mirror workflow.
+## 关键子模块与组件
+
+- **检查服务** (`check-service.ts`) – 编排“检查”流水线：扫描、AST 提取和验证。利用受管运行时会话支持检查点可恢复，并将使用指标记录到项目清单中。
+- **修复服务** (`fix-service.ts`) – 管理架构修复流水线：扫描、AST 提取、LLM 驱动的修正、验证以及重试逻辑（最多 2 次重试）。集成运行时会话和检查点系统以跟踪执行。
+- **LLM 管理服务** (`llm-admin-service.ts`) – 桥接 CLI 命令与 LLM 配置和密钥存储。提供设置、清除或查询 LLM 设置（提供者、模型、基址 URL、API 密钥、模式）的功能，支持全局或项目范围，并构建状态视图模型。
+- **发布前检查** (`publish-preflight.ts`) – 在发布前验证运行时条件：检查所需目录、清单完整性、锁定文件和快照就绪状态。对于本地策略部署发出警告。
+- **仓库管理服务** (`repository-admin-service.ts`) – 管理仓库制品策略，同步 Git 属性、忽略文件、代理指令和包脚本。支持应用、检查和安装推荐模板。
+- **运行时执行配置** (`runtime-execution-profile.ts`) – 根据 LLM 设置和运行时命令解析执行配置，定义 `ResolvedExecutionProfile` 接口，包含模式、提示层级、验证策略和生成流程。
+- **运行时服务** (`runtime-service.ts`) – 中央门面，负责解析 LLM 客户端、执行配置、视图配置，并构造域服务实例（检查、修复、同步）。同时处理环境变量解析。
+- **运行时会话** (`runtime-session.ts`) – 管理同步、检查和修复操作的可恢复命令会话。处理检查点验证、锁获取、受保护输出变异警告和错误清理。
+- **同步服务** (`sync-service.ts`) – 编排同步流水线：对账、扫描、AST 提取、摘要、状态提交和后提交派生。跟踪统计信息并集成视图服务注册表。
+- **任务运行时** (`task-runtime.ts`) – 工厂和编排器，准备完全配置的任务上下文，实例化扫描器、聚合器、AST 提取器、规则引擎、上下文引擎和输出管理器，并采用锁管理策略。
+- **视图服务** (`src/services/view/view-service.ts`) – 负责生成架构视图（图、风险热点、公共接口），渲染为 HTML/Markdown，持久化制品，并管理视图注册表。`src/services/view/` 目录包含视图生成、验证、渲染和索引加载的支撑模块。
+
+## 关键实现领域
+
+最重要的实现领域包括：
+
+- **流水线编排** – 多阶段任务顺序执行，支持检查点可恢复，确保长时间运行操作的可靠性。
+- **LLM 集成** – 用于配置 LLM 客户端和解析执行配置的管理服务，是镜像系统自适应行为的核心。
+- **会话与锁管理** – 运行时会话通过 spine-gate 集成防止并发冲突并保护输出边界。
+- **视图生成** – 视图子系统从索引代码库数据生成可操作的架构洞察，支持可视化和分析。
+
+所有服务都设计有强类型安全性、通过 `ArchSpineError` 的错误处理，以及与全局和项目级别配置的集成，使本目录成为系统运行逻辑的骨干。

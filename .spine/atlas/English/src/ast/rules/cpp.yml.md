@@ -1,27 +1,23 @@
-# ArchSpine C/C++ AST Extraction Rules: Document Summary
+# ArchSpine Symbol Extraction Rules Specification
 
 ## Purpose
-This document specifies the AST extraction rules for C and C++ languages used by the ArchSpine system to parse and index source code symbols. It defines how the system identifies imports, exported symbols, and usage patterns from C/C++ source files, enabling construction of the ArchSpine knowledge graph for code analysis and mirroring.
+This document defines the core extraction rules that drive the ArchSpine mirror system. It specifies how the system imports, exports, and identifies usages of C++ source code symbols. By providing a declarative pattern language, it enables the mirror to produce accurate API documentation and code mappings without executing or analyzing runtime behavior.
 
-## Intended Audience
-Developers and AI agents who need to understand how C/C++ code is analyzed for import detection, symbol export, and usage tracking within the ArchSpine knowledge graph. This includes anyone implementing or extending the extraction logic, as well as consumers of the extracted data who need to interpret the symbol relationships indexed by the system.
+## Audience
+This specification is intended for **developers and integrators** working on the ArchSpine mirror system. Readers who need to:
+- Configure which symbols are extracted from a C++ codebase.
+- Define how `#include` directives are matched for import.
+- Set export patterns for functions, classes, structs, namespaces, and template classes.
+- Establish usage patterns that detect function calls, scoped accesses, and method calls.
 
-## What the Document Defines
-The document anchors three key extraction workflows:
-
-- **Import detection**: How `#include` directives are recognized as source imports (pattern: `#include $SOURCE`).
-- **Symbol export**: How functions, classes, structs, namespaces, and template classes are extracted as exported symbols. Each export rule specifies the AST node kind, the pattern for capturing the symbol name and optional signature, and the assigned symbol kind (e.g., Function, Class, Type).
-- **Usage detection**: How three types of usages are identified: direct function calls (`$NAME($$$ARGS)`), scoped access with `::` (`$OBJ::$NAME`), and method calls with `.` (`$OBJ.$NAME($$$ARGS)`).
-
-## Decisions Anchored
-The document fixes:
-- Which C/C++ constructs are treated as imports, exports, or usages.
-- The exact AST patterns used to extract each symbol type.
-- The mapping from AST kinds to semantic symbol categories (Function, Class, Type).
-- The scope of extraction: it explicitly does **not** cover lambdas, `constexpr`, advanced template metaprogramming, macros, preprocessor directives beyond includes, or attribute annotations. It also does not enforce any architectural rules, naming conventions, or project-specific policies.
+## How This Document Anchors Decisions and Workflows
+- **Import Logic**: The `include` pattern (`#include $SOURCE`) defines the single entry point for header inclusion. All further extraction depends on correctly matching these directives.
+- **Export Definitions**: Five distinct export rule categories (function, class, struct, namespace, template_class) determine which C++ constructs become symbolic entities in the mirror. Each rule uses a tree–sitter–based rule pattern with placeholders (`$NAME`, `$ARGS`) to extract names and signatures.
+- **Usage Detection**: Three usage patterns (call, scoped, method) enable the mirror to record how extracted symbols are used across the codebase. This is essential for dependency analysis and cross–reference generation.
+- **Scope & Boundaries**: The specification explicitly excludes runtime semantics, build system configuration, and non–C++ languages. Any workflow relying on execution behavior or build dependencies must look elsewhere.
 
 ## Key Takeaways
-- Imports are extracted from `#include` directives.
-- Exports include functions, classes, structs, namespaces, and template classes, each with their name and (where applicable) signature.
-- Usages cover function calls, scoped access (::), and method calls (.).
-- The rules are limited to fundamental AST patterns and intentionally exclude more advanced C++ features.
+- Rules are defined for functions, classes, structs, namespaces, and template classes.
+- Usage patterns cover function calls, scoped member access (`::`), and method calls (`.`).
+- The import pattern matches `#include` directives to bring in header files.
+- All patterns follow a consistent tree–sitter grammar, ensuring deterministic extraction.

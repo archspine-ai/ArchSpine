@@ -1,48 +1,38 @@
-# ArchSpine Project Overview and Developer Guide
+# ArchSpine Document Summary
 
-## Purpose
+## Purpose of This Document
 
-This document is the central README and developer onboarding guide for the ArchSpine project. It explains why ArchSpine exists, what it does, and how to contribute effectively. It serves as the single source of truth for **repository structure, build processes, code conventions, and governance rules** that both human developers and AI agents must follow.
+This document serves as the **primary project documentation** for ArchSpine — an open-source protocol and toolchain that embeds a physical `.spine/` control plane inside Git repositories. It explains the project’s high-level vision: making codebases queryable, governable, and auditable for AI-assisted engineering. The document defines all necessary conventions, commands, and discipline guidelines that contributors and maintainers must follow.
 
-## Who Should Read This
+## Who Should Read It
 
-- **Primary audience:** Developers working on the ArchSpine toolchain itself, including AI agents that need to understand repository layout, build commands, and contribution protocols.
-- **Secondary audience:** Contributors exploring the codebase, reviewers, and anyone who needs to grasp the architectural philosophy behind `.spine/`.
+- **Developers and maintainers** working directly on ArchSpine itself  
+- **AI agents** that interact with the repository (e.g., agent-assisted programming workflows)  
+- Anyone who needs to understand how the `.spine/` control plane is built, maintained, and used  
 
-## Key Decisions and Workflows Anchored by This Document
+Readers should be familiar with TypeScript, Node.js, and modern Git workflows. This document is the entry point to the project’s structure, development practices, and the strict commit discipline required to keep the `.spine/` artifact consistent.
 
-### 1. What ArchSpine Is (and Isn't)
+## Key Decisions & Workflows Anchored by This Document
 
-ArchSpine is an **open-source protocol and toolchain** that builds a physical `.spine/` control plane inside Git repositories. This control plane makes codebases queryable, governable, and auditable for AI-assisted engineering. It is **not** a user manual or detailed API reference — those live in `docs/`.
+### Tech Stack & Code Conventions
+- Strictly TypeScript 5 ESM, Node.js ≥20, with Vitest, ESLint, Prettier, VitePress, better-sqlite3, @ast-grep/napi, and MCP SDK.  
+- Enforced conventions: ES module imports with `.js` suffixes, strict types, 2-space indentation, `camelCase`/`PascalCase` naming, Conventional Commits with optional scopes.  
 
-### 2. Technology Stack and Build Pipeline
+### Architecture Layers
+The source code is organized into nine distinct layers: `cli`, `core`, `engines`, `services`, `infra`, `tasks`, `types`, `utils`, `ast`. Each layer has a clear responsibility, from CLI dispatch to infrastructure and AST extraction.
 
-The project uses **TypeScript 5 (strict mode, ESM)** on **Node.js ≥20**, with **Vitest** for testing, **ESLint + Prettier** for code quality, and **VitePress** for documentation. Key commands (build, test, lint, validate, sync) are standardized in the README.
+### Git Workflow & Commit Discipline
+- Feature branches from `main`, using Conventional Commits.  
+- **Critical rule for `.spine/`**: source changes and `.spine/` sync commits **must be separate** — never mix them.  
+- The pipeline flows: modify source → build → commit source → run `spine sync` → commit `.spine/` refresh.  
+- Agents must run the formal `spine sync` command (not edit generated files directly) and verify staged file classification before committing.
 
-### 3. Code Conventions and Architecture Layers
+### Bilingual Documentation
+All documentation is maintained in **English** and **Simplified Chinese**, with aligned entry points. Design, planning, and archive documents live in separate directories and are not promoted into public navigation.
 
-- ES modules with explicit `.js` import suffixes, `strict: true`, 2-space indentation.
-- `camelCase` variables/functions, `PascalCase` classes/types.
-- Conventional Commits with optional scopes (e.g., `feat(cli): …`).
-- Architecture layers are clearly defined: `cli/`, `core/`, `engines/`, `services/`, `infra/`, `tasks/`, `types/`, `utils/`, `ast/`.
-
-### 4. Git Workflow and Commit Discipline
-
-- Feature branches from `main`, PR template required.
-- **Critical rule:** Source changes and `.spine/` sync must be committed in **separate commits** — never mix them.
-- Generated files under `.spine/index/`, `.spine/atlas/`, `.spine/view/` must never be edited directly; use `spine sync` to refresh.
-- Human-reviewed files (`.spine/config.json`, `rules/`) can be committed with source changes.
-
-### 5. Bilingual Documentation Requirement
-
-All documentation must be maintained in **English and Simplified Chinese**, with entry points kept aligned. Never publish design/planning docs into public navigation.
-
-### 6. AI Agent Guidelines
-
-- Always use `node dist/cli/index.js sync` to refresh `.spine/` — never edit generated files.
-- Verify staged file classification with `git status` before committing.
-- Be aware that `spine sync` may take significant time (scans full repo, calls LLM).
+### Self-Dogfooding Protocol
+The `.spine/` directory uses ArchSpine’s own protocol; `config.json` and `rules/**` are human-reviewed control plane files. Generated outputs (`.spine/index/**`, `.spine/atlas/**`, `.spine/view/**`) must never be edited directly — always refresh via `spine sync`.
 
 ---
 
-**This document anchors all architectural governance for the ArchSpine project.** Developers and AI agents should treat it as the authoritative starting point for understanding the repo’s structure, rules, and contribution workflow.
+This document is the single source of truth for ArchSpine’s development conventions, toolchain setup, and operational discipline. All contributors, whether human or AI, should start here.

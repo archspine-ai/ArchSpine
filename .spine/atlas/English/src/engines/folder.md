@@ -1,29 +1,38 @@
-## Core Engine (`engine/`)
+# ArchSpine Core Engine Module
 
-The `engine/` directory is the operational backbone of ArchSpine. It hosts all core services that transform raw file system data into structured architectural knowledge, enforce rules, generate diagnostics, and produce reports. The modules are logically grouped into several key implementation areas:
+This directory houses the core engine of the ArchSpine mirror system. It provides scanning, context resolution, rule enforcement, and reporting capabilities. The components collectively implement the system's operational logic, including file system scanning with ignore rules and git diff integration, architectural rule loading and matching, dependency and relevance analysis using path heuristics and symbol evidence, context resolution for architectural diagnostics, generation of violation fix prompts and reports, system health and usage reporting, and aggregation of spine index data into structured unit collections.
 
-### Scanning & Discovery
-- **`scanner.ts`** – Discovers all repository files using layered ignore rules (`.gitignore`, `.spineignore`, protocol exclusions) and optional git diff integration for incremental scanning. Returns a `ScanResult` with all and changed files.
-- **`scanner-utils.ts`** – Provides path normalization, picomatch-based pattern matching, dry-run report formatting, and grouping counts for scanner output.
-- **`scanner-git.ts`** – Defines a `ScannerGitClient` interface with a synchronous git command execution implementation, used by the scanner to detect changed files.
+## Notable Components
 
-### Aggregation & Index Management
-- **`aggregator.ts`** – Traverses `.spine/index` and `.spine/atlas` directories, reads and validates spine index documents, and constructs structured `SpineUnit` collections (`SpineFolderUnit`, `SpineProjectUnit`) for downstream sync and view generation. Integrates with an LLM client for semantic enrichment.
+The module is organized into several functional groups:
 
-### Rule Engine & Context Analysis
-- **`rules.ts`** – Loads, stores, and matches architectural rules (`SpineRuleDocument`) against file paths using glob patterns (including negation). Provides a public API for downstream enforcement.
-- **`context.ts`** – Resolves relative import targets to absolute paths, extracts architectural rule keywords from file skeletons, computes relevance scores for dependency candidates, and produces structured diagnostics.
-- **`context-path-resolver.ts`** – Utility that resolves relative import source strings to absolute filesystem paths, consulting language extension registries for existence checking.
-- **`context-relevance.ts`** – Scores dependency candidates and target paths using rule keywords, symbol evidence, and path distance heuristics. Computes composite relevance scores combining multiple signals.
+### Scanning and File Discovery
+- **`scanner.ts`** — Core file system scanner that discovers, filters, and reports repository files using layered ignore rules (`.gitignore`, `.spineignore`), `picomatch` pattern matching, and git diff integration for incremental scans. Generates `ScanResult` objects with both full and changed file lists.
+- **`scanner-utils.ts`** — Utility module providing path normalization, `picomatch`-based pattern matching, and dry-run report formatting for scan operations.
+- **`scanner-git.ts`** — Git command execution client interface and default implementation delegating to `child_process.execFileSync`.
 
-### Fix Generation
-- **`fix.ts`** – Public API facade re-exporting `FixService`, `runFix`, and `FixRunSummary`.
-- **`fix-prompt.ts`** – Generates LLM prompt templates for architectural violation fixes, formatting violation context into structured instructional prompts.
+### Rule Engine
+- **`rules.ts`** — Loads, stores, and matches architectural rules (`SpineRuleDocument`) against file paths using glob patterns (including negation via `!`). Leverages `picomatch` for efficient pattern matching.
 
-### Reporting, Diagnostics & Governance
-- **`god.ts`** – Orchestrates generation of a comprehensive architectural dossier (“God Mode report”) from `.spine/index` data, producing a Markdown report with file counts, role distribution, and per-file details.
-- **`info.ts`** – Generates a system info and health report, loading project manifest, configuration, secrets, and LLM settings. Checks for unauthorised mutations via spine-gate and reports sync status, language snapshots, and usage statistics.
-- **`usage.ts`** – Generates formatted usage and audit reports from the Manifest data store, displaying token counts, estimated costs, and violation rows for governance visibility.
-- **`check.ts`** – Public API barrel module for the check subsystem, re-exporting `CheckService`, `runCheck`, and `ValidationSummary`.
+### Context and Relevance Analysis
+- **`context.ts`** — Architectural context resolution engine that resolves relative import targets, extracts rule keywords from source skeletons, computes relevance scores, and generates structured diagnostics for dependency candidates.
+- **`context-path-resolver.ts`** — Path resolution utility that resolves relative import source strings to absolute file paths, consulting `LangRegistry` for valid extensions.
+- **`context-relevance.ts`** — Relevance scoring engine for dependency candidates and target paths using rule-derived keywords, symbol evidence, and path distance heuristics.
 
-The engine modules are designed to work together as a pipeline: scanning discovers files, the aggregator builds structured units, the rule engine matches constraints, context analysis resolves dependencies and scores relevance, fix generation provides automated corrections, and the reporting modules deliver comprehensive diagnostics and governance insight.
+### Reporting and Diagnostics
+- **`fix.ts`** and **`fix-prompt.ts`** — Public API facade for the fix service and an LLM prompt template generator for architectural violation fixes.
+- **`check.ts`** — Public API barrel module re-exporting `CheckService`, `runCheck`, and `ValidationSummary`.
+- **`info.ts`** — Generates comprehensive system info and health reports, inspecting manifest, config, secrets, and LLM configuration. Detects protected output mutations and reports sync status.
+- **`usage.ts`** — Generates formatted usage and audit reports from the Manifest data store, including token counts, estimated costs, and violation details.
+- **`god.ts`** — CLI orchestrator for generating a comprehensive architectural dossier (God Mode report) from `.spine/index`, producing a Markdown report with file ledger entries.
+
+### Aggregation
+- **`aggregator.ts`** — Core engine class that traverses the `.spine/index` and `.spine/atlas` directories, reads and validates spine index documents, and constructs structured `SpineUnit` collections (e.g., `SpineFolderUnit`, `SpineProjectUnit`) for downstream sync and view operations.
+
+## Key Implementation Areas
+
+- **Scanning & Ignore Logic**: The scanner subsystem integrates multiple ignore layers and git diff for incremental updates.
+- **Rule Matching & Enforcement**: The rules engine supports rich glob patterns and negation for precise architectural rule application.
+- **Context Resolution**: The context pipeline resolves imports, extracts keywords, and scores relevance to provide actionable diagnostics.
+- **Reporting**: Multiple reporting modules cover health, usage, violations, and comprehensive architecture dossiers.
+- **Aggregation**: The aggregator transforms raw spine data into structured collections used by the sync and view layers.

@@ -1,13 +1,30 @@
-# ArchSpine Bug Report Template Overview
+# Bug Report Template — ArchSpine Mirror Project
 
-## Why This Document Exists
-This document provides a standardized template for reporting bugs in ArchSpine. It ensures that all bug submissions — whether for runtime, CLI, MCP, or documentation — contain the necessary details (observed vs. expected behavior, reproduction steps, environment information, and logs) so maintainers can diagnose and resolve issues efficiently. By using this template, contributors and users help maintain consistency and completeness across all public issue reports.
+## Purpose
 
-## Who Should Read This
-This template is intended for anyone encountering a bug in ArchSpine: developers using the runtime, contributors working on CLI commands or the MCP server, and users who spot errors in documentation. It is designed for public issue tracking on GitHub. Security vulnerabilities should *not* be reported through this template; instead, follow the private disclosure process described in `SECURITY.md`.
+This document standardizes how bugs are reported in the ArchSpine mirror project. By providing a fixed structure, it ensures every report includes the information maintainers need to diagnose, reproduce, and resolve issues quickly. The template covers runtime, CLI, MCP, and documentation bugs, but explicitly excludes security vulnerabilities (which must follow `SECURITY.md`) and feature requests.
 
-## Key Decisions & Workflows It Anchors
-- **Clear bug vs. feature request distinction:** The template is purpose-built for bugs only. Feature requests, documentation improvements, and security disclosures each have separate processes (e.g., security goes through a private channel).
-- **Required fields for efficient triage:** Every report must include a summary (what happened vs. what was expected), a reproduction section with exact commands/steps, and environment details (Node.js version, OS, provider, CLI version). Optional logs or screenshots help speed up resolution.
-- **Directs security issues away from public issues:** The template includes a prominent warning to redirect security reports to the private disclosure flow, protecting the project and its users.
-- **Accelerates diagnosis:** By requiring precise commands, file paths, and error outputs, the template enables maintainers to reproduce and fix bugs quickly without back-and-forth clarification.
+## Intended Audience
+
+- **Users** encountering unexpected behavior in any ArchSpine component.
+- **Developers** who need to report or triage bugs.
+- **Maintainers** who use the collected data to prioritize fixes and update the codebase.
+
+## Workflows and Decisions Anchored
+
+- **Triage pipeline**: Every report with a `:bug` label enters a standardized review process. The summary, environment details, and reproduction steps are the first items a maintainer checks.
+- **Reproducibility**: The template forces contributors to provide exact commands, file paths, and step-by-step reproduction instructions. This is the core decision driver for whether a bug can be acted upon quickly.
+- **Release blocking**: Reports that lack environment information or clear reproduction steps may be flagged as incomplete, affecting their priority in the release cycle.
+
+## Key Sections in the Template
+
+| Section               | Purpose                                                                 |
+|-----------------------|-------------------------------------------------------------------------|
+| What happened?        | Observed vs. expected behavior                                          |
+| Reproduction          | Exact commands and steps (e.g., `spine init`, `spine check`)            |
+| Environment           | Node.js version, OS, provider, CLI version                              |
+| Logs or screenshots   | CLI output, stack traces, screenshots                                   |
+
+## Reminder for Security Issues
+
+Before opening a public issue, always consult `SECURITY.md`. Security vulnerabilities must be disclosed privately and **not** through this template.

@@ -1,17 +1,17 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "examples/demo-project/.spine/runtime/checkpoints",
-  "role": "Contains execution checkpoint records for the ArchSpine sync pipeline.",
-  "responsibility": "Tracks the lifecycle of sync command runs from initiation to completion, recording per-stage timestamps and item-level completion status, enabling reliable resumption of interrupted runs and providing an authoritative audit trail.",
+  "role": "Contains execution records of synchronization runs.",
+  "responsibility": "Captures the lifecycle and outcome of a sync command, reports pipeline stage status and timing, lists processed files for traceability, and provides metadata for resumption and hook behavior.",
   "children": [
     {
       "filePath": "examples/demo-project/.spine/runtime/checkpoints/sync.json",
-      "role": "This JSON file is an execution checkpoint record for the ArchSpine sync pipeline. It logs the initiation, progress, and final state of a sync command run, including per-stage timestamps and item-level completion status. It is not a configuration file that alters system behavior; rather, it serves as an authoritative trace for resumption, debugging, and audit of a specific sync operation.",
+      "role": "Execution record of a full synchronization run within the ArchSpine mirror system.",
       "fileKind": "config"
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-03T11:26:18.888Z",
+    "indexedAt": "2026-05-03T12:18:03.531Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

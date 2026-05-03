@@ -3,22 +3,28 @@
   "identity": {
     "filePath": "CLAUDE.md",
     "contentHash": "d1b4b66e61b93ae8d7e57efaf6067901da9dc7e72b3490d4dfe70cc622331668",
-    "semanticHash": "298bf3fafb23aa6aadae1c2bab32f70183434ec2501369d485eda78eac2c9fd9",
+    "semanticHash": "897c3b8e50def1de367bb48c3b57b1448722ff78f76b9cce088d3faf2384dda2",
     "language": "unsupported",
     "fileKind": "document",
     "scope": ""
   },
   "semantic": {
-    "role": "项目概览与开发者指南",
+    "role": "Primary project documentation for the ArchSpine protocol and toolchain, defining its purpose, architecture, conventions, and operational discipline.",
     "responsibilities": [
-      "项目核心概念与目标说明",
-      "技术栈与构建命令概览",
-      "代码规范与架构分层描述",
-      "Git 工作流与提交纪律定义",
-      "关键约束与维护边界说明"
+      "Describing ArchSpine as an open-source architectural governance and semantic layer with a physical .spine/ control plane inside Git repositories",
+      "Listing tech stack (TypeScript, Node.js, Vitest, ESLint, Prettier, VitePress, better-sqlite3, @ast-grep/napi, MCP SDK) and common development commands",
+      "Documenting code conventions (ES modules, strict TypeScript, 2-space indent, naming, commit message format with optional scopes)",
+      "Explaining the architecture layers (cli, core, engines, services, infra, tasks, types, utils, ast) and their responsibilities",
+      "Defining the Git workflow, branching model, and PR template requirements",
+      "Stating key constraints: bilingual documentation (English + Simplified Chinese), .spine/ dogfooding protocol, prohibition on direct edits to generated .spine/ directories, and discipline for pipeline commits",
+      "Providing detailed pipeline and commit discipline rules for maintaining .spine/ as a distribution artifact"
     ],
     "outOfScope": [
-      "详细的 API 文档、用户手册及设计原理文档（位于独立的 docs 子目录）"
+      "Detailed API reference or function-level documentation",
+      "End-user guide or non-developer usage instructions",
+      "Deployment and hosting instructions",
+      "Historical design, planning, or archive documents (separate docs/ directories)",
+      "Internal design rationale beyond what is stated in the constraints"
     ],
     "invariants": [],
     "changeIntent": {
@@ -30,25 +36,27 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document serves as the central README and developer onboarding guide for the ArchSpine project. It explains why ArchSpine exists, what it does, and how to contribute effectively.",
-        "context_and_audience": "Primary audience is developers who work on the ArchSpine toolchain itself, including AI agents that need to understand repository structure, build processes, and governance rules. Secondary audience includes contributors exploring the codebase.",
+        "purpose": "This document introduces ArchSpine, an open-source protocol and toolchain that embeds a physical .spine/ control plane inside Git repositories. It explains the project's high-level vision—making codebases queryable, governable, and auditable for AI-assisted engineering—and provides all necessary conventions, commands, and discipline guidelines for contributors and maintainers.",
+        "context_and_audience": "The primary audience is developers and maintainers working on ArchSpine itself, as well as AI agents that interact with the repository. It assumes familiarity with TypeScript, Node.js, and modern Git workflows. The document is the entry point for understanding the project's structure, development practices, and the strict commit discipline required to keep the .spine/ artifact consistent.",
         "key_takeaways": [
-          "ArchSpine is an open-source protocol and toolchain that builds a .spine/ control plane inside Git repositories for AI-era architectural governance.",
-          "The .spine/ directory contains both human-reviewed (config.json, rules/) and auto-generated files (index/, atlas/, view/).",
-          "Commit discipline is strict: source changes and .spine/ sync must be committed in separate commits; never mix them.",
-          "Bilingual documentation (English + Simplified Chinese) must stay aligned.",
-          "Never directly modify generated .spine/ sub-trees; use `spine sync` to refresh them."
+          "ArchSpine builds a .spine/ control plane in every Git repo to make codebases AI-queryable and governable.",
+          "The tech stack is strictly TypeScript 5 ESM, Node.js >=20, with specific test, lint, and documentation tooling.",
+          "Code conventions enforce ES module imports with .js suffixes, strict types, 2-space indent, and Conventional Commits with optional scopes.",
+          "Architecture is layered: cli, core, engines, services, infra, tasks, types, utils, ast—each with distinct responsibilities.",
+          "Key constraints include bilingual docs (EN + Simplified Chinese), dogfooding .spine/ protocol, never editing generated artifacts directly, and using spine sync instead.",
+          "The commit discipline mandates separating source changes from .spine/ sync commits, with agents required to run the formal sync command and verify staged files."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档是 ArchSpine 项目的核心 README 和开发者入门指南，阐述项目存在的原因、功能以及如何有效参与贡献。",
-        "context_and_audience": "主要面向 ArchSpine 工具链本身的开发者，包括需要理解仓库结构、构建流程和治理规则的 AI 智能体；其次面向希望探索代码库的贡献者。",
+        "purpose": "本文档介绍 ArchSpine，一个开源协议与工具链，它在 Git 仓库内部建立一个物理的 `.spine/` 控制平面。文档阐述了项目的高层愿景——让代码库对 AI 辅助工程具有可查询、可治理和可审计的能力——并为贡献者和维护者提供了所有必要的约定、命令和纪律指南。",
+        "context_and_audience": "主要受众是 ArchSpine 自身的开发者与维护者，以及与该仓库交互的 AI 代理。假设读者熟悉 TypeScript、Node.js 和现代 Git 工作流。本文档是理解项目结构、开发实践以及维护 `.spine/` 制品一致性所需的严格提交纪律的入口。",
         "key_takeaways": [
-          "ArchSpine 是一个开源协议与工具链，通过在 Git 仓库内构建 .spine/ 控制面，实现面向 AI 时代的架构治理与语义层。",
-          ".spine/ 目录包含人工审查的文件（config.json、rules/）以及自动生成的文件（index/、atlas/、view/）。",
-          "严格的提交纪律：源码变更与 .spine/ 同步必须分两次提交，不得混入同一次提交。",
-          "中英文双语文档必须保持内容对齐。",
-          "禁止直接编辑自动生成的 .spine/ 子目录，应使用 `spine sync` 命令刷新。"
+          "ArchSpine 在每个 Git 仓库中构建 `.spine/` 控制平面，使代码库对 AI 可查询、可治理。",
+          "技术栈严格限定为 TypeScript 5 ESM、Node.js >=20，使用特定的测试、代码检查和文档工具。",
+          "代码约定要求显式的 `.js` 导入后缀、严格类型、2空格缩进，并使用带可选范围的约定式提交。",
+          "架构分层：cli、core、engines、services、infra、tasks、types、utils、ast——各有明确的职责。",
+          "关键约束包括双语文档（英文 + 简体中文）、对 `.spine/` 协议的自举使用、绝不直接编辑生成的制品，而是使用 `spine sync` 命令。",
+          "提交纪律要求将源码变更与 `.spine/` 同步分开提交，AI 代理必须运行正式的 sync 命令并检查暂存文件分类。"
         ]
       }
     }
@@ -71,7 +79,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:22:36.857Z",
+    "indexedAt": "2026-05-03T12:14:49.944Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

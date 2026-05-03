@@ -1,29 +1,20 @@
-## Test Suite Summary
+The `tests/` directory is the test suite for the ArchSpine system. It validates all core subsystems, including CLI commands, configuration management, LLM integration, sync workflows, repository bootstrap, credential storage, database operations, error handling, and architectural boundary enforcement. Testing is conducted through isolated unit tests, integration tests, and end-to-end workflows.
 
-The `tests/` directory houses the complete test suite for the ArchSpine mirror system, covering all layers of verification: unit tests, integration tests, end-to-end tests, and acceptance tests. Its primary responsibility is to validate the system's correctness, reliability, and architectural integrity through comprehensive testing of CLI commands, configuration, LLM integration, database operations, security, error handling, and core workflows.
+Tests are organized into several subdirectories by testing focus:
+- **`tests/e2e/`** – End-to-end integration tests for CLI commands (init, pipeline execution, rule violation detection) using isolated git repositories and mocked prompts.
+- **`tests/engines/`** – Integration tests for the Scanner engine, validating file discovery and exclusion logic.
+- **`tests/helpers/`** – Utility scripts, including a lock manager test harness for multi-process lock behavior.
+- **`tests/infra/`** – Tests for index-based resume recovery and LLM retry mechanisms, covering partial/corrupted index states and failure simulation.
 
-### Notable Children and Grouping
+Notable concrete submodules and test files include:
+- `cli.test.ts` – E2E test of CLI command workflow and core engine orchestration using a custom mock LLM client.
+- `schema-compliance.test.ts` – Validates JSON schemas and SyncService integration with Ajv.
+- `integrity.test.ts` – Tests SpineDB batch commit atomicity and rollback on constraint violations.
+- `robustness.test.ts` – Validates cross-process lock acquisition and release via an isolated worker script.
+- `credentials-store.test.ts` – Tests CredentialStore with multiple backends, fallback file safety, and gitignore hardening.
+- `config-validation.test.ts` – Validates configuration loading, language defaults, hook sync mode, and warning emissions.
+- `error-system.test.ts` – Ensures consistent error propagation across service and infrastructure facade modules.
+- `infra-facade-boundary.test.ts` – Enforces architectural boundary rules through import analysis.
+- `view-module-boundary.test.ts` – Validates placement of view modules under `src/services/view` to maintain layer separation.
 
-The test suite is organized into several logical groups:
-
-- **CLI and Workflow Tests** – Reside at the top level with names like `cli.test.ts`, `init-cli.test.ts`, `sync-command.test.ts`, `view-command.test.ts`, and `publish-command.test.ts`. These validate command-line execution, argument parsing, exit codes, and orchestration of core workflows (sync, check, fix, publish, view).
-
-- **Configuration and LLM Tests** – Files such as `config.test.ts`, `config-validation.test.ts`, `llm-config.test.ts`, `llm.test.ts`, `llm-provider-utils.test.ts`, and `llm-command-ui.test.ts` verify configuration persistence, language settings, hook synchronization modes, LLM client resolution, secret injection, and provider utility functions.
-
-- **Database and Index Tests** – `db-modules.test.ts`, `integrity.test.ts`, `index-reader.test.ts`, and `manifest.test.ts` validate schema initialization, batch commits, transaction integrity, index file schema enforcement, and manifest behavior.
-
-- **Security and Error Handling Tests** – `security.test.ts`, `error-system.test.ts`, `credentials-backend.test.ts`, `credentials-store.test.ts`, `help-boundary-contract.test.ts`, and `schema-compliance.test.ts` cover credential storage, error propagation, lock serialization, schema validation, and security-sensitive prompt-flow behavior.
-
-- **Engine and Core Logic Tests** – `scanner.test.ts`, `scan-policy.test.ts`, `context-engine.test.ts`, `prompt-engine.test.ts`, `post-commit-derivation.test.ts`, `runtime-service.test.ts`, `runtime-session.test.ts`, `task-runtime.test.ts`, `task-state-guard.test.ts`, `validate-task.test.ts`, and others verify file scanning, dependency resolution, prompt budget calculation, task orchestration, runtime configuration, and state management.
-
-- **Subdirectories** – `tests/e2e/` contains end-to-end integration tests for CLI commands in isolated environments. `tests/engines/` holds integration tests for the Scanner engine. `tests/helpers/` provides utilities for concurrency lock testing (e.g., lock worker scripts). `tests/infra/` tests index-based resume recovery and LLM retry mechanisms.
-
-### Key Implementation Areas
-
-The most critical areas under test are:
-
-- **Synchronization and Repair** – `sync-cli-built.test.ts`, `sync-command.test.ts`, `repair-policy.test.ts`, and `repair-forced-processing.test.ts` ensure sync workflows correctly handle file synchronization, repair policies, and forced processing.
-- **Architectural Integrity** – `infra-facade-boundary.test.ts`, `view-module-boundary.test.ts`, and `footprint.test.ts` enforce layer separation, import rules, and structural/semantic footprint stability.
-- **Resilience and Recovery** – `execution-checkpoint.test.ts`, `resume-services.test.ts`, `robustness.test.ts`, and `index-reader.test.ts` test checkpoint resume, cross-process lock management, and recovery from corrupted indexes.
-- **Demo and Acceptance** – `demo-governance.test.ts` validates the full end-to-end governance workflow using the built CLI, ensuring sync, check, and fix operate correctly on a realistic project structure.
-- **Platform Support** – `windows-platform.test.ts` tests platform-specific global directory resolution for Windows and non-Windows systems.
+The test suite emphasizes isolated temporary directories for each test case to avoid side effects, extensive use of mocks (Vitest), and comprehensive coverage of both happy paths and error/edge cases across all major subsystems.

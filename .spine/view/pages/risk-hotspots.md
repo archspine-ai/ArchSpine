@@ -1,6 +1,6 @@
 # Risk Hotspots Report
 
-> Generated: 2026-05-03T11:29:16.415Z
+> Generated: 2026-05-03T12:20:51.705Z
 > Top 12 risk hotspots ranked by a transparent additive score model.
 
 ## Top Risk Files

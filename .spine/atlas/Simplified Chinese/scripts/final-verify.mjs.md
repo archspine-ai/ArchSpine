@@ -1,18 +1,16 @@
-# File: scripts/final-verify.mjs
+# ArchSpine ASTExtractor 端到端验证测试
 
-## 角色
-Multi-language AST extractor verification script
+## 目的
+本文档是 ArchSpine 镜像系统中 ASTExtractor 组件的最终端到端测试脚本。它验证提取器能够正确识别用 Java、C++、Rust、C、Python 和 Go 编写的源代码中的导出符号。测试覆盖了继承、接口、泛型、界限、结构体、trait、异步函数、模块和导出列表等语言特定构造。该文档的存在保证了对提取逻辑的任何修改都不会破坏跨语言公共 API 面检测的准确性。
 
-## 职责
-- End-to-end validation of ASTExtractor against Java, C++, Rust, C, Python, and Go code snippets
-- Ensures that exported symbols (classes, functions, interfaces, traits, structs, etc.) are correctly identified
-- Acts as a regression test suite for the extractor's multi-language support
-- Provides a clear pass/fail report for each language fixture
+## 目标读者
+本文档面向维护或扩展 ArchSpine 镜像系统的开发人员，具体包括：
+- 参与静态分析层的贡献者
+- 负责为现有或新语言添加或更新提取规则的语言支持工程师
+- 负责多语言提取正确性的质量保证工程师
 
-## 负面范围
-- Does not test extraction of imports, dependencies, or internal symbols
-- Does not validate type resolution, generics bounds, or inheritance semantics beyond name extraction
-- Does not cover languages beyond the six fixtures included
-- Does not test error handling or malformed code
-
-本地兜底版本，确保文档输出完整。
+## 所锚定的决策与工作流程
+- **通过/失败标准**：只有当提取出的导出名称与预期导出（如 `expectedExports` 所列）完全匹配时，该语言测试案例才算通过。任何缺失或多余的符号都会导致失败，从而确保提取结果与预期的导出表面精确对齐。
+- **诊断输出**：失败时，测试会同时打印 `missing`（缺失）和 `extra`（多余）符号列表，以及完整的提取结果和预期导出详情。这让开发者能够快速调试改变提取行为的变更。
+- **工作流程触发**：该测试旨在作为持续集成流水线的一部分运行。失败的测试会阻止部署，并表明 ASTExtractor 至少对一种语言不再产生正确的导出集。
+- **覆盖范围边界**：测试明确排除了非导出符号、模板实例化和运行时语义，强化了 ASTExtractor 职责的范围界定。

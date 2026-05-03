@@ -1,9 +1,11 @@
-This directory houses the foundational metadata, indexing configuration, and architectural governance rules that underpin the ArchSpine mirror system. Its contents are organized into three primary groups:
+This directory contains example configuration files for the ArchSpine repository indexing and rule enforcement system. The examples are grouped into three categories: **unit definitions** (spine-folder-unit.example.json, spine-project-unit.example.json, spine-unit.example.json), **index metadata** (spine-manifest.example.json), and **architectural rules** (spine-rule-document.example.json, spine-rule.example.md).  
 
-1. **Structural Metadata Units** – Files such as *spine-folder-unit.example.json*, *spine-project-unit.example.json*, and *spine-unit.example.json* define the identity, semantic role, and provenance of source directories and files. They enable the system to recognize module groupings, track indexing pipeline stages, and validate structural invariants.
+Key implementation areas are the repository indexing pipeline (folder and project units define module containers and provenance tracking), synchronization and file inventory (the manifest tracks sync state, content hashes, and reverse indices), and domain boundary enforcement (rules prevent direct database imports in application code).  
 
-2. **Indexing Manifest and State Snapshot** – The *spine-manifest.example.json* file maintains a registry of all indexed source files with content hashes, locale-specific documentation associations, and synchronization metadata. It provides a lightweight state snapshot for runtime operations and sync workflows.
-
-3. **Architectural Governance Rules** – Both *spine-rule-document.example.json* and *spine-rule.example.md* enforce separation of concerns by imposing import dependency constraints between architectural layers, preventing direct access to low‑level adapters, and defining pattern‑based scoping with severity and enforceability controls. These rules include clear rationales and remediation guidance.
-
-The most critical implementation areas are the indexing pipeline configuration (provenance tracking and change detection), structural identity assignment (semantic roles for directories and files), and policy enforcement (clean architecture boundary maintenance). Concrete submodules to monitor include the provenance metadata schema, the manifest’s reverse index completeness check, and the rule‑based import validation engine.
+Concrete submodules include:  
+- **spine-folder-unit.example.json** – defines the application module container for the indexing pipeline.  
+- **spine-manifest.example.json** – provides metadata for synchronization, file inventory, and reverse index lookups.  
+- **spine-project-unit.example.json** – describes project metadata, module structure (src/docs), and provenance tracking.  
+- **spine-rule-document.example.json** – enforces a prohibition on direct database-layer imports.  
+- **spine-rule.example.md** – specifies a mandatory rule with scope, severity, and rationale.  
+- **spine-unit.example.json** – models an authentication entry module with login/logout functions.

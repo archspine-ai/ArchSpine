@@ -1,18 +1,19 @@
-`prompt` 目录是 ArchSpine AI 交互系统的提示组装与生成层。它提供了流畅的提示构建器、共享的协议以及专用的生成器，用于构造结构化、本地化且经过验证的 AI 代理提示。
+## 提示词组装与编排层
 
-### 主要子模块
+本目录实现了 ArchSpine 系统中 AI 代理交互的核心提示词组装与编排功能。它提供了一套工具和外观模式，用于统一构建 Markdown 文档与源代码分析任务所需的结构化提示词。
 
-- **`builder.ts`** – 导出 `PromptBuilder` 类，提供流畅接口，用于按顺序组装提示的各个部分（身份说明、指令、上下文等），最终拼接成一个字符串。
-- **`types.ts`** – 定义提示生成协议所需的 TypeScript 类型，包括 `PromptResponseMode`（仅 JSON，或 JSON 与 Markdown 混合）和 `MarkdownPromptInput` 接口。
-- **`shared.ts`** – 工具模块，负责生成格式化的输出约束（OUTPUT CONTRACT）字符串以及相关的语言/Markdown 指导。验证 `English` 是否始终作为必需的基础语言包含在内。
-- **`markdown.ts`** – 外观层，根据语义 JSON 输入生成仅包含 Markdown 的本地化提示。借助 `PromptBuilder` 和共享指导，指示模型仅返回带有精确语言标记的 Markdown 块。
-- **`source.ts`** – 外观层，用于生成源代码分析和验证的结构化 LLM 提示。注入环境上下文、架构规则、依赖上下文以及先前的语义合约。包含一个专用的验证变体，用于严格的架构审计和语义漂移检测。
-- **`aggregate.ts`** – 存在但角色未知，可能为未来的聚合逻辑预留。
+### 主要子模块及分组
+
+- **`builder.ts`** — `PromptBuilder` 类，提供流畅的接口，用于按顺序组装提示词的各部分（身份设定、指令、上下文等），并将其拼接为最终字符串。
+- **`shared.ts`** — 共享工具模块，根据 `PromptResponseMode` 与目标语言生成输出合约段落（包括 JSON 结构、语言指令与 Markdown 指引）。强制要求英语作为基础语言。
+- **`types.ts`** — 定义 `PromptResponseMode` 类型（`json-only` 或 `json-and-markdown`）以及 `MarkdownPromptInput` 接口，编码了文件类型与本地化需求之间的契约。
+- **`markdown.ts`** — 外观函数 `generateMarkdownPrompt`，根据语义 JSON 输入构建纯 Markdown 提示词，内部依赖 `PromptBuilder` 与 `shared.ts` 工具。
+- **`source.ts`** — 用于生成源代码分析与校验任务的 LLM 提示词的外观函数。提供标准摘要变体以及专用校验变体 `generateSourceValidationJsonPrompt`，后者执行严格的架构审计并具备语义漂移检测能力。
 
 ### 关键实现领域
 
-- **提示组装编排** – `PromptBuilder` 链式调用并渲染身份、指令、上下文和输出格式等结构化块。
-- **本地化与输出约束执行** – `shared.ts` 构建语言特定的指令，并强制要求包含 `English` 作为基础语言。
-- **Markdown 专用生成** – `markdown.ts` 序列化语义 JSON，并指示模型仅按语言返回 Markdown 块。
-- **源代码分析提示** – `source.ts` 提供包含少样本示例和 Schema 驱动输出约束的完整上下文，用于摘要或验证任务。
-- **验证与漂移检测** – `source.ts` 的验证变体执行严格的架构审计，并通过比较语义合约来检测漂移。
+- **流畅的提示词构建**：通过 `PromptBuilder` 及可插拔的模板函数（身份、指令、上下文）实现。
+- **本地化支持**：为每种目标语言生成对应的指令，并在输出合约中强制包含基础语言。
+- **输出合约强制**：验证响应模式，并生成结构化 JSON 或 JSON+Markdown 输出。
+- **源代码分析流程**：注入环境上下文（分支、Git 状态）、架构规则、依赖上下文以及历史语义合约，以引导 LLM 输出。
+- **语义漂移检测**：通过比较当前 AST 状态与历史语义合约，在校验过程中标记不一致之处。

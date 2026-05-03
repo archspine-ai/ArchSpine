@@ -3,24 +3,23 @@
   "identity": {
     "filePath": "src/ast/rules/java.yml",
     "contentHash": "e7a1b864c9d2a40de2af30ed514891c4cad4025f920c4c9fef689bad9fc5d567",
-    "semanticHash": "49ab6a13e4fa4b6a903fdc1194345f13d0f5e399a8eca8e456bffab0b20a4314",
+    "semanticHash": "38a71fcd75c2025bd05aaa14e119c57dff4eed918e4f7a73f60a2533db2db15e",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/ast/rules"
   },
   "semantic": {
-    "role": "This document defines AST (Abstract Syntax Tree) extraction patterns for Java source code analysis within the ArchSpine mirror system. It specifies how imports, class declarations, interface declarations, and method call usages should be recognized from Java files.",
+    "role": "Define structural patterns for code analysis in the ArchSpine mirror system",
     "responsibilities": [
-      "Defining import extraction patterns using a regex-like `import $SOURCE` pattern.",
-      "Defining class and public class export patterns with optional body capture.",
-      "Defining interface and public interface export patterns.",
-      "Defining method call and object instantiation usage patterns (call and new).",
-      "Providing a structured YAML format for language-specific AST rules that can be consumed by the ArchSpine scanner and aggregator engines."
+      "Defining pattern syntax for imports",
+      "Defining pattern syntax for exports (classes, interfaces)",
+      "Defining pattern syntax for usages (method calls, object instantiation)",
+      "Establishing a configuration grammar for ArchSpine's reflection engine"
     ],
     "outOfScope": [
-      "Other programming languages (e.g., Python, Rust, C++) – those have separate rule files.",
-      "Higher-level architectural rules or naming conventions – those are defined in separate `.yml` files under `.spine/rules/`.",
-      "Documentation generation or view rendering – this file is purely for code structure extraction."
+      "Implementation details of the pattern matching engine",
+      "Runtime behavior or execution semantics",
+      "Language-specific syntax beyond Java-like patterns"
     ],
     "invariants": [],
     "changeIntent": {
@@ -32,25 +31,23 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document serves as a machine-readable ruleset that teaches ArchSpine how to parse Java source code into structured knowledge. By defining patterns for imports, exports (classes and interfaces), and usages (method calls and instantiations), it enables the system to build a detailed index of code dependencies, public API surfaces, and usage relationships. This is a foundational building block for ArchSpine’s ability to analyze, visualize, and govern codebases automatically.",
-        "context_and_audience": "This rules file is intended for developers contributing to ArchSpine’s language support, as well as for the ArchSpine runtime engine that reads these patterns to perform static analysis. It is not meant for end‑user consumption; rather, it is a configuration artifact within the `.spine/atlas` and `.spine/index` directories. The primary audience is the development team maintaining ArchSpine’s AST extraction capabilities and any contributors adding support for new languages.",
+        "purpose": "This document specifies the pattern definitions used by the ArchSpine mirror system to identify structural code elements such as imports, exports (classes/interfaces), and usages (calls/instantiations). It serves as a configuration reference for developers integrating code analysis or architecture validation.",
+        "context_and_audience": "Intended for developers and architects working on the ArchSpine tool, who need to understand or extend the pattern matching capabilities. It assumes familiarity with the system's reflection and mirroring concepts.",
         "key_takeaways": [
-          "The file defines Java‑specific AST extraction rules in a compact YAML format.",
-          "It covers three categories: imports, exports (classes/interfaces), and usages (calls/instantiations).",
-          "Patterns use a template language with placeholders like `$NAME`, `$BODY`, and `$ARGS` to match code structures.",
-          "This file is one of many language‑specific rule files; each language (TypeScript, Python, Go, etc.) has its own corresponding YAML file.",
-          "Without such a rules file, ArchSpine cannot parse the corresponding language and thus cannot provide insight into that language’s codebase."
+          "The document defines a grammar for three categories: imports, exports, usages.",
+          "Exports include patterns for class and interface declarations, both public and default visibility.",
+          "Usages cover method calls and constructor invocations.",
+          "Each pattern consists of an id and a pattern string with placeholders."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档是一个机器可读的规则集，用于指导 ArchSpine 如何解析 Java 源代码并提取结构化知识。通过定义导入、导出（类和接口）以及使用（方法调用和实例化）的模式，它使系统能够构建代码依赖关系、公共 API 表面和使用关系的详细索引。这是 ArchSpine 自动分析、可视化和治理代码库的基础构建模块。",
-        "context_and_audience": "该规则文件面向为 ArchSpine 语言支持做出贡献的开发者，以及读取这些模式以执行静态分析的 ArchSpine 运行时引擎。它并非面向最终用户，而是 `.spine/atlas` 和 `.spine/index` 目录中的一个配置工件。主要受众是维护 ArchSpine AST 提取功能的开发团队以及任何为添加新语言支持做出贡献的人。",
+        "purpose": "本文档定义了ArchSpine镜像系统中用于识别结构代码元素的模式，包括导入、导出（类/接口）和使用（调用/实例化）。作为开发者在集成代码分析或架构验证时的配置参考。",
+        "context_and_audience": "适用于使用ArchSpine工具的开发者与架构师，需理解或扩展模式匹配功能。假定读者熟悉系统的反射与镜像概念。",
         "key_takeaways": [
-          "该文件以紧凑的 YAML 格式定义了 Java 特定的 AST 提取规则。",
-          "它涵盖三个类别：导入（imports）、导出（exports，包括类和接口）和使用（usages，包括方法调用和实例化）。",
-          "模式使用模板语言，包含 `$NAME`、`$BODY` 和 `$ARGS` 等占位符来匹配代码结构。",
-          "该文件是众多语言特定规则文件之一；每种语言（TypeScript、Python、Go 等）都有其对应的 YAML 文件。",
-          "没有此类规则文件，ArchSpine 无法解析相应语言，因此无法提供该语言代码库的洞察。"
+          "文档定义了三种类别的模式语法：导入、导出、使用。",
+          "导出包括类和接口声明的模式，涵盖公有和默认可见性。",
+          "使用包括方法调用和构造函数调用。",
+          "每个模式由id和带占位符的pattern字符串组成。"
         ]
       }
     }
@@ -73,7 +70,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:25:29.688Z",
+    "indexedAt": "2026-05-03T12:17:28.128Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

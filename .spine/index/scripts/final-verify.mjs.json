@@ -3,24 +3,21 @@
   "identity": {
     "filePath": "scripts/final-verify.mjs",
     "contentHash": "09fd95cf959caf347b149d76693e9c4afd2bd8ad9869a71f297079f100852392",
-    "semanticHash": "4fdd8be601bc810d483d6d01f35c288b764fc4a7152b4284d5e7ac36488f9ddf",
+    "semanticHash": "790623d1f3a0029fbe1f5a17111db271c251beb092c3c687752072e9109bdaff",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "scripts"
   },
   "semantic": {
-    "role": "Multi-language AST extractor verification script",
+    "role": "End-to-end verification test for ASTExtractor across multiple programming languages",
     "responsibilities": [
-      "End-to-end validation of ASTExtractor against Java, C++, Rust, C, Python, and Go code snippets",
-      "Ensures that exported symbols (classes, functions, interfaces, traits, structs, etc.) are correctly identified",
-      "Acts as a regression test suite for the extractor's multi-language support",
-      "Provides a clear pass/fail report for each language fixture"
+      "Validates ASTExtractor output against expected exports for Java, C++, Rust, C, Python, and Go fixtures",
+      "Covers language-specific constructs: inheritance, interfaces, generics, bounds, structs, traits, async functions, modules, and export lists"
     ],
     "outOfScope": [
-      "Does not test extraction of imports, dependencies, or internal symbols",
-      "Does not validate type resolution, generics bounds, or inheritance semantics beyond name extraction",
-      "Does not cover languages beyond the six fixtures included",
-      "Does not test error handling or malformed code"
+      "Does not describe system architecture or design rationale",
+      "Does not cover user-facing documentation or API reference",
+      "Excludes non-exported symbols, template instantiations, or runtime semantics"
     ],
     "invariants": [],
     "changeIntent": {
@@ -32,23 +29,23 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This script serves as an end-to-end verification tool for the ASTExtractor component. It parses predefined code snippets in six programming languages and checks that the set of exported symbols matches expected names. Its goal is to catch regressions when the extractor logic changes, ensuring continued support for multi-language export detection.",
-        "context_and_audience": "Developers and test engineers working on the ArchSpine project, specifically those maintaining or extending the AST extraction pipeline. CI systems and code reviewers also rely on this script to validate extractor correctness before merging changes.",
+        "purpose": "This document is a test script that performs end-to-end verification of the ASTExtractor component. It ensures the extractor correctly identifies exported symbols from source code written in Java, C++, Rust, C, Python, and Go.",
+        "context_and_audience": "Written for developers maintaining or extending the ArchSpine mirror system. The audience includes contributors working on the static analysis layer, language support, or quality assurance for multi-language extraction.",
         "key_takeaways": [
-          "Verifies export extraction for Java, C++, Rust, C, Python, and Go",
-          "Tests inheritance, generics, traits, interfaces, and pub/private visibility",
-          "Runs as a standalone script with clear pass/fail output",
-          "Failing tests indicate a mismatch between extracted and expected exports"
+          "The extractor is tested on six languages with diverse type systems and module patterns",
+          "Each fixture includes inheritance, generics, and interfaces where applicable",
+          "Pass/fail criteria are based on exact match of exported symbol names",
+          "Unexpected missing or extra symbols trigger detailed diagnostic output"
         ]
       },
       "Simplified Chinese": {
-        "purpose": "该脚本是ASTExtractor组件的端到端验证工具。它会解析六种编程语言的预定义代码片段，并检查提取出的导出符号集合是否与预期名称一致。其目标是在提取器逻辑变更时捕获回归问题，确保多语言导出检测功能的持续可用性。",
-        "context_and_audience": "适用于ArchSpine项目的开发者和测试工程师，尤其是那些维护或扩展AST提取管线的成员。持续集成系统和代码审查者也依赖此脚本在合并变更前验证提取器的正确性。",
+        "purpose": "本文档是一个测试脚本，用于对ASTExtractor组件进行端到端验证。它确保提取器能够正确识别用Java、C++、Rust、C、Python和Go编写的源代码中的导出符号。",
+        "context_and_audience": "面向维护或扩展ArchSpine镜像系统的开发人员。目标受众包括参与静态分析层、语言支持或多语言提取质量保证的贡献者。",
         "key_takeaways": [
-          "验证Java、C++、Rust、C、Python和Go语言的导出提取功能",
-          "测试继承、泛型、特质、接口以及公开/私有可见性处理",
-          "作为独立脚本运行，提供清晰的通过/失败输出",
-          "测试失败表明提取结果与预期导出之间存在差异"
+          "提取器针对六种语言进行了测试，涵盖了多样化的类型系统和模块模式",
+          "每个测试用例都包含了继承、泛型和接口（如适用）",
+          "通过/失败的标准基于导出符号名称的精确匹配",
+          "任何缺失或多余的符号都会触发详细的诊断输出"
         ]
       }
     }
@@ -71,7 +68,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:25:08.205Z",
+    "indexedAt": "2026-05-03T12:16:26.450Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

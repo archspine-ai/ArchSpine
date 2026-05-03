@@ -1,7 +1,18 @@
-The `.github/ISSUE_TEMPLATE/` directory standardizes how contributors file issues in the ArchSpine project. It contains three YAML templates that enforce a consistent structure for bug reports, feature requests, and documentation improvements.
+# Issue Templates (.github/ISSUE_TEMPLATE/)
 
-- **bug_report.yml** – Used to report runtime, CLI, MCP, or documentation bugs. It collects observed vs. expected behavior, reproduction steps, environment details, logs, and screenshots. Security-sensitive issues are redirected to a private disclosure process.
-- **feature_request.yml** – Proposes new capabilities or workflow improvements. The template captures the problem, the proposed solution, and alternatives considered, ensuring actionable information for maintainers.
-- **docs_improvement.yml** – Suggests documentation fixes or enhancements. It requires links to the pages needing change and a description of the proposed improvement.
+This directory contains structured issue templates for the ArchSpine mirror system. These templates standardize user submissions for three categories: bug reports, documentation improvements, and feature requests. Each template captures essential details specific to its type to ensure clear, actionable feedback.
 
-These templates are the primary entry point for community contributions. When implementing or modifying them, focus on field clarity, validation rules, and alignment with ArchSpine’s triage workflow. Each template resides as a standalone YAML file under `ISSUE_TEMPLATE/`, and the directory is placed at the repository root under `.github/`.
+### Notable Children
+
+- **bug_report.yml** – Standardizes bug reports for runtime, CLI, MCP, or documentation issues. Collects observed vs. expected behavior, exact reproduction steps, environment details, and logs/screenshots.
+- **docs_improvement.yml** – Provides a structured format for reporting documentation issues. Collects links to problematic pages and descriptions of needed changes.
+- **feature_request.yml** – Ensures consistent structure for new workflow requests. Captures the problem or limitation, a detailed proposed solution (desired behavior, commands, UX), and alternative workarounds considered.
+
+### Key Implementation Areas
+
+- **Runtime & CLI issues** – via bug_report.yml  
+- **MCP integration issues** – also covered by bug_report.yml  
+- **Documentation tracking** – via docs_improvement.yml  
+- **Feature expansion** – via feature_request.yml
+
+These templates collectively guarantee that every issue report includes the minimum information needed to diagnose, reproduce, or evaluate the request.

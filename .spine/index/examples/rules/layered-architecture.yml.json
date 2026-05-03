@@ -3,23 +3,22 @@
   "identity": {
     "filePath": "examples/rules/layered-architecture.yml",
     "contentHash": "0de48a7c61fe6f1c8f51b0886997c2cdef8dbf5ba768236889f92c07eba43050",
-    "semanticHash": "68707719355839532b9828f56a408efc8c6896ec02caae8d1f64ef9b069f8d8d",
+    "semanticHash": "76020f5b1f8bd3a4a3e02803ca63de48fd4cf371d8397095fdec13742e6d4d53",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "examples/rules"
   },
   "semantic": {
-    "role": "层階構造制約規則ファイル",
+    "role": "Define and enforce layered architecture constraints to maintain clean dependency direction in the ArchSpine mirror system.",
     "responsibilities": [
-      "維持レイヤードアーキテクチャモデルのルール定義",
-      "ドメイン層の純粋性と独立を確保する制約",
-      "逆依存を防ぐルールの提供",
-      "API層が直接ドメイン層を呼ぶことを強制する制約"
+      "Document the specific rules for domain isolation, interface dependency, and API layer separation.",
+      "Provide the severity and rationale for each architectural constraint.",
+      "Serve as a reference for developers and automated tools to validate layer compliance."
     ],
     "outOfScope": [
-      "特定の実装詳細やインフラ層の内部ルール",
-      "クロスカッティング関心事（ロギング、認証など）のルール",
-      "命名規則やコーディングスタイルのガイドライン"
+      "Implementation details of infrastructure or CLI modules.",
+      "User interface design or frontend concerns.",
+      "Specific utility or helper function implementations."
     ],
     "invariants": [],
     "changeIntent": {
@@ -31,21 +30,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document defines the layered architecture constraints for the ArchSpine mirror system. It codifies rules that prevent reverse dependencies, enforce domain isolation, and ensure API layers only call service or domain layers, thereby preserving the classical layered model's integrity.",
-        "context_and_audience": "Intended for developers and architects maintaining the ArchSpine system, any AI agent or human needing to understand the architectural boundaries that keep the domain layer pure and infrastructure dependencies unidirectional.",
+        "purpose": "This document establishes the layered architecture constraints for the ArchSpine project, ensuring that high-level modules do not depend on low-level modules, and that the domain layer remains pure and independent.",
+        "context_and_audience": "This document is intended for developers and architects working on the ArchSpine system. It is used during code reviews, linting, and automated architecture checks to enforce dependency direction and maintain separation of concerns.",
         "key_takeaways": [
-          "Domain modules must not import from infra or CLI layers (error severity).",
-          "Domain should only depend on internal domain logic or generic utilities (warning severity).",
-          "API layers must only call service or domain layers; bypassing business logic is prohibited (error severity)."
+          "Domain modules (src/domain/) must not import from infrastructure or CLI layers.",
+          "Domain modules should only depend on internal domain logic or generic utilities.",
+          "API layers (src/api/) are allowed to call only Service or Domain layers, not bypass business logic."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档定义了 ArchSpine 镜像系统的分层架构约束。它将防止反向依赖、强制领域隔离以及确保 API 层仅调用服务层或领域层的规则编码化，从而维护经典分层模型的完整性。",
-        "context_and_audience": "适用于维护 ArchSpine 系统的开发者和架构师，以及任何需要了解保持领域层纯净和基础设施依赖单向的架构边界的 AI 代理或人类。",
+        "purpose": "本文档为ArchSpine项目定义分层架构约束，确保高层模块不依赖低层模块，并保持领域层的纯粹性和独立性。",
+        "context_and_audience": "本文档适用于ArchSpine系统的开发者和架构师。在代码审查、静态检查以及自动化架构验证中，用于强制依赖方向并维持关注点分离。",
         "key_takeaways": [
-          "领域模块不得从基础设施层或 CLI 层导入（错误级别）。",
-          "领域层应仅依赖内部领域逻辑或通用工具（警告级别）。",
-          "API 层必须仅调用服务层或领域层；禁止绕过业务逻辑（错误级别）。"
+          "领域模块（src/domain/）不得导入基础设施或CLI层。",
+          "领域模块只能依赖内部领域逻辑或通用工具。",
+          "API层（src/api/）仅允许调用服务层或领域层，不得绕过业务逻辑。"
         ]
       }
     }
@@ -68,7 +67,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:22:48.618Z",
+    "indexedAt": "2026-05-03T12:15:03.567Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

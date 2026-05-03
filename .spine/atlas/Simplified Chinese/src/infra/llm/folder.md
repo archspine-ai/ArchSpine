@@ -1,15 +1,17 @@
-此目录（`src/infra/llm/`）实现了 **ArchSpine 镜像系统中用于 LLM 客户端抽象、配置管理和弹性调用的基础设施层**。它提供了一套统一的、与提供商无关的方式来与多个 LLM 后端交互，同时处理配置注入、凭据管理和网络弹性。
+`src/infra/llm` 目录构成了 ArchSpine 镜像系统中大型语言模型（LLM）客户端抽象、配置与执行的基础设施层。其主要职责是提供与多个 LLM 提供商交互的统一接口，通过一致性的错误处理和配置合并，为不同文件类型生成语义摘要。
 
-其核心子模块分为五个模块和一个提供商子目录：
+该目录按以下几个关键领域进行逻辑分组：
 
-- **核心接口**（`base.ts`）——定义了 `LLMClient`、`LLMResponse`、`UsageInfo`、`ProviderConfig` 和 `PreviousSemanticContext` 等契约。这些抽象使系统的其余部分能够以统一方式操作任何提供商。
-- **客户端工厂**（`factory.ts`）——一个静态工厂（`LLMFactory`），根据提供商名称（OpenAI、DeepSeek、OpenRouter、Groq、Gemini、Mock）实例化对应的客户端实现。它处理名称归一化和提供商特有的构造逻辑。
-- **全局配置**（`global.ts`）——负责读写位于平台全局目录（`XDG_CONFIG_HOME` 或 `~/.config`）下的 JSON 配置文件。同时，通过 `GlobalLLMSecrets` 封装 `CredentialStore`，实现 API 密钥的安全管理。
-- **重试逻辑**（`retry.ts`）——`withRetry` 实现了带指数退避和抖动的重试机制，针对瞬态网络错误（如 `ECONNRESET`、`ETIMEDOUT`）进行重试。这是系统弹性的关键组件。
-- **运行时解析**（`runtime.ts`）——合并来自项目配置、全局配置、环境变量和运行时覆盖的 LLM 设置，然后调用工厂生成可直接使用的客户端。同时验证所需设置（如 API 密钥）是否存在于给定的命令上下文中。
-- **提供商实现**（`providers/` 子目录）——包含 **Gemini**、**OpenAI**（及其变体）以及用于测试的 **Mock** 提供商的具体客户端。每个实现都实现了 `LLMClient` 接口，包括提示词构建、API 通信、响应解析和用量汇总。
+- **接口定义（`base.ts`）**：定义了核心 TypeScript 接口，包括 `LLMClient`（与提供商无关的抽象）、`LLMResponse`（结构化 JSON 和本地化 Markdown 输出）、`UsageInfo`（令牌消耗指标）、`ProviderConfig`（每个提供商的配置）以及 `PreviousSemanticContext`（用于跨文件版本的语义漂移检测）。这些接口是所有 LLM 交互的契约。
 
-最重要的实现区域是：
-- `base.ts` 中的**接口定义**，因为它们是所有提供商必须遵循的契约。
-- **运行时解析**和**工厂**模块，共同将提供商选择与系统其他部分解耦。
-- **重试逻辑**，确保系统能从瞬态故障中恢复，而不会将错误向上传播。
+- **全局配置与凭证管理（`global.ts`）**：管理存储在 `XDG_CONFIG_HOME` 或 `~/.config` 下的全局 JSON 配置文件（`GlobalLLMConfig`），负责读取、写入和清理配置。同时通过 `GlobalLLMSecrets` 封装凭证存储（`CredentialStore`）以实现安全的 API 密钥管理，并导出 `getGlobalArchSpineDir` 以解析配置目录位置。
+
+- **重试逻辑（`retry.ts`）**：实现了可配置的 `withRetry` 函数，该函数使用指数退避和抖动机制对异步操作进行重试，仅对通过 `isRetryableError` 识别出的瞬时错误（如网络重置、超时、套接字错误）进行重试。
+
+- **工厂模式（`factory.ts`）**：提供静态工厂方法（`LLMFactory`），用于实例化支持的 LLM 提供商客户端（OpenAI、DeepSeek、OpenRouter、Groq、Gemini 以及用于测试的 Mock 客户端）。该工厂对提供商名称进行标准化处理（不区分大小写），并对不支持的提供商抛出描述性错误。
+
+- **运行时解析（`runtime.ts`）**：通过合并项目配置、全局配置、环境变量和运行时覆盖项（具有明确的优先级顺序）来解析 LLM 设置（提供商、模型、基础 URL、API 密钥）。同时解析并验证 LLM 模式、提示策略层级和验证策略，然后通过 `LLMFactory` 创建提供商客户端。
+
+- **具体提供商实现（`providers/`）**：包含实际的 LLM 客户端实现（Gemini、OpenAI 以及用于测试的 Mock 客户端），以及用于解析结构化响应、组装提示词和汇总使用信息的共享工具函数。该子目录承载了特定于提供商的逻辑，从而使基础设施的其他部分保持与提供商无关。
+
+最重要的实现领域是统一的 `LLMClient` 接口（确保跨提供商的一致性）、`runtime.ts` 中的配置合并逻辑（决定哪些设置具有更高优先级）以及重试机制（为瞬时故障提供韧性）。工厂和具体实现共同确保了添加新的 LLM 提供商只需新增客户端实现和工厂分支即可。

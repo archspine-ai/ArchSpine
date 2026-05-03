@@ -1,46 +1,16 @@
-# CLI Subcommand Entry Point (`src/cli/`)
+This directory implements the CLI command adapter layer for the ArchSpine mirror system. Each file corresponds to a single subcommand (e.g., `build`, `check`, `config`, `fix`, `god`, `history`, `hook`, `info`, `init`, `languages`, `llm`, `mcp`, `publish`, `remove`, `repo`, `scan`, `status`, `sync`, `try`, `usage`, `view`) and acts as a thin mediator between the user’s terminal input and the core service layer.
 
-This directory is the single entry point for all ArchSpine command-line operations. Each file here is a thin adapter that parses its subcommand's arguments, validates them, and delegates execution to the appropriate runtime service or engine. The structure ensures separation of concerns: CLI logic (argument parsing, user prompts, error formatting) stays here, while core business logic lives in `src/runtime/` and other layers.
+The adapters share a common pattern: they parse and validate command-line arguments, delegate the actual work to a dedicated core service (such as `RuntimeService`, `Config`, `Manifest`, or engine functions like `runGodMode`), and format the results for console output. Consistent error handling is enforced—most adapters convert internal failures into structured `ArchSpineError` instances, and helper utilities like `throwCliUsage` and `displayUIBanner` provide uniform user guidance.
 
-## Subcommand Groupings
+The files can be grouped into several functional clusters:
 
-- **Initialization & Configuration**  
-  `init.ts` – bootstraps the entire ArchSpine environment (`.spine` structure, agent files, language selection).  
-  `languages.ts` – interactive documentation language management.  
-  `config.ts` – get/set configuration values (LLM provider, model, etc.).  
-  `llm.ts` – interactive LLM provider/model/runtime configuration.  
-  `repo.ts` – repository-level operations (check strategy, set artifact strategy).
+- **Core build and validation pipeline**: `build.ts`, `check.ts`, `fix.ts` — these orchestrate the build workflow, run rule checks, and apply automated fixes.
+- **Configuration and hook management**: `config.ts`, `hook.ts`, `languages.ts`, `llm.ts` — they handle reading and writing configuration values, managing git hooks, and interactive language/LLM setup.
+- **Repository state and information**: `history.ts`, `info.ts`, `status.ts`, `usage.ts` — these query the manifest and runtime to show drift history, report status, and display usage statistics.
+- **Special features and initialization**: `god.ts`, `mcp.ts`, `init.ts` — god mode with destructive warnings, MCP server startup, and full environment bootstrap.
+- **Repository maintenance**: `publish.ts`, `remove.ts`, `repo.ts`, `scan.ts`, `sync.ts` — publish workflows, cleanup operations, artifact strategy configuration, scanning, and the critical synchronization pipeline (which includes spine gate protection, repair policies, and execution checkpoints).
+- **Utilities and preview**: `try.ts`, `view.ts` — validation of directories and configuration files, and interactive view selection with protected output baseline writes.
 
-- **Core Workflows**  
-  `sync.ts` – orchestrates the full synchronization (scan, manifest update, spine gate protection, repair policies).  
-  `publish.ts` – coordinates preflight checks, sync, document backfill, and manifest state update for publishing.  
-  `scan.ts` – scans the codebase according to the configured policy.  
-  `build.ts` – delegates to the build workflow for generating output artifacts.  
-  `check.ts` – runs rule validation via the `CheckService`.  
-  `fix.ts` – triggers automatic architectural violation fixes.
+Among the concrete submodules, `sync.ts` stands out for its complexity: it enforces spine gate protection, evaluates repair policies, manages partial-failure checkpoints, and coordinates multiple core services. `build.ts` is the entry point for the build workflow, while `check.ts` delegates directly to the `CheckService` inside `RuntimeService`. `config.ts` supports both get and set operations on a fixed set of supported keys. `god.ts` adds a user confirmation prompt before invoking the God engine. `llm.ts` provides an interactive configuration wizard for LLM providers and models.
 
-- **Status & Information**  
-  `status.ts` – displays synchronization metrics (total files, needs sync, failures).  
-  `info.ts` – runs the info report engine for detailed system state.  
-  `usage.ts` – executes the usage report.  
-  `view.ts` – manages view selection, display, and protected output baseline writes.  
-  `history.ts` – retrieves and displays drift history and file documentation for a given file.
-
-- **Maintenance & Hooks**  
-  `hook.ts` – installs, uninstalls, configures, and triggers the pre-commit git hook.  
-  `remove.ts` – removes all ArchSpine-managed artifacts (files, hooks) from a repository.
-
-- **Experimental / Advanced**  
-  `god.ts` – dangerous “God Mode” that overwrites files (requires confirmation).  
-  `mcp.ts` – starts the Model Context Protocol server for AI agent integration.  
-  `try.ts` – preview command for testing mirror output in specified directories.
-
-## Key Implementation Patterns
-
-- Every subcommand file exports a function like `executeXCommand(options)` that takes a typed options interface and returns `Promise<void>`.
-- Common CLI utilities (`throwCliUsage`, `displayUIBanner`, `toArchSpineError`) are reused across files for consistent user feedback and error handling.
-- The `sync.ts` file is particularly complex: it enforces spine gate protection via `detectProtectedOutputMutations`, applies repair policies, and manages execution checkpoints for recovery from partial failures.
-- Experimental features (check, fix) display localized warnings and encourage AI agent usage via MCP.
-- Several commands accept a `RuntimeService` dependency, enabling easier testing and separation from infrastructure.
-
-This structure makes ArchSpine's command-line interface modular, testable, and extensible – new subcommands simply add a new file in this directory and register it in the main CLI router.
+The most important implementation areas across the directory are argument validation (ensuring malformed input is caught early), delegation to the correct core service (maintaining separation of concerns), consistent error handling and user feedback via `ArchSpineError` and CLI helpers, and output formatting that presents information clearly in the terminal.

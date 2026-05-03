@@ -3,22 +3,22 @@
   "identity": {
     "filePath": "src/ast/rules/cpp.yml",
     "contentHash": "f83341f245071223bf897a5e3c45b96e0947b425f9d2a428c2e9320a8cd50358",
-    "semanticHash": "738e270ea3433c1a7c919f16812eac0730be4459828561146d2c8d50030aa272",
+    "semanticHash": "005e7bb8b4b4b7b000f82a01966cd35a1a6a91579b6415ea079ac094920c0cd4",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/ast/rules"
   },
   "semantic": {
-    "role": "Defines AST extraction patterns for C/C++ source code analysis",
+    "role": "Configuration specification for code symbol extraction rules used by the ArchSpine mirror system.",
     "responsibilities": [
-      "Define how to identify include directives as source imports",
-      "Define how to extract function definitions, class/struct definitions, namespace definitions, and template classes as exported symbols",
-      "Define how to detect function calls, scoped accesses (::), and method calls (.) as usages"
+      "Define import patterns for matching #include directives.",
+      "Define export patterns for extracting functions, classes, structs, namespaces, and template classes from C++ source code.",
+      "Define usage patterns for detecting function calls, scoped member accesses, and method calls."
     ],
     "outOfScope": [
-      "Does not cover C++ specific language features like lambdas, constexpr, or advanced template metaprogramming",
-      "Does not define extraction of macros, preprocessor directives beyond includes, or attribute annotations",
-      "Does not specify any architectural rules, naming conventions, or project-specific policies"
+      "Runtime behavior analysis or execution semantics.",
+      "Build system configuration or dependency management.",
+      "Support for programming languages other than C++."
     ],
     "invariants": [],
     "changeIntent": {
@@ -30,21 +30,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document specifies the AST extraction rules for C/C++ languages used by the ArchSpine system to parse and index source code symbols.",
-        "context_and_audience": "Intended for developers and AI agents who need to understand how C/C++ code is analyzed for import detection, symbol export, and usage tracking within the ArchSpine knowledge graph.",
+        "purpose": "This document specifies the extraction rules for the ArchSpine mirror system, detailing how to import, export, and identify usages of C++ code symbols.",
+        "context_and_audience": "Intended for developers working on the ArchSpine mirror system, who need to configure code analysis for API documentation or code mapping.",
         "key_takeaways": [
-          "Defines how to extract include declarations as imports",
-          "Defines how to extract functions, classes, structs, namespaces, and template classes as exports with their names and signatures",
-          "Defines three usage patterns: function calls, scoped access (::), and method calls (.)"
+          "Rules are defined for functions, classes, structs, namespaces, and template classes.",
+          "Usage patterns cover function calls, scoped member access, and method calls.",
+          "The import pattern matches #include directives to bring in header files."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "该文档定义了 ArchSpine 系统中用于解析和索引 C/C++ 源代码符号的 AST 提取规则。",
-        "context_and_audience": "适用于需要了解如何分析 C/C++ 代码以实现导入检测、符号导出和使用跟踪的开发者和 AI 代理，帮助构建 ArchSpine 知识图谱。",
+        "purpose": "本文档定义了ArchSpine镜像系统的提取规则，详细说明了如何导入、导出和识别C++代码符号的使用。",
+        "context_and_audience": "适用于ArchSpine镜像系统的开发者，他们需要配置代码分析以生成API文档或代码映射。",
         "key_takeaways": [
-          "定义了如何将 include 声明提取为导入项",
-          "定义了如何将函数、类、结构体、命名空间和模板类提取为导出项，包括它们的名称和签名",
-          "定义了三种使用模式：函数调用、作用域访问（::）和方法调用（.）"
+          "定义了函数、类、结构体、命名空间和模板类的规则。",
+          "使用模式涵盖了函数调用、作用域成员访问和方法调用。",
+          "导入模式匹配#include指令以引入头文件。"
         ]
       }
     }
@@ -67,7 +67,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:25:25.393Z",
+    "indexedAt": "2026-05-03T12:17:13.202Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

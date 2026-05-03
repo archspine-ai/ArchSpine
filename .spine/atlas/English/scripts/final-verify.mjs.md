@@ -1,17 +1,16 @@
----MARKDOWN:Simplified Chinese---
-# ArchSpine AST提取器验证脚本
+# ArchSpine ASTExtractor End-to-End Verification Test
 
-## 目的
-该脚本是ASTExtractor组件的端到端验证工具。它会解析六种编程语言的预定义代码片段，并检查提取出的导出符号集合是否与预期名称一致。其目标是在提取器逻辑变更时捕获回归问题，确保多语言导出检测功能的持续可用性。
+## Purpose
+This document is the definitive end-to-end test script for the ASTExtractor component of the ArchSpine mirror system. It verifies that the extractor correctly identifies exported symbols from source code written in Java, C++, Rust, C, Python, and Go. The test validates language-specific constructs including inheritance, interfaces, generics, bounds, structs, traits, async functions, modules, and export lists. It exists to guarantee that any changes to the extraction logic do not break the detection of public API surfaces across the supported languages.
 
-## 受众
-适用于ArchSpine项目的开发者和测试工程师，尤其是那些维护或扩展AST提取管线的成员。持续集成系统和代码审查者也依赖此脚本在合并变更前验证提取器的正确性。
+## Audience
+This document is written for developers who maintain or extend the ArchSpine mirror system. Specifically, it targets:
+- Contributors working on the static analysis layer
+- Language support engineers adding or updating extraction rules for new or existing languages
+- Quality assurance engineers responsible for multi-language extraction correctness
 
-## 关键要点
-- 验证Java、C++、Rust、C、Python和Go语言的导出提取功能。
-- 测试继承、泛型、特质、接口以及公开/私有可见性处理。
-- 作为独立脚本运行，提供清晰的通过/失败输出。
-- 测试失败表明提取结果与预期导出之间存在差异。
-
-## 它锚定的工作流
-该脚本是ArchSpine镜像系统回归测试套件的一部分。在CI管道中，每次AST提取器变更合并前都会自动执行。通过运行确认所有支持的语言正确导出符号；失败则会阻止合并并提醒开发人员回归。
+## Decisions and Workflows Anchored
+- **Pass/fail criteria**: A language fixture passes only if the extracted export names exactly match the expected exports (as listed in `expectedExports`). Any missing or extra symbols cause a failure, ensuring precise alignment between extraction and intended exported surface.
+- **Diagnostic output**: On failure, the test prints both the `missing` and `extra` symbol lists, along with full extracted and expected export details. This allows rapid debugging of changes that alter the extraction behavior.
+- **Workflow trigger**: This test is intended to run as part of a continuous integration pipeline. A failing test blocks deployment and signals that the ASTExtractor no longer produces the correct export set for at least one language.
+- **Coverage boundaries**: The test explicitly excludes non-exported symbols, template instantiations, and runtime semantics, reinforcing the scope of the ASTExtractor’s responsibility.

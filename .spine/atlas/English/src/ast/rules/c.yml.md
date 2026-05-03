@@ -1,20 +1,21 @@
-# ArchSpine C/C++ AST Extraction Rules
+# ArchSpine Pattern Extraction Rules Document Summary
 
 ## Purpose
-This document defines the exact syntactic patterns that the ArchSpine scanner uses to recognize C/C++ code constructs such as functions, structs, variables, includes, and usage references. It acts as the language-specific rule set for the AST extraction engine within the mirror system.
+This document defines the pattern-based extraction rules that power the ArchSpine mirror system. It specifies how the system discovers and represents code structures — imports, exports (functions, structs, variables), and usages (calls, fields, pointer fields) — from source files. These rules are the configuration foundation for building an accurate, automatically synchronized code mirror.
 
-## Audience and Context
-This document is intended for developers who maintain or extend ArchSpine’s language support, particularly for C/C++ codebases. It is also consumed automatically by the scanner to perform static analysis and symbol extraction. Understanding these rules is essential for adding new C/C++ constructs, debugging extraction issues, or porting the system to other dialects.
+## Audience
+Primary readers are **ArchSpine system developers and maintainers** who need to understand, customize, or extend the extraction logic. The document is also useful for integrators who want to adapt the mirror system to new languages or codebases by modifying the pattern definitions.
 
-## Key Takeaways
-- Patterns use a YAML-based DSL with placeholders like `$NAME`, `$RET`, `$ARGS`.
-- Export rules map code structures to symbolic kinds (`Function`, `Class`, `Variable`) for the index.
-- Usage rules capture how symbols are referenced (calls, field access) for dependency tracking.
-- This rule set covers only C/C++; other languages have separate files.
+## Key Decisions Anchored by This Document
+- **Import detection**: The `#include` pattern (e.g., `#include $SOURCE`) sets the standard for locating external dependencies.
+- **Export rules**: Three distinct patterns for functions, structs, and variables define how code elements are recognized as public API components.
+  - Functions: `$RET $NAME($$$ARGS) { $$$BODY }`
+  - Structs: Grammatical rule on `struct_specifier` with a type identifier.
+  - Variables: `$TYPE $NAME = $VAL;`
+- **Usage patterns**: Three patterns (`call`, `field`, `pointer_field`) specify how code interactions are tracked to establish connections within the mirror.
+  - Calls: `$NAME($$$ARGS)`
+  - Fields: `$OBJ.$NAME`
+  - Pointer fields: `$OBJ->$NAME`
 
-## Workflows Anchored
-- **Scanning pipeline**: The scanner loads this rule definition to recognize and extract symbols from C/C++ source files.
-- **Index building**: Exports become entries in the system’s symbolic index.
-- **Dependency analysis**: Usages feed into the mirror’s dependency graph construction.
-
----
+## Workflow Anchored
+The patterns defined here are directly consumed by the ArchSpine mirror-building engine. When a developer runs the mirror generation process, these rules drive the analysis of source files, producing a structured representation of imports, exported symbols, and usage relationships. Any change to these patterns immediately affects the mirror's coverage and accuracy.

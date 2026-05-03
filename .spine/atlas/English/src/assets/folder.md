@@ -1,10 +1,2 @@
-The `src/assets/templates` directory serves as the central template repository for the ArchSpine mirror system. It defines the structural and behavioral contracts that govern the entire project, providing reusable blueprints for mirroring documentation, generating structured AI outputs, enforcing architecture constraints, and assessing codebase health.
-
-Notable children within this directory are logically grouped into four primary categories: foundational documentation templates, AI prompt schemas, architectural rule definitions, and view inventories. Each group addresses a distinct implementation area:
-
-- **Foundational documentation templates** establish the baseline structure for mirrored content, ensuring consistency across project documents.
-- **AI prompt schemas** define standardized input/output formats for AI-driven analysis and generation, enabling reliable automation.
-- **Architectural rules** encode constraints and guidelines that the system must enforce, such as dependency rules and modularity boundaries.
-- **View inventories** catalog the various system perspectives (e.g., structural, behavioral, deployment) that can be extracted or generated from the codebase.
-
-Concrete submodules include templates for `mirror-summary.md`, `prompt-schema.json`, `arch-rules.yaml`, and `view-inventory.yaml`. The most critical implementation areas are automated documentation mirroring and AI-assisted architecture validation, both of which depend on the precision and completeness of these templates.
+---MARKDOWN:Simplified Chinese---
+`src/assets/templates` 目录是 ArchSpine 镜像系统的核心模板资产库，提供可复用的基础文档、提示工程组件、配置标准及公共 API 接口文档。这些模板按功能划分为架构文档模板、LLM 提示生成工具、代码质量与命名规范规则集以及外部接口概览等子模块，共同支撑系统在开发、维护与运营阶段的一致性。具体的子模块包括提示工程脚手架、编码规范文件以及接口说明文档，为系统的可持续演进提供标准化基础。

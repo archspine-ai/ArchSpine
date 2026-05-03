@@ -1,35 +1,74 @@
-# ArchSpine 包配置摘要
+# ArchSpine 配置文件概述 (package.json)
 
-此 `package.json` 文件是 ArchSpine CLI 工具的根清单。它定义了项目的身份、可执行入口点、运行时约束、自动化脚本以及发布规则。对于构建、测试、部署或维护 ArchSpine 系统的运维人员来说，理解其内容至关重要。
+本文解释 `package.json` 如何控制 ArchSpine CLI 工具链——包括包标识、运行时约束、构建流水线和发布工件。
 
-## 配置控制的内容
+## 项目标识
+- **name**：`archspine`——用于 npm 注册表识别和项目引用。
+- **version**：`1.0.0`——语义化版本号，影响发布兼容性。
+- **description**："Architectural Governance & Semantic Layer for the AI Era"——项目用途的人类可读摘要。
+- **author**：ArchSpine 团队。
+- **license**：Apache-2.0——决定法律使用、分发和贡献条款。
+- **repository**、**homepage**、**bugs**：指向 GitHub 项目主页和问题跟踪器。
 
-该清单确立了以下几个关键方面：
+## 入口点与 CLI
+- **main**：`dist/cli/index.js`——包被引用时加载的入口模块；构建后必须存在。
+- **bin**：将 `spine` 和 `archspine` 两个命令都映射到 `dist/cli/index.js`——定义 CLI 接口。
+- **type**：`"module"`——强制 ES 模块，影响导入/导出的解析方式。
 
-- **包身份与许可**：项目名为 `archspine`，采用 Apache-2.0 许可。这规定了包的使用和重新分发方式。
-- **CLI 二进制命令**：`bin` 字段将 `spine` 和 `archspine` 两个命令映射到同一个编译后的入口点（`dist/cli/index.js`）。安装后，用户可以通过任一命令调用该工具。
-- **Node.js 版本强制**：`engines` 字段将运行时限制为 Node.js 版本 `>=20.18.1 <21` 或 `>=22`。这防止在不兼容的 Node.js 版本（如 19.x、21.x）上意外使用，以免导致意外故障。
-- **构建与自动化脚本**：一套全面的 npm 脚本涵盖了构建、测试、代码检查、文档生成和发布门控。这些脚本直接影响 CI/CD 流水线的稳定性以及本地开发工作流。
-- **发布文件集**：`files` 字段将 npm 包限制为 `dist/` 目录（排除模拟文件和源映射）、`schemas/`、文档以及治理文件（LICENSE、CHANGELOG 等）。这减少了包体积和攻击面。
-- **依赖项（运行时和开发）**：列出运行时和开发依赖项可确保工具能够运行并可被构建/测试。缺失或版本不匹配会破坏功能。
+## 环境约束
+- **engines**：`node >=20.18.1 <21 || >=22`——确保运行时稳定性；不满足条件会导致安装或执行失败。
 
-## 最重要的参数
+## 发布文件控制
+`files` 数组控制哪些文件随 npm 发布。它包括：
+- `dist/`（排除 mock 和 source map 文件）
+- `schemas/`——协议架构文件
+- 文档：英文和中文 Markdown 文件、VitePress 文档源码等
+- 许可证、变更日志、行为准则、贡献指南、安全政策、支持文件。
 
-| 参数 | 为何重要 |
-|------|----------|
-| `bin` | 如果配置错误，CLI 将无法从终端调用。确保 `spine` 和 `archspine` 都指向正确的编译后文件。 |
-| `engines` | 防止在未经测试的 Node.js 版本上部署。运维人员必须确保运行时完全符合约束。使用 Node 21.x 或低于 20.18.1 的旧 18.x 版本将失败。 |
-| `scripts` / `test:ci` | 控制完整的 CI 流水线：构建、单元测试、模式合规性和端到端测试。这里的失败会阻塞发布。 |
-| `files` | 决定哪些内容被发布到 npm。不正确的模式可能暴露源映射或排除必要的模式文件。 |
-| `dependencies` | 运行时依赖项（例如 `better-sqlite3`、`chalk`）必须存在且兼容。使用 `npm ls` 验证依赖树。 |
+通过 `!` 前缀排除的内容防止测试 mock 和 source map 意外发布，从而减小包体积并避免敏感数据泄露。
 
-## 操作风险与稳定性关注点
+## 脚本——自动化概览
+脚本按用途分组：
 
-1. **Node 引擎兼容性**：狭窄的范围（20.18.1–20.x 或 22.x）意味着使用 Node 19.x 或 21.x 会立即失败。运维人员在升级 Node 时必须验证版本是否在允许范围内。
-2. **捆绑的二进制命令重复**：`spine` 和 `archspine` 都指向同一个文件。这是有意的，但如果你重命名或移动入口点，两个命令会同时失效。
-3. **脚本链依赖**：`test:ci` 脚本依赖于 `build` 成功。如果构建步骤失败（例如由于依赖项更改），所有后续测试将被跳过，从而掩盖问题。
-4. **源映射排除**：`!dist/**/*.map` 模式将源映射从发布的包中排除。虽然这减小了体积，但生产问题的调试变得困难。如有需要，考虑将源映射保留在单独的渠道中。
-5. **脚本缺少类型安全**：脚本引用 `.mjs` 文件，这些文件必须存在。如果这些文件被删除或修改，相应的 npm 命令将失败。在 CI 中验证所有脚本路径。
-6. **生产环境中的开发依赖项**：`devDependencies` 不包含在发布的包中。如果任何脚本在构建后错误地导入仅用于开发的包，运行时将失败。
+### 构建
+- `build`：生产构建（`scripts/build.mjs`）
+- `dev:build`：开发构建
 
-**结论**：`package.json` 是 ArchSpine CLI 运行时契约的单一权威来源。保持严格的版本对齐，定期测试 CI 流水线，并在每次发布前检查文件列表。
+### 测试（CI 流水线）
+- `test:ci`：先构建，再运行单元测试、架构合规测试和端到端测试
+- `test:unit`：Vitest 单元测试
+- `test:e2e`：Vitest 端到端测试
+- `test:schema`：架构合规验证
+
+### 文档
+- `docs:dev`、`docs:build`、`docs:preview`：VitePress 相关工作流
+
+### 代码格式与检查
+- `lint` / `lint:fix`：ESLint 检查 TypeScript 文件
+- `format:check`：Prettier 检查多种文件类型
+
+### 发布与验证
+- `validate`：协议资源验证
+- `release:gate`：发布就绪检查
+- `publish:placeholder`：占位发布脚本
+- `pack:check`：试运行 `npm pack` 预览发布内容
+
+### 快捷命令
+- `spine:init`、`spine:sync`、`spine:publish`、`spine:check`、`spine:fix`——CLI 子命令的快捷方式
+- `start`：直接运行编译后的 CLI
+- `db:update-schema`：数据库架构更新脚本
+
+## 依赖声明
+- **devDependencies** 当前包括类型定义、测试工具（Vitest、ts-node）、代码格式与检查工具（ESLint、Prettier）、AJV 架构验证和 TypeScript 本身。
+- **注意**：未声明 `dependencies` 字段。如果 CLI 有运行时依赖，必须添加，否则运行时将出现模块缺失错误。
+
+## 操作风险与稳定性注意事项
+- **引擎不匹配**：在低于 20.18.1 或处于 21.x 的 Node 版本上部署会失败。CI 必须强制使用正确的 Node 版本。
+- **缺少构建产物**：`main` 和 `bin` 指向 `dist/`。如果未执行 `npm run build` 就运行 CLI，包将无法加载。
+- **命令冲突**：`spine` 和 `archspine` 指向同一脚本。如果其他包也注册了 `spine`，可能发生冲突。
+- **发布文件配置错误**：`files` 列表必须与实际构建输出和文档目录保持同步。列表过于严格可能导致 `npm pack` 失败。
+- **依赖版本漂移**：`devDependencies` 使用语义化版本范围（如 `^5.0.0`）。这允许次要/补丁更新，但如果范围过宽可能引入破坏性变更。建议定期运行 `npm audit` 并更新。
+- **缺少运行时依赖**：由于未声明 `dependencies`，任何运行时导入（例如 `better-sqlite3`、`commander`、`chalk`）都必须打包到构建产物中或在此列出。否则，用户安装包时会遇到模块缺失错误。
+- **安全性**：排除 source map 和 mock 文件可减少数据暴露风险。但 README、LICENSE 和变更日志会被发布，需确保其中不包含敏感信息。
+
+---

@@ -1,19 +1,38 @@
-# Document Summary: Java AST Extraction Rules for ArchSpine
+# ArchSpine Pattern Definitions: Structural Code Analysis Grammar
 
 ## Purpose
-This document is a machine-readable ruleset that teaches ArchSpine how to parse Java source code into structured knowledge. By defining patterns for imports, exports (classes and interfaces), and usages (method calls and instantiations), it enables the system to build a detailed index of code dependencies, public API surfaces, and usage relationships. This is a foundational building block for ArchSpine’s ability to analyze, visualize, and govern codebases automatically.
+This document specifies the pattern syntax used by the ArchSpine mirror system to identify structural code elements. It defines three categories of patterns—imports, exports, and usages—that together form a configuration grammar for the tool's reflection engine. The patterns enable automated code analysis, architecture validation, and mirror construction without relying on runtime execution.
 
 ## Audience
-This rules file is intended for developers contributing to ArchSpine’s language support, as well as for the ArchSpine runtime engine that reads these patterns to perform static analysis. It is not meant for end‑user consumption; rather, it is a configuration artifact within the `.spine/atlas` and `.spine/index` directories. The primary audience is the development team maintaining ArchSpine’s AST extraction capabilities and any contributors adding support for new languages.
+This document is intended for developers and architects integrating or extending ArchSpine. Readers should be familiar with the system's mirroring and reflection concepts. Implementation details of the pattern matching engine, runtime semantics, and language-specific syntax beyond Java-like patterns are out of scope.
+
+## Why This Document Exists
+ArchSpine’s mirror system needs a declarative way to recognize structural code patterns. The definitions anchor the following workflows:
+- Configuration of the reflection engine for scanning source code.
+- Consistent identification of imports, class/interface declarations, and method calls or instantiations.
+- Extensibility: new patterns can be added following the established grammar.
+
+## Pattern Categories
+
+### Imports
+- **id**: `import`
+- **pattern**: `import $SOURCE;`  
+  Matches import statements.
+
+### Exports
+Patterns for class and interface declarations, with optional visibility modifiers.
+- **id**: `class`, pattern: `class $NAME $$$ { $$$BODY }` (default visibility)
+- **id**: `public_class`, pattern: `public class $NAME $$$ { $$$BODY }`
+- **id**: `interface`, pattern: `interface $NAME $$$ { $$$BODY }`
+- **id**: `public_interface`, pattern: `public interface $NAME $$$ { $$$BODY }`
+
+### Usages
+Patterns for method calls and object instantiation.
+- **id**: `call`, pattern: `$OBJ.$NAME($$$ARGS)` — method invocation.
+- **id**: `new`, pattern: `new $NAME($$$ARGS)` — constructor instantiation.
 
 ## Key Takeaways
-- The file defines Java‑specific AST extraction rules in a compact YAML format.
-- It covers three categories: imports, exports (classes/interfaces), and usages (calls/instantiations).
-- Patterns use a template language with placeholders like `$NAME`, `$BODY`, and `$ARGS` to match code structures.
-- This file is one of many language‑specific rule files; each language (TypeScript, Python, Go, etc.) has its own corresponding YAML file.
-- Without such a rules file, ArchSpine cannot parse the corresponding language and thus cannot provide insight into that language’s codebase.
-
-## Decisions and Workflows Anchored by This Document
-- **Pattern Design**: The rules define exactly how to extract imports, class/interface declarations, and method calls. Any change to these patterns affects the entire dependency graph and public API index.
-- **Scanner Workflow**: The ArchSpine scanner uses these patterns as the sole grammar for Java; the YAML structure determines what nodes are captured and how they are labeled (e.g., `kind: Class`).
-- **Aggregator Workflow**: The aggregator relies on extracted usages (calls and instantiations) to compute cross-file references, making this file the central contract for dependency resolution.
+- The grammar covers three domains: imports, exports (classes/interfaces), and usages (calls/instantiations).
+- Export patterns distinguish between public and default visibility, and between class and interface kinds.
+- Each pattern definition includes a unique `id` and a `pattern` string with placeholders (`$SOURCE`, `$NAME`, `$$$BODY`, `$$$ARGS`, etc.).
+- These patterns are the foundation for ArchSpine’s static code analysis and architecture enforcement.

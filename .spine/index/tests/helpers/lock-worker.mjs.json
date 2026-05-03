@@ -3,24 +3,23 @@
   "identity": {
     "filePath": "tests/helpers/lock-worker.mjs",
     "contentHash": "2478dbdc800821486e1b8fba0ec0ceb566c3cf5989c6a38c04f5fc6e5f975f12",
-    "semanticHash": "bff536fc49dfef91896cb1a69432d71267059d8c2378403352cacb6f17d26419",
+    "semanticHash": "8dc485ee664a81141b225d789d83f418b2bf65117da5afdd2cc92a59af5443c9",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "tests/helpers"
   },
   "semantic": {
-    "role": "This document is a lock worker script used for testing concurrency control in the ArchSpine project.",
+    "role": "Utility script for testing LockManager acquire/release behavior",
     "responsibilities": [
-      "Provides a child process that acquires and releases a lock managed by LockManager",
-      "Supports multiple modes: acquire-release, acquire-hold, acquire-release-rewrite",
-      "Emits JSON status messages to stdout for test assertion",
-      "Handles process signals (SIGINT, SIGTERM) for clean termination",
-      "Configurable hold duration via command line argument"
+      "Demonstrate lock acquisition and release in various modes",
+      "Provide a test harness for lock management",
+      "Output status messages in JSON format for external monitoring",
+      "Handle signals for graceful shutdown"
     ],
     "outOfScope": [
-      "Production locking logic – this is strictly a test helper",
-      "LockManager implementation – that resides in src/utils/lock.ts",
-      "High-level test scenarios – those are orchestrated by parent test files"
+      "Detailed implementation of LockManager class",
+      "Other ArchSpine components not related to locking",
+      "Production deployment configuration"
     ],
     "invariants": [],
     "changeIntent": {
@@ -32,23 +31,23 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "To act as a lightweight, scriptable worker that acquires a lock in a separate process, enabling integration tests for concurrent lock behavior.",
-        "context_and_audience": "This script is intended for developers writing or maintaining tests related to file-based locking. It is run as a child process by test suites such as 'lock-worker.mjs' or similar test harnesses. The reader should be familiar with Node.js child processes and the LockManager interface.",
+        "purpose": "This document provides the source code and description of a lock worker script used to test the LockManager functionality within the ArchSpine mirror system.",
+        "context_and_audience": "Intended for developers and testers working on the ArchSpine project who need to understand and verify the behavior of file locking mechanisms, particularly in concurrent or distributed scenarios. The script demonstrates acquire, hold, and release patterns and outputs status messages for debugging.",
         "key_takeaways": [
-          "The worker supports three modes: acquire-release (default), acquire-hold, and acquire-release-rewrite (no release).",
-          "It uses ts-node/esm to run TypeScript directly, importing LockManager from src/utils/lock.ts.",
-          "Output is JSON on stdout, making it easy to parse in test assertions.",
-          "Signal handling ensures clean exit even during long holds."
+          "The lock worker supports three modes: acquire-release, acquire-hold, and acquire-release-rewrite.",
+          "It uses the LockManager class from the project's utility library.",
+          "The script emits JSON status messages to stdout for monitoring and testing.",
+          "It handles signals (SIGINT/SIGTERM) and can hold the process open to simulate long-lived locks."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "该文档是一个锁工作进程脚本，用于测试 ArchSpine 项目中的并发控制机制。",
-        "context_and_audience": "此脚本面向编写或维护基于文件的锁定相关测试的开发人员。它作为子进程由测试套件（如 lock-worker.mjs）运行。读者应熟悉 Node.js 子进程和 LockManager 接口。脚本支持三种模式：acquire-release（默认）、acquire-hold 和 acquire-release-rewrite（不释放锁）。",
+        "purpose": "本文档提供了用于测试 ArchSpine 镜像系统中 LockManager 功能的锁工作进程脚本的源代码及说明。",
+        "context_and_audience": "适用于 ArchSpine 项目的开发者和测试人员，他们需要理解和验证文件锁定机制的行为，特别是在并发或分布式场景下。该脚本演示了获取、持有和释放锁的模式，并输出状态消息用于调试。",
         "key_takeaways": [
-          "工作进程支持三种模式：acquire-release（默认）、acquire-hold 和 acquire-release-rewrite（不释放锁）。",
-          "使用 ts-node/esm 直接运行 TypeScript，并从 src/utils/lock.ts 导入 LockManager。",
-          "输出为标准输出的 JSON，便于测试断言解析。",
-          "信号处理确保即使在长时间持有锁时也能干净退出。"
+          "锁工作进程支持三种模式：acquire-release、acquire-hold 和 acquire-release-rewrite。",
+          "它使用项目工具库中的 LockManager 类。",
+          "脚本通过 stdout 输出 JSON 状态消息，用于监控和测试。",
+          "它处理信号（SIGINT/SIGTERM），并可保持进程运行以模拟长时间持有锁的场景。"
         ]
       }
     }
@@ -71,7 +70,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:25:34.439Z",
+    "indexedAt": "2026-05-03T12:17:43.433Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

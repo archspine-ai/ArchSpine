@@ -1,36 +1,37 @@
-# ArchSpine Shared Definitions – Configuration Summary
+# ArchSpine Shared Definitions - Configuration Summary
 
-This foundational schema defines all reusable data types and validation rules used across every ArchSpine component and schema. It ensures type consistency, enforces format constraints, and acts as the single source of truth for base types such as version strings, timestamps, paths, hashes, locale codes, and enumerated classifications.
+This schema defines foundational validation types and structural constraints used by all ArchSpine data components. It enforces consistent formatting and type safety across the entire pipeline — from source analysis to graph construction.
 
-## What the Configuration Controls
+## What This Configuration Controls
 
-The schema controls the allowed formats and values for every shared field in the ArchSpine ecosystem. Any data entering the system must conform to these definitions or validation fails. Key areas include:
+The schema governs how core data fields are shaped and verified. Operators must ensure that any data entering the system conforms to these patterns; violations will be rejected or cause pipeline failures.
 
-- **Versioning**: All `schemaVersion` fields must follow `major.minor.patch` SemVer format. Malformed versions break schema validation chain.
-- **Timestamps**: `isoTimestamp` enforces ISO 8601 format; critical for ordering events, caching, and incremental processing.
-- **File Paths**: `repoRelativePath` and `scopePath` ensure paths are relative, cross-platform safe, and block absolute paths, backslashes, or double slashes (prevents traversal attacks).
-- **Content Integrity**: `contentHash` requires exactly 64 lowercase hex characters (SHA-256) – essential for cache consistency and corruption detection.
-- **Locale & Language**: `locale` validates BCP 47 tags; incorrect tags break localization lookups. `languageSelectionKey` non-empty check prevents missing keys during atlas merging.
-- **Enumerated Types**: `sourceLanguage`, `fileKind`, `symbolKind`, `dependencyRelation`, `edgeProvenance`, and `pipelineStage` are all constrained to closed enum sets. Any unknown value is rejected unless explicitly handled (e.g., `"unsupported"` for source language).
+### Key Parameters
 
-## Important Parameters for Operators
+| Parameter | Purpose & Impact |
+|-----------|------------------|
+| **schemaVersion** | Enforces semantic versioning (e.g., `1.0.0`). Affects compatibility checks and schema migration decisions. |
+| **isoTimestamp** | Validates ISO 8601 date-time strings. Impacts event ordering, audit trails, and synchronization across workers. |
+| **repoRelativePath** | Sanitizes file paths relative to the repository root. Prevents path traversal (`../`), absolute paths (`/`), or malformed references (backslashes, double slashes). |
+| **scopePath** | Normalizes scope identifiers; empty string is allowed for root scope. Affects module resolution and namespace isolation. |
+| **contentHash** | Enforces SHA‑256 hex digest (exactly 64 lowercase hex chars). Critical for cache invalidation and content integrity verification. |
+| **locale** | Validates BCP 47 locale codes (e.g., `en-US`, `zh-CN`). Controls internationalization matching in metadata and UI. |
+| **languageSelectionKey** | Non‑empty string used as key for multilingual content maps. Ensures every entry is addressable. |
+| **sourceLanguage** | Restricts source code language to known types (`typescript`, `javascript`, `python`, `unsupported`). Prevents unsupported languages from entering analysis. |
+| **fileKind** | Categorizes files as `source`, `config`, `document`, or `other`. Enforces type‑specific processing rules. |
+| **symbolKind** | Classifies symbols (`class`, `function`, `variable`, `interface`, `type`, `enum`, `unknown`). Drives dependency graph semantics and diagram generation. |
+| **dependencyRelation** | Defines relation type between modules (`import`, `reexport`, `type-import`). Affects build order, tree shaking, and module boundary decisions. |
+| **edgeProvenance** | Marks how dependency edges were discovered (`ast` or `inferred`). Distinguishes certain (AST‑based) vs. heuristic relationships, enabling confidence‑based filtering. |
+| **pipelineStage** | Indicates which analysis stage produced the data (`ast`, `llm`, `lite‑ast`, `lite‑llm`, `fallback`). Enables stage‑specific processing, quality scoring, and fallback logic. |
+| **nonEmptyString** | Guarantees string values have at least one character. Prevents empty fields in critical data (e.g., identifiers). |
+| **stringArray** | Defines a homogeneous array of strings. Useful for lists of tags, paths, or IDs. |
+| **localizedContentMap** | Stores multilingual content as a map keyed by locale code (must be valid `languageSelectionKey`). Enables localized configuration, documentation, and user‑facing strings. |
 
-| Parameter | Why It Matters |
-|-----------|----------------|
-| `schemaVersion` | Version mismatch can cascade; must match the expected schema major version. |
-| `repoRelativePath` | Security-critical: blocks malicious paths. Misuse can cause false rejects for legitimate paths – review regex periodically. |
-| `contentHash` | Integrity anchor; stale or incorrect hashes invalidate downstream caches and comparisons. |
-| `locale` | Wrong format fails silently in some tools; ensure all locale entries follow BCP 47 exactly. |
-| `sourceLanguage` | Adding a new language requires schema update; until then, new languages must be treated as `"unsupported"`. |
-| `dependencyRelation` | Mistaking `type-import` for `import` skews dependency weight calculations – important for dependency analysis and governance. |
-| `pipelineStage` | Stale or misrecorded stage can invalidate downstream consumers (e.g., using `"ast"` data when `"llm"` was expected). |
-| `edgeProvenance` | Affects confidence scoring in dependency graphs. Over-relying on `"inferred"` edges may mislead analysis. |
+## Stability & Risks
 
-## Stability Concerns & Operational Risks
+This schema establishes **strong invariants** that prevent malformed or ambiguous data from propagating through ArchSpine. However, operators should be aware of the following:
 
-- **Tight coupling**: Any change to this schema propagates to all dependent schemas and runtime validators. Backward-incompatible changes (e.g., adding a required field, narrowing a regex, or removing an enum value) require a **major version bump**.
-- **Enum rigidity**: Closed enums provide strong validation but require schema releases to support new tools or languages. Consider the trade-off: relaxing to `"type": "string"` with documentation guidance increases flexibility but loses automatic validation.
-- **Security vs. usability**: The strict path and hash patterns prevent injection and path-traversal attacks but may reject legitimate edge cases (e.g., paths with non-ASCII characters, new language code formats). Regular audits and user feedback loops are recommended.
-- **Cache & ordering risks**: Timestamp and hash mismatches can break incremental builds and dependency caching. Operators must ensure timestamps are generated in UTC at consistent precision.
-
-All operators working with ArchSpine should treat this schema as immutable once in production unless a coordinated upgrade is planned. Use schema version negotiation to avoid silent failures.
+- **Pattern strictness**: Overly restrictive patterns may reject valid edge cases — for example, non‑standard semantic version formats (e.g., `1.0.0-beta`) are not allowed without schema extension. Future locale patterns (e.g., `zh-Hans-CN`) are supported if they conform to BCP 47.
+- **Enum obsolescence**: Enum values for languages, file kinds, symbol kinds, etc., may become outdated as ecosystems evolve. Adding new values requires schema updates and coordination with downstream consumers.
+- **Migration overhead**: Any change to these base definitions can break existing data. Semver versioning of the schema itself is recommended; operators should version‑lock data producers and consumers.
+- **Recommendation**: Conduct regular schema audits to accommodate new requirements (e.g., additional source languages, new dependency relation types) without breaking existing records. Use the `pipelineStage` field to track which analysis version produced the data, enabling progressive adoption.

@@ -1,18 +1,23 @@
-# ArchSpine Component Contract Summary
+# ArchSpine Architecture Summary
 
 ## Purpose
-This document defines the architectural contract for a project component within the ArchSpine mirror system. It exists to establish a canonical specification that governs the component’s architectural role, responsibilities, and boundaries. By anchoring decisions about what the component must and must not do, it prevents architectural drift and ensures consistency across the mirrored project.
+
+This document is the authoritative architectural specification for the ArchSpine mirror synchronization system. It defines why ArchSpine exists, how it should operate within the larger project ecosystem, and — most importantly — what lies outside its scope. By reading this document, teams gain a shared understanding of the system’s core responsibilities and the invariants that must be preserved during implementation and maintenance.
 
 ## Audience
-This summary is intended for architects, developers, and AI agents who maintain the ArchSpine mirror system. Any stakeholder involved in designing, implementing, or reviewing the mirrored component should refer to this contract to understand its precise scope and obligations.
 
-## Key Takeaways
-- Each component has a clearly defined role and a set of specific responsibilities it must fulfill.
-- Invariants and explicitly listed out-of-scope items prevent scope creep and preserve architectural integrity.
-- The document may include Mermaid diagrams and additional sections to enhance clarity, but such content is supplementary to the core contractual definitions.
+- **Developers** who implement or extend the mirror synchronization logic.
+- **System architects** who need to reason about ArchSpine’s design and its boundaries.
+- **Maintainers** who will evolve the system over time, ensuring changes remain consistent with the original architectural intent.
 
-## Decisions and Workflows Anchored
-- **Role assignment**: Determines which architectural domain the component owns.
-- **Responsibility tracking**: Every listed responsibility becomes a testable requirement for implementation and review.
-- **Boundary enforcement**: Items marked as out-of-scope serve as hard limits during design discussions, code reviews, and AI agent planning.
-- **Diagram integration**: When present, diagrams give a visual reference for the component’s interactions and structure, but the written contract remains authoritative.
+## Core Decisions Anchored by This Document
+
+- **Scope definition**: ArchSpine is solely a mirror synchronization system. It does not handle user interfaces, deployment configurations, or detailed algorithm design.
+- **Invariants**: The system guarantees certain synchronization properties (e.g., content consistency across mirrors); these invariants must never be violated.
+- **Out-of-scope behaviors**: Implementation code, UI/UX, and infrastructure specifics are explicitly excluded from this specification, guiding teams to separate concerns cleanly.
+
+## Workflows It Supports
+
+- **Initial implementation**: Architects and developers refer to this document to align on the system’s design rationale and constraints before writing code.
+- **Maintenance and evolution**: When proposing changes, teams check against the out-of-scope list and invariants to ensure the system’s core purpose remains intact.
+- **Cross-team communication**: The document serves as a single source of truth for discussions about ArchSpine’s role, preventing scope creep and misunderstandings.

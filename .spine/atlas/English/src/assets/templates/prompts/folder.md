@@ -1,11 +1,8 @@
-The `prompts/` directory serves as the prompt engineering hub of ArchSpine. It provides prompt template schemas, rendering utilities, and example data necessary for AI agents to generate structured architecture diagrams and semantic summaries in a consistent JSON format. The directory combines three major areas of implementation: prompt construction blocks, schema definitions, and few-shot examples.
+This directory constitutes the prompt engineering toolkit for ArchSpine, containing all reusable components for constructing LLM prompts that generate structured JSON summaries. Its files are organized into four functional groups:
 
-Notable children are grouped as follows:
+- **Architecture diagram prompt** (`arch-diagram.ts`): Builds a complete LLM prompt that produces JSON architecture diagram specifications from project and folder summaries, including schema-driven constraints.
+- **Block rendering utilities** (`blocks.ts`): Provides pure functions for rendering identity, instructions, context, environment, rule violation checks, git intent, JSON schema, and source content blocks – the core building blocks for any prompt.
+- **Example data** (`examples.ts`): Supplies few-shot samples that define quality standards for role descriptions, used to guide the model toward correct output.
+- **Schema definitions** (`schemas.ts`): Defines JSON templates for five ArchSpine summary units (source file, document, configuration file, folder, project), ensuring consistent output structure across all mirroring tasks.
 
-- **`arch-diagram.ts`** – LLM prompt template for generating JSON architecture diagram specifications from project and folder summaries. It embeds the `archDiagramSchema` to enforce output structure (nodes, edges, summaryCards) and provides explicit instructions on allowed node types and constraints.
-- **`blocks.ts`** – A library of pure rendering functions for building structured text blocks used in prompt construction. It covers identity, instructions, context, environment, rule violations, git intent, JSON schema, and source content blocks, each with conditional rendering logic.
-- **`schemas.ts`** – Schema definitions for all ArchSpine semantic summary units: source files, documents, configuration files, folders, and project-level summaries. These schemas provide the JSON templates that guarantee consistent output from AI agents.
-- **`examples.ts`** – Static content with good/bad examples for semantic role descriptions, used as few-shot references in prompts to improve output quality.
-- **`index.ts`** – The public API facade that aggregates and re-exports all schemas, rendering functions, and example data into a single import point for downstream modules.
-
-The most important implementation areas are the prompt template in `arch-diagram.ts` (which drives architecture diagram generation) and the schema definitions in `schemas.ts` (which ensure all summary types adhere to a predictable structure). The rendering utilities in `blocks.ts` are the reusable foundation for composing prompts across multiple ArchSpine features.
+The `index.ts` file aggregates and re‑exports all schemas, rendering blocks, and examples, providing a single entry point for downstream prompt‑generation modules. Together, these components form a modular, reusable layer that drives the semantic summarization pipeline of the ArchSpine mirror system.

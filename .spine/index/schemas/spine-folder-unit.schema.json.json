@@ -3,24 +3,23 @@
   "identity": {
     "filePath": "schemas/spine-folder-unit.schema.json",
     "contentHash": "f0d70ca6d346612da6e4c70f044934103521cc1582fb5c4209daffe8f2fa6e63",
-    "semanticHash": "068ae9cbfdce04c847a1d1e526055b3995bd12e72ad9a9238ffb3dce58240ca5",
+    "semanticHash": "63d55762bb756de7581dcce913a4eddbb5c8c2fd2e934e16dafdc2c3cd73937b",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas"
   },
   "semantic": {
-    "role": "Defines the schema for a folder unit within the ArchSpine documentation index, used to record the role, responsibility, and children file entries of a directory in the project.",
+    "role": "Defines the JSON Schema for a SpineFolderUnit object, which represents a directory within the ArchSpine system along with its role, responsibility, and child file metadata.",
     "responsibilities": [
-      "Indexing directory-level metadata such as role and responsibility",
-      "Enumerating child files with their fileKind and role",
-      "Tracking provenance including indexing timestamp, generator version, and pipeline stages"
+      "Structure the metadata for directory units in ArchSpine",
+      "Validate instances of SpineFolderUnit against required fields and types",
+      "Track provenance of indexing and generation through pipeline stages"
     ],
     "outOfScope": [],
     "invariants": [
-      "Every folder unit must specify schemaVersion, directory, role, responsibility, children, and provenance",
-      "Each child entry must include filePath, role, and fileKind",
-      "Provenance must include indexedAt (ISO timestamp), generatorVersion, and pipelineStages array",
-      "No additional properties are permitted beyond the defined schema"
+      "All six required properties (schemaVersion, directory, role, responsibility, children, provenance) must be present",
+      "Children array items must include filePath, role, and fileKind",
+      "Provenance object must include indexedAt, generatorVersion, and pipelineStages"
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -31,28 +30,40 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Defines the schema for a folder unit within the ArchSpine documentation index, used to record the role, responsibility, and children file entries of a directory in the project.",
+        "role": "Defines the JSON Schema for a SpineFolderUnit object, which represents a directory within the ArchSpine system along with its role, responsibility, and child file metadata.",
         "parameter_definitions": {
-          "schemaVersion": "Version of the schema used for this folder unit; ensures forward compatibility.",
-          "directory": "Filesystem path of the directory relative to the repository root; scoped path.",
-          "role": "A non-empty string describing the functional role of this directory within the project architecture.",
-          "responsibility": "A non-empty string describing the responsibility or purpose of this directory.",
-          "children": "Array of child file entries within this directory. Each entry must include filePath (repo-relative path), role (non-empty string), and fileKind (type such as source, test, config, etc.).",
-          "provenance": "Metadata about when and how this folder unit was indexed. Contains indexedAt (ISO timestamp), generatorVersion (version of the indexing tool), and pipelineStages (list of pipeline stage names that processed this unit)."
+          "schemaVersion": "Ensures the instance conforms to a specific version of the schema for compatibility.",
+          "directory": "Specifies the relative path of the directory within the project scope.",
+          "role": "Describes the functional role of this folder unit (e.g., configuration, source, documentation).",
+          "responsibility": "States the main responsibility or purpose of the folder unit.",
+          "children": "Lists child files and their roles and file kinds, enabling hierarchical consistency.",
+          "provenance": "Captures metadata indexing time, generator version, and pipeline stages for traceability.",
+          "children.filePath": "Relative path of a child file within the repository.",
+          "children.role": "Role of the child file (mirrors the parent's context).",
+          "children.fileKind": "Kind of file (e.g., config, script, document) for type-based processing.",
+          "provenance.indexedAt": "ISO timestamp when the folder unit was indexed.",
+          "provenance.generatorVersion": "Version of the tool that generated this folder unit.",
+          "provenance.pipelineStages": "Array of pipeline stages that processed this unit."
         },
-        "stability_and_risks": "This schema enforces a rigid structure for folder-level metadata, which is critical for automated processing like rule validation, view generation, and change detection. Missing or incorrectly typed fields can break the indexing pipeline and lead to incomplete documentation. The invariants ensure every folder unit carries traceable provenance, aiding audit and recovery. Risks include schema drift if new fields are introduced without updating the schema version, or if the required 'provenance' block is absent, which would prevent the system from verifying data freshness."
+        "stability_and_risks": "This schema establishes a structural contract for all SpineFolderUnit instances. Misconfiguration (e.g., missing required fields or invalid types) can lead to validation failures and disrupt downstream processing that relies on these units. The provenance fields enhance auditability but must be correctly populated to avoid trust issues. Overall, strict adherence to this schema improves system consistency and reduces integration errors."
       },
       "Simplified Chinese": {
-        "role": "定义 ArchSpine 文档索引中文件夹单元的模式，用于记录项目目录的角色、职责以及子文件条目。",
+        "role": "定义ArchSpine系统中SpineFolderUnit对象的JSON模式。SpineFolderUnit代表一个目录及其角色、职责和子文件元数据。",
         "parameter_definitions": {
-          "schemaVersion": "该文件夹单元所使用的模式版本，确保向前兼容。",
-          "directory": "目录相对于仓库根目录的文件系统路径，限定作用域路径。",
-          "role": "描述该目录在项目架构中功能角色的非空字符串。",
-          "responsibility": "描述该目录职责或目的的非空字符串。",
-          "children": "该目录下的子文件条目数组。每个条目必须包含 filePath（仓库相对路径）、role（非空字符串）和 fileKind（类型，如 source、test、config 等）。",
-          "provenance": "关于该文件夹单元何时以及如何被索引的元数据。包含 indexedAt（ISO 时间戳）、generatorVersion（索引工具的版本）和 pipelineStages（处理该单元的流水线阶段名称列表）。"
+          "schemaVersion": "确保实例符合特定版本的模式以保证兼容性。",
+          "directory": "指定该目录在项目范围内的相对路径。",
+          "role": "描述此文件夹单元的功能角色（例如配置、源代码、文档）。",
+          "responsibility": "说明文件夹单元的主要职责或目的。",
+          "children": "列出子文件及其角色和文件类型，确保层次一致性。",
+          "provenance": "捕获元数据索引时间、生成器版本和流水线阶段，实现可追溯性。",
+          "children.filePath": "子文件在仓库中的相对路径。",
+          "children.role": "子文件的角色（与父单元的上下文对应）。",
+          "children.fileKind": "文件的种类（如配置、脚本、文档），用于类型化处理。",
+          "provenance.indexedAt": "文件夹单元被索引时的ISO时间戳。",
+          "provenance.generatorVersion": "生成此文件夹单元的工具版本。",
+          "provenance.pipelineStages": "处理此单元的流水线阶段数组。"
         },
-        "stability_and_risks": "该模式强制执行文件夹级元数据的严格结构，这对自动化处理（如规则验证、视图生成和变更检测）至关重要。字段缺失或类型错误可能导致索引管道中断，从而产生不完整的文档。不变量确保每个文件夹单元带有可追溯的来源信息，有助于审计和恢复。风险包括：如果引入新字段而未更新模式版本，可能导致模式漂移；如果缺少必需的 'provenance' 块，系统将无法验证数据的新鲜度。"
+        "stability_and_risks": "该模式为所有SpineFolderUnit实例建立了结构性契约。配置错误（如缺少必需字段或类型无效）可能导致验证失败并干扰依赖这些单元的下游处理。溯源字段增强了可审计性，但必须正确填写以避免信任问题。整体上，严格遵守此模式可提高系统一致性并减少集成错误。"
       }
     }
   },
@@ -74,7 +85,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:23:44.210Z",
+    "indexedAt": "2026-05-03T12:16:14.335Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

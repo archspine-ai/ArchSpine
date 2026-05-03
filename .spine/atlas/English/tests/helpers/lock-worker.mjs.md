@@ -1,13 +1,30 @@
-# Lock Worker Script Summary
+# Lock Worker Script: Testing LockManager in ArchSpine
 
 ## Purpose
-To act as a lightweight, scriptable worker that acquires a lock in a separate process, enabling integration tests for concurrent lock behavior.
 
-## Context and Audience
-This script is intended for developers writing or maintaining tests related to file-based locking. It is run as a child process by test suites such as 'lock-worker.mjs' or similar test harnesses. The reader should be familiar with Node.js child processes and the LockManager interface.
+This document exists to provide the source code and full description of a lock worker script designed to test the `LockManager` class within the ArchSpine mirror system. It serves as a reference for understanding how file locking is acquired, held, and released in various scenarios.
+
+## Audience
+
+The document is intended for **developers and testers** working on the ArchSpine project who need to verify the behavior of the file locking mechanism, especially in concurrent or distributed environments. It is also useful for anyone integrating external monitoring tools that consume JSON status messages.
+
+## What the Document Covers
+
+- **Three operational modes**: `acquire-release`, `acquire-hold`, and `acquire-release-rewrite`. Each mode demonstrates a distinct lock lifecycle pattern.
+- **Integration with `LockManager`**: the script imports and uses the `LockManager` utility from the project's source tree.
+- **JSON status output**: the script emits structured messages to `stdout` for debugging and external monitoring.
+- **Signal handling**: it registers graceful shutdown handlers for `SIGINT` and `SIGTERM` to release locks properly.
 
 ## Key Takeaways
-- The worker supports three modes: acquire-release (default), acquire-hold, and acquire-release-rewrite (no release).
-- It uses ts-node/esm to run TypeScript directly, importing LockManager from src/utils/lock.ts.
-- Output is JSON on stdout, making it easy to parse in test assertions.
-- Signal handling ensures clean exit even during long holds.
+
+- The lock worker supports three modes, each with different behavior for acquiring, holding, and releasing locks.
+- It relies on the project's `LockManager` class, not a custom implementation.
+- Status messages are in JSON format, enabling automated testing and observability.
+- The script can hold the process open to simulate long-lived locks, and handles termination signals cleanly.
+
+## Workflows and Decisions Anchored by This Document
+
+- Decisions about the lock lifecycle (e.g., when to release, how long to hold) are tested and validated through this script.
+- The JSON output format becomes the contract for external monitoring tools.
+- The signal handling pattern is a precedent for graceful shutdown in other ArchSpine components.
+- The script's structure (argument parsing, mode selection) sets a template for other test harnesses in the project.

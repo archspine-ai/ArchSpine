@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/infra/db",
-  "role": "Infrastructure layer for SQLite database management in the ArchSpine mirror system, providing the core persistence foundation for file metadata, audit events, and system status.",
-  "responsibility": "Manages the SQLite runtime database lifecycle within the `.spine` directory, including atomic batch commits with semantic drift detection, runtime error mapping to standardized codes, schema initialization with WAL journal mode, stale WAL file recovery, and a data access layer for CRUD operations on files, drift events, symbol caches, token usage, and violations. Also provides stable TypeScript interfaces that decouple data producers (indexers, auditors) from consumers (CLI, services).",
+  "role": "Infrastructure layer for SQLite database management in the ArchSpine system.",
+  "responsibility": "Provides database lifecycle management (creation, WAL recovery, schema initialization), atomic batch commits with semantic drift detection, runtime error mapping, and shared data type contracts for indexing, audit, and status reporting.",
   "children": [
     {
       "filePath": "src/infra/db/batch.ts",
@@ -16,7 +16,7 @@
     },
     {
       "filePath": "src/infra/db/repositories",
-      "role": "Data access layer (DAO) for persistent storage in the ArchSpine system.",
+      "role": "Data access layer (DAO) for the ArchSpine SQLite database, providing CRUD operations for drift events, file metadata, symbols, token usage, and violations.",
       "fileKind": "folder"
     },
     {
@@ -41,7 +41,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-03T11:27:16.681Z",
+    "indexedAt": "2026-05-03T12:18:51.324Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

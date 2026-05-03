@@ -1,19 +1,21 @@
-# ArchSpine File Extension and Language Support Configuration
+# ArchSpine Mirror Configuration Summary
 
-This configuration file controls which file extensions the ArchSpine system recognizes during scanning and indexing, and defines available programming languages for AST extraction and rule enforcement. The settings directly impact the scope of file processing and the accuracy of analysis.
+## Overview
+This configuration declares the file extensions recognized by the ArchSpine mirror system along with the programming languages it supports. It determines how files are indexed, processed, and which language-specific features are enabled.
 
-## Key Parameters
+## Parameter Definitions
 
-- **`schemaVersion`**: Must be set to `1` for compatibility with the current processing pipeline. Changing this value may break reading of the configuration file.
-- **`detectedExtensions`**: A list of file extensions that the system will scan and analyze. Currently includes `.gif`, `.json`, `.md`, `.ts`, `.yml`. Any file with an extension not in this list will be ignored. Adding or removing extensions alters the processing scope; missing expected extensions (e.g., `.tsx` for TypeScript React files) can lead to incomplete indexing.
-- **`languages.typescript.extensions`**: The file extensions mapped to TypeScript language analysis. Currently only `.ts` is defined. If your project uses `.tsx` files, you must add that extension here to ensure they are processed under TypeScript rules.
-- **`languages.typescript.status`**: Must be set to `"available"` for TypeScript analysis to be active. Any other value (e.g., `"disabled"`) will skip AST extraction and rule enforcement for TypeScript files.
+- **`schemaVersion`** (integer, currently `1`): Defines the version of the configuration schema. Version 1 is the only valid version; any other value will cause parsing failures.
+- **`detectedExtensions`** (array of strings): The list of file extensions the system actively monitors and indexes. Currently: `.gif`, `.json`, `.md`, `.ts`, `.yml`. Extensions not in this list will be ignored.
+- **`languages`** (object): A map of programming languages with their associated extensions and availability status. This controls which language tooling and analysis features are activated.
+  - **`languages.typescript`**:
+    - **`extensions`** (array): File extensions registered for TypeScript — only `.ts`. This setting controls detection of TypeScript source files.
+    - **`status`** (string): Set to `"available"` meaning TypeScript support is enabled. Changing it to `"unavailable"` would disable all TypeScript‑related features.
 
-## Stability and Operational Risks
+## Stability & Operational Risks
 
-- **Incomplete scanning**: If `detectedExtensions` does not include every file extension present in your repository, those files will be silently ignored. This can cause gaps in analysis and rule violations to go undetected.
-- **Performance impact**: Adding many extensions (especially large binary files) can slow down scanning and indexing. Stick to well-known source code extensions.
-- **Language analysis disabled**: Accidentally changing a language's `status` to anything other than `"available"` will disable its analysis entirely, potentially breaking architectural enforcement.
-- **Runtime crashes**: Adding unsupported or malformed extensions may trigger errors in the scanner. Always verify that extensions correspond to valid file types in your project.
+- **Extension accuracy**: An incomplete or incorrect `detectedExtensions` list may lead to files being missed during indexing or misclassified, causing downstream processing errors.
+- **Language status mismatch**: If `status` is set incorrectly (e.g., `"available"` when no support is actually implemented), the system might attempt to use non‑existent tooling, leading to runtime failures. Conversely, setting it to `"unavailable"` when support is required will disable essential functionality.
+- **Schema version lock**: The schema version is fixed at `1`. Do not change this value; any deviation will prevent the configuration from being parsed.
 
-To maintain system stability, keep this configuration tightly aligned with your project's actual file types and language support requirements. Review changes carefully before deployment.
+---

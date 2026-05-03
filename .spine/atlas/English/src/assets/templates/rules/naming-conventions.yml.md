@@ -1,23 +1,16 @@
-# Naming Conventions Specification
+# ArchSpine Naming Convention Rules
 
 ## Purpose
-This document establishes **mandatory naming rules** for TypeScript interfaces and test files across the ArchSpine monorepo. It ensures that every contributor follows a single, predictable style, eliminating guesswork and reducing code review friction.
+This document establishes clear naming rules to maintain a consistent and predictable codebase, especially within a large monorepo. It anchors automated checks and development workflows, ensuring that all contributions follow the same conventions.
 
 ## Audience
-All developers working in this repository – especially those contributing to `src/types/` and `tests/` directories. If you write interfaces or test files, you must read and apply these rules.
+All developers contributing to the ArchSpine project should read and adhere to this document. It provides explicit standards that reduce ambiguity during code reviews and improve long‑term maintainability.
 
-## Key Decisions & Workflows Anchored Here
-- **Interface naming rule**: Every internal TypeScript interface **must** start with the prefix `I`.  
-  *Example*: `IUserRepository` instead of `UserRepository`.  
-  *Scope*: `src/types/**/*.ts` | *Severity*: Warning  
-  *Rationale*: Quickly distinguish interfaces from classes and type aliases.
+## Key Takeaways
 
-- **Test file naming rule**: Every test file **must** end with `.test.ts` or `.spec.ts`.  
-  *Scope*: `tests/**` | *Severity*: Error  
-  *Rationale*: Ensures consistent matching by test runners (Vitest, Jest, etc.) across the project.
+- **Interface Naming:** All internal interfaces inside `src/types/**/*.ts` must start with the prefix `I`. For example, `IUserRepository`. This helps distinguish interfaces from types and classes. (Severity: Warning)
+- **Test File Naming:** All test files under `tests/**` must end with `.test.ts` or `.spec.ts`. This ensures compatibility with test runners. (Severity: Error)
+- These rules are enforced by automated tooling; the assigned severity levels guide whether a violation generates a warning or breaks the build.
 
 ## Out of Scope
-This document does **not** cover:
-- Formatting or indentation (handled by Prettier / ESLint)
-- Architecture rules (e.g., layered structure)
-- Dependency management, comment styles, or any non‑naming conventions
+This document does **not** cover general code formatting, style rules unrelated to naming, naming conventions for constants, functions, classes, directories, or any conventions outside the specified file scopes.

@@ -1,37 +1,35 @@
-# ArchSpine Atlas Manifest – Operator Summary
+# ArchSpine Mirror Index Configuration Summary
 
 ## Purpose
+This configuration file serves as the index metadata for the ArchSpine mirror system. It tracks the synchronization state and file inventory, ensuring that the mirror remains consistent with the source repository. Operators use it to verify sync completeness, detect stale or missing files, and enable reverse index lookups for documentation generation.
 
-This manifest file (`atlas.json`) is the central index for the ArchSpine Atlas system. It records every source file that has been indexed, along with its content fingerprint (SHA-256 hash) and links to its documentation in supported locales. It also stores synchronization checkpoint data used by the runtime to determine when a rescan is needed.
+## Key Parameters
 
-## Key Parameters & What They Control
+### Schema & Versioning
+- **schemaVersion** (`"1.0.0"`): Defines the config schema version for compatibility. Do not change manually.
+- **generatorVersion** (`"archspine/1.0.0"`): Identifies the tool and version that generated the file.
+- **createdAt** / **updatedAt**: Timestamps indicating when the index was first created and last modified. Useful for audit and freshness checks.
 
-| Parameter | What It Means | Why It Matters |
-|-----------|---------------|----------------|
-| `schemaVersion` | Version of the manifest schema. | Upgrading this can break compatibility with older tools. |
-| `generatorVersion` | Exact ArchSpine tool version that created the manifest. | Used for debugging and migration. |
-| `createdAt` / `updatedAt` | Timestamps of creation and last modification. | Help trace lifecycle and detect stale state. |
-| `sync.lastSyncAt` | When the last sync completed. | Used for incremental sync decisions. |
-| `sync.lastSyncMode` | `'full'` or `'incremental'`. | Affects the trust level of the index. |
-| `sync.reverseIndexComplete` | Boolean: whether the reverse index (docs back to source) is fully built. | If `false`, view generation and certain queries degrade. Handle with care. |
-| `sync.indexedUnitCount` | Number of tracked source units. | Should match the count of keys in `files`. **Divergence indicates corruption.** |
-| `files.<path>.contentHash` | SHA-256 hex digest of file content. | Used to detect modifications without re-reading the entire file. |
-| `files.<path>.fileKind` | Category of the file (`source`, `test`, `config`). | Influences which analysis pipelines are applied. |
-| `files.<path>.lastIndexedAt` | When this file was last indexed. | Decides if re-indexing is needed. |
-| `files.<path>.docs` | Array of locale + path to Atlas documentation. | Each entry must have a valid locale and a path under `.spine/atlas/`. |
-| `files.<path>.sourceExists` | Boolean: whether the source file still exists on disk. | Allows graceful handling of deleted files. |
+### Synchronization State (`sync`)
+- **lastSyncAt**: The most recent timestamp when synchronization occurred. A stale value may indicate a failed or missed sync.
+- **lastSyncMode**: Either `"full"` or `"incremental"`. Full sync re-processes all files; incremental only processes changes.
+- **reverseIndexComplete**: Boolean flag. **`false`** means the reverse index (e.g., from documentation paths back to source files) is not fully built. This can degrade query performance for some operations. Expect this to become `true` after a complete indexing run.
+- **indexedUnitCount**: The number of indexing units processed so far. In the example, this is `2` (matching the two source files). If this count does not match the actual number of indexed files, the index may be incomplete.
 
-## Operational Risks & Stability Concerns
+### File Inventory (`files`)
+Each source file is stored as a key-value pair mapping file path to metadata. In the example, both `src/auth.ts` and `src/sync.ts` are tracked.
 
-- **Single source of truth**: This manifest is the foundation for all indexing and analysis. If it becomes inconsistent (e.g., `contentHash` mismatches actual file content), analysis and fix operations will produce false positives or miss violations.
-- **Corruption or deletion**: If this file is deleted or corrupted, the next sync will trigger a **full re-index**, which can be very time-consuming.
-- **`reverseIndexComplete` flag**: If set to `false`, view generation and certain queries are degraded. Only set to `true` when the reverse index has been fully built, and ensure the process is reliable.
-- **`indexedUnitCount` mismatch**: If the number of entries in `files` differs from `sync.indexedUnitCount`, the manifest is corrupt. Operators should validate this count after every sync.
-- **`contentHash` integrity**: The hash must match the actual file content. If the file changes without updating the hash, the system will not detect the change. Use only authorized ArchSpine tooling to update the manifest.
-- **File system syncing**: The entire system's integrity depends on this manifest staying in sync with the file system. Any manual edits or out-of-band modifications risk instability.
+Required metadata per file:
+- **contentHash**: A 64-character SHA-256 hex string. The system uses this to detect content changes. An incorrect or stale hash can cause unrecognized changes or sync failures.
+- **fileKind**: The category of the file (e.g., `"source"`). Only predefined kinds are allowed.
+- **lastIndexedAt**: Timestamp of the last indexing for this file.
+- **docs**: An array of per-locale documentation references. Each entry has a `locale` (e.g., `"zh-CN"`) and a `path` to the generated documentation file.
+- **sourceExists**: Boolean indicating whether the original source file still exists on disk. A `false` value means the file has been deleted or moved—this should be investigated.
 
-## Example (from current context)
+## Stability & Risks
 
-- `files` contains two entries (`src/auth.ts` and `src/sync.ts`), both `source` type, with docs in `zh-CN`.
-- `reverseIndexComplete` is `false` – meaning certain cross-reference lookups may not work until a full reverse index build is run.
-- `sync.lastSyncMode` is `full` – the index was completely rebuilt on the last sync.
+- **Hash mismatches**: If a source file is modified but its hash is not updated, the system may incorrectly assume no change. Conversely, a stale hash can cause unnecessary re-syncs.
+- **Reverse index incomplete**: While `reverseIndexComplete` is `false`, reverse lookups may not return all relevant documentation. This is a transient state during initial indexing or after a partial sync.
+- **Indexed unit count discrepancies**: If `indexedUnitCount` does not equal the actual number of processed units (files or logical units), some content may be missing from the mirror.
+- **Missing or malformed entries**: Omitted locales, incorrect paths, or broken links in the `docs` array will lead to incomplete documentation generation.
+- **Operational checks**: Always verify timestamps (`createdAt`, `updatedAt`, `lastSyncAt`) to confirm the data is not stale. Cross-check `sourceExists` with actual disk state before relying on the index for deployments.

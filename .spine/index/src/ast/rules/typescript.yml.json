@@ -3,24 +3,23 @@
   "identity": {
     "filePath": "src/ast/rules/typescript.yml",
     "contentHash": "910d8cc916f11a4bce4f9b92c7255ad544c34413509f9ba8ada6987c14a928fd",
-    "semanticHash": "e4b06d671efbb2046f39bff94fd0e79ac7e64a02f61c6e5c5f13513fc7a31149",
+    "semanticHash": "3a27ba4240ef5bce3b6882667fc494b4a5f5977f199bcc5051c764b89f62f213",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/ast/rules"
   },
   "semantic": {
-    "role": "AST extraction rule definition for TypeScript",
+    "role": "Configuration for code pattern recognition in static analysis",
     "responsibilities": [
-      "Defines patterns for extracting import statements (named, default, namespace) from TypeScript source code",
-      "Defines patterns for extracting export statements (function, class, interface, type, const, let, var, default, list) from TypeScript source code",
-      "Defines patterns for extracting usage references (function calls, constructor calls, property access) from TypeScript source code"
+      "Defining import pattern syntax (named, default, namespace)",
+      "Defining export pattern syntax (function, class, interface, type, const, let, var, default, list)",
+      "Defining usage pattern syntax (call, new, property)",
+      "Mapping patterns to symbolic identifiers and kinds for analysis"
     ],
     "outOfScope": [
-      "Other programming languages (e.g., Python, Rust, Java, etc.)",
-      "Runtime behavior or execution semantics",
-      "Non-AST based documentation extraction methods",
-      "Build tools or CI/CD pipeline configuration",
-      "User-facing documentation or user guides"
+      "Specific implementation of the ArchSpine mirror system",
+      "Runtime behavior or deployment details",
+      "User interface or documentation generation logic"
     ],
     "invariants": [],
     "changeIntent": {
@@ -32,25 +31,23 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document serves as a configuration file that defines AST (Abstract Syntax Tree) extraction patterns for TypeScript source code within the ArchSpine project. It specifies how to identify and extract import declarations, export declarations, and usage references (such as function calls, constructor invocations, and property access) from TypeScript files. These patterns are used by the ArchSpine analysis engine to build an index of code structure, enabling automated documentation generation, dependency tracking, and governance enforcement.",
-        "context_and_audience": "This rule file is consumed by the ArchSpine AST extraction engine (located under `src/ast/`). The primary audience includes developers maintaining the ArchSpine analyzer, or AI agents tasked with understanding the metadata extraction pipeline for TypeScript. It is also relevant for contributors who wish to extend or modify the extraction capabilities for TypeScript. The file lives in `src/ast/rules/typescript.yml` and must be kept in sync with the TypeScript grammar supported by the tree-sitter parser used by ArchSpine.",
+        "purpose": "This configuration document specifies pattern-matching rules used by a static analysis tool to identify imports, exports, and usages in source code. It enables automated extraction of symbols and their dependencies, supporting the ArchSpine system's code mirroring and dependency tracking features.",
+        "context_and_audience": "Intended for developers and maintainers of the ArchSpine static analysis engine who need to understand or modify the recognition rules for different JavaScript/TypeScript code structures. This document is also relevant for contributors integrating new pattern types or adjusting existing ones.",
         "key_takeaways": [
-          "The document defines syntactic patterns for imports, exports, and usages using tree-sitter query syntax.",
-          "Each pattern is assigned an identifier and optionally a kind (e.g., Function, Class, Variable) for categorization.",
-          "Exports include a variety of TypeScript constructs such as default exports, named exports, and export lists.",
-          "Usage patterns capture common code usage forms including function calls (`call`), object instantiation (`new`), and property access (`property`).",
-          "The patterns are language-specific; other languages have their own rule files in the same directory."
+          "Import patterns cover named, default, and namespace imports.",
+          "Export patterns cover functions, classes, interfaces, types, variables, and default/list exports.",
+          "Usage patterns capture function calls, constructor invocations, and property accesses.",
+          "Each pattern is assigned a symbolic ID and kind for consistent processing in the analysis pipeline."
         ]
       },
       "Simplified Chinese": {
-        "purpose": "本文档是 ArchSpine 项目中的一份配置文件，用于定义 TypeScript 源代码的抽象语法树（AST）提取规则。它规定了如何从 TypeScript 文件中识别和提取导入声明、导出声明以及使用引用（如函数调用、构造函数调用和属性访问）。这些模式被 ArchSpine 的分析引擎用来构建代码结构索引，从而实现自动化文档生成、依赖追踪和治理执行。",
-        "context_and_audience": "此规则文件由 ArchSpine 的 AST 提取引擎（位于 `src/ast/` 目录下）使用。主要受众包括维护 ArchSpine 分析器的开发者，或需要理解 TypeScript 元数据提取流程的 AI 代理。同时，它也适用于希望扩展或修改 TypeScript 提取能力的贡献者。该文件位于 `src/ast/rules/typescript.yml`，必须与 ArchSpine 所使用的 tree-sitter 解析器支持的 TypeScript 语法保持同步。",
+        "purpose": "本配置文件定义了静态分析工具在源代码中识别导入、导出和使用的模式匹配规则。它支持自动提取符号及其依赖关系，为ArchSpine系统的代码镜像和依赖追踪功能提供基础。",
+        "context_and_audience": "适用于ArchSpine静态分析引擎的开发者和维护者，需要理解或修改针对不同JavaScript/TypeScript代码结构的识别规则。该文档同样适用于希望集成新模式类型或调整现有模式的贡献者。",
         "key_takeaways": [
-          "本文档使用 tree-sitter 查询语法定义了导入、导出和使用的句法模式。",
-          "每个模式都有一个标识符，并可选择指定一个种类（例如 Function、Class、Variable）进行分类。",
-          "导出模式涵盖了多种 TypeScript 结构，包括默认导出、具名导出和导出列表。",
-          "使用模式捕获了常见的代码使用形式，包括函数调用（`call`）、对象实例化（`new`）和属性访问（`property`）。",
-          "这些模式是语言特定的；其他语言在同一目录下有各自的规则文件。"
+          "导入模式涵盖命名导入、默认导入和命名空间导入。",
+          "导出模式涵盖函数、类、接口、类型、变量以及默认/列表导出。",
+          "使用模式捕获函数调用、构造函数调用和属性访问。",
+          "每个模式都有符号ID和种类标识，便于在分析流程中统一处理。"
         ]
       }
     }
@@ -73,7 +70,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-03T11:25:34.089Z",
+    "indexedAt": "2026-05-03T12:17:25.830Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
