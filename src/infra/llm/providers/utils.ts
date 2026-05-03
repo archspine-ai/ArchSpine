@@ -63,10 +63,17 @@ export function parseStructuredResponse(
       .replace(/```json/gi, '')
       .replace(/```/g, '')
       .trim();
-    const firstBrace = cleanJson.indexOf('{');
-    const lastBrace = cleanJson.lastIndexOf('}');
-    if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
-      cleanJson = cleanJson.substring(firstBrace, lastBrace + 1);
+    if (cleanJson.startsWith('[')) {
+      const lastBracket = cleanJson.lastIndexOf(']');
+      if (lastBracket > 0) {
+        cleanJson = cleanJson.substring(0, lastBracket + 1);
+      }
+    } else {
+      const firstBrace = cleanJson.indexOf('{');
+      const lastBrace = cleanJson.lastIndexOf('}');
+      if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+        cleanJson = cleanJson.substring(firstBrace, lastBrace + 1);
+      }
     }
     if (cleanJson) {
       json = JSON.parse(cleanJson);

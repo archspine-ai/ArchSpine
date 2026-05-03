@@ -212,10 +212,7 @@ export class Aggregator {
 
     if (this.writeAtlasDocs) {
       for (const locale of this.targetLocales) {
-        const content =
-          summary.markdown[locale] ||
-          summary.markdown.English ||
-          `Failed to generate docs for ${locale}`;
+        const content = summary.markdown[locale] || `Failed to generate docs for ${locale}`;
         const targetMdPath = path.join(this.spineDocsDir, locale, dirPath, 'folder.md');
         FileSystemManager.safeWriteFile(targetMdPath, content);
       }
@@ -288,10 +285,7 @@ export class Aggregator {
 
     if (this.writeAtlasDocs) {
       for (const locale of this.targetLocales) {
-        const content =
-          summary.markdown[locale] ||
-          summary.markdown.English ||
-          `Failed to generate docs for ${locale}`;
+        const content = summary.markdown[locale] || `Failed to generate docs for ${locale}`;
         const targetMdPath = path.join(this.spineDocsDir, locale, 'project.md');
         FileSystemManager.safeWriteFile(targetMdPath, content);
       }

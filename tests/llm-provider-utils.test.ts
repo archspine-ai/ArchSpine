@@ -30,6 +30,24 @@ describe('LLM provider utils', () => {
     });
   });
 
+  it('extracts fenced JSON array from structured responses', () => {
+    const parsed = parseStructuredResponse(
+      [
+        '---JSON---',
+        '```json',
+        '[{"role":"demo"},{"role":"test"}]',
+        '```',
+        '---MARKDOWN:English---',
+        '# Demo',
+      ].join('\n'),
+      ['English'],
+      'array.ts',
+    );
+
+    expect(parsed.json).toEqual([{ role: 'demo' }, { role: 'test' }]);
+    expect(parsed.markdown).toEqual({ English: '# Demo' });
+  });
+
   it('extracts fenced JSON and markdown from structured responses', () => {
     const parsed = parseStructuredResponse(
       [
