@@ -93,7 +93,7 @@ describe('E2E: Config commands', () => {
     fs.writeFileSync(path.join(dir, 'src', 'index.ts'), 'export const x = 1;\n');
     runInitWithPrompts(
       dir,
-      [['English'], false, false, true, false, false],
+      [false, false, true, false, '__skip__', false],
       ['--agent-file', 'CLAUDE.md'],
     );
   }

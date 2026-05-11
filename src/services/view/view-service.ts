@@ -6,7 +6,7 @@ import type {
   IViewArtifactEnvelope,
 } from '../../types/view.js';
 import type { RuntimeIO } from '../../infra/runtime-io.js';
-import { defaultRuntimeIO } from '../../infra/runtime-io.js';
+
 import type { LLMClient } from '../../infra/llm.js';
 import type { ViewId } from '../../types/view.js';
 import { getViewDefinition } from './view-registry.js';

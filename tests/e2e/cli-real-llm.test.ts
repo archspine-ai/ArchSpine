@@ -130,7 +130,7 @@ describe('E2E: Real LLM integration', () => {
     fs.writeFileSync(path.join(dir, 'src', 'index.ts'), 'export const hello = "world";\n');
     runInitWithPrompts(
       dir,
-      [['English'], false, false, true, false, false],
+      [false, false, true, false, '__skip__', false],
       ['--agent-file', 'CLAUDE.md'],
     );
   }

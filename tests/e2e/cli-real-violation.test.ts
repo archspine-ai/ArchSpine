@@ -376,15 +376,14 @@ function setupViolationProject(dir: string): void {
     ),
   );
 
-  // Init with rules=true
+  // Init with rules=true, skip LLM setup
   runInitWithPrompts(
     dir,
     [
-      ['English'],
       true, // Install rules → true
       false, // Enable hooks → false
       false, // Inject agent → false
-      false, // Reconfigure LLM → false
+      '__skip__', // LLM scope → skip
       false, // Initial build → false
     ],
     ['--agent-file', 'CLAUDE.md', '--artifact-strategy', 'local', '--no-inject-package-scripts'],
@@ -472,10 +471,12 @@ describe('E2E: Real LLM violation detection & fix', () => {
 
   describe('FIX-02: fix modifies code for violations', () => {
     // [DEPRECATED] spine fix has been removed in v2.0.
+    it.skip('deprecated', () => {});
   });
 
   describe('GOD-01-real: god mode with real LLM', () => {
     // [DEPRECATED] spine god has been removed in v2.0.
+    it.skip('deprecated', () => {});
   });
 });
 

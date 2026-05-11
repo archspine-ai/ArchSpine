@@ -102,7 +102,7 @@ describe('E2E: Read-only commands', () => {
 
       runInitWithPrompts(
         dir,
-        [['English'], false, false, true, false, false],
+        [false, false, true, false, '__skip__', false],
         ['--agent-file', 'CLAUDE.md'],
       );
 
@@ -129,7 +129,7 @@ describe('E2E: Read-only commands', () => {
 
       runInitWithPrompts(
         dir,
-        [['English'], false, false, true, false, false],
+        [false, false, true, false, '__skip__', false],
         ['--agent-file', 'CLAUDE.md'],
       );
 
@@ -148,7 +148,7 @@ describe('E2E: Read-only commands', () => {
 
       runInitWithPrompts(
         dir,
-        [['English'], false, false, true, false, false],
+        [false, false, true, false, '__skip__', false],
         ['--agent-file', 'CLAUDE.md'],
       );
 
@@ -175,7 +175,7 @@ describe('E2E: Read-only commands', () => {
 
       runInitWithPrompts(
         dir,
-        [['English'], false, false, true, false, false],
+        [false, false, true, false, '__skip__', false],
         ['--agent-file', 'CLAUDE.md'],
       );
 
@@ -190,15 +190,22 @@ describe('E2E: Read-only commands', () => {
       createdDirs.push(dir);
       initGitRepo(dir);
 
+      fs.writeFileSync(
+        path.join(dir, 'package.json'),
+        JSON.stringify({ name: 'test', version: '1.0.0' }),
+      );
+      fs.mkdirSync(path.join(dir, 'src'), { recursive: true });
+      fs.writeFileSync(path.join(dir, 'src', 'index.ts'), 'export const x = 1;\n');
+
       runInitWithPrompts(
         dir,
-        [['English'], false, false, true, false, false],
+        [false, false, true, false, '__skip__', false],
         ['--agent-file', 'CLAUDE.md'],
       );
 
       const output = runCliOk(['info'], dir);
 
-      expect(output).toContain('English');
+      expect(output).toMatch(/TypeScript|JavaScript/i);
     });
 
     it('INFO-04: reports token usage section', () => {
@@ -208,7 +215,7 @@ describe('E2E: Read-only commands', () => {
 
       runInitWithPrompts(
         dir,
-        [['English'], false, false, true, false, false],
+        [false, false, true, false, '__skip__', false],
         ['--agent-file', 'CLAUDE.md'],
       );
 

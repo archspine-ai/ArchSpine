@@ -98,6 +98,7 @@ This exposes all 21 MCP tools. Claude Code can then query the semantic index, ru
 Project ships `.spine/rules/layered-architecture.yml` (6 rules enforcing the layer model) and `naming-conventions.yml`. When adding new modules, ensure they respect the layer dependency direction. Importing upward (e.g., infra importing from services) is a violation.
 
 <!-- ARCHSPINE_MCP:BEGIN -->
+
 ## ArchSpine MCP Tools
 
 When the ArchSpine MCP server is connected, prefer these tools over grep/file search for structural queries:
@@ -109,6 +110,7 @@ When the ArchSpine MCP server is connected, prefer these tools over grep/file se
 5. `spine_get_module_context` — Get a module's full context: semantic info, dependencies, violations, diagnostics
 
 Use these tools when you need to:
+
 - Understand how modules are connected
 - Find the right module to edit for a given task
 - Assess the risk of a proposed change

@@ -1,4 +1,4 @@
-import { LLMClient, LLMTransport, ProviderConfig } from './base.js';
+import { LLMTransport, ProviderConfig } from './base.js';
 import { OpenAICompatibleClient } from './providers/openai.js';
 import { GeminiClient } from './providers/gemini.js';
 

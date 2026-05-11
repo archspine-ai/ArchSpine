@@ -100,7 +100,7 @@ describe('config validation', () => {
       ),
     );
 
-    const config = new Config(testDir);
+    new Config(testDir);
 
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining(`schemaVersion must equal "${CURRENT_CONFIG_SCHEMA_VERSION}"`),

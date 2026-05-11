@@ -5,6 +5,7 @@ This directory (`.spine/`) is an ArchSpine control plane — a machine-readable 
 ## For AI Agents
 
 Start here:
+
 1. Read `view/pages/agent-briefing.md` for project overview, module topology, and architecture constraints
 2. Query `view/knowledge-graph.json` for module dependency graph
 3. Check `view/diagnostics/` for health reports (cycles, dead code, hub modules)
@@ -12,6 +13,7 @@ Start here:
 ## MCP Tools
 
 If the ArchSpine MCP server is connected, use these tools:
+
 - `spine_query_graph` — query module dependencies
 - `spine_get_diagnostics` — get health reports
 - `spine_match_semantic` — find modules by role/responsibility

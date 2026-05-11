@@ -89,7 +89,7 @@ describe('E2E: Remove command', () => {
 
     runInitWithPrompts(
       dir,
-      [['English'], false, false, true, false, false],
+      [false, false, true, false, '__skip__', false],
       ['--agent-file', 'CLAUDE.md'],
     );
 
@@ -130,7 +130,7 @@ describe('E2E: Remove command', () => {
 
     runInitWithPrompts(
       dir,
-      [['English'], false, false, true, false, false],
+      [false, false, true, false, '__skip__', false],
       ['--agent-file', 'CLAUDE.md'],
     );
 

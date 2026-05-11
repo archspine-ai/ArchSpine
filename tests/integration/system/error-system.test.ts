@@ -61,7 +61,7 @@ describe('error system convergence (round 1)', () => {
     fs.writeFileSync(path.join(testDir, '.spine', 'manifest.json'), '{broken-json');
     fs.writeFileSync(path.join(testDir, '.spine', 'languages.json'), '{broken-json');
 
-    const config = new Config(testDir);
+    new Config(testDir);
 
     const manifest = Manifest.open(testDir);
     expect(manifest.loadLanguageSnapshot()).toBeNull();

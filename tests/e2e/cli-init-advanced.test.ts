@@ -80,7 +80,7 @@ describe('E2E: Init advanced scenarios', () => {
 
     runInitWithPrompts(
       dir,
-      [['English'], false, false, true, false, false],
+      [false, false, true, '__skip__', false],
       ['--agent-file', 'CLAUDE.md', '--artifact-strategy', 'local', '--no-inject-package-scripts'],
     );
 
@@ -109,14 +109,18 @@ describe('E2E: Init advanced scenarios', () => {
     // First init
     runInitWithPrompts(
       dir,
-      [['English'], false, false, true, false, false],
+      [false, false, true, '__skip__', false],
       ['--agent-file', 'CLAUDE.md', '--artifact-strategy', 'local', '--no-inject-package-scripts'],
     );
 
     const configBefore = fs.readFileSync(path.join(dir, '.spine', 'config.json'), 'utf-8');
 
-    // Second init — first prompt is "Config exists, overwrite?" → answer false to cancel
-    const { stdout, stderr } = runInitWithPrompts(dir, [false], ['--agent-file', 'CLAUDE.md']);
+    // Second init with same strategy — config should be overwritten with same values
+    const { stdout, stderr } = runInitWithPrompts(
+      dir,
+      [false, false, true, '__skip__', false],
+      ['--agent-file', 'CLAUDE.md', '--artifact-strategy', 'local'],
+    );
 
     const output = `${stdout}${stderr}`;
     // Should not have overwritten config
@@ -139,7 +143,7 @@ describe('E2E: Init advanced scenarios', () => {
 
     runInitWithPrompts(
       dir,
-      [['English'], false, false, true, false, false],
+      [false, false, true, '__skip__', false],
       ['--agent-file', 'CLAUDE.md', '--artifact-strategy', 'local', '--inject-package-scripts'],
     );
 

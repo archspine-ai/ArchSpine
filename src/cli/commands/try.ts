@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { Config } from '../../infra/config.js';
-import { LangRegistry } from '../../ast/lang-registry.js';
+
 import { throwCliUsage } from '../cli-utils.js';
 import {
   checkRepoPosture,
@@ -103,7 +103,7 @@ export async function executeTryCommand({
   console.log('');
   console.log('--- Language Landscape ---');
 
-  let languageSnapshot = await discoverLanguageLandscape(rootDir, new Config(rootDir));
+  const languageSnapshot = await discoverLanguageLandscape(rootDir, new Config(rootDir));
 
   if (!languageSnapshot || Object.keys(languageSnapshot.languages).length === 0) {
     console.log('No supported source languages detected in this repository.');
@@ -140,7 +140,7 @@ export async function executeTryCommand({
     return;
   }
 
-  const { previews, sampleLimit } = await generateASTPreviews(rootDir, languageSnapshot);
+  const { previews } = await generateASTPreviews(rootDir, languageSnapshot);
   const availableCount = Object.entries(languageSnapshot.languages).filter(
     ([, s]) => s.status === 'available',
   ).length;

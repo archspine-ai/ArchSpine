@@ -38,8 +38,6 @@ export class KnowledgeGraphTask extends SpineTask<CommitStageOutput, void> {
 
     ctx.outputManager.saveView('knowledge-graph.json', graph);
 
-    const diagnosticsDir = path.join(ctx.rootDir, '.spine', 'view', 'diagnostics');
-    fs.mkdirSync(diagnosticsDir, { recursive: true });
     ctx.outputManager.saveView('diagnostics/cycles.json', cycles);
     ctx.outputManager.saveView('diagnostics/dead-code.json', deadCode);
     ctx.outputManager.saveView('diagnostics/hubs.json', hubs);

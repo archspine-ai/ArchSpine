@@ -65,6 +65,7 @@ export function parseStructuredResponse(
     if (cleanJson) {
       // Strip control characters (U+0000-U+001F except \t, \n, \r) that LLM may
       // emit inside JSON string values, causing JSON.parse to throw.
+      // eslint-disable-next-line no-control-regex
       cleanJson = cleanJson.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, '');
       json = JSON.parse(cleanJson);
     }

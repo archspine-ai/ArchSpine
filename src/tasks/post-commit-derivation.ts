@@ -18,7 +18,7 @@ const SPINE_README = [
   'Start here:',
   '1. Read `view/pages/agent-briefing.md` for project overview, module topology, and architecture constraints',
   '2. Query `view/knowledge-graph.json` for module dependency graph',
-  '3. Check `view/diagnostics/` for health reports (cycles, dead code, hub modules)',
+  '3. Check `view/data/diagnostics/` for health reports (cycles, dead code, hub modules)',
   '',
   '## MCP Tools',
   '',

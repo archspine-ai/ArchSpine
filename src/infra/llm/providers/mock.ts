@@ -130,7 +130,7 @@ export class CreateUserHandler {
 
   async generateFolderSummary(
     dirPath: string,
-    childrenInfo: string,
+    _childrenInfo: string,
     _branch?: string,
     _status?: string,
   ): Promise<LLMResponse> {
@@ -149,7 +149,7 @@ export class CreateUserHandler {
 
   async generateProjectSummary(
     projectName: string,
-    modulesInfo: string,
+    _modulesInfo: string,
     _branch?: string,
     _status?: string,
   ): Promise<LLMResponse> {

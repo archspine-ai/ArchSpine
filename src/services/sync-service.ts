@@ -288,14 +288,6 @@ export class SyncService {
     const runtimeIO = this.options.runtimeIO || defaultRuntimeIO;
     const surface = options.surface || 'sync';
 
-    let effectiveRuntimeOverrides = options.runtimeOverrides;
-    if (!options.full) {
-      effectiveRuntimeOverrides = {
-        ...(effectiveRuntimeOverrides || {}),
-        generationStrategy: 'json-only',
-      };
-    }
-
     let effectiveHookMode = options.hookMode;
     let effectiveFullSync = options.full;
     let forcedCandidateFiles: string[] | undefined;
