@@ -6,6 +6,7 @@ export default defineConfig({
   description:
     'A control plane for AI-assisted engineering — give your AI agents architectural understanding before they write a single line.',
   cleanUrls: true,
+  ignoreDeadLinks: true,
   srcExclude: ['README.md', '.obsidian/**'],
   themeConfig: {
     nav: [
@@ -15,7 +16,7 @@ export default defineConfig({
       { text: 'Reference', link: '/reference/' },
       { text: 'Explanation', link: '/explanation/' },
       { text: '中文文档', link: '/zh-CN/' },
-      { text: 'GitHub', link: 'https://github.com/archspine-ai/archspine' },
+      { text: 'GitHub', link: 'https://github.com/archspine-ai/ArchSpine' },
     ],
     sidebar: [
       {
@@ -80,7 +81,7 @@ export default defineConfig({
         ],
       },
     ],
-    socialLinks: [{ icon: 'github', link: 'https://github.com/archspine-ai/archspine' }],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/archspine-ai/ArchSpine' }],
     search: {
       provider: 'local',
     },
