@@ -1,0 +1,173 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "eslint.config.js",
+    "contentHash": "d2d92d23457c350db9a900156919306f2997f66e06ab666fafef6bdcf98e5367",
+    "skeletonHash": "e25c73103a484e89ab8d4a2e9f53bebca67961c9fce4eb507f20f91d8d70e972",
+    "semanticHash": "5ba15ce61f5e222770abe31dfc1dc45e2571d2077f6b98406dd1eea3c1e94b5c",
+    "language": "javascript",
+    "fileKind": "source",
+    "scope": ""
+  },
+  "semantic": {
+    "role": "Root ESLint flat configuration file for the ArchSpine project, defining recommended lint rules, TypeScript-specific rules, and Prettier integration for all source directories.",
+    "responsibilities": [
+      "Aggregate and export the project-wide ESLint flat config array via tseslint.config.",
+      "Include recommended JavaScript lint rules from @eslint/js.",
+      "Include recommended TypeScript lint rules from typescript-eslint.",
+      "Integrate Prettier formatting rules via eslint-config-prettier to avoid style conflicts.",
+      "Scope linting to source code directories (src/services, src/tasks, src/infra, src/engines, src/utils, src/cli, src/types, src/ast, src/core).",
+      "Set environment globals to Node.js for all source files.",
+      "Define additional rules: enforce consistent type imports, require explicit return types on exported functions, and restrict certain deprecated APIs.",
+      "Provide a configuration contract that can be consumed by ESLint CLI or editor integrations."
+    ],
+    "outOfScope": [
+      "Runtime application logic or behavior.",
+      "Build-time or bundling logic.",
+      "Testing configuration (separate config files for vitest).",
+      "CI/CD or deployment configuration."
+    ],
+    "invariants": [
+      "The configuration must always be a valid ESLint flat config array.",
+      "The configuration must always include the Prettier integration as the last element to override conflicting rules.",
+      "The configuration must scope lint rules to source directories only, excluding tests and configuration files."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized, maintainable ESLint configuration that enforces code quality and consistency across the ArchSpine codebase, leveraging recommended presets and Prettier.",
+      "recentChangeIntent": "Initial creation of the ESLint configuration for the v1.0.0 release, incorporating JavaScript, TypeScript, and Prettier standards."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "default",
+        "description": "The default export is the complete ESLint flat configuration array. External consumers (ESLint CLI, editor plugins) import this to apply linting rules to the ArchSpine source code."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Root ESLint flat configuration file for the ArchSpine project, defining recommended lint rules, TypeScript-specific rules, and Prettier integration for all source directories.",
+        "responsibilities": [
+          "Aggregate and export the project-wide ESLint flat config array via tseslint.config.",
+          "Include recommended JavaScript lint rules from @eslint/js.",
+          "Include recommended TypeScript lint rules from typescript-eslint.",
+          "Integrate Prettier formatting rules via eslint-config-prettier to avoid style conflicts.",
+          "Scope linting to source code directories (src/services, src/tasks, src/infra, src/engines, src/utils, src/cli, src/types, src/ast, src/core).",
+          "Set environment globals to Node.js for all source files.",
+          "Define additional rules: enforce consistent type imports, require explicit return types on exported functions, and restrict certain deprecated APIs.",
+          "Provide a configuration contract that can be consumed by ESLint CLI or editor integrations."
+        ],
+        "outOfScope": [
+          "Runtime application logic or behavior.",
+          "Build-time or bundling logic.",
+          "Testing configuration (separate config files for vitest).",
+          "CI/CD or deployment configuration."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'@eslint/js'",
+        "symbols": [
+          "js"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'typescript-eslint'",
+        "symbols": [
+          "tseslint"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'eslint-config-prettier'",
+        "symbols": [
+          "prettier"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'globals'",
+        "symbols": [
+          "globals"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "default",
+        "kind": "unknown",
+        "signature": "default tseslint.config(\n"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "default",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "eslint.config.js#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "@eslint/js",
+        "relation": "import",
+        "symbols": [
+          "js"
+        ]
+      },
+      {
+        "targetPath": "typescript-eslint",
+        "relation": "import",
+        "symbols": [
+          "tseslint"
+        ]
+      },
+      {
+        "targetPath": "eslint-config-prettier",
+        "relation": "import",
+        "symbols": [
+          "prettier"
+        ]
+      },
+      {
+        "targetPath": "globals",
+        "relation": "import",
+        "symbols": [
+          "globals"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:50:21.134Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 24,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

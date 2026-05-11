@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/fix-prompt.ts",
+    "contentHash": "3545f7813c3f7e59c0c2d7276b1077817946987ae11cfdc4f9aaa959c71613ec",
+    "skeletonHash": "644ce283a294e9bf7f45136cc7f9ce22f7a4a8173fabd13467be8a90d8c11efc",
+    "semanticHash": "ed2641e3c7bd973c01052d4b047e78a51e8f85d9830ab637ea806fe1f3e49621",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Prompt generation engine for architectural violation fix suggestions.",
+    "responsibilities": [
+      "Construct a structured prompt string from a set of violations and file context, intended to be passed to an LLM to auto-generate a corrected file.",
+      "Format violations with rule IDs, severities, reasons, and optional rule content.",
+      "Include source file content and structural skeleton in the prompt.",
+      "Provide instructions for the LLM to produce a corrected file while preserving non-violation functionality."
+    ],
+    "outOfScope": [
+      "Does not execute the fix or modify files directly.",
+      "Does not validate the LLM output.",
+      "Does not determine which violations to fix."
+    ],
+    "invariants": [
+      "Must not import CLI, service, or presentation layer modules to maintain engine independence.",
+      "Output must be a plain string (no side effects)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable, engine-level utility for generating fix prompts that can be consumed by any service or task without coupling to orchestration.",
+      "recentChangeIntent": "Part of a release gate fix and source sync pass. No architectural change to this module."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "generateFixPrompt",
+        "description": "Generates a full prompt string for an LLM to fix architectural violations in a given file. Accepts a FixViolationContext with file path, content, structural skeleton, and violations array."
+      },
+      {
+        "symbolName": "FixViolationContext",
+        "description": "Interface defining the input structure for generateFixPrompt: file path, file content, structural skeleton, and an array of violation objects with ruleId, severity, reason, and optional ruleContent."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Prompt generation engine for architectural violation fix suggestions.",
+        "responsibilities": [
+          "Construct a structured prompt string from a set of violations and file context, intended to be passed to an LLM to auto-generate a corrected file.",
+          "Format violations with rule IDs, severities, reasons, and optional rule content.",
+          "Include source file content and structural skeleton in the prompt.",
+          "Provide instructions for the LLM to produce a corrected file while preserving non-violation functionality."
+        ],
+        "outOfScope": [
+          "Does not execute the fix or modify files directly.",
+          "Does not validate the LLM output.",
+          "Does not determine which violations to fix."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "generateFixPrompt",
+        "kind": "function",
+        "signature": "generateFixPrompt(ctx: FixViolationContext)"
+      },
+      {
+        "name": "FixViolationContext",
+        "kind": "interface",
+        "signature": "interface FixViolationContext"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "generateFixPrompt",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/fix-prompt.ts#"
+      },
+      {
+        "name": "FixViolationContext",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/fix-prompt.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [
+      {
+        "targetPath": "tests/unit/engines/fix-prompt.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:55:48.617Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 71,
+    "inCycle": true,
+    "cycleId": "src/core → src/types → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

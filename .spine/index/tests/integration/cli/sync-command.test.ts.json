@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integration/cli/sync-command.test.ts",
+    "contentHash": "6cdee89816bfca1c45afb8aed43c7173db9b79967340c61d504cf6952f884806",
+    "skeletonHash": "b05b1a49a5139e1be05325188e7533d1780ed37442921bf45bed8bdaefe5fa1d",
+    "semanticHash": "b7eb54014dfe6e7e474929e03a690f5ebcc49f45cf478548fefe57300ccb0763",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/integration/cli"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite for sync command CLI argument validation in repair mode",
+    "responsibilities": [
+      "verify that the sync command rejects unrecognized flags like --bogus",
+      "verify that --hook and --retry-failed together are rejected",
+      "verify that --repair-violations and --retry-failed together are rejected",
+      "provide mock runtime service and sync implementation for isolated testing"
+    ],
+    "outOfScope": [
+      "testing the actual sync workflow logic",
+      "testing the full CLI lifecycle integration"
+    ],
+    "invariants": [
+      "test files must end with .test.ts or .spec.ts (architectural rule test-file-suffix)"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure that the sync command's CLI argument validation correctly rejects conflicting flag combinations before any sync execution occurs",
+      "recentChangeIntent": "Applied release gate fixes and synced accumulated source changes; the test suite was likely updated to cover the new validation rules introduced by the fixes"
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite for sync command CLI argument validation in repair mode",
+        "responsibilities": [
+          "Verify that the sync command rejects unrecognized flags like --bogus",
+          "Verify that --hook and --retry-failed together are rejected",
+          "Verify that --repair-violations and --retry-failed together are rejected",
+          "Provide mock runtime service and sync implementation for isolated testing"
+        ],
+        "outOfScope": [
+          "Testing the actual sync workflow logic",
+          "Testing the full CLI lifecycle integration"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/cli/commands/sync.ts",
+        "relation": "import",
+        "symbols": [
+          "executeSyncCommand"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/integration/cli/sync-command.test.ts/_file_#",
+        "targetSymbol": "src/cli/commands/sync.ts/executeSyncCommand#",
+        "targetPath": "src/cli/commands/sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/cli/sync-command.test.ts/_file_#",
+        "targetSymbol": "src/cli/commands/sync.ts/runSyncWorkflow#",
+        "targetPath": "src/cli/commands/sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:39:49.780Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

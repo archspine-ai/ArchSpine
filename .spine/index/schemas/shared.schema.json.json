@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "schemas/shared.schema.json",
+    "contentHash": "c9cb1ce6d5d97a05a3783e17f4c68854472c69abfdc4ec0f9e978cf1fb03e7d9",
+    "semanticHash": "3b647664f51164c5f1fbf424a26ea05d0fb2fb00b84a8dc06ce19f9aba878be2",
+    "language": "unsupported",
+    "fileKind": "config",
+    "scope": "schemas"
+  },
+  "semantic": {
+    "role": "Defines reusable type constraints and validation patterns for ArchSpine configuration schemas",
+    "responsibilities": [
+      "Schema versioning (semver pattern)",
+      "Timestamp formatting (ISO 8601)",
+      "Repository-relative and scope path validation",
+      "Content integrity via SHA-256 hash pattern",
+      "Locale and language selection key patterns",
+      "Source language classification (typescript, javascript, python, unsupported)",
+      "File and symbol kind enumerations",
+      "Dependency relations and provenance tracking",
+      "Pipeline stage classification",
+      "Localized content map structure"
+    ],
+    "outOfScope": [],
+    "invariants": [
+      "All pattern and enum values must match exactly; validation failures reject configurations",
+      "repoRelativePath must not start with /, ./, or ../ and must not contain backslashes or double slashes",
+      "scopePath allows empty string but must not contain backslashes or double slashes",
+      "contentHash must be exactly 64 lowercase hex characters (SHA-256)",
+      "locale must follow IETF BCP47-like pattern (e.g., en, zh-CN, sr-Latn)",
+      "schemaVersion must follow semantic versioning (x.y.z)",
+      "Enums for sourceLanguage, fileKind, symbolKind, dependencyRelation, edgeProvenance, pipelineStage are limited to specified values"
+    ],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Defines reusable type constraints and validation patterns for ArchSpine configuration schemas. This schema provides the building blocks for all other configuration files, ensuring data consistency and integrity across the system.",
+        "parameter_definitions": {
+          "schemaVersion": "Enforces semantic versioning (e.g., 1.0.0) for schema compatibility checks. A mismatch can cause configuration to be rejected or require migration.",
+          "isoTimestamp": "Requires ISO 8601 date-time format for all timestamps, ensuring consistent ordering and logging across the system.",
+          "repoRelativePath": "Validates paths relative to repository root. Must be non-empty and cannot contain absolute or dot-relative segments; prevents path traversal and ambiguity.",
+          "scopePath": "Allows empty string (root scope) while disallowing backslashes and double slashes. Used for scoping rules or analyses. Impact: flexibility with safety.",
+          "contentHash": "Must be a 64-character hexadecimal string (SHA-256). Used for integrity verification of files and manifests. A mismatch indicates corruption or tampering.",
+          "locale": "Follows IETF language tag pattern (e.g., en, zh-CN). Defines which language a document or configuration is in. Important for multilingual support.",
+          "languageSelectionKey": "Arbitrary non-empty string for selecting among language-specific configurations. Should be kept consistent across related files.",
+          "sourceLanguage": "Classifies a file's language for parsing and analysis. Limited to typescript, javascript, python, or unsupported. Affects which AST rules apply.",
+          "fileKind": "Categorizes files as source, config, document, or other. Influences how files are processed (e.g., document files may be skipped for AST extraction).",
+          "symbolKind": "Classifies symbols (class, function, variable, etc.) found in source code. Used for dependency and architecture analysis. Incorrect classification may skew results.",
+          "dependencyRelation": "Defines how dependencies are expressed: import, reexport, or type-import. Affects graph building and impact analysis.",
+          "edgeProvenance": "Indicates whether a dependency edge came from AST parsing (ast) or was inferred (inferred). Helps in debugging and trust assessment.",
+          "pipelineStage": "Labels the processing stage that produced data: ast, llm, lite-ast, lite-llm, fallback. Important for result provenance and fallback logic.",
+          "nonEmptyString": "Ensures any required text field is at least one character long. Prevents empty strings from entering critical fields.",
+          "stringArray": "Defines a basic array of strings. Used for lists like tags, authors, or dependency paths. No length restriction; allows flexibility but risks unbounded growth.",
+          "localizedContentMap": "A dictionary keyed by language selection keys, where each value is an object (arbitrary). Used for storing translations or localized metadata. Structure must be consistent with language keys defined elsewhere."
+        },
+        "stability_and_risks": "This shared schema is the foundation for all ArchSpine configuration validation. Any change to patterns or enums cascades across the system, potentially breaking existing configurations. The strict patterns (especially repoRelativePath, scopePath, and contentHash) prevent many injection and path-traversal attacks but may reject legitimate inputs if overly restrictive. The locale pattern may not cover all BCP47 subtags; unknown regions could be rejected. The enum for sourceLanguage is limited; new languages require schema updates. contentHash uses SHA-256 which is cryptographically secure but may add computational overhead for large files. Overall, these definitions promote consistency and security but require careful governance when extending."
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:51:20.829Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 41,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

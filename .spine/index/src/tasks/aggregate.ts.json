@@ -1,0 +1,213 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/aggregate.ts",
+    "contentHash": "e3d073145053a2d8319f2275640ea45b6e6bc7037d4a3d883a6bb5f6919d3488",
+    "skeletonHash": "fa559cd1f161d094b7d92ed3539dea01c1af82035fd0cbd30b79f7ebe832fdb0",
+    "semanticHash": "79965e22eb061a748f806d688293d35ee66143a4676382bc7b9b0f40bd9574d9",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "Pipeline stage task responsible for aggregating source files into directory-level and project-level content units, with support for resuming interrupted aggregations.",
+    "responsibilities": [
+      "Aggregate tracked source files into hierarchical content units for each directory and the project root.",
+      "Resume partially completed aggregations from a prior run by querying execution checkpoints for incomplete directory items.",
+      "Compute directory depth and process directories bottom-up to ensure child directories are aggregated before their parents.",
+      "Use concurrency-limiting to parallelize directory aggregation while respecting resource constraints."
+    ],
+    "outOfScope": [
+      "Parsing CLI commands or managing user-facing arguments.",
+      "Orchestrating services unrelated to content aggregation.",
+      "Source code scanning or dependency graph construction.",
+      "Final commit-stage output generation (this task produces intermediate results only)."
+    ],
+    "invariants": [
+      "Aggregation is always bottom-up: deeper directories are processed before shallower ones.",
+      "Checkpoint recovery replaces full tree traversal for aggregation resumption; only incomplete items from a prior run are re-processed.",
+      "No CLI command parsing or unrelated service orchestration is performed within this module."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Implement a scalable, resumable aggregation stage for the ArchSpine pipeline, leveraging execution checkpoints to avoid redundant work and to keep the stage focused.",
+      "recentChangeIntent": "Based on git log: 'chore: apply release gate fixes and sync accumulated source changes'. Likely includes bug fixes and synchronization of the aggregation module with other pipeline changes to ensure checkpoint compatibility and concurrency correctness."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "AggregationTask",
+        "description": "Pipeline stage task class that aggregates source file content into per-directory and project-level units. Extends SpineTask and is executed by the task runtime during the 'aggregation' checkpoint stage. Provides checkpoint-based recovery for interrupted runs."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Pipeline stage task responsible for aggregating source files into directory-level and project-level content units, with support for resuming interrupted aggregations.",
+        "responsibilities": [
+          "Aggregate tracked source files into hierarchical content units for each directory and the project root.",
+          "Resume partially completed aggregations from a prior run by querying execution checkpoints for incomplete directory items.",
+          "Compute directory depth and process directories bottom-up to ensure child directories are aggregated before their parents.",
+          "Use concurrency-limiting to parallelize directory aggregation while respecting resource constraints."
+        ],
+        "outOfScope": [
+          "Parsing CLI commands or managing user-facing arguments.",
+          "Orchestrating services unrelated to content aggregation.",
+          "Source code scanning or dependency graph construction.",
+          "Final commit-stage output generation (produces intermediate results only)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/task-state.js'",
+        "symbols": [
+          "addTaskUsage",
+          "incrementTaskFailed"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/execution-checkpoint.js'",
+        "symbols": [
+          "getStageItemsByStatus"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'p-limit'",
+        "symbols": [
+          "pLimit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "AggregationTask",
+        "kind": "class",
+        "signature": "class AggregationTask"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "AggregationTask",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/tasks/aggregate.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "../core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "addTaskUsage",
+          "incrementTaskFailed"
+        ]
+      },
+      {
+        "targetPath": "../infra/execution-checkpoint.js",
+        "relation": "import",
+        "symbols": [
+          "getStageItemsByStatus"
+        ]
+      },
+      {
+        "targetPath": "p-limit",
+        "relation": "import",
+        "symbols": [
+          "pLimit"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/unit/tasks/aggregate.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/tasks/aggregate.ts/_file_#",
+        "targetSymbol": "src/infra/execution-checkpoint.ts/getStageItemsByStatus#",
+        "targetPath": "src/infra/execution-checkpoint.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/aggregate.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/addTaskUsage#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/aggregate.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/incrementTaskFailed#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:04:18.362Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 2,
+    "isHub": true,
+    "hubPercentile": 59,
+    "inCycle": true,
+    "cycleId": "src/core → src/tasks → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

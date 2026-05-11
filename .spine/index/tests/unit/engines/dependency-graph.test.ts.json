@@ -1,0 +1,191 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/engines/dependency-graph.test.ts",
+    "contentHash": "e9fb0f8d5f5c9a2e744188b185e899c34b6e8b51a0b397bd02b813f721e071f3",
+    "skeletonHash": "8cf8941b76ad6336d6323244b35d80ab8ad854877185e53e9091d5d285b329db",
+    "semanticHash": "7a75d7c460a3877094ae0470b4f64f4d12fdacaf7d004b9f6f2d94b400509f36",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/engines"
+  },
+  "semantic": {
+    "role": "Vitest test suite for the dependency-graph engine, verifying graph construction from mock Spine units.",
+    "responsibilities": [
+      "Creates temporary directories for each test to isolate file writes.",
+      "Defines test helpers (`writeSpineUnit`, `writeSpineUnit`) to write mock Spine unit JSON files into the temp directory.",
+      "Tests that `buildGraph` correctly builds a dependency graph by scanning a directory of Spine unit files and counting expected nodes.",
+      "Cleans up temporary directories after each test via `afterEach`."
+    ],
+    "outOfScope": [
+      "No production logic; entirely test infrastructure.",
+      "Does not define or export any public API for consumption by other modules."
+    ],
+    "invariants": [
+      "Test file must end with `.test.ts` or `.spec.ts` (rule `test-file-suffix`). The file is assumed to satisfy this (e.g., `dependency-graph.test.ts`).",
+      "Each test must clean up temporary directories to avoid side effects."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a test suite ensuring the dependency-graph engine correctly parses Spine units and builds a directed graph of module imports.",
+      "recentChangeIntent": "No recent change intent provided; this appears to be a new or unchanged test file."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite for the dependency-graph engine, verifying graph construction from mock Spine units.",
+        "responsibilities": [
+          "Creates temporary directories for each test to isolate file writes.",
+          "Defines test helpers (`writeSpineUnit`, `writeSpineUnit`) to write mock Spine unit JSON files into the temp directory.",
+          "Tests that `buildGraph` correctly builds a dependency graph by scanning a directory of Spine unit files and counting expected nodes.",
+          "Cleans up temporary directories after each test via `afterEach`."
+        ],
+        "outOfScope": [
+          "No production logic; entirely test infrastructure.",
+          "Does not define or export any public API for consumption by other modules."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/engines/dependency-graph.js'",
+        "symbols": [
+          "buildGraph"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/engines/dependency-graph.js",
+        "relation": "import",
+        "symbols": [
+          "buildGraph"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/engines/dependency-graph.test.ts/_file_#",
+        "targetSymbol": "src/engines/dependency-graph.ts/buildGraph#",
+        "targetPath": "src/engines/dependency-graph.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:09:07.745Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

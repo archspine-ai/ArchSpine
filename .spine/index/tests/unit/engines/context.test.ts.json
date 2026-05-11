@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/engines/context.test.ts",
+    "contentHash": "73f7845c611390b334fa0c5749dbe12539aa9964d9045faf5267ab818963e89a",
+    "skeletonHash": "610a3384d419dd3b7f753dd2235b18886bcb56685fc08e8e498845f5fef7ea98",
+    "semanticHash": "b18c82fe0c6a18e7397dd5915241bb63a339a166cbe9aa5df8291073feea8d34",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/engines"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for the ContextEngine class.",
+    "responsibilities": [
+      "Test that ContextEngine.resolveDependencies correctly resolves imported module symbols and generates context data.",
+      "Validate that the engine returns proper symbol edges and diagnostics for the given file skeleton.",
+      "Mock manifest and skeleton inputs to isolate ContextEngine behavior from real file system."
+    ],
+    "outOfScope": [
+      "Integration or end-to-end scenarios involving real file I/O.",
+      "Cross-module contract tests between ContextEngine and other engines."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide deterministic coverage for the dependency resolution logic of ContextEngine, validating that import analysis works correctly across relative, absolute, and external imports.",
+      "recentChangeIntent": "Part of a broader refactor that removed legacy CLI aliases and rebuilt documentation; this test file was updated to maintain alignment with changes to the ContextEngine interface or behavior."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for the ContextEngine class.",
+        "responsibilities": [
+          "Test that ContextEngine.resolveDependencies correctly resolves imported module symbols and generates context data.",
+          "Validate that the engine returns proper symbol edges and diagnostics for the given file skeleton.",
+          "Mock manifest and skeleton inputs to isolate ContextEngine behavior from real file system."
+        ],
+        "outOfScope": [
+          "Integration or end-to-end scenarios involving real file I/O.",
+          "Cross-module contract tests between ContextEngine and other engines."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/engines/context.js'",
+        "symbols": [
+          "ContextEngine"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/engines/context.js",
+        "relation": "import",
+        "symbols": [
+          "ContextEngine"
+        ]
+      },
+      {
+        "targetPath": "../../../src/ast/extractor.js",
+        "relation": "import",
+        "symbols": [
+          "FileSkeleton (type only)"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/engines/context.test.ts/_file_#",
+        "targetSymbol": "src/engines/context.ts/ContextEngine#",
+        "targetPath": "src/engines/context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:09:19.013Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

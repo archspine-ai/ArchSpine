@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/helpers/lock-worker.mjs",
+    "contentHash": "2478dbdc800821486e1b8fba0ec0ceb566c3cf5989c6a38c04f5fc6e5f975f12",
+    "semanticHash": "6ed08849bb19ab9172ff3a8b9b37d88dd2504a4def0bf7e18ee28f39bae54d0c",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": "tests/helpers"
+  },
+  "semantic": {
+    "role": "Placeholder lock worker process for testing lock concurrency in ArchSpine's LockManager",
+    "responsibilities": [
+      "Provides a subprocess that acquires and optionally releases a file-based lock",
+      "Supports test modes: acquire-release, acquire-hold, acquire-release-rewrite",
+      "Emits structured JSON status messages to stdout for test assertions",
+      "Handles signal-based cleanup and timed release"
+    ],
+    "outOfScope": [
+      "Not a production lock service",
+      "Does not implement lock conflict resolution or retry logic",
+      "Not part of the user-facing CLI or core pipeline"
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This lock-worker script is a minimal subprocess used by integration and unit tests to validate the LockManager's ability to acquire and release a file-based lock. It simulates both successful acquisition and scenarios where a lock is held for a duration, enabling concurrency tests without external dependencies.",
+        "context_and_audience": "Target audience: developers contributing to ArchSpine, especially those writing tests for the lock infrastructure. It is used in test suites that require concurrent lock operations to verify correctness and race-condition safety.",
+        "key_takeaways": [
+          "The script accepts command-line arguments for root directory, mode, and hold duration.",
+          "Modes: 'acquire-release' (default) acquires then immediately releases; 'acquire-hold' holds for a configurable duration before releasing; 'acquire-release-rewrite' acquires and holds indefinitely until signal.",
+          "Output is JSON on stdout (e.g., {\"status\": \"acquired\", \"pid\": ...}) for easy parsing by test runners.",
+          "Signal handlers ensure cleanup on SIGINT/SIGTERM."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:06:48.427Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,171 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/infra",
+  "role": "Provides the foundational infrastructure layer for the ArchSpine mirror system, encompassing configuration, LLM interaction, database management, prompt building, security, file I/O, and integrity protection.",
+  "responsibility": "The src/infra directory aggregates all low-level support modules that power the ArchSpine system. It delivers centralized configuration management with type-safe access, a unified LLM client abstraction with provider factory and retry logic, a persistent SQLite database for file tracking and symbol indexing, a prompt-building framework for structured AI agent interactions, an MCP server for external tool integration, secure credential storage, manifest and output management, file system integrity guards, and utility functions for runtime I/O and UI folding. Together, these components form the reusable backbone that higher layers depend on, ensuring separation of concerns and stable interfaces across the entire system.",
+  "children": [
+    {
+      "filePath": "src/infra/__mocks__",
+      "role": "This directory provides a mock LLM client for use in testing and development environments.",
+      "fileKind": "folder"
+    },
+    {
+      "filePath": "src/infra/auth.ts",
+      "role": "Infrastructure-level authentication stub providing placeholder login, logout, and a singleton AuthService class for early development and testing.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/config",
+      "role": "Infrastructure configuration layer providing centralized settings management, default factories, environment overrides, and type-safe access to the ArchSpine system configuration.",
+      "fileKind": "folder"
+    },
+    {
+      "filePath": "src/infra/config-validation.ts",
+      "role": "Infra facade module providing a stable, versioned entry point for core configuration schema resolution and validation functions.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/config.ts",
+      "role": "Barrel index file that aggregates and re-exports the public API of the infra/config module, providing a single import entry point for the Config facade and all configuration type definitions.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/credentials",
+      "role": "Secure credential storage abstraction and management for ArchSpine.",
+      "fileKind": "folder"
+    },
+    {
+      "filePath": "src/infra/db",
+      "role": "This directory contains the core SQLite database infrastructure layer for the ArchSpine system, providing database initialization, schema management, batch operations, error handling, and WAL recovery.",
+      "fileKind": "folder"
+    },
+    {
+      "filePath": "src/infra/db.ts",
+      "role": "Runtime database facade / data access aggregator providing a unified interface over file tracking, symbol indexing, usage logging, violation recording, drift history, and batch operations for the ArchSpine governance engine.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/execution-checkpoint.ts",
+      "role": "Infrastructure module providing checkpoint persistence and query logic for pipeline execution states (sync, check) to enable resumability.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/index-reader.ts",
+      "role": "Infrastructure facade for reading, parsing, and schema-validating index document JSON snapshots from the filesystem.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/llm",
+      "role": "Defines the core abstractions and runtime infrastructure for interacting with Large Language Models (LLMs) in the ArchSpine system, including type contracts, provider factory, global configuration management, retry logic, and runtime resolution.",
+      "fileKind": "folder"
+    },
+    {
+      "filePath": "src/infra/llm.ts",
+      "role": "Public facade that re-exports stable LLM runtime contracts and configuration resolution functions from lower-level infra modules, intended as the single import point for higher layers.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/manifest",
+      "role": "Core manifest management directory for ArchSpine, handling file tracking, integrity, I/O, state persistence, and type definitions.",
+      "fileKind": "folder"
+    },
+    {
+      "filePath": "src/infra/manifest.ts",
+      "role": "Infrastructure barrel module re-exporting the public API of the manifest subsystem.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/mcp",
+      "role": "This directory contains the MCP (Model Context Protocol) server implementation, tool definitions, and context management layer that expose ArchSpine's core capabilities to external AI agents and IDE clients.",
+      "fileKind": "folder"
+    },
+    {
+      "filePath": "src/infra/output.ts",
+      "role": "Infrastructure facade for persisting view data as JSON files to the local `.spine` directory, providing atomic file writes and directory structure management.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/prompt",
+      "role": "This directory contains the prompt-building infrastructure for the ArchSpine mirror system, providing factory functions and a fluent builder to construct structured LLM prompts for summarizing and validating various artifact types.",
+      "fileKind": "folder"
+    },
+    {
+      "filePath": "src/infra/prompt-context",
+      "role": "Infrastructure layer for constructing and managing source prompt artifacts used in LLM prompts within the ArchSpine mirror system.",
+      "fileKind": "folder"
+    },
+    {
+      "filePath": "src/infra/prompt-context.ts",
+      "role": "Public facade module that re-exports prompt-context policy constants and diagnostic functions, providing a stable import boundary for consumers and hiding internal submodule structure.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/prompt-policy.ts",
+      "role": "Infrastructure facade module for prompt policy, validation, and parsing utilities. Provides a stable import surface for constants, parsers, and policy resolvers used in prompt validation tasks.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/prompt-rendering.ts",
+      "role": "Public facade module for prompt generation and builder composition. It re-exports prompt assembly functions and the PromptBuilder class from internal submodules to provide a stable entrypoint for downstream consumers within the infrastructure layer.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/prompt.ts",
+      "role": "Prompt generation public facade – re-exports high-level prompt constructors for atlas documents, configs, folders, projects, sources, and markdown prompts, shielding consumers from internal prompt module restructuring.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/renderer.ts",
+      "role": "Documentation rendering utility for the ArchSpine view layer. Provides a static class and helper functions to produce formatted Markdown or text documentation from structured data (lists, sections, layout types).",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/repair-policy.ts",
+      "role": "Repair policy decision engine for the Spine gate output mutation check. Determines whether to perform targeted repair, prompt a full rebuild, or require a full rebuild.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/repository-artifacts.ts",
+      "role": "Infrastructure utility for reading and validating marker-delimited managed blocks in source files and for detecting snapshot output files in the .spine directory. Provides low-level file I/O and git-based file listing capabilities for the writer boundary layer.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/rules-loader.ts",
+      "role": "Infrastructure rule loader that reads and parses rule documents from the filesystem into typed SpineRuleDocument objects.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/runtime-io.ts",
+      "role": "Infrastructure layer defining the Runtime I/O contract (interface) and a default console-based implementation for logging and user confirmation.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/secrets.ts",
+      "role": "Project-scoped credentials management facade providing secure, delegated access to credential storage and retrieval.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/spine-gate.ts",
+      "role": "Protected output integrity guard for the ArchSpine system's generated artifacts. Detects unauthorized mutations to .spine/index and .spine/view directories by comparing current file hashes against a stored baseline snapshot.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/ui.ts",
+      "role": "Infrastructure utility providing a foldable output wrapper for CLI console logs, enabling collapsible sections in interactive terminals.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/writer-boundary.ts",
+      "role": "Infrastructure module that enforces write-access protection for critical Spine metadata directories and files, providing a safe gate for file system mutations.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:13:35.971Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

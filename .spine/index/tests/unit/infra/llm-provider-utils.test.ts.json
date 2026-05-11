@@ -1,0 +1,148 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/infra/llm-provider-utils.test.ts",
+    "contentHash": "63094da80d81678a3c06cb018aba605e053cfb9d41b15b4df27b0f9bdb8097c0",
+    "skeletonHash": "063770f75b731222ada4551b82f56b422ac3c3362fb3748b903439f7734a3f92",
+    "semanticHash": "77a4040cf3ed6f792c8068f58bed615ab3aabd91ebad53f938c75c9b1204cd23",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/infra"
+  },
+  "semantic": {
+    "role": "Vitest test suite exercising LLM provider utility functions (parseMarkdownBlocks, parseStructuredResponse, and related helpers).",
+    "responsibilities": [
+      "Verify that `parseMarkdownBlocks` correctly splits locale-tagged markdown into language-keyed blocks.",
+      "Verify that `parseStructuredResponse` correctly extracts JSON and markdown from combined JSON/Markdown responses.",
+      "Ensure edge cases like code fences around JSON in structured responses are handled properly.",
+      "Serve as regression guard for the parser functions used in prompt rendering and agent response processing."
+    ],
+    "outOfScope": [
+      "Integration tests with real LLM providers.",
+      "Testing of `buildSupportingContext` or `mergeUsage` beyond what is implicitly exercised (not directly tested in the visible snippets).",
+      "Performance or load testing.",
+      "Non-test files or production code."
+    ],
+    "invariants": [
+      "Test file must end with `.test.ts` or `.spec.ts` (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide unit-level coverage for core parsing utilities used across the prompt and agent interaction pipeline.",
+      "recentChangeIntent": "No explicit change intent captured; test file appears stable."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite exercising LLM provider utility functions (parseMarkdownBlocks, parseStructuredResponse, and related helpers).",
+        "responsibilities": [
+          "Verify that `parseMarkdownBlocks` correctly splits locale-tagged markdown into language-keyed blocks.",
+          "Verify that `parseStructuredResponse` correctly extracts JSON and markdown from combined JSON/Markdown responses.",
+          "Ensure edge cases like code fences around JSON in structured responses are handled properly.",
+          "Serve as regression guard for the parser functions used in prompt rendering and agent response processing."
+        ],
+        "outOfScope": [
+          "Integration tests with real LLM providers.",
+          "Testing of `buildSupportingContext` or `mergeUsage` beyond what is implicitly exercised (not directly tested in the visible snippets).",
+          "Performance or load testing.",
+          "Non-test files or production code."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/llm/providers/utils.js'",
+        "symbols": [
+          "buildSupportingContext",
+          "mergeUsage",
+          "parseMarkdownBlocks",
+          "parseStructuredResponse"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/infra/llm/providers/utils.js",
+        "relation": "import",
+        "symbols": [
+          "buildSupportingContext",
+          "mergeUsage",
+          "parseMarkdownBlocks",
+          "parseStructuredResponse"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/infra/llm-provider-utils.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/utils.ts/parseMarkdownBlocks#",
+        "targetPath": "src/infra/llm/providers/utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm-provider-utils.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/utils.ts/parseStructuredResponse#",
+        "targetPath": "src/infra/llm/providers/utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm-provider-utils.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/utils.ts/buildSupportingContext#",
+        "targetPath": "src/infra/llm/providers/utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm-provider-utils.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/utils.ts/mergeUsage#",
+        "targetPath": "src/infra/llm/providers/utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:09:50.442Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

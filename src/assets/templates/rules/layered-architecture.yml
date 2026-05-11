@@ -1,0 +1,40 @@
+# 🏛️ 分层架构约束 (Layered Architecture Constraints)
+#
+# 该规则用于维护当前仓库的 CLI -> services -> core/tasks/engines -> infra 分层模型，
+# 确保入口、编排、流水线、引擎与基础设施边界清晰。
+
+- rule: CLI Entrypoint Separation
+  scope: src/cli/**
+  constraint: CLI modules should stay as entrypoints and command adapters, and must not absorb pipeline or persistence logic that belongs in services, core, engines, or infra.
+  severity: Error
+  reason: Keep command routing thin so runtime behavior remains reusable and testable outside the CLI.
+
+- rule: Service Runtime Boundary
+  scope: src/services/**
+  constraint: Services may orchestrate core/tasks/engines/infra modules, but view-specific service modules should live under `src/services/view/**` instead of `src/infra/**`.
+  severity: Warning
+  reason: Runtime orchestration belongs in services, while the structure should still make service-owned subsystems obvious to contributors.
+
+- rule: Core Pipeline Isolation
+  scope: src/core/**
+  constraint: Core modules should define pipeline contracts, shared state, and cross-stage policies without depending on CLI entry code.
+  severity: Error
+  reason: The pipeline core should remain stable and reusable regardless of how commands are invoked.
+
+- rule: Task Stage Boundary
+  scope: src/tasks/**
+  constraint: Task modules should implement stage-local work on top of core contracts and engines, and should not take over CLI command parsing or unrelated service orchestration.
+  severity: Warning
+  reason: Keep pipeline stages focused so the execution graph stays understandable and incrementally maintainable.
+
+- rule: Engine Independence
+  scope: src/engines/**
+  constraint: Engine modules should provide reusable analysis and transformation logic without importing CLI entrypoints, and should stay decoupled from service-level orchestration where practical.
+  severity: Error
+  reason: Engines form the reusable analytical backbone of the project and should not depend on presentation or orchestration concerns.
+
+- rule: Infra Facade Imports
+  scope: src/infra/**
+  constraint: Infra modules should expose stable low-level capabilities and facades; callers should prefer public infra facades over reaching into deep private implementation paths when a facade exists.
+  severity: Warning
+  reason: Stable import surfaces make infrastructure refactors safer and reduce churn for contributors.

@@ -1,0 +1,222 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integration/system/integrity.test.ts",
+    "contentHash": "e69b4f11eb9c4649240ceb952421e124cb4670d1eac49807a3a7e9baaa828b21",
+    "skeletonHash": "25f4ed454c89b7259658375beaa84d2c2a774baaf62088e4c5d7ae940ade3d3d",
+    "semanticHash": "75e985eb8243fca38f566a8e30e2c31aa82a8ad34c28d924f5fbd47f956be988",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/integration/system"
+  },
+  "semantic": {
+    "role": "Vitest test suite covering Manifest persistence and SpineDB batch commit integration.",
+    "responsibilities": [
+      "Verify that Manifest can serialize and deserialize spine units to the database.",
+      "Validate that SpineDB.commitBatch correctly persists file metadata and spine units.",
+      "Test the interaction between Manifest facade and SpineDB's batch commit flow.",
+      "Ensure error handling when invalid or duplicate data is committed to the database."
+    ],
+    "outOfScope": [
+      "Production API or application logic outside of testing Manifest and SpineDB.",
+      "CI/CD pipeline scripts and deployment tooling.",
+      "User-facing views or CLI commands.",
+      "Non-test code paths not exercised by this suite."
+    ],
+    "invariants": [
+      "All test files must end with .test.ts or .spec.ts (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide comprehensive unit/integration tests for the manifest and database infrastructure layers to ensure data integrity and error handling.",
+      "recentChangeIntent": "No change intent derived from git log beyond minor commit '2'."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite covering Manifest persistence and SpineDB batch commit integration.",
+        "responsibilities": [
+          "Verify that Manifest can serialize and deserialize spine units to the database.",
+          "Validate that SpineDB.commitBatch correctly persists file metadata and spine units.",
+          "Test the interaction between Manifest facade and SpineDB's batch commit flow.",
+          "Ensure error handling when invalid or duplicate data is committed to the database."
+        ],
+        "outOfScope": [
+          "Production API or application logic outside of testing Manifest and SpineDB.",
+          "CI/CD pipeline scripts and deployment tooling.",
+          "User-facing views or CLI commands.",
+          "Non-test code paths not exercised by this suite."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/db.js'",
+        "symbols": [
+          "SpineDB"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/db.js",
+        "relation": "import",
+        "symbols": [
+          "SpineDB"
+        ]
+      },
+      {
+        "targetPath": "../../../src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SpineUnit"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/integration/system/integrity.test.ts/_file_#",
+        "targetSymbol": "src/infra/db.ts/SpineDB#",
+        "targetPath": "src/infra/db.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/integrity.test.ts/_file_#",
+        "targetSymbol": "src/infra/db/batch.ts/commitBatch#",
+        "targetPath": "src/infra/db/batch.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/integrity.test.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getTrackedFiles#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/integrity.test.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getFileDocs#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/integrity.test.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/updateFileStatusWithDocs#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:08:04.036Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

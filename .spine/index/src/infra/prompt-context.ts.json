@@ -1,0 +1,242 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-context.ts",
+    "contentHash": "65b8cc4e105c571492e514b64bad66d0416e505cd66f5be4811badd520e7ca60",
+    "skeletonHash": "98aeea1eafe53993eba02e2a704d67eaa6d8676e804c1421cc43be89f4e40d6e",
+    "semanticHash": "a93d4e612b9015af6eb24ff859857410a6e7bee23d50b16001b5445e294f155b",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Public facade module that re-exports prompt-context policy constants and diagnostic functions, providing a stable import boundary for consumers and hiding internal submodule structure.",
+    "responsibilities": [
+      "Re-export STRICT_VALIDATE_BUDGET_PROFILES, VALIDATE_POLICIES, PROMPT_BUDGET_PROFILES constants from ./prompt-policy.js.",
+      "Re-export buildSourcePromptArtifacts from ./prompt-context/artifacts.js.",
+      "Re-export calculateSourcePromptBudgets from ./prompt-context/budgets.js.",
+      "Re-export parseRelevanceDiagnosticsMode, parseValidatePolicy, defaultValidatePolicyForTask, resolveValidatePolicy from internal prompt-context modules.",
+      "Enforce that all external consumers import prompt-context functionality exclusively through this file."
+    ],
+    "outOfScope": [
+      "Implementation details of the re-exported functions and constants.",
+      "Direct imports from src/infra/prompt-context/* submodules by other consumers."
+    ],
+    "invariants": [
+      "This file is the sole public entry point for prompt-context policy and diagnostics functionality.",
+      "External modules must not import directly from src/infra/prompt-context/*; they must use this facade.",
+      "The facade itself contains no implementation logic – it only re-exports symbols from internal modules."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Decouple prompt-context consumers from internal module structure by providing a stable re-export facade.",
+      "recentChangeIntent": "chore: apply release gate fixes and sync accumulated source changes – no semantic change to this file's contract."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "STRICT_VALIDATE_BUDGET_PROFILES",
+        "description": "Constant that defines strict budget profile validation mode. Used by prompt policy evaluation."
+      },
+      {
+        "symbolName": "VALIDATE_POLICIES",
+        "description": "Constant that enables validation policies for prompt budgets. Used by prompt context building."
+      },
+      {
+        "symbolName": "PROMPT_BUDGET_PROFILES",
+        "description": "Constant that holds the set of available prompt budget profiles. Used to limit source prompt size."
+      },
+      {
+        "symbolName": "buildSourcePromptArtifacts",
+        "description": "Constructs source prompt artifacts from repository index data. Called during prompt assembly."
+      },
+      {
+        "symbolName": "calculateSourcePromptBudgets",
+        "description": "Calculates budget allocations for source prompts based on profiles. Called by prompt builder."
+      },
+      {
+        "symbolName": "parseRelevanceDiagnosticsMode",
+        "description": "Parses a string into a relevance diagnostics mode enum. Used by context relevance engine."
+      },
+      {
+        "symbolName": "parseValidatePolicy",
+        "description": "Parses a policy string into a validate policy value. Used for policy resolution."
+      },
+      {
+        "symbolName": "defaultValidatePolicyForTask",
+        "description": "Returns the default validate policy for a given task type. Used when no explicit policy is set."
+      },
+      {
+        "symbolName": "resolveValidatePolicy",
+        "description": "Resolves the effective validate policy from task configuration and defaults. Called by the validation pipeline."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Public facade module that re-exports prompt-context policy constants and diagnostic functions, providing a stable import boundary for consumers and hiding internal submodule structure.",
+        "responsibilities": [
+          "Re-export STRICT_VALIDATE_BUDGET_PROFILES, VALIDATE_POLICIES, PROMPT_BUDGET_PROFILES constants from ./prompt-policy.js.",
+          "Re-export buildSourcePromptArtifacts from ./prompt-context/artifacts.js.",
+          "Re-export calculateSourcePromptBudgets from ./prompt-context/budgets.js.",
+          "Re-export parseRelevanceDiagnosticsMode, parseValidatePolicy, defaultValidatePolicyForTask, resolveValidatePolicy from internal prompt-context modules.",
+          "Enforce that all external consumers import prompt-context functionality exclusively through this file."
+        ],
+        "outOfScope": [
+          "Implementation details of the re-exported functions and constants.",
+          "Direct imports from src/infra/prompt-context/* submodules by other consumers."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "STRICT_VALIDATE_BUDGET_PROFILES",
+        "kind": "unknown",
+        "signature": "export { STRICT_VALIDATE_BUDGET_PROFILES }"
+      },
+      {
+        "name": "VALIDATE_POLICIES",
+        "kind": "unknown",
+        "signature": "export { VALIDATE_POLICIES }"
+      },
+      {
+        "name": "PROMPT_BUDGET_PROFILES",
+        "kind": "unknown",
+        "signature": "export { PROMPT_BUDGET_PROFILES }"
+      },
+      {
+        "name": "buildSourcePromptArtifacts",
+        "kind": "unknown",
+        "signature": "export { buildSourcePromptArtifacts }"
+      },
+      {
+        "name": "calculateSourcePromptBudgets",
+        "kind": "unknown",
+        "signature": "export { calculateSourcePromptBudgets }"
+      },
+      {
+        "name": "parseRelevanceDiagnosticsMode",
+        "kind": "unknown",
+        "signature": "export { parseRelevanceDiagnosticsMode }"
+      },
+      {
+        "name": "parseValidatePolicy",
+        "kind": "unknown",
+        "signature": "export { parseValidatePolicy }"
+      },
+      {
+        "name": "defaultValidatePolicyForTask",
+        "kind": "unknown",
+        "signature": "export { defaultValidatePolicyForTask }"
+      },
+      {
+        "name": "resolveValidatePolicy",
+        "kind": "unknown",
+        "signature": "export { resolveValidatePolicy }"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "STRICT_VALIDATE_BUDGET_PROFILES",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context.ts#"
+      },
+      {
+        "name": "VALIDATE_POLICIES",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context.ts#"
+      },
+      {
+        "name": "PROMPT_BUDGET_PROFILES",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context.ts#"
+      },
+      {
+        "name": "buildSourcePromptArtifacts",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context.ts#"
+      },
+      {
+        "name": "calculateSourcePromptBudgets",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context.ts#"
+      },
+      {
+        "name": "parseRelevanceDiagnosticsMode",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context.ts#"
+      },
+      {
+        "name": "parseValidatePolicy",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context.ts#"
+      },
+      {
+        "name": "defaultValidatePolicyForTask",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context.ts#"
+      },
+      {
+        "name": "resolveValidatePolicy",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 9,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./prompt-policy.js",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "./prompt-context/artifacts.js",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "./prompt-context/budgets.js",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:00:11.673Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

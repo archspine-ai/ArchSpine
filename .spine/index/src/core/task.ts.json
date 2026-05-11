@@ -1,0 +1,219 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/core/task.ts",
+    "contentHash": "ae952a72ae59a8d8255c0e9b70b326167a2d94eb0714585af718704f47c70fd4",
+    "skeletonHash": "8794375b68198df5a588d1d54d5c78980109120173bb5a365eeaa46db5b8a37e",
+    "semanticHash": "833ce3fde0b342d64fd9214a2901c346d90f6d070ff124adc57b11c89d6d2d7b",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/core"
+  },
+  "semantic": {
+    "role": "Core abstract class defining the contract for all pipeline tasks in ArchSpine. Provides the base structure for task execution, including context management (TaskContext), and dependency injection of core engines (Scanner, Manifest, Aggregator, OutputManager, RuleEngine, ContextEngine, ASTExtractor).",
+    "responsibilities": [
+      "Define the abstract SpineTask base class that all pipeline tasks must extend, establishing a uniform execution lifecycle.",
+      "Provide the TaskContext interface for sharing state and artifact metadata across tasks during a pipeline run.",
+      "Inject core engine dependencies (Scanner, Manifest, Aggregator, OutputManager, RuleEngine, ContextEngine, ASTExtractor) into task implementations.",
+      "Enforce type-safe input/output generics (<I, O>) for task contracts."
+    ],
+    "outOfScope": [
+      "Does not implement any specific pipeline task logic (e.g., scanning, aggregation, validation).",
+      "Does not handle CLI command parsing or user interaction.",
+      "Does not manage persistent storage directly; delegates to injected services.",
+      "Does not define pipeline orchestration or scheduling logic."
+    ],
+    "invariants": [
+      "All pipeline tasks must extend SpineTask and implement its abstract execute method.",
+      "TaskContext must be consistently populated across all tasks in a single pipeline run.",
+      "Core modules (this file) must not depend on CLI entry code (src/cli/)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish a stable, reusable base class for all pipeline tasks to enforce separation of concerns, dependency injection, and a consistent lifecycle.",
+      "recentChangeIntent": "Chore: apply release gate fixes and sync accumulated source changes (no semantic change to the task contract detected)."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "SpineTask",
+        "description": "Abstract base class for all pipeline tasks. Defines the execution contract with generic input/output types and receives core engine dependencies. All concrete pipeline tasks (e.g., scan, aggregate, validate) extend this class."
+      },
+      {
+        "symbolName": "TaskContext",
+        "description": "Interface providing shared state and artifacts coordination between tasks during a pipeline run. Used by SpineTask subclasses and the pipeline orchestrator."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core abstract class defining the contract for all pipeline tasks in ArchSpine. Provides the base structure for task execution, including context management (TaskContext), and dependency injection of core engines (Scanner, Manifest, Aggregator, OutputManager, RuleEngine, ContextEngine, ASTExtractor).",
+        "responsibilities": [
+          "Define the abstract SpineTask base class that all pipeline tasks must extend, establishing a uniform execution lifecycle.",
+          "Provide the TaskContext interface for sharing state and artifact metadata across tasks during a pipeline run.",
+          "Inject core engine dependencies (Scanner, Manifest, Aggregator, OutputManager, RuleEngine, ContextEngine, ASTExtractor) into task implementations.",
+          "Enforce type-safe input/output generics (<I, O>) for task contracts."
+        ],
+        "outOfScope": [
+          "Does not implement any specific pipeline task logic (e.g., scanning, aggregation, validation).",
+          "Does not handle CLI command parsing or user interaction.",
+          "Does not manage persistent storage directly; delegates to injected services.",
+          "Does not define pipeline orchestration or scheduling logic."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../engines/scanner.js'",
+        "symbols": [
+          "Scanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../engines/aggregator.js'",
+        "symbols": [
+          "Aggregator"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/output.js'",
+        "symbols": [
+          "OutputManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../engines/rules.js'",
+        "symbols": [
+          "RuleEngine"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../engines/context.js'",
+        "symbols": [
+          "ContextEngine"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/extractor.js'",
+        "symbols": [
+          "ASTExtractor"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "TaskContext",
+        "kind": "interface",
+        "signature": "interface TaskContext"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "TaskContext",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../engines/scanner.js",
+        "relation": "import",
+        "symbols": [
+          "Scanner"
+        ]
+      },
+      {
+        "targetPath": "../infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "../engines/aggregator.js",
+        "relation": "import",
+        "symbols": [
+          "Aggregator"
+        ]
+      },
+      {
+        "targetPath": "../infra/output.js",
+        "relation": "import",
+        "symbols": [
+          "OutputManager"
+        ]
+      },
+      {
+        "targetPath": "../engines/rules.js",
+        "relation": "import",
+        "symbols": [
+          "RuleEngine"
+        ]
+      },
+      {
+        "targetPath": "../engines/context.js",
+        "relation": "import",
+        "symbols": [
+          "ContextEngine"
+        ]
+      },
+      {
+        "targetPath": "../ast/extractor.js",
+        "relation": "import",
+        "symbols": [
+          "ASTExtractor"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/tasks/state-commit.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:55:18.115Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 7,
+    "isHub": true,
+    "hubPercentile": 88,
+    "inCycle": true,
+    "cycleId": "src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

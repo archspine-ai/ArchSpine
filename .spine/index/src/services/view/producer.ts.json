@@ -1,0 +1,182 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/producer.ts",
+    "contentHash": "31a25bded78a863773f4dbab25c47c6fb19b085b417bc3f6bb89f925b79a2025",
+    "skeletonHash": "18a188405857867699c0ef70adc5a62b819402d06f72881b89e488053007eaa7",
+    "semanticHash": "c5a11f3f11387bbf4aeb17b9d1a05a872302f5c7383e40c1adde5598a37255fa",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "View producer interface definitions that establish the abstract contract between view producers and the output/persistence layer in the ArchSpine mirror system.",
+    "responsibilities": [
+      "Define the ViewOutputManager abstraction for persisting view artifacts decoupled from concrete implementation.",
+      "Define the ViewContext type carrying runtime context (RuntimeIO, LLMClient, ViewIndexLoader) to view producers.",
+      "Define the ViewArtifact structure representing a single produced view artifact.",
+      "Define the ViewProducer interface that all view producers must implement, ensuring a uniform contract for producing views.",
+      "Re-export ViewType from the view types module for consumer convenience."
+    ],
+    "outOfScope": [
+      "Concrete rendering of views (e.g., markdown, SVG).",
+      "Registration or discovery of view producers.",
+      "Execution or orchestration of view production.",
+      "Persistence logic (handled by implementing ViewOutputManager)."
+    ],
+    "invariants": [
+      "View producers must satisfy the ViewProducer interface, which includes a `produce` method returning ViewArtifact[].",
+      "ViewOutputManager.saveView must be called by producers to persist each artifact.",
+      "All view producer modules must reside under src/services/view/ to respect the service-runtime-boundary rule."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Extract and formalize the view producer contract into shared interfaces to decouple producers from output infrastructure and enable uniform view production.",
+      "recentChangeIntent": "No recent git intent directly matches this file; the refactor mention likely did not alter these interface definitions."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ViewType",
+        "description": "Re-exports the ViewType union from the view types module, allowing consumers to reference available view types without additional imports."
+      },
+      {
+        "symbolName": "ViewOutputManager",
+        "description": "Interface defining the abstract persistence surface for view artifacts, decoupling producers from the concrete OutputManager implementation."
+      },
+      {
+        "symbolName": "ViewContext",
+        "description": "Interface providing runtime context (RuntimeIO, LLMClient, ViewIndexLoader) to view producers during the produce execution."
+      },
+      {
+        "symbolName": "ViewArtifact",
+        "description": "Interface representing a single produced artifact, containing metadata such as type, content, and file name for a view."
+      },
+      {
+        "symbolName": "ViewProducer",
+        "description": "Interface that all view producers must implement; requires a `produce` method that takes ViewContext and returns an array of ViewArtifact."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "View producer interface definitions that establish the abstract contract between view producers and the output/persistence layer in the ArchSpine mirror system.",
+        "responsibilities": [
+          "Define the ViewOutputManager abstraction for persisting view artifacts decoupled from concrete implementation.",
+          "Define the ViewContext type carrying runtime context (RuntimeIO, LLMClient, ViewIndexLoader) to view producers.",
+          "Define the ViewArtifact structure representing a single produced view artifact.",
+          "Define the ViewProducer interface that all view producers must implement, ensuring a uniform contract for producing views.",
+          "Re-export ViewType from the view types module for consumer convenience."
+        ],
+        "outOfScope": [
+          "Concrete rendering of views (e.g., markdown, SVG).",
+          "Registration or discovery of view producers.",
+          "Execution or orchestration of view production.",
+          "Persistence logic (handled by implementing ViewOutputManager)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "ViewOutputManager",
+        "kind": "interface",
+        "signature": "interface ViewOutputManager"
+      },
+      {
+        "name": "ViewContext",
+        "kind": "interface",
+        "signature": "interface ViewContext"
+      },
+      {
+        "name": "ViewArtifact",
+        "kind": "interface",
+        "signature": "interface ViewArtifact"
+      },
+      {
+        "name": "ViewProducer",
+        "kind": "interface",
+        "signature": "interface ViewProducer"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ViewOutputManager",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/view/producer.ts#"
+      },
+      {
+        "name": "ViewContext",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/view/producer.ts#"
+      },
+      {
+        "name": "ViewArtifact",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/view/producer.ts#"
+      },
+      {
+        "name": "ViewProducer",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/view/producer.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 4,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "../../infra/llm.js",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "../../types/view.js",
+        "relation": "import",
+        "symbols": [
+          "ViewType"
+        ]
+      },
+      {
+        "targetPath": "./index-loader.js",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:03:39.622Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

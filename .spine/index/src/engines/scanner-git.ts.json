@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/scanner-git.ts",
+    "contentHash": "b268f44939fb5af3dc6825c30d4a420f514a9a633a1b32bdd31315b2f85df904",
+    "skeletonHash": "8b442d60ba13a8aece61c1549bd7a1a355f5cb45a8e77772f5eec4b83827671f",
+    "semanticHash": "d26404f6121d99755747a0b41d3d998220310caa40ce7eb9544788149a56ab12",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Git command execution abstraction layer for the scanner engine, providing a testable interface and default synchronous implementation for running git subprocesses.",
+    "responsibilities": [
+      "Define the ScannerGitClient interface that abstracts the execution of git commands.",
+      "Provide defaultScannerGitClient as a concrete implementation that invokes 'git' via child_process.execFileSync.",
+      "Enable testability by allowing mock or custom git command runners to replace the default."
+    ],
+    "outOfScope": [
+      "Parsing or interpreting git output.",
+      "Scanning logic or file traversal.",
+      "Service orchestration or CLI command handling."
+    ],
+    "invariants": [
+      "The module must remain independent of CLI entrypoints and service-level orchestration.",
+      "The interface method 'run' must always return the stdout as a string.",
+      "No mutable state is held in this module."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a minimal, replaceable git execution gateway for the scanner engine to keep git operations decoupled and testable.",
+      "recentChangeIntent": "Initial implementation as part of ArchSpine v1.0.0 architectural governance layer — establishes the git command boundary for the scanner."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ScannerGitClient",
+        "description": "Interface defining a 'run' method to execute git commands with given arguments and options, returning stdout. Consumed by scanner engine and test mocks."
+      },
+      {
+        "symbolName": "defaultScannerGitClient",
+        "description": "Default implementation of ScannerGitClient that runs 'git' synchronously using child_process.execFileSync. Used directly by scanner engine components."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Git command execution abstraction layer for the scanner engine, providing a testable interface and default synchronous implementation for running git subprocesses.",
+        "responsibilities": [
+          "Define the ScannerGitClient interface that abstracts the execution of git commands.",
+          "Provide defaultScannerGitClient as a concrete implementation that invokes 'git' via child_process.execFileSync.",
+          "Enable testability by allowing mock or custom git command runners to replace the default."
+        ],
+        "outOfScope": [
+          "Parsing or interpreting git output.",
+          "Scanning logic or file traversal.",
+          "Service orchestration or CLI command handling."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "* as childProcess"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "* as childProcess"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "ScannerGitClient",
+        "kind": "interface",
+        "signature": "interface ScannerGitClient"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ScannerGitClient",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/scanner-git.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "childProcess"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:56:02.572Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 71,
+    "inCycle": true,
+    "cycleId": "src/core → src/types → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": ".spine/rules/layered-architecture.yml",
+    "contentHash": "a710cbb2beaebf0a60070bb209fc5bc00f9a246a776cf003712a1418300b6581",
+    "semanticHash": "209784add474a35d68e643d9bfb34755507cf9d4cf842f8c15efa1089e099caa",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": ".spine/rules"
+  },
+  "semantic": {
+    "role": "Architectural governance rules that define and enforce the layered architecture constraints for the ArchSpine repository.",
+    "responsibilities": [
+      "Defining the separation between CLI, services, core/tasks/engines, and infra layers.",
+      "Specifying error and warning severity rules to prevent layering violations.",
+      "Maintaining the documented boundaries for module imports and responsibilities."
+    ],
+    "outOfScope": [
+      "Detailed implementation of specific modules or services.",
+      "External configuration or deployment concerns.",
+      "Non-layering code style or naming conventions."
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This document establishes the layered architecture constraints for the ArchSpine project, ensuring clear boundaries between entrypoints, orchestration, pipeline, engine, and infrastructure modules.",
+        "context_and_audience": "Intended for all developers and maintainers of the ArchSpine repository, especially those adding new features or refactoring existing code. It serves as a reference for code review and architectural compliance.",
+        "key_takeaways": [
+          "CLI modules must be thin entrypoints without pipeline or persistence logic.",
+          "Services orchestrate core/tasks/engines/infra, with view-specific services in src/services/view/.",
+          "Core modules define pipeline contracts without depending on CLI.",
+          "Task modules implement stage-local work without command parsing.",
+          "Engine modules provide reusable analysis without CLI or service dependencies.",
+          "Infra modules expose stable facades; prefer facades over deep internal imports."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:50:06.543Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 18,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

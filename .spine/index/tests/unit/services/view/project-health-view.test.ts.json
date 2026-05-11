@@ -1,0 +1,224 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/services/view/project-health-view.test.ts",
+    "contentHash": "b93b6f65e21dddef97f2791ee8b96047940d804784e248c73cb000458d3e1bd4",
+    "skeletonHash": "6d9b492b680082e361d9ee7db66e85875aa781b2d596f6b2d3d14f6a40679ebb",
+    "semanticHash": "07c500534f7017335d9cf8556d3b008a7079e7ed4b6b94005a4f1f99f8b55e7d",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/services/view"
+  },
+  "semantic": {
+    "role": "Test suite for the projectHealthProducer view producer.",
+    "responsibilities": [
+      "Verify that projectHealthProducer generates correct project-health data from a set of loaded units.",
+      "Ensure the produced output includes all required keys like 'totalUnits', 'documentedUnits', 'undocumentedUnits', 'langDistribution', 'schemaVersion', 'generatedAt'.",
+      "Validate that the producer correctly filters out health entries with zero documented units.",
+      "Confirm that the producer handles edge cases such as empty input arrays without throwing.",
+      "Clean up temporary directories after each test to avoid filesystem pollution."
+    ],
+    "outOfScope": [
+      "Production implementation of projectHealthProducer.",
+      "End-to-end integration testing with real data.",
+      "Performance or stress testing."
+    ],
+    "invariants": [
+      "Test files must be named with .test.ts or .spec.ts suffix (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide isolated, repeatable unit tests for the project health view producer to ensure data integrity and schema compliance.",
+      "recentChangeIntent": "Part of test suite updates aligning with schema version changes and documentation rebuilds (git message: 'refactor: remove legacy CLI aliases, rebuild docs, fix schema and tests')."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Test suite for the projectHealthProducer view producer.",
+        "responsibilities": [
+          "Verify that projectHealthProducer generates correct project-health data from a set of loaded units.",
+          "Ensure the produced output includes all required keys like 'totalUnits', 'documentedUnits', 'undocumentedUnits', 'langDistribution', 'schemaVersion', 'generatedAt'.",
+          "Validate that the producer correctly filters out health entries with zero documented units.",
+          "Confirm that the producer handles edge cases such as empty input arrays without throwing.",
+          "Clean up temporary directories after each test to avoid filesystem pollution."
+        ],
+        "outOfScope": [
+          "Production implementation of projectHealthProducer.",
+          "End-to-end integration testing with real data.",
+          "Performance or stress testing."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../../src/services/view/project-health-view.js'",
+        "symbols": [
+          "projectHealthProducer"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../../src/infra/output.js'",
+        "symbols": [
+          "OutputManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../../src/services/view/project-health-view.js",
+        "relation": "import",
+        "symbols": [
+          "projectHealthProducer"
+        ]
+      },
+      {
+        "targetPath": "../../../../src/infra/output.js",
+        "relation": "import",
+        "symbols": [
+          "OutputManager"
+        ]
+      },
+      {
+        "targetPath": "../../../../src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/services/view/project-health-view.test.ts/_file_#",
+        "targetSymbol": "src/infra/output.ts/OutputManager#",
+        "targetPath": "src/infra/output.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:10:50.524Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt/types.ts",
+    "contentHash": "f19dabf5a8daf22fb88ee6f2aca010e7b885fb697dccbd27c07bf3e24fdf3128",
+    "skeletonHash": "0ffc588603e862fba628e7bd01d65f9b68458872c8768985214e1e836d3aa53a",
+    "semanticHash": "dcad8a4aab8cf4140459c06de21a49e93614a8d0ed2a90281a0145ccabc01a11",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt"
+  },
+  "semantic": {
+    "role": "Type definitions for markdown prompt input and response mode within the prompt rendering infrastructure.",
+    "responsibilities": [
+      "Define the MarkdownPromptInput interface that specifies the data shape required to generate a markdown prompt for a file or project.",
+      "Define the PromptResponseMode type alias that controls whether prompt responses should be JSON-only or include both JSON and markdown."
+    ],
+    "outOfScope": [
+      "Prompt construction logic",
+      "Template rendering",
+      "Business rules for prompt generation"
+    ],
+    "invariants": [
+      "The MarkdownPromptInput.fileKind field must align with the FileKind type from the protocol module.",
+      "The PromptResponseMode type must be consistent with actual prompt generation behavior."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide stable type contracts for the markdown prompt rendering pipeline.",
+      "recentChangeIntent": "Initial creation of prompt type definitions as part of ArchSpine v1.0.0."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "MarkdownPromptInput",
+        "description": "Interface defining the required input for generating a markdown prompt for a source file or project. Consumed by prompt builders and renderers."
+      },
+      {
+        "symbolName": "PromptResponseMode",
+        "description": "Type alias that determines the format of prompt responses: either JSON-only or combined JSON and markdown."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Type definitions for markdown prompt input and response mode within the prompt rendering infrastructure.",
+        "responsibilities": [
+          "Define the MarkdownPromptInput interface that specifies the data shape required to generate a markdown prompt for a file or project.",
+          "Define the PromptResponseMode type alias that controls whether prompt responses should be JSON-only or include both JSON and markdown."
+        ],
+        "outOfScope": [
+          "Prompt construction logic",
+          "Template rendering",
+          "Business rules for prompt generation"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "MarkdownPromptInput",
+        "kind": "interface",
+        "signature": "interface MarkdownPromptInput"
+      },
+      {
+        "name": "PromptResponseMode",
+        "kind": "type",
+        "signature": "type PromptResponseMode"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "MarkdownPromptInput",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/prompt/types.ts#"
+      },
+      {
+        "name": "PromptResponseMode",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/prompt/types.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "FileKind"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/prompt-context/policy.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:01:32.393Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

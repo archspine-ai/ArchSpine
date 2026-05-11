@@ -1,0 +1,200 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/e2e/cli-real-llm.test.ts",
+    "contentHash": "39f8ef113ce0c85b787c88233b2fdf7b7380dfa2aec13737542bf7c112fe5aa8",
+    "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
+    "semanticHash": "e390d877114a964d5949d27b1d024c5748e0417d15b2b5046d067c25f50426b5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/e2e"
+  },
+  "semantic": {
+    "role": "End-to-end test suite for the ArchSpine CLI pipeline with a mock LLM provider.",
+    "responsibilities": [
+      "Sets up isolated temporary directories with initialized Git repositories for test isolation.",
+      "Invokes the built CLI binary via child_process to simulate user interactions.",
+      "Verifies that CLI commands (scan, sync, etc.) produce correct output and exit codes.",
+      "Ensures the full pipeline (scanning, analysis, indexing) behaves correctly under controlled, mock conditions."
+    ],
+    "outOfScope": [
+      "Unit-level testing of internal modules; this suite tests the integrated CLI binary end-to-end.",
+      "Testing with real LLM providers; LLM interactions are mocked or simulated."
+    ],
+    "invariants": [
+      "Test files in the repository must end with .test.ts or .spec.ts (architectural rule)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide deterministic, isolated E2E coverage of the CLI pipeline to catch regressions before release.",
+      "recentChangeIntent": "refactor: remove legacy CLI aliases, rebuild docs, fix schema and tests — this test file was likely updated to match CLI changes."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "End-to-end test suite for the ArchSpine CLI pipeline with a mock LLM provider.",
+        "responsibilities": [
+          "Sets up isolated temporary directories with initialized Git repositories for test isolation.",
+          "Invokes the built CLI binary via child_process to simulate user interactions.",
+          "Verifies that CLI commands (scan, sync, etc.) produce correct output and exit codes.",
+          "Ensures the full pipeline (scanning, analysis, indexing) behaves correctly under controlled, mock conditions."
+        ],
+        "outOfScope": [
+          "Unit-level testing of internal modules; this suite tests the integrated CLI binary end-to-end.",
+          "Testing with real LLM providers; LLM interactions are mocked or simulated."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ]
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:06:33.308Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

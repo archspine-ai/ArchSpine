@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/runtime-execution-profile.ts",
+    "contentHash": "28886cfdeffa5add7be87a20746190b4de86b00ee579dc3bd3e2d592e0967ecd",
+    "skeletonHash": "6f1f5499aecc19c9f8e2767cd5384e29a5280fbe5d7ccaf075b17728edf6ef27",
+    "semanticHash": "03bb91ce1bd513fb4dad9a4a1d5cf248a0c43a49194fb5ee1f6fdd7e0d11e4bf",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Service-level configuration resolver for execution profiles, mapping resolved LLM settings to a structured generation strategy profile.",
+    "responsibilities": [
+      "Define the `ResolvedExecutionProfile` interface that encapsulates the generation strategy and its source of truth.",
+      "Define the `RuntimeCommand` union type representing commands supported by the runtime (sync, check, fix).",
+      "Export `resolveExecutionProfileFromSettings` function that transforms an external `ResolvedLLMSettings` object into a `ResolvedExecutionProfile` for downstream runtime consumption."
+    ],
+    "outOfScope": [
+      "Actual execution of runtime commands (sync, check, fix) – this is about configuration resolution only.",
+      "LLM provider instantiation or credential management.",
+      "Context retrieval or prompt construction.",
+      "Persistence or caching of execution profiles."
+    ],
+    "invariants": [
+      "Must always produce a valid `ResolvedExecutionProfile` when given a fully resolved `ResolvedLLMSettings`.",
+      "The `generationStrategy` in the output must be a valid `GenerationStrategy` from the prompt-policy module.",
+      "The function must not have side effects (pure transformation)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a thin, focused configuration resolver that decouples LLM settings from runtime execution profiles, enabling runtime services to make decisions based on a resolved profile.",
+      "recentChangeIntent": "No changes specific to this file; the repository-wide commit message indicates general release gate fixes and source synchronization."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ResolvedExecutionProfile",
+        "description": "Interface defining an execution profile with a generation strategy and its source identifier. Used by runtime services to determine how to generate responses."
+      },
+      {
+        "symbolName": "RuntimeCommand",
+        "description": "Union type ('sync' | 'check' | 'fix') representing the currently selected runtime command. Consumed by orchestrators to branch execution flow."
+      },
+      {
+        "symbolName": "resolveExecutionProfileFromSettings",
+        "description": "Pure function that maps a ResolvedLLMSettings object to a ResolvedExecutionProfile. Called by runtime initialization to derive the active generation strategy."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Service-level configuration resolver for execution profiles, mapping resolved LLM settings to a structured generation strategy profile.",
+        "responsibilities": [
+          "Define the `ResolvedExecutionProfile` interface that encapsulates the generation strategy and its source of truth.",
+          "Define the `RuntimeCommand` union type representing commands supported by the runtime (sync, check, fix).",
+          "Export `resolveExecutionProfileFromSettings` function that transforms an external `ResolvedLLMSettings` object into a `ResolvedExecutionProfile` for downstream runtime consumption."
+        ],
+        "outOfScope": [
+          "Actual execution of runtime commands (sync, check, fix) – this is about configuration resolution only.",
+          "LLM provider instantiation or credential management.",
+          "Context retrieval or prompt construction.",
+          "Persistence or caching of execution profiles."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "resolveExecutionProfileFromSettings",
+        "kind": "function",
+        "signature": "resolveExecutionProfileFromSettings(\n  resolved: ResolvedLLMSettings,\n)"
+      },
+      {
+        "name": "ResolvedExecutionProfile",
+        "kind": "interface",
+        "signature": "interface ResolvedExecutionProfile"
+      },
+      {
+        "name": "RuntimeCommand",
+        "kind": "type",
+        "signature": "type RuntimeCommand"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "resolveExecutionProfileFromSettings",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/runtime-execution-profile.ts#"
+      },
+      {
+        "name": "ResolvedExecutionProfile",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/runtime-execution-profile.ts#"
+      },
+      {
+        "name": "RuntimeCommand",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/services/runtime-execution-profile.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 3,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "ResolvedLLMSettings"
+        ]
+      },
+      {
+        "targetPath": "../infra/prompt-policy.js",
+        "relation": "import",
+        "symbols": [
+          "GenerationStrategy"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:02:18.520Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

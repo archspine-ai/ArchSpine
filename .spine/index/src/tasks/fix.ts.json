@@ -1,0 +1,250 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/fix.ts",
+    "contentHash": "d15b57c1890b9f1f4422795a4551c2fe52892bf205a43ea96025eec90b8d7d24",
+    "skeletonHash": "9f341688243f7f68af5031dd3f6aa15d86fb18de5108e08410f5c7acea74ee01",
+    "semanticHash": "379065c8b9a60605c3a6f07aaad0101756c8c6a166a937765e3aaabd669730f5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "Pipeline stage that applies LLM-generated patches to automatically fix architectural rule violations in source files.",
+    "responsibilities": [
+      "Group architectural violations by source file for batch processing.",
+      "Invoke the LLM via `generateFixPrompt` to produce a concrete fix patch for each violation file.",
+      "Apply generated patches to files, recording success, skip, or failure per file through the execution checkpoint.",
+      "Support incremental rechecking of fixed files to verify corrections.",
+      "Implement the `SpineTask` contract for the fix stage of the pipeline."
+    ],
+    "outOfScope": [
+      "CLI command parsing and command dispatch.",
+      "Service orchestration unrelated to violation fixing.",
+      "Rule definition or rule engine implementation.",
+      "Initial scanning or aggregation of violations."
+    ],
+    "invariants": [
+      "Only processes violations that have already been detected and stored in previous pipeline stages.",
+      "Each fixed file is tracked via the execution checkpoint for resumability.",
+      "The task does not initiate scanning or rule loading — it depends on engine-provided violation contexts."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Implement the fix step of the automated compliance pipeline, providing a robust, checkpointed mechanism for applying LLM-suggested code patches to resolve architectural violations.",
+      "recentChangeIntent": "No recent git intent directly references this file; current analysis shows no structural changes beyond what is captured in the AST."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "FixTask",
+        "description": "Class that extends SpineTask to orchestrate the auto-fix of architectural violations by grouping them per file, generating fix prompts via LLM, applying patches, and tracking progress via execution checkpoints."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Pipeline stage that applies LLM-generated patches to automatically fix architectural rule violations in source files.",
+        "responsibilities": [
+          "Group architectural violations by source file for batch processing.",
+          "Invoke the LLM via `generateFixPrompt` to produce a concrete fix patch for each violation file.",
+          "Apply generated patches to files, recording success, skip, or failure per file through the execution checkpoint.",
+          "Support incremental rechecking of fixed files to verify corrections.",
+          "Implement the `SpineTask` contract for the fix stage of the pipeline."
+        ],
+        "outOfScope": [
+          "CLI command parsing and command dispatch.",
+          "Service orchestration unrelated to violation fixing.",
+          "Rule definition or rule engine implementation.",
+          "Initial scanning or aggregation of violations."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'diff'",
+        "symbols": [
+          "createTwoFilesPatch"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'@ast-grep/napi'",
+        "symbols": [
+          "parse"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/task-state.js'",
+        "symbols": [
+          "addTaskUsage"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../engines/fix-prompt.js'",
+        "symbols": [
+          "generateFixPrompt",
+          "type FixViolationContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../utils/fs.js'",
+        "symbols": [
+          "FileSystemManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/lang-registry.js'",
+        "symbols": [
+          "LangRegistry"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "FixTask",
+        "kind": "class",
+        "signature": "class FixTask"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "FixTask",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/tasks/fix.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 11,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "src/core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "addTaskUsage"
+        ]
+      },
+      {
+        "targetPath": "src/engines/fix-prompt.js",
+        "relation": "import",
+        "symbols": [
+          "generateFixPrompt",
+          "FixViolationContext"
+        ]
+      },
+      {
+        "targetPath": "src/utils/fs.js",
+        "relation": "import",
+        "symbols": [
+          "FileSystemManager"
+        ]
+      },
+      {
+        "targetPath": "src/ast/lang-registry.js",
+        "relation": "import",
+        "symbols": [
+          "LangRegistry"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/tasks/fix.ts/_file_#",
+        "targetSymbol": "src/engines/fix-prompt.ts/generateFixPrompt#",
+        "targetPath": "src/engines/fix-prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/fix.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/addTaskUsage#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/fix.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/clearViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:04:25.919Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 2,
+    "isHub": true,
+    "hubPercentile": 59,
+    "inCycle": true,
+    "cycleId": "src/core → src/tasks → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

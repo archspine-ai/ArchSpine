@@ -1,0 +1,193 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/infra/llm.test.ts",
+    "contentHash": "ed8eb21b3811b47aac267a52bff3c7b2389c840f449aa667d8d1be3656435e0b",
+    "skeletonHash": "7c5d2e4858ea1584256010cdc60d8dbdbff8d8c296bc017194d204f7a0304502",
+    "semanticHash": "515cef2006ad88d68c07e9c3eb0ed4fcff029e3cf1811f10be81df776fb5b688",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/infra"
+  },
+  "semantic": {
+    "role": "Vitest structural contract test for the LLM Facade module (`src/infra/llm.ts`). Validates that the module exports all required public symbols and that none are undefined.",
+    "responsibilities": [
+      "Verify that the LLM facade exports `GlobalLLMConfig`, `GlobalLLMSecrets`, `getGlobalArchSpineDir`, `createResolvedLLMClient`, and `resolveLLMSettings` as defined symbols.",
+      "Ensure no exported symbol resolves to undefined, acting as a boundary integrity check for the LLM infrastructure layer."
+    ],
+    "outOfScope": [
+      "Production logic, configuration, or state management.",
+      "Integration or end-to-end testing with real LLM providers.",
+      "Mocking or stubbing of LLM provider responses.",
+      "Behavioral assertions on LLM client behavior such as request/response handling or error scenarios."
+    ],
+    "invariants": [
+      "The test file must have a `.test.ts` or `.spec.ts` suffix (observed: `.test.ts` - compliant).",
+      "The test suite must import from `vitest` for the `describe`/`it`/`expect` API.",
+      "The test must import the LLM facade via relative path from `../../../src/infra/llm.js`.",
+      "All referenced symbols must be defined (non-undefined) at import time."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish a structural boundary contract between the test layer and the LLM infrastructure module, ensuring that the facade's public API does not silently break during refactoring.",
+      "recentChangeIntent": "No specific recent change intent detected beyond standard contract validation."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest structural contract test for the LLM Facade module (`src/infra/llm.ts`). It confirms that the facade exports the expected public symbols and that none are undefined, acting as a boundary guard for the LLM infrastructure layer.",
+        "responsibilities": [
+          "Ensure that `GlobalLLMConfig`, `GlobalLLMSecrets`, `getGlobalArchSpineDir`, `createResolvedLLMClient`, and `resolveLLMSettings` are all exported as defined symbols from the LLM facade.",
+          "Serve as a regression gate that detects if any required export disappears or becomes undefined due to refactoring."
+        ],
+        "outOfScope": [
+          "Any production business logic, configuration processing, or runtime behavior.",
+          "Integration tests that exercise real LLM providers or network calls.",
+          "Mocking, spying, or stubbing of provider behavior.",
+          "Behavioral tests beyond structural export validation."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "it",
+          "expect"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/llm.js'",
+        "symbols": [
+          "* as LLMFacade"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/llm.js'",
+        "symbols": [
+          "* as LLMFacade"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets",
+          "getGlobalArchSpineDir",
+          "createResolvedLLMClient",
+          "resolveLLMSettings"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/infra/llm.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/GlobalLLMConfig#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/GlobalLLMConfig#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/GlobalLLMSecrets#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/GlobalLLMSecrets#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/getGlobalArchSpineDir#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/getGlobalArchSpineDir#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/createResolvedLLMClient#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/runtime.ts/createResolvedLLMClient#",
+        "targetPath": "src/infra/llm/runtime.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/resolveLLMSettings#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/runtime.ts/resolveLLMSettings#",
+        "targetPath": "src/infra/llm/runtime.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:10:02.512Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

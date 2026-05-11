@@ -1,0 +1,294 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/types/view.ts",
+    "contentHash": "898e777ef52acf36a199e3e1634b8fc131684fb585a9b48de6aea9f843b3d6cb",
+    "skeletonHash": "6e307621c03501cb8bf919845869def48f6d9c50a72c811ac3dc465cf479c117",
+    "semanticHash": "80d7c1ba3de7d2aee4bd13840938c9f3a6b498ec2c2fc1718bfce6c722a19cfd",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/types"
+  },
+  "semantic": {
+    "role": "Central type definitions module for the View subsystem, defining data structures for all view output items including public surface, risk hotspots, architecture diagrams, and quality metadata.",
+    "responsibilities": [
+      "Define ViewId and ViewType union types enumerating all supported view identifiers.",
+      "Define PublicSurfaceKind and ArchNodeType union types for categorization of view items.",
+      "Define IViewScoreContribution interface for scoring factors in view quality assessment.",
+      "Define IViewQualityMetadata interface for aggregate quality metadata on views.",
+      "Define IPublicSurfaceViewItem interface representing a single public surface entry in the view.",
+      "Define IRiskHotspotViewItem interface representing a risk hotspot entry.",
+      "Define IArchDiagramNode, IArchDiagramEdge, IArchDiagramSummaryCard, IArchDiagramSpec interfaces for architecture diagram data.",
+      "Re-export the SchemaVersion type from the protocol module for use in view type definitions."
+    ],
+    "outOfScope": [
+      "View rendering logic, view derivation logic, view server implementation, and any runtime behavior.",
+      "Data access or persistence for view items.",
+      "User-facing view formatting or markdown generation."
+    ],
+    "invariants": [
+      "All view interfaces must be prefixed with 'I' to comply with the interface-prefix naming convention.",
+      "ViewId and ViewType are equivalent string unions representing the same set of identifiers.",
+      "PublicSurfaceKind and ArchNodeType are string literal unions, not enums.",
+      "IArchDiagramSpec uses generic type NodeMeta for flexibility in node metadata."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a single source of truth for view data types used across the view subsystem, ensuring type safety and consistency.",
+      "recentChangeIntent": "No recent changes evident from git intent or diff; this file appears to be stable type definitions."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ViewId",
+        "description": "Union of all supported view identifiers: 'public-surface', 'risk-hotspots', 'architecture-diagram', 'project-health', 'agent-briefing', 'change-impact'."
+      },
+      {
+        "symbolName": "ViewType",
+        "description": "Alias for ViewId; represents the type of a view."
+      },
+      {
+        "symbolName": "PublicSurfaceKind",
+        "description": "Union of string literals categorizing public surface items (e.g., 'function', 'class', 'type', 'interface')."
+      },
+      {
+        "symbolName": "ArchNodeType",
+        "description": "Union of string literals categorizing architecture diagram nodes (e.g., 'module', 'layer', 'component')."
+      },
+      {
+        "symbolName": "IViewScoreContribution",
+        "description": "Interface representing a single scoring factor contribution with a factor name, score, and reason."
+      },
+      {
+        "symbolName": "IViewQualityMetadata",
+        "description": "Interface for metadata about a view's quality, including an overall score, version, and list of score contributions."
+      },
+      {
+        "symbolName": "IPublicSurfaceViewItem",
+        "description": "Interface representing a single public surface item with name, kind, file path, etc."
+      },
+      {
+        "symbolName": "IRiskHotspotViewItem",
+        "description": "Interface representing a risk hotspot with file path, risk category, severity, and description."
+      },
+      {
+        "symbolName": "IArchDiagramNode",
+        "description": "Interface representing a node in an architecture diagram with id, label, type, and optional metadata."
+      },
+      {
+        "symbolName": "IArchDiagramEdge",
+        "description": "Interface representing a directed edge between two architecture diagram nodes."
+      },
+      {
+        "symbolName": "IArchDiagramSummaryCard",
+        "description": "Interface for a summary card in an architecture diagram view, containing a title, value, and optional trend."
+      },
+      {
+        "symbolName": "IArchDiagramSpec",
+        "description": "Generic interface representing the full architecture diagram specification including nodes, edges, and summary cards with typed node metadata."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Central type definitions module for the View subsystem. It defines all the data structures that represent view output items such as public surface entries, risk hotspots, architecture diagram nodes and edges, and quality metadata scores.",
+        "responsibilities": [
+          "Define ViewId and ViewType union types enumerating all supported view identifiers.",
+          "Define PublicSurfaceKind and ArchNodeType union types for categorizing view items.",
+          "Define IViewScoreContribution interface for scoring factor details.",
+          "Define IViewQualityMetadata interface for aggregate quality metadata on views.",
+          "Define IPublicSurfaceViewItem interface for a single public surface entry.",
+          "Define IRiskHotspotViewItem interface for a single risk hotspot entry.",
+          "Define IArchDiagramNode, IArchDiagramEdge, IArchDiagramSummaryCard, and IArchDiagramSpec interfaces for architecture diagram data."
+        ],
+        "outOfScope": [
+          "View rendering, derivation, server, or runtime logic. This module only defines types.",
+          "Data access or persistence for view items.",
+          "User-facing formatting or markdown generation."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "IViewScoreContribution",
+        "kind": "interface",
+        "signature": "interface IViewScoreContribution"
+      },
+      {
+        "name": "IViewQualityMetadata",
+        "kind": "interface",
+        "signature": "interface IViewQualityMetadata"
+      },
+      {
+        "name": "IPublicSurfaceViewItem",
+        "kind": "interface",
+        "signature": "interface IPublicSurfaceViewItem"
+      },
+      {
+        "name": "IRiskHotspotViewItem",
+        "kind": "interface",
+        "signature": "interface IRiskHotspotViewItem"
+      },
+      {
+        "name": "IArchDiagramNode",
+        "kind": "interface",
+        "signature": "interface IArchDiagramNode"
+      },
+      {
+        "name": "IArchDiagramEdge",
+        "kind": "interface",
+        "signature": "interface IArchDiagramEdge"
+      },
+      {
+        "name": "IArchDiagramSummaryCard",
+        "kind": "interface",
+        "signature": "interface IArchDiagramSummaryCard"
+      },
+      {
+        "name": "IArchDiagramSpec",
+        "kind": "interface",
+        "signature": "interface IArchDiagramSpec"
+      },
+      {
+        "name": "ViewId",
+        "kind": "type",
+        "signature": "type ViewId"
+      },
+      {
+        "name": "ViewType",
+        "kind": "type",
+        "signature": "type ViewType"
+      },
+      {
+        "name": "PublicSurfaceKind",
+        "kind": "type",
+        "signature": "type PublicSurfaceKind"
+      },
+      {
+        "name": "ArchNodeType",
+        "kind": "type",
+        "signature": "type ArchNodeType"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "IViewScoreContribution",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/view.ts#"
+      },
+      {
+        "name": "IViewQualityMetadata",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/view.ts#"
+      },
+      {
+        "name": "IPublicSurfaceViewItem",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/view.ts#"
+      },
+      {
+        "name": "IRiskHotspotViewItem",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/view.ts#"
+      },
+      {
+        "name": "IArchDiagramNode",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/view.ts#"
+      },
+      {
+        "name": "IArchDiagramEdge",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/view.ts#"
+      },
+      {
+        "name": "IArchDiagramSummaryCard",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/view.ts#"
+      },
+      {
+        "name": "IArchDiagramSpec",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/view.ts#"
+      },
+      {
+        "name": "ViewId",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/types/view.ts#"
+      },
+      {
+        "name": "ViewType",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/types/view.ts#"
+      },
+      {
+        "name": "PublicSurfaceKind",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/types/view.ts#"
+      },
+      {
+        "name": "ArchNodeType",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/types/view.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 12,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SchemaVersion"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/view/arch-diagram-renderer.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:06:16.335Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 9,
+    "isHub": true,
+    "hubPercentile": 100,
+    "inCycle": true,
+    "cycleId": "src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

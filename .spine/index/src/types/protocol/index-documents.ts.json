@@ -1,0 +1,523 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/types/protocol/index-documents.ts",
+    "contentHash": "0dbacba07ac266245022848fbeea7e86115a98312590021f0aab0f231a2b478b",
+    "skeletonHash": "9a5e1389912bbb912b780e422d882ae39d983316cd5a196e745c5e3db514d355",
+    "semanticHash": "4e96baba025c7b70af72bc2061315efa68753acda36d68a30c9fb74995f12513",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/types/protocol"
+  },
+  "semantic": {
+    "role": "Core protocol type definitions for the ArchSpine mirror system. Provides the canonical interfaces and type aliases that describe index entries, graph edges, skeletons, provenance, folder/project units, and health diagnostics.",
+    "responsibilities": [
+      "Define the SpineUnit interface, the primary index entry shape for file-level metadata in the atlas.",
+      "Define HealthFlags to attach per-file graph diagnostics (fan-in, hub status, cycle membership).",
+      "Define SpineIdentity, SpineSemantic, SpineSkeleton, ArchSpine, and SpineProvenance interfaces that together describe a file's identity, meaning, structure, dependency graph, and origin.",
+      "Define RuleViolation, Invariant, ChangeIntent, and PublicSurfaceEntry interfaces for governance and change tracking.",
+      "Define folder-level and project-level unit interfaces (SpineFolderUnit, FolderChild, SpineProjectUnit, ProjectModule) for hierarchical organization.",
+      "Define string-literal type aliases (SourceLanguage, FileKind, SymbolKind, DependencyRelation, EdgeProvenance, SymbolRelation, PipelineStage) to constrain the protocol domain."
+    ],
+    "outOfScope": [
+      "No runtime logic, validation, or parsing is implemented here.",
+      "No serialization or deserialization concerns are addressed.",
+      "No business or domain-specific behavior beyond type definitions."
+    ],
+    "invariants": [
+      "All exported interfaces must be part of the public protocol and must not be prefixed with 'I' (they are public types, not internal).",
+      "Type aliases must use string literal unions to enforce domain boundaries.",
+      "Interfaces must remain read-only (all fields using `readonly`) to ensure immutability constraints."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provides the shared type vocabulary that all other modules depend on for index entries, graph structures, and provenance metadata.",
+      "recentChangeIntent": "No specific recent changes detected in this file based on git status and commit messages."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "SpineUnit",
+        "description": "The top-level index entry shape for a single file, combining identity, semantic summary, structural skeleton, dependency graph, provenance, and optional health flags."
+      },
+      {
+        "symbolName": "HealthFlags",
+        "description": "Graph-health diagnostics attached to each index entry by KnowledgeGraphTask, recording fan-in, hub status, and cycle membership."
+      },
+      {
+        "symbolName": "SpineIdentity",
+        "description": "Identifies a file or directory by path, hash, and language classification."
+      },
+      {
+        "symbolName": "SpineSemantic",
+        "description": "Captures the architectural role, responsibilities, and invariants extracted by summarization."
+      },
+      {
+        "symbolName": "RuleViolation",
+        "description": "Describes a single architectural rule violation detected during checks, including rule ID, severity, and reason."
+      },
+      {
+        "symbolName": "Invariant",
+        "description": "Represents an invariant that must hold for the module, derived from architectural rules."
+      },
+      {
+        "symbolName": "ChangeIntent",
+        "description": "Documents the architectural and recent change intent for a file, used for drift detection."
+      },
+      {
+        "symbolName": "PublicSurfaceEntry",
+        "description": "An entry in a module's public API surface, describing a single exported symbol's contract."
+      },
+      {
+        "symbolName": "SpineSkeleton",
+        "description": "Structural skeleton of a source file, enumerating imports, exports, and declared symbols."
+      },
+      {
+        "symbolName": "SkeletonImport",
+        "description": "Represents a single import statement within a file's skeleton."
+      },
+      {
+        "symbolName": "SkeletonExport",
+        "description": "Represents a single export statement within a file's skeleton."
+      },
+      {
+        "symbolName": "DeclaredSymbol",
+        "description": "Represents a symbol declared in a file, with name, kind, and signature."
+      },
+      {
+        "symbolName": "StructuralHints",
+        "description": "Optional metadata hints about a file's structure, such as language or pattern type."
+      },
+      {
+        "symbolName": "ArchSpine",
+        "description": "Dependency graph representation for a file, listing file-level and symbol-level edges with relation types."
+      },
+      {
+        "symbolName": "FileDependencyEdge",
+        "description": "A directed dependency edge between two files, tracking relation type and provenance."
+      },
+      {
+        "symbolName": "SymbolDependencyEdge",
+        "description": "A directed dependency edge between two symbols, tracking the relation and providing symbolic granularity."
+      },
+      {
+        "symbolName": "SpineProvenance",
+        "description": "Metadata about how a SpineUnit was created, including tool version, task, and timestamp."
+      },
+      {
+        "symbolName": "SpineFolderUnit",
+        "description": "Index entry for a directory/folder, listing child files and subdirectories with their identity and health flags."
+      },
+      {
+        "symbolName": "FolderChild",
+        "description": "Describes a child entry (file or directory) within a folder unit, with path and health flags."
+      },
+      {
+        "symbolName": "SpineProjectUnit",
+        "description": "Top-level project unit containing configuration summary, module references, and root folder unit reference."
+      },
+      {
+        "symbolName": "ProjectModule",
+        "description": "Describes a module within a project unit, including its name, path, and language."
+      },
+      {
+        "symbolName": "SourceLanguage",
+        "description": "String-literal type union enumerating all supported source languages (e.g., 'typescript', 'python')."
+      },
+      {
+        "symbolName": "FileKind",
+        "description": "String-literal type union classifying file kinds (e.g., 'source', 'test', 'config')."
+      },
+      {
+        "symbolName": "SymbolKind",
+        "description": "String-literal type union for declared symbol kinds (e.g., 'function', 'class', 'interface')."
+      },
+      {
+        "symbolName": "DependencyRelation",
+        "description": "String-literal type union for dependency relationship types (e.g., 'imports', 'calls', 'extends')."
+      },
+      {
+        "symbolName": "EdgeProvenance",
+        "description": "String-literal type union describing how an edge was discovered (e.g., 'ast', 'inference')."
+      },
+      {
+        "symbolName": "SymbolRelation",
+        "description": "String-literal type union for symbol-level relationship types (e.g., 'imports', 'calls', 'implements')."
+      },
+      {
+        "symbolName": "PipelineStage",
+        "description": "String-literal type union for pipeline stage identifiers (e.g., 'scan', 'summarize', 'aggregate')."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core protocol type definitions for the ArchSpine mirror system. Provides the canonical interfaces and type aliases that describe index entries, graph edges, skeletons, provenance, folder/project units, and health diagnostics.",
+        "responsibilities": [
+          "Define the SpineUnit interface, the primary index entry shape for file-level metadata in the atlas.",
+          "Define HealthFlags to attach per-file graph diagnostics (fan-in, hub status, cycle membership).",
+          "Define SpineIdentity, SpineSemantic, SpineSkeleton, ArchSpine, and SpineProvenance interfaces that together describe a file's identity, meaning, structure, dependency graph, and origin.",
+          "Define RuleViolation, Invariant, ChangeIntent, and PublicSurfaceEntry interfaces for governance and change tracking.",
+          "Define folder-level and project-level unit interfaces (SpineFolderUnit, FolderChild, SpineProjectUnit, ProjectModule) for hierarchical organization.",
+          "Define string-literal type aliases (SourceLanguage, FileKind, SymbolKind, DependencyRelation, EdgeProvenance, SymbolRelation, PipelineStage) to constrain the protocol domain."
+        ],
+        "outOfScope": [
+          "No runtime logic, validation, or parsing is implemented here.",
+          "No serialization or deserialization concerns are addressed.",
+          "No business or domain-specific behavior beyond type definitions."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "SpineUnit",
+        "kind": "interface",
+        "signature": "interface SpineUnit"
+      },
+      {
+        "name": "HealthFlags",
+        "kind": "interface",
+        "signature": "interface HealthFlags"
+      },
+      {
+        "name": "SpineIdentity",
+        "kind": "interface",
+        "signature": "interface SpineIdentity"
+      },
+      {
+        "name": "SpineSemantic",
+        "kind": "interface",
+        "signature": "interface SpineSemantic"
+      },
+      {
+        "name": "RuleViolation",
+        "kind": "interface",
+        "signature": "interface RuleViolation"
+      },
+      {
+        "name": "Invariant",
+        "kind": "interface",
+        "signature": "interface Invariant"
+      },
+      {
+        "name": "ChangeIntent",
+        "kind": "interface",
+        "signature": "interface ChangeIntent"
+      },
+      {
+        "name": "PublicSurfaceEntry",
+        "kind": "interface",
+        "signature": "interface PublicSurfaceEntry"
+      },
+      {
+        "name": "SpineSkeleton",
+        "kind": "interface",
+        "signature": "interface SpineSkeleton"
+      },
+      {
+        "name": "SkeletonImport",
+        "kind": "interface",
+        "signature": "interface SkeletonImport"
+      },
+      {
+        "name": "SkeletonExport",
+        "kind": "interface",
+        "signature": "interface SkeletonExport"
+      },
+      {
+        "name": "DeclaredSymbol",
+        "kind": "interface",
+        "signature": "interface DeclaredSymbol"
+      },
+      {
+        "name": "StructuralHints",
+        "kind": "interface",
+        "signature": "interface StructuralHints"
+      },
+      {
+        "name": "ArchSpine",
+        "kind": "interface",
+        "signature": "interface ArchSpine"
+      },
+      {
+        "name": "FileDependencyEdge",
+        "kind": "interface",
+        "signature": "interface FileDependencyEdge"
+      },
+      {
+        "name": "SymbolDependencyEdge",
+        "kind": "interface",
+        "signature": "interface SymbolDependencyEdge"
+      },
+      {
+        "name": "SpineProvenance",
+        "kind": "interface",
+        "signature": "interface SpineProvenance"
+      },
+      {
+        "name": "SpineFolderUnit",
+        "kind": "interface",
+        "signature": "interface SpineFolderUnit"
+      },
+      {
+        "name": "FolderChild",
+        "kind": "interface",
+        "signature": "interface FolderChild"
+      },
+      {
+        "name": "SpineProjectUnit",
+        "kind": "interface",
+        "signature": "interface SpineProjectUnit"
+      },
+      {
+        "name": "ProjectModule",
+        "kind": "interface",
+        "signature": "interface ProjectModule"
+      },
+      {
+        "name": "SourceLanguage",
+        "kind": "type",
+        "signature": "type SourceLanguage"
+      },
+      {
+        "name": "FileKind",
+        "kind": "type",
+        "signature": "type FileKind"
+      },
+      {
+        "name": "SymbolKind",
+        "kind": "type",
+        "signature": "type SymbolKind"
+      },
+      {
+        "name": "DependencyRelation",
+        "kind": "type",
+        "signature": "type DependencyRelation"
+      },
+      {
+        "name": "EdgeProvenance",
+        "kind": "type",
+        "signature": "type EdgeProvenance"
+      },
+      {
+        "name": "SymbolRelation",
+        "kind": "type",
+        "signature": "type SymbolRelation"
+      },
+      {
+        "name": "PipelineStage",
+        "kind": "type",
+        "signature": "type PipelineStage"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "SpineUnit",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "HealthFlags",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "SpineIdentity",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "SpineSemantic",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "RuleViolation",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "Invariant",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "ChangeIntent",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "PublicSurfaceEntry",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "SpineSkeleton",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "SkeletonImport",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "SkeletonExport",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "DeclaredSymbol",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "StructuralHints",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "ArchSpine",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "FileDependencyEdge",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "SymbolDependencyEdge",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "SpineProvenance",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "SpineFolderUnit",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "FolderChild",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "SpineProjectUnit",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "ProjectModule",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "SourceLanguage",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "FileKind",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "SymbolKind",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "DependencyRelation",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "EdgeProvenance",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "SymbolRelation",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      },
+      {
+        "name": "PipelineStage",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/types/protocol/index-documents.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 28,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./versions.js",
+        "relation": "import",
+        "symbols": [
+          "SchemaVersion"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:05:39.853Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 9,
+    "isHub": true,
+    "hubPercentile": 100,
+    "inCycle": true,
+    "cycleId": "src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

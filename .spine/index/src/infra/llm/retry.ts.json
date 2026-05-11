@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/llm/retry.ts",
+    "contentHash": "5f1cea756b3d4e7a6175104ff81f3970b356d0e580746ba69d3049ce4e80168b",
+    "skeletonHash": "88d012ac2e029c4c1513edd3c0e07bc1618dae920070c1140cc0e2323cd6fcd3",
+    "semanticHash": "f448ed9a527edc68389a0611faaee60316b57b7ff81090631e5f45f73351301d",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/llm"
+  },
+  "semantic": {
+    "role": "Retry utility with exponential backoff for transient LLM provider errors.",
+    "responsibilities": [
+      "Define configuration interface for retry behavior (max retries, initial delay, onRetry callback).",
+      "Provide a predicate to classify errors as retryable based on network/socket/timeout patterns.",
+      "Implement an async retry loop with exponential backoff and jitter, invoking the onRetry callback on failures."
+    ],
+    "outOfScope": [
+      "LLM provider request construction or response parsing.",
+      "Authentication or credential management.",
+      "Any caching or circuit-breaking logic."
+    ],
+    "invariants": [
+      "The `isRetryableError` function must correctly identify network errors (ECONNRESET, ETIMEDOUT, UND_ERR_SOCKET, socket hang up, timeout, fetch failed).",
+      "The `withRetry` function must not retry on non-retryable errors.",
+      "The `withRetry` function must respect the `maxRetries` option and not exceed it.",
+      "Exponential backoff must include jitter (random delay) to avoid thundering herd."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a standardized, reusable retry mechanism for all LLM provider calls to handle transient failures gracefully.",
+      "recentChangeIntent": "Initial implementation for the v1.0.0 release."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "RetryOptions",
+        "description": "Configuration interface for retry behavior: maxRetries, initialDelayMs, and an optional onRetry callback for logging/debugging."
+      },
+      {
+        "symbolName": "isRetryableError",
+        "description": "Determines if an error is retryable by checking for common network/socket/timeout error patterns. Used by the retry loop and can be used externally for classification."
+      },
+      {
+        "symbolName": "withRetry",
+        "description": "Executes an async function with automatic retry logic. Retries on retryable errors up to maxRetries with exponential backoff and jitter. Returns the result or throws the last error."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Retry utility with exponential backoff for transient LLM provider errors.",
+        "responsibilities": [
+          "Define configuration interface for retry behavior (max retries, initial delay, onRetry callback).",
+          "Provide a predicate to classify errors as retryable based on network/socket/timeout patterns.",
+          "Implement an async retry loop with exponential backoff and jitter, invoking the onRetry callback on failures."
+        ],
+        "outOfScope": [
+          "LLM provider request construction or response parsing.",
+          "Authentication or credential management.",
+          "Any caching or circuit-breaking logic."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "RetryOptions",
+        "kind": "interface",
+        "signature": "interface RetryOptions"
+      },
+      {
+        "name": "isRetryableError",
+        "kind": "function",
+        "signature": "const isRetryableError"
+      },
+      {
+        "name": "withRetry",
+        "kind": "function",
+        "signature": "const withRetry"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "RetryOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/llm/retry.ts#"
+      },
+      {
+        "name": "isRetryableError",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/llm/retry.ts#"
+      },
+      {
+        "name": "withRetry",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/llm/retry.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 3,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [
+      {
+        "targetPath": "tests/infra/llm/retry.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:59:10.053Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

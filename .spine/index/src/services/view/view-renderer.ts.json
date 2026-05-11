@@ -1,0 +1,185 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/view-renderer.ts",
+    "contentHash": "445fb69c7bce6d56c8372cf408f461ec42df65f5756e24ec6059b3296973f92b",
+    "skeletonHash": "140ee1e86528b893a2f56fa98ddcc22245aca8b453f3bf0b6f3e1c449b9c2464",
+    "semanticHash": "ba5bd6f7f31419f2ec95975854da7809410e9d5a83db6dcf178e7c33fc786b31",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "View data to Markdown renderer — transforms structured view artifacts (risk hotspots, public surface, etc.) into formatted Markdown output using embedded templates.",
+    "responsibilities": [
+      "Load view Markdown templates from disk using Node.js fs and path modules.",
+      "Replace template placeholders with data from IViewArtifactEnvelope structures.",
+      "Format risk hotspot items into Markdown sections with entrypoint, kind, symbols, confidence, and summary.",
+      "Format public surface items into Markdown tables or lists.",
+      "Provide static methods (e.g., renderRiskHotspots) for use by view CLI commands and view runtime services.",
+      "Escape Markdown special characters in rendered output to preserve formatting integrity."
+    ],
+    "outOfScope": [
+      "Does not collect or compute source-level view data (e.g., scanning, aggregation).",
+      "Does not manage templates beyond loading and rendering; templates themselves are static assets.",
+      "Does not define view data structures; imports them from ../../types/view.js."
+    ],
+    "invariants": [
+      "View-specific rendering logic must reside in src/services/view/ (service-runtime-boundary rule).",
+      "All rendering methods must return a plain Markdown string, never HTML or other formats.",
+      "Template loading must use synchronous fs calls (as seen in the AST) to keep rendering simple and deterministic."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a clean separation between view data (artifacts) and their presentation (Markdown), enabling multiple output targets (CLI, files) through a single rendering class.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — finalization of the view rendering layer to support project health, risk hotspots, and public surface outputs for the 1.0 release."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ViewRenderer",
+        "description": "Static utility class with methods to render view artifacts (risk hotspots, public surface) into Markdown. Used by view CLI commands and the view runtime to produce human-readable output."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "View data to Markdown renderer — transforms structured view artifacts (risk hotspots, public surface, etc.) into formatted Markdown output using embedded templates.",
+        "responsibilities": [
+          "Load view Markdown templates from disk using Node.js fs and path modules.",
+          "Replace template placeholders with data from IViewArtifactEnvelope structures.",
+          "Format risk hotspot items into Markdown sections with entrypoint, kind, symbols, confidence, and summary.",
+          "Format public surface items into Markdown tables or lists.",
+          "Provide static methods (e.g., renderRiskHotspots) for use by view CLI commands and view runtime services.",
+          "Escape Markdown special characters in rendered output to preserve formatting integrity."
+        ],
+        "outOfScope": [
+          "Does not collect or compute source-level view data (e.g., scanning, aggregation).",
+          "Does not manage templates beyond loading and rendering; templates themselves are static assets.",
+          "Does not define view data structures; imports them from ../../types/view.js."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "ViewRenderer",
+        "kind": "class",
+        "signature": "class ViewRenderer"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ViewRenderer",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/services/view/view-renderer.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "../../types/view.js",
+        "relation": "type import",
+        "symbols": [
+          "IPublicSurfaceViewItem",
+          "IRiskHotspotViewItem",
+          "IViewArtifactEnvelope",
+          "PublicSurfaceKind"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/view/view-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:04:15.826Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

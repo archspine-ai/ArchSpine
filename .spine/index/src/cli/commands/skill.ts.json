@@ -1,0 +1,207 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/skill.ts",
+    "contentHash": "b08aeade30df5aa4a61a93edd1dcada2e295ccf9c858f27244ef9d3e6d4c4f24",
+    "skeletonHash": "31860ea1168ee5aba42bf59888b971900a5ba89d880b71c28d5fc48284b361e9",
+    "semanticHash": "d2ae0410c3b3574b40998670c943222cf745817557dc37de59ba7828f346954c",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command adapter for skill management operations (install, uninstall, list). It is a thin controller that parses CLI arguments, displays help/usage, and delegates to the skill service layer.",
+    "responsibilities": [
+      "Parse the first CLI argument as a subcommand (install, uninstall, list, etc.).",
+      "Invoke `installSkill` from the skill service with appropriate arguments for the 'install' subcommand.",
+      "Invoke `uninstallSkill` from the skill service with appropriate arguments for the 'uninstall' subcommand.",
+      "Display a list of installed skills with their descriptions for the 'list' subcommand.",
+      "Display usage help and exit with error code when an unknown subcommand is provided.",
+      "Provide the typed interface `ExecuteSkillCommandOptions` for the command options contract."
+    ],
+    "outOfScope": [
+      "Skill installation logic – handled by skill-service.",
+      "Skill uninstallation logic – handled by skill-service.",
+      "Any file system or network operations – delegated to service layer.",
+      "Pipeline or persistence logic – this module is purely an adapter."
+    ],
+    "invariants": [
+      "The CLI entrypoint must not contain business logic or persistence logic; this file adheres by delegating entirely to skill-service.",
+      "The subcommand must be the first element of the args array."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a dedicated CLI command for managing ArchSpine skills (installing, uninstalling, listing) that keeps the command layer thin and delegates to a service.",
+      "recentChangeIntent": "No recent changes detected in this file from the git intent (the intent mentioned removing legacy CLI aliases and rebuilding docs, but this file may not have been directly affected)."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "executeSkillCommand",
+        "description": "Top-level CLI handler for the 'skill' command. Parses subcommands and delegates to the skill service layer. Called by the CLI router when the user runs `spine skill <subcommand>`."
+      },
+      {
+        "symbolName": "ExecuteSkillCommandOptions",
+        "description": "Options interface specifying the command-line arguments (array of strings) to be passed to executeSkillCommand."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command adapter for skill management operations (install, uninstall, list). It is a thin controller that parses CLI arguments, displays help/usage, and delegates to the skill service layer.",
+        "responsibilities": [
+          "Parse the first CLI argument as a subcommand (install, uninstall, list, etc.).",
+          "Invoke `installSkill` from the skill service with appropriate arguments for the 'install' subcommand.",
+          "Invoke `uninstallSkill` from the skill service with appropriate arguments for the 'uninstall' subcommand.",
+          "Display a list of installed skills with their descriptions for the 'list' subcommand.",
+          "Display usage help and exit with error code when an unknown subcommand is provided.",
+          "Provide the typed interface `ExecuteSkillCommandOptions` for the command options contract."
+        ],
+        "outOfScope": [
+          "Skill installation logic – handled by skill-service.",
+          "Skill uninstallation logic – handled by skill-service.",
+          "Any file system or network operations – delegated to service layer.",
+          "Pipeline or persistence logic – this module is purely an adapter."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "throwCliUsage"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../services/skill-service.js'",
+        "symbols": [
+          "installSkill",
+          "uninstallSkill"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeSkillCommand",
+        "kind": "function",
+        "signature": "executeSkillCommand({ args }: ExecuteSkillCommandOptions)"
+      },
+      {
+        "name": "ExecuteSkillCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteSkillCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeSkillCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/skill.ts#"
+      },
+      {
+        "name": "ExecuteSkillCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/skill.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/cli/cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "throwCliUsage"
+        ]
+      },
+      {
+        "targetPath": "src/services/skill-service.js",
+        "relation": "import",
+        "symbols": [
+          "installSkill",
+          "uninstallSkill"
+        ]
+      },
+      {
+        "targetPath": "node:url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "node:path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/unit/cli/skill.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/skill.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/throwCliUsage#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:54:05.363Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 53,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

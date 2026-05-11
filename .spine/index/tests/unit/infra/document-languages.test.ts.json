@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/infra/document-languages.test.ts",
+    "contentHash": "005fbe6128b7725151086eba1731116d9a875d0fb0015929e4a0b1d48c113186",
+    "skeletonHash": "315734890ca5bb767d2da55de746981646c567935bea707ffc3a393846f89656",
+    "semanticHash": "7d7801a2fb231dc50155cbfc2ccf15faae6feb5ab22876ccef1f7d7253854d66",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/infra"
+  },
+  "semantic": {
+    "role": "Unit test suite for the document language choices module (getDocumentLanguageChoices and associated constants).",
+    "responsibilities": [
+      "Verify that getDocumentLanguageChoices() returns an array where stable languages appear first, followed by a disabled separator option, and high-capacity languages appear after the separator.",
+      "Verify that the separator's value matches HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE.",
+      "Verify that HIGH_CAPACITY_LANGUAGE_SEPARATOR is included in the choices as a disabled option.",
+      "Verify that DOCUMENT_LANGUAGE_QUALITY_NOTE is a specific string constant."
+    ],
+    "outOfScope": [
+      "Does not implement any production logic for language selection or document handling.",
+      "Does not exercise error paths or invalid inputs (only nominal behavior)."
+    ],
+    "invariants": [
+      "Test file must end with `.test.ts` or `.spec.ts` (satisfied)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Test suite that validates the ordering and structure of language choices, ensuring a clear separation between stable and high-capacity languages.",
+      "recentChangeIntent": "Added test to validate the separation of high-capacity languages from stable languages via a disabled separator in the language choices list."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Unit test suite for the document language choices module (getDocumentLanguageChoices and associated constants).",
+        "responsibilities": [
+          "Verify that getDocumentLanguageChoices() returns an array where stable languages appear first, followed by a disabled separator option, and high-capacity languages appear after the separator.",
+          "Verify that the separator's value matches HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE.",
+          "Verify that HIGH_CAPACITY_LANGUAGE_SEPARATOR is included in the choices as a disabled option.",
+          "Verify that DOCUMENT_LANGUAGE_QUALITY_NOTE is a specific string constant."
+        ],
+        "outOfScope": [
+          "Does not implement any production logic for language selection or document handling.",
+          "Does not exercise error paths or invalid inputs (only nominal behavior)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/cli/document-languages.js'",
+        "symbols": [
+          "DOCUMENT_LANGUAGE_QUALITY_NOTE",
+          "getDocumentLanguageChoices",
+          "HIGH_CAPACITY_LANGUAGE_SEPARATOR",
+          "HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "src/cli/document-languages.ts",
+        "relation": "import",
+        "symbols": [
+          "DOCUMENT_LANGUAGE_QUALITY_NOTE",
+          "getDocumentLanguageChoices",
+          "HIGH_CAPACITY_LANGUAGE_SEPARATOR",
+          "HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/infra/document-languages.test.ts/_file_#",
+        "targetSymbol": "src/cli/document-languages.ts/getDocumentLanguageChoices#",
+        "targetPath": "src/cli/document-languages.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:09:57.778Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0.0",
+  "project": {
+    "name": "ArchSpine",
+    "locales": ["English"]
+  },
+  "llm": {},
+  "mcp": {
+    "contextMode": "off"
+  },
+  "hooks": {
+    "preCommit": false,
+    "syncMode": "hook"
+  },
+  "artifacts": {
+    "strategy": "distributable"
+  },
+  "scanPolicy": {
+    "fileSource": "git-tracked",
+    "ignoreChain": {
+      "inheritGitIgnore": true,
+      "projectIgnore": ".spineignore",
+      "localIgnore": ".spineignore.local"
+    },
+    "protocolExclusions": [
+      ".spine/",
+      "**/.spine/",
+      "package-lock.json",
+      "pnpm-lock.yaml",
+      "yarn.lock",
+      "bun.lockb"
+    ],
+    "protocolInclusions": [".spine/rules/", ".spine/config.json"]
+  },
+  "initState": {
+    "agentInstructionsFile": "CLAUDE.md",
+    "agentInstructionsCreatedByArchSpine": false,
+    "spineIgnoreManaged": true,
+    "spineIgnoreCreatedByArchSpine": false,
+    "searchIgnoreManaged": true,
+    "searchIgnoreCreatedByArchSpine": false,
+    "artifactStrategy": "distributable",
+    "gitIgnoreManaged": true,
+    "gitIgnoreCreatedByArchSpine": false,
+    "gitAttributesManaged": true,
+    "gitAttributesCreatedByArchSpine": false,
+    "injectedPackageScripts": ["spine:init", "spine:sync", "spine:check", "spine:fix"]
+  }
+}

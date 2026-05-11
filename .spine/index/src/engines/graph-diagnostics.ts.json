@@ -1,0 +1,222 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/graph-diagnostics.ts",
+    "contentHash": "6892890b69e723c405f71690e0443a55099dc532a7d6c47604d0f6ce6bcc9db7",
+    "skeletonHash": "ae1524fb0475c18f42af7b4d9fab47a3f318472c8c63ee3feed0c1edc55b383a",
+    "semanticHash": "ecdbfd35543eca0ca22308b393fe2c4036a6dd42ff3a79ea39b3603115eb74c5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Deterministic pure-function engine for structural diagnostics over a module-level dependency graph (KnowledgeGraph). Provides cycle, dead code, hub, and structural drift detection without any LLM cost.",
+    "responsibilities": [
+      "Detecting cycles in the module dependency graph and returning cycle reports with node sequences.",
+      "Detecting dead code by identifying nodes with zero in-degree, excluding known infrastructure directories, and optionally considering public surfaces.",
+      "Detecting hub modules that have exceptionally high fan-in (in-degree) above a configurable percentile threshold.",
+      "Detecting structural drift between two KnowledgeGraph snapshots by comparing added, removed, and modified nodes and edges."
+    ],
+    "outOfScope": [
+      "LLM-based analysis",
+      "Service orchestration",
+      "CLI or presentation layer interaction",
+      "Non-deterministic analysis"
+    ],
+    "invariants": [
+      "All functions are deterministic and side-effect free",
+      "Must not import CLI or service-level modules",
+      "Dead code detection must exclude paths in KNOWN_INFRA_DIRS"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a zero-cost, deterministic diagnostic layer for the dependency graph that can be used by other engines or services without LLM dependency.",
+      "recentChangeIntent": "Refactoring removed legacy CLI aliases and updated docs and schema; no direct changes to this file."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "detectCycles",
+        "description": "Performs DFS-based cycle detection on the knowledge graph and returns an ordered list of CycleReport objects, each containing the sequence of node IDs forming a cycle."
+      },
+      {
+        "symbolName": "detectDeadCode",
+        "description": "Identifies nodes in the graph with zero in-degree (excluding known infra directories) and returns DeadCodeReport entries; optionally filters by a provided public surfaces map."
+      },
+      {
+        "symbolName": "detectHubs",
+        "description": "Ranks nodes by in-degree and returns HubReport entries for nodes whose in-degree is at or above the specified percentile threshold, indicating high coupling risk."
+      },
+      {
+        "symbolName": "detectStructuralDrift",
+        "description": "Compares two KnowledgeGraph snapshots and produces a DriftReport summarizing added, removed, and modified nodes and edges between them."
+      },
+      {
+        "symbolName": "CycleReport",
+        "description": "Interface describing a detected cycle with a nodeIdSequence array of module IDs."
+      },
+      {
+        "symbolName": "DeadCodeReport",
+        "description": "Interface describing a dead code candidate with the dead node ID."
+      },
+      {
+        "symbolName": "HubReport",
+        "description": "Interface describing a hub module with its node ID and in-degree count."
+      },
+      {
+        "symbolName": "DriftReport",
+        "description": "Interface describing structural drift between two graph snapshots, including lists of added, removed, and modified nodes and edges."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Deterministic pure-function engine for structural diagnostics over a module-level dependency graph (KnowledgeGraph). Provides cycle, dead code, hub, and structural drift detection without any LLM cost.",
+        "responsibilities": [
+          "Detecting cycles in the module dependency graph and returning cycle reports with node sequences.",
+          "Detecting dead code by identifying nodes with zero in-degree, excluding known infrastructure directories, and optionally considering public surfaces.",
+          "Detecting hub modules that have exceptionally high fan-in (in-degree) above a configurable percentile threshold.",
+          "Detecting structural drift between two KnowledgeGraph snapshots by comparing added, removed, and modified nodes and edges."
+        ],
+        "outOfScope": [
+          "LLM-based analysis",
+          "Service orchestration",
+          "CLI or presentation layer interaction",
+          "Non-deterministic analysis"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "detectCycles",
+        "kind": "function",
+        "signature": "detectCycles(graph: KnowledgeGraph)"
+      },
+      {
+        "name": "detectDeadCode",
+        "kind": "function",
+        "signature": "detectDeadCode(\n  graph: KnowledgeGraph,\n  publicSurfacesMap?: Map<string, boolean>,\n)"
+      },
+      {
+        "name": "detectHubs",
+        "kind": "function",
+        "signature": "detectHubs(graph: KnowledgeGraph, percentile: number = 95)"
+      },
+      {
+        "name": "detectStructuralDrift",
+        "kind": "function",
+        "signature": "detectStructuralDrift(prev: KnowledgeGraph, curr: KnowledgeGraph)"
+      },
+      {
+        "name": "CycleReport",
+        "kind": "interface",
+        "signature": "interface CycleReport"
+      },
+      {
+        "name": "DeadCodeReport",
+        "kind": "interface",
+        "signature": "interface DeadCodeReport"
+      },
+      {
+        "name": "HubReport",
+        "kind": "interface",
+        "signature": "interface HubReport"
+      },
+      {
+        "name": "DriftReport",
+        "kind": "interface",
+        "signature": "interface DriftReport"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "detectCycles",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/graph-diagnostics.ts#"
+      },
+      {
+        "name": "detectDeadCode",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/graph-diagnostics.ts#"
+      },
+      {
+        "name": "detectHubs",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/graph-diagnostics.ts#"
+      },
+      {
+        "name": "detectStructuralDrift",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/graph-diagnostics.ts#"
+      },
+      {
+        "name": "CycleReport",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/graph-diagnostics.ts#"
+      },
+      {
+        "name": "DeadCodeReport",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/graph-diagnostics.ts#"
+      },
+      {
+        "name": "HubReport",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/graph-diagnostics.ts#"
+      },
+      {
+        "name": "DriftReport",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/graph-diagnostics.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 8,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./dependency-graph.js",
+        "relation": "import",
+        "symbols": [
+          "KnowledgeGraph",
+          "KnowledgeGraphEdge"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:55:58.167Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 71,
+    "inCycle": true,
+    "cycleId": "src/core → src/types → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,443 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/sync.ts",
+    "contentHash": "4f6a8481b2dd50d57bf884922dfd7510ba894dd5d4c36449dd7d3744b51dc6c6",
+    "skeletonHash": "71615f99246a28b6db6bfd99f37734781cc97818c25907e8fc4b8d5c1abe3c45",
+    "semanticHash": "9ab3f9fed560ed738d4e2c5fa5d60e4cae193f1004dca45a70fa42f57c8d1c64",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command adapter and orchestration handler for the `sync` command. Routes parsed CLI arguments to the appropriate sync workflow mode and orchestrates the full synchronization pipeline including scanning, LLM analysis, manifest update, repair, and protected output mutation detection.",
+    "responsibilities": [
+      "Parse and validate CLI arguments for the sync command (e.g., --full, --hook, --repair, --retry-failed, --surface).",
+      "Display UI banner and route to appropriate sync mode (full scan, incremental hook, repair).",
+      "Orchestrate the full sync workflow: load execution checkpoint, run scanner, invoke LLM analysis via RuntimeService, update manifest, apply repair policy, and detect protected output mutations.",
+      "Handle errors by classifying with ArchSpineError and providing user-facing error messages.",
+      "Define the interface ExecuteSyncCommandOptions to type the command parameters."
+    ],
+    "outOfScope": [
+      "Scanner implementation details (e.g., file traversal logic).",
+      "LLM provider specifics or orchestration beyond invocation.",
+      "Manifest persistence layer.",
+      "Language discovery internals.",
+      "Credential store or configuration defaults."
+    ],
+    "invariants": [
+      "CLI modules must stay as entrypoints and command adapters, and must not absorb pipeline or persistence logic (per rule cli-entrypoint-separation)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Keep command routing thin so runtime behavior remains reusable and testable outside the CLI. The current implementation contradicts this intent.",
+      "recentChangeIntent": "No focused change intent identified beyond standard maintenance; the violation is pre-existing."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ExecuteSyncCommandOptions",
+        "description": "Interface defining the parameters required to invoke the sync command, including CLI args, root directory, config, runtime service, UI banner display function, and optional LLM runtime overrides."
+      },
+      {
+        "symbolName": "executeSyncCommand",
+        "description": "Primary entry point for the sync CLI command. Parses CLI arguments, validates flags, displays UI banner, and dispatches to `runSyncWorkflow` with the appropriate parameters."
+      },
+      {
+        "symbolName": "runSyncWorkflow",
+        "description": "Orchestrates the full synchronization pipeline: loads manifest and execution checkpoint, invokes Scanner for file discovery, runs LLM analysis via RuntimeService, updates manifest, applies repair policy, and detects protected output mutations. Accepts options for mode (full/hook), repair flag, retry-failed, origin, and surface type."
+      }
+    ],
+    "ruleViolations": [
+      {
+        "id": "cli-entrypoint-separation",
+        "severity": "error",
+        "reason": "The file 'src/cli/commands/sync.ts' defines the function `runSyncWorkflow`, which orchestrates the entire sync pipeline including loading execution checkpoints, deriving sync-failed candidate files, interacting with the manifest, applying repair policies, and detecting protected output mutations. This logic belongs in a service layer (e.g., SyncService) to maintain separation of concerns and testability. The CLI adapter should only parse arguments and delegate to a service."
+      }
+    ],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command adapter and orchestration handler for the `sync` command. Routes parsed CLI arguments to the appropriate sync workflow mode and orchestrates the full synchronization pipeline including scanning, LLM analysis, manifest update, repair, and protected output mutation detection.",
+        "responsibilities": [
+          "Parse and validate CLI arguments for the sync command.",
+          "Display UI banner and route to appropriate sync mode.",
+          "Orchestrate the full sync workflow: load checkpoint, run scanner, invoke LLM analysis, update manifest, apply repair policy, detect mutations.",
+          "Handle and classify errors with ArchSpineError.",
+          "Define the interface ExecuteSyncCommandOptions."
+        ],
+        "outOfScope": [
+          "Scanner internals.",
+          "LLM provider specifics.",
+          "Manifest persistence details.",
+          "Language discovery internals.",
+          "Credential and default configuration management."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../engines/scanner.js'",
+        "symbols": [
+          "Scanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../services/runtime-service.js'",
+        "symbols": [
+          "RuntimeService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../ast/lang-discovery.js'",
+        "symbols": [
+          "discoverLanguages",
+          "diffLanguages"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../utils/confirm.js'",
+        "symbols": [
+          "promptForExplicitConfirmation"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/ui.js'",
+        "symbols": [
+          "runWithFoldableOutput"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes",
+          "toArchSpineError"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/spine-gate.js'",
+        "symbols": [
+          "detectProtectedOutputMutations"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/repair-policy.js'",
+        "symbols": [
+          "evaluateRepairPolicy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/execution-checkpoint.js'",
+        "symbols": [
+          "ExecutionCheckpointStore",
+          "deriveSyncFailedCandidateFiles"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../services/repository-admin-service.js'",
+        "symbols": [
+          "syncV2AgentInstructionBlocks"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "throwCliUsage"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'process'",
+        "symbols": [
+          "* as process"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'process'",
+        "symbols": [
+          "* as process"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeSyncCommand",
+        "kind": "function",
+        "signature": "executeSyncCommand(options: ExecuteSyncCommandOptions)"
+      },
+      {
+        "name": "runSyncWorkflow",
+        "kind": "function",
+        "signature": "runSyncWorkflow(options: {\n  rootDir: string;\n  config: Config;\n  runtimeService: RuntimeService;\n  runtimeOverrides?: LLMRuntimeOverrides;\n  full: boolean;\n  hookMode: boolean;\n  repairViolations: boolean;\n  retryFailed?: boolean;\n  origin: 'user' | 'hook';\n  surface?: 'sync' | 'build';\n})"
+      },
+      {
+        "name": "ExecuteSyncCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteSyncCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeSyncCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/sync.ts#"
+      },
+      {
+        "name": "runSyncWorkflow",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/sync.ts#"
+      },
+      {
+        "name": "ExecuteSyncCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/sync.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 15,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../engines/scanner.js",
+        "relation": "import",
+        "symbols": [
+          "Scanner"
+        ]
+      },
+      {
+        "targetPath": "../../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../../infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "../../services/runtime-service.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeService"
+        ]
+      },
+      {
+        "targetPath": "../../ast/lang-discovery.js",
+        "relation": "import",
+        "symbols": [
+          "discoverLanguages",
+          "diffLanguages"
+        ]
+      },
+      {
+        "targetPath": "../../utils/confirm.js",
+        "relation": "import",
+        "symbols": [
+          "promptForExplicitConfirmation"
+        ]
+      },
+      {
+        "targetPath": "../../infra/ui.js",
+        "relation": "import",
+        "symbols": [
+          "runWithFoldableOutput"
+        ]
+      },
+      {
+        "targetPath": "../../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes",
+          "toArchSpineError"
+        ]
+      },
+      {
+        "targetPath": "../../infra/spine-gate.js",
+        "relation": "import",
+        "symbols": [
+          "detectProtectedOutputMutations"
+        ]
+      },
+      {
+        "targetPath": "../../infra/repair-policy.js",
+        "relation": "import",
+        "symbols": [
+          "evaluateRepairPolicy"
+        ]
+      },
+      {
+        "targetPath": "../../infra/execution-checkpoint.js",
+        "relation": "import",
+        "symbols": [
+          "ExecutionCheckpointStore",
+          "deriveSyncFailedCandidateFiles"
+        ]
+      },
+      {
+        "targetPath": "../../services/repository-admin-service.js",
+        "relation": "import",
+        "symbols": [
+          "syncV2AgentInstructionBlocks"
+        ]
+      },
+      {
+        "targetPath": "../cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "throwCliUsage"
+        ]
+      },
+      {
+        "targetPath": "../../infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "LLMRuntimeOverrides"
+        ]
+      },
+      {
+        "targetPath": "process",
+        "relation": "import",
+        "symbols": [
+          "* as process"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/integration/cli/sync-command.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/sync.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/throwCliUsage#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/sync.ts/_file_#",
+        "targetSymbol": "src/utils/confirm.ts/promptForExplicitConfirmation#",
+        "targetPath": "src/utils/confirm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/sync.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/toArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/sync.ts/_file_#",
+        "targetSymbol": "src/infra/ui.ts/runWithFoldableOutput#",
+        "targetPath": "src/infra/ui.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/sync.ts/_file_#",
+        "targetSymbol": "src/services/repository-admin-service.ts/syncV2AgentInstructionBlocks#",
+        "targetPath": "src/services/repository-admin-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/sync.ts/_file_#",
+        "targetSymbol": "src/infra/execution-checkpoint.ts/ExecutionCheckpointStore#",
+        "targetPath": "src/infra/execution-checkpoint.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/sync.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/ArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/sync.ts/_file_#",
+        "targetSymbol": "src/engines/scanner.ts/Scanner#",
+        "targetPath": "src/engines/scanner.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/sync.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/state.ts/loadLanguageSnapshot#",
+        "targetPath": "src/infra/manifest/state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/sync.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/state.ts/saveLanguageSnapshot#",
+        "targetPath": "src/infra/manifest/state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:39:49.486Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 53,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

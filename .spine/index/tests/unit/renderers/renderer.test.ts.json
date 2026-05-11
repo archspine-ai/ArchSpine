@@ -1,0 +1,204 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/renderers/renderer.test.ts",
+    "contentHash": "8e9e0bcf3b37c1cda9947f6ad0ae5eb3ea6533faf4a20e1ede62cb30fc333513",
+    "skeletonHash": "1fad915065d4e80c52f1b60c3a3a30fd3f6c0aa80ea2e434f9bedee16da38460",
+    "semanticHash": "38c97509b53c35e7999a9efcbcdec8ed70dffed6f31d96b322a19d8f6b14e170",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/renderers"
+  },
+  "semantic": {
+    "role": "Unit test suite for the DocumentationRenderer class and rendering helper functions.",
+    "responsibilities": [
+      "Validates that DocumentationRenderer.render produces correctly structured markdown content for English locale.",
+      "Ensures renderExtraSections and renderStructureList integration with the renderer output.",
+      "Verifies proper file creation and directory handling during rendering via temporary directories."
+    ],
+    "outOfScope": [
+      "Does not test rendering for non-English locales.",
+      "Does not test edge cases like empty input, null sections, or extremely large content.",
+      "Does not test the SVG diagram renderer from arch-diagram-svg-renderer."
+    ],
+    "invariants": [
+      "Test file naming must follow the pattern *.test.ts or *.spec.ts (rule: test-file-suffix).",
+      "The test must clean up temporary directories after each test case."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide comprehensive regression coverage for the DocumentationRenderer module to ensure markdown output stability.",
+      "recentChangeIntent": "Recent commit e9cba38 likely includes maintenance or updates to the test suite; no intentional change in the module contract detected."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Unit test suite for the DocumentationRenderer class and rendering helper functions.",
+        "responsibilities": [
+          "Validates that DocumentationRenderer.render produces correctly structured markdown content for English locale.",
+          "Ensures renderExtraSections and renderStructureList integration with the renderer output.",
+          "Verifies proper file creation and directory handling during rendering via temporary directories."
+        ],
+        "outOfScope": [
+          "Does not test rendering for non-English locales.",
+          "Does not test edge cases like empty input, null sections, or extremely large content.",
+          "Does not test the SVG diagram renderer from arch-diagram-svg-renderer."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/renderer.js'",
+        "symbols": [
+          "DocumentationRenderer",
+          "renderExtraSections",
+          "renderStructureList"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/renderer.ts",
+        "relation": "import",
+        "symbols": [
+          "DocumentationRenderer",
+          "renderExtraSections",
+          "renderStructureList"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/renderers/renderer.test.ts/_file_#",
+        "targetSymbol": "src/infra/renderer.ts/renderExtraSections#",
+        "targetPath": "src/infra/renderer.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/renderers/renderer.test.ts/_file_#",
+        "targetSymbol": "src/infra/renderer.ts/renderStructureList#",
+        "targetPath": "src/infra/renderer.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:10:35.287Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/services/runtime-session.test.ts",
+    "contentHash": "e4974da5d2396f589efdb7154d8eabe205446c48f16b9ea181c138d86c538dd1",
+    "skeletonHash": "b05b1a49a5139e1be05325188e7533d1780ed37442921bf45bed8bdaefe5fa1d",
+    "semanticHash": "b918f3796ae95b528faa078c6c3d7c74144b4cfebd2e9d31a6ae832c06214d4f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/services"
+  },
+  "semantic": {
+    "role": "Test suite for the runWithRuntimeSession helper, validating checkpoint lifecycle, error handling, and lock management behavior.",
+    "responsibilities": [
+      "Verify runWithRuntimeSession emits a warning when checkpoint loading encounters issues.",
+      "Validate that runWithRuntimeSession fails the checkpoint on execution errors and propagates the exception.",
+      "Confirm that runWithRuntimeSession always releases the acquired lock regardless of execution outcome."
+    ],
+    "outOfScope": [
+      "Unit tests for individual repository or service layers.",
+      "Integration or end-to-end (e2e) test coverage across multiple modules.",
+      "Performance, security, or concurrency load testing.",
+      "Tests for other runtime-session exports beyond runWithRuntimeSession."
+    ],
+    "invariants": [
+      "The test file uses the vitest testing framework and follows its conventions (describe/it, beforeEach for mock cleanup).",
+      "Every test case calls vi.fn() and vi.doMock() to isolate the module under test from real dependencies (writer-boundary, spine-gate).",
+      "The test fixture resets all mocks and modules before each test via vi.resetModules() and vi.restoreAllMocks().",
+      "Test file suffix is .test.ts, conforming to the test-file-suffix architectural rule."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain a focused, isolated test suite that validates the runtime session's checkpoint and lock lifecycle contract.",
+      "recentChangeIntent": "No recent commit intent provided for this specific test file."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Test suite for the runWithRuntimeSession helper, validating checkpoint lifecycle, error handling, and lock management behavior.",
+        "responsibilities": [
+          "Verify runWithRuntimeSession emits a warning when checkpoint loading encounters issues.",
+          "Validate that runWithRuntimeSession fails the checkpoint on execution errors and propagates the exception.",
+          "Confirm that runWithRuntimeSession always releases the acquired lock regardless of execution outcome."
+        ],
+        "outOfScope": [
+          "Unit tests for individual repository or service layers.",
+          "Integration or end-to-end (e2e) test coverage across multiple modules.",
+          "Performance, security, or concurrency load testing.",
+          "Tests for other runtime-session exports beyond runWithRuntimeSession."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/services/runtime-session.ts",
+        "relation": "import",
+        "symbols": [
+          "runWithRuntimeSession"
+        ]
+      },
+      {
+        "targetPath": "src/infra/writer-boundary.ts",
+        "relation": "test-double (via vi.doMock)",
+        "symbols": [
+          "withProtectedOutputsWriteAccess"
+        ]
+      },
+      {
+        "targetPath": "src/infra/spine-gate.ts",
+        "relation": "test-double (via vi.doMock)",
+        "symbols": [
+          "unknown"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/services/runtime-session.test.ts/_file_#",
+        "targetSymbol": "src/services/runtime-session.ts/runWithRuntimeSession#",
+        "targetPath": "src/services/runtime-session.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:10:53.250Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

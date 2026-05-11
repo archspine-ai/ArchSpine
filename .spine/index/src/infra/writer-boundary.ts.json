@@ -1,0 +1,176 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/writer-boundary.ts",
+    "contentHash": "52a2735780c2edeaf8cd6540dd0a8af6a0ddae2c60497239c4135dd307f58eba",
+    "skeletonHash": "8515c37618f504161e3e9b72c570c8de81292a239ad3e39f645915af23c1a034",
+    "semanticHash": "3156e534f85e072d2d705099e19c149a17a6a21c078b1566b362d3bc50ab96dd",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure module that enforces write-access protection for critical Spine metadata directories and files, providing a safe gate for file system mutations.",
+    "responsibilities": [
+      "Define protected paths for Spine index and view directories, as well as lock and cache database files.",
+      "Provide a function (withProtectedOutputsWriteAccess) that temporarily allows write operations on protected resources, ensuring permissions are restored afterward.",
+      "Provide a class (SpineWriterBoundary) that validates file paths against protected zones and manages file/directory permission modes (lock/unlock).",
+      "Normalize file paths to ensure consistent protection checks across OS platforms.",
+      "Walk directory trees for recursive permission management."
+    ],
+    "outOfScope": [
+      "File content reading or parsing.",
+      "High-level business logic or service orchestration.",
+      "Any network or external API interaction."
+    ],
+    "invariants": [
+      "The .spine/index, .spine/view directories and .spine/.lock, .spine/cache.db file prefixes are always write-protected.",
+      "Write access to protected resources must go through the provided boundary functions/classes.",
+      "Permission modes for locked directories are 0o755, locked files are 0o444; unlocked directories are 0o755, unlocked files are 0o644."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "To create a stable, safe write-access boundary around sensitive Spine internal data stores, preventing accidental corruption from other modules or external actors.",
+      "recentChangeIntent": "No recent change intent provided beyond the commit message 'chore: apply release gate fixes and sync accumulated source changes', which suggests maintenance consistency rather than a new architectural direction."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "withProtectedOutputsWriteAccess",
+        "description": "Executes an asynchronous operation with write access to protected Spine output directories and files, temporarily relaxing protections, and ensuring they are restored after the operation completes or fails."
+      },
+      {
+        "symbolName": "SpineWriterBoundary",
+        "description": "A class that encapsulates path validation and permission management for Spine's protected file system resources, providing methods to check and modify locked/unlocked states."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure module that enforces write-access protection for critical Spine metadata directories and files, providing a safe gate for file system mutations.",
+        "responsibilities": [
+          "Define protected paths for Spine index and view directories, as well as lock and cache database files.",
+          "Provide a function (withProtectedOutputsWriteAccess) that temporarily allows write operations on protected resources, ensuring permissions are restored afterward.",
+          "Provide a class (SpineWriterBoundary) that validates file paths against protected zones and manages file/directory permission modes (lock/unlock).",
+          "Normalize file paths to ensure consistent protection checks across OS platforms.",
+          "Walk directory trees for recursive permission management."
+        ],
+        "outOfScope": [
+          "File content reading or parsing.",
+          "High-level business logic or service orchestration.",
+          "Any network or external API interaction."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "withProtectedOutputsWriteAccess",
+        "kind": "function",
+        "signature": "withProtectedOutputsWriteAccess(\n  rootDir: string,\n  operation: () => Promise<T>,\n)"
+      },
+      {
+        "name": "SpineWriterBoundary",
+        "kind": "class",
+        "signature": "class SpineWriterBoundary"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "withProtectedOutputsWriteAccess",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/writer-boundary.ts#"
+      },
+      {
+        "name": "SpineWriterBoundary",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/writer-boundary.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/view/view-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/unit/services/runtime-session.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:02:04.914Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

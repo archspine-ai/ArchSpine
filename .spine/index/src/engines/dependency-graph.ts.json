@@ -1,0 +1,241 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/dependency-graph.ts",
+    "contentHash": "19dbdb211c4d3e83aa500317e085414b9548bd5960db5747eb99d7152e68fc8e",
+    "skeletonHash": "7c0804e41c39f2a90d45c7c6581f3d27b4082129753905729ee7312f12fe0de9",
+    "semanticHash": "2d3eda9971d8e4bcc5a1c3958bb189633a41d66def4e41bca5ad08c82f35a2b8",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Engine module that builds a typed dependency graph (knowledge graph) of project modules, deriving module identity, architectural layers, and structural relationships from file paths and architectural rules.",
+    "responsibilities": [
+      "Define the KnowledgeGraphNode, KnowledgeGraphEdge, and KnowledgeGraph data structures that represent module metadata and relationships.",
+      "Provide getModuleId() to derive a canonical module identifier and root-relative path from any file path.",
+      "Provide buildGraph() to scan an index directory, apply architectural rules, and construct the full knowledge graph of the project."
+    ],
+    "outOfScope": [
+      "Does not handle LLM interactions, CLI command processing, service orchestration, or view rendering.",
+      "Does not perform scanning of the actual source files; it works on pre-processed index data."
+    ],
+    "invariants": [
+      "Must not import CLI entrypoint modules (e.g., src/cli/*) or service orchestration modules (src/services/*). Currently satisfies this invariant.",
+      "Must remain a pure analysis engine: no side effects beyond file I/O for reading index data and rules."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provides a reusable, decoupled engine for constructing and querying the project's module dependency graph, enabling downstream analyses such as cycle detection, impact assessment, and architecture validation.",
+      "recentChangeIntent": "Part of a broader refactoring that removed legacy CLI aliases and rebuilt documentation; no direct behavioral changes observed in this file."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "getModuleId",
+        "description": "Transforms a file path into a module identifier and root-relative path for indexing the graph."
+      },
+      {
+        "symbolName": "buildGraph",
+        "description": "Main entry point: reads the index directory and architectural rules, then builds and returns a complete KnowledgeGraph object."
+      },
+      {
+        "symbolName": "KnowledgeGraphNode",
+        "description": "Interface describing a node in the graph, including module id, path, layer, role, and responsibilities."
+      },
+      {
+        "symbolName": "KnowledgeGraphEdge",
+        "description": "Interface describing a directional edge between two nodes, capturing dependency relationships."
+      },
+      {
+        "symbolName": "KnowledgeGraph",
+        "description": "Interface representing the complete graph with nodes, edges, and metadata."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Engine module that builds a typed dependency graph (knowledge graph) of project modules, deriving module identity, architectural layers, and structural relationships from file paths and architectural rules.",
+        "responsibilities": [
+          "Define the KnowledgeGraphNode, KnowledgeGraphEdge, and KnowledgeGraph data structures that represent module metadata and relationships.",
+          "Provide getModuleId() to derive a canonical module identifier and root-relative path from any file path.",
+          "Provide buildGraph() to scan an index directory, apply architectural rules, and construct the full knowledge graph of the project."
+        ],
+        "outOfScope": [
+          "Does not handle LLM interactions, CLI command processing, service orchestration, or view rendering.",
+          "Does not perform scanning of the actual source files; it works on pre-processed index data."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'picomatch'",
+        "symbols": [
+          "picomatch"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "getModuleId",
+        "kind": "function",
+        "signature": "getModuleId(filePath: string, rootDir?: string)"
+      },
+      {
+        "name": "buildGraph",
+        "kind": "function",
+        "signature": "buildGraph(\n  indexDir: string,\n  rules: SpineRuleDocument[] = [],\n  rootDir?: string,\n)"
+      },
+      {
+        "name": "KnowledgeGraphNode",
+        "kind": "interface",
+        "signature": "interface KnowledgeGraphNode"
+      },
+      {
+        "name": "KnowledgeGraphEdge",
+        "kind": "interface",
+        "signature": "interface KnowledgeGraphEdge"
+      },
+      {
+        "name": "KnowledgeGraph",
+        "kind": "interface",
+        "signature": "interface KnowledgeGraph"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "getModuleId",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/dependency-graph.ts#"
+      },
+      {
+        "name": "buildGraph",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/dependency-graph.ts#"
+      },
+      {
+        "name": "KnowledgeGraphNode",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/dependency-graph.ts#"
+      },
+      {
+        "name": "KnowledgeGraphEdge",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/dependency-graph.ts#"
+      },
+      {
+        "name": "KnowledgeGraph",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/dependency-graph.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 5,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "picomatch",
+        "relation": "import",
+        "symbols": [
+          "picomatch"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol/rules.js",
+        "relation": "import",
+        "symbols": [
+          "SpineRuleDocument"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol/index-documents.js",
+        "relation": "import",
+        "symbols": [
+          "Invariant",
+          "PublicSurfaceEntry"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/view/arch-diagram-svg-renderer.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:55:34.683Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 71,
+    "inCycle": true,
+    "cycleId": "src/core → src/types → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

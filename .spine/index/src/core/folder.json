@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/core",
+  "role": "Core pipeline infrastructure and task execution engine for the ArchSpine system.",
+  "responsibility": "Provides the foundational components for pipeline stage orchestration, including configuration validation, standardized error handling, scan policy definition, task state management, task type contracts, and a base class for all pipeline tasks.",
+  "children": [
+    {
+      "filePath": "src/core/config-schema.ts",
+      "role": "Configuration validation layer in the infrastructure module, responsible for validating `SpineConfig` structures against the protocol schema before they are consumed by the rest of the system.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/core/errors.ts",
+      "role": "Central error handling foundation providing standardized error types, error codes, and a conversion utility for the entire ArchSpine system.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/core/pipeline.ts",
+      "role": "Core pipeline execution orchestrator that manages the lifecycle of a `SpineTask`, including checkpointing, metric recording, and error propagation.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/core/scan-policy.ts",
+      "role": "Configuration schema and default resolver for the file scanning policy used in the pipeline. This module defines the contract that controls which files are scanned (source, ignore chain, protocol inclusions/exclusions) and how partial overrides are merged with defaults.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/core/task-state.ts",
+      "role": "Core pipeline state manager: initializes, mutates, and queries the mutable TaskContext for pipeline execution",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/core/task-types.ts",
+      "role": "Core TypeScript type definitions that establish the data contracts for the ArchSpine pipeline stages (scan, extraction, fix, commit, view derivation) and aggregate task state tracking.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/core/task.ts",
+      "role": "Core abstract class defining the contract for all pipeline tasks in ArchSpine. Provides the base structure for task execution, including context management (TaskContext), and dependency injection of core engines (Scanner, Manifest, Aggregator, OutputManager, RuleEngine, ContextEngine, ASTExtractor).",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:13:19.905Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

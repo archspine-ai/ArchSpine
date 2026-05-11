@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "tests/unit/services",
+  "role": "Unit test suites for the service layer of the ArchSpine mirror system, covering resume-aware sync, runtime operations, session management, and view generation.",
+  "responsibility": "Collectively validate that interrupted sync campaigns are resumed correctly, LLM settings are resolved with proper integration, runtime session lifecycle (checkpoints, locks, error handling) behaves as expected, and view derivation and rendering produce conformant outputs with proper schema and lifecycle management.",
+  "children": [
+    {
+      "filePath": "tests/unit/services/resume-services.test.ts",
+      "role": "Unit test suite for the resume-aware services module, verifying that interrupted sync campaigns are re-fed into scan and forced-sync paths, and that the sync pipeline correctly orchestrates scanner, aggregator, and state persistence.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/unit/services/runtime-service.test.ts",
+      "role": "Vitest test suite for the RuntimeService class, validating LLM settings resolution integration with config and secrets.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/unit/services/runtime-session.test.ts",
+      "role": "Test suite for the runWithRuntimeSession helper, validating checkpoint lifecycle, error handling, and lock management behavior.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/unit/services/view",
+      "role": "Test suites for the view producer modules in the ArchSpine mirror system.",
+      "fileKind": "folder"
+    },
+    {
+      "filePath": "tests/unit/services/view-service.test.ts",
+      "role": "Test suite for ViewService providing integration-level verification of view derivation, rendering, and lifecycle management.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:12:16.658Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

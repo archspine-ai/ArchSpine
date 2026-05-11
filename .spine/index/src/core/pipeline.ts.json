@@ -1,0 +1,156 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/core/pipeline.ts",
+    "contentHash": "a68406594c2a5189340819f8d4f144e66e1be4ea150f45947590c9f12940e917",
+    "skeletonHash": "5a297c1a0f26bc7b6090e2c17d16a0bf819b61eae46d0b6365edab66399c492e",
+    "semanticHash": "b58ab12ced361b4d451a033b4757cd1faa259a5c8121ca09eb137afc5ee6bfa5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/core"
+  },
+  "semantic": {
+    "role": "Core pipeline execution orchestrator that manages the lifecycle of a `SpineTask`, including checkpointing, metric recording, and error propagation.",
+    "responsibilities": [
+      "Execute a `SpineTask` by calling `task.execute(input)` with the provided input.",
+      "Record stage start and completion via `ExecutionContextCheckpoint` for observability and recovery.",
+      "Record execution metrics (duration, memory usage) via `recordTaskStageMetric` after each stage.",
+      "Handle task execution failures by marking the stage as failed and logging the error via `RuntimeIO.error()`",
+      "Log informational messages at stage boundaries via `RuntimeIO.info()`"
+    ],
+    "outOfScope": [
+      "Task definition or configuration – `SpineTask` is provided externally.",
+      "Concurrency or parallel execution management – each `run` call is a single task execution.",
+      "Input validation or transformation – the input type `I` is generic and passed through.",
+      "Persistence of metrics beyond the checkpoint scope – metrics are recorded ephemerally."
+    ],
+    "invariants": [
+      "core-pipeline-isolation: The module must not depend on CLI entry code; it only imports from other core modules (task.js, task-state.js), which is compliant."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a standardized, observable runtime for executing pipeline tasks with checkpoint and metric integration, decoupled from any specific task implementation.",
+      "recentChangeIntent": "No recent change intent available from git history beyond release gate fixes, which are unrelated."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "TaskRunner",
+        "description": "Core class that wraps a TaskContext and provides the `run` method to execute SpineTask instances with lifecycle instrumentation. Consumed by pipeline stages and orchestration services."
+      },
+      {
+        "symbolName": "TaskRunner.constructor",
+        "description": "Accepts a TaskContext object, which provides runtime services (checkpoint, IO, metrics) that the runner uses during execution."
+      },
+      {
+        "symbolName": "TaskRunner.run",
+        "description": "Asynchronously executes a SpineTask by calling its `execute` method with the provided input, managing checkpoint start/completion/failure and recording stage metrics. Returns the task's output type O."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core pipeline execution orchestrator that manages the lifecycle of a SpineTask, including checkpointing, metric recording, and error propagation.",
+        "responsibilities": [
+          "Execute a SpineTask by calling task.execute(input) with the provided input.",
+          "Record stage start and completion via ExecutionContextCheckpoint for observability and recovery.",
+          "Record execution metrics (duration, memory usage) via recordTaskStageMetric after each stage.",
+          "Handle task execution failures by marking the stage as failed and logging the error via RuntimeIO.error()",
+          "Log informational messages at stage boundaries via RuntimeIO.info()"
+        ],
+        "outOfScope": [
+          "Task definition or configuration – SpineTask is provided externally.",
+          "Concurrency or parallel execution management – each run call is a single task execution.",
+          "Input validation or transformation – the input type I is generic and passed through.",
+          "Persistence of metrics beyond the checkpoint scope – metrics are recorded ephemerally."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./task-state.js'",
+        "symbols": [
+          "recordTaskStageMetric"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "TaskRunner",
+        "kind": "class",
+        "signature": "class TaskRunner"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "TaskRunner",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/core/pipeline.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "./task-state.js",
+        "relation": "import",
+        "symbols": [
+          "recordTaskStageMetric"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/core/pipeline.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/recordTaskStageMetric#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:55:12.287Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 7,
+    "isHub": true,
+    "hubPercentile": 88,
+    "inCycle": true,
+    "cycleId": "src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

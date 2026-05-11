@@ -1,0 +1,307 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/mcp/setup.ts",
+    "contentHash": "37d3df0e3d4fdd1db736d886338b59f44ca0b6fbf1ff5a6f18abec3e65a2bd30",
+    "skeletonHash": "0f54c6483faaf54caf832a157e53a456883b67e6d6da1297d4b978dbda05c2de",
+    "semanticHash": "6f194d318f563f0378fc0d917788a939ec2b77e40aa7eca0c20ad66af349c2f8",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/mcp"
+  },
+  "semantic": {
+    "role": "Infrastructure facade for discovering, resolving, and writing MCP tool configurations for the ArchSpine CLI.",
+    "responsibilities": [
+      "Resolve the local ArchSpine CLI command path, preferring the project-local node_modules binary.",
+      "Format a resolved command into a display-ready string by joining command and arguments.",
+      "Detect all known MCP tools (e.g., Cline, Roo-Cline, GitHub Copilot, Claude Desktop) by probing predefined config file paths under the repository and home directory.",
+      "Write an MCP configuration JSON file for a given tool, ensuring parent directories exist.",
+      "Filter tools that already have an existing config file, returning those that are missing.",
+      "Orchestrate the full setup: resolve the command, detect tools, write missing configs, and return a structured result with the details of each setup action."
+    ],
+    "outOfScope": [
+      "User interaction like CLI prompts or confirmation dialogs.",
+      "Validation of tool binary existence or version compatibility.",
+      "Runtime execution of MCP servers or daemon management.",
+      "Uninstallation or cleanup of MCP configurations."
+    ],
+    "invariants": [
+      "The module relies only on Node.js built-in modules (fs, path, os) and does not depend on any external packages.",
+      "It writes configuration files in JSON format as expected by each MCP client.",
+      "Tool detection is based on a static set of known config paths; no dynamic discovery.",
+      "The setup result is an object with a success boolean and a flat list of items with name, configPath, and action."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a standardized, reusable facade for setting up MCP configurations for ArchSpine tools, isolating the logic of command resolution and config writing from higher-level orchestration.",
+      "recentChangeIntent": "Initial implementation or enhancement of the MCP configuration setup orchestration, including command resolution, tool detection, and config writing."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "resolveArchSpineCommand",
+        "description": "Resolves the absolute path to the archspine command, checking the local node_modules/.bin directory before falling back. Returns an McpResolvedCommand object with command string and resolveArgs."
+      },
+      {
+        "symbolName": "formatResolvedCommand",
+        "description": "Joins the command and its arguments into a single display string (e.g., 'npx @archspine/cli')."
+      },
+      {
+        "symbolName": "detectTools",
+        "description": "Probes known config paths for each MCP tool (Cline, Roo-Cline, GitHub Copilot, Claude Desktop) and returns a list of ToolConfig objects with tool name and configPath."
+      },
+      {
+        "symbolName": "writeMcpConfig",
+        "description": "Writes the MCP configuration JSON file at the given configPath using the resolved command object, creating parent directories if needed."
+      },
+      {
+        "symbolName": "detectExistingMcpConfigs",
+        "description": "Given a list of ToolConfig, returns only those that currently have an existing config file on disk."
+      },
+      {
+        "symbolName": "setupMcpConfigs",
+        "description": "Orchestrates the full MCP setup: resolves the archspine command, detects tools, writes configs for tools that are missing, and returns a SetupResult with success flag and details for each processed tool."
+      },
+      {
+        "symbolName": "McpResolvedCommand",
+        "description": "Interface describing a resolved command with 'command' (executable name/path) and 'resolveArgs' (array of arguments like 'run', '--config')."
+      },
+      {
+        "symbolName": "ToolConfig",
+        "description": "Interface describing an MCP tool entry with 'name' (e.g., 'cline') and 'configPath' (the full path to the tool's config file)."
+      },
+      {
+        "symbolName": "SetupResultItem",
+        "description": "Interface describing one tool setup result with 'name', 'configPath', and 'action' (e.g., 'write' or 'already_exists')."
+      },
+      {
+        "symbolName": "SetupResult",
+        "description": "Interface describing the overall setup result with 'success' (boolean) and 'items' (array of SetupResultItem)."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure facade for discovering, resolving, and writing MCP tool configurations for the ArchSpine CLI.",
+        "responsibilities": [
+          "Resolve the archspine command path from the project's local node_modules.",
+          "Format a resolved command as a readable string.",
+          "Detect commonly used MCP tools by checking known configuration file paths.",
+          "Write MCP configuration files for tools, creating necessary directories.",
+          "Filter tools that already have an existing configuration.",
+          "Orchestrate the full setup flow: resolve, detect, write, and return results."
+        ],
+        "outOfScope": [
+          "Handling user input or interactive prompts.",
+          "Verifying tool binaries or versions.",
+          "Running MCP servers or managing their processes.",
+          "Removing or cleaning up MCP configurations."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "resolveArchSpineCommand",
+        "kind": "function",
+        "signature": "resolveArchSpineCommand(dir: string)"
+      },
+      {
+        "name": "formatResolvedCommand",
+        "kind": "function",
+        "signature": "formatResolvedCommand(resolved: McpResolvedCommand)"
+      },
+      {
+        "name": "detectTools",
+        "kind": "function",
+        "signature": "detectTools(repoPath: string)"
+      },
+      {
+        "name": "writeMcpConfig",
+        "kind": "function",
+        "signature": "writeMcpConfig(configPath: string, resolved: McpResolvedCommand)"
+      },
+      {
+        "name": "detectExistingMcpConfigs",
+        "kind": "function",
+        "signature": "detectExistingMcpConfigs(tools: ToolConfig[])"
+      },
+      {
+        "name": "setupMcpConfigs",
+        "kind": "function",
+        "signature": "setupMcpConfigs(rootDir: string)"
+      },
+      {
+        "name": "McpResolvedCommand",
+        "kind": "interface",
+        "signature": "interface McpResolvedCommand"
+      },
+      {
+        "name": "ToolConfig",
+        "kind": "interface",
+        "signature": "interface ToolConfig"
+      },
+      {
+        "name": "SetupResultItem",
+        "kind": "interface",
+        "signature": "interface SetupResultItem"
+      },
+      {
+        "name": "SetupResult",
+        "kind": "interface",
+        "signature": "interface SetupResult"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "resolveArchSpineCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/mcp/setup.ts#"
+      },
+      {
+        "name": "formatResolvedCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/mcp/setup.ts#"
+      },
+      {
+        "name": "detectTools",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/mcp/setup.ts#"
+      },
+      {
+        "name": "writeMcpConfig",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/mcp/setup.ts#"
+      },
+      {
+        "name": "detectExistingMcpConfigs",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/mcp/setup.ts#"
+      },
+      {
+        "name": "setupMcpConfigs",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/mcp/setup.ts#"
+      },
+      {
+        "name": "McpResolvedCommand",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/mcp/setup.ts#"
+      },
+      {
+        "name": "ToolConfig",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/mcp/setup.ts#"
+      },
+      {
+        "name": "SetupResultItem",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/mcp/setup.ts#"
+      },
+      {
+        "name": "SetupResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/mcp/setup.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 10,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "node:fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "node:path",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "node:os",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T10:02:42.663Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

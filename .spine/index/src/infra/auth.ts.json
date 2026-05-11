@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/auth.ts",
+    "contentHash": "47a2b4579cea4c891e665e96d1aaea62d466ce9aefea42c365c4f4aea06b0f4d",
+    "skeletonHash": "8d0f7aca95e1110a7d22227312b33902094b1c00246ed26408bdf19763b0e719",
+    "semanticHash": "a1ee7997699c165fb960617ccb32571a1829a7b4990ae7b0b63090bf62ce68d2",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure-level authentication stub providing placeholder login, logout, and a singleton AuthService class for early development and testing.",
+    "responsibilities": [
+      "Expose a public logout function that prints a placeholder message to the console.",
+      "Expose a public login function that accepts a user string and a password (ignored) and prints a placeholder message.",
+      "Provide a singleton AuthService class via a static getInstance method for future injection."
+    ],
+    "outOfScope": [
+      "Real authentication (e.g., OAuth, JWT, SAML).",
+      "Token generation, validation, or refresh.",
+      "Password hashing or storage.",
+      "Session management or persistence.",
+      "Error handling for invalid credentials."
+    ],
+    "invariants": [
+      "All exports must remain importable without side effects.",
+      "Exported symbols must not change name or signature without a major version bump.",
+      "Only console.log is used for output (no side effects on external systems)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a minimal authentication interface for future integration with real authentication backends.",
+      "recentChangeIntent": "Initial stub implementation of auth module to establish the public API surface."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "logout",
+        "description": "Prints a placeholder logout message to the console. Intended as a stub for future real logout logic."
+      },
+      {
+        "symbolName": "login",
+        "description": "Accepts a username and password (both strings), prints a placeholder login message. The password is ignored; this is a stub for real authentication."
+      },
+      {
+        "symbolName": "AuthService",
+        "description": "A class with a static getInstance method returning a new instance. Placeholder for a real authentication service singleton."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure-level authentication stub providing placeholder login, logout, and a singleton AuthService class for early development and testing.",
+        "responsibilities": [
+          "Expose a public logout function that prints a placeholder message to the console.",
+          "Expose a public login function that accepts a user string and a password (ignored) and prints a placeholder message.",
+          "Provide a singleton AuthService class via a static getInstance method for future injection."
+        ],
+        "outOfScope": [
+          "Real authentication (e.g., OAuth, JWT, SAML).",
+          "Token generation, validation, or refresh.",
+          "Password hashing or storage.",
+          "Session management or persistence.",
+          "Error handling for invalid credentials."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "AuthService",
+        "kind": "class",
+        "signature": "class AuthService"
+      },
+      {
+        "name": "logout",
+        "kind": "function",
+        "signature": "() => ..."
+      },
+      {
+        "name": "login",
+        "kind": "function",
+        "signature": "(user: string, _pass: string) => ..."
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "AuthService",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/auth.ts#"
+      },
+      {
+        "name": "logout",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/auth.ts#"
+      },
+      {
+        "name": "login",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/auth.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 3,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:56:22.336Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

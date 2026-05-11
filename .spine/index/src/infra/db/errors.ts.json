@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db/errors.ts",
+    "contentHash": "0f4aa608b4bcd4ef4869268c2c2015349c7edf3cf05bc0ef1fb731f45d0cf9d7",
+    "skeletonHash": "088f7f70f0b1201f038c9d6ca2c42d21372ba1ae2963eff677b1b8eb6f16653b",
+    "semanticHash": "7c45e2991b85c1d3ed9e0884c2c4b9d603c8d28c4d20fe86f738c337242fa787",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/db"
+  },
+  "semantic": {
+    "role": "Utility function that maps low-level database errors into typed ArchSpineError instances for the runtime DB initialization and opening stages.",
+    "responsibilities": [
+      "Maps unknown or third-party errors into domain-specific ArchSpineError instances based on error message content.",
+      "Passes through existing ArchSpineError instances unchanged to preserve error type information.",
+      "Identifies read-only file system errors and maps them to RuntimeDbReadonly error code.",
+      "Identifies general database operation failures and maps them to RuntimeDbOpenFailed or RuntimeDbInitFailed based on the stage parameter."
+    ],
+    "outOfScope": [
+      "Database connection lifecycle management (opening/closing connections).",
+      "Database schema operations (migrations, table creation).",
+      "General error handling not related to runtime database operations.",
+      "Logging or reporting of errors beyond mapping."
+    ],
+    "invariants": [
+      "The function always returns an instance of ArchSpineError.",
+      "The function only processes errors for stages 'open' or 'init'.",
+      "The function does not throw; it always returns an ArchSpineError."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized error mapping layer for the runtime database subsystem to ensure consistent error types and messages.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era. This file is part of the initial error handling infrastructure for the database runtime."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "mapRuntimeDbError",
+        "description": "Maps an unknown error to an ArchSpineError appropriate for database runtime operations. Called by database opening and initialization logic to convert low-level errors into domain-specific typed errors."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Utility function that maps low-level database errors into typed ArchSpineError instances for the runtime DB initialization and opening stages.",
+        "responsibilities": [
+          "Maps unknown or third-party errors into domain-specific ArchSpineError instances based on error message content.",
+          "Passes through existing ArchSpineError instances unchanged to preserve error type information.",
+          "Identifies read-only file system errors and maps them to RuntimeDbReadonly error code.",
+          "Identifies general database operation failures and maps them to RuntimeDbOpenFailed or RuntimeDbInitFailed based on the stage parameter."
+        ],
+        "outOfScope": [
+          "Database connection lifecycle management (opening/closing connections).",
+          "Database schema operations (migrations, table creation).",
+          "General error handling not related to runtime database operations.",
+          "Logging or reporting of errors beyond mapping."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "mapRuntimeDbError",
+        "kind": "function",
+        "signature": "mapRuntimeDbError(\n  error: unknown,\n  stage: 'open' | 'init',\n  dbPath: string,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "mapRuntimeDbError",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/errors.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/db/runtime.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/db/errors.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/ArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:57:51.883Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

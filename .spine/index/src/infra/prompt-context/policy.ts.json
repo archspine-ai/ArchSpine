@@ -1,0 +1,146 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-context/policy.ts",
+    "contentHash": "c761931dfa0eeb683d682c22eb3d9a4fde16b126e48c21d75f7d43ed4f72ccc1",
+    "skeletonHash": "5c4fd77ec59ed6dd01505e2c30524c66eeb4759d8e14189da8ae8379c84a9d5a",
+    "semanticHash": "15c23e4f41925a46e925b81739dc67ce9b35f6b8cb4ab48c439cb3ddb29ff1b2",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt-context"
+  },
+  "semantic": {
+    "role": "Infra utility providing default validation policy selection for prompt tasks, mapping task mode to 'strict' or 'default' with optional override.",
+    "responsibilities": [
+      "Define default validate policy mapping from PromptTaskMode to ValidatePolicy (strict for 'validate' mode, default otherwise).",
+      "Resolve validate policy by accepting an optional explicit policy, falling back to the default computed from task mode.",
+      "Expose a stable, reusable function for policy determination used by upstream prompt infrastructure."
+    ],
+    "outOfScope": [
+      "Does not perform task validation or execution.",
+      "Does not build or format prompts.",
+      "Does not handle errors or edge cases beyond the type contract.",
+      "Does not manage policy storage or persistence."
+    ],
+    "invariants": [
+      "defaultValidatePolicyForTask always returns 'strict' when taskMode is 'validate', otherwise 'default'.",
+      "resolveValidatePolicy must return the provided validatePolicy if present, else the result of defaultValidatePolicyForTask.",
+      "Both functions accept only PromptTaskMode and ValidatePolicy types as defined in the local types module.",
+      "The ValidatePolicy type must be either 'strict' or 'default' (as enforced by the type system)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a small, stateless utility to centralize and harden the policy selection logic for prompt validation, preventing scattered conditional checks across the codebase.",
+      "recentChangeIntent": "No specific recent change intent provided."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "defaultValidatePolicyForTask",
+        "description": "Returns the default validation policy for a given prompt task mode: 'strict' for 'validate' mode, 'default' otherwise. Used as the fallback when no explicit policy is set."
+      },
+      {
+        "symbolName": "resolveValidatePolicy",
+        "description": "Resolves the effective validation policy by using an explicit policy if provided, otherwise falling back to the default computed by defaultValidatePolicyForTask. Called by prompt builders to determine validation strictness."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infra utility providing default validation policy selection for prompt tasks, mapping task mode to 'strict' or 'default' with optional override.",
+        "responsibilities": [
+          "Define default validate policy mapping from PromptTaskMode to ValidatePolicy (strict for 'validate' mode, default otherwise).",
+          "Resolve validate policy by accepting an optional explicit policy, falling back to the default computed from task mode.",
+          "Expose a stable, reusable function for policy determination used by upstream prompt infrastructure."
+        ],
+        "outOfScope": [
+          "Does not perform task validation or execution.",
+          "Does not build or format prompts.",
+          "Does not handle errors or edge cases beyond the type contract.",
+          "Does not manage policy storage or persistence."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "defaultValidatePolicyForTask",
+        "kind": "function",
+        "signature": "defaultValidatePolicyForTask(taskMode: PromptTaskMode)"
+      },
+      {
+        "name": "resolveValidatePolicy",
+        "kind": "function",
+        "signature": "resolveValidatePolicy(\n  taskMode: PromptTaskMode,\n  validatePolicy?: ValidatePolicy,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "defaultValidatePolicyForTask",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/policy.ts#"
+      },
+      {
+        "name": "resolveValidatePolicy",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/policy.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/prompt/types.ts",
+        "relation": "import",
+        "symbols": [
+          "PromptTaskMode",
+          "ValidatePolicy"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/prompt-context/policy.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/defaultValidatePolicyForTask#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/policy.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-policy.ts/defaultValidatePolicyForTask#",
+        "targetPath": "src/infra/prompt-policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:00:47.969Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

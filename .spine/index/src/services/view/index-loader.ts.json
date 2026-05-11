@@ -1,0 +1,220 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/index-loader.ts",
+    "contentHash": "e91992edd56819659c6a888ddc610d4b89e2b4107b9eaaaebce435e97260d721",
+    "skeletonHash": "41da33560a40321973eb260e832b13643ccaddd224dca1f35ec6c91980b109f5",
+    "semanticHash": "a4c0da46329c954061d4dad02de0e6ecf2e51c26d9e5af19141742ccf5c66353",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "View service responsible for loading and caching indexed Spine units (folders, projects, source files) from the filesystem index documents.",
+    "responsibilities": [
+      "Load indexed units from the .spine/index directory recursively using isCompatibleIndexDocument and readIndexDocument.",
+      "Cache the loaded units to avoid redundant filesystem I/O across view generation calls.",
+      "Sort folders by descending child count (and alphabetically) to prioritize folders with most structure for architecture diagram generation.",
+      "Limit the number of folders processed for architecture diagrams to MAX_ARCH_DIAGRAM_FOLDERS (12).",
+      "Report warnings via RuntimeIO when index documents fail compatibility checks or read errors occur."
+    ],
+    "outOfScope": [
+      "Does not handle manifest loading or writing.",
+      "Does not perform database queries or LLM interactions.",
+      "Does not manage runtime session state or checkpoint recovery.",
+      "Does not render views or generate output -- provides data to view renderers."
+    ],
+    "invariants": [
+      "Must only be used within the view service layer (src/services/view/).",
+      "Dependencies limited to fs, path, infra modules (index-reader, runtime-io), and protocol types.",
+      "Imported functions isCompatibleIndexDocument and readIndexDocument must come from ../../infra/index-reader.js."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized, cached data source for view services to access indexed units without redundant filesystem scans.",
+      "recentChangeIntent": "0c6bd73 ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era (likely stable; no recent changes detected in this file)"
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ViewIndexLoader",
+        "description": "Service class that loads, caches, and serves indexed Spine units (folders/projects/source files) for view generation. Primary consumer interface for view renderers to access the index."
+      },
+      {
+        "symbolName": "ViewIndexLoader.constructor",
+        "description": "Constructs a ViewIndexLoader with the root directory path and optional RuntimeIO for warnings."
+      },
+      {
+        "symbolName": "ViewIndexLoader.loadIndexedUnits (public, inferred)",
+        "description": "Returns the cached list of LoadedUnit objects, reloading from the filesystem if not yet cached. Sorts folders by child count."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "View service responsible for loading and caching indexed Spine units (folders, projects, source files) from the filesystem index documents.",
+        "responsibilities": [
+          "Load indexed units from the .spine/index directory recursively using isCompatibleIndexDocument and readIndexDocument.",
+          "Cache the loaded units to avoid redundant filesystem I/O across view generation calls.",
+          "Sort folders by descending child count (and alphabetically) to prioritize folders with most structure for architecture diagram generation.",
+          "Limit the number of folders processed for architecture diagrams to MAX_ARCH_DIAGRAM_FOLDERS (12).",
+          "Report warnings via RuntimeIO when index documents fail compatibility checks or read errors occur."
+        ],
+        "outOfScope": [
+          "Does not handle manifest loading or writing.",
+          "Does not perform database queries or LLM interactions.",
+          "Does not manage runtime session state or checkpoint recovery.",
+          "Does not render views or generate output -- provides data to view renderers."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../infra/index-reader.js'",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "ViewIndexLoader",
+        "kind": "class",
+        "signature": "class ViewIndexLoader"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ViewIndexLoader",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/services/view/index-loader.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../infra/index-reader.js",
+        "relation": "import",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ]
+      },
+      {
+        "targetPath": "../../infra/runtime-io.js",
+        "relation": "import-type",
+        "symbols": [
+          "RuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "../../types/protocol.js",
+        "relation": "import-type",
+        "symbols": [
+          "SpineFolderUnit",
+          "SpineProjectUnit",
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import-namespace",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import-namespace",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/view/view-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "src/tasks/view-derivation.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/view/index-loader.ts/_file_#",
+        "targetSymbol": "src/infra/index-reader.ts/isCompatibleIndexDocument#",
+        "targetPath": "src/infra/index-reader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/view/index-loader.ts/_file_#",
+        "targetSymbol": "src/infra/index-reader.ts/reportIndexReadIssueOnce#",
+        "targetPath": "src/infra/index-reader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:03:33.840Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

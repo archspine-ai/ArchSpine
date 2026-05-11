@@ -1,0 +1,230 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/infra/db-modules.test.ts",
+    "contentHash": "4836a28bbab858d5a84e554bdfa4b264c2e858ef098fd70a23705dba3ac29d47",
+    "skeletonHash": "b20a10bcc37424acc4af9cabaf1c1084214e72845e018c64066baf9397c2443c",
+    "semanticHash": "c7bc689d39b53f39113e46b1195a16fc9024adf24caa0662588ea005ddb24f81",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/infra"
+  },
+  "semantic": {
+    "role": "Test suite for database infrastructure modules, validating schema initialization and table structure.",
+    "responsibilities": [
+      "Verify that the runtime schema creates all required tables: files, symbols, usage_logs, violations, drift_events.",
+      "Validate that the files table has the expected columns (file_path, content_hash, etc.)."
+    ],
+    "outOfScope": [
+      "Does not test actual CRUD operations on the database.",
+      "Does not cover error handling or edge cases in schema creation."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (enforced by rule test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain regression coverage for the database schema initialization.",
+      "recentChangeIntent": "The test suite was retained while the atlas file (.md) was removed; the test itself appears unchanged."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Test suite for database infrastructure modules, validating schema initialization and table structure.",
+        "responsibilities": [
+          "Verify that the runtime schema creates all required tables: files, symbols, usage_logs, violations, drift_events.",
+          "Validate that the files table has the expected columns (file_path, content_hash, etc.)."
+        ],
+        "outOfScope": [
+          "Does not test actual CRUD operations on the database.",
+          "Does not cover error handling or edge cases in schema creation."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/db/batch.js'",
+        "symbols": [
+          "commitBatch"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/db/repositories/drift.js'",
+        "symbols": [
+          "getDriftHistory"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/db/repositories/files.js'",
+        "symbols": [
+          "getFileDocs",
+          "getTrackedFiles"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/db/schema.js'",
+        "symbols": [
+          "initializeRuntimeSchema"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "type SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'better-sqlite3'",
+        "symbols": [
+          "Database"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "better-sqlite3",
+        "relation": "import",
+        "symbols": [
+          "Database"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/db/batch.js",
+        "relation": "import",
+        "symbols": [
+          "commitBatch"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/db/repositories/drift.js",
+        "relation": "import",
+        "symbols": [
+          "getDriftHistory"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/db/repositories/files.js",
+        "relation": "import",
+        "symbols": [
+          "getFileDocs",
+          "getTrackedFiles"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/db/schema.js",
+        "relation": "import",
+        "symbols": [
+          "initializeRuntimeSchema"
+        ]
+      },
+      {
+        "targetPath": "../../../src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SpineUnit"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/infra/db-modules.test.ts/_file_#",
+        "targetSymbol": "src/infra/db/schema.ts/initializeRuntimeSchema#",
+        "targetPath": "src/infra/db/schema.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/db-modules.test.ts/_file_#",
+        "targetSymbol": "src/infra/db/batch.ts/commitBatch#",
+        "targetPath": "src/infra/db/batch.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/db-modules.test.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getTrackedFiles#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/db-modules.test.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getFileDocs#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/db-modules.test.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/drift.ts/getDriftHistory#",
+        "targetPath": "src/infra/db/repositories/drift.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/db-modules.test.ts/_file_#",
+        "targetSymbol": "examples/demo-project/src/infra/database.ts/Database#",
+        "targetPath": "examples/demo-project/src/infra/database.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:09:50.725Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

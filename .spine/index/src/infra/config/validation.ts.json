@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/config/validation.ts",
+    "contentHash": "8367ae2eeab04b9ab2fb2e323f4a742da1d0581eed44aa377d9c2b2452d0bbd0",
+    "skeletonHash": "40e2384a4be7045af390064f5e7b234c543cb71e8bee4665e6f01ae2f9feabc8",
+    "semanticHash": "43d72a0291f4217673728e734f7cb7cc7c41a6f1f801b58a8833602b04ddde49",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/config"
+  },
+  "semantic": {
+    "role": "Unknown role",
+    "responsibilities": [],
+    "outOfScope": [],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../types/protocol.js'",
+        "symbols": [
+          "CURRENT_CONFIG_SCHEMA_VERSION"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../core/errors.js'",
+        "symbols": [
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../core/config-schema.js'",
+        "symbols": [
+          "resolveSpineConfig"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./types.js'",
+        "symbols": [
+          "SpineConfig"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "validateConfigPayload",
+        "kind": "function",
+        "signature": "validateConfigPayload(configPath: string, payload: unknown)"
+      },
+      {
+        "name": "buildConfigValidationWarning",
+        "kind": "function",
+        "signature": "buildConfigValidationWarning(configPath: string, issues: string[])"
+      },
+      {
+        "name": "buildConfigParseWarning",
+        "kind": "function",
+        "signature": "buildConfigParseWarning(configPath: string, reason: string)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "validateConfigPayload",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/config/validation.ts#"
+      },
+      {
+        "name": "buildConfigValidationWarning",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/config/validation.ts#"
+      },
+      {
+        "name": "buildConfigParseWarning",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/config/validation.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/config/validation.ts/_file_#",
+        "targetSymbol": "src/infra/config-validation.ts/resolveSpineConfig#",
+        "targetPath": "src/infra/config-validation.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/config/validation.ts/_file_#",
+        "targetSymbol": "src/core/config-schema.ts/resolveSpineConfig#",
+        "targetPath": "src/core/config-schema.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:57:23.505Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

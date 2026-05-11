@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/cli/init",
+  "role": "Handles the interactive initialization and bootstrap of a new ArchSpine project, encompassing repository setup, runtime configuration, and type definitions.",
+  "responsibility": "Orchestrates the complete bootstrap sequence: prompts for artifact strategy, git hooks, user attribution (name/email), LLM credentials, language discovery, initial build, and provides typed contracts for init options and results.",
+  "children": [
+    {
+      "filePath": "src/cli/init/repository-bootstrap.ts",
+      "role": "CLI command handler for interactive repository initialization in ArchSpine's bootstrap flow.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/cli/init/runtime-bootstrap.ts",
+      "role": "CLI runtime bootstrap orchestrator for initializing a new ArchSpine project: coordinates LLM credential setup, language discovery, and optional build run during `spine init`.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/cli/init/types.ts",
+      "role": "Type-contract module for the CLI `init` command, defining the interfaces and type aliases that govern the shape of initialization options, bootstrap results, and status enums consumed by init-related entrypoints and services.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:12:04.266Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

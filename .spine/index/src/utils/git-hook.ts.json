@@ -1,0 +1,189 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/utils/git-hook.ts",
+    "contentHash": "0017ff4cf25d4c92e9e307f67b338858d40990369be92981e9e6b7c50280ddbf",
+    "skeletonHash": "630eabcf8fe0fd99159928b9c1fa65711efb983415d4ad6d78b900a157aa4914",
+    "semanticHash": "5b82f38433ddd6ebad6aab8d5f031db27c5925b9f33353a8ef0c732e4ffb0215",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/utils"
+  },
+  "semantic": {
+    "role": "Git hook lifecycle manager responsible for installing, updating, and removing the ArchSpine pre-commit hook in a Git repository.",
+    "responsibilities": [
+      "Install or update the pre-commit hook script with logic to discover the spine CLI via multiple fallback paths.",
+      "Backup any existing pre-commit hook before modifying it, using the FileSystemManager for safe file operations.",
+      "Remove the ArchSpine pre-commit hook cleanly when requested, leaving the hooks directory intact.",
+      "Provide idempotent installation: skip if the hook is already up-to-date, update if outdated, append if no managed block exists."
+    ],
+    "outOfScope": [
+      "Does not run the pre-commit hook itself; only installs/uninstalls the script.",
+      "Does not manage other git hooks (e.g., post-commit, pre-push).",
+      "Does not enforce that the hook is enabled; that is determined by CLI configuration at hook runtime."
+    ],
+    "invariants": [
+      "The managed hook script must always be delimited by the ArchSpine block markers (`# >>> ArchSpine pre-commit >>>` and `# <<< ArchSpine pre-commit <<<`).",
+      "The `.git/hooks` directory must exist for installation to succeed; otherwise the operation returns a skip result."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a programmatic interface for managing the pre-commit git hook that integrates ArchSpine's sync operation into the developer workflow, ensuring the semantic mirror is updated on every commit.",
+      "recentChangeIntent": "Updated the hook script to include localized Chinese progress messages for sync operations, added backup logic for existing hooks via FileSystemManager, and improved the spine CLI discovery fallback chain."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "InstallGitHookResult",
+        "description": "Discriminated union type representing the outcome of a git hook installation: success with status ('installed', 'updated', 'appended', 'standardized') or skip reason ('skipped-no-git-root') with a message."
+      },
+      {
+        "symbolName": "installGitHook",
+        "description": "Installs or updates the ArchSpine pre-commit hook script in `.git/hooks/pre-commit`. Returns an InstallGitHookResult indicating whether the hook was installed, updated, or skipped."
+      },
+      {
+        "symbolName": "uninstallGitHook",
+        "description": "Removes the ArchSpine pre-commit hook from `.git/hooks/pre-commit` if it exists. Returns a boolean indicating success."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Git hook lifecycle manager responsible for installing, updating, and removing the ArchSpine pre-commit hook in a Git repository.",
+        "responsibilities": [
+          "Install or update the pre-commit hook script with logic to discover the spine CLI via multiple fallback paths.",
+          "Backup any existing pre-commit hook before modifying it, using the FileSystemManager for safe file operations.",
+          "Remove the ArchSpine pre-commit hook cleanly when requested, leaving the hooks directory intact.",
+          "Provide idempotent installation: skip if the hook is already up-to-date, update if outdated, append if no managed block exists."
+        ],
+        "outOfScope": [
+          "Does not run the pre-commit hook itself; only installs/uninstalls the script.",
+          "Does not manage other git hooks (e.g., post-commit, pre-push).",
+          "Does not enforce that the hook is enabled; that is determined by CLI configuration at hook runtime."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./fs.js'",
+        "symbols": [
+          "FileSystemManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "installGitHook",
+        "kind": "function",
+        "signature": "installGitHook()"
+      },
+      {
+        "name": "uninstallGitHook",
+        "kind": "function",
+        "signature": "uninstallGitHook()"
+      },
+      {
+        "name": "InstallGitHookResult",
+        "kind": "type",
+        "signature": "type InstallGitHookResult"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "installGitHook",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/git-hook.ts#"
+      },
+      {
+        "name": "uninstallGitHook",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/git-hook.ts#"
+      },
+      {
+        "name": "InstallGitHookResult",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/git-hook.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./fs.js",
+        "relation": "import",
+        "symbols": [
+          "FileSystemManager"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:06:32.287Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 82,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

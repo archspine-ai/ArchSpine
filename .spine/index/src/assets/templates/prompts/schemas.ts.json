@@ -1,0 +1,169 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/assets/templates/prompts/schemas.ts",
+    "contentHash": "b26fa82fc5223a6d53a87051eef6fed37ca44b940e45f193ef3cfaf92f60c8a0",
+    "skeletonHash": "cc6d29a86dc4c23b8828108d583d63164df7bf3026393183d9e8556f8a035492",
+    "semanticHash": "670810149a372820380e9577a23c0873d212995c8d43cc482832b64c72e189fa",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/assets/templates/prompts"
+  },
+  "semantic": {
+    "role": "Schema definition file providing the canonical output contract for all ArchSpine summary units (source files, documents, configs, folders, projects).",
+    "responsibilities": [
+      "Define the exact JSON structure for source file summaries, including semantic metadata, graph dependencies, and localized descriptions.",
+      "Define the JSON structure for document summaries, focusing on narrative purpose and role.",
+      "Define the JSON structure for configuration file summaries, designed for configuration intent and usage.",
+      "Define the JSON structure for folder/directory summaries, describing collective purpose and component responsibility.",
+      "Define the JSON structure for project-level summaries, capturing high-level vision and module orchestration."
+    ],
+    "outOfScope": [
+      "Does not implement any validation logic to enforce the schema.",
+      "Does not generate or process actual summary data; it is purely a specification.",
+      "Does not define runtime behavior, serialization, or parsing utilities.",
+      "Does not include schemas for other potential unit types such as test files, assets, or binaries."
+    ],
+    "invariants": [
+      "Every summary unit must conform to the structure defined by the corresponding schema in this file.",
+      "Each schema is a string constant that must be parseable as a valid JSON object.",
+      "The localized block within each schema must contain at least one language key with natural prose descriptions."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish a formal, standardized output contract for all ArchSpine summary units, ensuring consistency and interoperability across the system.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era, marking the initial release with these schema definitions."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "sourceFileSchema",
+        "description": "Defines the JSON schema for summarizing a source code file, including semantic role, responsibilities, public surface entry list, drift detection, dependency graph, and localized descriptions. Required by any component that produces or validates source file summaries."
+      },
+      {
+        "symbolName": "documentSchema",
+        "description": "Defines the JSON schema for summarizing a document (e.g., Markdown file), focusing on narrative role, purpose, and content description. Used by document summary generators."
+      },
+      {
+        "symbolName": "configSchema",
+        "description": "Defines the JSON schema for summarizing a configuration file, capturing its functional role and usage context. Used by config summary generators."
+      },
+      {
+        "symbolName": "folderSchema",
+        "description": "Defines the JSON schema for summarizing a directory, including collective role and component responsibilities. Used by folder summary generators."
+      },
+      {
+        "symbolName": "projectSchema",
+        "description": "Defines the JSON schema for a project-level summary, including a high-level vision statement and comprehensive module orchestration description. Used by project summary generators."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Schema definition file providing the canonical output contract for all ArchSpine summary units (source files, documents, configs, folders, projects).",
+        "responsibilities": [
+          "Define the exact JSON structure for source file summaries, including semantic metadata, graph dependencies, and localized descriptions.",
+          "Define the JSON structure for document summaries, focusing on narrative purpose and role.",
+          "Define the JSON structure for configuration file summaries, designed for configuration intent and usage.",
+          "Define the JSON structure for folder/directory summaries, describing collective purpose and component responsibility.",
+          "Define the JSON structure for project-level summaries, capturing high-level vision and module orchestration."
+        ],
+        "outOfScope": [
+          "Does not implement any validation logic to enforce the schema.",
+          "Does not generate or process actual summary data; it is purely a specification.",
+          "Does not define runtime behavior, serialization, or parsing utilities.",
+          "Does not include schemas for other potential unit types such as test files, assets, or binaries."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "sourceFileSchema",
+        "kind": "variable",
+        "signature": "const sourceFileSchema"
+      },
+      {
+        "name": "documentSchema",
+        "kind": "variable",
+        "signature": "const documentSchema"
+      },
+      {
+        "name": "configSchema",
+        "kind": "variable",
+        "signature": "const configSchema"
+      },
+      {
+        "name": "folderSchema",
+        "kind": "variable",
+        "signature": "const folderSchema"
+      },
+      {
+        "name": "projectSchema",
+        "kind": "variable",
+        "signature": "const projectSchema"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "sourceFileSchema",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/assets/templates/prompts/schemas.ts#"
+      },
+      {
+        "name": "documentSchema",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/assets/templates/prompts/schemas.ts#"
+      },
+      {
+        "name": "configSchema",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/assets/templates/prompts/schemas.ts#"
+      },
+      {
+        "name": "folderSchema",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/assets/templates/prompts/schemas.ts#"
+      },
+      {
+        "name": "projectSchema",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/assets/templates/prompts/schemas.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 5,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:52:28.764Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 47,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

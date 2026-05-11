@@ -1,0 +1,223 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/features/god-mode.test.ts",
+    "contentHash": "c5da78910239c2ac7f946102d0cca6b1cb4049c46048276323b829846aaadbe6",
+    "skeletonHash": "c98244cfd3aebb3c21b7484c130f2f99716d921a2f6a220718eb4f86d8e8a4fc",
+    "semanticHash": "945bc21797c8b91a0eaa1afc98a8de303e9365ae20c04a42591cdd60913c047d",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/features"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite for the God mode orchestration and SyncService runner",
+    "responsibilities": [
+      "Set up a temporary project directory with a minimal .spine configuration and source file.",
+      "Execute the SyncService synchronizer to build the initial spine index.",
+      "Invoke runGodMode to generate the god-mode output (dossier) for the repository.",
+      "Verify that the generated dossier file exists and contains expected content like file basenames.",
+      "Clean up the temporary directory after each test case."
+    ],
+    "outOfScope": [
+      "Unit tests for individual functions or classes outside god mode and sync service integration.",
+      "End-to-end tests involving real LLM providers or network access.",
+      "Performance or load testing.",
+      "Manual testing or documentation generation."
+    ],
+    "invariants": [
+      "Test file suffix must be .test.ts or .spec.ts (rule test-file-suffix). This file ends with .test.ts, satisfying the rule.",
+      "Temporary directories must be cleaned up in afterEach to avoid disk leaks."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide automated integration-level validation for the god mode feature (runGodMode) and the sync service pipeline to ensure they work correctly together in a real filesystem environment.",
+      "recentChangeIntent": "Not determined from available data; the file is marked as deleted in the current branch."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite for the God mode orchestration and SyncService runner",
+        "responsibilities": [
+          "Set up a temporary project directory with a minimal .spine configuration and source file.",
+          "Execute the SyncService synchronizer to build the initial spine index.",
+          "Invoke runGodMode to generate the god-mode output (dossier) for the repository.",
+          "Verify that the generated dossier file exists and contains expected content like file basenames.",
+          "Clean up the temporary directory after each test case."
+        ],
+        "outOfScope": [
+          "Unit tests for individual functions or classes outside god mode and sync service integration.",
+          "End-to-end tests involving real LLM providers or network access.",
+          "Performance or load testing.",
+          "Manual testing or documentation generation."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/services/sync-service.js'",
+        "symbols": [
+          "SyncService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/engines/god.js'",
+        "symbols": [
+          "runGodMode"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/__mocks__/llm.js'",
+        "symbols": [
+          "MockClient"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 11,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/engines/god.ts",
+        "relation": "import",
+        "symbols": [
+          "runGodMode"
+        ]
+      },
+      {
+        "targetPath": "src/services/sync-service.ts",
+        "relation": "import",
+        "symbols": [
+          "SyncService"
+        ]
+      },
+      {
+        "targetPath": "src/infra/__mocks__/llm.ts",
+        "relation": "import",
+        "symbols": [
+          "MockClient"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/features/god-mode.test.ts/_file_#",
+        "targetSymbol": "src/engines/god.ts/runGodMode#",
+        "targetPath": "src/engines/god.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/features/god-mode.test.ts/_file_#",
+        "targetSymbol": "src/services/sync-service.ts/SyncService#",
+        "targetPath": "src/services/sync-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/features/god-mode.test.ts/_file_#",
+        "targetSymbol": "src/infra/__mocks__/llm.ts/MockClient#",
+        "targetPath": "src/infra/__mocks__/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/features/god-mode.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/mock.ts/MockClient#",
+        "targetPath": "src/infra/llm/providers/mock.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:09:21.271Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

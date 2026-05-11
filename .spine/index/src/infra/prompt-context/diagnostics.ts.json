@@ -1,0 +1,164 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-context/diagnostics.ts",
+    "contentHash": "4de69744d263b70566c54463d86ae93cbdf8a4f9e4fbf78c4d8d29b70fd3e4df",
+    "skeletonHash": "55d8f9d980362b9f9985cf3e284c24a2c9b651aa3a90721b5d287cb3ddf1e3aa",
+    "semanticHash": "643c25da32c28189d7d439770458bd8b30d9dd15ff1bc969f2846f5516ae4062",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt-context"
+  },
+  "semantic": {
+    "role": "Prompt context diagnostics module that produces structured metadata about which rule blocks and dependency candidates were retained or dropped during context assembly. Provides transparent introspection into trimming and selection decisions.",
+    "responsibilities": [
+      "Build a diagnostic report of retained and dropped rule blocks by comparing raw and final rule data using rule-ID extraction and block splitting.",
+      "Build a diagnostic report of dependency selection decisions by mapping context resolution diagnostics against the final rendered context data.",
+      "Serve as a stable entry point for external modules (e.g., prompt builder, context engine) to obtain diagnostic snapshots of the context assembly process."
+    ],
+    "outOfScope": [
+      "Actual trimming or selection logic (delegated to trim.ts and context engine).",
+      "Logging, rendering, or persistence of diagnostics.",
+      "Rule block splitting algorithm itself (imported from trim.js)."
+    ],
+    "invariants": [
+      "The module must remain pure and side-effect-free; it only transforms input strings and diagnostics data into structured diagnostic output.",
+      "Diagnostic structures must faithfully reflect the actual retained/dropped blocks and candidates as determined by the raw vs final data comparison.",
+      "Rule ID extraction must match the canonical '[Rule: ...]' format used by the rule loading pipeline."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a diagnostic layer that exposes the decision-making of context assembly, enabling agents and developers to audit why specific rules or dependencies were included or excluded in the prompt context.",
+      "recentChangeIntent": "Part of the ArchSpine v1.0.0 governance release, introducing diagnostic introspection into the semantic context assembly pipeline to improve transparency and debuggability."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "buildRuleBlockDiagnostics",
+        "description": "Compares raw and final rule block data to produce a diagnostic object listing which rule blocks were retained and which were dropped, each tagged with their rule ID."
+      },
+      {
+        "symbolName": "buildDependencySelectionDiagnostics",
+        "description": "Takes context resolution diagnostics (retained dependency candidates) and the final context string, then produces a diagnostic object mapping which candidates were included or excluded in the final context."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "A diagnostics module within the prompt-context subsystem. It builds structured reports that show which rule blocks and dependency candidates survived trimming and selection during context assembly, offering transparency into how the prompt context is composed.",
+        "responsibilities": [
+          "Compare the raw rule data before trimming against the final rule data after trimming to identify which rule blocks (by ID) were retained and which were dropped.",
+          "Cross-reference the dependency candidates that were originally retained during context resolution with the final rendered context string to determine which ones were actually included.",
+          "Expose these diagnostics via two pure functions so that calling code (e.g., the prompt builder or context engine) can attach diagnostic metadata to the assembled context."
+        ],
+        "outOfScope": [
+          "The actual trimming logic (splitRuleBlocks comes from trim.js).",
+          "Any output formatting, logging, or writing of diagnostics to disk or console.",
+          "Logic for context resolution or relevance scoring of dependencies (handled by context.ts)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./trim.js'",
+        "symbols": [
+          "splitRuleBlocks"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "buildRuleBlockDiagnostics",
+        "kind": "function",
+        "signature": "buildRuleBlockDiagnostics(\n  rawRuleData: string,\n  finalRuleData: string,\n)"
+      },
+      {
+        "name": "buildDependencySelectionDiagnostics",
+        "kind": "function",
+        "signature": "buildDependencySelectionDiagnostics(\n  dependencyDiagnostics: ContextResolutionDiagnostics | undefined,\n  finalContextData: string,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "buildRuleBlockDiagnostics",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/diagnostics.ts#"
+      },
+      {
+        "name": "buildDependencySelectionDiagnostics",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/diagnostics.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../engines/context.js",
+        "relation": "import",
+        "symbols": [
+          "ContextResolutionDiagnostics"
+        ]
+      },
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "PromptRelevanceDiagnostics"
+        ]
+      },
+      {
+        "targetPath": "./trim.js",
+        "relation": "import",
+        "symbols": [
+          "splitRuleBlocks"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/unit/core/prompt-context-modules.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/prompt-context/diagnostics.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/trim.ts/splitRuleBlocks#",
+        "targetPath": "src/infra/prompt-context/trim.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:00:10.535Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/repair-policy.ts",
+    "contentHash": "0174122c8cbd7cc766434779da9268f3d8a25b5614b9833171fceaf94c1247e5",
+    "skeletonHash": "81b08e91dd232831926729e4a86fdca99e6a20ae731e54917202ec2faf44321d",
+    "semanticHash": "d049cafbe65da393dc0a8029f1f0585ef38a783b9db5bf37cca1c6662eeb9709",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Repair policy decision engine for the Spine gate output mutation check. Determines whether to perform targeted repair, prompt a full rebuild, or require a full rebuild.",
+    "responsibilities": [
+      "Evaluate a ProtectedOutputMutationReport and produce a RepairPolicyDecision.",
+      "Classify each changed/added/removed path as a source file, aggregate-level path, or unmapped path.",
+      "Determine if aggregate-level paths are sufficiently covered by targeted source files.",
+      "Compute the appropriate repair action (targeted-repair, prompt-full-rebuild, require-full-rebuild).",
+      "Provide a safe non-interactive downgrade option when conditions allow."
+    ],
+    "outOfScope": [
+      "Executing the repair or any file mutations.",
+      "Interacting with LLMs or other external services.",
+      "Persisting the decision or managing state across sessions.",
+      "Handling errors or recovery from failed repairs."
+    ],
+    "invariants": [
+      "The evaluateRepairPolicy function always returns a valid RepairPolicyDecision object.",
+      "The decision is deterministic given the same input report."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provides a policy layer for deciding how to respond to output mutations in the Spine gate, enabling safe automated repair decisions.",
+      "recentChangeIntent": "Recent commit 'ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era' indicates this is part of the initial stable release of the repair policy engine with the core governance capabilities."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "evaluateRepairPolicy",
+        "description": "Evaluates a ProtectedOutputMutationReport and returns a RepairPolicyDecision indicating the repair action (targeted-repair, prompt-full-rebuild, or require-full-rebuild), along with targeted source files, aggregate-level paths, and a possible safe non-interactive downgrade. This is the primary entry point for the repair policy decision."
+      },
+      {
+        "symbolName": "RepairPolicyDecision",
+        "description": "Interface defining the output of the repair policy: the chosen action, reason, violation count, targeted source files, aggregate-level paths, unmapped paths, and an optional safe non-interactive downgrade proposal."
+      },
+      {
+        "symbolName": "RepairPolicyAction",
+        "description": "Union type of three possible repair actions: 'targeted-repair', 'prompt-full-rebuild', 'require-full-rebuild'. Used by RepairPolicyDecision."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Repair policy decision engine for the Spine gate output mutation check. Determines whether to perform targeted repair, prompt a full rebuild, or require a full rebuild.",
+        "responsibilities": [
+          "Evaluate a ProtectedOutputMutationReport and produce a RepairPolicyDecision.",
+          "Classify each changed/added/removed path as a source file, aggregate-level path, or unmapped path.",
+          "Determine if aggregate-level paths are sufficiently covered by targeted source files.",
+          "Compute the appropriate repair action (targeted-repair, prompt-full-rebuild, require-full-rebuild).",
+          "Provide a safe non-interactive downgrade option when conditions allow."
+        ],
+        "outOfScope": [
+          "Executing the repair or any file mutations.",
+          "Interacting with LLMs or other external services.",
+          "Persisting the decision or managing state across sessions.",
+          "Handling errors or recovery from failed repairs."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "evaluateRepairPolicy",
+        "kind": "function",
+        "signature": "evaluateRepairPolicy(report: ProtectedOutputMutationReport)"
+      },
+      {
+        "name": "RepairPolicyDecision",
+        "kind": "interface",
+        "signature": "interface RepairPolicyDecision"
+      },
+      {
+        "name": "RepairPolicyAction",
+        "kind": "type",
+        "signature": "type RepairPolicyAction"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "evaluateRepairPolicy",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/repair-policy.ts#"
+      },
+      {
+        "name": "RepairPolicyDecision",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/repair-policy.ts#"
+      },
+      {
+        "name": "RepairPolicyAction",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/repair-policy.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 3,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./spine-gate.js",
+        "relation": "import",
+        "symbols": [
+          "ProtectedOutputMutationReport"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:01:32.745Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

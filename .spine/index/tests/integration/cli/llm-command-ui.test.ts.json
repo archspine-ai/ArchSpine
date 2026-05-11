@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integration/cli/llm-command-ui.test.ts",
+    "contentHash": "a1099d177d0cebd6e9fabf777ea1e10875918107d000ecd152f7b41dbdfdd18e",
+    "skeletonHash": "f9af30b950512d694012b5a1b64723e0a38c578cf31103e48bfb06dfc679f239",
+    "semanticHash": "cb906b52f6afafafd70b12806dde0568253f853667220c4636a4a4a35b4f6dd8",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/integration/cli"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite for the LLM command UI output formatting and status display",
+    "responsibilities": [
+      "Verifies that the LLM status output hides internal generation pipeline details (e.g., 'Generation Flow', 'Validate Split Stage')",
+      "Verifies that the status output correctly displays the effective provider and model from user config",
+      "Verifies that the API key is masked in the output, using '***' substitution",
+      "Verifies that the generation strategy label is shown with proper understanding (e.g., 'Analyze in Parallel')",
+      "Provides test coverage for the `printLLMStatus` function exported by `src/cli/commands/llm.ts`"
+    ],
+    "outOfScope": [
+      "Not part of the production module contract; test-only code",
+      "Does not define or export any symbols consumed by other modules"
+    ],
+    "invariants": [
+      "This file is a test suite and does not contain production logic",
+      "All tests use vitest mocking to avoid real console output"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide automated regression coverage for the LLM status command's UI rendering, ensuring sensitive data is masked and internal implementation details are not leaked to users.",
+      "recentChangeIntent": "No changes specific to this file were identified in the recent commit; the file remains consistent with prior behavior."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite for the LLM command UI output formatting and status display",
+        "responsibilities": [
+          "Verifies that the LLM status output hides internal generation pipeline details such as 'Generation Flow' and 'Validate Split Stage'.",
+          "Verifies that the status output correctly displays the effective provider and model as resolved from user configuration.",
+          "Verifies that the API key is masked in the output using '***' substitution and does not leak the actual secret.",
+          "Verifies that the generation strategy label appears with human-readable understanding, for example 'Analyze in Parallel'.",
+          "Provides test coverage for the `printLLMStatus` function exported by `src/cli/commands/llm.ts`."
+        ],
+        "outOfScope": [
+          "Not part of the production module contract; this file is test-only.",
+          "Does not define or export any symbols consumed by other modules."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/cli/commands/llm.js'",
+        "symbols": [
+          "executeLlmCommand",
+          "printLLMStatus"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/cli/commands/llm.ts",
+        "relation": "import",
+        "symbols": [
+          "executeLlmCommand",
+          "printLLMStatus"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/integration/cli/llm-command-ui.test.ts/_file_#",
+        "targetSymbol": "src/cli/commands/llm.ts/printLLMStatus#",
+        "targetPath": "src/cli/commands/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/cli/llm-command-ui.test.ts/_file_#",
+        "targetSymbol": "src/cli/commands/llm.ts/executeLlmCommand#",
+        "targetPath": "src/cli/commands/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:07:25.476Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

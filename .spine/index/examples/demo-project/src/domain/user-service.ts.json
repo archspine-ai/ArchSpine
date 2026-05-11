@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "examples/demo-project/src/domain/user-service.ts",
+    "contentHash": "4eb9ab856d5a9cf9d6290d54455aa8a66cec1f50ca692a0c047d743015ec958d",
+    "skeletonHash": "f2926f2dde8194a7d98ff9381928c595a7a9001fd49211c34080bd2e234d6454",
+    "semanticHash": "c23c598b7dd29b0051c3d18e18871f3a4a73482e8223fc2ac6097b1910603c6b",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "examples/demo-project/src/domain"
+  },
+  "semantic": {
+    "role": "Domain service managing in-memory user entities with creation and lookup operations.",
+    "responsibilities": [
+      "Define the User entity interface (id, name, email).",
+      "Provide UserService class for in-memory CRUD of User objects.",
+      "Generate unique user IDs using random strings.",
+      "Expose methods to create new users and retrieve users by ID."
+    ],
+    "outOfScope": [
+      "Persistence beyond in-memory storage (no database).",
+      "Authentication or authorization logic.",
+      "Email validation or uniqueness constraints.",
+      "User update or deletion operations (not evident from usage)."
+    ],
+    "invariants": [
+      "User IDs generated are unique per UserService instance (random).",
+      "User list is never persisted across process restarts."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a simple in-memory domain service for user management, suitable for prototyping or isolated testing.",
+      "recentChangeIntent": "Initial creation of UserService and User interface."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "User",
+        "description": "Interface describing the shape of a user entity with id, name, and email fields. Used by consumers to type-check user data."
+      },
+      {
+        "symbolName": "UserService",
+        "description": "Class providing in-memory user storage, creation (with auto-generated IDs), and retrieval by ID. Consumed by handlers that need user CRUD."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Domain service managing in-memory user entities with creation and lookup operations.",
+        "responsibilities": [
+          "Define the User entity interface (id, name, email).",
+          "Provide UserService class for in-memory CRUD of User objects.",
+          "Generate unique user IDs using random strings.",
+          "Expose methods to create new users and retrieve users by ID."
+        ],
+        "outOfScope": [
+          "Persistence beyond in-memory storage (no database).",
+          "Authentication or authorization logic.",
+          "Email validation or uniqueness constraints.",
+          "User update or deletion operations (not evident from usage)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "UserService",
+        "kind": "class",
+        "signature": "class UserService"
+      },
+      {
+        "name": "User",
+        "kind": "interface",
+        "signature": "interface User"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "UserService",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "examples/demo-project/src/domain/user-service.ts#"
+      },
+      {
+        "name": "User",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "examples/demo-project/src/domain/user-service.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:50:27.732Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 12,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

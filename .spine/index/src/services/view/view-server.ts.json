@@ -1,0 +1,221 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/view-server.ts",
+    "contentHash": "522744d0b599717a757e779649311a7331cf20432de3e826aafc95fd81962270",
+    "skeletonHash": "e88f7561353ed652c8617d09a52de3823d5d2c764ac064d7b24355f07d26dc9b",
+    "semanticHash": "812d43bdb35cd567bec3788b23fed55a3b7c4dc7801abac674185899c7172588",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "Lightweight HTTP server that serves generated .spine view pages (Markdown→HTML) for local browser preview during development.",
+    "responsibilities": [
+      "Starts an HTTP server on a user-configurable port (default 7899) for browsing generated view documentation.",
+      "Converts Markdown files from the .spine/pages directory to HTML using a subset Markdown-to-HTML converter embedded in the module.",
+      "Serves static files (HTML, SVG, JSON, etc.) from the root of the .spine directory.",
+      "Handles error responses with 404 (file not found) and 500 (internal errors).",
+      "Returns the http.Server instance to allow callers to gracefully stop the server."
+    ],
+    "outOfScope": [
+      "Does not provide real-time file watching or hot-reload — pages are static snapshots.",
+      "Does not implement authentication, authorization, or CORS policy.",
+      "Does not proxy or serve content outside the .spine directory.",
+      "Is not intended for production deployment; lacks load balancing, caching, or security hardening."
+    ],
+    "invariants": [
+      "The server port must be configurable; default is 7899.",
+      "The server must serve files from the .spine directory specified in ViewServerOptions.",
+      "Markdown files must be converted to HTML before sending to clients.",
+      "The server must handle multiple concurrent requests.",
+      "The server must handle errors gracefully without crashing the process."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a self-contained local HTTP server for previewing generated .spine documentation views as a developer convenience.",
+      "recentChangeIntent": "Refactor to remove legacy CLI aliases; rebuild documentation; fix schema and tests. No direct impact on this file."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "startViewServer",
+        "description": "Starts a lightweight HTTP server that serves generated view pages from the .spine directory; returns the http.Server instance for external shutdown control."
+      },
+      {
+        "symbolName": "ViewServerOptions",
+        "description": "Configuration interface containing the path to the .spine directory (spineDir) and an optional port number (port, defaults to 7899)."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Lightweight HTTP server that serves generated .spine view pages (Markdown→HTML) for local browser preview during development.",
+        "responsibilities": [
+          "Starts an HTTP server on a user-configurable port (default 7899) for browsing generated view documentation.",
+          "Converts Markdown files from the .spine/pages directory to HTML using a subset Markdown-to-HTML converter embedded in the module.",
+          "Serves static files (HTML, SVG, JSON, etc.) from the root of the .spine directory.",
+          "Handles error responses with 404 (file not found) and 500 (internal errors).",
+          "Returns the http.Server instance to allow callers to gracefully stop the server."
+        ],
+        "outOfScope": [
+          "Does not provide real-time file watching or hot-reload — pages are static snapshots.",
+          "Does not implement authentication, authorization, or CORS policy.",
+          "Does not proxy or serve content outside the .spine directory.",
+          "Is not intended for production deployment; lacks load balancing, caching, or security hardening."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'http'",
+        "symbols": [
+          "* as http"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'http'",
+        "symbols": [
+          "* as http"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "startViewServer",
+        "kind": "function",
+        "signature": "startViewServer(options: ViewServerOptions)"
+      },
+      {
+        "name": "ViewServerOptions",
+        "kind": "interface",
+        "signature": "interface ViewServerOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "startViewServer",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/view-server.ts#"
+      },
+      {
+        "name": "ViewServerOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/view/view-server.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "http",
+        "relation": "import",
+        "symbols": [
+          "* as http"
+        ]
+      },
+      {
+        "targetPath": "../../types/view.js",
+        "relation": "import",
+        "symbols": [
+          "IPublicSurfaceViewItem",
+          "IRiskHotspotViewItem"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:04:21.945Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

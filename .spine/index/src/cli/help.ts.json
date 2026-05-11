@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/help.ts",
+    "contentHash": "20363f44934a0421bd3a627b6f01f588d8ba6e9a45eafa113fffe58d2baa2bd5",
+    "skeletonHash": "3c502d13da02e198f46f8491b801ed8b4e6dbdb4d91a10d1c31be1d09c220f79",
+    "semanticHash": "55ad0c8ec2e43b72efa96d9f177632b6061ada115ce08c9470bec44f4481ea27",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli"
+  },
+  "semantic": {
+    "role": "CLI help and dashboard display utility – provides formatted console output for the ArchSpine CLI dashboard and help commands.",
+    "responsibilities": [
+      "Print the ArchSpine product dashboard (sync status, enabled views, active rules) by delegating to DashboardService.",
+      "Print general CLI usage help text listing all available commands.",
+      "Print detailed help text for a specific CLI command based on command name."
+    ],
+    "outOfScope": [
+      "Business logic, persistence, pipeline orchestration – this module formats and displays precomputed data only."
+    ],
+    "invariants": [
+      "Must remain a thin CLI presentation layer; all data retrieval must be delegated to service modules.",
+      "Must not import or implement any pipeline, core, or persistence logic directly."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized help system for CLI commands and product status display, keeping presentation logic separate from business logic.",
+      "recentChangeIntent": "Refactored help output to remove legacy command aliases and update documentation references to match the refactored CLI structure."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "printDashboard",
+        "description": "Prints the ArchSpine product dashboard, including sync status, enabled views, and number of active rules, by fetching data from the DashboardService."
+      },
+      {
+        "symbolName": "printGeneralHelp",
+        "description": "Prints general CLI usage help text listing all available commands."
+      },
+      {
+        "symbolName": "printCommandHelp",
+        "description": "Prints detailed help text for a specific CLI command identified by name (e.g., 'init', 'scan')."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI help and dashboard display utility – provides formatted console output for the ArchSpine CLI dashboard and help commands.",
+        "responsibilities": [
+          "Print the ArchSpine product dashboard (sync status, enabled views, active rules) by delegating to DashboardService.",
+          "Print general CLI usage help text listing all available commands.",
+          "Print detailed help text for a specific CLI command based on command name."
+        ],
+        "outOfScope": [
+          "Business logic, persistence, pipeline orchestration – this module formats and displays precomputed data only."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../services/dashboard-service.js'",
+        "symbols": [
+          "getDashboardData"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "printDashboard",
+        "kind": "function",
+        "signature": "printDashboard(rootDir: string)"
+      },
+      {
+        "name": "printGeneralHelp",
+        "kind": "function",
+        "signature": "printGeneralHelp()"
+      },
+      {
+        "name": "printCommandHelp",
+        "kind": "function",
+        "signature": "printCommandHelp(cmd: string)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "printDashboard",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/help.ts#"
+      },
+      {
+        "name": "printGeneralHelp",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/help.ts#"
+      },
+      {
+        "name": "printCommandHelp",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/help.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 3,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../services/dashboard-service.js",
+        "relation": "import",
+        "symbols": [
+          "getDashboardData"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/integration/boundaries/help-boundary-contract.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:54:17.335Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 53,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

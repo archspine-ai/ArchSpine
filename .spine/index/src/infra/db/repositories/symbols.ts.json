@@ -1,0 +1,176 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db/repositories/symbols.ts",
+    "contentHash": "e2b726939226b0d409041851421b700744a354f039fc87a96f04660e53e78e3f",
+    "skeletonHash": "0588b95c3da317c8f4d7569418ce051924610d95073db627965b6f646d44e2d8",
+    "semanticHash": "76210576992291918f5960f8c4ac736c0c72a59fef3b34fcee34f55ed10aa1f9",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/db/repositories"
+  },
+  "semantic": {
+    "role": "Data Access Object (DAO) for low-level SQLite operations on the symbols table. Provides CRUD and search against a persistent symbol index.",
+    "responsibilities": [
+      "Manage the 'symbols' table in a SQLite database: insert, delete, query, and search.",
+      "Provide cache invalidation by deleting all rows.",
+      "Support batch insertion of symbol-file-path associations.",
+      "Enable symbol resolution (file paths for a given symbol name).",
+      "Support fuzzy search over symbol names with configurable limit."
+    ],
+    "outOfScope": [
+      "Higher-level orchestration or business logic that coordinates symbol indexing across files.",
+      "Scheduling or triggering of symbol re-indexing; this file only provides atomic data access operations.",
+      "Direct exposure of the database connection or schema; callers should use this repository rather than raw SQL."
+    ],
+    "invariants": [
+      "All public functions accept a better-sqlite3 Database instance as first parameter.",
+      "The symbols table must exist with at least columns name and file_path; INSERT OR IGNORE is used to avoid duplicates.",
+      "Search uses LIKE with wildcards; no indexing assumptions beyond SQLite defaults."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, low-level repository for symbol data access within the infra layer, isolating SQLite queries for the symbols table.",
+      "recentChangeIntent": "No recent changes directly observed; but the broader v1.0.0 release of ArchSpine suggests this file is part of a stable symbol indexing foundation for architectural governance."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "invalidateCache",
+        "description": "Deletes all rows from the symbols table, effectively clearing the symbol cache. Called when full re-indexing is required."
+      },
+      {
+        "symbolName": "addFileExports",
+        "description": "Inserts a batch of symbol names associated with a file path into the symbols table, ignoring duplicates. Used to record exported symbols from a file during scanning."
+      },
+      {
+        "symbolName": "clearFileExports",
+        "description": "Deletes all symbol entries for a specific file path. Called when a file is removed or re-scanned to clear stale symbols."
+      },
+      {
+        "symbolName": "resolveSymbol",
+        "description": "Queries the symbols table for all file paths that export the given symbol name. Returns an array of file paths."
+      },
+      {
+        "symbolName": "searchSymbols",
+        "description": "Searches the symbols table for symbol names matching a LIKE query (case-insensitive), returning the top matches up to a configurable limit."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Data Access Object (DAO) for low-level SQLite operations on the symbols table. Provides CRUD and search against a persistent symbol index.",
+        "responsibilities": [
+          "Manage the 'symbols' table in a SQLite database: insert, delete, query, and search.",
+          "Provide cache invalidation by deleting all rows.",
+          "Support batch insertion of symbol-file-path associations.",
+          "Enable symbol resolution (file paths for a given symbol name).",
+          "Support fuzzy search over symbol names with configurable limit."
+        ],
+        "outOfScope": [
+          "Higher-level orchestration or business logic that coordinates symbol indexing across files.",
+          "Scheduling or triggering of symbol re-indexing; this file only provides atomic data access operations.",
+          "Direct exposure of the database connection or schema; callers should use this repository rather than raw SQL."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "invalidateCache",
+        "kind": "function",
+        "signature": "invalidateCache(db: Database.Database)"
+      },
+      {
+        "name": "addFileExports",
+        "kind": "function",
+        "signature": "addFileExports(db: Database.Database, filePath: string, exports: string[])"
+      },
+      {
+        "name": "clearFileExports",
+        "kind": "function",
+        "signature": "clearFileExports(db: Database.Database, filePath: string)"
+      },
+      {
+        "name": "resolveSymbol",
+        "kind": "function",
+        "signature": "resolveSymbol(db: Database.Database, symbol: string)"
+      },
+      {
+        "name": "searchSymbols",
+        "kind": "function",
+        "signature": "searchSymbols(\n  db: Database.Database,\n  query: string,\n  limit: number = 50,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "invalidateCache",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/symbols.ts#"
+      },
+      {
+        "name": "addFileExports",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/symbols.ts#"
+      },
+      {
+        "name": "clearFileExports",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/symbols.ts#"
+      },
+      {
+        "name": "resolveSymbol",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/symbols.ts#"
+      },
+      {
+        "name": "searchSymbols",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/symbols.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 5,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "better-sqlite3",
+        "relation": "import",
+        "symbols": [
+          "Database"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:58:03.537Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

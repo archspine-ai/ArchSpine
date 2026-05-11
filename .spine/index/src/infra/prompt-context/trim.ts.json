@@ -1,0 +1,228 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-context/trim.ts",
+    "contentHash": "4bdec71f382e487fcfe963f9682f9674bac417db16fa3136a005001d175169e4",
+    "skeletonHash": "dec9188677b6bd2afd550a728e5738e5fea26454977d72caab800b947fa8a998",
+    "semanticHash": "a3b9834c2eb5385385e9941a58c414fc2d52f435adaa6b1f9ae4771750234eb3",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt-context"
+  },
+  "semantic": {
+    "role": "Infrastructure utility module providing text truncation and compaction functions for prompt context budget enforcement.",
+    "responsibilities": [
+      "Trim a string to a maximum number of lines, appending truncation indicator.",
+      "Trim a string to a maximum number of characters, preserving whole lines up to the limit.",
+      "Split concatenated rule data into individual rule blocks using a delimiter pattern.",
+      "Trim a concatenated rule string to a character limit, keeping complete rule blocks.",
+      "Trim sectioned context (separated by double newlines) to a character limit, preserving whole sections.",
+      "Compact a FileSkeleton object into a budget-aware string representation for prompt inclusion.",
+      "Trim the previous semantic context object to a maximum number of responsibility entries."
+    ],
+    "outOfScope": [
+      "Any I/O operations such as file reading or network calls.",
+      "Any interaction with LLM providers or prompt sending.",
+      "Any UI rendering or CLI output formatting.",
+      "Any database or persistence logic.",
+      "Any domain-specific validation or business rule enforcement."
+    ],
+    "invariants": [
+      "All exported functions are pure side-effect-free transformations of their inputs.",
+      "The module does not depend on any configuration or mutable state.",
+      "Budget parameters are always respected – trimming never exceeds the specified maximum."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide stable, composable trimming utilities that allow prompt construction to respect token/character budgets without leaking truncation logic into higher layers.",
+      "recentChangeIntent": "Finalize the prompt context trimming system for the v1.0.0 release, ensuring all context types (lines, characters, rule blocks, sections, file skeletons, previous semantic) have dedicated budget-aware truncation functions."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "trimLines",
+        "description": "Truncates a string to a specified number of lines, appending '...' if truncated. Used to cap multi-line text in prompts."
+      },
+      {
+        "symbolName": "trimTextByChars",
+        "description": "Truncates a string to a maximum number of characters while keeping whole lines. Used for character-based budget enforcement."
+      },
+      {
+        "symbolName": "splitRuleBlocks",
+        "description": "Splits a concatenated string of rule definitions into an array of individual rule blocks, based on the '[Rule: ' delimiter."
+      },
+      {
+        "symbolName": "trimRuleBlocks",
+        "description": "Truncates concatenated rule definitions to a character limit, preserving complete rule blocks (not splitting mid-rule)."
+      },
+      {
+        "symbolName": "trimSectionedContext",
+        "description": "Truncates context data separated by two newlines to a maximum character count, keeping whole sections intact."
+      },
+      {
+        "symbolName": "compactSkeletonForPrompt",
+        "description": "Converts a FileSkeleton and prompt budgets into a compact string representation suitable for inclusion in a prompt, respecting budget limits."
+      },
+      {
+        "symbolName": "trimPreviousSemantic",
+        "description": "Truncates the PreviousSemanticContext object to a maximum number of responsibility entries, reducing context size for large histories."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure utility module providing text truncation and compaction functions for prompt context budget enforcement.",
+        "responsibilities": [
+          "Trim a string to a maximum number of lines, appending truncation indicator.",
+          "Trim a string to a maximum number of characters, preserving whole lines up to the limit.",
+          "Split concatenated rule data into individual rule blocks using a delimiter pattern.",
+          "Trim a concatenated rule string to a character limit, keeping complete rule blocks.",
+          "Trim sectioned context (separated by double newlines) to a character limit, preserving whole sections.",
+          "Compact a FileSkeleton object into a budget-aware string representation for prompt inclusion.",
+          "Trim the previous semantic context object to a maximum number of responsibility entries."
+        ],
+        "outOfScope": [
+          "Any I/O operations such as file reading or network calls.",
+          "Any interaction with LLM providers or prompt sending.",
+          "Any UI rendering or CLI output formatting.",
+          "Any database or persistence logic.",
+          "Any domain-specific validation or business rule enforcement."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "trimLines",
+        "kind": "function",
+        "signature": "trimLines(value: string, maxLines: number)"
+      },
+      {
+        "name": "trimTextByChars",
+        "kind": "function",
+        "signature": "trimTextByChars(value: string, maxChars: number)"
+      },
+      {
+        "name": "splitRuleBlocks",
+        "kind": "function",
+        "signature": "splitRuleBlocks(ruleData: string)"
+      },
+      {
+        "name": "trimRuleBlocks",
+        "kind": "function",
+        "signature": "trimRuleBlocks(ruleData: string, maxChars: number)"
+      },
+      {
+        "name": "trimSectionedContext",
+        "kind": "function",
+        "signature": "trimSectionedContext(contextData: string, maxChars: number)"
+      },
+      {
+        "name": "compactSkeletonForPrompt",
+        "kind": "function",
+        "signature": "compactSkeletonForPrompt(\n  skeleton: FileSkeleton,\n  budgets: PromptBudgets,\n)"
+      },
+      {
+        "name": "trimPreviousSemantic",
+        "kind": "function",
+        "signature": "trimPreviousSemantic(\n  previousSemantic: PreviousSemanticContext | undefined,\n  maxResponsibilities: number,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "trimLines",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/trim.ts#"
+      },
+      {
+        "name": "trimTextByChars",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/trim.ts#"
+      },
+      {
+        "name": "splitRuleBlocks",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/trim.ts#"
+      },
+      {
+        "name": "trimRuleBlocks",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/trim.ts#"
+      },
+      {
+        "name": "trimSectionedContext",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/trim.ts#"
+      },
+      {
+        "name": "compactSkeletonForPrompt",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/trim.ts#"
+      },
+      {
+        "name": "trimPreviousSemantic",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/trim.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 7,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/ast/extractor.ts",
+        "relation": "import",
+        "symbols": [
+          "FileSkeleton"
+        ]
+      },
+      {
+        "targetPath": "src/infra/llm/base.ts",
+        "relation": "import",
+        "symbols": [
+          "PreviousSemanticContext"
+        ]
+      },
+      {
+        "targetPath": "src/infra/prompt-context/types.ts",
+        "relation": "import",
+        "symbols": [
+          "PromptBudgets"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:00:49.051Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

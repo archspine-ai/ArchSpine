@@ -1,0 +1,196 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/rules-loader.ts",
+    "contentHash": "afbd8fcf9abb7da864c3e525ad6005f264e95736dbc79c61e52ac7ec5afd7bb3",
+    "skeletonHash": "0ac17654d3efaab1fe477cd645aee926b0c94c90e995cc43150a684ae9b3e83a",
+    "semanticHash": "914964d33528d79f3a16b49257eefaa604ac76d4dfee59f96bc8048abcac5c64",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure rule loader that reads and parses rule documents from the filesystem into typed SpineRuleDocument objects.",
+    "responsibilities": [
+      "Load all YAML/Markdown rule files from a specified directory on disk.",
+      "Parse YAML frontmatter and Markdown body using gray-matter to extract metadata such as title, severity, and summary.",
+      "Construct and return an array of LoadedRuleFile entries, each containing the file path and a fully populated SpineRuleDocument with defaults for missing fields.",
+      "Return an empty array if the specified rules directory does not exist."
+    ],
+    "outOfScope": [
+      "Rule validation or enforcement – this module only loads raw rule documents without verifying their correctness.",
+      "Runtime parsing of rule content beyond the initial load phase.",
+      "Rule migration or schema version upgrades beyond recording the current schema version."
+    ],
+    "invariants": [
+      "This module is part of the infra layer and must expose a stable, low-level public surface (only loadRulesFromDir).",
+      "Callers should import from this module's public export rather than reaching into internal helpers like slugifyRuleId or the LoadedRuleFile interface."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a thin, filesystem-bound adapter that translates on-disk YAML/Markdown rule files into the core SpineRuleDocument type, decoupling rule storage format from rule consumption.",
+      "recentChangeIntent": "No recent change intent could be inferred from the provided git intent (commit message '4ded6c5 1' is too vague). The module appears stable."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "loadRulesFromDir",
+        "description": "Reads all YAML/Markdown rule files from a given directory, parses them into SpineRuleDocument objects, and returns an array of LoadedRuleFile entries. Used by the rule engine to load project-specific rules."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure rule loader that reads and parses rule documents from the filesystem into typed SpineRuleDocument objects.",
+        "responsibilities": [
+          "Load all YAML/Markdown rule files from a specified directory on disk.",
+          "Parse YAML frontmatter and Markdown body using gray-matter to extract metadata such as title, severity, and summary.",
+          "Construct and return an array of LoadedRuleFile entries, each containing the file path and a fully populated SpineRuleDocument with defaults for missing fields.",
+          "Return an empty array if the specified rules directory does not exist."
+        ],
+        "outOfScope": [
+          "Rule validation or enforcement – this module only loads raw rule documents without verifying their correctness.",
+          "Runtime parsing of rule content beyond the initial load phase.",
+          "Rule migration or schema version upgrades beyond recording the current schema version."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SpineRuleDocument"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'gray-matter'",
+        "symbols": [
+          "matter"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'js-yaml'",
+        "symbols": [
+          "yaml"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "loadRulesFromDir",
+        "kind": "function",
+        "signature": "loadRulesFromDir(rulesDir: string)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "loadRulesFromDir",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/rules-loader.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SpineRuleDocument"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "gray-matter",
+        "relation": "import",
+        "symbols": [
+          "matter"
+        ]
+      },
+      {
+        "targetPath": "js-yaml",
+        "relation": "import",
+        "symbols": [
+          "yaml"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/unit/infra/rules-loader.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:01:40.205Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

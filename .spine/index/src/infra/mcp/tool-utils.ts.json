@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/mcp/tool-utils.ts",
+    "contentHash": "8f3f2226e9321b15533a73ff95c053b76250d40f2203e40f598866f8a993dd53",
+    "skeletonHash": "48ee6682a701b63b39cb8f317c4caaf8ef7a6fed4716d1ac2c0eb5e2e1c80a12",
+    "semanticHash": "42750f2abc43902b1d56399394e3386fd8b8baa268e597b3e26743a9c71fd0e6",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/mcp"
+  },
+  "semantic": {
+    "role": "Infrastructure facade providing path sanitization and containment validation for MCP tool file inputs.",
+    "responsibilities": [
+      "Validate that tool-provided file paths are safe: reject null bytes, absolute paths, and path-traversal (\"..\") segments.",
+      "Normalize and return a relative file path that can be safely used within the project workspace.",
+      "Assert that a resolved absolute path remains within a designated parent directory to prevent directory escapes.",
+      "Throw typed ArchSpineError with ErrorCodes.McpToolInvalidArguments when validation fails."
+    ],
+    "outOfScope": [
+      "File I/O operations (read, write, exists).",
+      "MCP tool request routing or argument parsing beyond the filePath parameter.",
+      "Workspace or project metadata retrieval.",
+      "Domain or business logic."
+    ],
+    "invariants": [
+      "Every returned path is relative and normalized (posix forward slashes, no null bytes, no absolute prefix).",
+      "Every call to assertPathWithinParent guarantees the resolved path is a child of the supplied parent directory.",
+      "All validation failures throw ArchSpineError with the McpToolInvalidArguments error code."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Isolate and secure file path handling from MCP tools, providing a stable validation surface that internal callers can depend on.",
+      "recentChangeIntent": "No direct evidence of change to this module from the provided git history (commit primarily affects template files and language data)."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "normalizeToolFilePath",
+        "description": "Validates and normalizes a raw file path from an MCP tool, rejecting null bytes, absolute paths, and path traversal segments; returns a clean relative path."
+      },
+      {
+        "symbolName": "assertPathWithinParent",
+        "description": "Confirms that a resolved absolute path is contained within a specified parent directory; throws if the path escapes or is outside the boundary."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure facade providing path sanitization and containment validation for MCP tool file inputs.",
+        "responsibilities": [
+          "Validate that tool-provided file paths are safe: reject null bytes, absolute paths, and path-traversal (\"..\") segments.",
+          "Normalize and return a relative file path that can be safely used within the project workspace.",
+          "Assert that a resolved absolute path remains within a designated parent directory to prevent directory escapes.",
+          "Throw typed ArchSpineError with ErrorCodes.McpToolInvalidArguments when validation fails."
+        ],
+        "outOfScope": [
+          "File I/O operations (read, write, exists).",
+          "MCP tool request routing or argument parsing beyond the filePath parameter.",
+          "Workspace or project metadata retrieval.",
+          "Domain or business logic."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "normalizeToolFilePath",
+        "kind": "function",
+        "signature": "normalizeToolFilePath(toolName: string, rawPath: string)"
+      },
+      {
+        "name": "assertPathWithinParent",
+        "kind": "function",
+        "signature": "assertPathWithinParent(\n  toolName: string,\n  resolvedPath: string,\n  parentDir: string,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "normalizeToolFilePath",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/mcp/tool-utils.ts#"
+      },
+      {
+        "name": "assertPathWithinParent",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/mcp/tool-utils.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/mcp/tool-utils.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/ArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T10:02:42.721Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

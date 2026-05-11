@@ -1,0 +1,220 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-rendering.ts",
+    "contentHash": "7c4fff132bbcb7879b103ef3944457d7e1c9b9a915b0c1b5920c7d2da5196c54",
+    "skeletonHash": "873da5f2597100fecfc531e63e38bed3632a7fadd2dbad19b29811da2ff44591",
+    "semanticHash": "d3b75d1a1d4bbcff328cb97e6370f0671344f2d2a277f2fec4d989cf0c5a7f70",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Public facade module for prompt generation and builder composition. It re-exports prompt assembly functions and the PromptBuilder class from internal submodules to provide a stable entrypoint for downstream consumers within the infrastructure layer.",
+    "responsibilities": [
+      "Re-export PromptBuilder, a fluent builder class for constructing prompts programmatically.",
+      "Re-export generateConfigPrompt, generateDocumentPrompt, generateFolderPrompt, and generateProjectPrompt from the aggregate module for generating prompts for different document types.",
+      "Re-export generateMarkdownPrompt for producing prompts in Markdown format.",
+      "Re-export generateSourcePrompt for generating prompts targeting source code files with AST and rule context.",
+      "Provide a single stable import surface that isolates consumers from internal prompt submodule restructuring."
+    ],
+    "outOfScope": [
+      "Actual prompt rendering logic, tokenization, or formatting.",
+      "Prompt policy enforcement, budgeting, or trimming.",
+      "LLM interaction, authentication, or credential management.",
+      "Internal submodules (builder.ts, aggregate.ts, markdown.ts, source.ts) which are implementation details hidden behind this facade."
+    ],
+    "invariants": [
+      "This module must only contain re-export statements and a file header; it must not implement any logic.",
+      "The set of exported symbols should remain stable across releases to honor the facade contract."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish a stable public facade for prompt assembly, decoupling prompt consumers from the internal organization of prompt submodules within the infra layer.",
+      "recentChangeIntent": "Reflects accumulated source changes as part of a release gate fix and source sync. No semantic change to the public contract of this facade."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "PromptBuilder",
+        "description": "Class for composing prompts using a fluent builder pattern. Called by higher-level prompt assembly workflows to construct structured prompts."
+      },
+      {
+        "symbolName": "generateConfigPrompt",
+        "description": "Generates a prompt for a Spine configuration file, incorporating relevant rules and context. Used by the prompt rendering pipeline when processing config files."
+      },
+      {
+        "symbolName": "generateDocumentPrompt",
+        "description": "Generates a prompt for a documentation file, incorporating relevant rules and context. Used by the prompt rendering pipeline when processing documentation."
+      },
+      {
+        "symbolName": "generateFolderPrompt",
+        "description": "Generates a prompt for a folder index document, summarizing its structure and contents. Used in folder-level aggregation."
+      },
+      {
+        "symbolName": "generateProjectPrompt",
+        "description": "Generates a prompt for project-level summary or analysis based on project-wide rules and state. Used in project-level aggregations."
+      },
+      {
+        "symbolName": "generateMarkdownPrompt",
+        "description": "Generates a prompt rendered in Markdown format, used for human-readable output such as view pages or reports."
+      },
+      {
+        "symbolName": "generateSourcePrompt",
+        "description": "Generates a prompt for a source code file, incorporating AST data, rules, and usage context. Consumed by the per-file prompt generation pipeline."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Public facade module for prompt generation and builder composition. It re-exports prompt assembly functions and the PromptBuilder class from internal submodules to provide a stable entrypoint for downstream consumers within the infrastructure layer.",
+        "responsibilities": [
+          "Re-export PromptBuilder, a fluent builder class for constructing prompts programmatically.",
+          "Re-export generateConfigPrompt, generateDocumentPrompt, generateFolderPrompt, and generateProjectPrompt from the aggregate module for generating prompts for different document types.",
+          "Re-export generateMarkdownPrompt for producing prompts in Markdown format.",
+          "Re-export generateSourcePrompt for generating prompts targeting source code files with AST and rule context.",
+          "Provide a single stable import surface that isolates consumers from internal prompt submodule restructuring."
+        ],
+        "outOfScope": [
+          "Actual prompt rendering logic, tokenization, or formatting.",
+          "Prompt policy enforcement, budgeting, or trimming.",
+          "LLM interaction, authentication, or credential management.",
+          "Internal submodules (builder.ts, aggregate.ts, markdown.ts, source.ts) which are implementation details hidden behind this facade."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "PromptBuilder",
+        "kind": "unknown",
+        "signature": "export { PromptBuilder }"
+      },
+      {
+        "name": "generateConfigPrompt",
+        "kind": "unknown",
+        "signature": "export { generateConfigPrompt }"
+      },
+      {
+        "name": "generateDocumentPrompt",
+        "kind": "unknown",
+        "signature": "export { generateDocumentPrompt }"
+      },
+      {
+        "name": "generateFolderPrompt",
+        "kind": "unknown",
+        "signature": "export { generateFolderPrompt }"
+      },
+      {
+        "name": "generateProjectPrompt",
+        "kind": "unknown",
+        "signature": "export { generateProjectPrompt }"
+      },
+      {
+        "name": "generateMarkdownPrompt",
+        "kind": "unknown",
+        "signature": "export { generateMarkdownPrompt }"
+      },
+      {
+        "name": "generateSourcePrompt",
+        "kind": "unknown",
+        "signature": "export { generateSourcePrompt }"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "PromptBuilder",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-rendering.ts#"
+      },
+      {
+        "name": "generateConfigPrompt",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-rendering.ts#"
+      },
+      {
+        "name": "generateDocumentPrompt",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-rendering.ts#"
+      },
+      {
+        "name": "generateFolderPrompt",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-rendering.ts#"
+      },
+      {
+        "name": "generateProjectPrompt",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-rendering.ts#"
+      },
+      {
+        "name": "generateMarkdownPrompt",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-rendering.ts#"
+      },
+      {
+        "name": "generateSourcePrompt",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-rendering.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 7,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./prompt/builder.js",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "./prompt/aggregate.js",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "./prompt/markdown.js",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "./prompt/source.js",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:01:38.380Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

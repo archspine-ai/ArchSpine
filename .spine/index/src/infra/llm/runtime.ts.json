@@ -1,0 +1,366 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/llm/runtime.ts",
+    "contentHash": "9c71afc85b12aa86d4f453f8235f1d5feae8ff3846526625e020d85050f0cec3",
+    "skeletonHash": "166d079d597f5a1ac78e24ade4e89b3b869e3de1674f5a698640ba31924aea39",
+    "semanticHash": "a37c294d7a504f10a1a9ef843269daf745dc179df1a979c40fac28796cca4e7c",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/llm"
+  },
+  "semantic": {
+    "role": "LLM runtime configuration resolution layer. It bridges project-level and global-level configuration with secrets to produce a validated, ready-to-use LLM client instance. Encapsulates the resolution logic and validation.",
+    "responsibilities": [
+      "Resolve LLM provider, model, base URL, and API key from multiple sources (runtime overrides, environment variables, project config, global config, project keychain, global keychain, project secrets file) with a defined priority order.",
+      "Validate resolved settings for usability via `assertResolvedLLMUsable`, ensuring required API keys are present for applicable providers.",
+      "Create an LLM client instance using the resolved settings and the `LLMFactory`, providing a single entry point `createResolvedLLMClient`.",
+      "Expose helper `providerRequiresApiKey` to check whether a provider name requires an API key."
+    ],
+    "outOfScope": [
+      "Direct LLM provider implementations (handled in `./providers/`).",
+      "Global config file reading (delegated to `GlobalLLMConfig`/`GlobalLLMSecrets`).",
+      "Project config and secrets management (handled by `Config`/`Secrets`).",
+      "Prompt policy or generation strategy (imported as type only)."
+    ],
+    "invariants": [
+      "Resolved settings must always be validated via `assertResolvedLLMUsable` before client creation.",
+      "API key resolution follows a strict priority: runtime override > environment variable > project config > global config > project keychain > global keychain > project secrets file."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Centralized LLM configuration resolution and client instantiation to decouple provider implementation from configuration management.",
+      "recentChangeIntent": "Release gate fixes and accumulated source changes applied. No semantic contract changes observed."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "providerRequiresApiKey",
+        "description": "Returns whether the given provider name requires an API key for authentication. Used by validation logic to determine if a key must be present."
+      },
+      {
+        "symbolName": "assertResolvedLLMUsable",
+        "description": "Validates that resolved LLM settings are sufficient for the given command context; throws `ArchSpineError` with code `LLM_CONFIG_INCOMPLETE` if a required API key is missing."
+      },
+      {
+        "symbolName": "resolveLLMSettings",
+        "description": "Resolves LLM configuration by merging up to five sources (overrides, env, project config, global config, secrets) and returns a `ResolvedLLMSettings` with resolved values and their provenance."
+      },
+      {
+        "symbolName": "createResolvedLLMClient",
+        "description": "Resolves LLM settings via `resolveLLMSettings`, validates via `assertResolvedLLMUsable`, then creates and returns an `LLMClient` instance via `LLMFactory.create`."
+      },
+      {
+        "symbolName": "LLMRuntimeOverrides",
+        "description": "Interface defining optional runtime override fields (provider, model, baseURL, apiKey) that take highest priority during resolution."
+      },
+      {
+        "symbolName": "ResolvedLLMSettings",
+        "description": "Interface for the output of `resolveLLMSettings` containing the resolved provider, model, baseUrl, apiKey (or null), and a source string for each indicating where it was resolved from."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "LLM runtime configuration resolution layer. It bridges project-level and global-level configuration with secrets to produce a validated, ready-to-use LLM client instance. Encapsulates the resolution logic and validation.",
+        "responsibilities": [
+          "Resolve LLM provider, model, base URL, and API key from multiple sources (runtime overrides, environment variables, project config, global config, project keychain, global keychain, project secrets file) with a defined priority order.",
+          "Validate resolved settings for usability via `assertResolvedLLMUsable`, ensuring required API keys are present for applicable providers.",
+          "Create an LLM client instance using the resolved settings and the `LLMFactory`, providing a single entry point `createResolvedLLMClient`.",
+          "Expose helper `providerRequiresApiKey` to check whether a provider name requires an API key."
+        ],
+        "outOfScope": [
+          "Direct LLM provider implementations (handled in `./providers/`).",
+          "Global config file reading (delegated to `GlobalLLMConfig`/`GlobalLLMSecrets`).",
+          "Project config and secrets management (handled by `Config`/`Secrets`).",
+          "Prompt policy or generation strategy (imported as type only)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../secrets.js'",
+        "symbols": [
+          "Secrets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./global.js'",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./base.js'",
+        "symbols": [
+          "LLMClient",
+          "ProviderConfig"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./factory.js'",
+        "symbols": [
+          "LLMFactory"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./orchestrator.js'",
+        "symbols": [
+          "LLMOrchestrator"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./providers/mock.js'",
+        "symbols": [
+          "MockClient"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "providerRequiresApiKey",
+        "kind": "function",
+        "signature": "providerRequiresApiKey(provider: string | undefined)"
+      },
+      {
+        "name": "assertResolvedLLMUsable",
+        "kind": "function",
+        "signature": "assertResolvedLLMUsable(\n  resolved: ResolvedLLMSettings,\n  context: { command: string },\n)"
+      },
+      {
+        "name": "resolveLLMSettings",
+        "kind": "function",
+        "signature": "resolveLLMSettings(\n  config: Config,\n  secrets: Secrets,\n  globalConfig: GlobalLLMConfig = new GlobalLLMConfig(),\n  globalSecrets: GlobalLLMSecrets = new GlobalLLMSecrets(),\n  overrides: LLMRuntimeOverrides = {},\n)"
+      },
+      {
+        "name": "createResolvedLLMClient",
+        "kind": "function",
+        "signature": "createResolvedLLMClient(\n  config: Config,\n  secrets: Secrets,\n  globalConfig: GlobalLLMConfig = new GlobalLLMConfig(),\n  globalSecrets: GlobalLLMSecrets = new GlobalLLMSecrets(),\n  overrides: LLMRuntimeOverrides = {},\n)"
+      },
+      {
+        "name": "LLMRuntimeOverrides",
+        "kind": "interface",
+        "signature": "interface LLMRuntimeOverrides"
+      },
+      {
+        "name": "ResolvedLLMSettings",
+        "kind": "interface",
+        "signature": "interface ResolvedLLMSettings"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "providerRequiresApiKey",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/llm/runtime.ts#"
+      },
+      {
+        "name": "assertResolvedLLMUsable",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/llm/runtime.ts#"
+      },
+      {
+        "name": "resolveLLMSettings",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/llm/runtime.ts#"
+      },
+      {
+        "name": "createResolvedLLMClient",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/llm/runtime.ts#"
+      },
+      {
+        "name": "LLMRuntimeOverrides",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/llm/runtime.ts#"
+      },
+      {
+        "name": "ResolvedLLMSettings",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/llm/runtime.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 6,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "src/infra/secrets.js",
+        "relation": "import",
+        "symbols": [
+          "Secrets"
+        ]
+      },
+      {
+        "targetPath": "src/infra/llm/global.js",
+        "relation": "import",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets"
+        ]
+      },
+      {
+        "targetPath": "src/infra/llm/base.js",
+        "relation": "import",
+        "symbols": [
+          "LLMClient",
+          "ProviderConfig"
+        ]
+      },
+      {
+        "targetPath": "src/infra/llm/factory.js",
+        "relation": "import",
+        "symbols": [
+          "LLMFactory"
+        ]
+      },
+      {
+        "targetPath": "src/infra/llm/orchestrator.js",
+        "relation": "import",
+        "symbols": [
+          "LLMOrchestrator"
+        ]
+      },
+      {
+        "targetPath": "src/infra/llm/providers/mock.js",
+        "relation": "import",
+        "symbols": [
+          "MockClient"
+        ]
+      },
+      {
+        "targetPath": "src/core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/llm/runtime.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/providerRequiresApiKey#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/runtime.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/resolveLLMSettings#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/runtime.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/ArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/runtime.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/GlobalLLMConfig#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/runtime.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/GlobalLLMConfig#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/runtime.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/GlobalLLMSecrets#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/runtime.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/GlobalLLMSecrets#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/runtime.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/mock.ts/MockClient#",
+        "targetPath": "src/infra/llm/providers/mock.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/runtime.ts/_file_#",
+        "targetSymbol": "src/infra/__mocks__/llm.ts/MockClient#",
+        "targetPath": "src/infra/__mocks__/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:59:23.863Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

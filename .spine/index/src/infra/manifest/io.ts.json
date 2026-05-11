@@ -1,0 +1,252 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/manifest/io.ts",
+    "contentHash": "ef37cd8cc48677161f0a998f17ea94529cb2004e41a69f4750d5d591de796d36",
+    "skeletonHash": "41ba7ad453fbff54fadcf92a1008d83c61f632a7daacf4a6fb9cb9f71a85da72",
+    "semanticHash": "8c1738b6ad863aac9300635f5923604c3a3047ce134f3bf62f0a7acde4956cbf",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/manifest"
+  },
+  "semantic": {
+    "role": "Low-level synchronous I/O utility for reading JSON manifest files and computing canonical paths within the .spine directory. Provides a thin wrapper around fs and path for the manifest subsystem.",
+    "responsibilities": [
+      "Compute the absolute path to the project's manifest.json file under the .spine directory.",
+      "Compute the absolute path to the project's languages.json file under the .spine directory.",
+      "Read and parse a JSON file synchronously, returning null on missing or invalid data.",
+      "Read and parse a JSON file synchronously, emitting a warning via defaultRuntimeIO on failure, using a caller-provided warning builder callback.",
+      "Retrieve a file's modification time (seconds) and size as a FileStatusSnapshot, defaulting to zeros if the file does not exist."
+    ],
+    "outOfScope": [
+      "Does not handle asynchronous I/O or streaming reads.",
+      "Does not write or modify manifest files.",
+      "Does not parse complex file formats such as YAML, TOML, or INI.",
+      "Does not manage caching or memoization of file reads.",
+      "Does not perform schema validation of the parsed JSON."
+    ],
+    "invariants": [
+      "All public functions are synchronous (sync I/O).",
+      "File paths are always computed via path.join relative to a rootDir parameter.",
+      "Missing files are handled gracefully by returning a null / zero-valued fallback, never throwing an error.",
+      "The file does not import any third-party packages beyond Node.js built-in 'fs' and 'path'."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, thin I/O abstraction for reading manifest-related JSON files and snapshotting file metadata, isolating the rest of the system from raw fs and path operations.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — initial release of the architectural governance system. This file is part of the foundational infrastructure layer for manifest management."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "getManifestPath",
+        "description": "Returns the absolute path to the .spine/manifest.json file for a given project root directory. Used by callers that need to locate or read the manifest."
+      },
+      {
+        "symbolName": "getLanguageSnapshotPath",
+        "description": "Returns the absolute path to the .spine/languages.json file for a given project root directory. Used by callers that need to locate or read the language snapshot."
+      },
+      {
+        "symbolName": "readJsonFile",
+        "description": "Synchronously reads and parses a JSON file at the given path. Returns the typed data, or null if the file does not exist or JSON parsing fails. No warnings are emitted."
+      },
+      {
+        "symbolName": "readJsonFileWithWarning",
+        "description": "Similar to readJsonFile, but invokes the warningBuilder callback to construct a warning message if the file is missing or unparseable. The warning is emitted via the default runtime I/O."
+      },
+      {
+        "symbolName": "getFileStatusSnapshot",
+        "description": "Retrieves a FileStatusSnapshot (mtime in seconds, size in bytes) for a file. Returns zeroed values if the file does not exist. Used to detect file changes."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Low-level synchronous I/O utility for reading JSON manifest files and computing canonical paths within the .spine directory. Provides a thin wrapper around fs and path for the manifest subsystem.",
+        "responsibilities": [
+          "Compute the absolute path to the project's manifest.json file under the .spine directory.",
+          "Compute the absolute path to the project's languages.json file under the .spine directory.",
+          "Read and parse a JSON file synchronously, returning null on missing or invalid data.",
+          "Read and parse a JSON file synchronously, emitting a warning via defaultRuntimeIO on failure, using a caller-provided warning builder callback.",
+          "Retrieve a file's modification time (seconds) and size as a FileStatusSnapshot, defaulting to zeros if the file does not exist."
+        ],
+        "outOfScope": [
+          "Does not handle asynchronous I/O or streaming reads.",
+          "Does not write or modify manifest files.",
+          "Does not parse complex file formats such as YAML, TOML, or INI.",
+          "Does not manage caching or memoization of file reads.",
+          "Does not perform schema validation of the parsed JSON."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./types.js'",
+        "symbols": [
+          "FileStatusSnapshot"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "getManifestPath",
+        "kind": "function",
+        "signature": "getManifestPath(rootDir: string)"
+      },
+      {
+        "name": "getLanguageSnapshotPath",
+        "kind": "function",
+        "signature": "getLanguageSnapshotPath(rootDir: string)"
+      },
+      {
+        "name": "readJsonFile",
+        "kind": "function",
+        "signature": "readJsonFile(filePath: string)"
+      },
+      {
+        "name": "readJsonFileWithWarning",
+        "kind": "function",
+        "signature": "readJsonFileWithWarning(\n  filePath: string,\n  warningBuilder: (reason: string) => string,\n)"
+      },
+      {
+        "name": "getFileStatusSnapshot",
+        "kind": "function",
+        "signature": "getFileStatusSnapshot(filePath: string)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "getManifestPath",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/manifest/io.ts#"
+      },
+      {
+        "name": "getLanguageSnapshotPath",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/manifest/io.ts#"
+      },
+      {
+        "name": "readJsonFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/manifest/io.ts#"
+      },
+      {
+        "name": "readJsonFileWithWarning",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/manifest/io.ts#"
+      },
+      {
+        "name": "getFileStatusSnapshot",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/manifest/io.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 5,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "FileStatusSnapshot"
+        ]
+      },
+      {
+        "targetPath": "../runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/manifest/state.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:59:26.922Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "examples/demo-project/src",
+  "role": "Source code directory of a demo project for the ArchSpine mirror system, containing API, domain, and infrastructure layers for user management.",
+  "responsibility": "Combined, these components implement a user management flow (creation, retrieval) with an intentionally flawed architecture where the API handler bypasses the domain layer to directly access the database, while the domain layer uses in-memory storage, and the infrastructure layer manages database connections for SQLite and PostgreSQL.",
+  "children": [
+    {
+      "filePath": "examples/demo-project/src/api",
+      "role": "API handler layer for user creation, serving as the entry point for incoming requests.",
+      "fileKind": "folder"
+    },
+    {
+      "filePath": "examples/demo-project/src/domain",
+      "role": "Represents the user domain service layer for in-memory management of user entities.",
+      "fileKind": "folder"
+    },
+    {
+      "filePath": "examples/demo-project/src/infra",
+      "role": "The root directory of the ArchSpine mirror system project, containing the primary database connectivity module.",
+      "fileKind": "folder"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:12:02.848Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

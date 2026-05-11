@@ -1,0 +1,342 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/core/task-runtime.test.ts",
+    "contentHash": "d605ecfc2237c37d1d1145919b4915b6f7a381947deccea5c4f8fc86991076c4",
+    "skeletonHash": "2dd41b21d5e36dcfe2cf28d6ddd4b579d9872c432c8a0ebadcf07e8bbd5ab1b7",
+    "semanticHash": "95c5728aa3a903b240abc686a2b2fa2445ac40aa1bd771166f7d8c1c5b3ac53b",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/core"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for the task-runtime service and task-state core.",
+    "responsibilities": [
+      "Verifies that createTaskContext correctly initializes a TaskContext with the expected state structure (telemetry, runtimeCache).",
+      "Verifies that createTaskArtifactsState creates a properly structured artifacts tracking object.",
+      "Verifies that createTaskState initializes a task state with empty telemetry arrays (driftWarnings, diagnostics.summarize, diagnostics.validate).",
+      "Tests that the runtime cache supports tracking skeletons, unsupported files, and pending commits.",
+      "Tests insertion of drift warnings into context.state.telemetry.driftWarnings.",
+      "Tests injection of diagnostic summary and validation entries into context.state.telemetry.diagnostics.",
+      "Tests correct state reset via resetTaskState and related mutation functions (addTaskUsage, markTaskProcessedFile, incrementTaskFailed, incrementTaskSkipped, queueTaskCommit, recordTaskStageMetric).",
+      "Verifies the TaskRunner abstraction from pipeline and the SpineTask/TaskContext types from task module.",
+      "Uses temporary file system setup (fs.mkdtempSync, os.tmpdir, path.join) for sandboxed test execution.",
+      "Cleans up temporary directories after each test via afterEach."
+    ],
+    "outOfScope": [
+      "Implementation details of internal helper functions not exposed by the test suite.",
+      "End-to-end integration with real file systems beyond temporary directory setup.",
+      "Testing of production code outside the imported modules (task-state, pipeline, task, task-runtime).",
+      "Performance or stress testing."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (rule: test-file-suffix).",
+      "Test files should not export production symbols.",
+      "All test state is isolated per test via beforeEach/afterEach with temporary directories."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "This test file validates the contract of task-runtime and task-state modules by asserting correct initialization and mutation of task context, task state, and artifact structures. It ensures that the core task management primitives behave as expected when used by the pipeline and task runner.",
+      "recentChangeIntent": "Corresponds to the recent commit which applied release gate fixes and synced accumulated source changes; likely ensures that recent changes to task-runtime or task-state did not break expected behavior."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for the task-runtime service and task-state core.",
+        "responsibilities": [
+          "Verifies that createTaskContext correctly initializes a TaskContext with the expected state structure (telemetry, runtimeCache).",
+          "Verifies that createTaskArtifactsState creates a properly structured artifacts tracking object.",
+          "Verifies that createTaskState initializes a task state with empty telemetry arrays (driftWarnings, diagnostics.summarize, diagnostics.validate).",
+          "Tests that the runtime cache supports tracking skeletons, unsupported files, and pending commits.",
+          "Tests insertion of drift warnings into context.state.telemetry.driftWarnings.",
+          "Tests injection of diagnostic summary and validation entries into context.state.telemetry.diagnostics.",
+          "Tests correct state reset via resetTaskState and related mutation functions (addTaskUsage, markTaskProcessedFile, incrementTaskFailed, incrementTaskSkipped, queueTaskCommit, recordTaskStageMetric).",
+          "Verifies the TaskRunner abstraction from pipeline and the SpineTask/TaskContext types from task module.",
+          "Uses temporary file system setup (fs.mkdtempSync, os.tmpdir, path.join) for sandboxed test execution.",
+          "Cleans up temporary directories after each test via afterEach."
+        ],
+        "outOfScope": [
+          "Implementation details of internal helper functions not exposed by the test suite.",
+          "End-to-end integration with real file systems beyond temporary directory setup.",
+          "Testing of production code outside the imported modules (task-state, pipeline, task, task-runtime).",
+          "Performance or stress testing."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/core/task-state.js'",
+        "symbols": [
+          "addTaskUsage",
+          "createTaskArtifactsState",
+          "createTaskState",
+          "incrementTaskFailed",
+          "incrementTaskSkipped",
+          "markTaskProcessedFile",
+          "queueTaskCommit",
+          "recordTaskStageMetric",
+          "resetTaskState"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/core/pipeline.js'",
+        "symbols": [
+          "TaskRunner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/services/task-runtime.js'",
+        "symbols": [
+          "createTaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 11,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "../../../src/core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "addTaskUsage",
+          "createTaskArtifactsState",
+          "createTaskState",
+          "incrementTaskFailed",
+          "incrementTaskSkipped",
+          "markTaskProcessedFile",
+          "queueTaskCommit",
+          "recordTaskStageMetric",
+          "resetTaskState"
+        ]
+      },
+      {
+        "targetPath": "../../../src/core/pipeline.js",
+        "relation": "import",
+        "symbols": [
+          "TaskRunner"
+        ]
+      },
+      {
+        "targetPath": "../../../src/core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "../../../src/services/task-runtime.js",
+        "relation": "import",
+        "symbols": [
+          "createTaskContext"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/core/task-runtime.test.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/createTaskArtifactsState#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/task-runtime.test.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/createTaskState#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/task-runtime.test.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/resetTaskState#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/task-runtime.test.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/markTaskProcessedFile#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/task-runtime.test.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/incrementTaskSkipped#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/task-runtime.test.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/incrementTaskFailed#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/task-runtime.test.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/addTaskUsage#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/task-runtime.test.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/queueTaskCommit#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/task-runtime.test.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/recordTaskStageMetric#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/task-runtime.test.ts/_file_#",
+        "targetSymbol": "src/services/task-runtime.ts/createTaskContext#",
+        "targetPath": "src/services/task-runtime.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/task-runtime.test.ts/_file_#",
+        "targetSymbol": "src/core/pipeline.ts/TaskRunner#",
+        "targetPath": "src/core/pipeline.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:09:23.755Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

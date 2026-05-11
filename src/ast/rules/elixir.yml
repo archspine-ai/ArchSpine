@@ -1,0 +1,33 @@
+imports:
+  - id: import
+    pattern: 'import $SOURCE'
+  - id: alias
+    pattern: 'alias $SOURCE'
+  - id: require
+    pattern: 'require $SOURCE'
+  - id: use
+    pattern: 'use $SOURCE'
+exports:
+  - id: function
+    pattern: 'def $NAME($$$ARGS) do $$$BODY end'
+    kind: Function
+  - id: private_function
+    pattern: 'defp $NAME($$$ARGS) do $$$BODY end'
+    kind: Function
+  - id: macro
+    pattern: 'defmacro $NAME($$$ARGS) do $$$BODY end'
+    kind: Function
+  - id: module
+    pattern: 'defmodule $NAME do $$$BODY end'
+    kind: Class
+  - id: protocol
+    pattern: 'defprotocol $NAME do $$$BODY end'
+    kind: Interface
+  - id: implementation
+    pattern: 'defimpl $NAME do $$$BODY end'
+    kind: Class
+usages:
+  - id: call
+    pattern: '$NAME($$$ARGS)'
+  - id: module_call
+    pattern: '$MODULE.$NAME($$$ARGS)'

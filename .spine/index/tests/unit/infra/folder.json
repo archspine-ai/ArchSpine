@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "tests/unit/infra",
+  "role": "Unit test suite for ArchSpine's infrastructure layer, covering configuration, credentials, database, document handling, LLM integration, manifest, MCP, git hooks, repository strategy, and rules loading.",
+  "responsibility": "Collectively, these tests validate the correctness, error handling, and integration of key infrastructure modules to ensure reliable operation of the ArchSpine mirror system.",
+  "children": [
+    {
+      "filePath": "tests/unit/infra/config-validation.test.ts",
+      "role": "Unit test suite for the configuration validation module of ArchSpine.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/unit/infra/config.test.ts",
+      "role": "Test suite for the Config configuration management class.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/unit/infra/credentials-backend.test.ts",
+      "role": "Vitest test suite for the WindowsDPAPIBackend credential backend, verifying secure secret passing via stdin in PowerShell execution.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/unit/infra/credentials-store.test.ts",
+      "role": "Vitest test suite verifying the behavior of CredentialBackend, WindowsDPAPIBackend, and CredentialStore implementations.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/unit/infra/db-modules.test.ts",
+      "role": "Test suite for database infrastructure modules, validating schema initialization and table structure.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/unit/infra/document-languages.test.ts",
+      "role": "Unit test suite for the document language choices module (getDocumentLanguageChoices and associated constants).",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/unit/infra/index-reader.test.ts",
+      "role": "Vitest test suite for schema enforcement of the index-reader module.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/unit/infra/infra-facade-boundary.test.ts",
+      "role": "Vitest-based test suite for verifying the Writer Boundary Layer (facade-based import rules). Ensures that internal modules within a directory can only be imported through a designated facade file, and validates that importers are explicitly allowed.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/unit/infra/llm-config.test.ts",
+      "role": "Vitest test suite for the resolveLLMSettings function and credential backend availability behavior.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/unit/infra/llm-provider-utils.test.ts",
+      "role": "Vitest test suite exercising LLM provider utility functions (parseMarkdownBlocks, parseStructuredResponse, and related helpers).",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/unit/infra/llm.test.ts",
+      "role": "Vitest structural contract test for the LLM Facade module (`src/infra/llm.ts`). Validates that the module exports all required public symbols and that none are undefined.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/unit/infra/manifest.test.ts",
+      "role": "Vitest unit test suite for the Manifest class, validating its initialization, serialization/deserialization, state management, and integration with SpineDB.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/unit/infra/mcp",
+      "role": "Test suite for the SpineTools MCP module, validating tool definitions, resource handlers, and context enrichment.",
+      "fileKind": "folder"
+    },
+    {
+      "filePath": "tests/unit/infra/pre-commit-config.test.ts",
+      "role": "Vitest test suite validating the pre-commit git hook configuration loading, resolution, and installation logic.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/unit/infra/repo-strategy.test.ts",
+      "role": "Test suite for the repository strategy drift detection logic in src/cli/repo/strategy.ts.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/unit/infra/rules-loader.test.ts",
+      "role": "Unit test suite for the rules-loader module validating the loadRulesFromDir function.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:12:33.965Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

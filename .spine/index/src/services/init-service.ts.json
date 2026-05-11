@@ -1,0 +1,193 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/init-service.ts",
+    "contentHash": "a3831ab9d8914d6c4275df147c59a7ba9dc91e15cf3e591c99d35e169b42ca6e",
+    "skeletonHash": "014b09b72cbaacbaab5e70965cd046752b8211fe087eb06129613d168d915cc5",
+    "semanticHash": "c5072d0c3b0a8100e363a25498495d935852a110253e5f5ba22152b82a4643ff",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Service layer function that coordinates file scanning, language detection, and manifest persistence for a given project root.",
+    "responsibilities": [
+      "Accept root directory, project configuration, and an optional runtime service context.",
+      "Initialize a Scanner instance from the engine layer and gather all tracked files under the root directory using the configured scan policy.",
+      "Invoke the AST-level discoverLanguages function to detect programming languages from the collected file paths and optional additional binary paths.",
+      "Open or create a Manifest via the infra layer and persist the resulting LanguageSnapshot (metadata including detected languages and file counts).",
+      "Return the LanguageSnapshot for the caller (e.g., CLI bootstrap) to use or display."
+    ],
+    "outOfScope": [
+      "Low-level file system scanning logic (delegated to Scanner engine).",
+      "Language detection algorithms and heuristics (delegated to ast/lang-discovery).",
+      "Manifest file format, storage, or serialization details (delegated to infra/manifest).",
+      "CLI argument parsing, user interaction, error presentation, or logging strategies.",
+      "Configuration schema or validation (Config is provided externally)."
+    ],
+    "invariants": [
+      "All scanning, detection, and persistence logic is delegated to imported modules; this function only orchestrates.",
+      "The function must not perform I/O directly (except through the delegated modules).",
+      "The function must not contain any CLI-specific logic (e.g., console.log).",
+      "The function must not store state; it is a stateless service call."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a thin, orchestration-only service that encapsulates the multi-step language discovery workflow, keeping CLI bootstrap modules decoupled from engine and infra details.",
+      "recentChangeIntent": "Not determinable from commit message; likely a minor update to the discovery workflow."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "discoverProjectLanguages",
+        "description": "Scans the project at rootDir using the configured scanner policy, detects languages from the collected files, and persists the result to the manifest. Called by CLI bootstrap during project initialization or refresh."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Service layer function that coordinates file scanning, language detection, and manifest persistence for a given project root.",
+        "responsibilities": [
+          "Accepts root directory, configuration, and optional runtime service context.",
+          "Initializes a Scanner from the engine layer and collects all tracked files per the scan policy.",
+          "Invokes the AST-level language discovery to detect languages from file paths and optional binary paths.",
+          "Opens or creates a Manifest and saves the language snapshot.",
+          "Returns the language snapshot metadata."
+        ],
+        "outOfScope": [
+          "Low-level file scanning logic.",
+          "Language detection algorithms.",
+          "Manifest storage details.",
+          "CLI argument parsing or error handling.",
+          "Configuration schema validation."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../engines/scanner.js'",
+        "symbols": [
+          "Scanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/lang-discovery.js'",
+        "symbols": [
+          "discoverLanguages"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "discoverProjectLanguages",
+        "kind": "function",
+        "signature": "discoverProjectLanguages(\n  rootDir: string,\n  config: Config,\n  _runtimeService: unknown,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "discoverProjectLanguages",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/init-service.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../engines/scanner.js",
+        "relation": "import",
+        "symbols": [
+          "Scanner"
+        ]
+      },
+      {
+        "targetPath": "../ast/lang-discovery.js",
+        "relation": "import",
+        "symbols": [
+          "discoverLanguages"
+        ]
+      },
+      {
+        "targetPath": "../infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "LanguageSnapshot"
+        ]
+      },
+      {
+        "targetPath": "../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/init-service.ts/_file_#",
+        "targetSymbol": "src/ast/lang-discovery.ts/discoverLanguages#",
+        "targetPath": "src/ast/lang-discovery.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/init-service.ts/_file_#",
+        "targetSymbol": "src/engines/scanner.ts/Scanner#",
+        "targetPath": "src/engines/scanner.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/init-service.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/state.ts/saveLanguageSnapshot#",
+        "targetPath": "src/infra/manifest/state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T10:02:45.284Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

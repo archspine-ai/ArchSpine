@@ -1,0 +1,279 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/llm/global.ts",
+    "contentHash": "056fbda0aabdd0596af3d09cb23ec18fcbf02b37c51c5d98245ad551d52d8789",
+    "skeletonHash": "ef71cbaa0c47aa2de4efc75a8b0e2377f899b610107a44292d6c7aa95d60ce95",
+    "semanticHash": "1b47e29f7201ce4784d69fd646d30f4c309decebe3ade0414c0f12076b7f7a7a",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/llm"
+  },
+  "semantic": {
+    "role": "Global LLM configuration and secrets manager for the ArchSpine CLI tool. Provides platform-aware directory detection, persistent config loading/saving, and credential management via a CredentialStore.",
+    "responsibilities": [
+      "Determine the global ArchSpine directory path based on OS convention (Windows: %APPDATA%, Unix: XDG_CONFIG_HOME or ~/.config).",
+      "Load and parse global LLM configuration (provider, model, baseURL) from a JSON file, with fallback defaults.",
+      "Persist configuration changes (setProvider, setModel, setBaseURL) back to the JSON file.",
+      "Manage LLM API secrets (API keys, etc.) through a CredentialStore, providing getSecret/setSecret/deleteSecret operations.",
+      "Expose an interface (GlobalLLMConfigShape) for type-safe consumption of configuration."
+    ],
+    "outOfScope": [
+      "Direct file I/O error handling (console.warn on parse failure is a fallback, not a public contract).",
+      "Credential storage backend implementation (delegated to CredentialStore/CredentialBackend).",
+      "Platform-specific directory fallback details beyond the public function getGlobalArchSpineDir."
+    ],
+    "invariants": [
+      "The global config directory is determined deterministically per platform and can be retrieved via getGlobalArchSpineDir.",
+      "Configuration file (config.json) is always stored inside the global directory and is JSON-encoded.",
+      "Secrets (API keys) are never stored inline in the config JSON; they are managed exclusively via the CredentialStore."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Centralize global LLM configuration and secret management to avoid scattered file reads/writes and improve testability.",
+      "recentChangeIntent": "Synchronized with release gate fixes — likely refined config path resolution and credential store integration for cross-platform compatibility."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "getGlobalArchSpineDir",
+        "description": "Returns the absolute path to the platform-specific global ArchSpine data directory (e.g., ~/.config/archspine)."
+      },
+      {
+        "symbolName": "GlobalLLMConfigShape",
+        "description": "Interface defining the optional shape of the global LLM configuration (provider, model, baseURL)."
+      },
+      {
+        "symbolName": "GlobalLLMConfig",
+        "description": "Class that loads, mutates, and persists the global LLM configuration to a JSON file in the global directory."
+      },
+      {
+        "symbolName": "GlobalLLMSecrets",
+        "description": "Class that manages LLM credential secrets (API keys) using a CredentialStore for secure storage and retrieval."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Global LLM configuration and secrets manager for the ArchSpine CLI tool. It determines the platform-specific data directory, persists LLM provider settings to a JSON file, and manages sensitive credentials securely through a dedicated credential store.",
+        "responsibilities": [
+          "Resolve the global ArchSpine directory path depending on the operating system (Windows: %APPDATA%, Unix: XDG_CONFIG_HOME or ~/.config).",
+          "Load the global LLM configuration (provider, model, base URL) from a JSON file, providing sensible defaults when the file is absent.",
+          "Write configuration changes back to the JSON file after modification by the user.",
+          "Manage LLM API secrets (e.g., API keys) through a dedicated CredentialStore, with operations to read, write, and delete secrets.",
+          "Publish a TypeScript interface (GlobalLLMConfigShape) for type-safe access to the configuration structure."
+        ],
+        "outOfScope": [
+          "Low-level file I/O error handling, beyond emitting a warning on parse failure.",
+          "The credential storage backend implementation, which is fully delegated to the CredentialStore and CredentialBackend classes.",
+          "Platform-specific edge cases in directory resolution, which are encapsulated by getGlobalArchSpineDir."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../credentials/backend.js'",
+        "symbols": [
+          "CredentialBackend"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../credentials/store.js'",
+        "symbols": [
+          "CredentialSource",
+          "CredentialStore",
+          "createGlobalLLMCredentialStore"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../utils/fs.js'",
+        "symbols": [
+          "FileSystemManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "getGlobalArchSpineDir",
+        "kind": "function",
+        "signature": "getGlobalArchSpineDir()"
+      },
+      {
+        "name": "GlobalLLMConfig",
+        "kind": "class",
+        "signature": "class GlobalLLMConfig"
+      },
+      {
+        "name": "GlobalLLMSecrets",
+        "kind": "class",
+        "signature": "class GlobalLLMSecrets"
+      },
+      {
+        "name": "GlobalLLMConfigShape",
+        "kind": "interface",
+        "signature": "interface GlobalLLMConfigShape"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "getGlobalArchSpineDir",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/llm/global.ts#"
+      },
+      {
+        "name": "GlobalLLMConfig",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/llm/global.ts#"
+      },
+      {
+        "name": "GlobalLLMSecrets",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/llm/global.ts#"
+      },
+      {
+        "name": "GlobalLLMConfigShape",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/llm/global.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 4,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../credentials/backend.js",
+        "relation": "import",
+        "symbols": [
+          "CredentialBackend"
+        ]
+      },
+      {
+        "targetPath": "../credentials/store.js",
+        "relation": "import",
+        "symbols": [
+          "CredentialSource",
+          "CredentialStore",
+          "createGlobalLLMCredentialStore"
+        ]
+      },
+      {
+        "targetPath": "../../utils/fs.js",
+        "relation": "import",
+        "symbols": [
+          "FileSystemManager"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/llm/global.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/getGlobalArchSpineDir#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/global.ts/_file_#",
+        "targetSymbol": "src/infra/credentials/store.ts/createGlobalLLMCredentialStore#",
+        "targetPath": "src/infra/credentials/store.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:59:23.688Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

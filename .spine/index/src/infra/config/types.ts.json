@@ -1,0 +1,191 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/config/types.ts",
+    "contentHash": "f92c972c499d2fc96c8ad52483d3cb0029d052db395b272cd0d5d0838b4e767f",
+    "skeletonHash": "b418188785a233478fde232565d1ba187f327749893c1b42bd3f44164db51543",
+    "semanticHash": "304b49db3863f0ff5f01f0bd392e0412147ed236cd13c4a1a905082b21ab0757",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/config"
+  },
+  "semantic": {
+    "role": "Configuration type definitions and re-export module for the ArchSpine configuration system. Provides canonical type shapes for boolean setting resolution, supported config keys, sync modes, and artifact strategies, and re-exports the core SpineConfig type from the protocol layer.",
+    "responsibilities": [
+      "Re-export the SpineConfig type from the protocol layer as the canonical configuration type for the entire system.",
+      "Define BooleanSettingResolution interface to capture how a boolean config value was resolved (value, source, and optional env variable name).",
+      "Define SupportedConfigKey type enumerating all valid configuration key strings for compile-time constraint.",
+      "Define HookSyncMode literal type restricted to 'hook'.",
+      "Define ArtifactStrategy literal union type of 'local' | 'distributable'."
+    ],
+    "outOfScope": [
+      "No runtime logic such as loading, validation, or resolution of configuration values.",
+      "No environment variable parsing or I/O operations.",
+      "No dependency on specific configuration backends or providers."
+    ],
+    "invariants": [
+      "All exports are pure type definitions (interfaces, type aliases, literal unions).",
+      "Imports are restricted to public protocol type modules, avoiding deep infra implementation paths.",
+      "No side effects on module load."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain a single source of truth for configuration type shapes, enabling type-safe config access across the codebase without depending on implementation internals.",
+      "recentChangeIntent": "No direct code changes indicated in this file; the recent commit '4a6aac8' (release gate fixes) likely touched other modules."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "BooleanSettingResolution",
+        "description": "Interface that records how a boolean configuration value was resolved, including the actual value, source (env, config, default), and optional env variable name. Consumed by config resolution logic to trace setting provenance."
+      },
+      {
+        "symbolName": "SpineConfig",
+        "description": "Re-export of the canonical SpineConfig protocol type. Enables downstream modules to import the config type from the config module rather than directly from the protocol layer."
+      },
+      {
+        "symbolName": "HookSyncMode",
+        "description": "Literal type representing the sync mode for hooks. Currently restricted to 'hook'."
+      },
+      {
+        "symbolName": "ArtifactStrategy",
+        "description": "Literal union type representing the strategy for artifact management, either 'local' or 'distributable'."
+      },
+      {
+        "symbolName": "SupportedConfigKey",
+        "description": "Type that enumerates all supported configuration key strings. Used to constrain config access and validation at compile time."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Configuration type definitions and re-export module for the ArchSpine configuration system. Provides canonical type shapes for boolean setting resolution, supported config keys, sync modes, and artifact strategies, and re-exports the core SpineConfig type from the protocol layer.",
+        "responsibilities": [
+          "Re-export the SpineConfig type from the protocol layer as the canonical configuration type for the entire system.",
+          "Define BooleanSettingResolution interface to capture how a boolean config value was resolved (value, source, and optional env variable name).",
+          "Define SupportedConfigKey type enumerating all valid configuration key strings for compile-time constraint.",
+          "Define HookSyncMode literal type restricted to 'hook'.",
+          "Define ArtifactStrategy literal union type of 'local' | 'distributable'."
+        ],
+        "outOfScope": [
+          "No runtime logic such as loading, validation, or resolution of configuration values.",
+          "No environment variable parsing or I/O operations.",
+          "No dependency on specific configuration backends or providers."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../types/protocol.js'",
+        "symbols": [
+          "SpineConfig as ProtocolSpineConfig"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "BooleanSettingResolution",
+        "kind": "interface",
+        "signature": "interface BooleanSettingResolution"
+      },
+      {
+        "name": "SpineConfig",
+        "kind": "type",
+        "signature": "type SpineConfig"
+      },
+      {
+        "name": "HookSyncMode",
+        "kind": "type",
+        "signature": "type HookSyncMode"
+      },
+      {
+        "name": "ArtifactStrategy",
+        "kind": "type",
+        "signature": "type ArtifactStrategy"
+      },
+      {
+        "name": "SupportedConfigKey",
+        "kind": "type",
+        "signature": "type SupportedConfigKey"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "BooleanSettingResolution",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/config/types.ts#"
+      },
+      {
+        "name": "SpineConfig",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/config/types.ts#"
+      },
+      {
+        "name": "HookSyncMode",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/config/types.ts#"
+      },
+      {
+        "name": "ArtifactStrategy",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/config/types.ts#"
+      },
+      {
+        "name": "SupportedConfigKey",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/config/types.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 5,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SpineConfig as ProtocolSpineConfig"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/config/defaults.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:57:12.969Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

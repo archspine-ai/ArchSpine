@@ -1,0 +1,213 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/engines/aggregator.test.ts",
+    "contentHash": "c1ac6357293565b4eef27c0d9c43e5755063ec58f278301bf459f89d2f680159",
+    "skeletonHash": "4f3e22480f5ff5717dd794feed837f0c1c38895f3bae6595b2cbf867e20c3448",
+    "semanticHash": "ca86809b1474f4d2cc47df63b0ded589c0b90d7f0d1b51ce563ebe9e08e1186f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/engines"
+  },
+  "semantic": {
+    "role": "Vitest test suite for the Aggregator engine that validates AI summary aggregation over source file directories.",
+    "responsibilities": [
+      "Provide a mock LLM client factory (`makeMockLLMClient`) for use across aggregation tests.",
+      "Test that `Aggregator.needsDirectoryAggregation` correctly identifies directories requiring re-aggregation based on staleness.",
+      "Test directory isolation and cleanup via temporary directories created with `fs.mkdtempSync` and cleaned with `fs.rmSync`."
+    ],
+    "outOfScope": [
+      "Production aggregation logic or LLM calls (these are mocked).",
+      "Non-test infrastructure such as configuration or database access.",
+      "Integration or end-to-end workflows beyond unit-level method validation."
+    ],
+    "invariants": [
+      "All test files must use the .test.ts suffix (file complies).",
+      "Mocks are reset after each test via `afterEach` and `vi.restoreAllMocks()`."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Isolate unit tests for the Aggregator engine, using temporary directories and mock LLM clients to verify aggregation triggers without real I/O or LLM calls.",
+      "recentChangeIntent": "A project-wide refactor removed legacy CLI aliases, rebuilt documentation, and fixed schemas/tests. This test file maintains existing coverage for the Aggregator contract."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite for the Aggregator engine that validates AI summary aggregation over source file directories.",
+        "responsibilities": [
+          "Provide a mock LLM client factory (`makeMockLLMClient`) for use across aggregation tests.",
+          "Test that `Aggregator.needsDirectoryAggregation` correctly identifies directories requiring re-aggregation based on staleness.",
+          "Test directory isolation and cleanup via temporary directories created with `fs.mkdtempSync` and cleaned with `fs.rmSync`."
+        ],
+        "outOfScope": [
+          "Production aggregation logic or LLM calls (these are mocked).",
+          "Non-test infrastructure such as configuration or database access.",
+          "Integration or end-to-end workflows beyond unit-level method validation."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/engines/aggregator.js'",
+        "symbols": [
+          "Aggregator"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SpineFolderUnit",
+          "SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "../../../src/engines/aggregator.js",
+        "relation": "import",
+        "symbols": [
+          "Aggregator"
+        ]
+      },
+      {
+        "targetPath": "../../../src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SpineFolderUnit",
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/engines/aggregator.test.ts/_file_#",
+        "targetSymbol": "src/engines/aggregator.ts/Aggregator#",
+        "targetPath": "src/engines/aggregator.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:09:02.834Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

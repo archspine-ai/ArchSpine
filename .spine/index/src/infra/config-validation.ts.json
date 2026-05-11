@@ -1,0 +1,146 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/config-validation.ts",
+    "contentHash": "358196900136a339181ab9adb9a0acd6c75bfe0a8d45a80df16a2c47773034fe",
+    "skeletonHash": "cef7738862fe4deae4b80a442884eb732b8a96a00d2b7f28cd31b3206dc6e002",
+    "semanticHash": "0fea9b792607755a2bff994625f3b150fc3511466b94aac7ae4f840a5405ae34",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infra facade module providing a stable, versioned entry point for core configuration schema resolution and validation functions.",
+    "responsibilities": [
+      "Re-export resolveSpineConfig from core config-schema to allow consumers to resolve combined spine configuration.",
+      "Re-export validateSpineConfig to provide a single entry point for validating user-supplied configuration against the schema.",
+      "Re-export the SpineConfigValidationResult type to support type-safe validation result handling.",
+      "Act as an import barrier, ensuring callers import from the infra layer rather than reaching into core internals."
+    ],
+    "outOfScope": [
+      "Direct usage of core/config-schema.ts internals (this module's purpose is to encapsulate that).",
+      "Logic that transforms or wraps the re-exported functions (none present).",
+      "Testing of the core config schema logic itself."
+    ],
+    "invariants": [
+      "Should remain a strict re-export barrel without adding new logic.",
+      "Should not import from modules deeper than one level relative to infra layer.",
+      "Must always keep export signatures in sync with the source module."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable import surface for configuration validation in the infra layer.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era (no module-specific change evidence)."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "resolveSpineConfig",
+        "description": "Resolves the combined spine configuration from layered config files and environment variables. Called by CLI commands and services that need the active config."
+      },
+      {
+        "symbolName": "validateSpineConfig",
+        "description": "Validates a provided configuration object against the spine schema, returning validation errors if any. Used by init, config, and try commands before applying config."
+      },
+      {
+        "symbolName": "SpineConfigValidationResult",
+        "description": "The TypeScript type representing the result of spine configuration validation. Used by type-checking consumers to handle validation outcomes."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infra facade module providing a stable, versioned entry point for core configuration schema resolution and validation functions.",
+        "responsibilities": [
+          "Re-export resolveSpineConfig from core config-schema to allow consumers to resolve combined spine configuration.",
+          "Re-export validateSpineConfig to provide a single entry point for validating user-supplied configuration against the schema.",
+          "Re-export the SpineConfigValidationResult type to support type-safe validation result handling.",
+          "Act as an import barrier, ensuring callers import from the infra layer rather than reaching into core internals."
+        ],
+        "outOfScope": [
+          "Direct usage of core/config-schema.ts internals (this module's purpose is to encapsulate that).",
+          "Logic that transforms or wraps the re-exported functions (none present).",
+          "Testing of the core config schema logic itself."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "resolveSpineConfig",
+        "kind": "unknown",
+        "signature": "export { resolveSpineConfig }"
+      },
+      {
+        "name": "validateSpineConfig",
+        "kind": "unknown",
+        "signature": "export { validateSpineConfig }"
+      },
+      {
+        "name": "type SpineConfigValidationResult",
+        "kind": "unknown",
+        "signature": "export { type SpineConfigValidationResult }"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "resolveSpineConfig",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/config-validation.ts#"
+      },
+      {
+        "name": "validateSpineConfig",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/config-validation.ts#"
+      },
+      {
+        "name": "type SpineConfigValidationResult",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/config-validation.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 3,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/core/config-schema.ts",
+        "relation": "import",
+        "symbols": [
+          "resolveSpineConfig",
+          "validateSpineConfig",
+          "SpineConfigValidationResult"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:56:35.733Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

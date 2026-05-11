@@ -1,0 +1,24 @@
+imports:
+  - id: import
+    pattern: 'import $SOURCE'
+exports:
+  - id: class
+    pattern: 'class $NAME'
+    kind: Class
+  - id: struct
+    pattern: 'struct $NAME'
+    kind: Class
+  - id: enum
+    pattern: 'enum $NAME'
+    kind: Class
+  - id: protocol
+    pattern: 'protocol $NAME'
+    kind: Interface
+  - id: function
+    pattern: 'func $NAME'
+    kind: Function
+usages:
+  - id: call
+    pattern: '$NAME($$$ARGS)'
+  - id: method
+    pattern: '$OBJ.$NAME'

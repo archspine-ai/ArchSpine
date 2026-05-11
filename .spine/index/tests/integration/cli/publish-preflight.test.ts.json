@@ -1,0 +1,244 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integration/cli/publish-preflight.test.ts",
+    "contentHash": "e055ed7140afd5dc6d9b5a9c1596f6d23b32a02c6170eb997dbcf6e5bc18643a",
+    "skeletonHash": "b3c4d9a1bdd9fc08dd9bc1096fc7ed35607047ce8122ad07fbcf60b5080df651",
+    "semanticHash": "b32237df1a066be56b5e88d5f7383b44ed35a30a9d375a947b55ad47207d2ee0",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/integration/cli"
+  },
+  "semantic": {
+    "role": "Vitest test suite for the publish-preflight pre-validation logic.",
+    "responsibilities": [
+      "Verifies that assertPublishRuntimeBaseline correctly validates the presence and structure of the .spine/manifest.json runtime baseline.",
+      "Verifies that assertPublishSnapshotReady correctly validates that snapshot artifacts exist and are consistent.",
+      "Sets up temporary directories with mock runtime baselines and snapshots to simulate various publish preflight scenarios.",
+      "Tears down temporary directories after each test using afterEach hook.",
+      "Ensures that ArchSpineError is thrown with appropriate error codes when preflight conditions are not met."
+    ],
+    "outOfScope": [
+      "Production module behavior; this file is strictly test infrastructure.",
+      "Integration with actual filesystem outside temporary directories.",
+      "Network or external service interactions."
+    ],
+    "invariants": [
+      "Must only be invoked by the vitest test runner.",
+      "Temporary directories must be cleaned up after each test.",
+      "All test assertions must validate both success and failure code paths."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Test validation of publish preflight conditions to ensure safe publication of snapshots.",
+      "recentChangeIntent": "Updated as part of a broader refactor that removed legacy CLI aliases, rebuilt documentation, fixed schemas, and adjusted tests to align with the refactored publish-preflight module."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite for the publish-preflight pre-validation logic.",
+        "responsibilities": [
+          "Verifies that assertPublishRuntimeBaseline correctly validates the presence and structure of the .spine/manifest.json runtime baseline.",
+          "Verifies that assertPublishSnapshotReady correctly validates that snapshot artifacts exist and are consistent.",
+          "Sets up temporary directories with mock runtime baselines and snapshots to simulate various publish preflight scenarios.",
+          "Tears down temporary directories after each test using afterEach hook.",
+          "Ensures that ArchSpineError is thrown with appropriate error codes when preflight conditions are not met."
+        ],
+        "outOfScope": [
+          "Production module behavior; this file is strictly test infrastructure.",
+          "Integration with actual filesystem outside temporary directories.",
+          "Network or external service interactions."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/services/publish-preflight.js'",
+        "symbols": [
+          "assertPublishRuntimeBaseline",
+          "assertPublishSnapshotReady"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/utils/lock.js'",
+        "symbols": [
+          "serializeLockPayload"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "../../../src/services/publish-preflight.js",
+        "relation": "import",
+        "symbols": [
+          "assertPublishRuntimeBaseline",
+          "assertPublishSnapshotReady"
+        ]
+      },
+      {
+        "targetPath": "../../../src/core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ]
+      },
+      {
+        "targetPath": "../../../src/utils/lock.js",
+        "relation": "import",
+        "symbols": [
+          "serializeLockPayload"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/integration/cli/publish-preflight.test.ts/_file_#",
+        "targetSymbol": "src/utils/lock.ts/serializeLockPayload#",
+        "targetPath": "src/utils/lock.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/cli/publish-preflight.test.ts/_file_#",
+        "targetSymbol": "src/services/publish-preflight.ts/assertPublishRuntimeBaseline#",
+        "targetPath": "src/services/publish-preflight.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/cli/publish-preflight.test.ts/_file_#",
+        "targetSymbol": "src/services/publish-preflight.ts/assertPublishSnapshotReady#",
+        "targetPath": "src/services/publish-preflight.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:07:33.826Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

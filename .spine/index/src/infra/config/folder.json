@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/infra/config",
+  "role": "Infrastructure configuration layer providing centralized settings management, default factories, environment overrides, and type-safe access to the ArchSpine system configuration.",
+  "responsibility": "This directory implements the canonical configuration factory, file-based loading with merge logic, environment variable parsing, pre-commit hook resolution, and a unified facade for reading/writing structured configuration values like LLM provider settings, artifact strategies, and project metadata.",
+  "children": [
+    {
+      "filePath": "src/infra/config/defaults.ts",
+      "role": "Infrastructure configuration factory providing the canonical default configuration for the ArchSpine system.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/config/env.ts",
+      "role": "Infrastructure utility that normalizes boolean and positive-integer environment variable parsing for pre-commit configuration.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/config/facade.ts",
+      "role": "Centralized configuration facade for ArchSpine, providing a unified read/write API over project settings with environment overrides and policy integration.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/config/loader.ts",
+      "role": "Infrastructure configuration loader that merges default settings with user-provided overrides and loads validated SpineConfig from a JSON file path.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/config/precommit.ts",
+      "role": "Low-level configuration resolver for pre-commit hook enablement within the Infra Config layer. It centralizes the decision logic between environment variable overrides and explicit configuration, providing a structured resolution result to consumers.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/config/supported-values.ts",
+      "role": "Abstraction layer for reading and writing supported configuration values (LLM provider, model, pre-commit, etc.). Provides a type-safe accessor interface and mapping between configuration keys and concrete accessor methods.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/config/types.ts",
+      "role": "Configuration type definitions and re-export module for the ArchSpine configuration system. Provides canonical type shapes for boolean setting resolution, supported config keys, sync modes, and artifact strategies, and re-exports the core SpineConfig type from the protocol layer.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/config/validation.ts",
+      "role": "Unknown role",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:12:07.352Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

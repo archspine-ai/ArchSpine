@@ -1,0 +1,380 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/validate.ts",
+    "contentHash": "d71b61a8c647dfdab3661f2bbe6dfa3509062e804b478ac1d57c8dfb7cd960ba",
+    "skeletonHash": "769cee0261cd2eb099cfe5cdf0ffb41ceeda5e365c7d5fd04ef2afd88fd362fa",
+    "semanticHash": "0220d5265827ff426586aacb771bb6309aa48491b03182c6ecba392ea582d11d",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "Pipeline stage task for semantic architecture validation of source files against project rules.",
+    "responsibilities": [
+      "Read the current project index to identify source files requiring validation.",
+      "For each source file, retrieve applicable rules from the rule engine and evaluate compliance.",
+      "Normalize any raw violation data into the canonical RuleViolation format using normalizeRuleViolations.",
+      "Record validated violations into the project manifest via taskCtx.manifest.recordViolation and push diagnostic summaries via pushValidateDiagnostics.",
+      "Build prompt artifacts and relevance diagnostics to enrich validation context for downstream stages.",
+      "Produce a ValidationTaskResult containing violation diagnostics, a summary, and execution metadata for use by subsequent pipeline stages."
+    ],
+    "outOfScope": [
+      "Parsing CLI arguments or defining new CLI commands.",
+      "Managing repository initialization, configuration, or credentials.",
+      "Executing MCP protocol operations or serving tool requests.",
+      "Performing source code scanning or AST extraction (handled by scanner stage).",
+      "Orchestrating unrelated pipeline stages such as aggregation, fix, or synchronization."
+    ],
+    "invariants": [
+      "The module must implement stage-local validation work on top of core contracts and engines, and must not take over CLI command parsing or unrelated service orchestration (Rule: task-stage-boundary).",
+      "All rule violations must be recorded through the manifest and not stored independently.",
+      "The task must use the common task context and checkpoint mechanisms to allow correct pipeline execution and resumption."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Implement a reusable validation stage that checks source files against architecture rules and produces normalized diagnostics for the pipeline.",
+      "recentChangeIntent": "Apply release gate fixes and sync accumulated source changes, likely improving task stage boundary compliance and integrating with the prompt-context/prompt-policy refactor."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "normalizeRuleViolations",
+        "description": "Normalizes an unknown input value into a stable array of RuleViolation objects by filtering and sanitizing entries. Used by validation consumers to ensure consistent violation data regardless of the source format."
+      },
+      {
+        "symbolName": "ValidationTask",
+        "description": "Main pipeline task class that executes the semantic architecture audit stage. Extends SpineTask, iterates over indexed files, evaluates rules, records violations, and outputs a ValidationTaskResult for downstream stages."
+      },
+      {
+        "symbolName": "ValidationSummary",
+        "description": "Interface that encapsulates high-level summary statistics of the validation run, such as total violations, counts per severity, and files processed. Consumed by pipeline orchestrators and reporting views."
+      },
+      {
+        "symbolName": "ValidationTaskResult",
+        "description": "Interface defining the full output contract of the validation task, including violation diagnostics, a summary, and execution metadata. Designed to be consumed by subsequent pipeline stages and view services."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Pipeline stage task for semantic architecture validation of source files against project rules.",
+        "responsibilities": [
+          "Read the current project index to identify source files requiring validation.",
+          "For each source file, retrieve applicable rules from the rule engine and evaluate compliance.",
+          "Normalize any raw violation data into the canonical RuleViolation format using normalizeRuleViolations.",
+          "Record validated violations into the project manifest via taskCtx.manifest.recordViolation and push diagnostic summaries via pushValidateDiagnostics.",
+          "Build prompt artifacts and relevance diagnostics to enrich validation context for downstream stages.",
+          "Produce a ValidationTaskResult containing violation diagnostics, a summary, and execution metadata for use by subsequent pipeline stages."
+        ],
+        "outOfScope": [
+          "Parsing CLI arguments or defining new CLI commands.",
+          "Managing repository initialization, configuration, or credentials.",
+          "Executing MCP protocol operations or serving tool requests.",
+          "Performing source code scanning or AST extraction (handled by scanner stage).",
+          "Orchestrating unrelated pipeline stages such as aggregation, fix, or synchronization."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext",
+          "TaskContextFor"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/prompt-context.js'",
+        "symbols": [
+          "buildSourcePromptArtifacts",
+          "RelevanceDiagnosticsSnapshot"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/prompt-policy.js'",
+        "symbols": [
+          "resolveValidatePolicy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/lang-registry.js'",
+        "symbols": [
+          "LangRegistry"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "RuleViolation"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/task-state.js'",
+        "symbols": [
+          "addTaskUsage",
+          "pushValidateDiagnostics"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'p-limit'",
+        "symbols": [
+          "pLimit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "normalizeRuleViolations",
+        "kind": "function",
+        "signature": "normalizeRuleViolations(value: unknown)"
+      },
+      {
+        "name": "ValidationTask",
+        "kind": "class",
+        "signature": "class ValidationTask"
+      },
+      {
+        "name": "ValidationSummary",
+        "kind": "interface",
+        "signature": "interface ValidationSummary"
+      },
+      {
+        "name": "ValidationTaskResult",
+        "kind": "interface",
+        "signature": "interface ValidationTaskResult"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "normalizeRuleViolations",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/tasks/validate.ts#"
+      },
+      {
+        "name": "ValidationTask",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/tasks/validate.ts#"
+      },
+      {
+        "name": "ValidationSummary",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/tasks/validate.ts#"
+      },
+      {
+        "name": "ValidationTaskResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/tasks/validate.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 11,
+      "exportCount": 4,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext",
+          "TaskContextFor"
+        ]
+      },
+      {
+        "targetPath": "../infra/prompt-context.js",
+        "relation": "import",
+        "symbols": [
+          "buildSourcePromptArtifacts",
+          "RelevanceDiagnosticsSnapshot"
+        ]
+      },
+      {
+        "targetPath": "../infra/prompt-policy.js",
+        "relation": "import",
+        "symbols": [
+          "resolveValidatePolicy"
+        ]
+      },
+      {
+        "targetPath": "../ast/lang-registry.js",
+        "relation": "import",
+        "symbols": [
+          "LangRegistry"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "RuleViolation"
+        ]
+      },
+      {
+        "targetPath": "../core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "addTaskUsage",
+          "pushValidateDiagnostics"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "p-limit",
+        "relation": "import",
+        "symbols": [
+          "pLimit"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/tasks/validate.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/resolveValidatePolicy#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/validate.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-policy.ts/resolveValidatePolicy#",
+        "targetPath": "src/infra/prompt-policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/validate.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/policy.ts/resolveValidatePolicy#",
+        "targetPath": "src/infra/prompt-context/policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/validate.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/buildSourcePromptArtifacts#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/validate.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/artifacts.ts/buildSourcePromptArtifacts#",
+        "targetPath": "src/infra/prompt-context/artifacts.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/validate.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/pushValidateDiagnostics#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/validate.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/addTaskUsage#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/validate.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/recordViolation#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/validate.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/clearViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/validate.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getFileDocs#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:39:49.742Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 2,
+    "isHub": true,
+    "hubPercentile": 59,
+    "inCycle": true,
+    "cycleId": "src/core → src/tasks → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,230 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/repo/strategy.ts",
+    "contentHash": "e2b03823ecdb196983e8c5158de8dc24e1e8ad2017452a16715eaa8f7289663f",
+    "skeletonHash": "8ee9e3f44ecf45629433586226bd998d078359abd4cb75ac14c0a11d4a8e8e98",
+    "semanticHash": "b8d96855847c46acc09a2e8ddb2364e94b2fab5f6c59b90c9f9d49ebe00671ab",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/repo"
+  },
+  "semantic": {
+    "role": "CLI adapter module for artifact strategy selection in repository initialization and configuration workflows.",
+    "responsibilities": [
+      "Parse and normalize a string value to a valid ArtifactStrategy ('local' or 'distributable') or return undefined for invalid input.",
+      "Check the current repository strategy by delegating to checkRepositoryStrategy and report the result via console output, raising an error if no strategy is detected.",
+      "Set the artifact strategy for a repository by delegating to applyRepositoryStrategy, orchestrating the process with step-by-step progress printing via printStep."
+    ],
+    "outOfScope": [
+      "Actual execution of repository scanning, LLM calls, or database operations.",
+      "Persistence logic for storing or retrieving strategies beyond delegating to service functions.",
+      "Pipeline orchestration beyond the strategy check/set workflow."
+    ],
+    "invariants": [
+      "Must remain a thin CLI adapter, delegating business logic to service modules; must not absorb pipeline or persistence logic.",
+      "All user-facing output must be through console.log/console.warn or delegated printStep helper."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a clean CLI entrypoint for repository strategy operations, separating command routing from business logic by delegating to service functions.",
+      "recentChangeIntent": "Not directly related to this file; recent commit focused on hardening credential store and optimizing LLM summarization pipeline."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "parseArtifactStrategy",
+        "description": "Parses a raw string value and returns an ArtifactStrategy ('local' or 'distributable') if valid, otherwise undefined. Used by CLI commands to interpret user input for artifact strategy."
+      },
+      {
+        "symbolName": "runRepoCheck",
+        "description": "Checks the current repository artifact strategy using checkRepositoryStrategy and prints the result to the console. Raises an ArchSpineError if no strategy is detected. Called by the repo check CLI command."
+      },
+      {
+        "symbolName": "runRepoStrategySet",
+        "description": "Sets the artifact strategy for a repository by delegating to applyRepositoryStrategy, with step-by-step progress output via printStep. Called by the repo set CLI command."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI adapter module for artifact strategy selection in repository initialization and configuration workflows.",
+        "responsibilities": [
+          "Parse and normalize a string value to a valid ArtifactStrategy ('local' or 'distributable') or return undefined for invalid input.",
+          "Check the current repository strategy by delegating to checkRepositoryStrategy and report the result via console output, raising an error if no strategy is detected.",
+          "Set the artifact strategy for a repository by delegating to applyRepositoryStrategy, orchestrating the process with step-by-step progress printing via printStep."
+        ],
+        "outOfScope": [
+          "Actual execution of repository scanning, LLM calls, or database operations.",
+          "Persistence logic for storing or retrieving strategies beyond delegating to service functions.",
+          "Pipeline orchestration beyond the strategy check/set workflow."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../services/repository-admin-service.js'",
+        "symbols": [
+          "applyRepositoryStrategy",
+          "checkRepositoryStrategy"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "parseArtifactStrategy",
+        "kind": "function",
+        "signature": "parseArtifactStrategy(value: string | undefined)"
+      },
+      {
+        "name": "runRepoCheck",
+        "kind": "function",
+        "signature": "runRepoCheck(repoRoot: string, cfg: Config)"
+      },
+      {
+        "name": "runRepoStrategySet",
+        "kind": "function",
+        "signature": "runRepoStrategySet(\n  rootDir: string,\n  config: Config,\n  nextStrategy: ArtifactStrategy,\n  printStep: (message: string, options?: { inline?: boolean }) => void,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "parseArtifactStrategy",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/repo/strategy.ts#"
+      },
+      {
+        "name": "runRepoCheck",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/repo/strategy.ts#"
+      },
+      {
+        "name": "runRepoStrategySet",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/repo/strategy.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ]
+      },
+      {
+        "targetPath": "../../services/repository-admin-service.js",
+        "relation": "import",
+        "symbols": [
+          "applyRepositoryStrategy",
+          "checkRepositoryStrategy"
+        ]
+      },
+      {
+        "targetPath": "../init/types.js",
+        "relation": "type import",
+        "symbols": [
+          "ArtifactStrategy"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/unit/infra/repo-strategy.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/repo/strategy.ts/_file_#",
+        "targetSymbol": "src/services/repository-admin-service.ts/checkRepositoryStrategy#",
+        "targetPath": "src/services/repository-admin-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/repo/strategy.ts/_file_#",
+        "targetSymbol": "src/services/repository-admin-service.ts/applyRepositoryStrategy#",
+        "targetPath": "src/services/repository-admin-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/repo/strategy.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/printStep#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/repo/strategy.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/ArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/repo/strategy.ts/_file_#",
+        "targetSymbol": "src/infra/repository-artifacts.ts/snapshotOutputsPresent#",
+        "targetPath": "src/infra/repository-artifacts.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:54:38.861Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 53,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

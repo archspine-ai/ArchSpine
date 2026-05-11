@@ -1,0 +1,302 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integration/schema/schema-compliance.test.ts",
+    "contentHash": "d001aae35d5459d896cf05e39497d79b68997c05c57ccc0ab61bca0bf8b409e0",
+    "skeletonHash": "42a35c60618a301ba45fa425f331171148e03b0024e4e70820b8867986bdd0d0",
+    "semanticHash": "ca0876315756ecdf88e0163ce4743aa9690d4949a82b21a323ce5a5a5bf2a013",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/integration/schema"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite that validates generated spine unit files against JSON Schema and verifies SyncService output correctness.",
+    "responsibilities": [
+      "Validate that every generated .json file in the output directory conforms to the spine-unit JSON schema definition.",
+      "Verify that files in .spine/index/ directory adhere to the shared and unit schemas using Ajv compiler.",
+      "Test the SyncService integration with a mock LLM client to ensure correct output during sync operations.",
+      "Clean up temporary directories and created test files after each test execution to maintain isolation."
+    ],
+    "outOfScope": [
+      "Does not expose any production API, CLI commands, HTTP handlers, or MCP tools.",
+      "Does not define reusable configuration interfaces or exported symbols for external consumption."
+    ],
+    "invariants": [
+      "Test files must use the .test.ts or .spec.ts suffix — this file follows the convention."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide automated validation for the spine unit schema compliance and integration testing of SyncService.",
+      "recentChangeIntent": "Test suite for schema compliance and sync integration; aligns with the project's quality assurance pipeline."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite that validates generated spine unit files against JSON Schema and verifies SyncService output correctness.",
+        "responsibilities": [
+          "Validate that every generated .json file in the output directory conforms to the spine-unit JSON schema definition.",
+          "Verify that files in .spine/index/ directory adhere to the shared and unit schemas using Ajv compiler.",
+          "Test the SyncService integration with a mock LLM client to ensure correct output during sync operations.",
+          "Clean up temporary directories and created test files after each test execution to maintain isolation."
+        ],
+        "outOfScope": [
+          "Does not expose any production API, CLI commands, HTTP handlers, or MCP tools.",
+          "Does not define reusable configuration interfaces or exported symbols for external consumption."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "it",
+          "expect"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/services/sync-service.js'",
+        "symbols": [
+          "SyncService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/__mocks__/llm.js'",
+        "symbols": [
+          "MockClient"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'ajv'",
+        "symbols": [
+          "Ajv"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'ajv-formats'",
+        "symbols": [
+          "addFormats"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../schemas/spine-unit.schema.json'",
+        "symbols": [
+          "spineUnitSchema"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../schemas/shared.schema.json'",
+        "symbols": [
+          "sharedSchema"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 15,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "it",
+          "expect"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execFileSync"
+        ]
+      },
+      {
+        "targetPath": "../../../src/services/sync-service.js",
+        "relation": "import",
+        "symbols": [
+          "SyncService"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/__mocks__/llm.js",
+        "relation": "import",
+        "symbols": [
+          "MockClient"
+        ]
+      },
+      {
+        "targetPath": "../../../src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION"
+        ]
+      },
+      {
+        "targetPath": "ajv",
+        "relation": "import",
+        "symbols": [
+          "Ajv"
+        ]
+      },
+      {
+        "targetPath": "ajv-formats",
+        "relation": "import",
+        "symbols": [
+          "addFormats"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "../../../schemas/spine-unit.schema.json",
+        "relation": "import",
+        "symbols": [
+          "spineUnitSchema"
+        ]
+      },
+      {
+        "targetPath": "../../../schemas/shared.schema.json",
+        "relation": "import",
+        "symbols": [
+          "sharedSchema"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/integration/schema/schema-compliance.test.ts/_file_#",
+        "targetSymbol": "src/services/sync-service.ts/SyncService#",
+        "targetPath": "src/services/sync-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/schema/schema-compliance.test.ts/_file_#",
+        "targetSymbol": "src/infra/__mocks__/llm.ts/MockClient#",
+        "targetPath": "src/infra/__mocks__/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/schema/schema-compliance.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/mock.ts/MockClient#",
+        "targetPath": "src/infra/llm/providers/mock.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:07:35.831Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/types/protocol/languages.ts",
+    "contentHash": "6688209dcf26fbc80000f3eb5249f615fcd1cba45c9faca5a71f5a4abe6257cf",
+    "skeletonHash": "584a8f9db409cb7b7230db05fb814a6932f9bd196efc104a8a2e3eaec2d8509a",
+    "semanticHash": "3bdad844232fe0492180fe7d40f9fc01881ae8ceabfc1d0c3b042486c6722ba3",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/types/protocol"
+  },
+  "semantic": {
+    "role": "Protocol type definitions for language detection and support snapshots.",
+    "responsibilities": [
+      "Define the shape of a language detection snapshot (LanguageSnapshot), including schema version, detected file extensions, and per-language support status.",
+      "Define the LanguageSupport interface describing the support status (available, unavailable, unsupported) along with optional reason.",
+      "Define the LanguageDelta interface representing changes between two language snapshots."
+    ],
+    "outOfScope": [
+      "Language detection or AST extraction logic.",
+      "Runtime validation or serialization of these types.",
+      "Configuration or user-facing UI."
+    ],
+    "invariants": [
+      "Interfaces in this file are part of the public protocol and must not be prefixed with 'I' (the internal prefix rule applies only to non-exported interfaces)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish the type-level contract for language discovery and support status used across the ArchSpine system.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "LanguageSnapshot",
+        "description": "Container for the complete state of language detection: schema version, detected extensions, and a map of language support records."
+      },
+      {
+        "symbolName": "LanguageSupport",
+        "description": "Describes the detection status of a single language (available, unavailable, unsupported) with an optional explanation string."
+      },
+      {
+        "symbolName": "LanguageDelta",
+        "description": "Represents the difference between two language snapshots, used to propagate changes in language support."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Protocol type definitions for language detection and support snapshots.",
+        "responsibilities": [
+          "Define the shape of a language detection snapshot (LanguageSnapshot), including schema version, detected file extensions, and per-language support status.",
+          "Define the LanguageSupport interface describing the support status (available, unavailable, unsupported) along with optional reason.",
+          "Define the LanguageDelta interface representing changes between two language snapshots."
+        ],
+        "outOfScope": [
+          "Language detection or AST extraction logic.",
+          "Runtime validation or serialization of these types.",
+          "Configuration or user-facing UI."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "LanguageSnapshot",
+        "kind": "interface",
+        "signature": "interface LanguageSnapshot"
+      },
+      {
+        "name": "LanguageSupport",
+        "kind": "interface",
+        "signature": "interface LanguageSupport"
+      },
+      {
+        "name": "LanguageDelta",
+        "kind": "interface",
+        "signature": "interface LanguageDelta"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "LanguageSnapshot",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/languages.ts#"
+      },
+      {
+        "name": "LanguageSupport",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/languages.ts#"
+      },
+      {
+        "name": "LanguageDelta",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/languages.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 3,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:05:23.061Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 9,
+    "isHub": true,
+    "hubPercentile": 100,
+    "inCycle": true,
+    "cycleId": "src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

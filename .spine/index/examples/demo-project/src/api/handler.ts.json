@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "examples/demo-project/src/api/handler.ts",
+    "contentHash": "c5a14a5505bff0d05ade8b54362dab8084656003e1b646b4103cd8b1b21ac0e6",
+    "skeletonHash": "31dbcffa8936ef83b17166aa03df02e5927233ade034215aa966593fb8424076",
+    "semanticHash": "0af53a2074e553744e9e6de5669a409d28cae9259b06e8d472c98512124b0bad",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "examples/demo-project/src/api"
+  },
+  "semantic": {
+    "role": "API Handler for user creation, acting as an entry point that delegates to domain services.",
+    "responsibilities": [
+      "Expose the CreateUserHandler class as the HTTP or application-layer entry point for creating new users.",
+      "Accept incoming request data (name, email) and delegate the business logic to UserService.",
+      "Establish a direct (but architecturally invalid) connection to the Database infrastructure for persistence operations."
+    ],
+    "outOfScope": [
+      "Domain business logic and validation (handled by UserService).",
+      "Database schema or query execution details (handled by Database).",
+      "Routing or HTTP transport mechanics (not present in this file)."
+    ],
+    "invariants": [
+      "API layer must not directly import infrastructure modules (violated by Database import).",
+      "CreateUserHandler must always coordinate with UserService for user creation."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "This file is part of an MVC-style demo project where the API handler orchestrates user creation by calling domain services and infrastructure. It was designed to illustrate both correct layering (domain import) and a deliberate violation (direct infra import).",
+      "recentChangeIntent": "Part of the ArchSpine v1.0.0 initial commit which sets up the architectural governance and semantic layer for AI-era tooling."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "CreateUserHandler",
+        "description": "Application-layer handler for user creation. External callers instantiate this class and invoke its methods to create a user by delegating to UserService and Database."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "API Handler for user creation, acting as an entry point that delegates to domain services.",
+        "responsibilities": [
+          "Expose the CreateUserHandler class as the HTTP or application-layer entry point for creating new users.",
+          "Accept incoming request data (name, email) and delegate the business logic to UserService.",
+          "Establish a direct (but architecturally invalid) connection to the Database infrastructure for persistence operations."
+        ],
+        "outOfScope": [
+          "Domain business logic and validation (handled by UserService).",
+          "Database schema or query execution details (handled by Database).",
+          "Routing or HTTP transport mechanics (not present in this file)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../domain/user-service.js'",
+        "symbols": [
+          "UserService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/database.js'",
+        "symbols": [
+          "Database"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "CreateUserHandler",
+        "kind": "class",
+        "signature": "class CreateUserHandler"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "CreateUserHandler",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "examples/demo-project/src/api/handler.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../domain/user-service.js",
+        "relation": "import",
+        "symbols": [
+          "UserService"
+        ]
+      },
+      {
+        "targetPath": "../infra/database.js",
+        "relation": "import",
+        "symbols": [
+          "Database"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "examples/demo-project/src/api/handler.ts/_file_#",
+        "targetSymbol": "examples/demo-project/src/domain/user-service.ts/UserService#",
+        "targetPath": "examples/demo-project/src/domain/user-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "examples/demo-project/src/api/handler.ts/_file_#",
+        "targetSymbol": "examples/demo-project/src/infra/database.ts/Database#",
+        "targetPath": "examples/demo-project/src/infra/database.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:50:32.786Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 12,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

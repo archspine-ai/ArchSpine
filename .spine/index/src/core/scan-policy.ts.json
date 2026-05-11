@@ -1,0 +1,160 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/core/scan-policy.ts",
+    "contentHash": "b516b6a1abbc0bf9d235e29f8de745bec09cd6100f22ac5204730934af3cb756",
+    "skeletonHash": "3d73b948047e407b69568fee591568253726b193c9c58011b97f42df857ffe7c",
+    "semanticHash": "2980f9631bdb5a74287c84a63e63c668b80b04a100ac2bbbe090aa3308c4534a",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/core"
+  },
+  "semantic": {
+    "role": "Configuration schema and default resolver for the file scanning policy used in the pipeline. This module defines the contract that controls which files are scanned (source, ignore chain, protocol inclusions/exclusions) and how partial overrides are merged with defaults.",
+    "responsibilities": [
+      "Define the FileSource type to select the set of files for scanning (git-tracked, git-tracked-plus-untracked, or full filesystem).",
+      "Define the ScanPolicy interface specifying file source, ignore chain (with inheritGitIgnore, projectIgnore, localIgnore), and protocol-level inclusion/exclusion lists.",
+      "Define the PartialScanPolicy interface allowing callers to override only specific fields of ScanPolicy.",
+      "Implement resolveScanPolicy to merge a partial policy with default values, producing a complete ScanPolicy.",
+      "Maintain protocol-level isolation: the policy definition must not depend on CLI or filesystem I/O."
+    ],
+    "outOfScope": [
+      "Does not perform actual file scanning or traversal.",
+      "Does not interact with the filesystem or Git repository.",
+      "Does not parse CLI arguments or configuration files.",
+      "Does not manage scan results or state."
+    ],
+    "invariants": [
+      "Must not import from CLI layer (core-pipeline-isolation rule)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, isolated configuration type for scan policies that can be consumed by engines, services, and tasks without coupling to I/O or CLI concerns.",
+      "recentChangeIntent": "No recent changes detected; the file remains stable with unchanged contracts."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "FileSource",
+        "description": "Union type that selects the source of files for scanning: 'git-tracked', 'git-tracked-plus-untracked', or 'filesystem'. Used by scan engines to determine which files to process."
+      },
+      {
+        "symbolName": "ScanPolicy",
+        "description": "Complete interface specifying file source, ignore chain configuration, and protocol-level inclusion/exclusion arrays. Consumed by scanners and pipeline stages to control scan scope."
+      },
+      {
+        "symbolName": "PartialScanPolicy",
+        "description": "Partial version of ScanPolicy with all fields optional. Allows callers to override only specific policy fields without specifying the full policy."
+      },
+      {
+        "symbolName": "resolveScanPolicy",
+        "description": "Merges a PartialScanPolicy with default values to produce a complete ScanPolicy. Called by pipeline initialization and command handlers to compute the effective scan policy."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Configuration schema and default resolver for the file scanning policy used in the pipeline. This module defines the contract that controls which files are scanned (source, ignore chain, protocol inclusions/exclusions) and how partial overrides are merged with defaults.",
+        "responsibilities": [
+          "Define the FileSource type to select the set of files for scanning (git-tracked, git-tracked-plus-untracked, or full filesystem).",
+          "Define the ScanPolicy interface specifying file source, ignore chain (with inheritGitIgnore, projectIgnore, localIgnore), and protocol-level inclusion/exclusion lists.",
+          "Define the PartialScanPolicy interface allowing callers to override only specific fields of ScanPolicy.",
+          "Implement resolveScanPolicy to merge a partial policy with default values, producing a complete ScanPolicy.",
+          "Maintain protocol-level isolation: the policy definition must not depend on CLI or filesystem I/O."
+        ],
+        "outOfScope": [
+          "Does not perform actual file scanning or traversal.",
+          "Does not interact with the filesystem or Git repository.",
+          "Does not parse CLI arguments or configuration files.",
+          "Does not manage scan results or state."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "resolveScanPolicy",
+        "kind": "function",
+        "signature": "resolveScanPolicy(policy?: PartialScanPolicy)"
+      },
+      {
+        "name": "ScanPolicy",
+        "kind": "interface",
+        "signature": "interface ScanPolicy"
+      },
+      {
+        "name": "PartialScanPolicy",
+        "kind": "interface",
+        "signature": "interface PartialScanPolicy"
+      },
+      {
+        "name": "FileSource",
+        "kind": "type",
+        "signature": "type FileSource"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "resolveScanPolicy",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/scan-policy.ts#"
+      },
+      {
+        "name": "ScanPolicy",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/scan-policy.ts#"
+      },
+      {
+        "name": "PartialScanPolicy",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/scan-policy.ts#"
+      },
+      {
+        "name": "FileSource",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/core/scan-policy.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 4,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/config/defaults.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:54:59.606Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 7,
+    "isHub": true,
+    "hubPercentile": 88,
+    "inCycle": true,
+    "cycleId": "src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

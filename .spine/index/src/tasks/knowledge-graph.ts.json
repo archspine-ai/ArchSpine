@@ -1,0 +1,300 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/knowledge-graph.ts",
+    "contentHash": "d283d69d8a57c30b46af96beb4d0b7f1f6d283cadf1dcedae30b4b972163b06f",
+    "skeletonHash": "d22175ddf3e94509128019bfedd51662d222fd220f7fb3572cc3fd6c75d32cff",
+    "semanticHash": "c5b714b9435d271937e363642926137a4be2464109bf996111aa0ef58d748dd1",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "Stage-local task module that builds a dependency knowledge graph from the repository's tracked source files and runs structural diagnostics (cycles, dead code, hubs), saving the results as view data files for downstream views.",
+    "responsibilities": [
+      "Construct a dependency graph from all tracked source files using the engine's buildGraph function.",
+      "Detect circular dependencies (cycles) in the graph and report them per module.",
+      "Detect dead code (modules with no incoming dependencies) and report the list of unused modules.",
+      "Detect hub modules (modules with an abnormally high number of incoming dependencies) and report them with their dependency counts.",
+      "Save the knowledge graph view data (knowledge-graph.json) via the output manager.",
+      "Save diagnostics data for cycles, dead code, and hubs as separate view data files.",
+      "Write health flags (e.g., derived from diagnostics severity) to the output.",
+      "Read index documents to obtain unit definitions needed for module identification.",
+      "Iterate over all tracked files from the scanner to build and analyze the graph.",
+      "Use the filesystem to ensure the output directory exists before writing view data."
+    ],
+    "outOfScope": [
+      "Does not parse CLI arguments or dispatch commands.",
+      "Does not interact with LLM providers or manage credentials.",
+      "Does not modify source code files or create new files beyond view data.",
+      "Does not orchestrate other services or handle user prompts.",
+      "Does not perform any runtime execution scheduling or checkpointing."
+    ],
+    "invariants": [
+      "Only imports from core contracts, engines, infra (index-reader), and types/protocol; no direct coupling to CLI or service layers.",
+      "Produces only view data output; no side effects on source code or database beyond saving view data.",
+      "Complete dependency on the scanner's tracked file list and index reader for unit definitions.",
+      "Task executes after scanning and before view derivation in the pipeline."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "This task is a dedicated stage in the pipeline that augments the unit index with structural insights from dependency analysis. It converts raw dependency data into view-ready diagnostics and knowledge graph structures, reducing the complexity of downstream view derivation.",
+      "recentChangeIntent": "Refactor to remove legacy CLI aliases, rebuild documentation, fix schema issues and tests. No direct changes to this file's logic or responsibilities."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "KnowledgeGraphTask",
+        "description": "Pipeline task that constructs a dependency knowledge graph, runs structural diagnostics, and saves the results as view data. Invoked by the task runtime after scanning, consumes tracked files and index documents, and produces knowledge-graph.json, cycle, dead-code, and hub diagnostics."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Stage-local task module that builds a dependency knowledge graph from the repository's tracked source files and runs structural diagnostics (cycles, dead code, hubs), saving the results as view data files for downstream views.",
+        "responsibilities": [
+          "Construct a dependency graph from all tracked source files using the engine's buildGraph function.",
+          "Detect circular dependencies (cycles) in the graph and report them per module.",
+          "Detect dead code (modules with no incoming dependencies) and report the list of unused modules.",
+          "Detect hub modules (modules with an abnormally high number of incoming dependencies) and report them with their dependency counts.",
+          "Save the knowledge graph view data (knowledge-graph.json) via the output manager.",
+          "Save diagnostics data for cycles, dead code, and hubs as separate view data files.",
+          "Write health flags (e.g., derived from diagnostics severity) to the output.",
+          "Read index documents to obtain unit definitions needed for module identification.",
+          "Iterate over all tracked files from the scanner to build and analyze the graph.",
+          "Use the filesystem to ensure the output directory exists before writing view data."
+        ],
+        "outOfScope": [
+          "Does not parse CLI arguments or dispatch commands.",
+          "Does not interact with LLM providers or manage credentials.",
+          "Does not modify source code files or create new files beyond view data.",
+          "Does not orchestrate other services or handle user prompts.",
+          "Does not perform any runtime execution scheduling or checkpointing."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../engines/dependency-graph.js'",
+        "symbols": [
+          "buildGraph",
+          "getModuleId",
+          "KnowledgeGraph"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../engines/graph-diagnostics.js'",
+        "symbols": [
+          "detectCycles",
+          "detectDeadCode",
+          "detectHubs",
+          "CycleReport",
+          "DeadCodeReport",
+          "HubReport"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/index-reader.js'",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "KnowledgeGraphTask",
+        "kind": "class",
+        "signature": "class KnowledgeGraphTask"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "KnowledgeGraphTask",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/tasks/knowledge-graph.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "../engines/dependency-graph.js",
+        "relation": "import",
+        "symbols": [
+          "buildGraph",
+          "getModuleId",
+          "KnowledgeGraph"
+        ]
+      },
+      {
+        "targetPath": "../engines/graph-diagnostics.js",
+        "relation": "import",
+        "symbols": [
+          "detectCycles",
+          "detectDeadCode",
+          "detectHubs",
+          "CycleReport",
+          "DeadCodeReport",
+          "HubReport"
+        ]
+      },
+      {
+        "targetPath": "../infra/index-reader.js",
+        "relation": "import",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SpineUnit"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/tasks/knowledge-graph.ts/_file_#",
+        "targetSymbol": "src/engines/dependency-graph.ts/buildGraph#",
+        "targetPath": "src/engines/dependency-graph.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/knowledge-graph.ts/_file_#",
+        "targetSymbol": "src/engines/graph-diagnostics.ts/detectCycles#",
+        "targetPath": "src/engines/graph-diagnostics.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/knowledge-graph.ts/_file_#",
+        "targetSymbol": "src/engines/graph-diagnostics.ts/detectDeadCode#",
+        "targetPath": "src/engines/graph-diagnostics.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/knowledge-graph.ts/_file_#",
+        "targetSymbol": "src/engines/graph-diagnostics.ts/detectHubs#",
+        "targetPath": "src/engines/graph-diagnostics.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/knowledge-graph.ts/_file_#",
+        "targetSymbol": "src/engines/dependency-graph.ts/getModuleId#",
+        "targetPath": "src/engines/dependency-graph.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/knowledge-graph.ts/_file_#",
+        "targetSymbol": "src/infra/index-reader.ts/isCompatibleIndexDocument#",
+        "targetPath": "src/infra/index-reader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/knowledge-graph.ts/_file_#",
+        "targetSymbol": "src/infra/index-reader.ts/reportIndexReadIssueOnce#",
+        "targetPath": "src/infra/index-reader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/knowledge-graph.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/updateFileStatusWithDocs#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:04:40.165Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 2,
+    "isHub": true,
+    "hubPercentile": 59,
+    "inCycle": true,
+    "cycleId": "src/core → src/tasks → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

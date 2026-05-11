@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/__mocks__/llm.ts",
+    "contentHash": "fec64456f50fd4693f75af63e428dada850c91c2bd24bc0b0618ce7d23d59f6c",
+    "skeletonHash": "2572e29729c3582f752430acbde8bbc17efa51bb0da45d117d65db18b1c3cdeb",
+    "semanticHash": "fe84756d2041514d79b31d95cd141db66707051c6b22a89326f6aa4e55e6d208",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/__mocks__"
+  },
+  "semantic": {
+    "role": "Re-export module providing a mock LLM client for testing and development environments within the ArchSpine infrastructure.",
+    "responsibilities": [
+      "Provide a convenient import point for the MockClient test double, avoiding direct imports from deep provider paths.",
+      "Enable mock LLM responses without hitting real providers, facilitating isolated unit and integration tests."
+    ],
+    "outOfScope": [
+      "Implementing real LLM provider logic.",
+      "Handling authentication or credentials.",
+      "Managing LLM provider lifecycle or configuration."
+    ],
+    "invariants": [
+      "The MockClient symbol must remain available as a re-export from this file."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, centralized mock for LLM testing that insulates callers from low-level provider paths.",
+      "recentChangeIntent": "File was reorganized into __mocks__ directory; no semantic change to the MockClient contract."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "MockClient",
+        "description": "A mock LLM client that simulates responses for testing. Re-exported from the mock provider for convenient import by tests and development tools."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Re-export module providing a mock LLM client for testing and development environments within the ArchSpine infrastructure.",
+        "responsibilities": [
+          "Provide a convenient import point for the MockClient test double, avoiding direct imports from deep provider paths.",
+          "Enable mock LLM responses without hitting real providers, facilitating isolated unit and integration tests."
+        ],
+        "outOfScope": [
+          "Implementing real LLM provider logic.",
+          "Handling authentication or credentials.",
+          "Managing LLM provider lifecycle or configuration."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "MockClient",
+        "kind": "unknown",
+        "signature": "export { MockClient }"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "MockClient",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/__mocks__/llm.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/llm/providers/mock.ts",
+        "relation": "import",
+        "symbols": [
+          "MockClient"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/integration/system/demo-governance.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/unit/features/god-mode.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:56:27.208Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

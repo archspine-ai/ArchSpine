@@ -1,0 +1,545 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/utils/agent-instructions.templates.ts",
+    "contentHash": "b3f24cb824926ecfe7d1796277957e79694e91892575f06773bbae904b6ff703",
+    "skeletonHash": "3c52b0c1e06e293012e4b19846fbd4ebe7706164fc31db1ef77a2fc0b65eaad3",
+    "semanticHash": "d46ce2d447e78ad035b8dbf62bf18304f118f515cfac48a17a1219a538746927",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/utils"
+  },
+  "semantic": {
+    "role": "Constants and template definitions module for ArchSpine's agent briefing blocks, MCP tools documentation, health snapshot content, and managed ignore-file entries (.gitignore, .spineignore, .gitattributes, .ignore).",
+    "responsibilities": [
+      "Define unique block start/end markers for embedding ArchSpine sections (v1 agent instructions, V2 knowledge graph briefing, MCP tools, health snapshot) into markdown documents.",
+      "Provide pre-assembled block strings (ARCHSPINE_AGENT_BLOCK, ARCHSPINE_V2_BRIEFING_BLOCK, ARCHSPINE_MCP_TOOLS_BLOCK, ARCHSPINE_HEALTH_BLOCK) for direct injection into agent instruction files.",
+      "Supply content arrays (ARCHSPINE_V2_BRIEFING_CONTENT, ARCHSPINE_MCP_TOOLS_CONTENT, ARCHSPINE_HEALTH_CONTENT) that form the inner text of those blocks.",
+      "Define file paths (SEARCH_IGNORE_PATH, SPINEIGNORE_PATH) for the .ignore and .spineignore files.",
+      "Provide recommended ignore lines for .spineignore (SPINEIGNORE_RECOMMENDED_LINES) and .gitignore (LOCAL_GITIGNORE_LINES), plus block start/end delimiters for managed sections.",
+      "Provide .gitignore and .gitattributes block start/end markers (GITIGNORE_BLOCK_START/END, GITATTRIBUTES_BLOCK_START/END) to encapsulate ArchSpine-managed regions.",
+      "Supply the full concatenated SEARCH_IGNORE_CONTENT for the .ignore file from the SEARCH_IGNORE_LINES list."
+    ],
+    "outOfScope": [
+      "Writing or patching ignore files to disk — that is the responsibility of infra modules (spine-gate, fs-utils).",
+      "Rendering or injecting agent blocks into output documents — that is done by agent-instructions sync and view renderers.",
+      "Validating that the block start/end markers match or that ignore file content is correct — no validation logic here."
+    ],
+    "invariants": [
+      "Block start markers (e.g., AGENT_BLOCK_START, ARCHSPINE_V2_BLOCK_START) are fixed strings that must not change to remain consistent with parsers and view renderers that match them.",
+      "Ignore line lists (SEARCH_IGNORE_LINES, SPINEIGNORE_RECOMMENDED_LINES, LOCAL_GITIGNORE_LINES) reflect the current set of ArchSpine-managed exclusions and are kept in sync across the repository."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Centralize all ArchSpine-managed textual definitions (block markers, agent blocks, MCP tool overview, health snapshot content, and ignore file entries) in a single constants module to enable consistent injection and easy modification.",
+      "recentChangeIntent": "Added '.mcp.json' to the LOCAL_GITIGNORE_LINES array so that the managed .gitignore block includes the new MCP configuration file that ArchSpine generates, preventing it from being committed inadvertently."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ArtifactStrategy",
+        "description": "Exported type (likely an enum or union) that defines strategies for resolving artifact content paths. Used by artifact resolution logic."
+      },
+      {
+        "symbolName": "AGENT_BLOCK_START",
+        "description": "Markdown comment marker indicating the start of the ArchSpine agent instruction block."
+      },
+      {
+        "symbolName": "AGENT_BLOCK_END",
+        "description": "Markdown comment marker indicating the end of the ArchSpine agent instruction block."
+      },
+      {
+        "symbolName": "ARCHSPINE_AGENT_BLOCK",
+        "description": "Pre-built full agent instruction block with start/end markers and instructions for AI agents interacting with the repository."
+      },
+      {
+        "symbolName": "ARCHSPINE_V2_BLOCK_START",
+        "description": "Markdown comment marker indicating the start of the V2 knowledge graph briefing block."
+      },
+      {
+        "symbolName": "ARCHSPINE_V2_BLOCK_END",
+        "description": "Markdown comment marker indicating the end of the V2 knowledge graph briefing block."
+      },
+      {
+        "symbolName": "ARCHSPINE_V2_BRIEFING_CONTENT",
+        "description": "Array of lines forming the V2 knowledge graph briefing content (availability notice)."
+      },
+      {
+        "symbolName": "ARCHSPINE_V2_BRIEFING_BLOCK",
+        "description": "Pre-built V2 knowledge graph briefing block with start/end markers."
+      },
+      {
+        "symbolName": "ARCHSPINE_MCP_BLOCK_START",
+        "description": "Markdown comment marker indicating the start of the MCP tools overview block."
+      },
+      {
+        "symbolName": "ARCHSPINE_MCP_BLOCK_END",
+        "description": "Markdown comment marker indicating the end of the MCP tools overview block."
+      },
+      {
+        "symbolName": "ARCHSPINE_MCP_TOOLS_CONTENT",
+        "description": "Array of lines forming the MCP tools overview text describing available MCP tools."
+      },
+      {
+        "symbolName": "ARCHSPINE_MCP_TOOLS_BLOCK",
+        "description": "Pre-built MCP tools overview block with start/end markers."
+      },
+      {
+        "symbolName": "ARCHSPINE_HEALTH_BLOCK_START",
+        "description": "Markdown comment marker indicating the start of the health snapshot block."
+      },
+      {
+        "symbolName": "ARCHSPINE_HEALTH_BLOCK_END",
+        "description": "Markdown comment marker indicating the end of the health snapshot block."
+      },
+      {
+        "symbolName": "ARCHSPINE_HEALTH_CONTENT",
+        "description": "Array of lines forming the health snapshot content (system health summary)."
+      },
+      {
+        "symbolName": "ARCHSPINE_HEALTH_BLOCK",
+        "description": "Pre-built health snapshot block with start/end markers."
+      },
+      {
+        "symbolName": "SEARCH_IGNORE_PATH",
+        "description": "File name constant for the custom .ignore file used by ArchSpine's search mechanism to exclude noisy directories."
+      },
+      {
+        "symbolName": "SPINEIGNORE_PATH",
+        "description": "File name constant for the .spineignore file that controls semantic scanning of the repository."
+      },
+      {
+        "symbolName": "SEARCH_IGNORE_LINES",
+        "description": "Array of lines for the .ignore file, excluding generated and low-signal paths from agent workspace search."
+      },
+      {
+        "symbolName": "SEARCH_IGNORE_CONTENT",
+        "description": "Complete newline-separated string content for the .ignore file built from SEARCH_IGNORE_LINES."
+      },
+      {
+        "symbolName": "SPINEIGNORE_BLOCK_START",
+        "description": "Comment marker line indicating the start of the ArchSpine-recommended section in .spineignore."
+      },
+      {
+        "symbolName": "SPINEIGNORE_BLOCK_END",
+        "description": "Comment marker line indicating the end of the ArchSpine-recommended section in .spineignore."
+      },
+      {
+        "symbolName": "SPINEIGNORE_RECOMMENDED_LINES",
+        "description": "Array of recommended lines for .spineignore including block markers and exclusion patterns for generated, local, and high-noise files."
+      },
+      {
+        "symbolName": "GITIGNORE_BLOCK_START",
+        "description": "Comment marker line indicating the start of the ArchSpine-managed section in .gitignore."
+      },
+      {
+        "symbolName": "GITIGNORE_BLOCK_END",
+        "description": "Comment marker line indicating the end of the ArchSpine-managed section in .gitignore."
+      },
+      {
+        "symbolName": "GITATTRIBUTES_BLOCK_START",
+        "description": "Comment marker line indicating the start of the ArchSpine-managed section in .gitattributes."
+      },
+      {
+        "symbolName": "GITATTRIBUTES_BLOCK_END",
+        "description": "Comment marker line indicating the end of the ArchSpine-managed section in .gitattributes."
+      },
+      {
+        "symbolName": "LOCAL_GITIGNORE_LINES",
+        "description": "Array of .gitignore lines for ArchSpine-managed files (cache.db, lock file, etc.), including the .mcp.json entry."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Constants and template definitions module for ArchSpine's agent briefing blocks, MCP tools documentation, health snapshot content, and managed ignore-file entries (.gitignore, .spineignore, .gitattributes, .ignore).",
+        "responsibilities": [
+          "Define unique block start/end markers for embedding ArchSpine sections (v1 agent instructions, V2 knowledge graph briefing, MCP tools, health snapshot) into markdown documents.",
+          "Provide pre-assembled block strings (ARCHSPINE_AGENT_BLOCK, ARCHSPINE_V2_BRIEFING_BLOCK, ARCHSPINE_MCP_TOOLS_BLOCK, ARCHSPINE_HEALTH_BLOCK) for direct injection into agent instruction files.",
+          "Supply content arrays (ARCHSPINE_V2_BRIEFING_CONTENT, ARCHSPINE_MCP_TOOLS_CONTENT, ARCHSPINE_HEALTH_CONTENT) that form the inner text of those blocks.",
+          "Define file paths (SEARCH_IGNORE_PATH, SPINEIGNORE_PATH) for the .ignore and .spineignore files.",
+          "Provide recommended ignore lines for .spineignore (SPINEIGNORE_RECOMMENDED_LINES) and .gitignore (LOCAL_GITIGNORE_LINES), plus block start/end delimiters for managed sections.",
+          "Provide .gitignore and .gitattributes block start/end markers (GITIGNORE_BLOCK_START/END, GITATTRIBUTES_BLOCK_START/END) to encapsulate ArchSpine-managed regions.",
+          "Supply the full concatenated SEARCH_IGNORE_CONTENT for the .ignore file from the SEARCH_IGNORE_LINES list."
+        ],
+        "outOfScope": [
+          "Writing or patching ignore files to disk — that is the responsibility of infra modules (spine-gate, fs-utils).",
+          "Rendering or injecting agent blocks into output documents — that is done by agent-instructions sync and view renderers.",
+          "Validating that the block start/end markers match or that ignore file content is correct — no validation logic here."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "ArtifactStrategy",
+        "kind": "type",
+        "signature": "type ArtifactStrategy"
+      },
+      {
+        "name": "AGENT_BLOCK_START",
+        "kind": "variable",
+        "signature": "const AGENT_BLOCK_START"
+      },
+      {
+        "name": "AGENT_BLOCK_END",
+        "kind": "variable",
+        "signature": "const AGENT_BLOCK_END"
+      },
+      {
+        "name": "ARCHSPINE_AGENT_BLOCK",
+        "kind": "variable",
+        "signature": "const ARCHSPINE_AGENT_BLOCK"
+      },
+      {
+        "name": "ARCHSPINE_V2_BLOCK_START",
+        "kind": "variable",
+        "signature": "const ARCHSPINE_V2_BLOCK_START"
+      },
+      {
+        "name": "ARCHSPINE_V2_BLOCK_END",
+        "kind": "variable",
+        "signature": "const ARCHSPINE_V2_BLOCK_END"
+      },
+      {
+        "name": "ARCHSPINE_V2_BRIEFING_CONTENT",
+        "kind": "variable",
+        "signature": "const ARCHSPINE_V2_BRIEFING_CONTENT"
+      },
+      {
+        "name": "ARCHSPINE_V2_BRIEFING_BLOCK",
+        "kind": "variable",
+        "signature": "const ARCHSPINE_V2_BRIEFING_BLOCK"
+      },
+      {
+        "name": "ARCHSPINE_MCP_BLOCK_START",
+        "kind": "variable",
+        "signature": "const ARCHSPINE_MCP_BLOCK_START"
+      },
+      {
+        "name": "ARCHSPINE_MCP_BLOCK_END",
+        "kind": "variable",
+        "signature": "const ARCHSPINE_MCP_BLOCK_END"
+      },
+      {
+        "name": "ARCHSPINE_MCP_TOOLS_CONTENT",
+        "kind": "variable",
+        "signature": "const ARCHSPINE_MCP_TOOLS_CONTENT"
+      },
+      {
+        "name": "ARCHSPINE_MCP_TOOLS_BLOCK",
+        "kind": "variable",
+        "signature": "const ARCHSPINE_MCP_TOOLS_BLOCK"
+      },
+      {
+        "name": "ARCHSPINE_HEALTH_BLOCK_START",
+        "kind": "variable",
+        "signature": "const ARCHSPINE_HEALTH_BLOCK_START"
+      },
+      {
+        "name": "ARCHSPINE_HEALTH_BLOCK_END",
+        "kind": "variable",
+        "signature": "const ARCHSPINE_HEALTH_BLOCK_END"
+      },
+      {
+        "name": "ARCHSPINE_HEALTH_CONTENT",
+        "kind": "variable",
+        "signature": "const ARCHSPINE_HEALTH_CONTENT"
+      },
+      {
+        "name": "ARCHSPINE_HEALTH_BLOCK",
+        "kind": "variable",
+        "signature": "const ARCHSPINE_HEALTH_BLOCK"
+      },
+      {
+        "name": "SEARCH_IGNORE_PATH",
+        "kind": "variable",
+        "signature": "const SEARCH_IGNORE_PATH"
+      },
+      {
+        "name": "SPINEIGNORE_PATH",
+        "kind": "variable",
+        "signature": "const SPINEIGNORE_PATH"
+      },
+      {
+        "name": "SEARCH_IGNORE_LINES",
+        "kind": "variable",
+        "signature": "const SEARCH_IGNORE_LINES"
+      },
+      {
+        "name": "SEARCH_IGNORE_CONTENT",
+        "kind": "variable",
+        "signature": "const SEARCH_IGNORE_CONTENT"
+      },
+      {
+        "name": "SPINEIGNORE_BLOCK_START",
+        "kind": "variable",
+        "signature": "const SPINEIGNORE_BLOCK_START"
+      },
+      {
+        "name": "SPINEIGNORE_BLOCK_END",
+        "kind": "variable",
+        "signature": "const SPINEIGNORE_BLOCK_END"
+      },
+      {
+        "name": "SPINEIGNORE_RECOMMENDED_LINES",
+        "kind": "variable",
+        "signature": "const SPINEIGNORE_RECOMMENDED_LINES"
+      },
+      {
+        "name": "GITIGNORE_BLOCK_START",
+        "kind": "variable",
+        "signature": "const GITIGNORE_BLOCK_START"
+      },
+      {
+        "name": "GITIGNORE_BLOCK_END",
+        "kind": "variable",
+        "signature": "const GITIGNORE_BLOCK_END"
+      },
+      {
+        "name": "GITATTRIBUTES_BLOCK_START",
+        "kind": "variable",
+        "signature": "const GITATTRIBUTES_BLOCK_START"
+      },
+      {
+        "name": "GITATTRIBUTES_BLOCK_END",
+        "kind": "variable",
+        "signature": "const GITATTRIBUTES_BLOCK_END"
+      },
+      {
+        "name": "LOCAL_GITIGNORE_LINES",
+        "kind": "variable",
+        "signature": "const LOCAL_GITIGNORE_LINES"
+      },
+      {
+        "name": "DISTRIBUTABLE_GITIGNORE_LINES",
+        "kind": "variable",
+        "signature": "const DISTRIBUTABLE_GITIGNORE_LINES"
+      },
+      {
+        "name": "DISTRIBUTABLE_GITATTRIBUTES_LINES",
+        "kind": "variable",
+        "signature": "const DISTRIBUTABLE_GITATTRIBUTES_LINES"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ArtifactStrategy",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "AGENT_BLOCK_START",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "AGENT_BLOCK_END",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "ARCHSPINE_AGENT_BLOCK",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "ARCHSPINE_V2_BLOCK_START",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "ARCHSPINE_V2_BLOCK_END",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "ARCHSPINE_V2_BRIEFING_CONTENT",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "ARCHSPINE_V2_BRIEFING_BLOCK",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "ARCHSPINE_MCP_BLOCK_START",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "ARCHSPINE_MCP_BLOCK_END",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "ARCHSPINE_MCP_TOOLS_CONTENT",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "ARCHSPINE_MCP_TOOLS_BLOCK",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "ARCHSPINE_HEALTH_BLOCK_START",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "ARCHSPINE_HEALTH_BLOCK_END",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "ARCHSPINE_HEALTH_CONTENT",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "ARCHSPINE_HEALTH_BLOCK",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "SEARCH_IGNORE_PATH",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "SPINEIGNORE_PATH",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "SEARCH_IGNORE_LINES",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "SEARCH_IGNORE_CONTENT",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "SPINEIGNORE_BLOCK_START",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "SPINEIGNORE_BLOCK_END",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "SPINEIGNORE_RECOMMENDED_LINES",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "GITIGNORE_BLOCK_START",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "GITIGNORE_BLOCK_END",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "GITATTRIBUTES_BLOCK_START",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "GITATTRIBUTES_BLOCK_END",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "LOCAL_GITIGNORE_LINES",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "DISTRIBUTABLE_GITIGNORE_LINES",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      },
+      {
+        "name": "DISTRIBUTABLE_GITATTRIBUTES_LINES",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.templates.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 30,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/repository-admin-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:06:25.981Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 82,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

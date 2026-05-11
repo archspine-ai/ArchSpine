@@ -1,0 +1,407 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integration/system/error-system.test.ts",
+    "contentHash": "a5c63d561fb5565ff114d4bb83710c69a72e00e2eabec442b5982908080395e4",
+    "skeletonHash": "37a6a7e5ab31c8e8784b71efa6740aee299bac20a58b63cbefa2b8e29e261620",
+    "semanticHash": "040c0e39c268ca635c94c8b09d2b1aaf9aa1ae58f8ce8cd788a32c9dc603151d",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/integration/system"
+  },
+  "semantic": {
+    "role": "Test suite for the error system convergence, validating that error types propagate correctly through CheckService, FixService, MCP tools, and other core infrastructure components.",
+    "responsibilities": [
+      "Verifies that CheckService.run() throws ArchSpineError with correct error codes and messages.",
+      "Verifies that FixService.run() throws ArchSpineError with correct error codes and messages.",
+      "Verifies that MCP resources (SpineResources.getResource) handle errors uniformly.",
+      "Ensures that all error paths converge to a consistent error handling contract."
+    ],
+    "outOfScope": [
+      "Does not test edge cases of each individual service beyond error propagation.",
+      "Does not test integration with real LLM or file system."
+    ],
+    "invariants": [
+      "All errors thrown by core services must be instances of ArchSpineError.",
+      "Error codes must be from the ErrorCodes enum."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Test suite to validate that the error system converges uniformly across different components, ensuring consistent error handling behavior.",
+      "recentChangeIntent": "Minor commit message 'e9cba38 2' with no significant semantic change — likely a tiny fix or merge."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Test suite for the error system convergence, validating that error types propagate correctly through CheckService, FixService, MCP tools, and other core infrastructure components.",
+        "responsibilities": [
+          "Verifies that CheckService.run() throws ArchSpineError with correct error codes and messages.",
+          "Verifies that FixService.run() throws ArchSpineError with correct error codes and messages.",
+          "Verifies that MCP resources (SpineResources.getResource) handle errors uniformly.",
+          "Ensures that all error paths converge to a consistent error handling contract."
+        ],
+        "outOfScope": [
+          "Does not test edge cases of each individual service beyond error propagation.",
+          "Does not test integration with real LLM or file system."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/services/check-service.js'",
+        "symbols": [
+          "CheckService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/services/fix-service.js'",
+        "symbols": [
+          "FixService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/mcp/resources.js'",
+        "symbols": [
+          "SpineResources"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/mcp/tools.js'",
+        "symbols": [
+          "SpineTools"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/mcp/context.js'",
+        "symbols": [
+          "MCPContextGate"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/db.js'",
+        "symbols": [
+          "SpineDB"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/utils/lock.js'",
+        "symbols": [
+          "serializeLockPayload"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 17,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "src/services/check-service.ts",
+        "relation": "import",
+        "symbols": [
+          "CheckService"
+        ]
+      },
+      {
+        "targetPath": "src/services/fix-service.ts",
+        "relation": "import",
+        "symbols": [
+          "FixService"
+        ]
+      },
+      {
+        "targetPath": "src/infra/mcp/resources.ts",
+        "relation": "import",
+        "symbols": [
+          "SpineResources"
+        ]
+      },
+      {
+        "targetPath": "src/infra/mcp/tools.ts",
+        "relation": "import",
+        "symbols": [
+          "SpineTools"
+        ]
+      },
+      {
+        "targetPath": "src/infra/mcp/context.ts",
+        "relation": "import",
+        "symbols": [
+          "MCPContextGate"
+        ]
+      },
+      {
+        "targetPath": "src/core/errors.ts",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ]
+      },
+      {
+        "targetPath": "src/infra/config.ts",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "src/infra/manifest.ts",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "src/infra/db.ts",
+        "relation": "import",
+        "symbols": [
+          "SpineDB"
+        ]
+      },
+      {
+        "targetPath": "src/utils/lock.ts",
+        "relation": "import",
+        "symbols": [
+          "serializeLockPayload"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/integration/system/error-system.test.ts/_file_#",
+        "targetSymbol": "src/utils/lock.ts/serializeLockPayload#",
+        "targetPath": "src/utils/lock.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/error-system.test.ts/_file_#",
+        "targetSymbol": "src/engines/check.ts/CheckService#",
+        "targetPath": "src/engines/check.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/error-system.test.ts/_file_#",
+        "targetSymbol": "src/services/check-service.ts/CheckService#",
+        "targetPath": "src/services/check-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/error-system.test.ts/_file_#",
+        "targetSymbol": "src/engines/fix.ts/FixService#",
+        "targetPath": "src/engines/fix.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/error-system.test.ts/_file_#",
+        "targetSymbol": "src/services/fix-service.ts/FixService#",
+        "targetPath": "src/services/fix-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/error-system.test.ts/_file_#",
+        "targetSymbol": "src/infra/mcp/resources.ts/SpineResources#",
+        "targetPath": "src/infra/mcp/resources.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/error-system.test.ts/_file_#",
+        "targetSymbol": "src/infra/mcp/context.ts/MCPContextGate#",
+        "targetPath": "src/infra/mcp/context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/error-system.test.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/error-system.test.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/error-system.test.ts/_file_#",
+        "targetSymbol": "src/infra/mcp/tools.ts/SpineTools#",
+        "targetPath": "src/infra/mcp/tools.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/error-system.test.ts/_file_#",
+        "targetSymbol": "src/infra/db.ts/SpineDB#",
+        "targetPath": "src/infra/db.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/error-system.test.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/state.ts/loadLanguageSnapshot#",
+        "targetPath": "src/infra/manifest/state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/error-system.test.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/ensureFileRecord#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:39:49.818Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

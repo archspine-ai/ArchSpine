@@ -1,0 +1,403 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/core/task-state.ts",
+    "contentHash": "71783ea5b9fceb937902a653168c302eff6bf4fc2169d6e282897051a93648aa",
+    "skeletonHash": "bcf2a8553f6a302f58e241e5eb701dd23449e31cd2e4a20e39810a7ed8c69424",
+    "semanticHash": "67eff80e8b422f072af53497555671560855b43b758eae103045e3d300dcc5ff",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/core"
+  },
+  "semantic": {
+    "role": "Core pipeline state manager: initializes, mutates, and queries the mutable TaskContext for pipeline execution",
+    "responsibilities": [
+      "Factory creation of initial TaskArtifactsState, TaskTelemetryState, and composite TaskState objects",
+      "Resetting pipeline state within a TaskContext with optional partial overrides",
+      "Tracking LLM usage metrics (token consumption, cost) into telemetry",
+      "Recording per-stage runtime metrics (duration, heap, RSS) for diagnostics and profiling",
+      "Maintaining monotonic counters for processed, skipped, and failed files",
+      "Caching file skeletons and unsupported-file markers in runtime-scoped artifacts",
+      "Queuing pending index commits (file hash, kind, and SpineUnit) for batch flush",
+      "Collecting drift warnings, summarize diagnostics, and validate diagnostics in telemetry",
+      "Providing lookup queries for cached skeletons and unsupported-file checks"
+    ],
+    "outOfScope": [
+      "Persisting task state to disk or database",
+      "Orchestrating or scheduling pipeline stages",
+      "Performing file I/O or filesystem operations",
+      "Defining pipeline stage contracts or stage ordering",
+      "Generating or rendering output artifacts"
+    ],
+    "invariants": [
+      "All task-state factory functions produce valid fully-initialized state objects with non-null collections",
+      "All state mutations operate exclusively through a TaskContext reference, never on detached state",
+      "File-path keys in runtime-cache Maps (skeletons, unsupportedFiles, pendingCommits) are always relative paths",
+      "Processed/skipped/failed counters are monotonically non-decreasing",
+      "Drift warnings and diagnostic snapshots are append-only collections",
+      "Core module must not import or depend on CLI entry code (core-pipeline-isolation rule)"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized, mutable state abstraction that pipeline stages and task runners use to record progress, cache derived artifacts, and collect telemetry without coupling directly to each other's internals.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era"
+    },
+    "publicSurface": [
+      {
+        "symbolName": "createTaskArtifactsState",
+        "description": "Creates and returns a fresh TaskArtifactsState with empty skeleton, unsupported-files, and pending-commit maps. Called at the start of a pipeline run."
+      },
+      {
+        "symbolName": "createTaskTelemetryState",
+        "description": "Creates and returns a fresh TaskTelemetryState initialized with the given diagnostics mode and zeroed counters. Called at the start of a pipeline run."
+      },
+      {
+        "symbolName": "createTaskState",
+        "description": "Creates and returns a complete TaskState by composing createTaskArtifactsState and createTaskTelemetryState with default values. Called when initializing a new TaskContext."
+      },
+      {
+        "symbolName": "resetTaskState",
+        "description": "Resets the TaskContext state to a fresh baseline, preserving only the diagnostics mode and applying optional partial overrides. Called when re-initializing the pipeline for a new run."
+      },
+      {
+        "symbolName": "addTaskUsage",
+        "description": "Records LLM usage information (token counts, cost) into the task telemetry. Called by LLM-invoking stages after each model call."
+      },
+      {
+        "symbolName": "recordTaskStageMetric",
+        "description": "Records a runtime metric snapshot (duration, heap, RSS) for a named pipeline stage. Called by each stage upon completion."
+      },
+      {
+        "symbolName": "markTaskProcessedFile",
+        "description": "Increments the processed-file counter in telemetry stats. Called by stages after successfully handling a file."
+      },
+      {
+        "symbolName": "incrementTaskSkipped",
+        "description": "Increments the skipped-file counter in telemetry stats. Called by stages when a file is intentionally skipped."
+      },
+      {
+        "symbolName": "incrementTaskFailed",
+        "description": "Increments the failed-file counter in telemetry stats. Called by stages when a file processing fails."
+      },
+      {
+        "symbolName": "setUnsupportedTaskFile",
+        "description": "Marks a file path as unsupported with a human-readable reason in the runtime artifacts cache. Called by analyzers that cannot parse a file."
+      },
+      {
+        "symbolName": "hasUnsupportedTaskFile",
+        "description": "Checks whether a given file path has been previously marked as unsupported. Called by stages before attempting to process a file."
+      },
+      {
+        "symbolName": "setTaskSkeleton",
+        "description": "Stores a parsed FileSkeleton object in the runtime artifacts cache keyed by file path. Called by the AST extraction stage."
+      },
+      {
+        "symbolName": "getTaskSkeleton",
+        "description": "Retrieves a cached FileSkeleton by file path, or undefined if none exists. Called by stages that need file structure data."
+      },
+      {
+        "symbolName": "queueTaskCommit",
+        "description": "Queues a pending commit record (hash, file kind, spine unit) for batch persistence. Called after a file is fully processed and needs indexing."
+      },
+      {
+        "symbolName": "addTaskDriftWarning",
+        "description": "Appends a drift-warning entry containing file path and reason to the telemetry drift-warnings list. Called by the semantic-drift detection stage."
+      },
+      {
+        "symbolName": "pushSummarizeDiagnostics",
+        "description": "Pushes a diagnostic snapshot into the summarize diagnostics array within telemetry. Called by the summarization stage for observability."
+      },
+      {
+        "symbolName": "pushValidateDiagnostics",
+        "description": "Pushes a diagnostic snapshot into the validate diagnostics array within telemetry. Called by the validation stage for observability."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core pipeline state manager: initializes, mutates, and queries the mutable TaskContext for pipeline execution",
+        "responsibilities": [
+          "Factory creation of initial TaskArtifactsState, TaskTelemetryState, and composite TaskState objects",
+          "Resetting pipeline state within a TaskContext with optional partial overrides",
+          "Tracking LLM usage metrics (token consumption, cost) into telemetry",
+          "Recording per-stage runtime metrics (duration, heap, RSS) for diagnostics and profiling",
+          "Maintaining monotonic counters for processed, skipped, and failed files",
+          "Caching file skeletons and unsupported-file markers in runtime-scoped artifacts",
+          "Queuing pending index commits (file hash, kind, and SpineUnit) for batch flush",
+          "Collecting drift warnings, summarize diagnostics, and validate diagnostics in telemetry",
+          "Providing lookup queries for cached skeletons and unsupported-file checks"
+        ],
+        "outOfScope": [
+          "Persisting task state to disk or database",
+          "Orchestrating or scheduling pipeline stages",
+          "Performing file I/O or filesystem operations",
+          "Defining pipeline stage contracts or stage ordering",
+          "Generating or rendering output artifacts"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "createTaskArtifactsState",
+        "kind": "function",
+        "signature": "createTaskArtifactsState()"
+      },
+      {
+        "name": "createTaskTelemetryState",
+        "kind": "function",
+        "signature": "createTaskTelemetryState(\n  diagnosticsMode: TaskTelemetryState['diagnostics']['mode'],\n)"
+      },
+      {
+        "name": "createTaskState",
+        "kind": "function",
+        "signature": "createTaskState(\n  diagnosticsMode: TaskTelemetryState['diagnostics']['mode'],\n)"
+      },
+      {
+        "name": "resetTaskState",
+        "kind": "function",
+        "signature": "resetTaskState(context: TaskContext, overrides: Partial<TaskState> = {})"
+      },
+      {
+        "name": "addTaskUsage",
+        "kind": "function",
+        "signature": "addTaskUsage(context: TaskContext, usage?: UsageInfo)"
+      },
+      {
+        "name": "recordTaskStageMetric",
+        "kind": "function",
+        "signature": "recordTaskStageMetric(\n  context: TaskContext,\n  stageId: string,\n  metric: {\n    durationMs: number;\n    heapUsedBytes: number;\n    rssBytes: number;\n  },\n)"
+      },
+      {
+        "name": "markTaskProcessedFile",
+        "kind": "function",
+        "signature": "markTaskProcessedFile(context: TaskContext, _filePath: string)"
+      },
+      {
+        "name": "incrementTaskSkipped",
+        "kind": "function",
+        "signature": "incrementTaskSkipped(context: TaskContext)"
+      },
+      {
+        "name": "incrementTaskFailed",
+        "kind": "function",
+        "signature": "incrementTaskFailed(context: TaskContext)"
+      },
+      {
+        "name": "setUnsupportedTaskFile",
+        "kind": "function",
+        "signature": "setUnsupportedTaskFile(\n  context: TaskContext,\n  filePath: string,\n  reason: string,\n)"
+      },
+      {
+        "name": "hasUnsupportedTaskFile",
+        "kind": "function",
+        "signature": "hasUnsupportedTaskFile(context: TaskContext, filePath: string)"
+      },
+      {
+        "name": "setTaskSkeleton",
+        "kind": "function",
+        "signature": "setTaskSkeleton(\n  context: TaskContext,\n  filePath: string,\n  skeleton: FileSkeleton,\n)"
+      },
+      {
+        "name": "getTaskSkeleton",
+        "kind": "function",
+        "signature": "getTaskSkeleton(context: TaskContext, filePath: string)"
+      },
+      {
+        "name": "queueTaskCommit",
+        "kind": "function",
+        "signature": "queueTaskCommit(\n  context: TaskContext,\n  filePath: string,\n  commit: { hash: string; kind: FileKind; spineUnit: SpineUnit },\n)"
+      },
+      {
+        "name": "addTaskDriftWarning",
+        "kind": "function",
+        "signature": "addTaskDriftWarning(\n  context: TaskContext,\n  warning: { filePath: string; reason: string },\n)"
+      },
+      {
+        "name": "pushSummarizeDiagnostics",
+        "kind": "function",
+        "signature": "pushSummarizeDiagnostics(\n  context: TaskContext,\n  snapshot: TaskTelemetryState['diagnostics']['summarize'][number],\n)"
+      },
+      {
+        "name": "pushValidateDiagnostics",
+        "kind": "function",
+        "signature": "pushValidateDiagnostics(\n  context: TaskContext,\n  snapshot: TaskTelemetryState['diagnostics']['validate'][number],\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "createTaskArtifactsState",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/task-state.ts#"
+      },
+      {
+        "name": "createTaskTelemetryState",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/task-state.ts#"
+      },
+      {
+        "name": "createTaskState",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/task-state.ts#"
+      },
+      {
+        "name": "resetTaskState",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/task-state.ts#"
+      },
+      {
+        "name": "addTaskUsage",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/task-state.ts#"
+      },
+      {
+        "name": "recordTaskStageMetric",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/task-state.ts#"
+      },
+      {
+        "name": "markTaskProcessedFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/task-state.ts#"
+      },
+      {
+        "name": "incrementTaskSkipped",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/task-state.ts#"
+      },
+      {
+        "name": "incrementTaskFailed",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/task-state.ts#"
+      },
+      {
+        "name": "setUnsupportedTaskFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/task-state.ts#"
+      },
+      {
+        "name": "hasUnsupportedTaskFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/task-state.ts#"
+      },
+      {
+        "name": "setTaskSkeleton",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/task-state.ts#"
+      },
+      {
+        "name": "getTaskSkeleton",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/task-state.ts#"
+      },
+      {
+        "name": "queueTaskCommit",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/task-state.ts#"
+      },
+      {
+        "name": "addTaskDriftWarning",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/task-state.ts#"
+      },
+      {
+        "name": "pushSummarizeDiagnostics",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/task-state.ts#"
+      },
+      {
+        "name": "pushValidateDiagnostics",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/core/task-state.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 17,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../ast/extractor.js",
+        "relation": "import",
+        "symbols": [
+          "FileSkeleton"
+        ]
+      },
+      {
+        "targetPath": "../infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "UsageInfo"
+        ]
+      },
+      {
+        "targetPath": "./task-types.js",
+        "relation": "import",
+        "symbols": [
+          "TaskStageMetric",
+          "TaskArtifactsState",
+          "TaskState",
+          "TaskTelemetryState"
+        ]
+      },
+      {
+        "targetPath": "./task.js",
+        "relation": "import",
+        "symbols": [
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "FileKind",
+          "SpineUnit"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:55:34.784Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 7,
+    "isHub": true,
+    "hubPercentile": 88,
+    "inCycle": true,
+    "cycleId": "src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

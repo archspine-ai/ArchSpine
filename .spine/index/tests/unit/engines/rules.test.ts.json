@@ -1,0 +1,160 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/engines/rules.test.ts",
+    "contentHash": "3908f38f07e2f8afbac02359d2a01094551540cf86c92ae2f79df3e60f8af41e",
+    "skeletonHash": "fc4b4c8e5d017be48c764bac88b89823d3fd83184b50377faa92f161c5c7e02d",
+    "semanticHash": "4ea27ce160d14e1320ee5341759200a2aa15916c94ccbf249c5d55ac6fe53925",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/engines"
+  },
+  "semantic": {
+    "role": "Unit test suite for the RuleEngine class, verifying rule matching from YAML front-matter files via temporary filesystem setup.",
+    "responsibilities": [
+      "Provide setupRoot helper to scaffold a temporary .spine/rules/ directory with given rule files.",
+      "Test that RuleEngine.getRulesForFile returns only rules whose appliesTo glob matches the provided file path.",
+      "Clean up temporary directories after each test case to leave no side effects."
+    ],
+    "outOfScope": [
+      "Production runtime behavior.",
+      "Integration with LLM or external services.",
+      "Real file system persistence beyond temporary directories."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (rule test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Testing RuleEngine's rule matching logic to ensure correctness of the governance rule engine.",
+      "recentChangeIntent": "Refactor to remove legacy CLI aliases, rebuild docs, fix schema and tests."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Unit test suite for the RuleEngine class, verifying rule matching from YAML front-matter files via temporary filesystem setup.",
+        "responsibilities": [
+          "Provide setupRoot helper to scaffold a temporary .spine/rules/ directory with given rule files.",
+          "Test that RuleEngine.getRulesForFile returns only rules whose appliesTo glob matches the provided file path.",
+          "Clean up temporary directories after each test case to leave no side effects."
+        ],
+        "outOfScope": [
+          "Production runtime behavior.",
+          "Integration with LLM or external services.",
+          "Real file system persistence beyond temporary directories."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/engines/rules.js'",
+        "symbols": [
+          "RuleEngine"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/engines/rules.js",
+        "relation": "import",
+        "symbols": [
+          "RuleEngine"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/engines/rules.test.ts/_file_#",
+        "targetSymbol": "src/engines/rules.ts/RuleEngine#",
+        "targetPath": "src/engines/rules.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:09:29.129Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

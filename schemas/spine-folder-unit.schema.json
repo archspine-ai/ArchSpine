@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archspine.dev/schema/v1.0.0/spine-folder-unit.schema.json",
+  "title": "ArchSpine SpineFolderUnit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "directory", "role", "responsibility", "children", "provenance"],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "./shared.schema.json#/$defs/schemaVersion"
+    },
+    "directory": {
+      "$ref": "./shared.schema.json#/$defs/scopePath"
+    },
+    "role": {
+      "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+    },
+    "responsibility": {
+      "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+    },
+    "children": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["filePath", "role", "fileKind"],
+        "properties": {
+          "filePath": {
+            "$ref": "./shared.schema.json#/$defs/repoRelativePath"
+          },
+          "role": {
+            "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+          },
+          "fileKind": {
+            "$ref": "./shared.schema.json#/$defs/fileKind"
+          }
+        }
+      }
+    },
+    "provenance": {
+      "$ref": "#/$defs/provenance"
+    }
+  },
+  "$defs": {
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["indexedAt", "generatorVersion", "pipelineStages"],
+      "properties": {
+        "indexedAt": {
+          "$ref": "./shared.schema.json#/$defs/isoTimestamp"
+        },
+        "generatorVersion": {
+          "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+        },
+        "pipelineStages": {
+          "type": "array",
+          "items": {
+            "$ref": "./shared.schema.json#/$defs/pipelineStage"
+          }
+        }
+      }
+    }
+  }
+}

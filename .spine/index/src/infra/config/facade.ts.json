@@ -1,0 +1,311 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/config/facade.ts",
+    "contentHash": "c36980c19efb32e580f16ba285352ea606f73fba1183b70508d3c53017ead493",
+    "skeletonHash": "c7a3beeae9ba87d3b213f18673710dde970e032248d3453c78606281b3ed358a",
+    "semanticHash": "d1043a1cdbc14af6a8b351d74771569037b27ad22330e965c0051c1b90379b53",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/config"
+  },
+  "semantic": {
+    "role": "Centralized configuration facade for ArchSpine, providing a unified read/write API over project settings with environment overrides and policy integration.",
+    "responsibilities": [
+      "Load and persist the SpineConfig structure from the filesystem via the loader module.",
+      "Expose config values for LLM provider settings, artifact strategies, and initialization state.",
+      "Provide mutator methods (setLLMValue, clearLLMValue) to modify active configuration with automatic persistence.",
+      "Integrate with scan policy resolution and pre-commit hook configuration.",
+      "Implement the ConfigSupportedValueAccess interface to support validated configuration keys.",
+      "Resolve environment variable overrides (via parseBooleanEnv) with precedence over file values.",
+      "Handle config path resolution, existence checks, and file I/O through the FileSystemManager utility."
+    ],
+    "outOfScope": [
+      "Direct user authentication or credential management.",
+      "AST extraction or source code scanning.",
+      "Runtime execution state management or task scheduling.",
+      "Direct interaction with LLM providers or API calls.",
+      "Multi-language document management or atlas generation."
+    ],
+    "invariants": [
+      "Infra consumers must access configuration through this public facade rather than importing sub-modules like loader, env, or supported-values directly.",
+      "Config values from environment variables always override values stored in the configuration file.",
+      "The Config class must remain the single entry point for all configuration mutations and reads within the infra layer."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, high-level abstraction over the configuration subsystem so that consumers do not depend on low-level file I/O or environment parsing logic, enabling safe refactors of the config internals.",
+      "recentChangeIntent": "Apply release gate fixes and sync accumulated source changes, ensuring the facade remains consistent with other modules after recent commits."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "Config",
+        "description": "Facade class implementing ConfigSupportedValueAccess. Exposes methods to read and write SpineConfig, manage LLM/artifacts/init-state settings, and integrate with scan policy and pre-commit configuration. All infra-layer configuration access should go through this class."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Centralized configuration facade for ArchSpine, providing a unified read/write API over project settings with environment overrides and policy integration.",
+        "responsibilities": [
+          "Load and persist the SpineConfig structure from the filesystem via the loader module.",
+          "Expose config values for LLM provider settings, artifact strategies, and initialization state.",
+          "Provide mutator methods (setLLMValue, clearLLMValue) to modify active configuration with automatic persistence.",
+          "Integrate with scan policy resolution and pre-commit hook configuration.",
+          "Implement the ConfigSupportedValueAccess interface to support validated configuration keys.",
+          "Resolve environment variable overrides (via parseBooleanEnv) with precedence over file values.",
+          "Handle config path resolution, existence checks, and file I/O through the FileSystemManager utility."
+        ],
+        "outOfScope": [
+          "Direct user authentication or credential management.",
+          "AST extraction or source code scanning.",
+          "Runtime execution state management or task scheduling.",
+          "Direct interaction with LLM providers or API calls.",
+          "Multi-language document management or atlas generation."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../utils/fs.js'",
+        "symbols": [
+          "FileSystemManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../core/scan-policy.js'",
+        "symbols": [
+          "resolveScanPolicy",
+          "ScanPolicy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../types/protocol.js'",
+        "symbols": [
+          "MCPContextMode"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./types.js'",
+        "symbols": [
+          "SpineConfig",
+          "BooleanSettingResolution",
+          "HookSyncMode",
+          "ArtifactStrategy",
+          "SupportedConfigKey"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./loader.js'",
+        "symbols": [
+          "loadConfigData"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./env.js'",
+        "symbols": [
+          "parseBooleanEnv"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./precommit.js'",
+        "symbols": [
+          "resolvePreCommitSetting"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./supported-values.js'",
+        "symbols": [
+          "ConfigSupportedValueAccess",
+          "getSupportedValue as getDelegatedSupportedValue",
+          "setSupportedValue as setDelegatedSupportedValue"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "Config",
+        "kind": "class",
+        "signature": "class Config"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "Config",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/config/facade.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 12,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../utils/fs.js",
+        "relation": "import",
+        "symbols": [
+          "FileSystemManager"
+        ]
+      },
+      {
+        "targetPath": "../../core/scan-policy.js",
+        "relation": "import",
+        "symbols": [
+          "resolveScanPolicy",
+          "ScanPolicy"
+        ]
+      },
+      {
+        "targetPath": "../../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "MCPContextMode"
+        ]
+      },
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "SpineConfig",
+          "BooleanSettingResolution",
+          "HookSyncMode",
+          "ArtifactStrategy",
+          "SupportedConfigKey"
+        ]
+      },
+      {
+        "targetPath": "./loader.js",
+        "relation": "import",
+        "symbols": [
+          "loadConfigData"
+        ]
+      },
+      {
+        "targetPath": "./env.js",
+        "relation": "import",
+        "symbols": [
+          "parseBooleanEnv"
+        ]
+      },
+      {
+        "targetPath": "./precommit.js",
+        "relation": "import",
+        "symbols": [
+          "resolvePreCommitSetting"
+        ]
+      },
+      {
+        "targetPath": "./supported-values.js",
+        "relation": "import",
+        "symbols": [
+          "ConfigSupportedValueAccess",
+          "getSupportedValue",
+          "setSupportedValue"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/config/facade.ts/_file_#",
+        "targetSymbol": "src/infra/config/loader.ts/loadConfigData#",
+        "targetPath": "src/infra/config/loader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/config/facade.ts/_file_#",
+        "targetSymbol": "src/core/scan-policy.ts/resolveScanPolicy#",
+        "targetPath": "src/core/scan-policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/config/facade.ts/_file_#",
+        "targetSymbol": "src/infra/config/precommit.ts/resolvePreCommitSetting#",
+        "targetPath": "src/infra/config/precommit.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/config/facade.ts/_file_#",
+        "targetSymbol": "src/infra/config/env.ts/parseBooleanEnv#",
+        "targetPath": "src/infra/config/env.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:57:02.769Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

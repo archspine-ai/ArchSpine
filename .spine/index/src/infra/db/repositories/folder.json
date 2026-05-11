@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/infra/db/repositories",
+  "role": "Data access layer for the ArchSpine system, providing repository objects for each domain entity.",
+  "responsibility": "Collectively, these repositories manage all persistent data operations including file metadata, symbol index, semantic drift events, token usage logs, and architectural violation records, using SQLite as the backend.",
+  "children": [
+    {
+      "filePath": "src/infra/db/repositories/drift.ts",
+      "role": "Database repository (Data Access Object) for semantic drift events.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/db/repositories/files.ts",
+      "role": "Database Repository (Data Access Object) providing low-level CRUD operations on the 'files' table in an SQLite database, isolating file metadata persistence for the ArchSpine runtime.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/db/repositories/symbols.ts",
+      "role": "Data Access Object (DAO) for low-level SQLite operations on the symbols table. Provides CRUD and search against a persistent symbol index.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/db/repositories/usage.ts",
+      "role": "Infrastructure repository (DAO) for recording and querying LLM token usage logs in the SQLite database.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/db/repositories/violations.ts",
+      "role": "Data Access Object (DAO) for violation records in the SQLite-based index database.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:11:46.454Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

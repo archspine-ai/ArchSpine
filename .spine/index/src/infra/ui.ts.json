@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/ui.ts",
+    "contentHash": "8ed56140eedf6d2636123817f34fded5c0fe7b6185d67e4a4a762a1414e6a54f",
+    "skeletonHash": "152f7615f7c16d0b11a6bfe3fb7554655b8d8df7bc3bc2dd33d9c457fcc4da24",
+    "semanticHash": "ddc7e16c8f58c06ceab59d46c79059d2ab2a17940020b8d9fd4e520eae8e79ac",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure utility providing a foldable output wrapper for CLI console logs, enabling collapsible sections in interactive terminals.",
+    "responsibilities": [
+      "Wraps asynchronous actions to fold their console output into a single line with a blinking indicator.",
+      "Provides fallback behavior for non-TTY or CI environments to avoid ANSI escape issues.",
+      "Allows user to press SPACE to expand and see the full log output in real-time."
+    ],
+    "outOfScope": [
+      "This module does not handle logging to files or external services.",
+      "This module does not format log messages; it delegates to `util.format` and `console` methods.",
+      "This module does not replace the global console; it only wraps specific actions."
+    ],
+    "invariants": [
+      "The module must only be used as a wrapper for specific actions; it does not replace the global console.",
+      "The module behaves correctly in non-TTY and CI environments by falling back to standard console output."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable pattern for CLI commands to have foldable output, reducing visual noise in interactive terminals.",
+      "recentChangeIntent": "Refactored to use ANSI escape sequences for blinking indicator and raw stdin for SPACE key detection; added CI detection via environment variables."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "runWithFoldableOutput",
+        "description": "Executes an asynchronous action, folding its console output into a single line with a blinking indicator. Pressing SPACE expands the output in real-time. Falls back to normal console output when not a TTY or in CI."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure utility providing a foldable output wrapper for CLI console logs, enabling collapsible sections in interactive terminals.",
+        "responsibilities": [
+          "Wraps asynchronous actions to fold their console output into a single line with a blinking indicator.",
+          "Provides fallback behavior for non-TTY or CI environments to avoid ANSI escape issues.",
+          "Allows user to press SPACE to expand and see the full log output in real-time."
+        ],
+        "outOfScope": [
+          "This module does not handle logging to files or external services.",
+          "This module does not format log messages; it delegates to `util.format` and `console` methods.",
+          "This module does not replace the global console; it only wraps specific actions."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'util'",
+        "symbols": [
+          "* as util"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'chalk'",
+        "symbols": [
+          "chalk"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'util'",
+        "symbols": [
+          "* as util"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "runWithFoldableOutput",
+        "kind": "function",
+        "signature": "runWithFoldableOutput(\n  action: () => Promise<T>,\n  options: { fallbackMessage?: string; label?: string } = {},\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "runWithFoldableOutput",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/ui.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "util",
+        "relation": "import",
+        "symbols": [
+          "* as util"
+        ]
+      },
+      {
+        "targetPath": "chalk",
+        "relation": "import",
+        "symbols": [
+          "chalk"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:02:01.640Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

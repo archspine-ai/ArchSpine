@@ -1,0 +1,387 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/info.ts",
+    "contentHash": "73e9538bcb8f9bbddff19efff87b151008cdecb41f2595a27dc52d7b171d9bc2",
+    "skeletonHash": "2e92611e2ebf39acfda9948f890b65339ab51194976e5fc4c30561cdede767df",
+    "semanticHash": "5db4c3bc6273dbd36cfd42fb9f722ec92e71aeadd7b3890e031935dac1b63b7a",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Engine module that generates a comprehensive informational report about the project state, including configuration, manifest integrity, LLM settings, scan statistics, and file counts. Used by the CLI info command and potentially by service-level orchestrators.",
+    "responsibilities": [
+      "Open and inspect the project manifest to derive index completeness, usage counts, and language snapshots.",
+      "Load and display the project configuration including pre-commit resolution and scan policy settings.",
+      "Resolve and display the effective LLM configuration and secrets (masked) used by the runtime.",
+      "Optionally run a full scan (via Scanner) when manifest info is incomplete, and display updated file tracking statistics.",
+      "Format and output structured info report lines to the provided RuntimeIO or default console output.",
+      "Check for protected output mutations and emit warnings when detected, using spine-gate utilities."
+    ],
+    "outOfScope": [
+      "Executing scans on behalf of other engines or services (scanning is triggered only for informational completeness in this report).",
+      "Modifying project files or configuration.",
+      "Performing analysis or transformation of source code (this is purely a reporting/read-only module)."
+    ],
+    "invariants": [
+      "Rule engine-independence (error): Engine modules must not import CLI entrypoints and should stay decoupled from service-level orchestration. This file only imports from infra and other engine modules, which satisfies this constraint."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a standalone, reusable info report generator that can be used both by the CLI info command and programmatically by other components, aggregating data from multiple infra subsystems.",
+      "recentChangeIntent": "The commit 'chore: apply release gate fixes and sync accumulated source changes' suggests recent modifications to this file as part of release preparation, likely refining the info report output or fixing minor defects; no new public API surface introduced."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "runInfoReport",
+        "description": "Generates and outputs a comprehensive project information report covering manifest, config, LLM settings, scan statistics, and file tracking. Called by the CLI info command and available for programmatic use by other modules."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Engine module that generates a comprehensive informational report about the project state, including configuration, manifest integrity, LLM settings, scan statistics, and file counts. Used by the CLI info command and potentially by service-level orchestrators.",
+        "responsibilities": [
+          "Open and inspect the project manifest to derive index completeness, usage counts, and language snapshots.",
+          "Load and display the project configuration including pre-commit resolution and scan policy settings.",
+          "Resolve and display the effective LLM configuration and secrets (masked) used by the runtime.",
+          "Optionally run a full scan (via Scanner) when manifest info is incomplete, and display updated file tracking statistics.",
+          "Format and output structured info report lines to the provided RuntimeIO or default console output.",
+          "Check for protected output mutations and emit warnings when detected, using spine-gate utilities."
+        ],
+        "outOfScope": [
+          "Executing scans on behalf of other engines or services (scanning is triggered only for informational completeness in this report).",
+          "Modifying project files or configuration.",
+          "Performing analysis or transformation of source code (this is purely a reporting/read-only module)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/secrets.js'",
+        "symbols": [
+          "Secrets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/llm.js'",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets",
+          "getGlobalArchSpineDir",
+          "resolveLLMSettings"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./scanner.js'",
+        "symbols": [
+          "Scanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/spine-gate.js'",
+        "symbols": [
+          "detectProtectedOutputMutations",
+          "formatProtectedOutputMutationWarning"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "LanguageSnapshot"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "runInfoReport",
+        "kind": "function",
+        "signature": "runInfoReport(\n  rootDir: string,\n  options: { verbose?: boolean; runtimeIO?: RuntimeIO } = {},\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "runInfoReport",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/info.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 12,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "../infra/secrets.js",
+        "relation": "import",
+        "symbols": [
+          "Secrets"
+        ]
+      },
+      {
+        "targetPath": "../infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets",
+          "getGlobalArchSpineDir",
+          "resolveLLMSettings"
+        ]
+      },
+      {
+        "targetPath": "./scanner.js",
+        "relation": "import",
+        "symbols": [
+          "Scanner"
+        ]
+      },
+      {
+        "targetPath": "../infra/spine-gate.js",
+        "relation": "import",
+        "symbols": [
+          "detectProtectedOutputMutations",
+          "formatProtectedOutputMutationWarning"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "LanguageSnapshot"
+        ]
+      },
+      {
+        "targetPath": "../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/spine-gate.ts/formatProtectedOutputMutationWarning#",
+        "targetPath": "src/infra/spine-gate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/spine-gate.ts/detectProtectedOutputMutations#",
+        "targetPath": "src/infra/spine-gate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/resolveLLMSettings#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/llm/runtime.ts/resolveLLMSettings#",
+        "targetPath": "src/infra/llm/runtime.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/getGlobalArchSpineDir#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/getGlobalArchSpineDir#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/secrets.ts/Secrets#",
+        "targetPath": "src/infra/secrets.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/GlobalLLMConfig#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/GlobalLLMConfig#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/GlobalLLMSecrets#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/GlobalLLMSecrets#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/engines/scanner.ts/Scanner#",
+        "targetPath": "src/engines/scanner.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/usage.ts/getTotalUsage#",
+        "targetPath": "src/infra/db/repositories/usage.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/info.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/state.ts/loadLanguageSnapshot#",
+        "targetPath": "src/infra/manifest/state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:56:23.008Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 71,
+    "inCycle": true,
+    "cycleId": "src/core → src/types → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

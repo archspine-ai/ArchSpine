@@ -1,0 +1,566 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/repository-admin-service.ts",
+    "contentHash": "680d0309f6d1ec7f4520b420b5031d60efbffe4137c469ec1a2d6ef27bf7f5b4",
+    "skeletonHash": "9feea66265f3278a827903323712b4160c33a4326783559bcf050c8120e27d10",
+    "semanticHash": "9e2f0f15072c1f1bd8f2cbf5f98d0bb5a0e5aeb4591608fc70fd88f10ff94114",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "CLI-level orchestration module for applying and verifying the ArchSpine repository artifact strategy (e.g., agent instruction files, gitignore, scripts, rule templates). It coordinates the initial bootstrap and ongoing sync of managed repository files during 'init', 'sync', and 'scan' CLI commands.",
+    "responsibilities": [
+      "Detect mismatches between the intended artifact strategy and the current repository state (e.g., which agent instruction file is selected, whether managed blocks are present and complete).",
+      "Apply the desired artifact strategy by writing/updating config, gitignore, gitattributes, and agent instruction files.",
+      "Install default rule templates (layered-architecture.yml, naming-conventions.yml) into the repository's .spine/rules/ directory.",
+      "Synchronize V2 agent instruction blocks (health block, MCP tools block, briefing block, etc.) with the selected agent instruction file (e.g., CLAUDE.md or AGENTS.md).",
+      "Synchronize all managed repository files (.gitignore, .gitattributes, .spineignore, .searchignore) with ArchSpine's managed blocks.",
+      "Inject npm scripts (e.g., `spine-sync`, `spine-scan`, `spine-check`) into the repository's package.json.",
+      "Return typed result structures detailing what was checked or applied."
+    ],
+    "outOfScope": [
+      "Source code scanning or violation detection (handled by scanner engines).",
+      "Aggregating atomic units or building index structures.",
+      "Generating view data (architecture diagram, public surface, risk hotspots).",
+      "LLM interaction, prompt building, or content generation.",
+      "Database operations or persistent state management."
+    ],
+    "invariants": [
+      "The artifact strategy (ArtifactStrategy) must be consistent between the config and the actual repository state after application.",
+      "All managed blocks must be present and contain exactly the expected markers (e.g., BEGIN/END comments).",
+      "The repository must have the required configuration files (package.json, .gitignore, .gitattributes) before strategy application can succeed."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Consolidate repository initialisation and synchronization logic into a single CLI-level strategy module, decoupling it from infra and utils while providing clear typed results for each operation.",
+      "recentChangeIntent": "Refactored to remove legacy CLI aliases; the module now centralises all repository strategy operations for init/sync flows, matching the cleanup described in the recent commit."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "checkRepositoryStrategy",
+        "description": "Compares the current repository configuration against the intended artifact strategy and returns a list of issues to resolve. Called during `spine init` and `spine sync` preflight checks."
+      },
+      {
+        "symbolName": "applyRepositoryStrategy",
+        "description": "Applies the next artifact strategy to the repository, updating config, agent instruction files, and managed blocks accordingly. Called during `spine init` and `spine sync` to enforce the desired setup."
+      },
+      {
+        "symbolName": "installRecommendedRuleTemplates",
+        "description": "Copies the default architectural rule templates (layered-architecture.yml, naming-conventions.yml) into the .spine/rules directory of the repository. Used during first-time initialisation."
+      },
+      {
+        "symbolName": "syncV2AgentInstructionBlocks",
+        "description": "Synchronises V2 agent instruction blocks (health, MCP tools, briefing, etc.) into the selected agent instruction file. Called by syncAgentInstructionsConfiguration."
+      },
+      {
+        "symbolName": "syncAgentInstructionsConfiguration",
+        "description": "Full synchronisation of agent instruction configuration: updates health blocks, MCP tools blocks, V2 blocks, removes stale sections, and reports sync status. Called during `spine sync`."
+      },
+      {
+        "symbolName": "syncManagedRepositoryFiles",
+        "description": "Synchronises managed files (gitignore, gitattributes, spineignore, searchignore) with ArchSpine's managed blocks using the given artifact strategy. Called during `spine sync`."
+      },
+      {
+        "symbolName": "injectRepositoryPackageScripts",
+        "description": "Adds or updates npm scripts for ArchSpine commands (spine-sync, spine-scan, etc.) in the repository's package.json. Called during `spine init`."
+      },
+      {
+        "symbolName": "RepositoryStrategyCheckResult",
+        "description": "Typed result of checkRepositoryStrategy, containing the current strategy, next strategy, and a list of identified issues."
+      },
+      {
+        "symbolName": "RepositoryStrategyApplyResult",
+        "description": "Typed result of applyRepositoryStrategy, reporting which strategy was applied and whether files were updated."
+      },
+      {
+        "symbolName": "RuleTemplateInstallResult",
+        "description": "Typed result of installRecommendedRuleTemplates, listing whether each template file was created or already existed."
+      },
+      {
+        "symbolName": "AgentInstructionsSyncResult",
+        "description": "Typed result of syncAgentInstructionsConfiguration, containing sync statuses for agent instructions, health blocks, MCP tools blocks, and V2 blocks."
+      },
+      {
+        "symbolName": "ManagedRepositoryFilesResult",
+        "description": "Typed result of syncManagedRepositoryFiles, reporting sync status for each managed file (gitignore, gitattributes, spineignore, searchignore)."
+      },
+      {
+        "symbolName": "InjectPackageScriptsResult",
+        "description": "Typed result of injectRepositoryPackageScripts, detailing which scripts were added or updated."
+      },
+      {
+        "symbolName": "V2BlockSyncResults",
+        "description": "Typed collection of V2 block sync statuses, used inside AgentInstructionsSyncResult to describe the outcome of syncV2AgentInstructionBlocks."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI-level orchestration module for applying and verifying the ArchSpine repository artifact strategy (e.g., agent instruction files, gitignore, scripts, rule templates). It coordinates the initial bootstrap and ongoing sync of managed repository files during 'init', 'sync', and 'scan' CLI commands.",
+        "responsibilities": [
+          "Detect mismatches between the intended artifact strategy and the current repository state (e.g., which agent instruction file is selected, whether managed blocks are present and complete).",
+          "Apply the desired artifact strategy by writing/updating config, gitignore, gitattributes, and agent instruction files.",
+          "Install default rule templates (layered-architecture.yml, naming-conventions.yml) into the repository's .spine/rules/ directory.",
+          "Synchronize V2 agent instruction blocks (health block, MCP tools block, briefing block, etc.) with the selected agent instruction file (e.g., CLAUDE.md or AGENTS.md).",
+          "Synchronize all managed repository files (.gitignore, .gitattributes, .spineignore, .searchignore) with ArchSpine's managed blocks.",
+          "Inject npm scripts (e.g., `spine-sync`, `spine-scan`, `spine-check`) into the repository's package.json.",
+          "Return typed result structures detailing what was checked or applied."
+        ],
+        "outOfScope": [
+          "Source code scanning or violation detection (handled by scanner engines).",
+          "Aggregating atomic units or building index structures.",
+          "Generating view data (architecture diagram, public surface, risk hotspots).",
+          "LLM interaction, prompt building, or content generation.",
+          "Database operations or persistent state management."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/repository-artifacts.js'",
+        "symbols": [
+          "listTrackedSnapshotFiles",
+          "managedBlockIncludesAll",
+          "readManagedFileBlock",
+          "snapshotOutputsPresent"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../utils/agent-instructions.js'",
+        "symbols": [
+          "injectArchSpineScripts",
+          "removeManagedGitAttributesFile",
+          "syncAgentInstructionsFile",
+          "syncGitAttributesFile",
+          "syncGitIgnoreFile",
+          "syncHealthBlock",
+          "syncMCPToolsBlock",
+          "syncSearchIgnoreFile",
+          "syncSpineIgnoreFile",
+          "syncV2BriefingBlock",
+          "type AgentInstructionsSyncStatus",
+          "type GitAttributesRemovalStatus",
+          "type GitAttributesSyncStatus",
+          "type GitIgnoreSyncStatus",
+          "type PackageScriptStatus",
+          "type SearchIgnoreSyncStatus",
+          "type SpineIgnoreSyncStatus",
+          "type V2BlockSyncStatus"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../utils/agent-instructions.templates.js'",
+        "symbols": [
+          "DISTRIBUTABLE_GITATTRIBUTES_LINES",
+          "GITATTRIBUTES_BLOCK_END",
+          "GITATTRIBUTES_BLOCK_START",
+          "GITIGNORE_BLOCK_END",
+          "GITIGNORE_BLOCK_START",
+          "type ArtifactStrategy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "checkRepositoryStrategy",
+        "kind": "function",
+        "signature": "checkRepositoryStrategy(\n  rootDir: string,\n  config: Config,\n)"
+      },
+      {
+        "name": "applyRepositoryStrategy",
+        "kind": "function",
+        "signature": "applyRepositoryStrategy(\n  rootDir: string,\n  config: Config,\n  nextStrategy: ArtifactStrategy,\n)"
+      },
+      {
+        "name": "installRecommendedRuleTemplates",
+        "kind": "function",
+        "signature": "installRecommendedRuleTemplates(rootDir: string)"
+      },
+      {
+        "name": "syncV2AgentInstructionBlocks",
+        "kind": "function",
+        "signature": "syncV2AgentInstructionBlocks(\n  rootDir: string,\n  selectedAgentInstructionsFile: string,\n)"
+      },
+      {
+        "name": "syncAgentInstructionsConfiguration",
+        "kind": "function",
+        "signature": "syncAgentInstructionsConfiguration(\n  rootDir: string,\n  config: Config,\n  selectedAgentInstructionsFile: string,\n)"
+      },
+      {
+        "name": "syncManagedRepositoryFiles",
+        "kind": "function",
+        "signature": "syncManagedRepositoryFiles(\n  rootDir: string,\n  config: Config,\n  artifactStrategy: ArtifactStrategy,\n)"
+      },
+      {
+        "name": "injectRepositoryPackageScripts",
+        "kind": "function",
+        "signature": "injectRepositoryPackageScripts(\n  rootDir: string,\n  config: Config,\n)"
+      },
+      {
+        "name": "RepositoryStrategyCheckResult",
+        "kind": "interface",
+        "signature": "interface RepositoryStrategyCheckResult"
+      },
+      {
+        "name": "RepositoryStrategyApplyResult",
+        "kind": "interface",
+        "signature": "interface RepositoryStrategyApplyResult"
+      },
+      {
+        "name": "RuleTemplateInstallResult",
+        "kind": "interface",
+        "signature": "interface RuleTemplateInstallResult"
+      },
+      {
+        "name": "AgentInstructionsSyncResult",
+        "kind": "interface",
+        "signature": "interface AgentInstructionsSyncResult"
+      },
+      {
+        "name": "ManagedRepositoryFilesResult",
+        "kind": "interface",
+        "signature": "interface ManagedRepositoryFilesResult"
+      },
+      {
+        "name": "InjectPackageScriptsResult",
+        "kind": "interface",
+        "signature": "interface InjectPackageScriptsResult"
+      },
+      {
+        "name": "V2BlockSyncResults",
+        "kind": "interface",
+        "signature": "interface V2BlockSyncResults"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "checkRepositoryStrategy",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "applyRepositoryStrategy",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "installRecommendedRuleTemplates",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "syncV2AgentInstructionBlocks",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "syncAgentInstructionsConfiguration",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "syncManagedRepositoryFiles",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "injectRepositoryPackageScripts",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "RepositoryStrategyCheckResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "RepositoryStrategyApplyResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "RuleTemplateInstallResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "AgentInstructionsSyncResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "ManagedRepositoryFilesResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "InjectPackageScriptsResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      },
+      {
+        "name": "V2BlockSyncResults",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/repository-admin-service.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 14,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/config.ts",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "src/infra/repository-artifacts.ts",
+        "relation": "import",
+        "symbols": [
+          "listTrackedSnapshotFiles",
+          "managedBlockIncludesAll",
+          "readManagedFileBlock",
+          "snapshotOutputsPresent"
+        ]
+      },
+      {
+        "targetPath": "src/utils/agent-instructions.ts",
+        "relation": "import",
+        "symbols": [
+          "injectArchSpineScripts",
+          "removeManagedGitAttributesFile",
+          "syncAgentInstructionsFile",
+          "syncGitAttributesFile",
+          "syncGitIgnoreFile",
+          "syncHealthBlock",
+          "syncMCPToolsBlock",
+          "syncSearchIgnoreFile",
+          "syncSpineIgnoreFile",
+          "syncV2BriefingBlock"
+        ]
+      },
+      {
+        "targetPath": "src/utils/agent-instructions.templates.ts",
+        "relation": "import",
+        "symbols": [
+          "DISTRIBUTABLE_GITATTRIBUTES_LINES",
+          "GITATTRIBUTES_BLOCK_END",
+          "GITATTRIBUTES_BLOCK_START",
+          "GITIGNORE_BLOCK_END",
+          "GITIGNORE_BLOCK_START",
+          "ArtifactStrategy"
+        ]
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/infra/repository-artifacts.ts/readManagedFileBlock#",
+        "targetPath": "src/infra/repository-artifacts.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/infra/repository-artifacts.ts/managedBlockIncludesAll#",
+        "targetPath": "src/infra/repository-artifacts.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncGitIgnoreFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncGitAttributesFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/infra/repository-artifacts.ts/snapshotOutputsPresent#",
+        "targetPath": "src/infra/repository-artifacts.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/infra/repository-artifacts.ts/listTrackedSnapshotFiles#",
+        "targetPath": "src/infra/repository-artifacts.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeManagedGitAttributesFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncV2BriefingBlock#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncMCPToolsBlock#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncHealthBlock#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncAgentInstructionsFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncSpineIgnoreFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncSearchIgnoreFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/repository-admin-service.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/injectArchSpineScripts#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:02:59.718Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

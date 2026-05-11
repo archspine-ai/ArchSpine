@@ -1,0 +1,181 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/agent-briefing-view.ts",
+    "contentHash": "3429ed7773b1574085bb4ab6da8c545bb354af57b0a4d85e2b1411c43954e420",
+    "skeletonHash": "26585537f2437d5e2c4d70c3eac33938ab911e371a3fdb32d17466151362b5e5",
+    "semanticHash": "8cd9d7f3daf4a02d33c27bf532ce7bd4b81c1bc59a11c1ef8c5f2373a9445c8f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "View producer that generates the agent briefing artifact by loading architectural rules, knowledge graph data, and diagnostic reports, then formatting the output as localized Markdown.",
+    "responsibilities": [
+      "Load architectural rules from a directory via loadRulesFromDir to include in the briefing.",
+      "Ingest knowledge graph (KnowledgeGraph, KnowledgeGraphNode, KnowledgeGraphEdge) and diagnostic data (CycleReport, DeadCodeReport, HubReport) for analysis.",
+      "Compose a Markdown document with sections for entry points, language support, and rule summaries by escaping inline formatting.",
+      "Issue warnings through runtimeIO when data inconsistencies are encountered."
+    ],
+    "outOfScope": [
+      "Direct LLM invocation or prompt construction.",
+      "Scanning source code files for AST extraction.",
+      "Persisting or retrieving checkpoint state."
+    ],
+    "invariants": [
+      "The produced artifact must conform to IViewArtifactEnvelope and ViewArtifact interfaces.",
+      "All user-facing text is Markdown-escaped to prevent injection or formatting corruption.",
+      "Requires a SpineConfig to determine supported locales and rule paths."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Generate a concise architecture briefing for AI agents by aggregating rules, dependency graphs, and diagnostic summaries into a single Markdown document.",
+      "recentChangeIntent": "Refactor to remove legacy CLI aliases and rebuild documentation artifacts; this file was modified as part of aligning the view producer with the new schema and updated CLI commands."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "View producer that generates the agent briefing artifact by loading architectural rules, knowledge graph data, and diagnostic reports, then formatting the output as localized Markdown.",
+        "responsibilities": [
+          "Load architectural rules from a directory via loadRulesFromDir to include in the briefing.",
+          "Ingest knowledge graph (KnowledgeGraph, KnowledgeGraphNode, KnowledgeGraphEdge) and diagnostic data (CycleReport, DeadCodeReport, HubReport) for analysis.",
+          "Compose a Markdown document with sections for entry points, language support, and rule summaries by escaping inline formatting.",
+          "Issue warnings through runtimeIO when data inconsistencies are encountered."
+        ],
+        "outOfScope": [
+          "Direct LLM invocation or prompt construction.",
+          "Scanning source code files for AST extraction.",
+          "Persisting or retrieving checkpoint state."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../infra/rules-loader.js'",
+        "symbols": [
+          "loadRulesFromDir"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../infra/rules-loader.js",
+        "relation": "import",
+        "symbols": [
+          "loadRulesFromDir"
+        ]
+      },
+      {
+        "targetPath": "../../engines/dependency-graph.js",
+        "relation": "import",
+        "symbols": [
+          "KnowledgeGraph",
+          "KnowledgeGraphEdge",
+          "KnowledgeGraphNode"
+        ]
+      },
+      {
+        "targetPath": "../../engines/graph-diagnostics.js",
+        "relation": "import",
+        "symbols": [
+          "CycleReport",
+          "DeadCodeReport",
+          "HubReport"
+        ]
+      },
+      {
+        "targetPath": "../../types/protocol/config.js",
+        "relation": "import",
+        "symbols": [
+          "SpineConfig"
+        ]
+      },
+      {
+        "targetPath": "../../types/view.js",
+        "relation": "import",
+        "symbols": [
+          "IViewArtifactEnvelope"
+        ]
+      },
+      {
+        "targetPath": "./producer.js",
+        "relation": "import",
+        "symbols": [
+          "ViewArtifact",
+          "ViewContext",
+          "ViewProducer"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/view/agent-briefing-view.ts/_file_#",
+        "targetSymbol": "src/infra/rules-loader.ts/loadRulesFromDir#",
+        "targetPath": "src/infra/rules-loader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:02:58.162Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

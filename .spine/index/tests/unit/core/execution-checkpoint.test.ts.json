@@ -1,0 +1,206 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/core/execution-checkpoint.test.ts",
+    "contentHash": "04784e8f5d4cb11bd5e3340f19cbbdbec9dcbce3dcedc4be87f6a4cedbd065a7",
+    "skeletonHash": "6b38527425e97be89a3258826ba74d2407db64f7f66f5fdfdfac3f3c77b0278a",
+    "semanticHash": "3f3a1fdfd83c37e7a28ceba2c8b3d99b5d69236cece2357a3d55042df3ec0832",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/core"
+  },
+  "semantic": {
+    "role": "Unit test suite for the execution checkpoint module",
+    "responsibilities": [
+      "Verify correct behavior of ExecutionCheckpointStore constructor and methods",
+      "Validate deriveSyncResumeCandidateFiles returns expected file candidates under various state conditions",
+      "Validate deriveCheckResumeCandidateFiles returns expected file candidates under various state conditions",
+      "Ensure edge cases (e.g., empty stages, missing fields) are handled gracefully"
+    ],
+    "outOfScope": [
+      "Production execution logic: this file is not part of the application runtime",
+      "Integration or end-to-end testing: this is a pure unit test suite",
+      "Public API surface: no symbols are exported from this file"
+    ],
+    "invariants": [
+      "All test files must end with .test.ts or .spec.ts (rule test-file-suffix)"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Not applicable – test file. The architectural intent is to validate the execution checkpoint subsystem.",
+      "recentChangeIntent": "Not applicable – test file. No recent change intent provided beyond the test suite's purpose."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Unit test suite for the execution checkpoint module",
+        "responsibilities": [
+          "Verify correct behavior of ExecutionCheckpointStore constructor and methods",
+          "Validate deriveSyncResumeCandidateFiles returns expected file candidates under various state conditions",
+          "Validate deriveCheckResumeCandidateFiles returns expected file candidates under various state conditions",
+          "Ensure edge cases (e.g., empty stages, missing fields) are handled gracefully"
+        ],
+        "outOfScope": [
+          "Production execution logic: this file is not part of the application runtime",
+          "Integration or end-to-end testing: this is a pure unit test suite",
+          "Public API surface: no symbols are exported from this file"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/execution-checkpoint.js'",
+        "symbols": [
+          "ExecutionCheckpointStore",
+          "deriveCheckResumeCandidateFiles",
+          "deriveSyncResumeCandidateFiles",
+          "type ExecutionCheckpointState"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "test",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/execution-checkpoint.js",
+        "relation": "import",
+        "symbols": [
+          "ExecutionCheckpointStore",
+          "deriveCheckResumeCandidateFiles",
+          "deriveSyncResumeCandidateFiles",
+          "ExecutionCheckpointState"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/core/execution-checkpoint.test.ts/_file_#",
+        "targetSymbol": "src/infra/execution-checkpoint.ts/deriveSyncResumeCandidateFiles#",
+        "targetPath": "src/infra/execution-checkpoint.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/execution-checkpoint.test.ts/_file_#",
+        "targetSymbol": "src/infra/execution-checkpoint.ts/deriveCheckResumeCandidateFiles#",
+        "targetPath": "src/infra/execution-checkpoint.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/execution-checkpoint.test.ts/_file_#",
+        "targetSymbol": "src/infra/execution-checkpoint.ts/ExecutionCheckpointStore#",
+        "targetPath": "src/infra/execution-checkpoint.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:08:26.291Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

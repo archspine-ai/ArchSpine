@@ -1,0 +1,234 @@
+<?xml version="1.0" standalone="no"?>
+<svg viewBox="0 0 1600 1000" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background glow -->
+    <radialGradient id="bg-glow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#161B22" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#0D1117" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- ArchSpine layer glow -->
+    <filter id="archspine-glow" x="-5%" y="-15%" width="110%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="20" flood-color="#A371F7" flood-opacity="0.15"/>
+    </filter>
+
+    <!-- ArchSpine badge glow -->
+    <filter id="badge-glow" x="-20%" y="-50%" width="140%" height="200%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#A371F7" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1600" height="1000" fill="#0D1117"/>
+  <rect width="1600" height="1000" fill="url(#bg-glow)"/>
+
+  <!-- Subtle grid -->
+  <g opacity="0.03">
+    <line x1="0" y1="200" x2="1600" y2="200" stroke="#8B949E" stroke-width="1"/>
+    <line x1="0" y1="400" x2="1600" y2="400" stroke="#8B949E" stroke-width="1"/>
+    <line x1="0" y1="600" x2="1600" y2="600" stroke="#8B949E" stroke-width="1"/>
+    <line x1="0" y1="800" x2="1600" y2="800" stroke="#8B949E" stroke-width="1"/>
+  </g>
+
+  <!-- Title -->
+  <text x="800" y="55" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="30" font-weight="800" fill="#F0F6FC" letter-spacing="-0.02em">AI Agent 理解代码仓库需要几层能力？</text>
+  <text x="800" y="85" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="400" fill="#8B949E">不同层解决不同问题 — ArchSpine 占据结构化架构层，与现有方案互补而非竞争</text>
+
+  <!-- Main container -->
+  <rect x="80" y="120" width="1440" height="750" rx="16" fill="#0D1117" stroke="#21262D" stroke-width="1.5"/>
+
+  <!-- ============================================ -->
+  <!-- LAYER 1: 行为指令层 -->
+  <!-- ============================================ -->
+  <g opacity="0.85">
+    <rect x="120" y="148" width="1360" height="138" rx="10" fill="#161B22" stroke="#21262D" stroke-width="1"/>
+
+    <!-- Left accent bar -->
+    <rect x="120" y="148" width="6" height="138" rx="3" fill="#58A6FF"/>
+
+    <!-- Layer number badge -->
+    <rect x="150" y="164" width="28" height="28" rx="6" fill="#58A6FF" opacity="0.12"/>
+    <text x="164" y="183" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#58A6FF">1</text>
+
+    <text x="190" y="183" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#E6EDF3">行为指令层</text>
+    <text x="190" y="208" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="500" fill="#6E7681">Behavior / Instructions</text>
+
+    <line x1="420" y1="154" x2="420" y2="280" stroke="#21262D" stroke-width="1"/>
+
+    <rect x="448" y="163" width="108" height="26" rx="6" fill="#0D1117" stroke="#30363D" stroke-width="1"/>
+    <text x="502" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#79C0FF">CLAUDE.md</text>
+
+    <rect x="564" y="163" width="108" height="26" rx="6" fill="#0D1117" stroke="#30363D" stroke-width="1"/>
+    <text x="618" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#79C0FF">AGENTS.md</text>
+
+    <rect x="680" y="163" width="112" height="26" rx="6" fill="#0D1117" stroke="#30363D" stroke-width="1"/>
+    <text x="736" y="180" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#79C0FF">Memory Files</text>
+
+    <text x="448" y="218" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#C9D1D9">告诉 Agent 开发规范和行为约定</text>
+
+    <text x="448" y="246" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#6E7681">
+      <tspan font-weight="600" fill="#8B949E">定位</tspan>
+      <tspan> — 仅指导行为，不验证代码是否实际遵守</tspan>
+    </text>
+  </g>
+
+  <!-- Gap connector 1 → 2 -->
+  <g opacity="0.4">
+    <line x1="800" y1="286" x2="800" y2="306" stroke="#30363D" stroke-width="1.5"/>
+    <path d="M 793,300 L 800,308 L 807,300" stroke="#30363D" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- ============================================ -->
+  <!-- LAYER 2: 仓库上下文层 -->
+  <!-- ============================================ -->
+  <g opacity="0.85">
+    <rect x="120" y="314" width="1360" height="138" rx="10" fill="#161B22" stroke="#21262D" stroke-width="1"/>
+    <rect x="120" y="314" width="6" height="138" rx="3" fill="#39D2C0"/>
+
+    <rect x="150" y="330" width="28" height="28" rx="6" fill="#39D2C0" opacity="0.12"/>
+    <text x="164" y="349" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#39D2C0">2</text>
+
+    <text x="190" y="349" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#E6EDF3">仓库上下文层</text>
+    <text x="190" y="374" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="500" fill="#6E7681">Repository Context</text>
+
+    <line x1="420" y1="320" x2="420" y2="446" stroke="#21262D" stroke-width="1"/>
+
+    <rect x="448" y="329" width="140" height="26" rx="6" fill="#0D1117" stroke="#30363D" stroke-width="1"/>
+    <text x="518" y="346" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#56D364">Copilot Memory</text>
+
+    <rect x="596" y="329" width="156" height="26" rx="6" fill="#0D1117" stroke="#30363D" stroke-width="1"/>
+    <text x="674" y="346" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#56D364">Windsurf Rules</text>
+
+    <rect x="760" y="329" width="100" height="26" rx="6" fill="#0D1117" stroke="#30363D" stroke-width="1"/>
+    <text x="810" y="346" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#56D364">平台记忆</text>
+
+    <text x="448" y="384" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#C9D1D9">提供项目级持久上下文，跨会话保持 Agent 记忆</text>
+
+    <text x="448" y="412" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#6E7681">
+      <tspan font-weight="600" fill="#8B949E">定位</tspan>
+      <tspan> — 依赖手动维护，与代码实际结构无自动绑定</tspan>
+    </text>
+  </g>
+
+  <!-- Gap connector 2 → 3 -->
+  <g opacity="0.4">
+    <line x1="800" y1="452" x2="800" y2="472" stroke="#30363D" stroke-width="1.5"/>
+    <path d="M 793,466 L 800,474 L 807,466" stroke="#30363D" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- ============================================ -->
+  <!-- LAYER 3: 结构化架构层 ← ArchSpine -->
+  <!-- ============================================ -->
+  <g transform="translate(0,0)">
+    <!-- Glow underlay -->
+    <rect x="105" y="475" width="1390" height="195" rx="14" fill="#A371F7" opacity="0.06" filter="url(#archspine-glow)"/>
+
+    <!-- Card bg -->
+    <rect x="120" y="480" width="1360" height="180" rx="10" fill="#161B22" stroke="#A371F7" stroke-width="1.5"/>
+    <rect x="120" y="480" width="1360" height="180" rx="10" fill="none" stroke="#BC8CFF" stroke-width="1" opacity="0.1"/>
+
+    <!-- Left accent bar (thicker) -->
+    <rect x="120" y="480" width="8" height="180" rx="3" fill="#A371F7"/>
+
+    <rect x="150" y="496" width="28" height="28" rx="6" fill="#A371F7" opacity="0.18"/>
+    <text x="164" y="515" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#BC8CFF">3</text>
+
+    <text x="190" y="515" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#F0F6FC">结构化架构层</text>
+    <text x="190" y="540" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="500" fill="#A371F7">Structured Architecture</text>
+
+    <!-- ArchSpine badge -->
+    <rect x="190" y="560" width="120" height="28" rx="14" fill="#A371F7" filter="url(#badge-glow)"/>
+    <text x="250" y="579" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#F0F6FC">ArchSpine</text>
+
+    <line x1="420" y1="486" x2="420" y2="654" stroke="#A371F7" stroke-width="1" opacity="0.25"/>
+
+    <!-- Capability tags -->
+    <rect x="448" y="493" width="90" height="26" rx="6" fill="#A371F7" opacity="0.1" stroke="#BC8CFF" stroke-width="1"/>
+    <text x="493" y="510" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#BC8CFF">语义索引</text>
+
+    <rect x="546" y="493" width="90" height="26" rx="6" fill="#A371F7" opacity="0.1" stroke="#BC8CFF" stroke-width="1"/>
+    <text x="591" y="510" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#BC8CFF">知识图谱</text>
+
+    <rect x="644" y="493" width="90" height="26" rx="6" fill="#A371F7" opacity="0.1" stroke="#BC8CFF" stroke-width="1"/>
+    <text x="689" y="510" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#BC8CFF">架构规则</text>
+
+    <rect x="742" y="493" width="70" height="26" rx="6" fill="#A371F7" opacity="0.1" stroke="#BC8CFF" stroke-width="1"/>
+    <text x="777" y="510" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#BC8CFF">视图</text>
+
+    <rect x="820" y="493" width="90" height="26" rx="6" fill="#A371F7" opacity="0.1" stroke="#BC8CFF" stroke-width="1"/>
+    <text x="865" y="510" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#BC8CFF">MCP 工具</text>
+
+    <rect x="918" y="493" width="90" height="26" rx="6" fill="#A371F7" opacity="0.1" stroke="#BC8CFF" stroke-width="1"/>
+    <text x="963" y="510" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#BC8CFF">诊断引擎</text>
+
+    <!-- Differentiator lines -->
+    <text x="448" y="546" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#D2D8E0">
+      <tspan font-weight="700" fill="#BC8CFF">自动构建 · 代码即真相</tspan>
+      <tspan> — AST 抽取语义索引 + 知识图谱，Agent 通过 21 个 MCP 工具直接查询</tspan>
+    </text>
+    <text x="448" y="574" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#D2D8E0">
+      <tspan font-weight="700" fill="#BC8CFF">Git 原生 · commit 即分发</tspan>
+      <tspan> — </tspan>
+      <tspan font-family="monospace" fill="#A371F7">.spine/</tspan>
+      <tspan> 随仓库版本化，</tspan>
+      <tspan font-family="monospace" fill="#A371F7">spine sync</tspan>
+      <tspan> 一键刷新，架构规则可审查可执行</tspan>
+    </text>
+    <text x="448" y="602" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#D2D8E0">
+      <tspan font-weight="700" fill="#BC8CFF">本地优先 · 数据不离开你</tspan>
+      <tspan> — 控制面在仓库内，不依赖外部服务，clone 即得完整架构理解</tspan>
+    </text>
+
+    <!-- Positioning -->
+    <text x="448" y="632" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#6E7681">
+      <tspan font-weight="600" fill="#8B949E">定位</tspan>
+      <tspan> — 填补"代码结构 → Agent 可理解语义"这一缺失的架构层，与上下层共存互补</tspan>
+    </text>
+  </g>
+
+  <!-- Gap connector 3 → 4 -->
+  <g opacity="0.4">
+    <line x1="800" y1="660" x2="800" y2="682" stroke="#30363D" stroke-width="1.5"/>
+    <path d="M 793,676 L 800,684 L 807,676" stroke="#30363D" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- ============================================ -->
+  <!-- LAYER 4: 通用记忆基础设施 -->
+  <!-- ============================================ -->
+  <g opacity="0.85">
+    <rect x="120" y="690" width="1360" height="138" rx="10" fill="#161B22" stroke="#21262D" stroke-width="1"/>
+    <rect x="120" y="690" width="6" height="138" rx="3" fill="#8B949E"/>
+
+    <rect x="150" y="706" width="28" height="28" rx="6" fill="#8B949E" opacity="0.12"/>
+    <text x="164" y="725" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#8B949E">4</text>
+
+    <text x="190" y="725" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#E6EDF3">通用记忆基础设施</text>
+    <text x="190" y="750" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="500" fill="#6E7681">General Memory Infrastructure</text>
+
+    <line x1="420" y1="696" x2="420" y2="822" stroke="#21262D" stroke-width="1"/>
+
+    <rect x="448" y="705" width="64" height="26" rx="6" fill="#0D1117" stroke="#30363D" stroke-width="1"/>
+    <text x="480" y="722" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#8B949E">Mem0</text>
+
+    <rect x="520" y="705" width="72" height="26" rx="6" fill="#0D1117" stroke="#30363D" stroke-width="1"/>
+    <text x="556" y="722" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#8B949E">Letta</text>
+
+    <rect x="600" y="705" width="80" height="26" rx="6" fill="#0D1117" stroke="#30363D" stroke-width="1"/>
+    <text x="640" y="722" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#8B949E">Graphiti</text>
+
+    <rect x="688" y="705" width="72" height="26" rx="6" fill="#0D1117" stroke="#30363D" stroke-width="1"/>
+    <text x="724" y="722" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600" fill="#8B949E">Cognee</text>
+
+    <text x="448" y="760" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="500" fill="#C9D1D9">跨会话记忆、知识图谱存储、向量召回等通用基础设施</text>
+
+    <text x="448" y="788" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#6E7681">
+      <tspan font-weight="600" fill="#8B949E">定位</tspan>
+      <tspan> — 通用记忆层，不与当前仓库代码结构直接关联</tspan>
+    </text>
+  </g>
+
+  <!-- Footer note -->
+  <text x="800" y="908" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="400" fill="#6E7681">
+    四层可以共存互补 — ArchSpine 不替代任何层，而是填补"代码结构 → Agent 可理解语义"这一缺失的架构层
+  </text>
+</svg>

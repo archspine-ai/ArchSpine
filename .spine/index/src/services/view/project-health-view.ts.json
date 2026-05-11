@@ -1,0 +1,154 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/project-health-view.ts",
+    "contentHash": "256392ac570c97570c7d46b07b9cea4b39a20935fda2c124dd874886d3b1a90e",
+    "skeletonHash": "22199373c58bd6d2d6d3483d76229db852b814ec63ca914a650e9c9565b99ddb",
+    "semanticHash": "e5a859883aad2ac9f222d760784d32e692b4ac22a3177c65d85876a9bef895ab",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "Internal Markdown formatter for knowledge graph diagnostics within the view subsystem.",
+    "responsibilities": [
+      "Load diagnostic JSON files from the .spine/view/data/ directory using fs and path.",
+      "Compute and format dependency edge compliance ratios into Markdown summary tables.",
+      "Format cycle dependency data (ID, modules, length) into a Markdown table with proper escaping.",
+      "Format dead code module entries into a Markdown table.",
+      "Provide escapeMarkdownTableCell utility to safely wrap values for Markdown table cells."
+    ],
+    "outOfScope": [
+      "CLI commands or argument parsing.",
+      "HTTP or WebSocket server handling.",
+      "Database access or query execution.",
+      "LLM provider interactions.",
+      "Configuration loading or validation."
+    ],
+    "invariants": [
+      "Input data must conform to the diagnostic JSON schema (KGNode, edges, cycles, deadCode).",
+      "Markdown output must be valid GitHub-flavored Markdown with properly escaped table cells."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide reusable Markdown formatting utilities for view producers that render knowledge graph diagnostic data into human-readable artifacts.",
+      "recentChangeIntent": "This file is part of the view subsystem rebuild; the recent commit removed legacy CLI aliases and rebuilt docs, which may have affected the view data paths or formatting expectations."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Internal Markdown formatter for knowledge graph diagnostics within the view subsystem.",
+        "responsibilities": [
+          "Load diagnostic JSON files from the .spine/view/data/ directory using fs and path.",
+          "Compute and format dependency edge compliance ratios into Markdown summary tables.",
+          "Format cycle dependency data (ID, modules, length) into a Markdown table with proper escaping.",
+          "Format dead code module entries into a Markdown table.",
+          "Provide escapeMarkdownTableCell utility to safely wrap values for Markdown table cells."
+        ],
+        "outOfScope": [
+          "CLI commands or argument parsing.",
+          "HTTP or WebSocket server handling.",
+          "Database access or query execution.",
+          "LLM provider interactions.",
+          "Configuration loading or validation."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "readFileSync",
+          "existsSync"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "join"
+        ]
+      },
+      {
+        "targetPath": "./producer.js",
+        "relation": "type_import",
+        "symbols": [
+          "ViewArtifact",
+          "ViewContext",
+          "ViewProducer"
+        ]
+      },
+      {
+        "targetPath": "../../types/view.js",
+        "relation": "type_import",
+        "symbols": [
+          "IViewArtifactEnvelope"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:03:41.996Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/tasks/aggregate.test.ts",
+    "contentHash": "d02db11f8e6095b919bbdcd4a478104c415328798f82d9e73e5fbea56a5504b8",
+    "skeletonHash": "459c5d7c1db4bf030a6b2017f62b67313528aa15b527bb3fceaab4416c93c3f5",
+    "semanticHash": "d06f201f490b6b68924e9faddbc0c79df293f875c0c57e0dbbb3b9c8c122ad20",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/tasks"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for the AggregationTask pipeline task.",
+    "responsibilities": [
+      "Verifies that AggregationTask correctly orchestrates directory and project aggregation.",
+      "Mocks infrastructure dependencies (aggregator, checkpoint) to isolate task logic.",
+      "Ensures proper error handling when aggregation initialization fails."
+    ],
+    "outOfScope": [
+      "Does not test full integration with real LLM or database layers.",
+      "Does not cover aggregation correctness beyond task execution flow."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (rule violation check: satisfied)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide isolated behavioral verification for the AggregationTask class, ensuring the task properly delegates to aggregator and checkpoint services.",
+      "recentChangeIntent": "No recent code changes captured in this file; the intent is maintenance of test coverage."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for the AggregationTask pipeline task.",
+        "responsibilities": [
+          "Verifies that AggregationTask correctly orchestrates directory and project aggregation.",
+          "Mocks infrastructure dependencies (aggregator, checkpoint) to isolate task logic.",
+          "Ensures proper error handling when aggregation initialization fails."
+        ],
+        "outOfScope": [
+          "Does not test full integration with real LLM or database layers.",
+          "Does not cover aggregation correctness beyond task execution flow."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/tasks/aggregate.js'",
+        "symbols": [
+          "AggregationTask"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/tasks/aggregate.ts",
+        "relation": "import",
+        "symbols": [
+          "AggregationTask"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/tasks/aggregate.test.ts/_file_#",
+        "targetSymbol": "src/tasks/aggregate.ts/AggregationTask#",
+        "targetPath": "src/tasks/aggregate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:10:53.104Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

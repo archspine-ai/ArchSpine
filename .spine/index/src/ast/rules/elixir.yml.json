@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/ast/rules/elixir.yml",
+    "contentHash": "1ded5f0eebe076048c44ff9ecbd98416eb4074ccb52a9e57633f798216cafa62",
+    "semanticHash": "f64d46fbbdfffc4fa88b03b69bd416ed45f75ad92d6c9fb013725733c4020920",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": "src/ast/rules"
+  },
+  "semantic": {
+    "role": "Defines AST extraction patterns for the Elixir programming language within the ArchSpine mirror system.",
+    "responsibilities": [
+      "Specifies how to detect import statements (import, alias, require, use) in Elixir source code.",
+      "Defines export pattern rules for functions, private functions, macros, modules, protocols, and implementations.",
+      "Provides usage pattern rules for function calls and module-qualified function calls.",
+      "Serves as a language-specific rule set for the ArchSpine code analysis and governance engine."
+    ],
+    "outOfScope": [
+      "Does not cover other programming languages supported by ArchSpine.",
+      "Does not include semantic analysis beyond pattern matching.",
+      "Does not define project-level governance or architectural constraints."
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This document acts as the Elixir language grammar for ArchSpine’s AST extraction pipeline. It translates the structural conventions of Elixir source files into patterns that the scanner can match to identify imports, exports, and usage references. By doing so, it enables ArchSpine to understand Elixir code structure for dependency analysis, violation detection, and architectural documentation.",
+        "context_and_audience": "ArchSpine contributors who extend language support, maintainers of the scanning engine, and developers configuring project rules for Elixir repositories. Also relevant for AI agents that need to interpret how Elixir code is parsed and indexed.",
+        "key_takeaways": [
+          "The document codifies four import patterns (import, alias, require, use) to capture external dependencies.",
+          "Export patterns cover functions (def, defp), macros (defmacro), modules (defmodule), protocols (defprotocol), and implementations (defimpl), each classified as Function, Class, or Interface.",
+          "Usage patterns detect both direct function calls and module-qualified calls, which are critical for building a dependency graph.",
+          "This file is part of the `src/ast/rules/` directory and is loaded by ArchSpine’s language registry to configure the scanner for Elixir projects."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:52:25.383Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 8,
+    "isHub": true,
+    "hubPercentile": 94,
+    "inCycle": true,
+    "cycleId": "src/ast → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/utils/confirm.ts",
+    "contentHash": "0732860fb39181958aee031003d49985f7539dcb219587945a0b2b9434064efa",
+    "skeletonHash": "1e9b63ef627ba4f5e6e70abd3dac181b395729f51ab0dba56feae56bfeca7d12",
+    "semanticHash": "6d0ec7bf7addf21fd1cedcdd8bdc92b4de71fac89b87425de36c364c72972071",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/utils"
+  },
+  "semantic": {
+    "role": "CLI utility providing interactive user confirmation prompts for terminal-based workflows.",
+    "responsibilities": [
+      "Implement promptForExplicitConfirmation: an async confirmation dialog that accepts a message and returns a boolean based on typed user input ('y'/'n'), using the 'prompts' library.",
+      "Implement promptForImmediateConfirmation: an async confirmation that waits for a single keypress ('y' or 'n') in raw mode without requiring Enter, processing stdin directly with readline.",
+      "Handle Ctrl+C during immediate confirmation by cleaning up stdin, writing a newline, and exiting the process with status 130.",
+      "Provide colored output (green 'Yes', red 'No') for immediate confirmation responses using kleur."
+    ],
+    "outOfScope": [
+      "Non-interactive or automated confirmation flows (e.g., flag-driven defaults).",
+      "General-purpose input prompts beyond yes/no confirmation.",
+      "Any stateful session or multi-step wizards."
+    ],
+    "invariants": [
+      "Both functions always return a Promise<boolean>.",
+      "Immediate confirmation uses stdin raw mode and ensures cleanup on resolution or interruption.",
+      "Ctrl+C during immediate confirmation terminates the process."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide isolated confirmation utilities for CLI interactivity, decoupled from business logic and command handlers.",
+      "recentChangeIntent": "Not applicable; no prior semantic provided."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "promptForExplicitConfirmation",
+        "description": "Displays a prompt message and waits for the user to type a response ('y' or 'n'), returning true for yes and false for no. Uses the prompts library for input."
+      },
+      {
+        "symbolName": "promptForImmediateConfirmation",
+        "description": "Displays a prompt message and listens for a single keypress ('y' or 'n') in raw mode, returning true for yes and false for no, with colored output and Ctrl+C handling."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI utility providing interactive user confirmation prompts for terminal-based workflows.",
+        "responsibilities": [
+          "Implement promptForExplicitConfirmation: an async confirmation dialog that accepts a message and returns a boolean based on typed user input ('y'/'n'), using the 'prompts' library.",
+          "Implement promptForImmediateConfirmation: an async confirmation that waits for a single keypress ('y' or 'n') in raw mode without requiring Enter, processing stdin directly with readline.",
+          "Handle Ctrl+C during immediate confirmation by cleaning up stdin, writing a newline, and exiting the process with status 130.",
+          "Provide colored output (green 'Yes', red 'No') for immediate confirmation responses using kleur."
+        ],
+        "outOfScope": [
+          "Non-interactive or automated confirmation flows (e.g., flag-driven defaults).",
+          "General-purpose input prompts beyond yes/no confirmation.",
+          "Any stateful session or multi-step wizards."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'prompts'",
+        "symbols": [
+          "prompts"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'readline'",
+        "symbols": [
+          "* as readline"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'kleur'",
+        "symbols": [
+          "kleur"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'readline'",
+        "symbols": [
+          "* as readline"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "promptForExplicitConfirmation",
+        "kind": "function",
+        "signature": "promptForExplicitConfirmation(message: string)"
+      },
+      {
+        "name": "promptForImmediateConfirmation",
+        "kind": "function",
+        "signature": "promptForImmediateConfirmation(\n  message: string,\n  options: { skipNewline?: boolean } = {},\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "promptForExplicitConfirmation",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/confirm.ts#"
+      },
+      {
+        "name": "promptForImmediateConfirmation",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/confirm.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "prompts",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "readline",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "kleur",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:05:53.203Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 82,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

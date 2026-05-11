@@ -1,0 +1,266 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-context/artifacts.ts",
+    "contentHash": "3ac944a3088d50b21e02567d2c3edcd82c7666cebd81afcb055db26bf7209bf0",
+    "skeletonHash": "23ee85f5bf5e47cd6007999b1f0baf939ad810b69c367449444a22b8be310e5c",
+    "semanticHash": "020286e463678d3e1d89ff38393252ca957d32c73bf3f17b1ea393796f4139a7",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt-context"
+  },
+  "semantic": {
+    "role": "Orchestrator for building compacted source prompt artifacts used in LLM prompts, integrating policy resolution, budget calculation, trimming, and diagnostics from sub-modules.",
+    "responsibilities": [
+      "Accepts SourcePromptArtifactsInput and returns a fully constructed SourcePromptArtifacts object.",
+      "Resolves the validation policy via resolveValidatePolicy based on task mode and input policy.",
+      "Calculates source prompt budgets (header lines, dependency context character limit) via calculateSourcePromptBudgets.",
+      "Extracts a skeleton representation by taking the first header lines from the source content.",
+      "Applies trimming strategies: compactSkeletonForPrompt on the skeleton, trimSectionedContext on dependency context, trimRuleBlocks on rule data, and trimPreviousSemantic on previous semantic analysis.",
+      "Builds diagnostics for dependency selection and rule blocks via buildDependencySelectionDiagnostics and buildRuleBlockDiagnostics.",
+      "Serializes artifacts to JSON strings for inclusion in prompt context."
+    ],
+    "outOfScope": [
+      "Direct file system or AST extraction operations.",
+      "CLI command parsing or execution.",
+      "MCP server or tool definitions.",
+      "Database interactions or repository operations.",
+      "View rendering or output formatting."
+    ],
+    "invariants": [
+      "All imports from sibling prompt-context modules must resolve to stable internal facades; no violation detected."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a single orchestration point for building source prompt artifacts, ensuring consistent application of validation policy and trimming across all source inputs.",
+      "recentChangeIntent": "This file was not directly modified in the recent commit; it is part of the broader prompt-context module which likely stabilized around release gate fixes."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "buildSourcePromptArtifacts",
+        "description": "Primary entry point that constructs a SourcePromptArtifacts object from input by resolving validate policy, calculating budgets, extracting skeleton, trimming context, and building diagnostics."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Orchestrator for building compacted source prompt artifacts used in LLM prompts, integrating policy resolution, budget calculation, trimming, and diagnostics from sub-modules.",
+        "responsibilities": [
+          "Accepts SourcePromptArtifactsInput and returns a fully constructed SourcePromptArtifacts object.",
+          "Resolves the validation policy via resolveValidatePolicy based on task mode and input policy.",
+          "Calculates source prompt budgets (header lines, dependency context character limit) via calculateSourcePromptBudgets.",
+          "Extracts a skeleton representation by taking the first header lines from the source content.",
+          "Applies trimming strategies: compactSkeletonForPrompt on the skeleton, trimSectionedContext on dependency context, trimRuleBlocks on rule data, and trimPreviousSemantic on previous semantic analysis.",
+          "Builds diagnostics for dependency selection and rule blocks via buildDependencySelectionDiagnostics and buildRuleBlockDiagnostics.",
+          "Serializes artifacts to JSON strings for inclusion in prompt context."
+        ],
+        "outOfScope": [
+          "Direct file system or AST extraction operations.",
+          "CLI command parsing or execution.",
+          "MCP server or tool definitions.",
+          "Database interactions or repository operations.",
+          "View rendering or output formatting."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./diagnostics.js'",
+        "symbols": [
+          "buildDependencySelectionDiagnostics",
+          "buildRuleBlockDiagnostics"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./budgets.js'",
+        "symbols": [
+          "calculateSourcePromptBudgets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./policy.js'",
+        "symbols": [
+          "resolveValidatePolicy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./trim.js'",
+        "symbols": [
+          "compactSkeletonForPrompt",
+          "trimPreviousSemantic",
+          "trimRuleBlocks",
+          "trimSectionedContext"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "buildSourcePromptArtifacts",
+        "kind": "function",
+        "signature": "buildSourcePromptArtifacts(\n  input: SourcePromptArtifactsInput,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "buildSourcePromptArtifacts",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/artifacts.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./diagnostics.js",
+        "relation": "import",
+        "symbols": [
+          "buildDependencySelectionDiagnostics",
+          "buildRuleBlockDiagnostics"
+        ]
+      },
+      {
+        "targetPath": "./budgets.js",
+        "relation": "import",
+        "symbols": [
+          "calculateSourcePromptBudgets"
+        ]
+      },
+      {
+        "targetPath": "./policy.js",
+        "relation": "import",
+        "symbols": [
+          "resolveValidatePolicy"
+        ]
+      },
+      {
+        "targetPath": "./trim.js",
+        "relation": "import",
+        "symbols": [
+          "compactSkeletonForPrompt",
+          "trimPreviousSemantic",
+          "trimRuleBlocks",
+          "trimSectionedContext"
+        ]
+      },
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "SourcePromptArtifacts",
+          "SourcePromptArtifactsInput"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/prompt-context/artifacts.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/policy.ts/resolveValidatePolicy#",
+        "targetPath": "src/infra/prompt-context/policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/artifacts.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/resolveValidatePolicy#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/artifacts.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-policy.ts/resolveValidatePolicy#",
+        "targetPath": "src/infra/prompt-policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/artifacts.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/budgets.ts/calculateSourcePromptBudgets#",
+        "targetPath": "src/infra/prompt-context/budgets.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/artifacts.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/calculateSourcePromptBudgets#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/artifacts.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/trim.ts/compactSkeletonForPrompt#",
+        "targetPath": "src/infra/prompt-context/trim.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/artifacts.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/trim.ts/trimSectionedContext#",
+        "targetPath": "src/infra/prompt-context/trim.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/artifacts.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/trim.ts/trimRuleBlocks#",
+        "targetPath": "src/infra/prompt-context/trim.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/artifacts.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/trim.ts/trimPreviousSemantic#",
+        "targetPath": "src/infra/prompt-context/trim.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/artifacts.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/diagnostics.ts/buildDependencySelectionDiagnostics#",
+        "targetPath": "src/infra/prompt-context/diagnostics.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/artifacts.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/diagnostics.ts/buildRuleBlockDiagnostics#",
+        "targetPath": "src/infra/prompt-context/diagnostics.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:00:27.089Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/usage.ts",
+    "contentHash": "b163b8384e9f069b1a4dc2dd826586356c50e3a7894599286655832381245925",
+    "skeletonHash": "afcb9569c30171a4b9bdfcd42a9282e9d239e1ec52977ee7d5ebcbad9effeb50",
+    "semanticHash": "1c77fe671bc94cf83d3ba524f066ee401f4d7359a5f7179b603b5d01ffae87c2",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Engine module that generates and outputs a usage and audit report for an ArchSpine project by querying the manifest for token usage, usage summaries, and active violations.",
+    "responsibilities": [
+      "Open the project manifest via `Manifest.open` using the provided root directory.",
+      "Retrieve total token usage (input, output, total) from the manifest.",
+      "Retrieve a usage summary detailing per-sync-mode statistics.",
+      "Retrieve the list of active violations currently recorded in the project.",
+      "Format and output the gathered data into a human-readable report through the provided `RuntimeIO` abstraction."
+    ],
+    "outOfScope": [
+      "Actual token accounting or usage accumulation logic (delegated to manifest repositories).",
+      "Detailed violation data beyond headings (calls `getActiveViolations` but does not format each violation).",
+      "Interactive user input or configuration parsing.",
+      "Direct CLI command registration or argument handling.",
+      "Any persistent state changes or side effects beyond printing."
+    ],
+    "invariants": [
+      "Requires a valid root directory that contains an initialized ArchSpine project with a manifest.",
+      "Uses default `RuntimeIO` if no runtime IO instance is provided.",
+      "Assumes `Manifest.getTotalUsage`, `getUsageSummary`, and `getActiveViolations` are synchronous methods returning plain objects."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable engine-level utility for generating usage and audit reports that can be consumed by CLI commands, service layers, or interactive tools without coupling to specific entry points.",
+      "recentChangeIntent": "Align with ArchSpine v1.0.0 architectural governance: this engine fulfills the reporting requirement while maintaining separation from CLI concerns."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "runUsageReport",
+        "description": "Opens the project manifest, retrieves total usage, usage summary, and active violations, then formats and prints the report via the provided RuntimeIO. Intended to be called by CLI or service orchestration code."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Engine module that generates and outputs a usage and audit report for an ArchSpine project by querying the manifest for token usage, usage summaries, and active violations.",
+        "responsibilities": [
+          "Open the project manifest via `Manifest.open` using the provided root directory.",
+          "Retrieve total token usage (input, output, total) from the manifest.",
+          "Retrieve a usage summary detailing per-sync-mode statistics.",
+          "Retrieve the list of active violations currently recorded in the project.",
+          "Format and output the gathered data into a human-readable report through the provided `RuntimeIO` abstraction."
+        ],
+        "outOfScope": [
+          "Actual token accounting or usage accumulation logic (delegated to manifest repositories).",
+          "Detailed violation data beyond headings (calls `getActiveViolations` but does not format each violation).",
+          "Interactive user input or configuration parsing.",
+          "Direct CLI command registration or argument handling.",
+          "Any persistent state changes or side effects beyond printing."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "runUsageReport",
+        "kind": "function",
+        "signature": "runUsageReport(\n  rootDir: string,\n  runtimeIO: RuntimeIO = defaultRuntimeIO,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "runUsageReport",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/usage.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/engines/usage.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/usage.ts/getTotalUsage#",
+        "targetPath": "src/infra/db/repositories/usage.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/usage.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/usage.ts/getUsageSummary#",
+        "targetPath": "src/infra/db/repositories/usage.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/usage.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/getActiveViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:56:20.966Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 71,
+    "inCycle": true,
+    "cycleId": "src/core → src/types → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

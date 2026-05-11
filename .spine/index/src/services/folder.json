@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/services",
+  "role": "Orchestration services that coordinate the core pipelines (sync, check, fix) and manage runtime lifecycle, configuration, repository artifacts, and output generation for the ArchSpine mirror system.",
+  "responsibility": "Acts as the central orchestration layer, providing service classes and functions to execute scanning, AST extraction, validation, summarization, and fix pipelines with retry logic and session management; handles LLM configuration persistence, repository artifact strategy (init/sync), preflight checks, runtime dependency composition, and view-based output production (Markdown, SVG, JSON).",
+  "children": [
+    {
+      "filePath": "src/services/check-service.ts",
+      "role": "Primary orchestration service for the ArchSpine 'check' pipeline — coordinates scanning, AST extraction, validation, and cleanup tasks in a single workflow. Used by CLI commands and programmatic consumers to run governance checks on a repository.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/fix-service.ts",
+      "role": "Service-layer orchestrator for automated violation remediation via retry-able fix pipelines.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/llm-admin-service.ts",
+      "role": "Orchestration service for persisting and querying LLM configuration settings across global and project scopes, consumed by CLI commands.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/publish-preflight.ts",
+      "role": "Preflight validation module for the ArchSpine publish pipeline, guarding against missing runtime state and misconfiguration before a publish operation can proceed.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/repository-admin-service.ts",
+      "role": "CLI-level orchestration module for applying and verifying the ArchSpine repository artifact strategy (e.g., agent instruction files, gitignore, scripts, rule templates). It coordinates the initial bootstrap and ongoing sync of managed repository files during 'init', 'sync', and 'scan' CLI commands.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/runtime-execution-profile.ts",
+      "role": "Service-level configuration resolver for execution profiles, mapping resolved LLM settings to a structured generation strategy profile.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/runtime-service.ts",
+      "role": "Runtime orchestration service that initializes and composes infrastructure dependencies (Config, LLM client, Secrets, view layer) and provides factory methods to create SyncService, CheckService, and FixService instances. Acts as the central dependency container and lifecycle manager for CLI command execution.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/runtime-service.types.ts",
+      "role": "Draft interface definition serving as a future contract for runtime service capabilities, intended to centralize access to resolved LLM settings, sync, check, and fix services.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/runtime-session.ts",
+      "role": "Runtime session orchestrator that manages lifecycle of a single command execution (sync, check, fix) with resumability, protected-output safety, and error handling.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/sync-service.ts",
+      "role": "Orchestrator service that coordinates the full synchronization pipeline (scan, reconcile, AST extraction, summarization, state commit, post-commit derivation). It is the primary entry point for the sync command and manages runtime sessions, protected output detection, and resume logic.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/task-runtime.ts",
+      "role": "Central factory module that assembles a fully wired task execution context, composing Scanner, Aggregator, ASTExtractor, RuleEngine, OutputManager, ContextEngine, LockManager, Manifest, and RuntimeIO into a single PreparedTaskContext object.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/view",
+      "role": "The view subsystem that produces all output artifacts (Markdown, SVG, JSON) from the internal knowledge graph and index data for the ArchSpine mirror system.",
+      "fileKind": "folder"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:13:26.548Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

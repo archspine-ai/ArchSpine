@@ -1,0 +1,295 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/llm/orchestrator.ts",
+    "contentHash": "7cf11789cc0f4fdaaa6a253e8d86d308e166dbc5ea42de4b48899c999cf79656",
+    "skeletonHash": "b14d768e78390ce5d53a84c6a7d791dbae8f705ee2485048e2cdbbcdf41a7447",
+    "semanticHash": "60356e2fe340f59e4518ffe0e5ca8ad44ddf1bd660b030ce9d7b95ff128d0c45",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/llm"
+  },
+  "semantic": {
+    "role": "LLM orchestration service implementing the LLMClient interface. Coordinates prompt generation, LLM transport calls, and structured response parsing for multiple file kinds (config, document, folder, project, source).",
+    "responsibilities": [
+      "Generate prompts for different file kinds using specialized prompt generators (generateConfigPrompt, generateDocumentPrompt, generateFolderPrompt, generateProjectPrompt, generateSourcePrompt).",
+      "Invoke the LLM transport (LLMTransport) to obtain completions for generated prompts.",
+      "Parse structured responses from LLM output using parseStructuredResponse.",
+      "Manage generation strategies and prompt task modes (GenerationStrategy, PromptTaskMode).",
+      "Implement the LLMClient interface as a stable infra facade for LLM interactions."
+    ],
+    "outOfScope": [
+      "Low-level transport implementation details (handled by LLMTransport).",
+      "Specific prompt content generation logic (delegated to prompt generators).",
+      "LLM provider-specific parsing details (handled by parseStructuredResponse).",
+      "Test-only utilities or internal helper functions."
+    ],
+    "invariants": [
+      "Must fully implement the LLMClient interface including expected methods (e.g., generate).",
+      "Must use LLMTransport for all LLM call execution.",
+      "Must use parseStructuredResponse for parsing structured responses.",
+      "Must delegate prompt generation to the imported prompt generators for the respective file kinds."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized orchestration layer for LLM interactions within the infra layer, abstracting prompt generation and response parsing behind a common interface to decouple callers from transport and parsing details.",
+      "recentChangeIntent": "Initial implementation of LLMOrchestrator class (inferred from commit d63e898)."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "LLMOrchestrator",
+        "description": "Public class implementing LLMClient. Central orchestrator for LLM interactions, coordinating prompt generation, LLM transport calls, and structured response parsing for multiple file kinds. External modules create an instance with an LLMTransport and call its generate() method to obtain LLM responses."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "LLM orchestration service implementing the LLMClient interface. Coordinates prompt generation, LLM transport calls, and structured response parsing for multiple file kinds (config, document, folder, project, source).",
+        "responsibilities": [
+          "Generate prompts for different file kinds using specialized prompt generators (generateConfigPrompt, generateDocumentPrompt, generateFolderPrompt, generateProjectPrompt, generateSourcePrompt).",
+          "Invoke the LLM transport (LLMTransport) to obtain completions for generated prompts.",
+          "Parse structured responses from LLM output using parseStructuredResponse.",
+          "Manage generation strategies and prompt task modes (GenerationStrategy, PromptTaskMode).",
+          "Implement the LLMClient interface as a stable infra facade for LLM interactions."
+        ],
+        "outOfScope": [
+          "Low-level transport implementation details (handled by LLMTransport).",
+          "Specific prompt content generation logic (delegated to prompt generators).",
+          "LLM provider-specific parsing details (handled by parseStructuredResponse).",
+          "Test-only utilities or internal helper functions."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../prompt.js'",
+        "symbols": [
+          "generateConfigPrompt",
+          "generateDocumentPrompt",
+          "generateFolderPrompt",
+          "generateProjectPrompt",
+          "generateSourcePrompt"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./providers/utils.js'",
+        "symbols": [
+          "parseStructuredResponse"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../types/protocol.js'",
+        "symbols": [
+          "FileKind"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "LLMOrchestrator",
+        "kind": "class",
+        "signature": "class LLMOrchestrator"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "LLMOrchestrator",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/llm/orchestrator.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../prompt.js",
+        "relation": "import",
+        "symbols": [
+          "generateConfigPrompt",
+          "generateDocumentPrompt",
+          "generateFolderPrompt",
+          "generateProjectPrompt",
+          "generateSourcePrompt"
+        ]
+      },
+      {
+        "targetPath": "./providers/utils.js",
+        "relation": "import",
+        "symbols": [
+          "parseStructuredResponse"
+        ]
+      },
+      {
+        "targetPath": "./base.js",
+        "relation": "import",
+        "symbols": [
+          "LLMClient",
+          "LLMResponse",
+          "LLMTransport",
+          "PreviousSemanticContext",
+          "UsageInfo"
+        ]
+      },
+      {
+        "targetPath": "../../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "FileKind"
+        ]
+      },
+      {
+        "targetPath": "../prompt-policy.js",
+        "relation": "import",
+        "symbols": [
+          "GenerationStrategy",
+          "PromptTaskMode"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/llm/orchestrator.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/generateDocumentPrompt#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/orchestrator.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/generateDocumentPrompt#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/orchestrator.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/aggregate.ts/generateDocumentPrompt#",
+        "targetPath": "src/infra/prompt/aggregate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/orchestrator.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/generateConfigPrompt#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/orchestrator.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/generateConfigPrompt#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/orchestrator.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/aggregate.ts/generateConfigPrompt#",
+        "targetPath": "src/infra/prompt/aggregate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/orchestrator.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/generateSourcePrompt#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/orchestrator.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/generateSourcePrompt#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/orchestrator.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/source.ts/generateSourcePrompt#",
+        "targetPath": "src/infra/prompt/source.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/orchestrator.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/utils.ts/parseStructuredResponse#",
+        "targetPath": "src/infra/llm/providers/utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/orchestrator.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/generateFolderPrompt#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/orchestrator.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/generateFolderPrompt#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/orchestrator.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/aggregate.ts/generateFolderPrompt#",
+        "targetPath": "src/infra/prompt/aggregate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/orchestrator.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/generateProjectPrompt#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/orchestrator.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/generateProjectPrompt#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/orchestrator.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/aggregate.ts/generateProjectPrompt#",
+        "targetPath": "src/infra/prompt/aggregate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T10:02:41.741Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

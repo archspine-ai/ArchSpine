@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/engines/graph-query.test.ts",
+    "contentHash": "a6d6fd40975867e48799d62375988f81c003fa3fc4fc8104cff3c94a6acb6aaa",
+    "skeletonHash": "f2b6b275a42cbd59ebd97f07ad349c30cac9c57f96d9862ce6c77b23028cc48a",
+    "semanticHash": "86ab86895dc12a535a30cdf4dfd296f062a4dfd38cceba322a07d37559c29558",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/engines"
+  },
+  "semantic": {
+    "role": "Test suite providing unit coverage for graph-query dependency graph traversal and analysis functions.",
+    "responsibilities": [
+      "Verify that upstreamOf returns correct transitive and direct upstream modules from a given module in a fixture graph.",
+      "Verify that downstreamOf returns correct transitive and direct downstream modules.",
+      "Verify that violationEdges enumerates cross-layer dependency violations correctly.",
+      "Verify that changeImpact computes transitive impact boundaries for a changed module.",
+      "Verify that matchSemantic supports fuzzy semantic matching of symbol names."
+    ],
+    "outOfScope": [
+      "Not a production module; not intended for direct consumption by other modules.",
+      "Does not provide reusable abstractions beyond test coverage for graph-query."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts (rule test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide comprehensive unit tests for the graph query engine to ensure correctness of dependency graph operations.",
+      "recentChangeIntent": "No recent change intent extracted; tests are part of ongoing refactoring/maintenance."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Test suite providing unit coverage for graph-query dependency graph traversal and analysis functions.",
+        "responsibilities": [
+          "Verify that upstreamOf returns correct transitive and direct upstream modules from a given module in a fixture graph.",
+          "Verify that downstreamOf returns correct transitive and direct downstream modules.",
+          "Verify that violationEdges enumerates cross-layer dependency violations correctly.",
+          "Verify that changeImpact computes transitive impact boundaries for a changed module.",
+          "Verify that matchSemantic supports fuzzy semantic matching of symbol names."
+        ],
+        "outOfScope": [
+          "Not a production module; not intended for direct consumption by other modules.",
+          "Does not provide reusable abstractions beyond test coverage for graph-query."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/engines/graph-query.js'",
+        "symbols": [
+          "upstreamOf",
+          "downstreamOf",
+          "violationEdges",
+          "changeImpact",
+          "matchSemantic"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/engines/graph-query.js",
+        "relation": "import",
+        "symbols": [
+          "upstreamOf",
+          "downstreamOf",
+          "violationEdges",
+          "changeImpact",
+          "matchSemantic"
+        ]
+      },
+      {
+        "targetPath": "../../../src/engines/dependency-graph.js",
+        "relation": "import-type",
+        "symbols": [
+          "KnowledgeGraph"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/engines/graph-query.test.ts/_file_#",
+        "targetSymbol": "src/engines/graph-query.ts/upstreamOf#",
+        "targetPath": "src/engines/graph-query.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/engines/graph-query.test.ts/_file_#",
+        "targetSymbol": "src/engines/graph-query.ts/downstreamOf#",
+        "targetPath": "src/engines/graph-query.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/engines/graph-query.test.ts/_file_#",
+        "targetSymbol": "src/engines/graph-query.ts/violationEdges#",
+        "targetPath": "src/engines/graph-query.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/engines/graph-query.test.ts/_file_#",
+        "targetSymbol": "src/engines/graph-query.ts/changeImpact#",
+        "targetPath": "src/engines/graph-query.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/engines/graph-query.test.ts/_file_#",
+        "targetSymbol": "src/engines/graph-query.ts/matchSemantic#",
+        "targetPath": "src/engines/graph-query.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:09:26.571Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

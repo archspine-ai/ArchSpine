@@ -1,0 +1,159 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-context/budgets.ts",
+    "contentHash": "26485b659cac695f7ed72f3640bc2c2a6f3dadf5d3f8ceaa231209f1d97f6e02",
+    "skeletonHash": "affea7f0525355e846265d8905e525e62ff3fc45958e77e7da8a37cca7fadfb7",
+    "semanticHash": "54827b9a7fff0188631b67c5729d7744cfa9375df812de90a2c1be387123fecd",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt-context"
+  },
+  "semantic": {
+    "role": "Budget calculator for source prompt artifacts. Selects a budget profile (standard or strict validate) based on the task mode and validation policy, then computes numeric budget limits (e.g., max tokens, lines, sections) from the source content and its structural skeleton.",
+    "responsibilities": [
+      "Compute prompt budget limits (e.g., token count, line count, section caps) for source-level prompts based on the task mode and optional validate policy.",
+      "Select the appropriate budget profile from `PROMPT_BUDGET_PROFILES` or `STRICT_VALIDATE_BUDGET_PROFILES` depending on whether a strict validation mode is active.",
+      "Consume the resolved validation policy from `resolveValidatePolicy` to influence profile selection.",
+      "Provide a single, stable public entry point (`calculateSourcePromptBudgets`) for the rest of the prompt-context subsystem to compute budgets for source artifacts."
+    ],
+    "outOfScope": [],
+    "invariants": [
+      "The public API surface is limited to one exported function: `calculateSourcePromptBudgets`.",
+      "The function must always return a valid `PromptBudgets` object.",
+      "The file must only import from sibling modules within `prompt-context/` (constants and policy) and type-only imports."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Isolate prompt budget computation logic into a dedicated module to allow profile-based clamping and validation-policy-aware budget selection. This keeps the prompt-context domain cohesive and testable.",
+      "recentChangeIntent": "No specific semantic change detected. The module appears stable; recent git history indicates a general release-gate fix that likely touched multiple files without altering this module's contract."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "calculateSourcePromptBudgets",
+        "description": "Computes a `PromptBudgets` object for a given source artifact input by selecting the appropriate budget profile based on the task mode and validation policy, then applying clamping logic to each budget dimension."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Budget calculator for source prompt artifacts. Selects a budget profile (standard or strict validate) based on the task mode and validation policy, then computes numeric budget limits (e.g., max tokens, lines, sections) from the source content and its structural skeleton.",
+        "responsibilities": [
+          "Compute prompt budget limits (e.g., token count, line count, section caps) for source-level prompts based on the task mode and optional validate policy.",
+          "Select the appropriate budget profile from `PROMPT_BUDGET_PROFILES` or `STRICT_VALIDATE_BUDGET_PROFILES` depending on whether a strict validation mode is active.",
+          "Consume the resolved validation policy from `resolveValidatePolicy` to influence profile selection.",
+          "Provide a single, stable public entry point (`calculateSourcePromptBudgets`) for the rest of the prompt-context subsystem to compute budgets for source artifacts."
+        ],
+        "outOfScope": []
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./constants.js'",
+        "symbols": [
+          "PROMPT_BUDGET_PROFILES",
+          "STRICT_VALIDATE_BUDGET_PROFILES"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./policy.js'",
+        "symbols": [
+          "resolveValidatePolicy"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "calculateSourcePromptBudgets",
+        "kind": "function",
+        "signature": "calculateSourcePromptBudgets(input: SourcePromptArtifactsInput)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "calculateSourcePromptBudgets",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/budgets.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./constants.js",
+        "relation": "import",
+        "symbols": [
+          "PROMPT_BUDGET_PROFILES",
+          "STRICT_VALIDATE_BUDGET_PROFILES"
+        ]
+      },
+      {
+        "targetPath": "./policy.js",
+        "relation": "import",
+        "symbols": [
+          "resolveValidatePolicy"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/unit/core/prompt-context-modules.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/prompt-context/budgets.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/policy.ts/resolveValidatePolicy#",
+        "targetPath": "src/infra/prompt-context/policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/budgets.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/resolveValidatePolicy#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt-context/budgets.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-policy.ts/resolveValidatePolicy#",
+        "targetPath": "src/infra/prompt-policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:59:55.685Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

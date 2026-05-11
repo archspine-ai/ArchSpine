@@ -1,0 +1,235 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/repository-artifacts.ts",
+    "contentHash": "0f1eab172d98b68e41a37c900c476026816163fef305093557d323eb05e73aa8",
+    "skeletonHash": "a71115c8dde892ac2cd152814e580449192b4aeec123e0f916a6c2dc28139a8b",
+    "semanticHash": "51dc9a1370fd24f5648c75270c3adc30ac4abd77b047d890822c4876d446619a",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure utility for reading and validating marker-delimited managed blocks in source files and for detecting snapshot output files in the .spine directory. Provides low-level file I/O and git-based file listing capabilities for the writer boundary layer.",
+    "responsibilities": [
+      "Read the content of a managed block (delimited by start/end markers) from a given file path, returning null if the file does not exist.",
+      "Check whether a managed block string (or null) contains all required string entries via an every+includes test.",
+      "List all snapshot output files tracked by git under a root directory using `git ls-files` with pattern matching.",
+      "Check whether the standard snapshot output files (data/ and pages/ subdirectories under .spine) exist on disk."
+    ],
+    "outOfScope": [
+      "Writing or modifying managed blocks or snapshot files.",
+      "Parsing or validating the content of snapshot files.",
+      "Git operations beyond listing tracked files (no commits, diffs, or status checks).",
+      "Any external API calls or network I/O."
+    ],
+    "invariants": [
+      "managedBlockIncludesAll must receive a block string that was previously read by readManagedFileBlock, or null.",
+      "readManagedFileBlock requires that the start and end markers exist exactly once in the file (otherwise returns incorrect slice).",
+      "listTrackedSnapshotFiles and snapshotOutputsPresent assume a valid git repository exists at rootDir.",
+      "All functions are synchronous and can throw on file system or git errors."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide reusable, boundary-safe utilities for the writer subsystem to read managed blocks and check snapshot file presence without exposing internal file manipulation logic.",
+      "recentChangeIntent": "v1.0.0 release; this file establishes the writer boundary infrastructure for governance-driven file management."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ManagedBlockMarkers",
+        "description": "Interface defining start and end marker strings for a managed block. Used to specify boundaries for readManagedFileBlock."
+      },
+      {
+        "symbolName": "readManagedFileBlock",
+        "description": "Reads a file at the given path and extracts the text between the specified start and end markers. Returns null if the file does not exist."
+      },
+      {
+        "symbolName": "managedBlockIncludesAll",
+        "description": "Checks whether a managed block string (or null) contains every entry in the requiredEntries array. Returns false if the block is null."
+      },
+      {
+        "symbolName": "listTrackedSnapshotFiles",
+        "description": "Executes `git ls-files` in the root directory and returns an array of relative paths matching snapshot file patterns (.json, .md, .svg)."
+      },
+      {
+        "symbolName": "snapshotOutputsPresent",
+        "description": "Returns a boolean indicating whether standard snapshot output directories (data and pages) exist under the .spine directory."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure utility for reading and validating marker-delimited managed blocks in source files and for detecting snapshot output files in the .spine directory. Provides low-level file I/O and git-based file listing capabilities for the writer boundary layer.",
+        "responsibilities": [
+          "Read the content of a managed block (delimited by start/end markers) from a given file path, returning null if the file does not exist.",
+          "Check whether a managed block string (or null) contains all required string entries via an every+includes test.",
+          "List all snapshot output files tracked by git under a root directory using `git ls-files` with pattern matching.",
+          "Check whether the standard snapshot output files (data/ and pages/ subdirectories under .spine) exist on disk."
+        ],
+        "outOfScope": [
+          "Writing or modifying managed blocks or snapshot files.",
+          "Parsing or validating the content of snapshot files.",
+          "Git operations beyond listing tracked files (no commits, diffs, or status checks).",
+          "Any external API calls or network I/O."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "readManagedFileBlock",
+        "kind": "function",
+        "signature": "readManagedFileBlock(\n  filePath: string,\n  markers: ManagedBlockMarkers,\n)"
+      },
+      {
+        "name": "managedBlockIncludesAll",
+        "kind": "function",
+        "signature": "managedBlockIncludesAll(block: string | null, requiredEntries: string[])"
+      },
+      {
+        "name": "listTrackedSnapshotFiles",
+        "kind": "function",
+        "signature": "listTrackedSnapshotFiles(rootDir: string)"
+      },
+      {
+        "name": "snapshotOutputsPresent",
+        "kind": "function",
+        "signature": "snapshotOutputsPresent(rootDir: string)"
+      },
+      {
+        "name": "ManagedBlockMarkers",
+        "kind": "interface",
+        "signature": "interface ManagedBlockMarkers"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "readManagedFileBlock",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/repository-artifacts.ts#"
+      },
+      {
+        "name": "managedBlockIncludesAll",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/repository-artifacts.ts#"
+      },
+      {
+        "name": "listTrackedSnapshotFiles",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/repository-artifacts.ts#"
+      },
+      {
+        "name": "snapshotOutputsPresent",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/repository-artifacts.ts#"
+      },
+      {
+        "name": "ManagedBlockMarkers",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/repository-artifacts.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 5,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execFileSync"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "existsSync",
+          "readFileSync"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "join"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/repository-admin-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:01:54.952Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

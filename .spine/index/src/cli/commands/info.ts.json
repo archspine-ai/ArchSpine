@@ -1,0 +1,211 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/info.ts",
+    "contentHash": "a7126fb2958c2bb32619f9d6edb78cede65c11d61ae825dad8537437ca2192db",
+    "skeletonHash": "a95293ed9d06f93c3c380aaf0ac827fe7d241dc284b652c5a3452fb6aec26202",
+    "semanticHash": "87ba427284fc21bafa9ffc7894e79235c9fa0d7a056354aecb22b02abe743fef",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command adapter for the `info` subcommand, orchestrating sync status display and optional detailed reports by delegating to engine and service modules.",
+    "responsibilities": [
+      "Execute the `info` CLI command by parsing arguments and delegating to `runInfoReport` or `runUsageReport` based on flags.",
+      "Retrieve and display project sync status from the runtime service (`runtimeService.getSyncStatusService().status`).",
+      "Translate errors into user-facing messages using `toArchSpineError` from the core error system.",
+      "Pass `defaultRuntimeIO` as the I/O abstraction to engine functions for consistent output."
+    ],
+    "outOfScope": [
+      "Persistent state or database interactions.",
+      "Direct AST extraction, scanning, or file system traversal.",
+      "Pipeline orchestration beyond calling predefined engine functions.",
+      "LLM provider selection or credential management."
+    ],
+    "invariants": [
+      "Must remain a thin adapter: it must not absorb logic that belongs in services, core, engines, or infra (enforced by rule `cli-entrypoint-separation`).",
+      "All I/O flows through `defaultRuntimeIO` to enable testability.",
+      "Command behavior must be solely determined by CLI arguments and the delegated modules; no hidden side effects."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain a clear separation where CLI modules act as entrypoint adapters, delegating all domain and infrastructure logic to layers below.",
+      "recentChangeIntent": "Refactored to remove legacy CLI aliases and improve command structure, with related documentation and schema updates."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ExecuteInfoCommandOptions",
+        "description": "Configuration interface for the info command execution, containing CLI arguments, root directory, and an optional RuntimeService instance."
+      },
+      {
+        "symbolName": "executeInfoCommand",
+        "description": "Asynchronously executes the info command: displays sync status and, based on CLI flags, runs the detailed information report or usage report by delegating to engine modules."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command adapter for the `info` subcommand, orchestrating sync status display and optional detailed reports by delegating to engine and service modules.",
+        "responsibilities": [
+          "Execute the `info` CLI command by parsing arguments and delegating to `runInfoReport` or `runUsageReport` based on flags.",
+          "Retrieve and display project sync status from the runtime service (`runtimeService.getSyncStatusService().status`).",
+          "Translate errors into user-facing messages using `toArchSpineError` from the core error system.",
+          "Pass `defaultRuntimeIO` as the I/O abstraction to engine functions for consistent output."
+        ],
+        "outOfScope": [
+          "Persistent state or database interactions.",
+          "Direct AST extraction, scanning, or file system traversal.",
+          "Pipeline orchestration beyond calling predefined engine functions.",
+          "LLM provider selection or credential management."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../core/errors.js'",
+        "symbols": [
+          "ErrorCodes",
+          "toArchSpineError"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../engines/info.js'",
+        "symbols": [
+          "runInfoReport"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../engines/usage.js'",
+        "symbols": [
+          "runUsageReport"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeInfoCommand",
+        "kind": "function",
+        "signature": "executeInfoCommand({\n  args,\n  rootDir,\n  runtimeService,\n}: ExecuteInfoCommandOptions)"
+      },
+      {
+        "name": "ExecuteInfoCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteInfoCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeInfoCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/info.ts#"
+      },
+      {
+        "name": "ExecuteInfoCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/info.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../core/errors.ts",
+        "relation": "import",
+        "symbols": [
+          "ErrorCodes",
+          "toArchSpineError"
+        ]
+      },
+      {
+        "targetPath": "../../engines/info.ts",
+        "relation": "import",
+        "symbols": [
+          "runInfoReport"
+        ]
+      },
+      {
+        "targetPath": "../../engines/usage.ts",
+        "relation": "import",
+        "symbols": [
+          "runUsageReport"
+        ]
+      },
+      {
+        "targetPath": "../../infra/runtime-io.ts",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "../../services/runtime-service.ts",
+        "relation": "import-type",
+        "symbols": [
+          "RuntimeService"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/info.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/toArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/info.ts/_file_#",
+        "targetSymbol": "src/engines/usage.ts/runUsageReport#",
+        "targetPath": "src/engines/usage.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/info.ts/_file_#",
+        "targetSymbol": "src/engines/info.ts/runInfoReport#",
+        "targetPath": "src/engines/info.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:53:42.821Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 53,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

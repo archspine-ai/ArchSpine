@@ -1,0 +1,185 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/utils/banner.ts",
+    "contentHash": "c1684d50b413689028c9b14b5c9480fb16a9f5f59e8e355cc414f18c4ad3ce6b",
+    "skeletonHash": "94f3e534433c407fea40f714b1abd7a2db14f4c4265dd4bde583227539e1121b",
+    "semanticHash": "e3d448c390599c7564ab02ea600fa3a1339a78ea9de290e82d2583068697cf4d",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/utils"
+  },
+  "semantic": {
+    "role": "CLI presentation module that renders colored ASCII art banners for the ArchSpine command-line interface.",
+    "responsibilities": [
+      "Reads the package version from package.json and caches it for reuse.",
+      "Renders a large, colorized ASCII art banner with version information during full startup of the CLI.",
+      "Renders a compact one-line banner for quick or sub-command invocations."
+    ],
+    "outOfScope": [
+      "Business logic or core pipeline operations.",
+      "Configuration or state management.",
+      "User I/O beyond console output."
+    ],
+    "invariants": [
+      "Brand colors are hardcoded as hex #ec9877 (orange) and #ebefbb (cream).",
+      "Version is read once from disk and cached indefinitely.",
+      "Banners are printed synchronously via console.log."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a lightweight, visually consistent branding layer for all CLI interactions.",
+      "recentChangeIntent": "Initial implementation of full and mini banner rendering as part of ArchSpine v1.0.0 launch."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "printFullBanner",
+        "description": "Prints a large ASCII art banner with the ArchSpine logo and version. Called once at the start of interactive or verbose CLI sessions."
+      },
+      {
+        "symbolName": "printMiniBanner",
+        "description": "Prints a compact one-line colored banner showing 'ArchSpine' in brand colors. Used for quick command invocations where a full banner is excessive."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI presentation module that renders colored ASCII art banners for the ArchSpine command-line interface.",
+        "responsibilities": [
+          "Reads the package version from package.json and caches it for reuse.",
+          "Renders a large, colorized ASCII art banner with version information during full startup of the CLI.",
+          "Renders a compact one-line banner for quick or sub-command invocations."
+        ],
+        "outOfScope": [
+          "Business logic or core pipeline operations.",
+          "Configuration or state management.",
+          "User I/O beyond console output."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'chalk'",
+        "symbols": [
+          "chalk"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "printFullBanner",
+        "kind": "function",
+        "signature": "printFullBanner()"
+      },
+      {
+        "name": "printMiniBanner",
+        "kind": "function",
+        "signature": "printMiniBanner()"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "printFullBanner",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/banner.ts#"
+      },
+      {
+        "name": "printMiniBanner",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/banner.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "chalk",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:05:38.214Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 82,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

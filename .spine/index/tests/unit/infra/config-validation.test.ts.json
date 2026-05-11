@@ -1,0 +1,239 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/infra/config-validation.test.ts",
+    "contentHash": "29a204ffbd705c197b33759900694970765f190c2260a503776551ea932cb4bf",
+    "skeletonHash": "93105931e39f3d6a92696c0d2560983ed2d5a46b2958737aa6e5e9ea85a8829b",
+    "semanticHash": "4020a13cb6df89c3d86994e1b06c30caa680f340a6cc686bed2a99c9e45811fb",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/infra"
+  },
+  "semantic": {
+    "role": "Unit test suite for the configuration validation module of ArchSpine.",
+    "responsibilities": [
+      "Verify that Config objects are constructed correctly from valid .spine/config.json files.",
+      "Validate that resolveSpineConfig handles schema version mismatches and other config errors.",
+      "Ensure appropriate warnings are emitted for missing or invalid configuration fields.",
+      "Test edge cases such as missing directories, invalid JSON, or out-of-range schema versions."
+    ],
+    "outOfScope": [
+      "Production code deployment or runtime behavior.",
+      "Integration or end-to-end testing of the full CLI pipeline.",
+      "Performance or security testing."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain a comprehensive unit test suite covering config validation logic to ensure configuration reliability across releases.",
+      "recentChangeIntent": "Align test file with broader release gate fixes and accumulated source changes."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Unit test suite for the configuration validation module of ArchSpine.",
+        "responsibilities": [
+          "Verify that Config objects are constructed correctly from valid .spine/config.json files.",
+          "Validate that resolveSpineConfig handles schema version mismatches and other config errors.",
+          "Ensure appropriate warnings are emitted for missing or invalid configuration fields.",
+          "Test edge cases such as missing directories, invalid JSON, or out-of-range schema versions."
+        ],
+        "outOfScope": [
+          "Production code deployment or runtime behavior.",
+          "Integration or end-to-end testing of the full CLI pipeline.",
+          "Performance or security testing."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/core/config-schema.js'",
+        "symbols": [
+          "resolveSpineConfig"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_CONFIG_SCHEMA_VERSION"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../../../src/core/config-schema.js",
+        "relation": "import",
+        "symbols": [
+          "resolveSpineConfig"
+        ]
+      },
+      {
+        "targetPath": "../../../src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_CONFIG_SCHEMA_VERSION"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/infra/config-validation.test.ts/_file_#",
+        "targetSymbol": "src/core/config-schema.ts/resolveSpineConfig#",
+        "targetPath": "src/core/config-schema.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/config-validation.test.ts/_file_#",
+        "targetSymbol": "src/infra/config-validation.ts/resolveSpineConfig#",
+        "targetPath": "src/infra/config-validation.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/config-validation.test.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/config-validation.test.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:09:26.664Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

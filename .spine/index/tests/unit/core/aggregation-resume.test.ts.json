@@ -1,0 +1,232 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/core/aggregation-resume.test.ts",
+    "contentHash": "7b5a636e56043e9b102ee8837cdb160b3e13f1e7d665770c8c102677e95a5948",
+    "skeletonHash": "ce39d7bc7fa347343683c699e11b81dec4af5c7477b26cc6b3f46a202baf8aa5",
+    "semanticHash": "914eb3d8f63cffffd25c7190fdd5b96ad3181119a51aa57aea5d8657c269f804",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/core"
+  },
+  "semantic": {
+    "role": "Unit test suite for the aggregation resume functionality of the Aggregator engine and AggregationTask lifecycle.",
+    "responsibilities": [
+      "Verifies that the Aggregator correctly identifies directories that need full aggregation versus resume from checkpoint.",
+      "Ensures that aggregation state (via createTaskTelemetryState) integrates properly with the pause/resume cycle.",
+      "Tests temporary file system scaffolding used during aggregation operations."
+    ],
+    "outOfScope": [
+      "Production API surface; this file is exclusively a test suite and does not export any symbols.",
+      "Integration with real LLM providers or complex multi-step pipelines covered by other test suites."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts (rule test-file-suffix). The file ends with .test.ts, thus compliant."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain and validate the aggregation resume contract—ensuring that partial aggregations can be paused and resumed without data loss or recomputation.",
+      "recentChangeIntent": "Applied release gate fixes and synchronized accumulated source changes; may include adjustments to test scaffolding or assertions for resume behavior."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Unit test suite for the aggregation resume functionality of the Aggregator engine and AggregationTask lifecycle.",
+        "responsibilities": [
+          "Verifies that the Aggregator correctly identifies directories that need full aggregation versus resume from checkpoint.",
+          "Ensures that aggregation state (via createTaskTelemetryState) integrates properly with the pause/resume cycle.",
+          "Tests temporary file system scaffolding used during aggregation operations."
+        ],
+        "outOfScope": [
+          "Production API surface; this file is exclusively a test suite and does not export any symbols.",
+          "Integration with real LLM providers or complex multi-step pipelines covered by other test suites."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/engines/aggregator.js'",
+        "symbols": [
+          "Aggregator"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/tasks/aggregate.js'",
+        "symbols": [
+          "AggregationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/core/task-state.js'",
+        "symbols": [
+          "createTaskTelemetryState"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "../../../src/engines/aggregator.js",
+        "relation": "import",
+        "symbols": [
+          "Aggregator"
+        ]
+      },
+      {
+        "targetPath": "../../../src/tasks/aggregate.js",
+        "relation": "import",
+        "symbols": [
+          "AggregationTask"
+        ]
+      },
+      {
+        "targetPath": "../../../src/core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "createTaskTelemetryState"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/core/aggregation-resume.test.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/createTaskTelemetryState#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/aggregation-resume.test.ts/_file_#",
+        "targetSymbol": "src/engines/aggregator.ts/Aggregator#",
+        "targetPath": "src/engines/aggregator.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/aggregation-resume.test.ts/_file_#",
+        "targetSymbol": "src/tasks/aggregate.ts/AggregationTask#",
+        "targetPath": "src/tasks/aggregate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:08:31.785Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

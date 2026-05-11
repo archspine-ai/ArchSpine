@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/types/protocol/index.ts",
+    "contentHash": "2de5bef2f2ba093f29891a7cfe68d5fd9f541340bcc155a8f75154c38f8e6e6a",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "2eda0a7d143f3786e3ee26e58e317a099636caa2a78594ac942ff4fa8f22903b",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/types/protocol"
+  },
+  "semantic": {
+    "role": "Protocol type barrel file aggregating all shared type definitions for the ArchSpine governance layer.",
+    "responsibilities": [
+      "Acts as the single import entry point for all protocol-level types (config, documents, languages, manifest, rules, versions).",
+      "Encapsulates the internal module structure of the protocol types directory, providing a stable public API surface.",
+      "Preserves compatibility by re-exporting individual modules without adding or modifying symbols."
+    ],
+    "outOfScope": [
+      "Business logic or data manipulation — this module contains only re-exports.",
+      "Implementation of types — all type definitions reside in the re-exported submodules.",
+      "Runtime behavior — this module is purely declarative with no executable code."
+    ],
+    "invariants": [
+      "All exports from the re-exported submodules are part of this module's contract; any change in those submodules changes the public surface.",
+      "This module must not define new types or functions locally; it must remain a pure barrel file.",
+      "Interface names in the re-exported modules must conform to the 'I' prefix rule (enforced by rule interface-prefix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Centralize protocol type definitions into a single barrel export to simplify imports across the codebase and establish a clear public API boundary for the protocol layer.",
+      "recentChangeIntent": "No changes detected in this file from the git log; the file structure aligns with the v1.0.0 intent to provide a stable protocol abstraction."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "config (re-export)",
+        "description": "Re-exports all symbols from './config.js', providing configuration-related type definitions (e.g., project config schema, environment settings)."
+      },
+      {
+        "symbolName": "index-documents (re-export)",
+        "description": "Re-exports all symbols from './index-documents.js', providing type definitions for indexed document structures used in search and retrieval."
+      },
+      {
+        "symbolName": "languages (re-export)",
+        "description": "Re-exports all symbols from './languages.js', providing type definitions for supported programming languages and language detection."
+      },
+      {
+        "symbolName": "manifest (re-export)",
+        "description": "Re-exports all symbols from './manifest.js', providing type definitions for the ArchSpine manifest format."
+      },
+      {
+        "symbolName": "rules (re-export)",
+        "description": "Re-exports all symbols from './rules.js', providing type definitions for architectural rules and rule enforcement."
+      },
+      {
+        "symbolName": "versions (re-export)",
+        "description": "Re-exports all symbols from './versions.js', providing type definitions for protocol versioning and compatibility."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Protocol type barrel file aggregating all shared type definitions for the ArchSpine governance layer.",
+        "responsibilities": [
+          "Acts as the single import entry point for all protocol-level types (config, documents, languages, manifest, rules, versions).",
+          "Encapsulates the internal module structure of the protocol types directory, providing a stable public API surface.",
+          "Preserves compatibility by re-exporting individual modules without adding or modifying symbols."
+        ],
+        "outOfScope": [
+          "Business logic or data manipulation — this module contains only re-exports.",
+          "Implementation of types — all type definitions reside in the re-exported submodules.",
+          "Runtime behavior — this module is purely declarative with no executable code."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/types/protocol/config.js",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "src/types/protocol/index-documents.js",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "src/types/protocol/languages.js",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "src/types/protocol/manifest.js",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "src/types/protocol/rules.js",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "src/types/protocol/versions.js",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:05:14.047Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 9,
+    "isHub": true,
+    "hubPercentile": 100,
+    "inCycle": true,
+    "cycleId": "src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

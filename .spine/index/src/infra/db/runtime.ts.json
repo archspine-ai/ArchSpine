@@ -1,0 +1,232 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db/runtime.ts",
+    "contentHash": "cec0fde844e636c8282f95877d1d52fd1d9042b209031657bacd3b0c3b845b23",
+    "skeletonHash": "90b138f1042993dc4e2bc2ee69c350fba7bb365fb8774dd800ec5ef8daec037f",
+    "semanticHash": "8bf43a37a3895b732cc400f739f08330e5e01082ff7b1606633070b275724aad",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/db"
+  },
+  "semantic": {
+    "role": "Infrastructure module providing a managed SQLite runtime database for the ArchSpine system. Handles database file creation, WAL recovery, and provides a simple open/readonly interface.",
+    "responsibilities": [
+      "Open and initialize a runtime SQLite database using better-sqlite3.",
+      "Ensure the database directory exists by creating it if necessary.",
+      "Perform WAL recovery via recoverStaleWal before opening to prevent corruption.",
+      "Map database errors via mapRuntimeDbError for consistent error handling.",
+      "Support optional readonly mode via the opts parameter."
+    ],
+    "outOfScope": [
+      "Schema definition or migration management.",
+      "Query building or execution logic.",
+      "Connection pooling or transaction lifecycle management."
+    ],
+    "invariants": [
+      "All runtime database access must go through the openRuntimeDatabase function and RuntimeDatabase interface.",
+      "No caller should directly instantiate better-sqlite3 or reach into internal modules like ./wal-recovery.js when a stable facade exists.",
+      "The database directory must be writable unless readonly mode is enabled."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish a stable, managed runtime database layer that abstracts SQLite initialization, WAL recovery, and error mapping, serving as the single entrance point for runtime persistence.",
+      "recentChangeIntent": "Part of the v1.0.0 release that introduces architectural governance and a semantic layer for the AI era; this module provides the foundational database access for runtime state."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "RuntimeDatabase",
+        "description": "Interface representing an opened runtime database. Contains the underlying better-sqlite3 Database instance and the file path of the database."
+      },
+      {
+        "symbolName": "openRuntimeDatabase",
+        "description": "Opens a runtime SQLite database at a path within rootDir. Creates the directory if needed, performs WAL recovery, and returns a RuntimeDatabase instance. Supports a readonly option."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure module providing a managed SQLite runtime database for the ArchSpine system. Handles database file creation, WAL recovery, and provides a simple open/readonly interface.",
+        "responsibilities": [
+          "Open and initialize a runtime SQLite database using better-sqlite3.",
+          "Ensure the database directory exists by creating it if necessary.",
+          "Perform WAL recovery via recoverStaleWal before opening to prevent corruption.",
+          "Map database errors via mapRuntimeDbError for consistent error handling.",
+          "Support optional readonly mode via the opts parameter."
+        ],
+        "outOfScope": [
+          "Schema definition or migration management.",
+          "Query building or execution logic.",
+          "Connection pooling or transaction lifecycle management."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./errors.js'",
+        "symbols": [
+          "mapRuntimeDbError"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./wal-recovery.js'",
+        "symbols": [
+          "recoverStaleWal"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'better-sqlite3'",
+        "symbols": [
+          "Database"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "openRuntimeDatabase",
+        "kind": "function",
+        "signature": "openRuntimeDatabase(\n  rootDir: string,\n  opts?: { readonly?: boolean },\n)"
+      },
+      {
+        "name": "RuntimeDatabase",
+        "kind": "interface",
+        "signature": "interface RuntimeDatabase"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "openRuntimeDatabase",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/runtime.ts#"
+      },
+      {
+        "name": "RuntimeDatabase",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/db/runtime.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/db/errors.ts",
+        "relation": "import",
+        "symbols": [
+          "mapRuntimeDbError"
+        ]
+      },
+      {
+        "targetPath": "src/infra/db/wal-recovery.ts",
+        "relation": "import",
+        "symbols": [
+          "recoverStaleWal"
+        ]
+      },
+      {
+        "targetPath": "better-sqlite3",
+        "relation": "import",
+        "symbols": [
+          "Database"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "existsSync",
+          "mkdirSync"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "join"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/db/runtime.ts/_file_#",
+        "targetSymbol": "src/infra/db/wal-recovery.ts/recoverStaleWal#",
+        "targetPath": "src/infra/db/wal-recovery.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db/runtime.ts/_file_#",
+        "targetSymbol": "src/infra/db/errors.ts/mapRuntimeDbError#",
+        "targetPath": "src/infra/db/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db/runtime.ts/_file_#",
+        "targetSymbol": "examples/demo-project/src/infra/database.ts/Database#",
+        "targetPath": "examples/demo-project/src/infra/database.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:58:14.135Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

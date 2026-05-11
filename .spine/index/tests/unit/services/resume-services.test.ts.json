@@ -1,0 +1,164 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/services/resume-services.test.ts",
+    "contentHash": "e6cfe7c10dc56cfb18cb27206422b5846121c2a19c5b6684273fd4cbed1a7b32",
+    "skeletonHash": "a28f4b0832f77d925687e0a12a95e0cba832e430fa7f597cb1d8ea618887af91",
+    "semanticHash": "f56d1a9b77281a8cf955993e02e24a68c171e40825b4bb20c7b2ae41482f7ae6",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/services"
+  },
+  "semantic": {
+    "role": "Unit test suite for the resume-aware services module, verifying that interrupted sync campaigns are re-fed into scan and forced-sync paths, and that the sync pipeline correctly orchestrates scanner, aggregator, and state persistence.",
+    "responsibilities": [
+      "Validates that interrupted sync candidates are correctly channeled into the scan and forced-sync paths on resume.",
+      "Ensures the sync pipeline passes through the scanner and aggregator in the correct order.",
+      "Verifies that sync results are persisted via manifest save and usage recording."
+    ],
+    "outOfScope": [
+      "Actual implementation of SyncService, CheckService, or scanner logic.",
+      "Production behavior not exercised by these test cases.",
+      "Integration with real file systems or external services.",
+      "Performance or security testing."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts (rule 'test-file-suffix').",
+      "All mock setup and teardown must occur within beforeEach.",
+      "Test isolation must be maintained via vi.resetModules and vi.restoreAllMocks."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "This file forms part of the test suite that validates the resume behaviour of the sync pipeline, ensuring fault tolerance and data consistency after interruptions.",
+      "recentChangeIntent": "No recent change intent inferred from available git metadata or code – the single-line commit message 'e9cba38 2' lacks semantic detail."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Unit test suite for the resume-aware services module, verifying that interrupted sync campaigns are re-fed into scan and forced-sync paths, and that the sync pipeline correctly orchestrates scanner, aggregator, and state persistence.",
+        "responsibilities": [
+          "Validates that interrupted sync candidates are correctly channeled into the scan and forced-sync paths on resume.",
+          "Ensures the sync pipeline passes through the scanner and aggregator in the correct order.",
+          "Verifies that sync results are persisted via manifest save and usage recording."
+        ],
+        "outOfScope": [
+          "Actual implementation of SyncService, CheckService, or scanner logic.",
+          "Production behavior not exercised by these test cases.",
+          "Integration with real file systems or external services.",
+          "Performance or security testing."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/core/task-state.js'",
+        "symbols": [
+          "createTaskTelemetryState"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "createTaskTelemetryState"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/services/resume-services.test.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/createTaskTelemetryState#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/services/resume-services.test.ts/_file_#",
+        "targetSymbol": "src/services/sync-service.ts/SyncService#",
+        "targetPath": "src/services/sync-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/services/resume-services.test.ts/_file_#",
+        "targetSymbol": "src/engines/check.ts/CheckService#",
+        "targetPath": "src/engines/check.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/services/resume-services.test.ts/_file_#",
+        "targetSymbol": "src/services/check-service.ts/CheckService#",
+        "targetPath": "src/services/check-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/services/resume-services.test.ts/_file_#",
+        "targetSymbol": "src/engines/fix.ts/FixService#",
+        "targetPath": "src/engines/fix.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/services/resume-services.test.ts/_file_#",
+        "targetSymbol": "src/services/fix-service.ts/FixService#",
+        "targetPath": "src/services/fix-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/services/resume-services.test.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/resetTaskState#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:10:47.355Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

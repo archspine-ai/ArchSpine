@@ -1,0 +1,189 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/infra/repo-strategy.test.ts",
+    "contentHash": "d5be14b216713f6d7e535eeb266caeb011a6551f947301f5cbd58f1403d516fb",
+    "skeletonHash": "2ff45e15c409015d990f0d1bf186f4fe74d6b2ba80a0c755bc6d161d6acb4964",
+    "semanticHash": "b38bea9b42931f2de4e091190c8e42823b51ad0b1bd3907a5fb2db69ce6d038c",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/infra"
+  },
+  "semantic": {
+    "role": "Test suite for the repository strategy drift detection logic in src/cli/repo/strategy.ts.",
+    "responsibilities": [
+      "Verify that runRepoCheck correctly detects drift in .gitignore and .spineignore patterns.",
+      "Verify that runRepoCheck initializes a new repository with proper ArchSpine-managed gitignore markers.",
+      "Verify that runRepoCheck respects the artifact strategy parameter when writing ignore files."
+    ],
+    "outOfScope": [
+      "This file does not contain any production code.",
+      "It is not part of the runtime or CLI service layer.",
+      "It does not define configuration interfaces, CLI commands, HTTP handlers, or MCP tools."
+    ],
+    "invariants": [
+      "The file name ends with .test.ts to satisfy the test-file-suffix rule.",
+      "All test files in the project must follow the same naming convention."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide automated verification of the repository strategy module's drift detection and initialization behavior.",
+      "recentChangeIntent": "No recent change intent available from git history."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Test suite for the repository strategy drift detection logic in src/cli/repo/strategy.ts.",
+        "responsibilities": [
+          "Verify that runRepoCheck correctly detects drift in .gitignore and .spineignore patterns.",
+          "Verify that runRepoCheck initializes a new repository with proper ArchSpine-managed gitignore markers.",
+          "Verify that runRepoCheck respects the artifact strategy parameter when writing ignore files."
+        ],
+        "outOfScope": [
+          "This file does not contain any production code.",
+          "It is not part of the runtime or CLI service layer.",
+          "It does not define configuration interfaces, CLI commands, HTTP handlers, or MCP tools."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/cli/repo/strategy.js'",
+        "symbols": [
+          "runRepoCheck"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/config.ts",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "src/cli/repo/strategy.ts",
+        "relation": "import",
+        "symbols": [
+          "runRepoCheck"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/infra/repo-strategy.test.ts/_file_#",
+        "targetSymbol": "src/cli/repo/strategy.ts/runRepoCheck#",
+        "targetPath": "src/cli/repo/strategy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/repo-strategy.test.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/repo-strategy.test.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:10:18.701Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

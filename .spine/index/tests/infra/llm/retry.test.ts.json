@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/infra/llm/retry.test.ts",
+    "contentHash": "1a2a52856c835b1cfc53d95da9a71b4574d543090d7997957ad25dd0ef7e8392",
+    "skeletonHash": "56dc774021a488a0aeec7bc3965d0fb9c2696de2fd13bbb2e5c290957f067926",
+    "semanticHash": "1cea6cc86246bb733bdd9e1212d8578fe8acde51ca5ef697ceb92b5f202f15b0",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/infra/llm"
+  },
+  "semantic": {
+    "role": "Unit test suite for the LLM retry logic module.",
+    "responsibilities": [
+      "Validates that `isRetryableError` correctly identifies socket hang-up, ECONNRESET, terminated, and HTTP 429 errors as retryable.",
+      "Validates that `isRetryableError` treats non-retryable errors (e.g., 400 Bad Request) as non-retryable."
+    ],
+    "outOfScope": [
+      "Does not define or modify production retry logic.",
+      "Does not implement retry mechanisms; only tests the existing implementation."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts (rule test-file-suffix enforced).",
+      "Tests must remain consistent with the contract of `isRetryableError` and `withRetry` from the production module."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide comprehensive test coverage for the LLM retry utility, ensuring correct classification of retryable vs. non-retryable errors.",
+      "recentChangeIntent": "Established test coverage for retry logic during the ArchSpine v1.0.0 release (Architectural Governance & Semantic Layer for the AI Era)."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Unit test suite for the LLM retry logic module.",
+        "responsibilities": [
+          "Validates that `isRetryableError` correctly identifies socket hang-up, ECONNRESET, terminated, and HTTP 429 errors as retryable.",
+          "Validates that `isRetryableError` treats non-retryable errors (e.g., 400 Bad Request) as non-retryable."
+        ],
+        "outOfScope": [
+          "Does not define or modify production retry logic.",
+          "Does not implement retry mechanisms; only tests the existing implementation."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/llm/retry.js'",
+        "symbols": [
+          "withRetry",
+          "isRetryableError"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/llm/retry.ts",
+        "relation": "import",
+        "symbols": [
+          "withRetry",
+          "isRetryableError"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/infra/llm/retry.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/retry.ts/isRetryableError#",
+        "targetPath": "src/infra/llm/retry.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/infra/llm/retry.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/retry.ts/withRetry#",
+        "targetPath": "src/infra/llm/retry.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:07:00.857Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

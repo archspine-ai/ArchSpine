@@ -1,0 +1,233 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/scanner/scanner.test.ts",
+    "contentHash": "fd0d305de4af34dd0e3e25a1345269c7f03bff691cb99a75e4702339d035b456",
+    "skeletonHash": "50e6395c4b91838b601eccbf91c44eb3e2aec5cfd4113dd524ff151c31068b64",
+    "semanticHash": "3e3108d0e9f3a02d79980ef9037fa0844861996e26d3b43f69622a144a7199d4",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/scanner"
+  },
+  "semantic": {
+    "role": "Vitest test suite for the Scanner engine, validating file discovery and scan policy behavior in an isolated temporary directory.",
+    "responsibilities": [
+      "Sets up a temporary directory with .spine configuration and .gitignore for isolated Scanner testing.",
+      "Verifies that Scanner.getAllFiles correctly enumerates files based on the scan policy.",
+      "Ensures mock configurations are properly passed to the Scanner and affect its behavior.",
+      "Cleans up temporary directories and restores mocked functions after each test."
+    ],
+    "outOfScope": [
+      "Production code execution or deployment.",
+      "Network, external API, or LLM interactions.",
+      "End-to-end CLI pipeline tests beyond Scanner module boundaries."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts (rule test-file-suffix).",
+      "All mocks must be restored (vi.restoreAllMocks) in afterEach to prevent test pollution."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain a focused, isolated test harness for the Scanner engine to verify file discovery against scan policies without side effects.",
+      "recentChangeIntent": "Updated test suite for the Scanner engine (commit e9cba38): likely adjustments to matchers, directory setup, or mock expectations to align with recent Scanner refactoring."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite for the Scanner engine, validating file discovery and scan policy behavior in an isolated temporary directory.",
+        "responsibilities": [
+          "Sets up a temporary directory with .spine configuration and .gitignore for isolated Scanner testing.",
+          "Verifies that Scanner.getAllFiles correctly enumerates files based on the scan policy.",
+          "Ensures mock configurations are properly passed to the Scanner and affect its behavior.",
+          "Cleans up temporary directories and restores mocked functions after each test."
+        ],
+        "outOfScope": [
+          "Production code execution or deployment.",
+          "Network, external API, or LLM interactions.",
+          "End-to-end CLI pipeline tests beyond Scanner module boundaries."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "beforeEach",
+          "afterEach",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/engines/scanner.js'",
+        "symbols": [
+          "Scanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/engines/scanner.js",
+        "relation": "import",
+        "symbols": [
+          "Scanner"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "beforeEach",
+          "afterEach",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execSync"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/scanner/scanner.test.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/scanner/scanner.test.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/scanner/scanner.test.ts/_file_#",
+        "targetSymbol": "src/engines/scanner.ts/Scanner#",
+        "targetPath": "src/engines/scanner.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:10:52.425Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

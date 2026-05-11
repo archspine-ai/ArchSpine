@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "CLAUDE.md",
+    "contentHash": "46139b13cd8392b3f78e10ae3474755586e89cf0cad11e34ca8fbfcf9f95e190",
+    "semanticHash": "386a6da5483fe4e61b421193437f9581e72ceaedc96b86065274d9d812f70b24",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": ""
+  },
+  "semantic": {
+    "role": "Guidance document for AI coding assistants to interact with the ArchSpine repository",
+    "responsibilities": [
+      "Project overview and governance model (.spine control plane, MCP tools)",
+      "Commands for build, test, lint, documentation, validation",
+      "Architecture — 6-layer dependency model with strict upward-import prohibition",
+      "Key subsystem descriptions: MCP Server, Dependency Graph, Pipeline, Scanner, LLM Abstraction",
+      "TypeScript and documentation conventions",
+      "Testing setup and MCP server usage for development",
+      "Architecture rules and maintenance boundaries"
+    ],
+    "outOfScope": [
+      "Detailed API specifications or protocol documentation",
+      "Human-oriented design rationale or planning notes",
+      "User-facing feature descriptions beyond AI agent interaction"
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This document provides a concise yet comprehensive instruction set for AI coding assistants (specifically Claude Code) to correctly interact with, build, test, and extend the ArchSpine codebase. It ensures the AI agent follows the project's architectural governance, conventions, and tools in a deterministic and non-destructive way.",
+        "context_and_audience": "The intended audience is AI coding assistants (Claude Code) that need to understand the repository's structural intent, layered architecture, and available MCP tools. Secondary audience includes human developers who wish to see what the AI agent knows. The document is written as a machine-readable but human-friendly reference to align AI actions with project rules.",
+        "key_takeaways": [
+          "ArchSpine creates a .spine/ control plane that indexes repository semantics for AI agents via 21 MCP tools.",
+          "A strict 6-layer architecture is enforced by `.spine/rules/layered-architecture.yml`; imports must only go downward.",
+          "All development interactions with the repository should go through the MCP server (`node dist/cli/index.js mcp start`) rather than running CLI commands directly.",
+          "TypeScript strict mode, ES modules with explicit `.js` extensions, kebab-case file naming, and no `console.log` (use infra/runtime-io logging).",
+          "Documentation must maintain English/Chinese mirrors; MCP server is the primary interface for AI agents."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:40:07.049Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 24,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

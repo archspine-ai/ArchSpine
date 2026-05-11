@@ -1,0 +1,320 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/mcp/server.ts",
+    "contentHash": "df35d8d3a742e0a425c6563d42182c4d006df2498649b9051fb566225581171c",
+    "skeletonHash": "f371f27c4a03dc9cba53c5fbf56d417134be1370b316910b3161e06bdb6b8c26",
+    "semanticHash": "a3ea0b0013feb566a8b843ebb34ddd3c87e36c5a9d8049cdab3200d9ca6bd192",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/mcp"
+  },
+  "semantic": {
+    "role": "MCP (Model Context Protocol) server bootstrap that initializes the MCP server instance, registers all request handlers for tools, resources, and prompts, and connects to stdio transport. Serves as the primary entry point for external MCP clients (e.g., IDEs, AI agents) to interact with ArchSpine capabilities.",
+    "responsibilities": [
+      "Initialize and configure the MCP server using the SDK Server class with capabilities for resources, tools, and prompts.",
+      "Register request handlers for ListResources, ReadResource, ListTools, CallTool, ListPrompts, and GetPrompt requests.",
+      "Delegate tool execution and resource retrieval to the SpineTools and SpineResources modules respectively.",
+      "Enforce the MCPContextGate authentication/authorization layer for access control.",
+      "Map internal errors to standard MCP error responses using toArchSpineError.",
+      "Connect the server to StdioServerTransport for standard I/O communication.",
+      "Provide error logging and graceful initialization failure handling."
+    ],
+    "outOfScope": [
+      "Implementation of individual tools (handled by SpineTools).",
+      "Implementation of individual resource providers (SpineResources).",
+      "Configuration loading and validation (Config facade).",
+      "Manifest loading and management (Manifest facade).",
+      "Context gate logic details (MCPContextGate)."
+    ],
+    "invariants": [
+      "All request handlers are registered before the server connects to the transport.",
+      "Server lifecycle is fully managed within this class (init -> connect).",
+      "Context gate is consistently applied to tool and resource access."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a standardized MCP interface for ArchSpine, allowing external tools (e.g., IDEs, AI agents) to interact with ArchSpine's capabilities such as scanning, validation, and configuration.",
+      "recentChangeIntent": "Refactored to remove legacy CLI aliases, rebuild docs, fix schema and tests; MCP server remained stable with no semantic changes."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ArchSpineMCPServer",
+        "description": "MCP server class that initializes the Model Context Protocol server, registers handlers for tools, resources, and prompts, and connects via stdio transport. The primary export consumed by the MCP setup entry point."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "MCP (Model Context Protocol) server bootstrap that initializes the MCP server instance, registers all request handlers for tools, resources, and prompts, and connects to stdio transport. Serves as the primary entry point for external MCP clients (e.g., IDEs, AI agents) to interact with ArchSpine capabilities.",
+        "responsibilities": [
+          "Initialize and configure the MCP server using the SDK Server class with capabilities for resources, tools, and prompts.",
+          "Register request handlers for ListResources, ReadResource, ListTools, CallTool, ListPrompts, and GetPrompt requests.",
+          "Delegate tool execution and resource retrieval to the SpineTools and SpineResources modules respectively.",
+          "Enforce the MCPContextGate authentication/authorization layer for access control.",
+          "Map internal errors to standard MCP error responses using toArchSpineError.",
+          "Connect the server to StdioServerTransport for standard I/O communication.",
+          "Provide error logging and graceful initialization failure handling."
+        ],
+        "outOfScope": [
+          "Implementation of individual tools (handled by SpineTools).",
+          "Implementation of individual resource providers (SpineResources).",
+          "Configuration loading and validation (Config facade).",
+          "Manifest loading and management (Manifest facade).",
+          "Context gate logic details (MCPContextGate)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'@modelcontextprotocol/sdk/server/index.js'",
+        "symbols": [
+          "Server"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'@modelcontextprotocol/sdk/server/stdio.js'",
+        "symbols": [
+          "StdioServerTransport"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'@modelcontextprotocol/sdk/types.js'",
+        "symbols": [
+          "CallToolRequestSchema",
+          "GetPromptRequestSchema",
+          "ListPromptsRequestSchema",
+          "ListResourcesRequestSchema",
+          "ListToolsRequestSchema",
+          "ReadResourceRequestSchema"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./resources.js'",
+        "symbols": [
+          "SpineResources"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./tools.js'",
+        "symbols": [
+          "SpineTools"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./context.js'",
+        "symbols": [
+          "MCPContextGate"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../core/errors.js'",
+        "symbols": [
+          "toArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../types/protocol.js'",
+        "symbols": [
+          "CURRENT_PACKAGE_VERSION"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "ArchSpineMCPServer",
+        "kind": "class",
+        "signature": "class ArchSpineMCPServer"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ArchSpineMCPServer",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/mcp/server.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "@modelcontextprotocol/sdk/server/index.js",
+        "relation": "import",
+        "symbols": [
+          "Server"
+        ]
+      },
+      {
+        "targetPath": "@modelcontextprotocol/sdk/server/stdio.js",
+        "relation": "import",
+        "symbols": [
+          "StdioServerTransport"
+        ]
+      },
+      {
+        "targetPath": "@modelcontextprotocol/sdk/types.js",
+        "relation": "import",
+        "symbols": [
+          "CallToolRequestSchema",
+          "GetPromptRequestSchema",
+          "ListPromptsRequestSchema",
+          "ListResourcesRequestSchema",
+          "ListToolsRequestSchema",
+          "ReadResourceRequestSchema"
+        ]
+      },
+      {
+        "targetPath": "src/infra/mcp/resources.ts",
+        "relation": "import",
+        "symbols": [
+          "SpineResources"
+        ]
+      },
+      {
+        "targetPath": "src/infra/mcp/tools.ts",
+        "relation": "import",
+        "symbols": [
+          "SpineTools"
+        ]
+      },
+      {
+        "targetPath": "src/infra/manifest.ts",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "src/infra/config.ts",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "src/infra/mcp/context.ts",
+        "relation": "import",
+        "symbols": [
+          "MCPContextGate"
+        ]
+      },
+      {
+        "targetPath": "src/core/errors.ts",
+        "relation": "import",
+        "symbols": [
+          "toArchSpineError",
+          "ErrorCodes"
+        ]
+      },
+      {
+        "targetPath": "src/types/protocol.ts",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_PACKAGE_VERSION"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "__runtime__/mcp",
+        "relation": "import",
+        "edgeProvenance": "inferred",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/mcp/server.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/toArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/server.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/server.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/server.ts/_file_#",
+        "targetSymbol": "src/infra/mcp/context.ts/MCPContextGate#",
+        "targetPath": "src/infra/mcp/context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/server.ts/_file_#",
+        "targetSymbol": "src/infra/mcp/resources.ts/SpineResources#",
+        "targetPath": "src/infra/mcp/resources.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/server.ts/_file_#",
+        "targetSymbol": "src/infra/mcp/tools.ts/SpineTools#",
+        "targetPath": "src/infra/mcp/tools.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:00:05.252Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

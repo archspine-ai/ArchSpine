@@ -1,0 +1,118 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/utils/agent-instructions.ts",
+    "contentHash": "8d14ac35f76ec2611240e96b799caf7921603ce2b9ff7bf62a7d70b5c9619a4b",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "df15f4d0f5863d00b9db689241df0d231a7e4dfeb56d931659cfde14705314fb",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/utils"
+  },
+  "semantic": {
+    "role": "Barrel module aggregating agent instruction utility exports from two submodules.",
+    "responsibilities": [
+      "Re-export all exported symbols from './agent-instructions.templates.js' to provide template definitions for agent instructions.",
+      "Re-export all exported symbols from './agent-instructions.sync.js' to provide synchronization logic for agent instructions."
+    ],
+    "outOfScope": [
+      "Does not contain any custom implementation, logic, or configuration.",
+      "Does not directly define or export any agent instruction content itself."
+    ],
+    "invariants": [
+      "The set of exported symbols must always be the union of the two submodules' public APIs.",
+      "No additional exports or imports should be added to preserve its role as a pure aggregator."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a single entry point for all agent instruction utilities, hiding the internal module split.",
+      "recentChangeIntent": "Aggregate exports from the two submodules as part of the v1.0.0 release; no functional logic changed."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "agent-instructions.templates",
+        "description": "Re-exports all symbols from the agent instructions templates module, providing template definitions for agent instruction formatting and generation."
+      },
+      {
+        "symbolName": "agent-instructions.sync",
+        "description": "Re-exports all symbols from the agent instructions synchronization module, providing logic to synchronize instruction sets across environments."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Barrel module aggregating agent instruction utility exports from two submodules.",
+        "responsibilities": [
+          "Re-export all exported symbols from './agent-instructions.templates.js' to provide template definitions for agent instructions.",
+          "Re-export all exported symbols from './agent-instructions.sync.js' to provide synchronization logic for agent instructions."
+        ],
+        "outOfScope": [
+          "Does not contain any custom implementation, logic, or configuration.",
+          "Does not directly define or export any agent instruction content itself."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./agent-instructions.templates.js",
+        "relation": "import",
+        "symbols": [
+          "all"
+        ]
+      },
+      {
+        "targetPath": "./agent-instructions.sync.js",
+        "relation": "import",
+        "symbols": [
+          "all"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/repository-admin-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/integration/system/agent-host-init.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:05:43.778Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 82,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

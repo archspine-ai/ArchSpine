@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/types/protocol.ts",
+    "contentHash": "c0cb9d58e839954e1fda00352d5eb29c51225a956d0bb212ca1f836038af84e5",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "0baac62a12e8b6d8a14a5f67523f9d3097b0b89685c3d8e04c1deb3094c882e5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/types"
+  },
+  "semantic": {
+    "role": "Protocol type definitions re-export barrel file. Serves as the public entry point for all protocol type definitions, allowing external modules to import from a single location while keeping the implementation split across domain-specific files under src/types/protocol.",
+    "responsibilities": [
+      "Provide a unified import surface for all protocol type definitions by re-exporting from src/types/protocol/index.js.",
+      "Abstract the internal domain split of protocol types, enabling callers to import from a single path.",
+      "Prevent importing from internal protocol submodules directly, enforcing the module boundary."
+    ],
+    "outOfScope": [
+      "No type definitions or implementation logic are declared in this file.",
+      "No runtime behavior, validation, or processing is performed.",
+      "No orchestration or conversion of data occurs here."
+    ],
+    "invariants": [
+      "The file must always re-export all symbols from './protocol/index.js' (via `export *`).",
+      "No additional exports or imports should be added to this file; it must remain a pure re-export facade.",
+      "The file path must remain as src/types/protocol.ts to maintain the public API contract."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a clean, public protocol facade that decouples internal protocol organization from external consumption, keeping the import surface stable even as the protocol submodule is restructured.",
+      "recentChangeIntent": "Initial creation of the protocol facade as part of the ArchSpine v1.0.0 release, establishing the foundational architecture for type definitions."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "protocol.ts (barrel module)",
+        "description": "Re-exports all type definitions from src/types/protocol/index.js. External modules import from this file to access all protocol-related types without depending on internal module structure."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Protocol type definitions re-export barrel file. Serves as the public entry point for all protocol type definitions, allowing external modules to import from a single location while keeping the implementation split across domain-specific files under src/types/protocol.",
+        "responsibilities": [
+          "Provide a unified import surface for all protocol type definitions by re-exporting from src/types/protocol/index.js.",
+          "Abstract the internal domain split of protocol types, enabling callers to import from a single path.",
+          "Prevent importing from internal protocol submodules directly, enforcing the module boundary."
+        ],
+        "outOfScope": [
+          "No type definitions or implementation logic are declared in this file.",
+          "No runtime behavior, validation, or processing is performed.",
+          "No orchestration or conversion of data occurs here."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./protocol/index.js",
+        "relation": "export-re-export",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/config/defaults.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "src/infra/manifest/state.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "src/infra/mcp/server.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:04:59.712Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 9,
+    "isHub": true,
+    "hubPercentile": 100,
+    "inCycle": true,
+    "cycleId": "src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

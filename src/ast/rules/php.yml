@@ -1,0 +1,28 @@
+imports:
+  - id: use
+    pattern: 'use $SOURCE;'
+  - id: require
+    pattern: 'require $SOURCE;'
+  - id: require_once
+    pattern: 'require_once $SOURCE;'
+  - id: include
+    pattern: 'include $SOURCE;'
+  - id: include_once
+    pattern: 'include_once $SOURCE;'
+exports:
+  - id: namespace
+    pattern: 'namespace $NAME;'
+    kind: Type
+  - id: class
+    pattern: 'class $NAME'
+    kind: Class
+  - id: function
+    pattern: 'function $NAME'
+    kind: Function
+usages:
+  - id: call
+    pattern: '$NAME($$$ARGS)'
+  - id: method
+    pattern: '$OBJ->$NAME'
+  - id: static
+    pattern: '$OBJ::$NAME'

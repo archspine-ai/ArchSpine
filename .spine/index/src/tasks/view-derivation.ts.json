@@ -1,0 +1,197 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/view-derivation.ts",
+    "contentHash": "1c6ddd5b4044936922b04de6435f8e85f6c7f167fde7159f19bd98a3d97e3149",
+    "skeletonHash": "f69f8f16cf42f0c2b971988bc2d6f4ed75bc2791bae82e41f48e2edbba7ce6bb",
+    "semanticHash": "41337b8fc2e814fd6c2599b691bee4aa03e68c7b17e29505137d7e24d67f25f2",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "Pipeline task for orchestrating view artifact derivation after the commit stage.",
+    "responsibilities": [
+      "Instantiate ViewService and coordinate view derivation for each enabled view definition.",
+      "Clear stale view artifacts before re-derivation.",
+      "Iterate over all registered VIEW_DEFINITIONS, skipping disabled views and delegating derivation to ViewService methods or custom producers via getViewProducer.",
+      "Collect generated and skipped view IDs and return them as part of the stage output."
+    ],
+    "outOfScope": [
+      "CLI command parsing or argument handling.",
+      "Direct database access or schema queries.",
+      "Core scanning, AST extraction, or task state management.",
+      "User-facing output formatting beyond returning structured data."
+    ],
+    "invariants": [
+      "Requires a valid TaskContext with rootDir, outputManager, runtimeIO, and llmClient.",
+      "Assumes enabledViews is a subset of VIEW_DEFINITIONS ids.",
+      "Must run after CommitStageOutput is available."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain a clear pipeline stage separation where view derivation is a self-contained task that delegates all rendering to service-layer abstractions.",
+      "recentChangeIntent": "Refactor to remove legacy CLI aliases; this file was likely touched to align with updated service imports or test adjustments, but no semantic contract change is evident."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ViewDerivationTask",
+        "description": "A pipeline task (extending SpineTask) that orchestrates the derivation of all view artifacts after the commit stage, using ViewService and registered view producers for each enabled view definition. Called by the pipeline runner."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Pipeline task for orchestrating view artifact derivation after the commit stage.",
+        "responsibilities": [
+          "Instantiate ViewService and coordinate view derivation for each enabled view definition.",
+          "Clear stale view artifacts before re-derivation.",
+          "Iterate over all registered VIEW_DEFINITIONS, skipping disabled views and delegating derivation to ViewService methods or custom producers via getViewProducer.",
+          "Collect generated and skipped view IDs and return them as part of the stage output."
+        ],
+        "outOfScope": [
+          "CLI command parsing or argument handling.",
+          "Direct database access or schema queries.",
+          "Core scanning, AST extraction, or task state management.",
+          "User-facing output formatting beyond returning structured data."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../services/view/index.js'",
+        "symbols": [
+          "VIEW_DEFINITIONS"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../services/view/view-service.js'",
+        "symbols": [
+          "ViewService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../services/view/producer-registry.js'",
+        "symbols": [
+          "getViewProducer"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../services/view/index-loader.js'",
+        "symbols": [
+          "ViewIndexLoader"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "ViewDerivationTask",
+        "kind": "class",
+        "signature": "class ViewDerivationTask"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ViewDerivationTask",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/tasks/view-derivation.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "src/services/view/index.js",
+        "relation": "import",
+        "symbols": [
+          "VIEW_DEFINITIONS"
+        ]
+      },
+      {
+        "targetPath": "src/services/view/view-service.ts",
+        "relation": "import",
+        "symbols": [
+          "ViewService"
+        ]
+      },
+      {
+        "targetPath": "src/services/view/producer-registry.ts",
+        "relation": "import",
+        "symbols": [
+          "getViewProducer"
+        ]
+      },
+      {
+        "targetPath": "src/services/view/index-loader.ts",
+        "relation": "import",
+        "symbols": [
+          "ViewIndexLoader"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/tasks/view-derivation.ts/_file_#",
+        "targetSymbol": "src/services/view/producer-registry.ts/getViewProducer#",
+        "targetPath": "src/services/view/producer-registry.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/view-derivation.ts/_file_#",
+        "targetSymbol": "src/services/view/index-loader.ts/ViewIndexLoader#",
+        "targetPath": "src/services/view/index-loader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:05:00.601Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 2,
+    "isHub": true,
+    "hubPercentile": 59,
+    "inCycle": true,
+    "cycleId": "src/core → src/tasks → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

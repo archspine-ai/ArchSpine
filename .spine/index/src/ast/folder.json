@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/ast",
+  "role": "AST analysis layer for the ArchSpine mirror system that provides language-specific parsing, symbol extraction, and language discovery capabilities.",
+  "responsibility": "Provides the core static analysis infrastructure by combining an AST extraction engine (extractor.ts) with a language registry (lang-registry.ts) and language discovery (lang-discovery.ts), supported by per-language rule configurations (rules/). Together, these components enable parsing of source files, extraction of exported symbols and imports, detection of programming languages, and dynamic registration of language support, forming the foundation for building a semantic index of codebases.",
+  "children": [
+    {
+      "filePath": "src/ast/extractor.ts",
+      "role": "AST extraction engine that parses source files using `@ast-grep/napi` and language-specific YAML rules to extract exported symbols and import declarations. It is consumed by the analysis and view derivation pipeline to build the semantic index of a codebase.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/ast/lang-discovery.ts",
+      "role": "AST-level language discovery utility that identifies, tracks, and resolves programming languages within the codebase. Provides snapshot and delta computation for language landscape tracking.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/ast/lang-registry.ts",
+      "role": "Central language registry mapping project source languages (e.g., TypeScript, Python) to @ast-grep/napi Lang objects. Supports both static built-in languages and dynamically loaded plugin languages via registerDynamicLanguage.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/ast/rules",
+      "role": "Configuration directory containing per-language AST extraction rule definitions for the ArchSpine mirror system.",
+      "fileKind": "folder"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:13:25.331Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

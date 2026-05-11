@@ -1,0 +1,418 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/fix-service.ts",
+    "contentHash": "ffd79bd72a169c3d4dcac3b80667694086f3efa9f25997c08cfb5b5b1db50188",
+    "skeletonHash": "12f6fe8e2b4f85ebf083cba63dea7517e3e3a6c01fc834567a6589f599ac6d84",
+    "semanticHash": "c6c3cb6d5c5e839e80934b2b46240b0ba998ef34ce974214b6f63481c14945c6",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Service-layer orchestrator for automated violation remediation via retry-able fix pipelines.",
+    "responsibilities": [
+      "Exposes the standalone `runFix()` function as a convenience entry point for executing a complete fix run.",
+      "Defines the `FixService` class to encapsulate fix orchestration with configurable options (LLM client, scan policy, runtime I/O).",
+      "Runs a pipeline of tasks in sequence: validation, AST extraction, fix application, scan+cleanup, then re-validation with retry logic (up to 2 retries).",
+      "Tracks fix outcomes via `FixRunSummary` containing initial/remaining violations and count of fixed items.",
+      "Wraps the orchestration in a runtime session for checkpointing and consistent I/O."
+    ],
+    "outOfScope": [
+      "Individual task implementations (validation, scanning, AST extraction, fix generation).",
+      "Runtime session lifecycle management (delegated to `runWithRuntimeSession`).",
+      "Low-level error handling and error code definitions (delegated to core/errors).",
+      "Configuration loading or policy definition (provided as inputs)."
+    ],
+    "invariants": [
+      "Fix orchestration follows a strict task pipeline: validate → extract AST → apply fix → scan+cleanup → revalidate.",
+      "FixService may orchestrate core, task, engine, and infra modules, but must not contain view-specific logic.",
+      "The module lives under `src/services/` and complies with the service-layer boundary rule."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable, retry-capable fix orchestration service that decouples the fix workflow from CLI commands and enables programmatic invocation.",
+      "recentChangeIntent": "Applied release gate fixes and synced accumulated source changes; no semantic changes to the public contract or orchestration logic."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "runFix",
+        "description": "Standalone async function that kicks off a full fix run with optional LLM client and scan policy. Intended as a quick entry point for non-class-based consumers."
+      },
+      {
+        "symbolName": "FixService",
+        "description": "Class that encapsulates fix orchestration. Accepts `FixServiceOptions` in the constructor and provides a `run()` method that executes the fix pipeline with retry logic."
+      },
+      {
+        "symbolName": "FixRunSummary",
+        "description": "Interface describing the outcome of a fix run: `initialViolations`, `remainingViolations`, and `fixed` counts."
+      },
+      {
+        "symbolName": "FixServiceOptions",
+        "description": "Interface for configuring `FixService`: optional LLM client, scan policy, runtime I/O interface, and root directory."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Service-layer orchestrator for automated violation remediation via retry-able fix pipelines.",
+        "responsibilities": [
+          "Exposes a standalone `runFix()` function as a convenient entry point for executing a complete fix run.",
+          "Defines the `FixService` class to encapsulate fix orchestration with configurable options (LLM client, scan policy, runtime I/O).",
+          "Runs a pipeline of tasks in sequence: validation, AST extraction, fix application, scan+cleanup, then re-validation with retry logic (up to 2 retries).",
+          "Tracks fix outcomes via `FixRunSummary` containing initial/remaining violations and count of fixed items.",
+          "Wraps the orchestration in a runtime session for checkpointing and consistent I/O."
+        ],
+        "outOfScope": [
+          "Individual task implementations (validation, scanning, AST extraction, fix generation).",
+          "Runtime session lifecycle management (delegated to `runWithRuntimeSession`).",
+          "Low-level error handling and error code definitions (delegated to core/errors).",
+          "Configuration loading or policy definition (provided as inputs)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/pipeline.js'",
+        "symbols": [
+          "TaskRunner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../tasks/fix.js'",
+        "symbols": [
+          "FixTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../tasks/scan-cleanup.js'",
+        "symbols": [
+          "ScanAndCleanupTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../tasks/ast-extra.js'",
+        "symbols": [
+          "ASTExtractionTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../tasks/validate.js'",
+        "symbols": [
+          "ValidationSummary",
+          "ValidationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/scan-policy.js'",
+        "symbols": [
+          "ScanPolicy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./task-runtime.js'",
+        "symbols": [
+          "createTaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/task-state.js'",
+        "symbols": [
+          "resetTaskState"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes",
+          "toArchSpineError"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./runtime-session.js'",
+        "symbols": [
+          "runWithRuntimeSession"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "runFix",
+        "kind": "function",
+        "signature": "runFix(\n  rootDir: string,\n  llmClient?: LLMClient,\n  scanPolicy?: ScanPolicy,\n)"
+      },
+      {
+        "name": "FixService",
+        "kind": "class",
+        "signature": "class FixService"
+      },
+      {
+        "name": "FixRunSummary",
+        "kind": "interface",
+        "signature": "interface FixRunSummary"
+      },
+      {
+        "name": "FixServiceOptions",
+        "kind": "interface",
+        "signature": "interface FixServiceOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "runFix",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/fix-service.ts#"
+      },
+      {
+        "name": "FixService",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/services/fix-service.ts#"
+      },
+      {
+        "name": "FixRunSummary",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/fix-service.ts#"
+      },
+      {
+        "name": "FixServiceOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/fix-service.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 11,
+      "exportCount": 4,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/pipeline.js",
+        "relation": "import",
+        "symbols": [
+          "TaskRunner"
+        ]
+      },
+      {
+        "targetPath": "../tasks/fix.js",
+        "relation": "import",
+        "symbols": [
+          "FixTask"
+        ]
+      },
+      {
+        "targetPath": "../tasks/scan-cleanup.js",
+        "relation": "import",
+        "symbols": [
+          "ScanAndCleanupTask"
+        ]
+      },
+      {
+        "targetPath": "../tasks/ast-extra.js",
+        "relation": "import",
+        "symbols": [
+          "ASTExtractionTask"
+        ]
+      },
+      {
+        "targetPath": "../tasks/validate.js",
+        "relation": "import",
+        "symbols": [
+          "ValidationSummary",
+          "ValidationTask"
+        ]
+      },
+      {
+        "targetPath": "../core/scan-policy.js",
+        "relation": "import",
+        "symbols": [
+          "ScanPolicy"
+        ]
+      },
+      {
+        "targetPath": "./task-runtime.js",
+        "relation": "import",
+        "symbols": [
+          "createTaskContext"
+        ]
+      },
+      {
+        "targetPath": "../core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "resetTaskState"
+        ]
+      },
+      {
+        "targetPath": "../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes",
+          "toArchSpineError"
+        ]
+      },
+      {
+        "targetPath": "../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "./runtime-session.js",
+        "relation": "import",
+        "symbols": [
+          "runWithRuntimeSession"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/integration/system/error-system.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/fix-service.ts/_file_#",
+        "targetSymbol": "src/services/runtime-session.ts/runWithRuntimeSession#",
+        "targetPath": "src/services/runtime-session.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/fix-service.ts/_file_#",
+        "targetSymbol": "src/services/task-runtime.ts/createTaskContext#",
+        "targetPath": "src/services/task-runtime.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/fix-service.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/resetTaskState#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/fix-service.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/toArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/fix-service.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/ArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/fix-service.ts/_file_#",
+        "targetSymbol": "src/core/pipeline.ts/TaskRunner#",
+        "targetPath": "src/core/pipeline.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/fix-service.ts/_file_#",
+        "targetSymbol": "src/tasks/fix.ts/FixTask#",
+        "targetPath": "src/tasks/fix.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/fix-service.ts/_file_#",
+        "targetSymbol": "src/tasks/scan-cleanup.ts/ScanAndCleanupTask#",
+        "targetPath": "src/tasks/scan-cleanup.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/fix-service.ts/_file_#",
+        "targetSymbol": "src/tasks/ast-extra.ts/ASTExtractionTask#",
+        "targetPath": "src/tasks/ast-extra.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/fix-service.ts/_file_#",
+        "targetSymbol": "src/tasks/validate.ts/ValidationTask#",
+        "targetPath": "src/tasks/validate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/fix-service.ts/_file_#",
+        "targetSymbol": "src/engines/fix.ts/FixService#",
+        "targetPath": "src/engines/fix.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/fix-service.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/getActiveViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/fix-service.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/usage.ts/recordUsage#",
+        "targetPath": "src/infra/db/repositories/usage.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:02:18.431Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

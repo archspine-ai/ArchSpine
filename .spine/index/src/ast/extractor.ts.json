@@ -1,0 +1,262 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/ast/extractor.ts",
+    "contentHash": "29cf9dd98b74605a16434d839299491e1beeb495dd1db768c63a4a66cd715956",
+    "skeletonHash": "29eb9c3dd5263c02d5c4d32daca4e8bc7692e619dee2312f6b0de3fc486d7cd6",
+    "semanticHash": "3cc4e18ce29277ca79149910dc7e938ba067d839a9a5d6babaedd8ada7a9ef90",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/ast"
+  },
+  "semantic": {
+    "role": "AST extraction engine that parses source files using `@ast-grep/napi` and language-specific YAML rules to extract exported symbols and import declarations. It is consumed by the analysis and view derivation pipeline to build the semantic index of a codebase.",
+    "responsibilities": [
+      "Parse source code files for multiple programming languages using `@ast-grep/napi` and language-specific AST patterns defined in YAML rule files.",
+      "Extract exported symbols (classes, functions, variables, interfaces, types) from source files and return structured `ExtractedSymbol` objects.",
+      "Extract import statements, including source module paths and imported symbols, returning `ExtractedImport` objects.",
+      "Load and cache language-specific AST rules from YAML files, using `LangRegistry` to resolve supported languages and announce unsupported ones.",
+      "Produce a `FileSkeleton` structure summarizing a file's imports and exports for downstream processing."
+    ],
+    "outOfScope": [
+      "Does not perform semantic analysis or type checking beyond basic AST pattern matching.",
+      "Does not resolve transitive dependencies or build dependency graphs.",
+      "Does not handle code formatting, linting, or transformation.",
+      "Does not persist extracted data to storage or database."
+    ],
+    "invariants": [
+      "Every call to `ASTExtractor` methods must have the language-specific YAML rules available in the expected directory structure.",
+      "Language support is determined by the presence of a corresponding YAML file in the rules directory, registered via `LangRegistry`.",
+      "The extraction relies on `@ast-grep/napi` node patterns; malformed or unexpected syntax may produce incomplete results."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable, language-agnostic AST extraction layer that feeds into the ArchSpine indexing and analysis pipeline. The module decouples extraction logic from specific language implementations by using rule files.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Establish the foundational AST extraction module as part of the semantic layer for architectural governance."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ASTExtractor",
+        "description": "Class that parses source files and extracts symbols and imports using ast-grep and language-specific YAML rules. The primary entry point for all AST extraction operations in the ArchSpine pipeline."
+      },
+      {
+        "symbolName": "ExtractedSymbol",
+        "description": "Interface representing a single extracted symbol: its name, kind (Class, Function, Variable, Interface, Type, Unknown), signature, and optional implementation clue."
+      },
+      {
+        "symbolName": "ExtractedImport",
+        "description": "Interface representing an import statement: the source module path and the list of imported symbol names."
+      },
+      {
+        "symbolName": "FileSkeleton",
+        "description": "Interface describing the overall structure of a parsed file, including its imports and exported symbols."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "AST extraction engine that parses source files using `@ast-grep/napi` and language-specific YAML rules to extract exported symbols and import declarations. It is consumed by the analysis and view derivation pipeline to build the semantic index of a codebase.",
+        "responsibilities": [
+          "Parse source code files for multiple programming languages using `@ast-grep/napi` and language-specific AST patterns defined in YAML rule files.",
+          "Extract exported symbols (classes, functions, variables, interfaces, types) from source files and return structured `ExtractedSymbol` objects.",
+          "Extract import statements, including source module paths and imported symbols, returning `ExtractedImport` objects.",
+          "Load and cache language-specific AST rules from YAML files, using `LangRegistry` to resolve supported languages and announce unsupported ones.",
+          "Produce a `FileSkeleton` structure summarizing a file's imports and exports for downstream processing."
+        ],
+        "outOfScope": [
+          "Does not perform semantic analysis or type checking beyond basic AST pattern matching.",
+          "Does not resolve transitive dependencies or build dependency graphs.",
+          "Does not handle code formatting, linting, or transformation.",
+          "Does not persist extracted data to storage or database."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'@ast-grep/napi'",
+        "symbols": [
+          "parse"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./lang-registry.js'",
+        "symbols": [
+          "LangRegistry"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'js-yaml'",
+        "symbols": [
+          "yaml"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "ASTExtractor",
+        "kind": "class",
+        "signature": "class ASTExtractor"
+      },
+      {
+        "name": "ExtractedSymbol",
+        "kind": "interface",
+        "signature": "interface ExtractedSymbol"
+      },
+      {
+        "name": "ExtractedImport",
+        "kind": "interface",
+        "signature": "interface ExtractedImport"
+      },
+      {
+        "name": "FileSkeleton",
+        "kind": "interface",
+        "signature": "interface FileSkeleton"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ASTExtractor",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/ast/extractor.ts#"
+      },
+      {
+        "name": "ExtractedSymbol",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/ast/extractor.ts#"
+      },
+      {
+        "name": "ExtractedImport",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/ast/extractor.ts#"
+      },
+      {
+        "name": "FileSkeleton",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/ast/extractor.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 4,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "'@ast-grep/napi'",
+        "relation": "import",
+        "symbols": [
+          "parse"
+        ]
+      },
+      {
+        "targetPath": "'url'",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "'./lang-registry.js'",
+        "relation": "import",
+        "symbols": [
+          "LangRegistry"
+        ]
+      },
+      {
+        "targetPath": "'fs'",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "'path'",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "'js-yaml'",
+        "relation": "import",
+        "symbols": [
+          "yaml"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/prompt-context/trim.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:52:29.480Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 8,
+    "isHub": true,
+    "hubPercentile": 94,
+    "inCycle": true,
+    "cycleId": "src/ast → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

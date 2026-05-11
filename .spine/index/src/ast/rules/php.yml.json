@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/ast/rules/php.yml",
+    "contentHash": "7671cdb554ffa91263b3b04a91b894665bdea9b0b0f9a3d077f9a41670adbd12",
+    "semanticHash": "c0d02ff251d71fd1827ac5db7838613d379a606726590d4309110bb3b064f712",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": "src/ast/rules"
+  },
+  "semantic": {
+    "role": "Language-specific pattern definition for PHP code analysis within the ArchSpine mirror system.",
+    "responsibilities": [
+      "Define import detection patterns (use, require, require_once, include, include_once)",
+      "Define export detection patterns (namespace, class, function)",
+      "Define usage detection patterns (call, method, static)",
+      "Support ArchSpine's AST extraction and dependency analysis for PHP projects"
+    ],
+    "outOfScope": [
+      "Non-PHP languages",
+      "Full AST parsing logic",
+      "Patterns for other constructs like traits, interfaces, or anonymous classes"
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "To provide the ArchSpine system with the necessary pattern definitions for parsing and analyzing PHP source code, enabling automated dependency detection and architecture validation.",
+        "context_and_audience": "This document is intended for ArchSpine maintainers and contributors who are extending or maintaining PHP language support. It is used by the AST extraction engine to identify imports, exports, and usages in PHP files.",
+        "key_takeaways": [
+          "ArchSpine uses pattern-based rules to understand PHP code structure.",
+          "Imports are detected via 'use', 'require', 'require_once', 'include', and 'include_once' statements.",
+          "Exports are identified through 'namespace', 'class', and 'function' declarations.",
+          "Usages track function calls, method calls, and static method calls.",
+          "These patterns enable ArchSpine to build dependency graphs and enforce architectural rules."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:52:42.074Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 8,
+    "isHub": true,
+    "hubPercentile": 94,
+    "inCycle": true,
+    "cycleId": "src/ast → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

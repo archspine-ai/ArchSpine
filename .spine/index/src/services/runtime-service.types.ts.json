@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/runtime-service.types.ts",
+    "contentHash": "6acbec450f79c888dfcb55a3ce06395c951f8ea12befe08dbeb6d3ec9969938b",
+    "skeletonHash": "020c0408182bb1944caee20198b958e9f20ab6ca170a819a6a56ffd1961a98b6",
+    "semanticHash": "7f706d685ddefbdbcba99e96b9ae305ecc3e4f618bf98feccd518d8320a7f16f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Draft interface definition serving as a future contract for runtime service capabilities, intended to centralize access to resolved LLM settings, sync, check, and fix services.",
+    "responsibilities": [
+      "Define the contract for a runtime service facade: getResolvedLLMSettings, getSyncService, getCheckService, getFixService.",
+      "Act as a placeholder to absorb future runtime orchestration responsibilities, preventing further expansion of provider-resolution code in infra/llm/runtime.ts."
+    ],
+    "outOfScope": [
+      "Implementation details of the methods.",
+      "Actual resolution of LLM providers or service instances.",
+      "Any logic beyond the interface definition."
+    ],
+    "invariants": [
+      "The interface is a draft; all methods return unknown, indicating lack of concrete types.",
+      "The file should not be imported or implemented until the draft is stabilized."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Define a draft interface for future runtime service capabilities, preventing further expansion of provider-resolution code in infra/llm/runtime.ts.",
+      "recentChangeIntent": "Part of the ArchSpine v1.0.0 architectural governance restructuring; this draft was introduced to prepare for consolidated runtime services without altering existing provider-resolution code."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "RuntimeServiceDraft",
+        "description": "Interface defining the draft contract for a runtime service that provides resolved LLM settings and access to sync, check, and fix services. All methods currently return unknown, indicating the contract is not yet finalized."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Draft interface definition serving as a future contract for runtime service capabilities, intended to centralize access to resolved LLM settings, sync, check, and fix services.",
+        "responsibilities": [
+          "Define the contract for a runtime service facade: getResolvedLLMSettings, getSyncService, getCheckService, getFixService.",
+          "Act as a placeholder to absorb future runtime orchestration responsibilities, preventing further expansion of provider-resolution code in infra/llm/runtime.ts."
+        ],
+        "outOfScope": [
+          "Implementation details of the methods.",
+          "Actual resolution of LLM providers or service instances.",
+          "Any logic beyond the interface definition."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "RuntimeServiceDraft",
+        "kind": "interface",
+        "signature": "interface RuntimeServiceDraft"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "RuntimeServiceDraft",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/runtime-service.types.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:02:41.406Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

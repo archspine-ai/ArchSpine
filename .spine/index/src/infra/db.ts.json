@@ -1,0 +1,472 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db.ts",
+    "contentHash": "e469b7a9344ad2dea2d3146579fd0b1cec53ad5da74089a2277af878f57fca70",
+    "skeletonHash": "d00ac41e94e3c008b3816231041bb60794fb18204bdd86b68f812c7e83c737d1",
+    "semanticHash": "c10ac42f1ee27d4f362dd2b7b40e8d1e6aed5a4ab6b3ec4d7d48a9b543820cb0",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Runtime database facade / data access aggregator providing a unified interface over file tracking, symbol indexing, usage logging, violation recording, drift history, and batch operations for the ArchSpine governance engine.",
+    "responsibilities": [
+      "Aggregate and expose all runtime database operations through a single SpineDB class, hiding the internal repository module structure.",
+      "Manage the lifecycle of the better-sqlite3 database connection, including initialization and schema setup.",
+      "Provide file-level tracking operations: ensuring file records, updating status, retrieving docs, deleting records, and listing tracked files.",
+      "Provide symbol-level operations: adding/clearing file exports, resolving symbols by name, searching across the symbol index, and cache invalidation.",
+      "Provide usage logging operations: recording usage entries, retrieving total usage, and summarizing usage data.",
+      "Provide violation management operations: recording violations, clearing violations, deleting orphan violations, and retrieving active violations.",
+      "Provide drift history retrieval for governance analysis.",
+      "Support batch commits for atomic multi-operation updates."
+    ],
+    "outOfScope": [
+      "Direct execution of raw SQL queries; those are delegated to repository modules.",
+      "Schema migration logic beyond initialization; schema changes are handled by the schema module.",
+      "Connection pooling or multi-instance concurrency; assumes single-process better-sqlite3 usage.",
+      "CLI/UI interface; this is a pure data-access layer."
+    ],
+    "invariants": [
+      "SpineDB must remain the single public entry point for runtime database operations; all callers must use SpineDB rather than importing repository modules directly to preserve stable import surfaces (per rule infra-facade-imports).",
+      "All public methods on SpineDB should delegate to repository functions, never bypassing them."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Introduce a unified facade (SpineDB) that aggregates all runtime database repositories, providing a single class for consumers to interact with the governance engine's persistent state.",
+      "recentChangeIntent": "Added violation lifecycle management methods (recordViolation, clearViolations, deleteOrphanViolations, getActiveViolations) to support the --fresh check flag and violation lifecycle feature."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "SpineDB",
+        "description": "Unified facade class that aggregates all runtime database operations for ArchSpine, including file tracking, symbol indexing, usage logging, violation recording, drift history, and batch commits. Instantiated by the governance engine core to interact with the persistent runtime database."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Runtime database facade / data access aggregator providing a unified interface over file tracking, symbol indexing, usage logging, violation recording, drift history, and batch operations for the ArchSpine governance engine.",
+        "responsibilities": [
+          "Aggregate and expose all runtime database operations through a single SpineDB class, hiding the internal repository module structure.",
+          "Manage the lifecycle of the better-sqlite3 database connection, including initialization and schema setup.",
+          "Provide file-level tracking operations: ensuring file records, updating status, retrieving docs, deleting records, and listing tracked files.",
+          "Provide symbol-level operations: adding/clearing file exports, resolving symbols by name, searching across the symbol index, and cache invalidation.",
+          "Provide usage logging operations: recording usage entries, retrieving total usage, and summarizing usage data.",
+          "Provide violation management operations: recording violations, clearing violations, deleting orphan violations, and retrieving active violations.",
+          "Provide drift history retrieval for governance analysis.",
+          "Support batch commits for atomic multi-operation updates."
+        ],
+        "outOfScope": [
+          "Direct execution of raw SQL queries; those are delegated to repository modules.",
+          "Schema migration logic beyond initialization; schema changes are handled by the schema module.",
+          "Connection pooling or multi-instance concurrency; assumes single-process better-sqlite3 usage.",
+          "CLI/UI interface; this is a pure data-access layer."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./db/batch.js'",
+        "symbols": [
+          "commitBatch"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./db/errors.js'",
+        "symbols": [
+          "mapRuntimeDbError"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./db/repositories/files.js'",
+        "symbols": [
+          "deleteFile",
+          "ensureFileRecord",
+          "getFileDocs",
+          "getFileStatus",
+          "getGlobalStatus",
+          "getTrackedFiles",
+          "updateFileStatus",
+          "updateFileStatusWithDocs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./db/repositories/drift.js'",
+        "symbols": [
+          "getDriftHistory"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./db/repositories/symbols.js'",
+        "symbols": [
+          "addFileExports",
+          "clearFileExports",
+          "invalidateCache",
+          "resolveSymbol",
+          "searchSymbols"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./db/repositories/usage.js'",
+        "symbols": [
+          "getTotalUsage",
+          "getUsageSummary",
+          "recordUsage"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./db/repositories/violations.js'",
+        "symbols": [
+          "clearViolations",
+          "deleteOrphanViolations",
+          "getActiveViolations",
+          "recordViolation"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./db/runtime.js'",
+        "symbols": [
+          "openRuntimeDatabase"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./db/schema.js'",
+        "symbols": [
+          "initializeRuntimeSchema"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'better-sqlite3'",
+        "symbols": [
+          "Database"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "SpineDB",
+        "kind": "class",
+        "signature": "class SpineDB"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "SpineDB",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/db.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./db/batch.js",
+        "relation": "import",
+        "symbols": [
+          "commitBatch"
+        ]
+      },
+      {
+        "targetPath": "./db/errors.js",
+        "relation": "import",
+        "symbols": [
+          "mapRuntimeDbError"
+        ]
+      },
+      {
+        "targetPath": "./db/repositories/files.js",
+        "relation": "import",
+        "symbols": [
+          "deleteFile",
+          "ensureFileRecord",
+          "getFileDocs",
+          "getFileStatus",
+          "getGlobalStatus",
+          "getTrackedFiles",
+          "updateFileStatus",
+          "updateFileStatusWithDocs"
+        ]
+      },
+      {
+        "targetPath": "./db/repositories/drift.js",
+        "relation": "import",
+        "symbols": [
+          "getDriftHistory"
+        ]
+      },
+      {
+        "targetPath": "./db/repositories/symbols.js",
+        "relation": "import",
+        "symbols": [
+          "addFileExports",
+          "clearFileExports",
+          "invalidateCache",
+          "resolveSymbol",
+          "searchSymbols"
+        ]
+      },
+      {
+        "targetPath": "./db/repositories/usage.js",
+        "relation": "import",
+        "symbols": [
+          "getTotalUsage",
+          "getUsageSummary",
+          "recordUsage"
+        ]
+      },
+      {
+        "targetPath": "./db/repositories/violations.js",
+        "relation": "import",
+        "symbols": [
+          "clearViolations",
+          "deleteOrphanViolations",
+          "getActiveViolations",
+          "recordViolation"
+        ]
+      },
+      {
+        "targetPath": "./db/runtime.js",
+        "relation": "import",
+        "symbols": [
+          "openRuntimeDatabase"
+        ]
+      },
+      {
+        "targetPath": "./db/schema.js",
+        "relation": "import",
+        "symbols": [
+          "initializeRuntimeSchema"
+        ]
+      },
+      {
+        "targetPath": "better-sqlite3",
+        "relation": "import",
+        "symbols": [
+          "Database"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/integration/system/error-system.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/runtime.ts/openRuntimeDatabase#",
+        "targetPath": "src/infra/db/runtime.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/schema.ts/initializeRuntimeSchema#",
+        "targetPath": "src/infra/db/schema.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/errors.ts/mapRuntimeDbError#",
+        "targetPath": "src/infra/db/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/symbols.ts/invalidateCache#",
+        "targetPath": "src/infra/db/repositories/symbols.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getFileStatus#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/ensureFileRecord#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/updateFileStatus#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/updateFileStatusWithDocs#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/batch.ts/commitBatch#",
+        "targetPath": "src/infra/db/batch.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getFileDocs#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/deleteFile#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getTrackedFiles#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/drift.ts/getDriftHistory#",
+        "targetPath": "src/infra/db/repositories/drift.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/symbols.ts/addFileExports#",
+        "targetPath": "src/infra/db/repositories/symbols.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/symbols.ts/clearFileExports#",
+        "targetPath": "src/infra/db/repositories/symbols.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/symbols.ts/resolveSymbol#",
+        "targetPath": "src/infra/db/repositories/symbols.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/symbols.ts/searchSymbols#",
+        "targetPath": "src/infra/db/repositories/symbols.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/usage.ts/recordUsage#",
+        "targetPath": "src/infra/db/repositories/usage.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/usage.ts/getUsageSummary#",
+        "targetPath": "src/infra/db/repositories/usage.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/usage.ts/getTotalUsage#",
+        "targetPath": "src/infra/db/repositories/usage.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/recordViolation#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/clearViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/deleteOrphanViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/getActiveViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/db.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getGlobalStatus#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:40:34.242Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

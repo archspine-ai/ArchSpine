@@ -1,0 +1,144 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/types/protocol/config.ts",
+    "contentHash": "64114570a344767eb4cb36681154bab7fd1f57c5220c6fdf545883ff7f7267c5",
+    "skeletonHash": "4df3fa499c4b8ef7f91292ae284b2e481ccd8712a3c1f25112f8497cfea008e1",
+    "semanticHash": "5ae3c2ffd11d84202122684a01095e4d2e1a0fd14cad1be23acb6481823c59c5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/types/protocol"
+  },
+  "semantic": {
+    "role": "Configuration schema types for the ArchSpine project — defines the structure of the `spine.config.json` file and related type aliases.",
+    "responsibilities": [
+      "Define the `SpineConfig` interface that describes the project configuration schema, including project name, locales, and LLM settings.",
+      "Define the `MCPContextMode` type alias for the context mode used by MCP tools.",
+      "Import and re-export the `SchemaVersion` type from the versions module to enforce versioning on configuration files.",
+      "Import the `PartialScanPolicy` type from scan-policy to allow embedding partial scan policies within the configuration."
+    ],
+    "outOfScope": [
+      "Runtime configuration loading or validation.",
+      "Default configuration values.",
+      "Configuration file I/O.",
+      "CLI handling of configuration."
+    ],
+    "invariants": [
+      "Configuration schema must include a `schemaVersion` field of type `SchemaVersion`.",
+      "Configuration must include a `project` object with `name` and `locales` fields.",
+      "Configuration may optionally include an `llm` object with `provider`, `model`, and `baseURL` fields."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a type-safe contract for the project's main configuration file (spine.config.json), ensuring that all required and optional fields are well-typed and that the configuration is versioned.",
+      "recentChangeIntent": "No recent changes specific to this file are indicated by git history or environment context beyond broad release gate fixes."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "SpineConfig",
+        "description": "The primary configuration interface for the ArchSpine project. Consumed by configuration loaders and validators to enforce the shape of `spine.config.json`."
+      },
+      {
+        "symbolName": "MCPContextMode",
+        "description": "A type alias defining the available context modes for MCP operations. Used by MCP server and tool configurations."
+      }
+    ],
+    "ruleViolations": [
+      {
+        "id": "interface-prefix",
+        "severity": "warning",
+        "reason": "Interface `SpineConfig` is exported and does not follow the rule that internal interfaces must start with the character 'I'. According to the architecture rule, `SpineConfig` should be named `ISpineConfig` or similar."
+      }
+    ],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Configuration schema types for the ArchSpine project — defines the structure of the `spine.config.json` file and related type aliases.",
+        "responsibilities": [
+          "Define the `SpineConfig` interface that describes the project configuration schema, including project name, locales, and LLM settings.",
+          "Define the `MCPContextMode` type alias for the context mode used by MCP tools.",
+          "Import and re-export the `SchemaVersion` type from the versions module to enforce versioning on configuration files.",
+          "Import the `PartialScanPolicy` type from scan-policy to allow embedding partial scan policies within the configuration."
+        ],
+        "outOfScope": [
+          "Runtime configuration loading or validation.",
+          "Default configuration values.",
+          "Configuration file I/O.",
+          "CLI handling of configuration."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "SpineConfig",
+        "kind": "interface",
+        "signature": "interface SpineConfig"
+      },
+      {
+        "name": "MCPContextMode",
+        "kind": "type",
+        "signature": "type MCPContextMode"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "SpineConfig",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/config.ts#"
+      },
+      {
+        "name": "MCPContextMode",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/types/protocol/config.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../core/scan-policy.js",
+        "relation": "import",
+        "symbols": [
+          "PartialScanPolicy"
+        ]
+      },
+      {
+        "targetPath": "./versions.js",
+        "relation": "import",
+        "symbols": [
+          "SchemaVersion"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:05:13.539Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 9,
+    "isHub": true,
+    "hubPercentile": 100,
+    "inCycle": true,
+    "cycleId": "src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

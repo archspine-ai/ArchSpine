@@ -1,0 +1,235 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/index-reader.ts",
+    "contentHash": "73d47759423d27e77e9fb815aa0b09454f450b6c471e0665569a5f27f8534ed1",
+    "skeletonHash": "8144f1629469448c5e15b011c5dcb9975322a3c3efcf5c358e989caa962dec36",
+    "semanticHash": "34ef3df04f3e7db154ac5cf25970d05d4762688af6093df7ec7740537dad9b8e",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure facade for reading, parsing, and schema-validating index document JSON snapshots from the filesystem.",
+    "responsibilities": [
+      "Read a JSON index document file from a given absolute path and parse it into a typed structure.",
+      "Validate that the parsed document's schemaVersion is compatible with the current protocol schema version (CURRENT_SCHEMA_VERSION).",
+      "Return a discriminated union result indicating success (ok), missing file, or failure (with specific error codes for invalid content or incompatible schema).",
+      "Provide type guard functions to allow consumers to narrow result types: isIndexReadFailure and isCompatibleIndexDocument.",
+      "Deduplicate warning/error log messages for repeated index read issues using a module-level Set.",
+      "Compute the relative path from the root directory for use in result metadata."
+    ],
+    "outOfScope": [
+      "Writing, modifying, or deleting index documents.",
+      "Crawling or indexing the filesystem to discover index documents.",
+      "Managing the lifecycle or cache of index documents."
+    ],
+    "invariants": [
+      "Index document content must be valid JSON and an object with an optional schemaVersion property.",
+      "If schemaVersion is present, it must be compatible with CURRENT_SCHEMA_VERSION (exact match or non-breaking difference); otherwise the result is a failure with IndexSnapshotIncompatibleSchema error code.",
+      "If the file does not exist, the result status is 'missing' (not a failure).",
+      "All validation errors (invalid JSON, wrong type, incompatible schema) are mapped to specific ErrorCodes: IndexSnapshotInvalidContent or IndexSnapshotIncompatibleSchema.",
+      "Log messages for non-ok/non-missing results are emitted at most once per unique message via the module-level reportedIssues set."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a deterministic, schema-safe reader for index snapshot files that enforces version compatibility and returns explicit, typed results to prevent silent data corruption during deserialization.",
+      "recentChangeIntent": "No recent git changes detected; the file appears stable and unchanged in the working tree."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "IndexReadResult<T>",
+        "description": "Discriminated union type representing the outcome of reading an index document: ok (with parsed data and schema version), missing (file not found), or failure (invalid content or incompatible schema)."
+      },
+      {
+        "symbolName": "readIndexDocument",
+        "description": "Reads and parses a JSON index document from disk, validates its schema version against CURRENT_SCHEMA_VERSION, and returns a typed IndexReadResult. Called by index loading services."
+      },
+      {
+        "symbolName": "reportIndexReadIssueOnce",
+        "description": "Logs a warning or error message for a non-ok, non-missing IndexReadResult, ensuring each unique message is reported only once per process lifetime."
+      },
+      {
+        "symbolName": "isIndexReadFailure",
+        "description": "Type guard that returns true if the IndexReadResult status is not 'ok' or 'missing', i.e., it is an error condition."
+      },
+      {
+        "symbolName": "isCompatibleIndexDocument",
+        "description": "Type guard that returns true if the IndexReadResult status is 'ok', indicating a successfully read and schema-compatible document."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure facade for reading, parsing, and schema-validating index document JSON snapshots from the filesystem.",
+        "responsibilities": [
+          "Read a JSON index document file from a given absolute path and parse it into a typed structure.",
+          "Validate that the parsed document's schemaVersion is compatible with the current protocol schema version (CURRENT_SCHEMA_VERSION).",
+          "Return a discriminated union result indicating success (ok), missing file, or failure (with specific error codes for invalid content or incompatible schema).",
+          "Provide type guard functions to allow consumers to narrow result types: isIndexReadFailure and isCompatibleIndexDocument.",
+          "Deduplicate warning/error log messages for repeated index read issues using a module-level Set.",
+          "Compute the relative path from the root directory for use in result metadata."
+        ],
+        "outOfScope": [
+          "Writing, modifying, or deleting index documents.",
+          "Crawling or indexing the filesystem to discover index documents.",
+          "Managing the lifecycle or cache of index documents."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/errors.js'",
+        "symbols": [
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "type SchemaVersion"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "readIndexDocument",
+        "kind": "function",
+        "signature": "readIndexDocument(\n  rootDir: string,\n  fullPath: string,\n)"
+      },
+      {
+        "name": "reportIndexReadIssueOnce",
+        "kind": "function",
+        "signature": "reportIndexReadIssueOnce(\n  logger: (message: string) => void,\n  result: Exclude<IndexReadResult<unknown>, { status: 'ok' | 'missing' }>,\n)"
+      },
+      {
+        "name": "isIndexReadFailure",
+        "kind": "function",
+        "signature": "isIndexReadFailure(\n  result: IndexReadResult<T>,\n)"
+      },
+      {
+        "name": "isCompatibleIndexDocument",
+        "kind": "function",
+        "signature": "isCompatibleIndexDocument(\n  result: IndexReadResult<T>,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "readIndexDocument",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/index-reader.ts#"
+      },
+      {
+        "name": "reportIndexReadIssueOnce",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/index-reader.ts#"
+      },
+      {
+        "name": "isIndexReadFailure",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/index-reader.ts#"
+      },
+      {
+        "name": "isCompatibleIndexDocument",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/index-reader.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 4,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ErrorCodes"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SchemaVersion"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:58:27.789Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

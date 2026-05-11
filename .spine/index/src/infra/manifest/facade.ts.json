@@ -1,0 +1,431 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/manifest/facade.ts",
+    "contentHash": "e57cd72b5b2103f5131478f6807c61d893bfb96ee5d9b1eb7db9e9d4ff73685f",
+    "skeletonHash": "aee4e3eb837a827393a621444147b70e4785756ebaf9fb043f4400f3904bce80",
+    "semanticHash": "09f926cf9bd38e640be7b858eb0523926c6f2b159e6d5884c30c1e7b607906b5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/manifest"
+  },
+  "semantic": {
+    "role": "Facade class that orchestrates file tracking, metadata management, and persistence operations over the SpineDB.",
+    "responsibilities": [
+      "Create, update, and delete file records in the SpineDB via `ensureTracked`, `commitBatch`, and `deleteFile`.",
+      "Retrieve file documents and tracked file lists via `getFileDocs` and `getTrackedFiles`.",
+      "Query drift history for a specific file via `getDriftHistory`.",
+      "Coordinate state persistence and baseline detection by delegating to the manifest state module (load/save manifest state, check needsInitialSync, persist reverse index state)."
+    ],
+    "outOfScope": [
+      "Low-level SpineDB operations (direct database queries).",
+      "File system I/O (scanning, reading files).",
+      "Configuration management, CLI, MCP tools, or HTTP services.",
+      "Language-specific parsing or aggregation logic."
+    ],
+    "invariants": [
+      "Manifest is the sole public entry point for manifest operations; consumers must not directly import from io, state, or integrity modules within this package (enforced by infra-facade-imports rule).",
+      "All file operations must go through the SpineDB instance owned by Manifest; no direct state mutations outside this class.",
+      "In-memory state (e.g., reverseIndexComplete) must be persisted via delegated state methods before a new session expects to use it."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, encapsulated API for the manifest subsystem, hiding database layout and internal persistence logic from higher-level services.",
+      "recentChangeIntent": "No significant semantic change detected from git intent; minor adjustments for consistency."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "Manifest",
+        "description": "Public class that exposes the stable API for all manifest file tracking operations. Consumed by services like sync-service, check-service, and fix-service."
+      },
+      {
+        "symbolName": "Manifest.constructor(db, rootDir)",
+        "description": "Initializes a new Manifest instance with the provided SpineDB and project root directory. Called once at system startup."
+      },
+      {
+        "symbolName": "Manifest.ensureTracked(filePath, language, content?)",
+        "description": "Creates or updates a file record in the database, computing the content hash and committing the change. Called when a file is first discovered or modified."
+      },
+      {
+        "symbolName": "Manifest.commitBatch(commits)",
+        "description": "Atomically persists a batch of file status updates, recording the commit history for each file. Called by sync-service to apply a set of changes."
+      },
+      {
+        "symbolName": "Manifest.getFileDocs(filePath)",
+        "description": "Retrieves all document records associated with a given file path. Called by view services to render file details."
+      },
+      {
+        "symbolName": "Manifest.getTrackedFiles()",
+        "description": "Returns the complete list of tracked file records from the database. Used for enumeration and summary generation."
+      },
+      {
+        "symbolName": "Manifest.getDriftHistory(filePath)",
+        "description": "Queries the drift event history for a specific file, returning an array of DriftEvent objects. Used by drift detection and risk assessment."
+      },
+      {
+        "symbolName": "Manifest.deleteFile(filePath)",
+        "description": "Deletes a file record and its associated documents from the database. Called when a file is removed from the project."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Facade class that orchestrates file tracking, metadata management, and persistence operations over the SpineDB.",
+        "responsibilities": [
+          "Create, update, and delete file records in the SpineDB via dedicated methods like ensureTracked, commitBatch, and deleteFile.",
+          "Retrieve file documents and tracked file lists to support views and summaries.",
+          "Query drift history for individual files to enable drift detection and risk analysis.",
+          "Coordinate state persistence and baseline detection by delegating to internal state management functions."
+        ],
+        "outOfScope": [
+          "Low-level SpineDB operations, such as direct database queries or transactions.",
+          "File system scanning or content reading.",
+          "Configuration management, CLI commands, MCP tools, or HTTP handling.",
+          "Language-specific parsing or aggregation logic."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../db.js'",
+        "symbols": [
+          "DriftEvent",
+          "SpineDB",
+          "UsageSummaryRow",
+          "UsageTotals",
+          "ViolationRecord"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../types/protocol.js'",
+        "symbols": [
+          "SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../utils/repo-path.js'",
+        "symbols": [
+          "normalizeRepoPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../types/protocol.js'",
+        "symbols": [
+          "LanguageSnapshot"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./io.js'",
+        "symbols": [
+          "getFileStatusSnapshot"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./integrity.js'",
+        "symbols": [
+          "calculateHash"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./state.js'",
+        "symbols": [
+          "needsInitialSync",
+          "loadLanguageSnapshot as loadPersistedLanguageSnapshot",
+          "loadManifestState",
+          "persistReverseIndexState",
+          "saveLanguageSnapshot as savePersistedLanguageSnapshot",
+          "saveManifestState"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "Manifest",
+        "kind": "class",
+        "signature": "class Manifest"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "Manifest",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/manifest/facade.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/db.js",
+        "relation": "import",
+        "symbols": [
+          "DriftEvent",
+          "SpineDB",
+          "UsageSummaryRow",
+          "UsageTotals",
+          "ViolationRecord"
+        ]
+      },
+      {
+        "targetPath": "src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SpineUnit",
+          "LanguageSnapshot"
+        ]
+      },
+      {
+        "targetPath": "src/utils/repo-path.js",
+        "relation": "import",
+        "symbols": [
+          "normalizeRepoPath"
+        ]
+      },
+      {
+        "targetPath": "src/infra/manifest/io.js",
+        "relation": "import",
+        "symbols": [
+          "getFileStatusSnapshot"
+        ]
+      },
+      {
+        "targetPath": "src/infra/manifest/integrity.js",
+        "relation": "import",
+        "symbols": [
+          "calculateHash"
+        ]
+      },
+      {
+        "targetPath": "src/infra/manifest/state.js",
+        "relation": "import",
+        "symbols": [
+          "needsInitialSync",
+          "loadLanguageSnapshot",
+          "loadManifestState",
+          "persistReverseIndexState",
+          "saveLanguageSnapshot",
+          "saveManifestState"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/state.ts/loadManifestState#",
+        "targetPath": "src/infra/manifest/state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/state.ts/needsInitialSync#",
+        "targetPath": "src/infra/manifest/state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/integrity.ts/calculateHash#",
+        "targetPath": "src/infra/manifest/integrity.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/utils/repo-path.ts/normalizeRepoPath#",
+        "targetPath": "src/utils/repo-path.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/io.ts/getFileStatusSnapshot#",
+        "targetPath": "src/infra/manifest/io.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/state.ts/persistReverseIndexState#",
+        "targetPath": "src/infra/manifest/state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/state.ts/saveManifestState#",
+        "targetPath": "src/infra/manifest/state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/manifest.ts/Manifest#",
+        "targetPath": "src/infra/manifest.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/db.ts/SpineDB#",
+        "targetPath": "src/infra/db.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getFileStatus#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/updateFileStatus#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/updateFileStatusWithDocs#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/db/batch.ts/commitBatch#",
+        "targetPath": "src/infra/db/batch.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getFileDocs#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getTrackedFiles#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/drift.ts/getDriftHistory#",
+        "targetPath": "src/infra/db/repositories/drift.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/symbols.ts/addFileExports#",
+        "targetPath": "src/infra/db/repositories/symbols.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/symbols.ts/clearFileExports#",
+        "targetPath": "src/infra/db/repositories/symbols.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/symbols.ts/resolveSymbol#",
+        "targetPath": "src/infra/db/repositories/symbols.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/symbols.ts/searchSymbols#",
+        "targetPath": "src/infra/db/repositories/symbols.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/getActiveViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/recordViolation#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/clearViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/usage.ts/recordUsage#",
+        "targetPath": "src/infra/db/repositories/usage.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/usage.ts/getTotalUsage#",
+        "targetPath": "src/infra/db/repositories/usage.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/facade.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/usage.ts/getUsageSummary#",
+        "targetPath": "src/infra/db/repositories/usage.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:39:49.641Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

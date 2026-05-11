@@ -1,0 +1,249 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/core/repair-forced-processing.test.ts",
+    "contentHash": "564b6570d719584a12bca1e8b1b63d4377148f5e8a57923b7f034ff583f1afd7",
+    "skeletonHash": "24377112d92926992cf840d119daca3bafe2438924071d0236b7d25b8e803458",
+    "semanticHash": "ce6e7bbc84b704d4f8f6fbdbadac81c8600ef6052495872cb40991cdf7199306",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/core"
+  },
+  "semantic": {
+    "role": "Vitest test suite for forced processing behavior of AST extraction and summarization tasks under repair policy",
+    "responsibilities": [
+      "Verifies that ASTExtractionTask executes correctly when forced processing is enabled, even if the underlying task would normally be skipped.",
+      "Verifies that SummarizationTask executes correctly under forced processing conditions.",
+      "Validates that repair policy interacts as expected with forced task execution, ensuring tasks are not prematurely short-circuited.",
+      "Creates isolated temporary project directories with mock file structures to provide realistic but controlled test environments.",
+      "Mocks LLM calls and other expensive dependencies to keep tests fast and deterministic."
+    ],
+    "outOfScope": [
+      "Production configuration loading or schema validation",
+      "Database persistence or synchronization logic",
+      "MCP server or tool definitions",
+      "CLI command parsing or UI rendering",
+      "End-to-end integration with real LLM providers"
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (enforced by the test-file-suffix rule). This file satisfies the constraint."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide automated regression coverage for the forced processing feature of the task runtime, ensuring that AST extraction and summarization tasks respect forced flags and repair policies.",
+      "recentChangeIntent": "No direct changes to this file in the current git intent; the latest commit (release gate fixes and sync) may have influenced the task implementations being tested."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite for forced processing behavior of AST extraction and summarization tasks under repair policy",
+        "responsibilities": [
+          "Verifies that ASTExtractionTask executes correctly when forced processing is enabled, even if the underlying task would normally be skipped.",
+          "Verifies that SummarizationTask executes correctly under forced processing conditions.",
+          "Validates that repair policy interacts as expected with forced task execution, ensuring tasks are not prematurely short-circuited.",
+          "Creates isolated temporary project directories with mock file structures to provide realistic but controlled test environments.",
+          "Mocks LLM calls and other expensive dependencies to keep tests fast and deterministic."
+        ],
+        "outOfScope": [
+          "Production configuration loading or schema validation",
+          "Database persistence or synchronization logic",
+          "MCP server or tool definitions",
+          "CLI command parsing or UI rendering",
+          "End-to-end integration with real LLM providers"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/tasks/ast-extra.js'",
+        "symbols": [
+          "ASTExtractionTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/tasks/summarize.js'",
+        "symbols": [
+          "SummarizationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/core/task-state.js'",
+        "symbols": [
+          "createTaskTelemetryState"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "../../../src/tasks/ast-extra.js",
+        "relation": "import",
+        "symbols": [
+          "ASTExtractionTask"
+        ]
+      },
+      {
+        "targetPath": "../../../src/tasks/summarize.js",
+        "relation": "import",
+        "symbols": [
+          "SummarizationTask"
+        ]
+      },
+      {
+        "targetPath": "../../../src/core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "createTaskTelemetryState"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/core/repair-forced-processing.test.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/createTaskTelemetryState#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/repair-forced-processing.test.ts/_file_#",
+        "targetSymbol": "src/tasks/ast-extra.ts/ASTExtractionTask#",
+        "targetPath": "src/tasks/ast-extra.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/repair-forced-processing.test.ts/_file_#",
+        "targetSymbol": "src/tasks/summarize.ts/SummarizationTask#",
+        "targetPath": "src/tasks/summarize.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/repair-forced-processing.test.ts/_file_#",
+        "targetSymbol": "src/tasks/validate.ts/ValidationTask#",
+        "targetPath": "src/tasks/validate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:39:49.857Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

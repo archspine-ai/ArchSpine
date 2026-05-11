@@ -1,0 +1,267 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/ast-extra.ts",
+    "contentHash": "8232993b72d56f4a3258816757f99c8d8b2bab063dcb648202d6392db9abc6c3",
+    "skeletonHash": "709499b04d28b03c0e109a70348ab04b4ad642f65a9c749f0f10d7cf5a1ccc47",
+    "semanticHash": "21c86ea02d3983739c9f4f327d77da68428671625ced74f7d09f5d4d5589ad51",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "Pipeline stage task responsible for AST extraction, language detection, and symbol registration for source files identified during the scan phase.",
+    "responsibilities": [
+      "Detects source files and resolves their programming language using the language registry and discovery.",
+      "Performs AST extraction for each source file and produces structural skeletons and symbol exports.",
+      "Registers extracted skeletons and exports into the task state and manifest layers.",
+      "Manages checkpoint progress for each file, including start, complete, and skip marks.",
+      "Handles unsupported or non-source files by recording them and optionally cleaning up stale state.",
+      "Uses forced-sync detection to re-extract files that require update."
+    ],
+    "outOfScope": [
+      "File discovery and scanning (handled by the scan stage).",
+      "CLI command parsing or execution orchestration.",
+      "Output rendering or view generation.",
+      "Direct database access (operates through the manifest facade)."
+    ],
+    "invariants": [
+      "Adheres to the task-stage-boundary rule by implementing only stage-local work without crossing into CLI parsing or unrelated orchestration.",
+      "Uses the SpineTask contract and does not bypass core abstractions.",
+      "Relies on ctx.manifest and ctx.extractor for all persistence and extraction, not performing direct I/O beyond reading file content."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "To isolate AST extraction as a dedicated pipeline stage, ensuring clean separation between scanning, extraction, and symbol registration.",
+      "recentChangeIntent": "Applied release gate fixes and synced accumulated source changes; no semantic alteration to the extraction task's contract."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ASTExtractionTask",
+        "description": "Pipeline stage task that performs AST extraction, language detection, and symbol registration for source files. Consumed by the pipeline executor to process scanned file results."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Pipeline stage task for AST extraction, language detection, and symbol registration of scanned source files.",
+        "responsibilities": [
+          "Identify source files and resolve their programming language via the language registry and language discovery modules.",
+          "Extract AST skeletons and symbol exports for each source file using the core extractor.",
+          "Register skeletons and exports into the task runtime state and the manifest layer.",
+          "Manage checkpoint lifecycle for each file, recording starts, completions, and skips.",
+          "Handle unsupported or non-source files by marking them and cleaning up any stale state.",
+          "Detect forced-sync files and re-extract them when necessary."
+        ],
+        "outOfScope": [
+          "File scanning and discovery (part of the scan stage).",
+          "CLI command parsing or general orchestration.",
+          "Rendering or view generation.",
+          "Direct database manipulation (all persistence goes through the manifest facade)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/lang-registry.js'",
+        "symbols": [
+          "LangRegistry"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/lang-discovery.js'",
+        "symbols": [
+          "resolveLanguage"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/task-state.js'",
+        "symbols": [
+          "setTaskSkeleton",
+          "setUnsupportedTaskFile"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "ASTExtractionTask",
+        "kind": "class",
+        "signature": "class ASTExtractionTask"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ASTExtractionTask",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/tasks/ast-extra.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "../ast/lang-registry.js",
+        "relation": "import",
+        "symbols": [
+          "LangRegistry"
+        ]
+      },
+      {
+        "targetPath": "../ast/lang-discovery.js",
+        "relation": "import",
+        "symbols": [
+          "resolveLanguage"
+        ]
+      },
+      {
+        "targetPath": "../core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "setTaskSkeleton",
+          "setUnsupportedTaskFile"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "existsSync",
+          "readFileSync"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "join"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/tasks/ast-extra.ts/_file_#",
+        "targetSymbol": "src/ast/lang-discovery.ts/resolveLanguage#",
+        "targetPath": "src/ast/lang-discovery.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/ast-extra.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/setUnsupportedTaskFile#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/ast-extra.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/setTaskSkeleton#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/ast-extra.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/deleteFile#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/ast-extra.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/integrity.ts/calculateHash#",
+        "targetPath": "src/infra/manifest/integrity.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/ast-extra.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/ensureFileRecord#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/ast-extra.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/symbols.ts/clearFileExports#",
+        "targetPath": "src/infra/db/repositories/symbols.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:04:41.314Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 2,
+    "isHub": true,
+    "hubPercentile": 59,
+    "inCycle": true,
+    "cycleId": "src/core → src/tasks → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

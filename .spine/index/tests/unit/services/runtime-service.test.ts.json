@@ -1,0 +1,309 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/services/runtime-service.test.ts",
+    "contentHash": "36f76a47a6924301e51939acc198b1a96908e1a5010fe92fe6db3bcf606971f9",
+    "skeletonHash": "4f65f81f6fde6c3e28452d57ddcceea2d0003a798dfa55f5f8ff654473a46281",
+    "semanticHash": "3e454fc472f33ad6a5ed8033583744470f7f2482ea8e0fb224fe7ad9d5ddb738",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/services"
+  },
+  "semantic": {
+    "role": "Vitest test suite for the RuntimeService class, validating LLM settings resolution integration with config and secrets.",
+    "responsibilities": [
+      "Validates that resolved LLM settings reflect the configured provider source and value after setting provider and API key.",
+      "Ensures that LLM API key is correctly propagated through the credential backend and appears in resolved settings.",
+      "Verifies that temporary directory scaffolding for test isolation is properly created and cleaned up."
+    ],
+    "outOfScope": [
+      "Does not test error paths or runtime service initialization failures.",
+      "Does not test scanning, aggregation, or task execution behavior of RuntimeService.",
+      "Does not verify multi-provider selection logic or fallback behavior."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide automated regression coverage for the LLM settings resolution path in RuntimeService.",
+      "recentChangeIntent": "Adjust test to reflect config/secrets integration changes from recent release gate fixes."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite for the RuntimeService class, validating LLM settings resolution integration with config and secrets.",
+        "responsibilities": [
+          "Validates that resolved LLM settings reflect the configured provider source and value after setting provider and API key.",
+          "Ensures that LLM API key is correctly propagated through the credential backend and appears in resolved settings.",
+          "Verifies that temporary directory scaffolding for test isolation is properly created and cleaned up."
+        ],
+        "outOfScope": [
+          "Does not test error paths or runtime service initialization failures.",
+          "Does not test scanning, aggregation, or task execution behavior of RuntimeService.",
+          "Does not verify multi-provider selection logic or fallback behavior."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/secrets.js'",
+        "symbols": [
+          "Secrets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/credentials/backend.js'",
+        "symbols": [
+          "MemoryCredentialBackend"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/llm.js'",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/services/runtime-service.js'",
+        "symbols": [
+          "RuntimeService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/services/runtime-execution-profile.js'",
+        "symbols": [
+          "resolveExecutionProfileFromSettings"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/core/errors.js'",
+        "symbols": [
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 14,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/secrets.js",
+        "relation": "import",
+        "symbols": [
+          "Secrets"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/credentials/backend.js",
+        "relation": "import",
+        "symbols": [
+          "MemoryCredentialBackend"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets"
+        ]
+      },
+      {
+        "targetPath": "../../../src/services/runtime-service.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeService"
+        ]
+      },
+      {
+        "targetPath": "../../../src/services/runtime-execution-profile.js",
+        "relation": "import",
+        "symbols": [
+          "resolveExecutionProfileFromSettings"
+        ]
+      },
+      {
+        "targetPath": "../../../src/core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ErrorCodes"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/services/runtime-service.test.ts/_file_#",
+        "targetSymbol": "src/services/runtime-execution-profile.ts/resolveExecutionProfileFromSettings#",
+        "targetPath": "src/services/runtime-execution-profile.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/services/runtime-service.test.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/services/runtime-service.test.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/services/runtime-service.test.ts/_file_#",
+        "targetSymbol": "src/infra/secrets.ts/Secrets#",
+        "targetPath": "src/infra/secrets.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/services/runtime-service.test.ts/_file_#",
+        "targetSymbol": "src/infra/credentials/backend.ts/MemoryCredentialBackend#",
+        "targetPath": "src/infra/credentials/backend.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/services/runtime-service.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/GlobalLLMConfig#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/services/runtime-service.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/GlobalLLMConfig#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/services/runtime-service.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/GlobalLLMSecrets#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/services/runtime-service.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/GlobalLLMSecrets#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/services/runtime-service.test.ts/_file_#",
+        "targetSymbol": "src/services/runtime-service.ts/RuntimeService#",
+        "targetPath": "src/services/runtime-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:10:53.558Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

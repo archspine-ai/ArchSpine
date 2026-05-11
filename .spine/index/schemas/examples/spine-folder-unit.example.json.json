@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "schemas/examples/spine-folder-unit.example.json",
+    "contentHash": "9a6be5a8fb2d48f4401fa10d40e6ce44cfb5c63986d102595be72d01799d9617",
+    "semanticHash": "b4ede9e0a871bc3425d2365f490c7b346da5a10864dc82cf8109e0d25a5aa489",
+    "language": "unsupported",
+    "fileKind": "config",
+    "scope": "schemas/examples"
+  },
+  "semantic": {
+    "role": "Core application module container.",
+    "responsibilities": [
+      "Groups source files that implement the repository indexing pipeline.",
+      "Defines the structural layout of the source directory and its components.",
+      "Provides provenance metadata for traceability of pipeline executions."
+    ],
+    "outOfScope": [],
+    "invariants": [
+      "Each child entry must include a 'filePath' and 'fileKind' matching the ArchSpine schema.",
+      "'schemaVersion' must be a valid semver string.",
+      "'provenance.indexedAt' must be an ISO 8601 timestamp.",
+      "'provenance.generatorVersion' must follow 'archspine/<semver>' format.",
+      "The 'directory' field must point to an existing or intended directory path."
+    ],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core application module container.",
+        "parameter_definitions": {
+          "schemaVersion": "Defines the version of the folder unit schema; used for compatibility checks.",
+          "directory": "Specifies the target directory path that this unit describes.",
+          "role": "Describes the functional purpose of this directory within the system.",
+          "responsibility": "Summarizes what the directory is responsible for organizing.",
+          "children": "List of files or sub-units with their own path, role, and kind.",
+          "filePath": "Relative path to the source file.",
+          "fileKind": "Classifier for the file (e.g., 'source', 'config', 'documentation').",
+          "provenance": "Metadata block recording when and how this unit was indexed.",
+          "provenance.indexedAt": "Timestamp of the last indexing operation.",
+          "provenance.generatorVersion": "Version of the ArchSpine tool that produced this unit.",
+          "provenance.pipelineStages": "Stages executed during indexing (e.g., 'ast', 'llm')."
+        },
+        "stability_and_risks": "This configuration file defines a folder unit that is fundamental to the repository's structural integrity. If the 'directory' path is incorrect or the 'children' references are stale, indexing pipelines may miss or misclassify source files, leading to incomplete views (architecture diagrams, public surface, risk hotspots) and broken dependency analysis. The provenance fields ensure traceability; missing or incorrect provenance can cause cache invalidation and re-indexing overhead. Invariants enforce schema compliance; violation would be caught by the validation pipeline. Overall, this file has low runtime risk but high impact on data quality."
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:50:48.461Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 41,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

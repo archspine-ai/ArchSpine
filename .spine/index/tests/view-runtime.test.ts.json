@@ -1,0 +1,197 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/view-runtime.test.ts",
+    "contentHash": "d2176469edbbf298bf10d3bf8aa4c7d8985a17d3fba48755697634afc0f98d11",
+    "skeletonHash": "621b523b986ab52a32315f276e87ee19ba8edb120c5932bce632d6bdda1e8dc9",
+    "semanticHash": "2ef51a28ddce9ab706304be2404a3ef7ef8a7cf21f2de76ccaaaa6046b933b7b",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests"
+  },
+  "semantic": {
+    "role": "Test suite for view runtime layer resolution logic. Validates the behavior of resolveViewLayer and resolveEnabledViews under various configurations (env vars, config file settings).",
+    "responsibilities": [
+      "Verify that resolveViewLayer returns the correct layer ID based on the SPINE_VIEW_LAYER environment variable when present.",
+      "Verify that resolveViewLayer reads the view-layer from a config file (spine.config.json) when the env var is absent.",
+      "Verify that resolveViewLayer falls back to the default layer when neither env var nor config specifies a layer.",
+      "Verify that resolveEnabledViews returns the appropriate set of enabled views based on the resolved layer."
+    ],
+    "outOfScope": [
+      "Production runtime logic – this file only contains test cases, not runtime code.",
+      "Integration with external systems beyond temporary filesystem setup."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts per repository rules."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide automated regression coverage for the view layer selection mechanism that determines what views are available to users based on configuration and environment.",
+      "recentChangeIntent": "No recent change intent specific to this file; test suite maintains stability of view runtime resolution."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Test suite for view runtime layer resolution logic. Validates the behavior of resolveViewLayer and resolveEnabledViews under various configurations (env vars, config file settings).",
+        "responsibilities": [
+          "Verify that resolveViewLayer returns the correct layer ID based on the SPINE_VIEW_LAYER environment variable when present.",
+          "Verify that resolveViewLayer reads the view-layer from a config file (spine.config.json) when the env var is absent.",
+          "Verify that resolveViewLayer falls back to the default layer when neither env var nor config specifies a layer.",
+          "Verify that resolveEnabledViews returns the appropriate set of enabled views based on the resolved layer."
+        ],
+        "outOfScope": [
+          "Production runtime logic – this file only contains test cases, not runtime code.",
+          "Integration with external systems beyond temporary filesystem setup."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../src/services/view/index.js'",
+        "symbols": [
+          "resolveEnabledViews",
+          "resolveViewLayer"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../src/services/view/index.js",
+        "relation": "import",
+        "symbols": [
+          "resolveEnabledViews",
+          "resolveViewLayer"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/view-runtime.test.ts/_file_#",
+        "targetSymbol": "src/services/view/view-runtime.ts/resolveViewLayer#",
+        "targetPath": "src/services/view/view-runtime.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/view-runtime.test.ts/_file_#",
+        "targetSymbol": "src/services/view/view-runtime.ts/resolveEnabledViews#",
+        "targetPath": "src/services/view/view-runtime.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/view-runtime.test.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/view-runtime.test.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:11:17.883Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

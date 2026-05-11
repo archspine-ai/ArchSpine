@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integration/system/build-script.test.ts",
+    "contentHash": "6af151b118972d07e228c61e01d4396a44053bb60d66c08d0d9b8b18eb6493ea",
+    "skeletonHash": "9d768c7c1c371060e3bc60a96c1f43aa867811593aaae966711607d636c3a5e4",
+    "semanticHash": "be2b7f1807a3b16aaa5f181778048e3b8c6befd42ed04047cdb3f692f72c36a0",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/integration/system"
+  },
+  "semantic": {
+    "role": "Unit test suite for the build script's dist packaging exclusion filter",
+    "responsibilities": [
+      "Verify that `shouldExcludeDistEntry` correctly identifies `__mocks__` directory entries as excludable from distribution packages",
+      "Verify that non-mock source paths are not excluded by `shouldExcludeDistEntry`",
+      "Provide regression coverage for build script packaging logic"
+    ],
+    "outOfScope": [
+      "Direct integration with build or deployment pipelines",
+      "Testing of other build script functions beyond the exclusion filter",
+      "Production runtime behavior"
+    ],
+    "invariants": [
+      "Test files must follow naming convention ending in `.test.ts` or `.spec.ts` (rule: test-file-suffix)"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain correctness of the build packaging filter that strips mock directories from distribution artifacts",
+      "recentChangeIntent": "Introduce test coverage for the `shouldExcludeDistEntry` function to ensure `__mocks__` directories are excluded while other paths remain included"
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Unit test suite for the build script's dist packaging exclusion filter",
+        "responsibilities": [
+          "Verify that `shouldExcludeDistEntry` correctly identifies `__mocks__` directory entries as excludable from distribution packages",
+          "Verify that non-mock source paths are not excluded by `shouldExcludeDistEntry`",
+          "Provide regression coverage for build script packaging logic"
+        ],
+        "outOfScope": [
+          "Direct integration with build or deployment pipelines",
+          "Testing of other build script functions beyond the exclusion filter",
+          "Production runtime behavior"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../scripts/build.mjs'",
+        "symbols": [
+          "shouldExcludeDistEntry"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "scripts/build.mjs",
+        "relation": "import",
+        "symbols": [
+          "shouldExcludeDistEntry"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:07:43.442Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

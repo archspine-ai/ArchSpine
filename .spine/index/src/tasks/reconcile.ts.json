@@ -1,0 +1,263 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/reconcile.ts",
+    "contentHash": "5d642058c221eccda07e205cb7f354f41cf58cad386c7c36173c93e4a7334f14",
+    "skeletonHash": "2a5833fdd24386458fb26dee316c92118b3bd9fbae90eb2048578b7f9240fa2b",
+    "semanticHash": "ed0040a36c07631bf8a7710ad89d2e1043b693e752fd06fbfb05369cac3caefe",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "Pipeline task stage that reconciles the file system state against the indexed cache by detecting new, changed, or removed files, updating file statuses, and clearing stale symbol exports.",
+    "responsibilities": [
+      "Load the language snapshot from the manifest to determine which file extensions are tracked per language.",
+      "Query the scanner for all tracked files and filter by the set of tracked extensions.",
+      "For each tracked file, calculate a content hash and compare it with the manifest's cached state to decide if an update is needed.",
+      "Read index documents, validate their compatibility via `isCompatibleIndexDocument`, and produce SpineUnit records.",
+      "Update file status with associated documentation records for new or changed files.",
+      "Clear symbol exports for files that no longer exist on disk.",
+      "Report index read issues once per incompatible document."
+    ],
+    "outOfScope": [
+      "CLI command parsing and argument handling.",
+      "Orchestration of unrelated services (e.g., LLM, MCP, view rendering).",
+      "File system scanning of untracked extensions (delegated to scanner).",
+      "Deep AST extraction beyond index document reading."
+    ],
+    "invariants": [
+      "Must only depend on core task contracts (`SpineTask`, `TaskContext`) and infrastructure utilities (manifest, scanner, index-reader).",
+      "Must not perform CLI command parsing or service orchestration (rule `task-stage-boundary`).",
+      "Must call `reportIndexReadIssueOnce` at most once per incompatible index document to avoid spam."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "ArchSpine v1.0.0 establishes a layered pipeline architecture where each task stage performs a focused, local transformation on project state. ReconcileTask is the stage responsible for maintaining cache consistency between the live file system and the index database.",
+      "recentChangeIntent": "0c6bd73 — ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era. Introduces the reconciled pipeline stage as part of the new governance layer."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ReconcileTask",
+        "description": "Pipeline task class that synchronizes the file system state with the indexed cache. Invoked by the pipeline runner after scanning and before downstream stages like summarization or validation."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Pipeline task stage that reconciles the file system state against the indexed cache by detecting new, changed, or removed files, updating file statuses, and clearing stale symbol exports.",
+        "responsibilities": [
+          "Load the language snapshot from the manifest to determine which file extensions are tracked per language.",
+          "Query the scanner for all tracked files and filter by the set of tracked extensions.",
+          "For each tracked file, calculate a content hash and compare it with the manifest's cached state to decide if an update is needed.",
+          "Read index documents, validate their compatibility via `isCompatibleIndexDocument`, and produce SpineUnit records.",
+          "Update file status with associated documentation records for new or changed files.",
+          "Clear symbol exports for files that no longer exist on disk.",
+          "Report index read issues once per incompatible document."
+        ],
+        "outOfScope": [
+          "CLI command parsing and argument handling.",
+          "Orchestration of unrelated services (e.g., LLM, MCP, view rendering).",
+          "File system scanning of untracked extensions (delegated to scanner).",
+          "Deep AST extraction beyond index document reading."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/lang-registry.js'",
+        "symbols": [
+          "LangRegistry"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/index-reader.js'",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "ReconcileTask",
+        "kind": "class",
+        "signature": "class ReconcileTask"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ReconcileTask",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/tasks/reconcile.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "../ast/lang-registry.js",
+        "relation": "import",
+        "symbols": [
+          "LangRegistry"
+        ]
+      },
+      {
+        "targetPath": "../infra/index-reader.js",
+        "relation": "import",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/tasks/reconcile.ts/_file_#",
+        "targetSymbol": "src/infra/index-reader.ts/isCompatibleIndexDocument#",
+        "targetPath": "src/infra/index-reader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/reconcile.ts/_file_#",
+        "targetSymbol": "src/infra/index-reader.ts/reportIndexReadIssueOnce#",
+        "targetPath": "src/infra/index-reader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/reconcile.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/state.ts/loadLanguageSnapshot#",
+        "targetPath": "src/infra/manifest/state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/reconcile.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/integrity.ts/calculateHash#",
+        "targetPath": "src/infra/manifest/integrity.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/reconcile.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/updateFileStatusWithDocs#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/reconcile.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/symbols.ts/clearFileExports#",
+        "targetPath": "src/infra/db/repositories/symbols.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:04:26.947Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 2,
+    "isHub": true,
+    "hubPercentile": 59,
+    "inCycle": true,
+    "cycleId": "src/core → src/tasks → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

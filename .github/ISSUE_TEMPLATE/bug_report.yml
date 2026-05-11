@@ -1,0 +1,45 @@
+name: 'Bug Report'
+description: 'Report a bug to help us improve ArchSpine'
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: description
+    attributes:
+      label: 'Description'
+      description: 'A clear and concise description of what the bug is.'
+      placeholder: 'I encountered an issue when running `spine sync`...'
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 'Reproduction'
+      description: 'Steps to reproduce the behavior.'
+      placeholder: |
+        1. Run '...'
+        2. See error '...'
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: 'ArchSpine Version'
+      description: 'Output of `spine --version` or version in `package.json`'
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: 'Relevant Logs'
+      description: 'Please provide any relevant log output (especially from `.spine/logs/` if applicable).'
+      render: shell
+  - type: textarea
+    id: environment
+    attributes:
+      label: 'Environment'
+      description: 'OS, Node.js version, etc.'
+      placeholder: 'macOS 14.4, Node.js v20.11.0'

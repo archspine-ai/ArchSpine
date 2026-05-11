@@ -1,0 +1,330 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/scanner.ts",
+    "contentHash": "3826adaa5ad9627b7c63961fcbf9a7025e4b6339c30d1664e20ec9c780baa9da",
+    "skeletonHash": "9215d1b0f5d7ead984037c972a3c075f8a765eda4795392ab08a5720bc0fa263",
+    "semanticHash": "cc6382b59cfd35e8aea2a42069407ce848bfbc65d3ca1ca40767c7ced5271935",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Core file system scanner engine that recursively traverses the project directory, applies `.gitignore` and `.spineignore` exclusion rules via the `ignore` library, integrates with git for change detection, and produces a normalized, sorted list of all files and changed files for downstream processing.",
+    "responsibilities": [
+      "Initialize scan policy and ignore chains from provided policy and default values.",
+      "Load and apply .gitignore and .spineignore files during directory traversal.",
+      "Normalize inclusion/exclusion patterns and create efficient matchers using the `ignore` library.",
+      "Recursively walk the file system, collecting all files while respecting ignore rules and protocol exclusions.",
+      "Integrate with git via ScannerGitClient to compute changed files relative to a base commit.",
+      "Produce a ScanResult containing a sorted list of all discovered files and changed files.",
+      "Support dry-run mode that generates a ScanDryRunReport with grouped counts and notable exclusions."
+    ],
+    "outOfScope": [
+      "Does not parse file contents or perform AST extraction.",
+      "Does not perform semantic or architectural analysis.",
+      "Does not enforce architectural rules or policies.",
+      "Does not trigger or orchestrate other pipeline stages."
+    ],
+    "invariants": [
+      "Engine modules must not import CLI entrypoints or service-level orchestration code.",
+      "The scanner must remain decoupled from presentation and orchestration layers.",
+      "All file paths are normalized to POSIX separators before pattern matching.",
+      "The output lists must contain unique, sorted paths."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable file scanning engine that isolates file discovery from other pipeline stages, ensuring decoupling and testability.",
+      "recentChangeIntent": "Established the scanner engine as part of the v1.0.0 architectural governance release, providing the foundational file discovery layer for the ArchSpine pipeline."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "Scanner",
+        "description": "Primary class for file system scanning. Accepts root directory, scan policy, optional git client and runtime IO. Exposes methods to walk the directory tree, apply ignore rules, detect changed files via git, and produce scan results or dry-run reports."
+      },
+      {
+        "symbolName": "ScanResult",
+        "description": "Interface defining the output of a scan: `allFiles` (sorted list of all discovered files) and `changedFiles` (list of files changed since a base commit)."
+      },
+      {
+        "symbolName": "ScanDryRunReport",
+        "description": "Interface defining the output of a dry-run scan, including grouped counts of files and notable exclusions."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core file system scanner engine that recursively traverses the project directory, applies `.gitignore` and `.spineignore` exclusion rules via the `ignore` library, integrates with git for change detection, and produces a normalized, sorted list of all files and changed files for downstream processing.",
+        "responsibilities": [
+          "Initialize scan policy and ignore chains from provided policy and default values.",
+          "Load and apply .gitignore and .spineignore files during directory traversal.",
+          "Normalize inclusion/exclusion patterns and create efficient matchers using the `ignore` library.",
+          "Recursively walk the file system, collecting all files while respecting ignore rules and protocol exclusions.",
+          "Integrate with git via ScannerGitClient to compute changed files relative to a base commit.",
+          "Produce a ScanResult containing a sorted list of all discovered files and changed files.",
+          "Support dry-run mode that generates a ScanDryRunReport with grouped counts and notable exclusions."
+        ],
+        "outOfScope": [
+          "Does not parse file contents or perform AST extraction.",
+          "Does not perform semantic or architectural analysis.",
+          "Does not enforce architectural rules or policies.",
+          "Does not trigger or orchestrate other pipeline stages."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/scan-policy.js'",
+        "symbols": [
+          "DEFAULT_SCAN_POLICY",
+          "ScanPolicy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./scanner-git.js'",
+        "symbols": [
+          "defaultScannerGitClient",
+          "type ScannerGitClient"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./scanner-utils.js'",
+        "symbols": [
+          "buildDryRunGroupedCounts",
+          "collectNotableExclusions",
+          "createScannerMatcher",
+          "formatDryRunReport",
+          "normalizeScannerPath",
+          "normalizeScannerPattern",
+          "splitScannerOutput",
+          "uniqueScannerPaths"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'ignore'",
+        "symbols": [
+          "ignore"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "Scanner",
+        "kind": "class",
+        "signature": "class Scanner"
+      },
+      {
+        "name": "ScanResult",
+        "kind": "interface",
+        "signature": "interface ScanResult"
+      },
+      {
+        "name": "ScanDryRunReport",
+        "kind": "interface",
+        "signature": "interface ScanDryRunReport"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "Scanner",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/engines/scanner.ts#"
+      },
+      {
+        "name": "ScanResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/scanner.ts#"
+      },
+      {
+        "name": "ScanDryRunReport",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/scanner.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/scan-policy.js",
+        "relation": "import",
+        "symbols": [
+          "DEFAULT_SCAN_POLICY",
+          "ScanPolicy"
+        ]
+      },
+      {
+        "targetPath": "./scanner-git.js",
+        "relation": "import",
+        "symbols": [
+          "defaultScannerGitClient",
+          "ScannerGitClient"
+        ]
+      },
+      {
+        "targetPath": "./scanner-utils.js",
+        "relation": "import",
+        "symbols": [
+          "buildDryRunGroupedCounts",
+          "collectNotableExclusions",
+          "createScannerMatcher",
+          "formatDryRunReport",
+          "normalizeScannerPath",
+          "normalizeScannerPattern",
+          "splitScannerOutput",
+          "uniqueScannerPaths"
+        ]
+      },
+      {
+        "targetPath": "../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "ignore",
+        "relation": "import",
+        "symbols": [
+          "ignore"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/engines/scanner.ts/_file_#",
+        "targetSymbol": "src/engines/scanner-utils.ts/normalizeScannerPath#",
+        "targetPath": "src/engines/scanner-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/scanner.ts/_file_#",
+        "targetSymbol": "src/engines/scanner-utils.ts/normalizeScannerPattern#",
+        "targetPath": "src/engines/scanner-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/scanner.ts/_file_#",
+        "targetSymbol": "src/engines/scanner-utils.ts/createScannerMatcher#",
+        "targetPath": "src/engines/scanner-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/scanner.ts/_file_#",
+        "targetSymbol": "src/engines/scanner-utils.ts/splitScannerOutput#",
+        "targetPath": "src/engines/scanner-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/scanner.ts/_file_#",
+        "targetSymbol": "src/engines/scanner-utils.ts/uniqueScannerPaths#",
+        "targetPath": "src/engines/scanner-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/scanner.ts/_file_#",
+        "targetSymbol": "src/engines/scanner-utils.ts/buildDryRunGroupedCounts#",
+        "targetPath": "src/engines/scanner-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/scanner.ts/_file_#",
+        "targetSymbol": "src/engines/scanner-utils.ts/collectNotableExclusions#",
+        "targetPath": "src/engines/scanner-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/scanner.ts/_file_#",
+        "targetSymbol": "src/engines/scanner-utils.ts/formatDryRunReport#",
+        "targetPath": "src/engines/scanner-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:56:40.254Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 71,
+    "inCycle": true,
+    "cycleId": "src/core → src/types → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

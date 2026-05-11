@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "scripts/build.mjs",
+    "contentHash": "5645e777be2a99a7cd0b985fcf960da9b8565edf8ae66f0aec90c7ebd5ab56be",
+    "semanticHash": "316653e99ae29eeb27788bc839107abfd2bfa8a6e26e599dc9e53865a5bddd03",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": "scripts"
+  },
+  "semantic": {
+    "role": "Build script for the ArchSpine project that compiles TypeScript, copies assets, and cleans up build artifacts.",
+    "responsibilities": [
+      "TypeScript compilation via tsc",
+      "Copying AST rule files (YAML) to dist",
+      "Copying project assets (excluding .ts files and mock directories)",
+      "Removing __mocks__ directories from dist",
+      "Setting executable permission on CLI entry point"
+    ],
+    "outOfScope": [
+      "Runtime execution",
+      "Unit testing",
+      "Deployment",
+      "Development environment setup"
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This script automates the build process for the ArchSpine project. It compiles TypeScript source code using the TypeScript compiler, copies configuration files for abstract syntax tree rules (YAML files) into the distribution directory, and replicates all project assets while excluding TypeScript source files and mock directories. It also cleans up any residual mock directories within the built output to ensure a clean distribution.",
+        "context_and_audience": "This document is intended for developers and maintainers of the ArchSpine project who need to understand how the project is built. It serves as the primary build script invoked during development and release workflows.",
+        "key_takeaways": [
+          "The build process starts by removing the previous dist directory and running tsc.",
+          "Non-'.ts' asset files are copied from src/assets to dist/assets.",
+          "Rule YAML files under src/ast/rules are copied directly to dist/ast/rules.",
+          "All __mocks__ directories are recursively removed from the dist output.",
+          "The CLI entry point (dist/cli/index.js) is made executable."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [
+      {
+        "targetPath": "tests/integration/system/build-script.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:51:28.555Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 6,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

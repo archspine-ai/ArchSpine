@@ -1,0 +1,194 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/init/types.ts",
+    "contentHash": "4234ccf343b7fcd33f546c8b735ced41145f80aa186c3612013e2bb872d66562",
+    "skeletonHash": "53755c5493ac614f9bb37b0837dcdbc31fa0f220de145e28996b171c76629a92",
+    "semanticHash": "1e23d7aefcd828ba333d091e69e57ab424f12c9c1989202417da50c0edde8de5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/init"
+  },
+  "semantic": {
+    "role": "Type-contract module for the CLI `init` command, defining the interfaces and type aliases that govern the shape of initialization options, bootstrap results, and status enums consumed by init-related entrypoints and services.",
+    "responsibilities": [
+      "Define the `InitSharedOptions` interface that aggregates the configuration and runtime service references required by init bootstrap modules.",
+      "Define the `RepositoryBootstrapResult` interface that describes the outcome of repository bootstrapping (e.g., created or updated spine files).",
+      "Enumerate bounded string literal types for LLM scope (`LLMScope`), hook setup status (`HookSetupStatus`), and artifact strategy (`ArtifactStrategy`) to constrain valid values across the init pipeline."
+    ],
+    "outOfScope": [
+      "Execution of any initialization logic, file I/O, or git operations.",
+      "Persistent state management or database interactions.",
+      "CLI command routing or argument parsing.",
+      "Business logic beyond type definitions."
+    ],
+    "invariants": [
+      "The exported types must remain backward-compatible with all init entrypoints (`init.ts`, `repository-bootstrap.ts`, `runtime-bootstrap.ts`).",
+      "`InitSharedOptions.rootDir`, `Config`, and `RuntimeService` must always be provided for bootstrap execution."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a thin type-contract layer between CLI init entrypoints and bootstrap services, ensuring type safety without absorbing any execution responsibilities.",
+      "recentChangeIntent": "Align with ArchSpine v1.0.0's architectural governance by formalizing init option and result types as part of the semantic layer."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "InitSharedOptions",
+        "description": "Interface that aggregates `rootDir`, `Config`, and `RuntimeService` instances required by init bootstrap modules. Consumed by `repository-bootstrap` and `runtime-bootstrap`."
+      },
+      {
+        "symbolName": "RepositoryBootstrapResult",
+        "description": "Interface describing the result of repository bootstrapping, including flags for files created or updated. Consumed by init command handlers."
+      },
+      {
+        "symbolName": "LLMScope",
+        "description": "String literal type `'global' | 'project'` indicating the scope for LLM configuration. Used to constrain valid values in init prompts."
+      },
+      {
+        "symbolName": "HookSetupStatus",
+        "description": "String literal type `'enabled' | 'disabled' | 'skipped-no-git-root'` representing the outcome of git hook setup attempts. Used to report status to the user."
+      },
+      {
+        "symbolName": "ArtifactStrategy",
+        "description": "String literal type `'local' | 'distributable'` defining how artifacts should be stored. Influences file placement during initialization."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Type-contract module for the CLI `init` command, defining the interfaces and type aliases that govern the shape of initialization options, bootstrap results, and status enums consumed by init-related entrypoints and services.",
+        "responsibilities": [
+          "Define the `InitSharedOptions` interface that aggregates the configuration and runtime service references required by init bootstrap modules.",
+          "Define the `RepositoryBootstrapResult` interface that describes the outcome of repository bootstrapping (e.g., created or updated spine files).",
+          "Enumerate bounded string literal types for LLM scope (`LLMScope`), hook setup status (`HookSetupStatus`), and artifact strategy (`ArtifactStrategy`) to constrain valid values across the init pipeline."
+        ],
+        "outOfScope": [
+          "Execution of any initialization logic, file I/O, or git operations.",
+          "Persistent state management or database interactions.",
+          "CLI command routing or argument parsing.",
+          "Business logic beyond type definitions."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../services/runtime-service.js'",
+        "symbols": [
+          "RuntimeService"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "InitSharedOptions",
+        "kind": "interface",
+        "signature": "interface InitSharedOptions"
+      },
+      {
+        "name": "RepositoryBootstrapResult",
+        "kind": "interface",
+        "signature": "interface RepositoryBootstrapResult"
+      },
+      {
+        "name": "LLMScope",
+        "kind": "type",
+        "signature": "type LLMScope"
+      },
+      {
+        "name": "HookSetupStatus",
+        "kind": "type",
+        "signature": "type HookSetupStatus"
+      },
+      {
+        "name": "ArtifactStrategy",
+        "kind": "type",
+        "signature": "type ArtifactStrategy"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "InitSharedOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/init/types.ts#"
+      },
+      {
+        "name": "RepositoryBootstrapResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/init/types.ts#"
+      },
+      {
+        "name": "LLMScope",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/cli/init/types.ts#"
+      },
+      {
+        "name": "HookSetupStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/cli/init/types.ts#"
+      },
+      {
+        "name": "ArtifactStrategy",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/cli/init/types.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 5,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "src/services/runtime-service.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeService"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:54:30.502Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 53,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

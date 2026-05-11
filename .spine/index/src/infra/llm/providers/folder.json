@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/infra/llm/providers",
+  "role": "LLM transport providers and utility modules for interacting with large language models across different AI platforms.",
+  "responsibility": "Provides a unified abstraction for making LLM API calls via pluggable providers (Gemini, OpenAI, mock), along with utilities for parsing structured responses, extracting markdown code blocks, and aggregating usage information, enabling deterministic testing and flexible model selection.",
+  "children": [
+    {
+      "filePath": "src/infra/llm/providers/gemini.ts",
+      "role": "Infrastructure LLM transport provider implementing the LLMTransport interface for Google Gemini models. A thin API caller that wraps the @google/generative-ai SDK.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/llm/providers/mock.ts",
+      "role": "Mock implementation of the LLMClient provider interface, providing deterministic simulated responses and built-in architectural rule violation detection for testing purposes.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/llm/providers/openai.ts",
+      "role": "LLM transport provider for OpenAI-compatible APIs. Implements the LLMTransport interface to make chat completion requests through the OpenAI SDK.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/llm/providers/utils.ts",
+      "role": "Infrastructure utility module providing low-level parsers for LLM response extraction and prompt context construction in the prompt subsystem.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:11:43.696Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

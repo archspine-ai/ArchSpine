@@ -1,0 +1,198 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integration/cli/sync-cli-built.test.ts",
+    "contentHash": "59c5fa916672fbc9861791330df6c90d2a14923402711db3dde7225f2ee4ccdd",
+    "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
+    "semanticHash": "e4786358241a28acd5266c0117cef338105ac7e1fd5e36503073486d000b68c4",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/integration/cli"
+  },
+  "semantic": {
+    "role": "Integration test suite for the built CLI sync command and related operations.",
+    "responsibilities": [
+      "Create a temporary repository fixture to isolate test environment from the actual project.",
+      "Execute the built CLI binary (dist/cli/index.js) with subcommands like sync and remove.",
+      "Verify that the sync command initializes and synchronizes a minimal project correctly.",
+      "Assert that the CLI processes exit codes, output, and file changes as expected."
+    ],
+    "outOfScope": [
+      "Unit tests for individual modules or internal functions.",
+      "Tests requiring external LLM, network services, or real credentials.",
+      "Performance, load, or security regression testing."
+    ],
+    "invariants": [
+      "The file is a test suite (not part of the main application source).",
+      "It uses vitest (describe, it, beforeAll) and child_process (execFileSync, spawnSync).",
+      "Temporary directories are created and cleaned up per test run."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide automated regression coverage for the CLI built artifact, ensuring that after build and packaging the primary commands (sync, remove) still behave correctly.",
+      "recentChangeIntent": "Reflects the removal of legacy CLI aliases and related test fixes; validates that the sync command works after those changes."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Integration test suite for the built CLI sync command and related operations.",
+        "responsibilities": [
+          "Create a temporary repository fixture to isolate test environment from the actual project.",
+          "Execute the built CLI binary (dist/cli/index.js) with subcommands like sync and remove.",
+          "Verify that the sync command initializes and synchronizes a minimal project correctly.",
+          "Assert that the CLI processes exit codes, output, and file changes as expected."
+        ],
+        "outOfScope": [
+          "Unit tests for individual modules or internal functions.",
+          "Tests requiring external LLM, network services, or real credentials.",
+          "Performance, load, or security regression testing."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ]
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:07:20.002Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

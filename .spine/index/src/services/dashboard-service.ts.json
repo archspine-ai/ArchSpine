@@ -1,0 +1,150 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/dashboard-service.ts",
+    "contentHash": "05762919b501423e4d1b659b08aeae7163c52c804c203cbdcc9a6ab33896107f",
+    "skeletonHash": "4d09da140bfa6b6e7b7376040d4bf300ca25e5f92f8c6e0b3a843669f62955fc",
+    "semanticHash": "fecaa6d1deb4df52a4302d95579807a64ba196d8d2891c3023cf9204b1f2748f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Service-layer data-access function providing ArchSpine dashboard metadata from the .spine control plane.",
+    "responsibilities": [
+      "Read and aggregate dashboard status from the .spine directory (existence, last sync timestamp, enabled view IDs, total rule count).",
+      "Encapsulate file I/O so CLI modules remain thin entrypoints without direct filesystem logic.",
+      "Expose a typed interface (DashboardData) describing the control plane's current state."
+    ],
+    "outOfScope": [
+      "Modifying or writing to the .spine directory.",
+      "Authentication or authorization logic.",
+      "UI rendering or HTTP handling."
+    ],
+    "invariants": [
+      "The module resides under src/services/, not src/infra/, satisfying the service-runtime-boundary rule's intent.",
+      "All filesystem operations target only the .spine directory relative to the provided rootDir.",
+      "No side-effects beyond reading the filesystem."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Keep CLI modules thin by moving raw filesystem access into a dedicated service module.",
+      "recentChangeIntent": "Unknown; git intent shows only a minor bump, no functional change."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "getDashboardData",
+        "description": "Reads and returns dashboard status from the .spine control plane. Used by CLI commands to display current ArchSpine state."
+      },
+      {
+        "symbolName": "DashboardData",
+        "description": "Data transfer object describing the .spine control plane status: hasSpine, lastSync timestamp, list of enabledViews, and rulesCount."
+      }
+    ],
+    "ruleViolations": [
+      {
+        "id": "service-runtime-boundary",
+        "severity": "warning",
+        "reason": "The file src/services/dashboard-service.ts is a view-specific service module (it provides dashboard metadata). The rule states that view-specific service modules should live under src/services/view/** rather than directly in src/services/. The current location violates that placement directive."
+      }
+    ],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Service-layer data-access function providing ArchSpine dashboard metadata from the .spine control plane.",
+        "responsibilities": [
+          "Read and aggregate dashboard status from the .spine directory (existence, last sync timestamp, enabled view IDs, total rule count).",
+          "Encapsulate file I/O so CLI modules remain thin entrypoints without direct filesystem logic.",
+          "Expose a typed interface (DashboardData) describing the control plane's current state."
+        ],
+        "outOfScope": [
+          "Modifying or writing to the .spine directory.",
+          "Authentication or authorization logic.",
+          "UI rendering or HTTP handling."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "getDashboardData",
+        "kind": "function",
+        "signature": "getDashboardData(rootDir: string)"
+      },
+      {
+        "name": "DashboardData",
+        "kind": "interface",
+        "signature": "interface DashboardData"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "getDashboardData",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/dashboard-service.ts#"
+      },
+      {
+        "name": "DashboardData",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/dashboard-service.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "existsSync",
+          "readFileSync",
+          "readdirSync"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T10:02:45.075Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

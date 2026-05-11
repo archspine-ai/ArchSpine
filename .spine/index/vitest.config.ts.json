@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "vitest.config.ts",
+    "contentHash": "94ee0793dcc0eff310d163c568fb01ec5a4de1601fb4287e42a33266615f9908",
+    "skeletonHash": "17cfc82e13170542667d1d67fcd6ed670b70d0c6abc03e3888a4939bcb173660",
+    "semanticHash": "5127a251736e70396f9e3ed1854eea8b282d92e5fba4d29bd12a3cf482b1e396",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": ""
+  },
+  "semantic": {
+    "role": "Vitest configuration file that defines the unit test runner settings for the ArchSpine project.",
+    "responsibilities": [
+      "Specifies the glob patterns for including test files (tests/**/*.test.ts, tests/**/*.bench.ts) and excluding e2e tests.",
+      "Sets a default test timeout of 60 seconds and hook timeout of 20 seconds."
+    ],
+    "outOfScope": [
+      "Does not define or orchestrate any business logic.",
+      "Does not manage any domain or infrastructure concerns."
+    ],
+    "invariants": [
+      "The configuration must be consumed by Vitest to determine which test files to run and under what timeout constraints."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish a consistent test runner configuration for all unit and benchmark tests, excluding end-to-end tests from this configuration.",
+      "recentChangeIntent": "No recent changes detected from git intent; the file is in its initial or stable state."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "default (export default defineConfig({...}))",
+        "description": "Exports the Vitest configuration object consumed by the Vitest CLI or programmatic runner. It controls which test files are included, excluded, and the timeout values."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest configuration file that defines the unit test runner settings for the ArchSpine project.",
+        "responsibilities": [
+          "Specifies the glob patterns for including test files (tests/**/*.test.ts, tests/**/*.bench.ts) and excluding e2e tests.",
+          "Sets a default test timeout of 60 seconds and hook timeout of 20 seconds."
+        ],
+        "outOfScope": [
+          "Does not define or orchestrate any business logic.",
+          "Does not manage any domain or infrastructure concerns."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest/config'",
+        "symbols": [
+          "defineConfig"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "default",
+        "kind": "unknown",
+        "signature": "default defineConfig({\n"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "default",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "vitest.config.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest/config",
+        "relation": "import",
+        "symbols": [
+          "defineConfig"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:11:09.175Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 24,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

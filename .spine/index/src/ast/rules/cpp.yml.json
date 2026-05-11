@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/ast/rules/cpp.yml",
+    "contentHash": "f83341f245071223bf897a5e3c45b96e0947b425f9d2a428c2e9320a8cd50358",
+    "semanticHash": "878db9dde086bba99c129ff4241f884216bef22a401e59ec3df969bffa883aaf",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": "src/ast/rules"
+  },
+  "semantic": {
+    "role": "Defines AST extraction rules for the C/C++ programming language within the ArchSpine scanning pipeline.",
+    "responsibilities": [
+      "Specifies how to detect and extract import statements (#include directives).",
+      "Defines export patterns for functions, classes, structs, namespaces, and template classes using tree-sitter AST queries.",
+      "Defines usage patterns for function calls, scoped access (::), and method calls (.).",
+      "Maps each extracted symbol to a semantic kind (Function, Class, Type)."
+    ],
+    "outOfScope": [
+      "Does not cover other programming languages (e.g., Python, TypeScript).",
+      "Does not define high-level architecture or rules beyond symbol extraction.",
+      "Does not describe runtime behavior or project structure constraints."
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This document serves as a configuration file for ArchSpine's AST-based code scanner, specifically targeting C and C++ source files. It provides the rules necessary to automatically discover and classify declarations such as functions, classes, structs, namespaces, and template classes, as well as to recognize usage patterns like direct calls, scoped references, and method invocations. By parsing these patterns, ArchSpine builds a symbol graph that tracks where each symbol is defined and used, enabling dependency analysis, impact assessment, and architectural rule enforcement.",
+        "context_and_audience": "This file is read by ArchSpine's scanner engine during project initialization and subsequent scans. It is intended for developers maintaining the ArchSpine tool itself (i.e., contributors to the repo) who need to adjust how C/C++ code is interpreted. It is also relevant for AI agents that assist with code understanding, as they rely on the symbol index produced by these rules.",
+        "key_takeaways": [
+          "This file is part of ArchSpine's AST rule set and is specific to C/C++.",
+          "It defines five export categories: function, class, struct, namespace, and template_class.",
+          "Patterns are expressed using tree-sitter query syntax, referencing named capture groups.",
+          "Usage patterns (call, scoped, method) allow ArchSpine to trace symbol usage across the codebase.",
+          "Changes to this file can affect the completeness and accuracy of the symbol graph for C/C++ projects."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:52:21.698Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 8,
+    "isHub": true,
+    "hubPercentile": 94,
+    "inCycle": true,
+    "cycleId": "src/ast → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

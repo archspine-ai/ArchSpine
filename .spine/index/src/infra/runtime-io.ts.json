@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/runtime-io.ts",
+    "contentHash": "016ba421678e07b86c6f6de4b72f1294bab567fc5ac8bbff89d158a8f8b13617",
+    "skeletonHash": "c547ca8e7757fa3ad6e9fe9d5b1afcc99cc276adea12fddc812ab442c0b25205",
+    "semanticHash": "115ec2029ed4f2a140b4e2faf51eaeebb1d23afa7564df020a9154d44eb85ff7",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure layer defining the Runtime I/O contract (interface) and a default console-based implementation for logging and user confirmation.",
+    "responsibilities": [
+      "Define the `RuntimeIO` interface as a stable abstraction for runtime output (info, warn, error) and user confirmation (confirm).",
+      "Provide `defaultRuntimeIO`, a concrete implementation using `console.log`, `console.warn`, `console.error` for output and delegating confirm to `promptForExplicitConfirmation`.",
+      "Serve as a public infra facade that other modules can depend on for I/O without coupling directly to console or prompt implementations."
+    ],
+    "outOfScope": [
+      "File system or network I/O operations.",
+      "Any non-console output mechanisms (e.g., GUI dialogs, remote logging).",
+      "Buffering or formatting of log messages beyond simple console use."
+    ],
+    "invariants": [
+      "The `RuntimeIO` interface must remain backwards-compatible to avoid breaking consumers.",
+      "The default implementation must not introduce side effects beyond console I/O and prompt for confirmation.",
+      "Callers should prefer importing `defaultRuntimeIO` from this module rather than reaching into deeper implementation paths (per infra-facade-imports rule)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish a stable, swappable I/O boundary for runtime interactions so that CLI, MCP server, and other components can operate without direct console dependencies.",
+      "recentChangeIntent": "No specific recent change; the file is part of the v1.0.0 release baseline."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "RuntimeIO",
+        "description": "Interface defining the contract for runtime output (info, warn, error) and user confirmation. Any consumer that requires logging or prompts should depend on this interface."
+      },
+      {
+        "symbolName": "defaultRuntimeIO",
+        "description": "Default implementation of RuntimeIO that logs to console and prompts using promptForExplicitConfirmation. Used as the standard runtime I/O object across the codebase."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure layer defining the Runtime I/O contract (interface) and a default console-based implementation for logging and user confirmation.",
+        "responsibilities": [
+          "Define the `RuntimeIO` interface as a stable abstraction for runtime output (info, warn, error) and user confirmation (confirm).",
+          "Provide `defaultRuntimeIO`, a concrete implementation using `console.log`, `console.warn`, `console.error` for output and delegating confirm to `promptForExplicitConfirmation`.",
+          "Serve as a public infra facade that other modules can depend on for I/O without coupling directly to console or prompt implementations."
+        ],
+        "outOfScope": [
+          "File system or network I/O operations.",
+          "Any non-console output mechanisms (e.g., GUI dialogs, remote logging).",
+          "Buffering or formatting of log messages beyond simple console use."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../utils/confirm.js'",
+        "symbols": [
+          "promptForExplicitConfirmation"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "RuntimeIO",
+        "kind": "interface",
+        "signature": "interface RuntimeIO"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "RuntimeIO",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/runtime-io.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../utils/confirm.js",
+        "relation": "import",
+        "symbols": [
+          "promptForExplicitConfirmation"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/view/view-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/runtime-io.ts/_file_#",
+        "targetSymbol": "src/utils/confirm.ts/promptForExplicitConfirmation#",
+        "targetPath": "src/utils/confirm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:01:42.543Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

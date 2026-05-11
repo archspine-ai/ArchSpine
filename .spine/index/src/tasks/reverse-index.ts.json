@@ -1,0 +1,224 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/reverse-index.ts",
+    "contentHash": "bbee6a177b4e99c77c9ac349c749e39cbc3e0dc4963cbd54ff2ffb32b4336362",
+    "skeletonHash": "f593abbfd5c146f5c74ba91c743c80938e34b0038713d24fcf13a543729fa96a",
+    "semanticHash": "de5aaa97aa6db8a0926f4a4fc27b23e2a1eadde81985b23e112ed91cfa18f4d6",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "Pipeline task stage responsible for computing reverse dependency edges by scanning tracked source files for index documents and caching the resulting dependency graph.",
+    "responsibilities": [
+      "Retrieve all tracked files from the scanner context.",
+      "For each tracked file, read its index document if present and compatible.",
+      "Extract source path and target path from each index document to build reverse dependency edges.",
+      "Cache reverse edges in an in-memory map indexed by target path.",
+      "Report warnings for files without a compatible index document via `reportIndexReadIssueOnce`.",
+      "Override `exec` method to orchestrate the iterative scanning and edge-building.",
+      "Provide checkpoint ID 'reverse-index' for pipeline resumption."
+    ],
+    "outOfScope": [
+      "File content analysis or AST extraction beyond index document reading.",
+      "CLI command parsing or any user-facing I/O.",
+      "Orchestration of services outside the core task contract (e.g., database writes, MCP tools).",
+      "Writing or updating index documents; it is a read-only consumer of the index cache."
+    ],
+    "invariants": [
+      "The task must only depend on core contracts (`SpineTask`, `TaskContext`) and index-reader utilities.",
+      "Reverse edges are built purely from the index documents of tracked files, not from dynamic analysis.",
+      "The task must not modify the scanner state or manifest; it only reads from them."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "To compute a reverse dependency graph from existing index documents, enabling downstream views (e.g., change-impact, risk-hotspots) to assess which files depend on a given module.",
+      "recentChangeIntent": "The recent commit 'refactor: remove legacy CLI aliases, rebuild docs, fix schema and tests' does not modify this file's public contract or implementation logic; minimal impact."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ReverseIndexingTask",
+        "description": "Class that extends SpineTask to scan tracked files and build a reverse dependency index. Executed as a pipeline stage; exports its results via the checkpointed state for downstream views."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Pipeline task stage responsible for computing reverse dependency edges by scanning tracked source files for index documents and caching the resulting dependency graph.",
+        "responsibilities": [
+          "Retrieve all tracked files from the scanner context.",
+          "For each tracked file, read its index document if present and compatible.",
+          "Extract source path and target path from each index document to build reverse dependency edges.",
+          "Cache reverse edges in an in-memory map indexed by target path.",
+          "Report warnings for files without a compatible index document via reportIndexReadIssueOnce.",
+          "Override exec method to orchestrate the iterative scanning and edge-building.",
+          "Provide checkpoint ID 'reverse-index' for pipeline resumption."
+        ],
+        "outOfScope": [
+          "File content analysis or AST extraction beyond index document reading.",
+          "CLI command parsing or any user-facing I/O.",
+          "Orchestration of services outside the core task contract (e.g., database writes, MCP tools).",
+          "Writing or updating index documents; it is a read-only consumer of the index cache."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/index-reader.js'",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "ReverseIndexingTask",
+        "kind": "class",
+        "signature": "class ReverseIndexingTask"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ReverseIndexingTask",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/tasks/reverse-index.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "../infra/index-reader.js",
+        "relation": "import",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/tasks/reverse-index.ts/_file_#",
+        "targetSymbol": "src/infra/index-reader.ts/isCompatibleIndexDocument#",
+        "targetPath": "src/infra/index-reader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/reverse-index.ts/_file_#",
+        "targetSymbol": "src/infra/index-reader.ts/reportIndexReadIssueOnce#",
+        "targetPath": "src/infra/index-reader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/reverse-index.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/updateFileStatusWithDocs#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:04:41.223Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 2,
+    "isHub": true,
+    "hubPercentile": 59,
+    "inCycle": true,
+    "cycleId": "src/core → src/tasks → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

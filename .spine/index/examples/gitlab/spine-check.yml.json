@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "examples/gitlab/spine-check.yml",
+    "contentHash": "f649e42202dbd53330a22ecae1b0ab2fb569f8a1c9ceab3b00dbc475382fbca5",
+    "semanticHash": "440c5e0f4d7f2a5886a8508a171bf2807e1218e6bb55075841c0158e93107900",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": "examples/gitlab"
+  },
+  "semantic": {
+    "role": "CI/CD integration template for ArchSpine architecture checks within GitLab merge requests",
+    "responsibilities": [
+      "Provides a reusable .gitlab-ci.yml job to run 'spine check' on merge requests",
+      "Includes setup for LLM API key and GitLab token for MR comments",
+      "Defines artifact collection for failure output",
+      "Covers prerequisite configuration (spine init and config)"
+    ],
+    "outOfScope": [
+      "Documentation of ArchSpine commands beyond this template",
+      "CI integration for other platforms (GitHub Actions, etc.)",
+      "Troubleshooting ArchSpine check results",
+      "Detailed explanation of architecture rules or violations"
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This document provides a ready-to-use GitLab CI job template that integrates ArchSpine's architecture validation into the merge request workflow, automatically blocking merges if architectural violations are detected.",
+        "context_and_audience": "Intended for development teams using GitLab who want to enforce architectural rules automatically. Readers are expected to have ArchSpine initialized in their repository and have basic knowledge of GitLab CI. The template assumes a project with LLM access and a GitLab API token for posting comments.",
+        "key_takeaways": [
+          "The job runs on merge request events only.",
+          "It executes 'spine sync --no-docs' then 'spine check'.",
+          "If violations are found, it posts a formatted comment on the MR and exits with failure.",
+          "Required CI/CD variables: LLM_API_KEY, GITLAB_TOKEN."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:50:32.059Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 12,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/tasks",
+  "role": "This directory contains the individual stage task modules that together form the ArchSpine synchronization pipeline.",
+  "responsibility": "The pipeline stage tasks collectively orchestrate the full lifecycle of repository analysis: reconciling filesystem state against the indexed cache, scanning and cleaning up orphaned files, extracting ASTs and building skeletons, summarizing extracted artifacts via LLM, validating architecture rules, applying automated fixes, aggregating source files into content units, building a knowledge graph with dependency diagnostics, deriving view artifacts, and committing final state. They implement a checkpoint-resumable, parallelized execution model that ensures incremental consistency and produces the structured semantic data, diagnostic outputs, and view artifacts required by downstream consumers.",
+  "children": [
+    {
+      "filePath": "src/tasks/aggregate.ts",
+      "role": "Pipeline stage task responsible for aggregating source files into directory-level and project-level content units, with support for resuming interrupted aggregations.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/tasks/ast-extra.ts",
+      "role": "Pipeline stage task responsible for AST extraction, language detection, and symbol registration for source files identified during the scan phase.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/tasks/fix.ts",
+      "role": "Pipeline stage that applies LLM-generated patches to automatically fix architectural rule violations in source files.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/tasks/knowledge-graph.ts",
+      "role": "Stage-local task module that builds a dependency knowledge graph from the repository's tracked source files and runs structural diagnostics (cycles, dead code, hubs), saving the results as view data files for downstream views.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/tasks/post-commit-derivation.ts",
+      "role": "Composite task orchestrating the post-commit derivation pipeline: runs aggregation, reverse-indexing, knowledge-graph, and view-derivation sub-tasks, then writes the spine README and regenerates all view artifacts.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/tasks/reconcile.ts",
+      "role": "Pipeline task stage that reconciles the file system state against the indexed cache by detecting new, changed, or removed files, updating file statuses, and clearing stale symbol exports.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/tasks/reverse-index.ts",
+      "role": "Pipeline task stage responsible for computing reverse dependency edges by scanning tracked source files for index documents and caching the resulting dependency graph.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/tasks/scan-cleanup.ts",
+      "role": "Pipeline task responsible for scanning orphan files (files tracked by the manifest but no longer present in the scanner's file set) and cleaning up their state from the project's knowledge base.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/tasks/state-commit.ts",
+      "role": "Pipeline task implementing the state commitment stage for the ArchSpine synchronization pipeline.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/tasks/summarize.ts",
+      "role": "Pipeline stage task that orchestrates LLM-based semantic summarization and synthesis from extracted source artifacts, consuming skeletons and units to produce structured semantic output with drift awareness and validation.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/tasks/validate.ts",
+      "role": "Pipeline stage task for semantic architecture validation of source files against project rules.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/tasks/view-derivation.ts",
+      "role": "Pipeline task for orchestrating view artifact derivation after the commit stage.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:13:27.110Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

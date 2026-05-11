@@ -1,0 +1,231 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/llm/base.ts",
+    "contentHash": "7533fe80c456284cf4086bd6f3162b9fff851c73caba2d7ed5c027718e7d06f1",
+    "skeletonHash": "15accc0223765532b4e20d22f76da4f4ac56641e9bd6a8bfc96994f120346950",
+    "semanticHash": "8425a02d43e8834ad4303480f4984e33baedc4c6714fcb8d520b3b04e117f277",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/llm"
+  },
+  "semantic": {
+    "role": "Type contract layer defining the core abstractions for LLM interaction: transport, provider, client, and response contracts. Serves as the canonical type specification that all LLM providers must implement.",
+    "responsibilities": [
+      "Define UsageInfo for tracking LLM token consumption (input, output, total)",
+      "Define LLMResponse as the generic structure for LLM responses, including JSON and markdown variants and optional usage info",
+      "Define LLMClient as the primary interface for making LLM requests and receiving responses",
+      "Define PreviousSemanticContext for passing historical semantic drift analysis into LLM prompts",
+      "Define LLMProvider as the interface that each concrete provider (OpenAI, Gemini, etc.) must implement",
+      "Define ProviderConfig for provider-specific configuration parameters",
+      "Define LLMTransport as the abstract transport layer for communication with LLM APIs"
+    ],
+    "outOfScope": [
+      "Concrete implementations of specific LLM providers (e.g., OpenAI, Gemini, Mock)",
+      "Configuration loading, environment variable parsing, or secrets management",
+      "Retry logic, error handling, or timeout management for LLM calls",
+      "Prompt building, template rendering, or context aggregation",
+      "Token counting or cost estimation logic",
+      "HTTP client setup or connection pooling"
+    ],
+    "invariants": [
+      "All LLM providers must implement the LLMProvider interface defined here",
+      "The LLMClient interface is the single entry point for making LLM calls across the system",
+      "LLMResponse must always include a json field (any type) and a markdown Record<string, string>"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish a stable, type-safe contract layer for all LLM integrations to decouple providers from consumers and enable provider swapping without affecting higher-level services.",
+      "recentChangeIntent": "Not applicable – no changes detected in the provided AST or header."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "UsageInfo",
+        "description": "Records token consumption for an LLM request, including inputTokens, outputTokens, and totalTokens."
+      },
+      {
+        "symbolName": "LLMResponse",
+        "description": "Standard response shape from an LLM call containing a generic JSON payload, markdown key-value map, and optional usage statistics."
+      },
+      {
+        "symbolName": "LLMClient",
+        "description": "Primary interface for executing LLM requests. All system components that need LLM capabilities depend on this contract."
+      },
+      {
+        "symbolName": "PreviousSemanticContext",
+        "description": "Stores the previous semantic analysis context for drift detection, enabling the system to compare past and present module contracts."
+      },
+      {
+        "symbolName": "LLMProvider",
+        "description": "Interface that each concrete LLM provider (e.g., OpenAI, Gemini) must implement to integrate with ArchSpine."
+      },
+      {
+        "symbolName": "ProviderConfig",
+        "description": "Configuration contract for initializing and customizing an LLM provider instance."
+      },
+      {
+        "symbolName": "LLMTransport",
+        "description": "Abstract transport contract for low-level communication with LLM APIs, handling HTTP or other protocols."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Type contract layer defining the core abstractions for LLM interaction: transport, provider, client, and response contracts. Serves as the canonical type specification that all LLM providers must implement.",
+        "responsibilities": [
+          "Define UsageInfo for tracking LLM token consumption (input, output, total)",
+          "Define LLMResponse as the generic structure for LLM responses, including JSON and markdown variants and optional usage info",
+          "Define LLMClient as the primary interface for making LLM requests and receiving responses",
+          "Define PreviousSemanticContext for passing historical semantic drift analysis into LLM prompts",
+          "Define LLMProvider as the interface that each concrete provider (OpenAI, Gemini, etc.) must implement",
+          "Define ProviderConfig for provider-specific configuration parameters",
+          "Define LLMTransport as the abstract transport layer for communication with LLM APIs"
+        ],
+        "outOfScope": [
+          "Concrete implementations of specific LLM providers (e.g., OpenAI, Gemini, Mock)",
+          "Configuration loading, environment variable parsing, or secrets management",
+          "Retry logic, error handling, or timeout management for LLM calls",
+          "Prompt building, template rendering, or context aggregation",
+          "Token counting or cost estimation logic",
+          "HTTP client setup or connection pooling"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../types/protocol.js'",
+        "symbols": [
+          "FileKind"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "UsageInfo",
+        "kind": "interface",
+        "signature": "interface UsageInfo"
+      },
+      {
+        "name": "LLMResponse",
+        "kind": "interface",
+        "signature": "interface LLMResponse"
+      },
+      {
+        "name": "LLMClient",
+        "kind": "interface",
+        "signature": "interface LLMClient"
+      },
+      {
+        "name": "PreviousSemanticContext",
+        "kind": "interface",
+        "signature": "interface PreviousSemanticContext"
+      },
+      {
+        "name": "LLMProvider",
+        "kind": "interface",
+        "signature": "interface LLMProvider"
+      },
+      {
+        "name": "ProviderConfig",
+        "kind": "interface",
+        "signature": "interface ProviderConfig"
+      },
+      {
+        "name": "LLMTransport",
+        "kind": "interface",
+        "signature": "interface LLMTransport"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "UsageInfo",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/llm/base.ts#"
+      },
+      {
+        "name": "LLMResponse",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/llm/base.ts#"
+      },
+      {
+        "name": "LLMClient",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/llm/base.ts#"
+      },
+      {
+        "name": "PreviousSemanticContext",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/llm/base.ts#"
+      },
+      {
+        "name": "LLMProvider",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/llm/base.ts#"
+      },
+      {
+        "name": "ProviderConfig",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/llm/base.ts#"
+      },
+      {
+        "name": "LLMTransport",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/llm/base.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 7,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "FileKind"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/prompt-context/trim.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:58:31.277Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

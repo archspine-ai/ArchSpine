@@ -1,0 +1,39 @@
+imports:
+  - id: import
+    pattern: 'import $SOURCE'
+exports:
+  - id: function
+    pattern: 'def $NAME($$$ARGS) $$$= $$$BODY'
+    kind: Function
+  - id: private_function
+    pattern: 'private def $NAME($$$ARGS) $$$= $$$BODY'
+    kind: Function
+  - id: class
+    pattern: 'class $NAME $$$ { $$$BODY }'
+    kind: Class
+  - id: case_class
+    pattern: 'case class $NAME $$$ { $$$BODY }'
+    kind: Class
+  - id: object
+    pattern: 'object $NAME $$$ { $$$BODY }'
+    kind: Class
+  - id: trait
+    pattern: 'trait $NAME $$$ { $$$BODY }'
+    kind: Interface
+  - id: sealed_trait
+    pattern: 'sealed trait $NAME $$$ { $$$BODY }'
+    kind: Interface
+  - id: val
+    pattern: 'val $NAME = $VAL'
+    kind: Variable
+  - id: var
+    pattern: 'var $NAME = $VAL'
+    kind: Variable
+  - id: type_alias
+    pattern: 'type $NAME = $VAL'
+    kind: Type
+usages:
+  - id: call
+    pattern: '$NAME($$$ARGS)'
+  - id: property
+    pattern: '$OBJ.$NAME'

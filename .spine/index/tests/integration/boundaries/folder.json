@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "tests/integration/boundaries",
+  "role": "Test suite enforcing architectural boundaries and module contracts within the ArchSpine system.",
+  "responsibility": "These tests collectively validate CLI help text contracts, module boundary compliance for view components, and write access isolation via the SpineWriterBoundary, ensuring the system remains modular and secure.",
+  "children": [
+    {
+      "filePath": "tests/integration/boundaries/help-boundary-contract.test.ts",
+      "role": "Automated test suite that verifies the help text contract for CLI commands, ensuring that `spine sync` help directs users to `spine build` for baseline rebuilds and that general help contains expected usage line.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/integration/boundaries/view-module-boundary.test.ts",
+      "role": "Vitest test file validating the module boundary of view-related components under src/services/view.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/integration/boundaries/writer-boundary.test.ts",
+      "role": "Unit/integration test suite for the SpineWriterBoundary module, verifying write access protection and output isolation.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:12:04.651Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

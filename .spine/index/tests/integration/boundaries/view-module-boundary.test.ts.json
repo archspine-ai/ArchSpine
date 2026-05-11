@@ -1,0 +1,148 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integration/boundaries/view-module-boundary.test.ts",
+    "contentHash": "a19cbd7c7609ad0870236c4520bc679077d34f5e1c949bbf7f55446cf965579b",
+    "skeletonHash": "62fb68889f055ca24930047326f0af5096f4c10c23defb0f8cf37a321f4e3618",
+    "semanticHash": "b8689a41e85308225b5ae7e77c96bba97dcf1ff73b8652f15618b6711b93925c",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/integration/boundaries"
+  },
+  "semantic": {
+    "role": "Vitest test file validating the module boundary of view-related components under src/services/view.",
+    "responsibilities": [
+      "Verify that view-renderer.ts exists in src/services/view.",
+      "Verify that arch-diagram-renderer.ts exists in src/services/view.",
+      "Verify that view-registry.ts exists in src/services/view.",
+      "Verify that view-runtime.ts exists in src/services/view.",
+      "Assert that view-renderer.ts does NOT exist in src/infra (boundary enforcement)."
+    ],
+    "outOfScope": [
+      "Production logic or module implementation.",
+      "Other service boundaries or architecture layers."
+    ],
+    "invariants": [
+      "View-related rendering and runtime modules must be located exclusively under src/services/view.",
+      "No view-renderer module should exist under src/infra."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Preserve the layered architecture boundary by ensuring view modules are placed in the services layer, not in infra.",
+      "recentChangeIntent": "No specific recent change identified from commit history; file appears stable as a boundary test."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test file validating the module boundary of view-related components under src/services/view.",
+        "responsibilities": [
+          "Verify that view-renderer.ts exists in src/services/view.",
+          "Verify that arch-diagram-renderer.ts exists in src/services/view.",
+          "Verify that view-registry.ts exists in src/services/view.",
+          "Verify that view-runtime.ts exists in src/services/view.",
+          "Assert that view-renderer.ts does NOT exist in src/infra (boundary enforcement)."
+        ],
+        "outOfScope": [
+          "Production logic or module implementation.",
+          "Other service boundaries or architecture layers."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "node:fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "node:path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:07:01.331Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

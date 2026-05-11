@@ -1,0 +1,169 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/llm/factory.ts",
+    "contentHash": "ef7d36598e99f82fedee71f515ef9123354fba45f2f55b826706d427b829b59c",
+    "skeletonHash": "3512255b9321e68a48dcdde0cfc81e8ad18a1ee989c2ea60787cb87b9feb8958",
+    "semanticHash": "826fe8545e6046d8f786639a683a9e9193a13212dff72129d32aa4c53946c136",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/llm"
+  },
+  "semantic": {
+    "role": "LLM Transport Factory — Central factory that constructs LLMTransport instances for specific providers based on a provider string, acting as the public entry point for provider instantiation.",
+    "responsibilities": [
+      "Creates LLMTransport objects for OpenAI-compatible providers (OpenAI, DeepSeek, OpenRouter, Groq) and Gemini.",
+      "Maps a provider string to the appropriate concrete client implementation.",
+      "Throws an error when an unsupported provider name is passed."
+    ],
+    "outOfScope": [
+      "Does not manage LLM runtime lifecycle, retries, or configuration loading.",
+      "Does not handle authentication or credential resolution."
+    ],
+    "invariants": [
+      "The factory must return an LLMTransport for any supported provider string.",
+      "The provider string comparison must be case-insensitive.",
+      "Unsupported providers must result in a thrown Error."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, centralized factory for creating LLM transport instances, isolating provider-specific client code behind a single dispatch point.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — consolidates LLM provider instantiation into a factory pattern to support architectural governance across multiple AI providers."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "LLMFactory",
+        "description": "Class that provides a static factory method for creating LLMTransport instances. Exported for external consumption by all LLM-dependent modules."
+      },
+      {
+        "symbolName": "LLMFactory.createTransport",
+        "description": "Static method that accepts a provider string and ProviderConfig, returns the corresponding LLMTransport. Throws for unsupported providers. The primary instantiation contract for the LLM subsystem."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "LLM Transport Factory — Central factory that constructs LLMTransport instances for specific providers based on a provider string, acting as the public entry point for provider instantiation.",
+        "responsibilities": [
+          "Creates LLMTransport objects for OpenAI-compatible providers (OpenAI, DeepSeek, OpenRouter, Groq) and Gemini.",
+          "Maps a provider string to the appropriate concrete client implementation.",
+          "Throws an error when an unsupported provider name is passed."
+        ],
+        "outOfScope": [
+          "Does not manage LLM runtime lifecycle, retries, or configuration loading.",
+          "Does not handle authentication or credential resolution."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./base.js'",
+        "symbols": [
+          "LLMClient",
+          "LLMTransport",
+          "ProviderConfig"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./providers/openai.js'",
+        "symbols": [
+          "OpenAICompatibleClient"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./providers/gemini.js'",
+        "symbols": [
+          "GeminiClient"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "LLMFactory",
+        "kind": "class",
+        "signature": "class LLMFactory"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "LLMFactory",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/llm/factory.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/llm/base.js",
+        "relation": "import",
+        "symbols": [
+          "LLMClient",
+          "LLMTransport",
+          "ProviderConfig"
+        ]
+      },
+      {
+        "targetPath": "src/infra/llm/providers/openai.js",
+        "relation": "import",
+        "symbols": [
+          "OpenAICompatibleClient"
+        ]
+      },
+      {
+        "targetPath": "src/infra/llm/providers/gemini.js",
+        "relation": "import",
+        "symbols": [
+          "GeminiClient"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/llm/factory.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/openai.ts/OpenAICompatibleClient#",
+        "targetPath": "src/infra/llm/providers/openai.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/llm/factory.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/gemini.ts/GeminiClient#",
+        "targetPath": "src/infra/llm/providers/gemini.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:58:27.470Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

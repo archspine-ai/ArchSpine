@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "schemas/spine-rules.schema.json",
+    "contentHash": "5b225a87d53d0d6e9145d758d0ef11810730c38104b5435b6ddaf17eceda04f6",
+    "semanticHash": "812816860d4068bae5d654ffeeabf437c290e83c11e96e40ed10e9149451e5fd",
+    "language": "unsupported",
+    "fileKind": "config",
+    "scope": "schemas"
+  },
+  "semantic": {
+    "role": "Defines the formal schema for ArchSpine rule documents, ensuring all rules in the system conform to a consistent structure and validation contract.",
+    "responsibilities": [
+      "Rule lifecycle management",
+      "Enforcement severity classification",
+      "Rule applicability scoping",
+      "Rule content validation"
+    ],
+    "outOfScope": [],
+    "invariants": [
+      "Every rule document MUST include schemaVersion, ruleId, title, summary, appliesTo, severity, enforceable, and bodyMarkdown.",
+      "ruleId MUST match the pattern ^[a-z0-9]+(?:-[a-z0-9]+)*$.",
+      "severity MUST be one of 'advisory', 'warning', 'error'.",
+      "appliesTo array MUST contain at least one non-empty string."
+    ],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "This schema defines the required structure and validation rules for any SpineRuleDocument used within the ArchSpine governance system. It acts as the contract that all rule definitions must satisfy before they can be loaded and enforced.",
+        "parameter_definitions": {
+          "schemaVersion": "Specifies the version of the schema to allow forward compatibility and migration logic.",
+          "ruleId": "Unique identifier for the rule, must be kebab-case. Used for referencing and deduplication across the rule corpus.",
+          "title": "Human-readable short name of the rule, displayed in reports and logs.",
+          "summary": "Brief explanation of the rule's purpose, used for quick understanding in dashboards and rule listings.",
+          "appliesTo": "List of file patterns or module scopes the rule should be evaluated against. An empty list is invalid.",
+          "severity": "Controls the impact level: 'advisory' for suggestions, 'warning' for non-blocking violations, 'error' for blocking violations that can halt CI pipelines.",
+          "enforceable": "Boolean flag indicating whether the rule can be automatically enforced or is purely informational.",
+          "rationale": "Optional field providing design rationale or justification; not used in enforcement logic but aids maintainers.",
+          "bodyMarkdown": "Full rule description in Markdown format, may contain examples and explanations. Must be non-empty."
+        },
+        "stability_and_risks": "The schema ensures that all rule documents are structurally sound and semantically complete. By enforcing required fields and value constraints, it prevents runtime errors caused by malformed rules. The severity enum directly governs CI pipeline behaviour — setting an 'error' severity will cause pipeline failures on violations, so misconfiguration here can block deployments. The 'enforceable' flag determines whether automated repair attempts are made; incorrect settings could lead to either missed opportunities for auto-fix or unwanted modifications. Overall, this file is critical for maintaining rule integrity and system predictability; any version mismatches or schema drift could cause rules to be silently skipped or produce inconsistent enforcement."
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:51:16.191Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 41,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

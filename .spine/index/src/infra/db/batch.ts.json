@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db/batch.ts",
+    "contentHash": "a93d40e2272f1996b79a3b0e315bce173065f12c9ed56c74b9a844741af07006",
+    "skeletonHash": "44323a43ccaba7f90f20fce6e76221698cd37d7ca1caa58fa1c7b2a3bcd710ae",
+    "semanticHash": "0bdbcd22181cba7fb452903f50195a2cc7b394f901d33a0b79783e31c02f452c",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/db"
+  },
+  "semantic": {
+    "role": "Batch commit handler for file indexing records in the SQLite infrastructure layer.",
+    "responsibilities": [
+      "Atomically insert or update a batch of file index records (path, hash, kind, lastIndexedAt, docs, is_authoritative, mtime, size) into the `files` table.",
+      "Detect and record semantic drift events by calling `recordDriftEvent` when a file's recorded role or responsibilities change between commits.",
+      "Manage batch transaction lifecycle via better-sqlite3 transactions."
+    ],
+    "outOfScope": [
+      "Does not perform individual file indexing or AST extraction — it only commits pre-computed batch records.",
+      "Does not handle read queries or retrieval of file data.",
+      "Does not implement the drift detection logic itself — delegates to `recordDriftEvent`."
+    ],
+    "invariants": [
+      "All commits must be executed within a database transaction, ensuring atomicity of the batch.",
+      "File records are upserted based on path (ON CONFLICT UPDATE).",
+      "Drift events must be recorded for any file whose metadata indicates a change in role or responsibilities.",
+      "Imports from a deeper repository submodule (`repositories/drift.js`) — if a public facade for drift recording exists, this import should be replaced to comply with `infra-facade-imports`."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provides a low-level batch write abstraction for the file index, ensuring consistency and drift tracking within the SQLite persistence layer.",
+      "recentChangeIntent": "Part of the ArchSpine v1.0.0 release establishing the core infrastructure for file indexing and semantic drift detection."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "commitBatch",
+        "description": "Atomically inserts or updates a batch of file index records and records any detected semantic drift events."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Batch commit handler for file indexing records in the SQLite infrastructure layer.",
+        "responsibilities": [
+          "Atomically insert or update a batch of file index records (path, hash, kind, lastIndexedAt, docs, is_authoritative, mtime, size) into the `files` table.",
+          "Detect and record semantic drift events by calling `recordDriftEvent` when a file's recorded role or responsibilities change between commits.",
+          "Manage batch transaction lifecycle via better-sqlite3 transactions."
+        ],
+        "outOfScope": [
+          "Does not perform individual file indexing or AST extraction — it only commits pre-computed batch records.",
+          "Does not handle read queries or retrieval of file data.",
+          "Does not implement the drift detection logic itself — delegates to `recordDriftEvent`."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./repositories/drift.js'",
+        "symbols": [
+          "recordDriftEvent"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "commitBatch",
+        "kind": "function",
+        "signature": "commitBatch(db: Database.Database, commits: FileCommitRecord[])"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "commitBatch",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/batch.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./repositories/drift.js",
+        "relation": "import",
+        "symbols": [
+          "recordDriftEvent"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/db/batch.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/drift.ts/recordDriftEvent#",
+        "targetPath": "src/infra/db/repositories/drift.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:57:46.247Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

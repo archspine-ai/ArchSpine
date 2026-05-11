@@ -1,0 +1,213 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/infra/manifest.test.ts",
+    "contentHash": "eb37ad087ec5ac2f45917fe6ef54b4d1be7c441a828c9ffef567e51575dbae19",
+    "skeletonHash": "f8cb7194f0886ff4eb6b5ebaf61fc3b60dc9c7ff695718d4cd2945b728ebbadd",
+    "semanticHash": "a134aa4d01fb8da229ea4471c81f66260005ae723c6eefad3941b489469edb75",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/infra"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for the Manifest class, validating its initialization, serialization/deserialization, state management, and integration with SpineDB.",
+    "responsibilities": [
+      "Test instantiation of Manifest with valid and invalid options, ensuring correct error handling.",
+      "Test load and save operations from/to SpineDB, including serialization of manifest data.",
+      "Test state manipulation methods (set, setMany, get, filter, toJSON, clearCache) for correctness.",
+      "Test manifest integrity by validating file hashes and detecting corruption.",
+      "Test integration with SpineDB mock, verifying correct interaction with database methods like getGlobalStatus, getFileStatus, ensureFileRecord, updateFileStatus, commitBatch, etc."
+    ],
+    "outOfScope": [
+      "Performance benchmarks or load testing.",
+      "Integration with real LLM providers or external services.",
+      "UI or CLI command behavior beyond manifest operations."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts (rule test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide repeatable, isolated unit tests for the Manifest infrastructure layer, using dependency injection via mocks to avoid external state.",
+      "recentChangeIntent": "Commit '2' without explicit detail; likely a general updated or new test file covering Manifest unit tests."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for the Manifest class, validating its initialization, serialization/deserialization, state management, and integration with SpineDB.",
+        "responsibilities": [
+          "Test instantiation of Manifest with valid and invalid options, ensuring correct error handling.",
+          "Test load and save operations from/to SpineDB, including serialization of manifest data.",
+          "Test state manipulation methods (set, setMany, get, filter, toJSON, clearCache) for correctness.",
+          "Test manifest integrity by validating file hashes and detecting corruption.",
+          "Test integration with SpineDB mock, verifying correct interaction with database methods like getGlobalStatus, getFileStatus, ensureFileRecord, updateFileStatus, commitBatch, etc."
+        ],
+        "outOfScope": [
+          "Performance benchmarks or load testing.",
+          "Integration with real LLM providers or external services.",
+          "UI or CLI command behavior beyond manifest operations."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "beforeEach",
+          "afterEach",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "beforeEach",
+          "afterEach",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/infra/manifest.test.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getGlobalStatus#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/manifest.test.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/getActiveViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/manifest.test.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/integrity.ts/calculateHash#",
+        "targetPath": "src/infra/manifest/integrity.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/manifest.test.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getFileStatus#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:39:49.895Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

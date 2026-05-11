@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "tests/e2e",
+  "role": "Contains end-to-end and integration tests for the ArchSpine CLI.",
+  "responsibility": "Ensures correctness of CLI commands (init, sync, scan, build, view, mcp, check, skill, rules) through automated test suites that verify output, error handling, exit codes, and pipeline behavior in isolated temporary environments.",
+  "children": [
+    {
+      "filePath": "tests/e2e/cli-config.test.ts",
+      "role": "Vitest-based integration test suite for the ArchSpine CLI commands.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/e2e/cli-init-advanced.test.ts",
+      "role": "End-to-end test suite for the advanced CLI initialization workflow.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/e2e/cli-pipeline-mock.test.ts",
+      "role": "Vitest end-to-end test suite that validates the ArchSpine CLI pipeline via mock (simulated) commands in isolated temporary git repositories.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/e2e/cli-readonly.test.ts",
+      "role": "Test harness for integration testing of the ArchSpine CLI; spawns the built CLI binary in a child process against isolated temporary workspaces.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/e2e/cli-real-llm.test.ts",
+      "role": "End-to-end test suite for the ArchSpine CLI pipeline with a mock LLM provider.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/e2e/cli-real-violation.test.ts",
+      "role": "E2E test suite verifying the CLI's detection of real architectural violations in a temporary Git repository.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "tests/e2e/cli-remove.test.ts",
+      "role": "End-to-end (E2E) test suite for the ArchSpine CLI pipeline using a mocked LLM provider. Validates that the CLI handles subcommands (scan, sync, etc.) correctly in a controlled environment.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:13:24.251Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

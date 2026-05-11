@@ -1,0 +1,269 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/post-commit-derivation.ts",
+    "contentHash": "de87a76130e7be971089ab4d9b4267a1636ba3a239f2e30d22f73ed8641232a9",
+    "skeletonHash": "0c585f67ed7ec04808d4980c9275203cc9fa6ec1a16109dee0c0c809c6a3f785",
+    "semanticHash": "0c58272758678fe6ea828e4019bc3393f63d97d0018f85809cf1d95605cfbb8d",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "Composite task orchestrating the post-commit derivation pipeline: runs aggregation, reverse-indexing, knowledge-graph, and view-derivation sub-tasks, then writes the spine README and regenerates all view artifacts.",
+    "responsibilities": [
+      "Executes the AggregationTask via TaskRunner to produce aggregated semantic data.",
+      "Executes the ReverseIndexingTask via TaskRunner to build reverse indexes.",
+      "Executes the KnowledgeGraphTask via TaskRunner to construct the module dependency graph.",
+      "Executes the ViewDerivationTask via TaskRunner to derive view artifacts.",
+      "Writes the `.spine/README.md` control plane document with instructions for AI agents.",
+      "Clears previous view artifacts using ViewService.clearViewArtifacts.",
+      "Regenerates all view artifacts by running the view regeneration function for each view definition (VIEW_DEFINITIONS).",
+      "Saves the final god document via ctx.outputManager.saveGodDoc."
+    ],
+    "outOfScope": [
+      "Does not parse CLI commands or handle user input.",
+      "Does not implement the logic of individual derivation sub-tasks (delegates to dedicated task classes).",
+      "Does not manage runtime sessions, checkpoints, or scan policies.",
+      "Does not define view definitions or rendering logic."
+    ],
+    "invariants": [
+      "The sub-tasks are always executed in the fixed order: aggregation, reverse-indexing, knowledge-graph, view-derivation.",
+      "After execution completes, the spine README and all view artifacts are guaranteed to reflect the current codebase state.",
+      "Each sub-task is executed through the TaskRunner, respecting pipeline execution semantics and error handling.",
+      "The task operates within the CommitStageOutput context and produces no return value (void)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a single, well-defined entry point for all post-commit derivation work, ensuring data consistency across derived artifacts after each commit.",
+      "recentChangeIntent": "Refactored as part of infrastructure cleanup to remove legacy CLI aliases and rebuild documentation; the core orchestration logic remains intact."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "PostCommitDerivationTask",
+        "description": "Exported class that orchestrates the full post-commit derivation pipeline. External modules instantiate and run this task to regenerate all derived data (aggregation, indexes, knowledge graph, views) after a commit."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Composite task orchestrating the post-commit derivation pipeline: runs aggregation, reverse-indexing, knowledge-graph, and view-derivation sub-tasks, then writes the spine README and regenerates all view artifacts.",
+        "responsibilities": [
+          "Executes the AggregationTask via TaskRunner to produce aggregated semantic data.",
+          "Executes the ReverseIndexingTask via TaskRunner to build reverse indexes.",
+          "Executes the KnowledgeGraphTask via TaskRunner to construct the module dependency graph.",
+          "Executes the ViewDerivationTask via TaskRunner to derive view artifacts.",
+          "Writes the `.spine/README.md` control plane document with instructions for AI agents.",
+          "Clears previous view artifacts using ViewService.clearViewArtifacts.",
+          "Regenerates all view artifacts by running the view regeneration function for each view definition (VIEW_DEFINITIONS).",
+          "Saves the final god document via ctx.outputManager.saveGodDoc."
+        ],
+        "outOfScope": [
+          "Does not parse CLI commands or handle user input.",
+          "Does not implement the logic of individual derivation sub-tasks (delegates to dedicated task classes).",
+          "Does not manage runtime sessions, checkpoints, or scan policies.",
+          "Does not define view definitions or rendering logic."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/pipeline.js'",
+        "symbols": [
+          "TaskRunner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./aggregate.js'",
+        "symbols": [
+          "AggregationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./reverse-index.js'",
+        "symbols": [
+          "ReverseIndexingTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./knowledge-graph.js'",
+        "symbols": [
+          "KnowledgeGraphTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./view-derivation.js'",
+        "symbols": [
+          "ViewDerivationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../services/view/view-service.js'",
+        "symbols": [
+          "ViewService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../services/view/view-registry.js'",
+        "symbols": [
+          "VIEW_DEFINITIONS"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "PostCommitDerivationTask",
+        "kind": "class",
+        "signature": "class PostCommitDerivationTask"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "PostCommitDerivationTask",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/tasks/post-commit-derivation.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "../core/pipeline.js",
+        "relation": "import",
+        "symbols": [
+          "TaskRunner"
+        ]
+      },
+      {
+        "targetPath": "./aggregate.js",
+        "relation": "import",
+        "symbols": [
+          "AggregationTask"
+        ]
+      },
+      {
+        "targetPath": "./reverse-index.js",
+        "relation": "import",
+        "symbols": [
+          "ReverseIndexingTask"
+        ]
+      },
+      {
+        "targetPath": "./knowledge-graph.js",
+        "relation": "import",
+        "symbols": [
+          "KnowledgeGraphTask"
+        ]
+      },
+      {
+        "targetPath": "./view-derivation.js",
+        "relation": "import",
+        "symbols": [
+          "ViewDerivationTask"
+        ]
+      },
+      {
+        "targetPath": "../services/view/view-service.js",
+        "relation": "import",
+        "symbols": [
+          "ViewService"
+        ]
+      },
+      {
+        "targetPath": "../services/view/view-registry.js",
+        "relation": "import",
+        "symbols": [
+          "VIEW_DEFINITIONS"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/tasks/post-commit-derivation.ts/_file_#",
+        "targetSymbol": "src/core/pipeline.ts/TaskRunner#",
+        "targetPath": "src/core/pipeline.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/post-commit-derivation.ts/_file_#",
+        "targetSymbol": "src/tasks/reverse-index.ts/ReverseIndexingTask#",
+        "targetPath": "src/tasks/reverse-index.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/post-commit-derivation.ts/_file_#",
+        "targetSymbol": "src/tasks/aggregate.ts/AggregationTask#",
+        "targetPath": "src/tasks/aggregate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/post-commit-derivation.ts/_file_#",
+        "targetSymbol": "src/tasks/knowledge-graph.ts/KnowledgeGraphTask#",
+        "targetPath": "src/tasks/knowledge-graph.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/post-commit-derivation.ts/_file_#",
+        "targetSymbol": "src/tasks/view-derivation.ts/ViewDerivationTask#",
+        "targetPath": "src/tasks/view-derivation.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:04:53.061Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 2,
+    "isHub": true,
+    "hubPercentile": 59,
+    "inCycle": true,
+    "cycleId": "src/core → src/tasks → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

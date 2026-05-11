@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/assets/templates/rules/layered-architecture.yml",
+    "contentHash": "a710cbb2beaebf0a60070bb209fc5bc00f9a246a776cf003712a1418300b6581",
+    "semanticHash": "f14e539e8e26ebedf88fb94c1a6c1228a4e130fdd1f6ba9e97789b9b4534e134",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": "src/assets/templates/rules"
+  },
+  "semantic": {
+    "role": "Governance rules for maintaining layered architecture boundaries in the ArchSpine project",
+    "responsibilities": [
+      "Defining constraints for CLI, services, core, tasks, engines, and infra layers",
+      "Ensuring separation of entrypoints, orchestration, pipeline logic, reusable analytics, and low-level infrastructure",
+      "Guiding contributors on where to place code and how to import from other layers"
+    ],
+    "outOfScope": [
+      "General coding style or formatting rules",
+      "External dependency management",
+      "Specific implementation patterns within a layer"
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "To enforce a clear layered architecture in the ArchSpine project, keeping each layer focused on its own responsibility while avoiding unnecessary coupling between CLI commands, service orchestration, core pipeline contracts, task stages, reusable engines, and infrastructure facades.",
+        "context_and_audience": "This document is intended for all developers and contributors working on the ArchSpine codebase. It helps them understand architectural expectations when modifying or adding code, ensuring the system remains modular, testable, and maintainable.",
+        "key_takeaways": [
+          "CLI modules must remain thin entrypoints – they should not absorb pipeline or persistence logic.",
+          "Services orchestrate core/tasks/engines/infra; view-specific services belong under src/services/view/, not infra.",
+          "Core modules define pipeline contracts and shared state without depending on CLI code.",
+          "Task modules implement stage-local work on top of core and engines, without handling CLI parsing.",
+          "Engines provide reusable analysis logic, independent of service orchestration and CLI entrypoints.",
+          "Infra modules expose public facades; callers should avoid deep internal imports when a facade exists."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:51:54.970Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 47,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

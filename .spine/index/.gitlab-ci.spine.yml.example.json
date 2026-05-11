@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": ".gitlab-ci.spine.yml.example",
+    "contentHash": "c22a5fbe1c1d7a6a8de122312c29279d2dfc7ec90867318b3f3288f8a6c03e0c",
+    "semanticHash": "2c160f573d65de5a15a1fec727cc7867fe3da57ff88c812d7ff205970068da57",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": ""
+  },
+  "semantic": {
+    "role": "CI/CD integration template for automated ArchSpine architecture sync and policy checking on GitLab Merge Requests",
+    "responsibilities": [
+      "Provides a ready-to-use GitLab CI job (spine-check) that runs `spine sync --no-docs` and `spine check` on every MR",
+      "Defines prerequisites, environment variables (LLM_API_KEY, GITLAB_TOKEN), and customization points",
+      "Automatically posts an MR comment when architecture violations are detected and fails the pipeline",
+      "Captures check output as an artifact for debugging"
+    ],
+    "outOfScope": [
+      "Detailed ArchSpine configuration or init instructions",
+      "Support for other CI platforms (e.g., GitHub Actions, Jenkins)",
+      "Manual execution steps outside CI pipelines"
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This document provides a copy-paste GitLab CI template that lets teams enforce ArchSpine architecture rules automatically on every Merge Request. It eliminates the need to manually remember `spine check` and ensures violations are surfaced immediately in the MR discussion.",
+        "context_and_audience": "Intended for developers and DevOps engineers managing a GitLab repository who have already initialized ArchSpine (`spine init`) and want to integrate architecture validation into their CI pipeline. Readers should be familiar with GitLab CI variables and rules.",
+        "key_takeaways": [
+          "Drop the job into `.gitlab-ci.yml` and configure two CI variables (LLM_API_KEY + GITLAB_TOKEN) to start enforcing architecture checks",
+          "The job runs only on merge requests, so it does not slow down regular branch pipelines",
+          "On failure, a formatted comment is posted to the MR and the pipeline exits with status 1, blocking merge until violations are resolved",
+          "The output is saved as an artifact (`spine-check-output.txt`) for inspection when the job fails"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:40:01.232Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 24,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

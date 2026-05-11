@@ -1,0 +1,358 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/context.ts",
+    "contentHash": "387c5a330eacb07a93081dd124c2f42a422cd30e83d8074cd8e4cdb35be89554",
+    "skeletonHash": "7aa79dd92860272d0e9b6c3d1f802e846febc5c3084c58f72be254df4313ab68",
+    "semanticHash": "1e5a7f9d7c3c107f701a602cf017ca453796482eafd5bed7cd039be52567d0bf",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Engine for resolving and scoring relevant dependency context to support LLM-driven code analysis and fix generation.",
+    "responsibilities": [
+      "Resolves relative import statements to absolute file paths within the project.",
+      "Scores dependency candidates based on relevance to the current change context using keyword and path scoring.",
+      "Assembles a structured context prompt section that includes import summaries, dependency descriptions, and symbol references.",
+      "Maintains a configurable limit on dependency summaries to manage context window size."
+    ],
+    "outOfScope": [
+      "Direct orchestration of LLM calls.",
+      "Generation of fix suggestions or violation checks.",
+      "CLI entrypoint handling.",
+      "Data persistence or database operations."
+    ],
+    "invariants": [
+      "Engine modules must not import CLI entrypoint modules.",
+      "Engine modules must not import service-level orchestration modules.",
+      "Engine modules should remain decoupled from presentation concerns."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provides a reusable engine for building relevant context prompts from dependency analysis.",
+      "recentChangeIntent": "Part of the ArchSpine v1.0.0 release establishing a semantic layer for architectural governance."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ContextEngine",
+        "description": "Primary class that resolves import dependencies, scores relevance, and builds a context prompt for LLM interactions."
+      },
+      {
+        "symbolName": "RelevanceScoreContribution",
+        "description": "Interface defining the structure of a single relevance score factor, including factor name, score, and reason."
+      },
+      {
+        "symbolName": "DependencyCandidateDiagnostics",
+        "description": "Interface providing diagnostic details about a single dependency candidate, including path, imported symbols, and score breakdown."
+      },
+      {
+        "symbolName": "SymbolTargetDiagnostics",
+        "description": "Interface describing the diagnostics for a resolved symbol target, including file path, score, and reason."
+      },
+      {
+        "symbolName": "UsageTargetDiagnostics",
+        "description": "Interface for diagnostics of a usage target, detailing how a symbol is used across the project."
+      },
+      {
+        "symbolName": "ContextResolutionDiagnostics",
+        "description": "Collects all diagnostics from the context resolution process, including dependency and symbol diagnostics."
+      },
+      {
+        "symbolName": "ContextResolutionResult",
+        "description": "Interface for the output of context resolution, containing the assembled context string and diagnostics."
+      },
+      {
+        "symbolName": "ContextResolutionOptions",
+        "description": "Interface for configuring context resolution behavior, such as maximum dependency summaries and scoring thresholds."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Engine for resolving and scoring relevant dependency context to support LLM-driven code analysis and fix generation.",
+        "responsibilities": [
+          "Resolves relative import statements to absolute file paths within the project.",
+          "Scores dependency candidates based on relevance to the current change context using keyword and path scoring.",
+          "Assembles a structured context prompt section that includes import summaries, dependency descriptions, and symbol references.",
+          "Maintains a configurable limit on dependency summaries to manage context window size."
+        ],
+        "outOfScope": [
+          "Direct orchestration of LLM calls.",
+          "Generation of fix suggestions or violation checks.",
+          "CLI entrypoint handling.",
+          "Data persistence or database operations."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../ast/extractor.js'",
+        "symbols": [
+          "FileSkeleton"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "SymbolDependencyEdge"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./context-path-resolver.js'",
+        "symbols": [
+          "resolveRelativeImportTarget"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./context-relevance.js'",
+        "symbols": [
+          "extractRuleKeywords",
+          "scoreDependencyCandidate",
+          "scoreTargetPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "ContextEngine",
+        "kind": "class",
+        "signature": "class ContextEngine"
+      },
+      {
+        "name": "RelevanceScoreContribution",
+        "kind": "interface",
+        "signature": "interface RelevanceScoreContribution"
+      },
+      {
+        "name": "DependencyCandidateDiagnostics",
+        "kind": "interface",
+        "signature": "interface DependencyCandidateDiagnostics"
+      },
+      {
+        "name": "SymbolTargetDiagnostics",
+        "kind": "interface",
+        "signature": "interface SymbolTargetDiagnostics"
+      },
+      {
+        "name": "UsageTargetDiagnostics",
+        "kind": "interface",
+        "signature": "interface UsageTargetDiagnostics"
+      },
+      {
+        "name": "ContextResolutionDiagnostics",
+        "kind": "interface",
+        "signature": "interface ContextResolutionDiagnostics"
+      },
+      {
+        "name": "ContextResolutionResult",
+        "kind": "interface",
+        "signature": "interface ContextResolutionResult"
+      },
+      {
+        "name": "ContextResolutionOptions",
+        "kind": "interface",
+        "signature": "interface ContextResolutionOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ContextEngine",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/engines/context.ts#"
+      },
+      {
+        "name": "RelevanceScoreContribution",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/context.ts#"
+      },
+      {
+        "name": "DependencyCandidateDiagnostics",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/context.ts#"
+      },
+      {
+        "name": "SymbolTargetDiagnostics",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/context.ts#"
+      },
+      {
+        "name": "UsageTargetDiagnostics",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/context.ts#"
+      },
+      {
+        "name": "ContextResolutionDiagnostics",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/context.ts#"
+      },
+      {
+        "name": "ContextResolutionResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/context.ts#"
+      },
+      {
+        "name": "ContextResolutionOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/context.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 8,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../ast/extractor.js",
+        "relation": "import",
+        "symbols": [
+          "FileSkeleton"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SymbolDependencyEdge"
+        ]
+      },
+      {
+        "targetPath": "../infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "./context-path-resolver.js",
+        "relation": "import",
+        "symbols": [
+          "resolveRelativeImportTarget"
+        ]
+      },
+      {
+        "targetPath": "./context-relevance.js",
+        "relation": "import",
+        "symbols": [
+          "extractRuleKeywords",
+          "scoreDependencyCandidate",
+          "scoreTargetPath"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/unit/core/context-engine.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/engines/context.ts/_file_#",
+        "targetSymbol": "src/engines/context-relevance.ts/extractRuleKeywords#",
+        "targetPath": "src/engines/context-relevance.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/context.ts/_file_#",
+        "targetSymbol": "src/engines/context-relevance.ts/scoreDependencyCandidate#",
+        "targetPath": "src/engines/context-relevance.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/context.ts/_file_#",
+        "targetSymbol": "src/engines/context-relevance.ts/scoreTargetPath#",
+        "targetPath": "src/engines/context-relevance.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/context.ts/_file_#",
+        "targetSymbol": "src/engines/context-path-resolver.ts/resolveRelativeImportTarget#",
+        "targetPath": "src/engines/context-path-resolver.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/context.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getFileDocs#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/context.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/symbols.ts/resolveSymbol#",
+        "targetPath": "src/infra/db/repositories/symbols.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:55:51.143Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 71,
+    "inCycle": true,
+    "cycleId": "src/core → src/types → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

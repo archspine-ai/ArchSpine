@@ -1,0 +1,246 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt/aggregate.ts",
+    "contentHash": "896e26edc789c47b18d4f53498e1d58645225357d3fefb240591d301bcbbfa26",
+    "skeletonHash": "c1e80edea1a3a61107e5fc0783a5888c40e7221168e151f60ec4fe9a0664a792",
+    "semanticHash": "b535d8ecf52399293c860580b3a3129cfabd36498e05a758e6c8a384ceba8dda",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt"
+  },
+  "semantic": {
+    "role": "Infrastructure module providing factory functions for building structured LLM prompts used to drive AI summarization of different artifact types (documents, configuration files, folder indexes, and project overviews).",
+    "responsibilities": [
+      "Generate a prompt string for summarizing a document artifact, using the documentSchema for structured output.",
+      "Generate a prompt string for summarizing a configuration file artifact, using the configSchema.",
+      "Generate a prompt string for summarizing a directory/folder artifact (L2 aggregation), using the folderSchema.",
+      "Generate a prompt string for summarizing a project overview, using the projectSchema.",
+      "Allow callers to specify languages for localized output instructions, branch and status for environmental context, and response mode (e.g., json-only)."
+    ],
+    "outOfScope": [
+      "This module does not handle raw source-code scanning or AST extraction.",
+      "It does not execute LLM calls; it only constructs prompts.",
+      "It does not manage the lifecycle of prompts beyond generation."
+    ],
+    "invariants": [
+      "The module is an infra facade: callers should use these exported functions rather than directly importing internal prompt builder components (as per the infra-facade-imports rule)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "To provide a stable, high-level API for generating prompts that guide LLMs to produce structured summaries of Atlas documentation artifacts.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era. Likely introduced or refined these prompt generator functions as part of the core prompt engine overhaul."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "generateDocumentPrompt",
+        "description": "Constructs a structured LLM prompt for summarizing a document file; consumes documentSchema and returns a prompt string."
+      },
+      {
+        "symbolName": "generateConfigPrompt",
+        "description": "Constructs a structured LLM prompt for summarizing a configuration file; consumes configSchema and returns a prompt string."
+      },
+      {
+        "symbolName": "generateFolderPrompt",
+        "description": "Constructs a structured LLM prompt for summarizing a directory (L2 aggregation); consumes folderSchema and returns a prompt string."
+      },
+      {
+        "symbolName": "generateProjectPrompt",
+        "description": "Constructs a structured LLM prompt for summarizing a project overview; consumes projectSchema and returns a prompt string."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure module providing factory functions for building structured LLM prompts used to drive AI summarization of different artifact types (documents, configuration files, folder indexes, and project overviews).",
+        "responsibilities": [
+          "Generates a prompt string for summarizing a document artifact, using the documentSchema for structured output.",
+          "Generates a prompt string for summarizing a configuration file artifact, using the configSchema.",
+          "Generates a prompt string for summarizing a directory/folder artifact (L2 aggregation), using the folderSchema.",
+          "Generates a prompt string for summarizing a project overview, using the projectSchema.",
+          "Allows callers to specify languages for localized output instructions, branch and status for environmental context, and response mode (e.g., json-only)."
+        ],
+        "outOfScope": [
+          "This module does not handle raw source-code scanning or AST extraction.",
+          "It does not execute LLM calls; it only constructs prompts.",
+          "It does not manage the lifecycle of prompts beyond generation."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../assets/templates/prompts/index.js'",
+        "symbols": [
+          "configSchema",
+          "documentSchema",
+          "folderSchema",
+          "projectSchema"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./builder.js'",
+        "symbols": [
+          "PromptBuilder"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./shared.js'",
+        "symbols": [
+          "buildLocalizedLanguageInstructions",
+          "renderOutputContract"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "generateDocumentPrompt",
+        "kind": "function",
+        "signature": "generateDocumentPrompt(\n  filePath: string,\n  content: string,\n  languages: string[] = ['English'],\n  branch: string = '',\n  status: string = '',\n  responseMode: PromptResponseMode = 'json-only',\n)"
+      },
+      {
+        "name": "generateConfigPrompt",
+        "kind": "function",
+        "signature": "generateConfigPrompt(\n  filePath: string,\n  content: string,\n  languages: string[] = ['English'],\n  branch: string = '',\n  status: string = '',\n  responseMode: PromptResponseMode = 'json-only',\n)"
+      },
+      {
+        "name": "generateFolderPrompt",
+        "kind": "function",
+        "signature": "generateFolderPrompt(\n  dirPath: string,\n  childrenInfo: string,\n  languages: string[] = ['English'],\n  branch: string = '',\n  status: string = '',\n  responseMode: PromptResponseMode = 'json-only',\n)"
+      },
+      {
+        "name": "generateProjectPrompt",
+        "kind": "function",
+        "signature": "generateProjectPrompt(\n  projectName: string,\n  modulesInfo: string,\n  languages: string[] = ['English'],\n  branch: string = '',\n  status: string = '',\n  responseMode: PromptResponseMode = 'json-only',\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "generateDocumentPrompt",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt/aggregate.ts#"
+      },
+      {
+        "name": "generateConfigPrompt",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt/aggregate.ts#"
+      },
+      {
+        "name": "generateFolderPrompt",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt/aggregate.ts#"
+      },
+      {
+        "name": "generateProjectPrompt",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt/aggregate.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 4,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../assets/templates/prompts/index.js",
+        "relation": "import",
+        "symbols": [
+          "configSchema",
+          "documentSchema",
+          "folderSchema",
+          "projectSchema"
+        ]
+      },
+      {
+        "targetPath": "./builder.js",
+        "relation": "import",
+        "symbols": [
+          "PromptBuilder"
+        ]
+      },
+      {
+        "targetPath": "./shared.js",
+        "relation": "import",
+        "symbols": [
+          "buildLocalizedLanguageInstructions",
+          "renderOutputContract"
+        ]
+      },
+      {
+        "targetPath": "./types.js",
+        "relation": "import-type",
+        "symbols": [
+          "PromptResponseMode"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/prompt/aggregate.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/shared.ts/buildLocalizedLanguageInstructions#",
+        "targetPath": "src/infra/prompt/shared.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/aggregate.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/shared.ts/renderOutputContract#",
+        "targetPath": "src/infra/prompt/shared.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/aggregate.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/builder.ts/PromptBuilder#",
+        "targetPath": "src/infra/prompt/builder.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/aggregate.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/PromptBuilder#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/aggregate.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/PromptBuilder#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:01:00.998Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

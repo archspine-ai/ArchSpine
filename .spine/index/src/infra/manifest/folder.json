@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/infra/manifest",
+  "role": "Manifest management and persistence subsystem of the ArchSpine project, providing core logic for tracking file state, computing integrity hashes, and coordinating the lifecycle of the Spine manifest.",
+  "responsibility": "The components in this directory collectively maintain the Spine manifest's runtime state and persistent storage. They handle file record creation, update, and deletion via the SpineDB; compute SHA-256 hashes of file content and metadata for drift detection; read and write JSON manifest and language snapshot files; manage the manifest lifecycle including baseline detection and sync decisions; and define the type contracts for file status snapshots used across scanning and synchronization layers.",
+  "children": [
+    {
+      "filePath": "src/infra/manifest/facade.ts",
+      "role": "Facade class that orchestrates file tracking, metadata management, and persistence operations over the SpineDB.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/manifest/integrity.ts",
+      "role": "Infrastructure utility for computing file integrity hashes, used by the Spine gate to detect file changes.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/manifest/io.ts",
+      "role": "Low-level synchronous I/O utility for reading JSON manifest files and computing canonical paths within the .spine directory. Provides a thin wrapper around fs and path for the manifest subsystem.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/manifest/state.ts",
+      "role": "State persistence and lifecycle manager for the Spine manifest runtime state and language detection snapshots.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/manifest/types.ts",
+      "role": "Protocol type definition defining the shape of a file status snapshot for use across the ArchSpine scanning and synchronization layers.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-11T05:40:42.473Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

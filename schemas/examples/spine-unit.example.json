@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/auth.ts",
+    "contentHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src"
+  },
+  "semantic": {
+    "role": "Authentication entry module for login and logout operations.",
+    "responsibilities": [
+      "Expose login and logout functions.",
+      "Provide a minimal AuthService singleton entry point."
+    ],
+    "outOfScope": ["Must not persist authentication state to a database."],
+    "invariants": [
+      {
+        "id": "no-direct-db-access",
+        "description": "This module must not import database adapters directly.",
+        "enforceable": true
+      }
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Keep authentication entry points lightweight and side-effect limited.",
+      "recentChangeIntent": "Refine exported auth helpers."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "login",
+        "description": "Starts a login flow for a caller-supplied user identity."
+      },
+      {
+        "symbolName": "logout",
+        "description": "Terminates an active session from the caller side."
+      }
+    ]
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "login",
+        "kind": "function",
+        "signature": "(user: string, pass: string)"
+      },
+      {
+        "name": "logout",
+        "kind": "function",
+        "signature": "() => ..."
+      },
+      {
+        "name": "AuthService",
+        "kind": "class",
+        "signature": "class AuthService"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "login",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/auth.ts/login#"
+      },
+      {
+        "name": "logout",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/auth.ts/logout#"
+      },
+      {
+        "name": "AuthService",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/auth.ts/AuthService#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 3,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-04-02T10:00:00Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": ["ast", "llm"]
+  }
+}

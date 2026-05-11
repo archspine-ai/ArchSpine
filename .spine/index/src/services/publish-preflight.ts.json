@@ -1,0 +1,269 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/publish-preflight.ts",
+    "contentHash": "a687cbfe966a1cbf02fe771e339926bf7b8f3d012868dff42add2bc8e0fff255",
+    "skeletonHash": "1d3ca9f683dd3093034906f7364fb114bd89992466c6f1cc157da1d28af798d2",
+    "semanticHash": "932eb22139ee66be2a5488f3afca795a1fedbd4acc1da9f4c3d80cafe0aa1eb1",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Preflight validation module for the ArchSpine publish pipeline, guarding against missing runtime state and misconfiguration before a publish operation can proceed.",
+    "responsibilities": [
+      "Assert that the .spine directory exists as a prerequisite for any publish operation.",
+      "Assert that all required snapshot index files exist under .spine/index and that no lock conflict exists (i.e. no other process holds the snapshot lock).",
+      "Warn the user when the current artifact strategy is set to 'local', which is inappropriate for publishing and may cause misdelivery."
+    ],
+    "outOfScope": [
+      "This module does not perform the actual publish or snapshot generation.",
+      "It does not validate the contents or integrity of the snapshot files beyond existence.",
+      "It does not modify any runtime state or configuration."
+    ],
+    "invariants": [
+      "Publish must fail if .spine directory is absent.",
+      "Publish must fail if any required snapshot index file is missing.",
+      "Publish must fail if the snapshot lock is held by another process (lock conflict).",
+      "the artifact strategy must not be 'local' when publishing in a CI context.",
+      "The service-runtime-boundary rule is not violated as this module is not view-specific."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provides pre-flight checks for the publish pipeline to ensure the runtime state is safe and consistent before proceeding.",
+      "recentChangeIntent": "Part of pre-flight validations for the publish pipeline; introduced to guard against missing runtime state and misconfiguration."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "assertPublishRuntimeBaseline",
+        "description": "Verifies that the .spine directory exists at the project root, throwing an error if not. Called before any publish action."
+      },
+      {
+        "symbolName": "assertPublishSnapshotReady",
+        "description": "Checks that the .spine/index directory and all required snapshot index files exist, and that no other process holds the snapshot lock. Throws on missing files or lock conflict."
+      },
+      {
+        "symbolName": "warnIfPublishingFromLocalStrategy",
+        "description": "Reads the artifact strategy from config and issues a warning if it is set to 'local', which is not suitable for publication. Uses the provided RuntimeIO for output."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Preflight validation module for the ArchSpine publish pipeline, guarding against missing runtime state and misconfiguration before a publish operation can proceed.",
+        "responsibilities": [
+          "Assert that the .spine directory exists as a prerequisite for any publish operation.",
+          "Assert that all required snapshot index files exist under .spine/index and that no lock conflict exists (i.e. no other process holds the snapshot lock).",
+          "Warn the user when the current artifact strategy is set to 'local', which is inappropriate for publishing and may cause misdelivery."
+        ],
+        "outOfScope": [
+          "This module does not perform the actual publish or snapshot generation.",
+          "It does not validate the contents or integrity of the snapshot files beyond existence.",
+          "It does not modify any runtime state or configuration."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../utils/lock.js'",
+        "symbols": [
+          "parseLockPayload"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "assertPublishRuntimeBaseline",
+        "kind": "function",
+        "signature": "assertPublishRuntimeBaseline(rootDir: string)"
+      },
+      {
+        "name": "assertPublishSnapshotReady",
+        "kind": "function",
+        "signature": "assertPublishSnapshotReady(rootDir: string)"
+      },
+      {
+        "name": "warnIfPublishingFromLocalStrategy",
+        "kind": "function",
+        "signature": "warnIfPublishingFromLocalStrategy(\n  rootDir: string,\n  runtimeIO: RuntimeIO = defaultRuntimeIO,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "assertPublishRuntimeBaseline",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/publish-preflight.ts#"
+      },
+      {
+        "name": "assertPublishSnapshotReady",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/publish-preflight.ts#"
+      },
+      {
+        "name": "warnIfPublishingFromLocalStrategy",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/publish-preflight.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ]
+      },
+      {
+        "targetPath": "../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "../utils/lock.js",
+        "relation": "import",
+        "symbols": [
+          "parseLockPayload"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/publish-preflight.ts/_file_#",
+        "targetSymbol": "src/utils/lock.ts/parseLockPayload#",
+        "targetPath": "src/utils/lock.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/publish-preflight.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/ArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/publish-preflight.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/publish-preflight.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:02:14.047Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

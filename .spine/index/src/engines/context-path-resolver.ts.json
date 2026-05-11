@@ -1,0 +1,146 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/context-path-resolver.ts",
+    "contentHash": "eaaf5fb357f94e149096b03418d2ff5f798eed2f8156dbe3169a3cde8bd7a00a",
+    "skeletonHash": "2cf13407c5e6897d222121ff8dcbb9ada21d3a0143796cdaeec223b09c1c9794",
+    "semanticHash": "09653e8e060f001d4f53e67221f2d7618d67e54d5aafe0cfdca48ee1b1f5d381",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Utility for resolving relative import statements to absolute file paths, used by the scanner and AST extractor to map import directives to concrete source files.",
+    "responsibilities": [
+      "Resolve a relative import source string (e.g. './foo') to an absolute file path by testing candidate extensions from the language registry.",
+      "Return null for non-relative imports (absolute or bare specifiers) to filter out external dependencies.",
+      "Support nested directory traversal and index file resolution (e.g. './dir' → './dir/index.ts') when applicable."
+    ],
+    "outOfScope": [
+      "Does not parse the AST of import statements; it only resolves already-extracted source strings.",
+      "Does not handle URL imports, package specifiers, or dynamic imports.",
+      "Does not track or store resolved paths; it is a stateless function."
+    ],
+    "invariants": [
+      "Only processes imports starting with '.' (relative imports).",
+      "Uses LangRegistry to obtain the list of source extensions to try.",
+      "Returns the first existing file path that matches, or null if none is found."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable, stateless resolution function that decouples import resolution from the specific scanner implementation.",
+      "recentChangeIntent": "Not applicable — no previous semantic provided."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "resolveRelativeImportTarget",
+        "description": "Given a root directory, a file directory, and a relative import source string, resolves to the first existing file path matching the language registry's known extensions, or null if unresolved. Called by scanning and AST extraction phases to convert import statements into concrete file references."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Utility for resolving relative import statements to absolute file paths, used by the scanner and AST extractor to map import directives to concrete source files.",
+        "responsibilities": [
+          "Resolve a relative import source string (e.g. './foo') to an absolute file path by testing candidate extensions from the language registry.",
+          "Return null for non-relative imports (absolute or bare specifiers) to filter out external dependencies.",
+          "Support nested directory traversal and index file resolution (e.g. './dir' → './dir/index.ts') when applicable."
+        ],
+        "outOfScope": [
+          "Does not parse the AST of import statements; it only resolves already-extracted source strings.",
+          "Does not handle URL imports, package specifiers, or dynamic imports.",
+          "Does not track or store resolved paths; it is a stateless function."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../ast/lang-registry.js'",
+        "symbols": [
+          "LangRegistry"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "resolveRelativeImportTarget",
+        "kind": "function",
+        "signature": "resolveRelativeImportTarget(\n  rootDir: string,\n  dir: string,\n  source: string,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "resolveRelativeImportTarget",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/context-path-resolver.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../ast/lang-registry.js",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:55:17.388Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 71,
+    "inCycle": true,
+    "cycleId": "src/core → src/types → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

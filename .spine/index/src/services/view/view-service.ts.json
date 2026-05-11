@@ -1,0 +1,335 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/view-service.ts",
+    "contentHash": "8c299e433704487957fc1ce1352b57764927b4659c567b7f25928dc722c60de2",
+    "skeletonHash": "0abffce5d5750da0e2e98bd330622043c0c7495186acc2b537fd006bd57f36d3",
+    "semanticHash": "2b7e1b43783d1ce44a28db330f1dd0d56774eeb570f029f47648baf0700de05b",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "Service orchestrator for deriving, rendering, and managing views (both pre-defined and producer-based) in the ArchSpine mirror system, handling persistence and cleanup of view artifacts.",
+    "responsibilities": [
+      "Load indexed units from the mirror index via ViewIndexLoader.",
+      "Derive pre-defined public surface view by calling buildPublicSurfaceView with indexed units and view options.",
+      "Derive pre-defined risk hotspots view by calling buildRiskHotspotsView with indexed units and view options.",
+      "Derive arbitrary views via the producer registry (getViewProducer/producer.derive) using a ViewId and optional context.",
+      "Render derived views into markdown using ViewRenderer (supports both public surface and risk hotspots rendering).",
+      "Save rendered views to output artifacts via OutputManager (using saveViewMarkdown and saveView).",
+      "Delete view artifacts for given view IDs via OutputManager.deleteViewArtifacts.",
+      "Write protected output baseline by coordinating with infra writer-boundary and spine-gate.",
+      "Log progress and errors via runtimeIO (defaulting to defaultRuntimeIO)."
+    ],
+    "outOfScope": [
+      "Low-level file I/O or direct filesystem manipulation (delegated to infra/writer-boundary and spine-gate).",
+      "Direct interaction with the LLM client (passed in but not called directly within the shown usages).",
+      "Configuration validation or management.",
+      "Parsing or interpreting view definition schemas (handled by view-registry)."
+    ],
+    "invariants": [
+      "All view-specific service modules reside under src/services/view/, not under src/infra/ (rule service-runtime-boundary).",
+      "View derivation is delegated either to specialized builders (public-surface-view, risk-hotspots-view) or to generic producers registered in producer-registry.",
+      "Persistence of view artifacts is managed through OutputManager, not done inline.",
+      "Protected output writing uses withProtectedOutputsWriteAccess/writeProtectedOutputBaseline from infra modules."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a unified entry point for all view-related operations within the mirror system, supporting both hardcoded view types and extensible producers.",
+      "recentChangeIntent": "Expand ViewService from handling only public surface and risk hotspots to supporting generic view derivation via producer registry and artifact deletion."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ViewService",
+        "description": "Primary class that orchestrates view derivation, rendering, persistence, and cleanup. Consumed by CLI commands and runtime orchestrator."
+      },
+      {
+        "symbolName": "ViewService.derivePublicSurfaceView",
+        "description": "Derives and persists the public surface view (list of exported symbols) for the indexed codebase. Returns a promise of the derived view envelope."
+      },
+      {
+        "symbolName": "ViewService.deriveRiskHotspotsView",
+        "description": "Derives and persists the risk hotspots view (areas with high change impact) for the indexed codebase. Returns a promise of the derived view envelope."
+      },
+      {
+        "symbolName": "ViewService.deriveView",
+        "description": "Derives an arbitrary view by looking up its producer from the producer registry, calling producer.derive, and persisting the result. Accepts a ViewId and optional ViewContext."
+      },
+      {
+        "symbolName": "ViewService.deleteViewArtifacts",
+        "description": "Deletes all stored artifacts (files) for the given view IDs via OutputManager and writes a new protected output baseline."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": true,
+    "driftReason": "The module's contract expanded from only handling two pre-defined views (public surface and risk hotspots) to also supporting generic view derivation via the producer registry (deriveView) and artifact deletion (deleteViewArtifacts). The previous semantic contract did not mention these generic capabilities, which form a significant part of the current public surface.",
+    "localized": {
+      "English": {
+        "role": "Service orchestrator for deriving, rendering, and managing views (both pre-defined and producer-based) in the ArchSpine mirror system, handling persistence and cleanup of view artifacts.",
+        "responsibilities": [
+          "Load indexed units from the mirror index via ViewIndexLoader.",
+          "Derive pre-defined public surface view by calling buildPublicSurfaceView with indexed units and view options.",
+          "Derive pre-defined risk hotspots view by calling buildRiskHotspotsView with indexed units and view options.",
+          "Derive arbitrary views via the producer registry (getViewProducer/producer.derive) using a ViewId and optional context.",
+          "Render derived views into markdown using ViewRenderer (supports both public surface and risk hotspots rendering).",
+          "Save rendered views to output artifacts via OutputManager (using saveViewMarkdown and saveView).",
+          "Delete view artifacts for given view IDs via OutputManager.deleteViewArtifacts.",
+          "Write protected output baseline by coordinating with infra writer-boundary and spine-gate.",
+          "Log progress and errors via runtimeIO (defaulting to defaultRuntimeIO)."
+        ],
+        "outOfScope": [
+          "Low-level file I/O or direct filesystem manipulation (delegated to infra/writer-boundary and spine-gate).",
+          "Direct interaction with the LLM client (passed in but not called directly within the shown usages).",
+          "Configuration validation or management.",
+          "Parsing or interpreting view definition schemas (handled by view-registry)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../infra/output.js'",
+        "symbols": [
+          "OutputManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./view-renderer.js'",
+        "symbols": [
+          "ViewRenderer"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./view-registry.js'",
+        "symbols": [
+          "getViewDefinition"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./producer-registry.js'",
+        "symbols": [
+          "getViewProducer"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./index-loader.js'",
+        "symbols": [
+          "ViewIndexLoader"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./public-surface-view.js'",
+        "symbols": [
+          "buildPublicSurfaceView"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./risk-hotspots-view.js'",
+        "symbols": [
+          "buildRiskHotspotsView"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/writer-boundary.js'",
+        "symbols": [
+          "withProtectedOutputsWriteAccess"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/spine-gate.js'",
+        "symbols": [
+          "writeProtectedOutputBaseline"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "ViewService",
+        "kind": "class",
+        "signature": "class ViewService"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ViewService",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/services/view/view-service.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/output.ts",
+        "relation": "import",
+        "symbols": [
+          "OutputManager"
+        ]
+      },
+      {
+        "targetPath": "src/services/view/view-renderer.ts",
+        "relation": "import",
+        "symbols": [
+          "ViewRenderer"
+        ]
+      },
+      {
+        "targetPath": "src/infra/runtime-io.ts",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "src/services/view/view-registry.ts",
+        "relation": "import",
+        "symbols": [
+          "getViewDefinition"
+        ]
+      },
+      {
+        "targetPath": "src/services/view/producer-registry.ts",
+        "relation": "import",
+        "symbols": [
+          "getViewProducer"
+        ]
+      },
+      {
+        "targetPath": "src/services/view/index-loader.ts",
+        "relation": "import",
+        "symbols": [
+          "ViewIndexLoader"
+        ]
+      },
+      {
+        "targetPath": "src/services/view/public-surface-view.ts",
+        "relation": "import",
+        "symbols": [
+          "buildPublicSurfaceView"
+        ]
+      },
+      {
+        "targetPath": "src/services/view/risk-hotspots-view.ts",
+        "relation": "import",
+        "symbols": [
+          "buildRiskHotspotsView"
+        ]
+      },
+      {
+        "targetPath": "src/infra/writer-boundary.ts",
+        "relation": "import",
+        "symbols": [
+          "withProtectedOutputsWriteAccess"
+        ]
+      },
+      {
+        "targetPath": "src/infra/spine-gate.ts",
+        "relation": "import",
+        "symbols": [
+          "writeProtectedOutputBaseline"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/tasks/view-derivation.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/view/view-service.ts/_file_#",
+        "targetSymbol": "src/services/view/view-registry.ts/getViewDefinition#",
+        "targetPath": "src/services/view/view-registry.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/view/view-service.ts/_file_#",
+        "targetSymbol": "src/services/view/producer-registry.ts/getViewProducer#",
+        "targetPath": "src/services/view/producer-registry.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/view/view-service.ts/_file_#",
+        "targetSymbol": "src/services/view/public-surface-view.ts/buildPublicSurfaceView#",
+        "targetPath": "src/services/view/public-surface-view.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/view/view-service.ts/_file_#",
+        "targetSymbol": "src/services/view/risk-hotspots-view.ts/buildRiskHotspotsView#",
+        "targetPath": "src/services/view/risk-hotspots-view.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/view/view-service.ts/_file_#",
+        "targetSymbol": "src/infra/writer-boundary.ts/withProtectedOutputsWriteAccess#",
+        "targetPath": "src/infra/writer-boundary.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/view/view-service.ts/_file_#",
+        "targetSymbol": "src/infra/spine-gate.ts/writeProtectedOutputBaseline#",
+        "targetPath": "src/infra/spine-gate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/view/view-service.ts/_file_#",
+        "targetSymbol": "src/services/view/index-loader.ts/ViewIndexLoader#",
+        "targetPath": "src/services/view/index-loader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T10:02:47.122Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

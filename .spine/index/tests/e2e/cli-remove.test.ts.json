@@ -1,0 +1,207 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/e2e/cli-remove.test.ts",
+    "contentHash": "0e670d8386f29a58a1b336bc1a6a632fbc6259151056f7c8c1576e81d43c699c",
+    "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
+    "semanticHash": "843ae89bb8183f11b5c9027420c6c723ca4af72b473586af0ee57a05ee48fe3a",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/e2e"
+  },
+  "semantic": {
+    "role": "End-to-end (E2E) test suite for the ArchSpine CLI pipeline using a mocked LLM provider. Validates that the CLI handles subcommands (scan, sync, etc.) correctly in a controlled environment.",
+    "responsibilities": [
+      "Provides a temporary isolated workspace per test run temp directory.",
+      "Runs the built CLI as a child process with configurable arguments and a working directory.",
+      "Verifies that the CLI pipeline executes without errors and produces the expected output (stdout/stderr).",
+      "Tests the integration of core pipeline stages (scan, sync) with a mock LLM to avoid external dependencies.",
+      "Supports cleanup of temporary test directories after each test to avoid state leakage."
+    ],
+    "outOfScope": [
+      "Production pipeline logic or business rules.",
+      "Real LLM provider communication or credential handling.",
+      "Performance/scaling characteristics.",
+      "UI rendering or user interaction beyond CLI exit codes and stdout/stderr."
+    ],
+    "invariants": [
+      "Test file name must end with .test.ts or .spec.ts (satisfied).",
+      "CLI binary must be built before tests run (ensured by build script or CI step)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "This file is part of the E2E test suite that validates the end-to-end behavior of the CLI pipeline using a mocked LLM. It isolates tests via temporary directories and child processes.",
+      "recentChangeIntent": "Added as part of an E2E test suite expansion (37 tests across 7 files) to cover CLI commands including pipeline mock scenarios."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "End-to-end (E2E) test suite for the ArchSpine CLI pipeline using a mocked LLM provider. Validates that the CLI handles subcommands (scan, sync, etc.) correctly in a controlled environment.",
+        "responsibilities": [
+          "Provides a temporary isolated workspace per test run temp directory.",
+          "Runs the built CLI as a child process with configurable arguments and a working directory.",
+          "Verifies that the CLI pipeline executes without errors and produces the expected output (stdout/stderr).",
+          "Tests the integration of core pipeline stages (scan, sync) with a mock LLM to avoid external dependencies.",
+          "Supports cleanup of temporary test directories after each test to avoid state leakage."
+        ],
+        "outOfScope": [
+          "Production pipeline logic or business rules.",
+          "Real LLM provider communication or credential handling.",
+          "Performance/scaling characteristics.",
+          "UI rendering or user interaction beyond CLI exit codes and stdout/stderr."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ]
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:06:40.770Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

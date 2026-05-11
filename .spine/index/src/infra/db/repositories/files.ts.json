@@ -1,0 +1,244 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db/repositories/files.ts",
+    "contentHash": "0d04fc7afb18215a2df6f96651814796512c2164e8cde6ccb35c4cd97d6436d9",
+    "skeletonHash": "bfad905fa28e9ea48a16b5dd9ae65f6dd1cf92568e5c835c90ec4a279824be9b",
+    "semanticHash": "b35c7264e0c43bf7a991df1627f38cf0ab332f708820b2112db352485ba655d2",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/db/repositories"
+  },
+  "semantic": {
+    "role": "Database Repository (Data Access Object) providing low-level CRUD operations on the 'files' table in an SQLite database, isolating file metadata persistence for the ArchSpine runtime.",
+    "responsibilities": [
+      "Retrieve the file status record (hash, kind, mtime, size) for a given file path via getFileStatus.",
+      "Create a new file record if one does not exist via ensureFileRecord.",
+      "Update file metadata including hash, kind, locales, mtime, and size via updateFileStatus.",
+      "Update file metadata along with an associated SpineUnit document via updateFileStatusWithDocs.",
+      "Retrieve the SpineUnit document associated with a file path via getFileDocs.",
+      "Delete a file record from the database by path via deleteFile.",
+      "List all tracked file paths via getTrackedFiles.",
+      "Return global file count status via getGlobalStatus."
+    ],
+    "outOfScope": [
+      "Higher-level business logic or orchestration of scan/sync pipelines.",
+      "Schema migrations or database initialization.",
+      "External file system I/O or content hashing.",
+      "Cross-repository or cross-language coordination."
+    ],
+    "invariants": [
+      "Every exported function requires a better-sqlite3 Database instance as the first parameter.",
+      "File paths uniquely identify records in the files table.",
+      "SpineUnit documents are serialized to JSON strings for storage and deserialized on retrieval."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, isolated data access layer for file metadata persistence, decoupling scanner and engine logic from raw SQL.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era: establishes foundational file record DAO for the governance and semantic layer runtime."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "getFileStatus",
+        "description": "Queries the files table for a file's hash, kind, mtime, and size by file path. Returns undefined if the file is not tracked."
+      },
+      {
+        "symbolName": "ensureFileRecord",
+        "description": "Inserts a new file record with the given path, kind, mtime, and size if one does not already exist."
+      },
+      {
+        "symbolName": "updateFileStatus",
+        "description": "Updates an existing file record's hash, kind, locales, mtime, and size, setting a new updatedAt timestamp."
+      },
+      {
+        "symbolName": "updateFileStatusWithDocs",
+        "description": "Updates a file record with new metadata and serializes a SpineUnit document into the docs column, setting a new updatedAt timestamp."
+      },
+      {
+        "symbolName": "getFileDocs",
+        "description": "Retrieves and deserializes the SpineUnit document associated with a file path. Returns undefined if no docs exist."
+      },
+      {
+        "symbolName": "deleteFile",
+        "description": "Deletes the file record identified by the given file path from the database."
+      },
+      {
+        "symbolName": "getTrackedFiles",
+        "description": "Returns an array of all file paths currently tracked in the files table."
+      },
+      {
+        "symbolName": "getGlobalStatus",
+        "description": "Returns a GlobalStatus object containing the total count of tracked files."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Database Repository (Data Access Object) providing low-level CRUD operations on the 'files' table in an SQLite database, isolating file metadata persistence for the ArchSpine runtime.",
+        "responsibilities": [
+          "Retrieve the file status record (hash, kind, mtime, size) for a given file path via getFileStatus.",
+          "Create a new file record if one does not exist via ensureFileRecord.",
+          "Update file metadata including hash, kind, locales, mtime, and size via updateFileStatus.",
+          "Update file metadata along with an associated SpineUnit document via updateFileStatusWithDocs.",
+          "Retrieve the SpineUnit document associated with a file path via getFileDocs.",
+          "Delete a file record from the database by path via deleteFile.",
+          "List all tracked file paths via getTrackedFiles.",
+          "Return global file count status via getGlobalStatus."
+        ],
+        "outOfScope": [
+          "Higher-level business logic or orchestration of scan/sync pipelines.",
+          "Schema migrations or database initialization.",
+          "External file system I/O or content hashing.",
+          "Cross-repository or cross-language coordination."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "getFileStatus",
+        "kind": "function",
+        "signature": "getFileStatus(\n  db: Database.Database,\n  filePath: string,\n)"
+      },
+      {
+        "name": "ensureFileRecord",
+        "kind": "function",
+        "signature": "ensureFileRecord(\n  db: Database.Database,\n  filePath: string,\n  kind: string,\n  mtime: number = 0,\n  size: number = 0,\n)"
+      },
+      {
+        "name": "updateFileStatus",
+        "kind": "function",
+        "signature": "updateFileStatus(\n  db: Database.Database,\n  filePath: string,\n  hash: string,\n  kind: string,\n  locales: string[] = [],\n  mtime: number = 0,\n  size: number = 0,\n)"
+      },
+      {
+        "name": "updateFileStatusWithDocs",
+        "kind": "function",
+        "signature": "updateFileStatusWithDocs(\n  db: Database.Database,\n  filePath: string,\n  hash: string,\n  kind: string,\n  spineUnit: SpineUnit,\n  locales: string[] = [],\n  mtime: number = 0,\n  size: number = 0,\n)"
+      },
+      {
+        "name": "getFileDocs",
+        "kind": "function",
+        "signature": "getFileDocs(db: Database.Database, filePath: string)"
+      },
+      {
+        "name": "deleteFile",
+        "kind": "function",
+        "signature": "deleteFile(db: Database.Database, filePath: string)"
+      },
+      {
+        "name": "getTrackedFiles",
+        "kind": "function",
+        "signature": "getTrackedFiles(db: Database.Database)"
+      },
+      {
+        "name": "getGlobalStatus",
+        "kind": "function",
+        "signature": "getGlobalStatus(db: Database.Database)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "getFileStatus",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/files.ts#"
+      },
+      {
+        "name": "ensureFileRecord",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/files.ts#"
+      },
+      {
+        "name": "updateFileStatus",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/files.ts#"
+      },
+      {
+        "name": "updateFileStatusWithDocs",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/files.ts#"
+      },
+      {
+        "name": "getFileDocs",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/files.ts#"
+      },
+      {
+        "name": "deleteFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/files.ts#"
+      },
+      {
+        "name": "getTrackedFiles",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/files.ts#"
+      },
+      {
+        "name": "getGlobalStatus",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/files.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 8,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "better-sqlite3",
+        "relation": "import",
+        "symbols": [
+          "Database"
+        ]
+      },
+      {
+        "targetPath": "../../../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "../types.js",
+        "relation": "import",
+        "symbols": [
+          "FileStatusRecord",
+          "GlobalStatus"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:39:49.587Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

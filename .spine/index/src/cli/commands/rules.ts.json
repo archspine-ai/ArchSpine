@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/rules.ts",
+    "contentHash": "912475b5aa4824d2378083d8b98191c07ec6f2d181ffc74eac614dc7c9166b93",
+    "skeletonHash": "a59173ca66a9f5d28410203e44cf4fbbb7e939dd0195e98d907f7f5f4ed068fc",
+    "semanticHash": "a08c97ebe58969cc2814f0d1c2d35be007ed2cbe63cb947fa47ce448fc752b2a",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command adapter for rule management (list, add, info) that delegates to the rule service layer.",
+    "responsibilities": [
+      "Parses the subcommand from command-line arguments to determine the rule operation (list, add, info).",
+      "Delegates to `listRuleTemplates`, `addRuleTemplate`, and `getRuleTemplateInfo` from the rule service for actual business logic.",
+      "Handles CLI output by printing results or error messages to the console.",
+      "Calls `throwCliUsage` to display usage information when an invalid subcommand is provided."
+    ],
+    "outOfScope": [
+      "Does not perform rule validation or enforcement; delegates entirely to the rule service.",
+      "Does not handle persistence, pipeline orchestration, or infrastructure concerns."
+    ],
+    "invariants": [
+      "CLI modules must stay as entrypoints and command adapters, and must not absorb pipeline or persistence logic (as per cli-entrypoint-separation rule)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a CLI command surface for managing architectural rules via subcommands, keeping the adapter thin and delegating to the rule service.",
+      "recentChangeIntent": "Refactor to remove legacy CLI aliases; this file appears unaffected by that change."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "executeRulesCommand",
+        "description": "Entry point for the 'rules' CLI command. Parses the subcommand from args and delegates to rule service functions. Called by the CLI dispatcher."
+      },
+      {
+        "symbolName": "ExecuteRulesCommandOptions",
+        "description": "Interface defining the options for executeRulesCommand: an array of args and an optional root directory."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command adapter for rule management (list, add, info) that delegates to the rule service layer.",
+        "responsibilities": [
+          "Parses the subcommand from command-line arguments to determine the rule operation (list, add, info).",
+          "Delegates to `listRuleTemplates`, `addRuleTemplate`, and `getRuleTemplateInfo` from the rule service for actual business logic.",
+          "Handles CLI output by printing results or error messages to the console.",
+          "Calls `throwCliUsage` to display usage information when an invalid subcommand is provided."
+        ],
+        "outOfScope": [
+          "Does not perform rule validation or enforcement; delegates entirely to the rule service.",
+          "Does not handle persistence, pipeline orchestration, or infrastructure concerns."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "throwCliUsage"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../services/rule-service.js'",
+        "symbols": [
+          "listRuleTemplates",
+          "addRuleTemplate",
+          "getRuleTemplateInfo"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeRulesCommand",
+        "kind": "function",
+        "signature": "executeRulesCommand(options: ExecuteRulesCommandOptions)"
+      },
+      {
+        "name": "ExecuteRulesCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteRulesCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeRulesCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/rules.ts#"
+      },
+      {
+        "name": "ExecuteRulesCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/rules.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "throwCliUsage"
+        ]
+      },
+      {
+        "targetPath": "../../services/rule-service.js",
+        "relation": "import",
+        "symbols": [
+          "listRuleTemplates",
+          "addRuleTemplate",
+          "getRuleTemplateInfo"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/rules.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/throwCliUsage#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:53:39.318Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 53,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

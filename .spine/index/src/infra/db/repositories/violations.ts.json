@@ -1,0 +1,166 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db/repositories/violations.ts",
+    "contentHash": "9081393cddcd760b8a540cd31f70df262d03f4a13b6ed0d64201596c5621007d",
+    "skeletonHash": "203b82b241750a171790143ef2e8bbcb549ed34842a5ca272b9def8f68cf71d6",
+    "semanticHash": "b4549d05f13ea4872673799beb36da333f11de805da05e21e6d0ccf299475496",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/db/repositories"
+  },
+  "semantic": {
+    "role": "Data Access Object (DAO) for violation records in the SQLite-based index database.",
+    "responsibilities": [
+      "Persist new architectural rule violations to the 'violations' table.",
+      "Delete all violation records associated with a given file path.",
+      "Delete violation records for rule IDs that are no longer active (orphan cleanup).",
+      "Retrieve all currently active violations ordered by severity and detection time."
+    ],
+    "outOfScope": [
+      "Database schema creation or migration.",
+      "Index management or query optimization.",
+      "Domain logic for rule evaluation or violation detection."
+    ],
+    "invariants": [
+      "All database operations use prepared statements to prevent SQL injection.",
+      "Violations are stored in a 'violations' table with columns: file_path, rule_id, severity, reason, detected_at.",
+      "Retrieved violations are sorted by severity descending, then detected_at descending."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable data-access layer for managing lifecycle of architectural rule violations in the index database.",
+      "recentChangeIntent": "Added deleteOrphanViolations to remove violations for rules that are no longer active, implementing violation lifecycle management."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "recordViolation",
+        "description": "Inserts a new violation record into the 'violations' table with file path, rule ID, severity, reason, and current timestamp."
+      },
+      {
+        "symbolName": "clearViolations",
+        "description": "Deletes all violation records associated with a given file path."
+      },
+      {
+        "symbolName": "deleteOrphanViolations",
+        "description": "Deletes all violation records whose rule_id is not in the provided list of active rule IDs, returning the count of deleted rows."
+      },
+      {
+        "symbolName": "getActiveViolations",
+        "description": "Returns all violation records sorted by severity (descending) and detection time (descending)."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": true,
+    "driftReason": "Public surface expanded: added deleteOrphanViolations function, introducing lifecycle management for violations linked to deactivated rules. Previous contract did not include this symbol or capability.",
+    "localized": {
+      "English": {
+        "role": "Data Access Object (DAO) for violation records in the SQLite-based index database.",
+        "responsibilities": [
+          "Insert violation records into the 'violations' table.",
+          "Delete all violations associated with a given file path.",
+          "Delete violations for rule IDs that are no longer in the active set.",
+          "Fetch all current violations ordered by severity and detection time."
+        ],
+        "outOfScope": [
+          "Database schema creation or migration.",
+          "Index management or query optimization.",
+          "Domain logic for rule evaluation or violation detection."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "recordViolation",
+        "kind": "function",
+        "signature": "recordViolation(\n  db: Database.Database,\n  filePath: string,\n  ruleId: string,\n  severity: string,\n  reason: string,\n)"
+      },
+      {
+        "name": "clearViolations",
+        "kind": "function",
+        "signature": "clearViolations(db: Database.Database, filePath: string)"
+      },
+      {
+        "name": "deleteOrphanViolations",
+        "kind": "function",
+        "signature": "deleteOrphanViolations(db: Database.Database, activeRuleIds: string[])"
+      },
+      {
+        "name": "getActiveViolations",
+        "kind": "function",
+        "signature": "getActiveViolations(db: Database.Database)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "recordViolation",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/violations.ts#"
+      },
+      {
+        "name": "clearViolations",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/violations.ts#"
+      },
+      {
+        "name": "deleteOrphanViolations",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/violations.ts#"
+      },
+      {
+        "name": "getActiveViolations",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/violations.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 4,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/db/types.ts",
+        "relation": "import",
+        "symbols": [
+          "ViolationRecord"
+        ]
+      },
+      {
+        "targetPath": "better-sqlite3",
+        "relation": "import",
+        "symbols": [
+          "Database"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:40:14.809Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

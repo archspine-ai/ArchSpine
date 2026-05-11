@@ -1,0 +1,191 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/view-registry.ts",
+    "contentHash": "ba4bef885d26c5b6e90563d647993ae3e3f15a1e68062022ee73cb2f6b7fca06",
+    "skeletonHash": "5deb7435cede2407cbe3f56ddb6b8f48348b1081c7e4b880fb7db0605ae55101",
+    "semanticHash": "a27b82e1f0f20badcb04534baf7b7c57b7750b68a843afb6787caa2630ed98c8",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "View Registry – defines all available system views and provides type-safe lookup and validation functions used by the CLI, view-service, and other modules to discover and select views for rendering.",
+    "responsibilities": [
+      "Maintain the canonical list of all system views (ViewDefinition) as an exported constant VIEW_DEFINITIONS.",
+      "Provide a type guard (isViewId) to validate whether a string is a known ViewId.",
+      "Expose a lookup function (getViewDefinition) that returns the ViewDefinition for a given ViewId.",
+      "Supply a function (getDefaultEnabledViewIds) that returns the subset of ViewIds marked as default enabled.",
+      "Offer a normalizer (normalizeViewIds) that splits a user-provided string array into known ViewIds and unrecognized strings, facilitating CLI argument parsing."
+    ],
+    "outOfScope": [
+      "Rendering or generating view output (handled by individual view producers and renderers).",
+      "Collecting or analyzing repository data for views.",
+      "Interacting with the LLM or external AI providers.",
+      "File I/O or data persistence.",
+      "Defining view-specific business logic (delegated to dedicated view modules like public-surface-view.ts, risk-hotspots-view.ts, etc.)."
+    ],
+    "invariants": [
+      "All view definitions must be declared in the VIEW_DEFINITIONS array and must have unique ViewIds.",
+      "The VIEW_DEFINITION_MAP (derived from VIEW_DEFINITIONS) must contain every view referenced by lookup functions.",
+      "Functions isViewId, getViewDefinition, getDefaultEnabledViewIds, normalizeViewIds must remain pure and side-effect free."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Centralize view metadata in a single, statically-typed registry to decouple view selection from view execution, enabling automated CLI completion, validation, and dynamic discovery.",
+      "recentChangeIntent": "Refactored alongside removal of legacy CLI aliases, documentation rebuilds, and schema/item fixes – the view registry likely remained stable as the single source of truth for available views."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "VIEW_DEFINITIONS",
+        "description": "The canonical array of ViewDefinition objects, listing all system views. Consumed by the CLI, view-service, and view producers to enumerate and describe available views."
+      },
+      {
+        "symbolName": "isViewId",
+        "description": "Type guard that checks whether a string matches a known ViewId. Used for runtime validation of user-provided view identifiers."
+      },
+      {
+        "symbolName": "getViewDefinition",
+        "description": "Returns the full ViewDefinition object for a given ViewId. Used by other modules that need view metadata (title, description, requirements)."
+      },
+      {
+        "symbolName": "getDefaultEnabledViewIds",
+        "description": "Returns an array of ViewIds that have defaultEnabled set to true. Used by the CLI and view runtime to determine which views to run when none are explicitly selected."
+      },
+      {
+        "symbolName": "normalizeViewIds",
+        "description": "Takes an optional array of strings and splits them into known ViewIds and unknown strings. Used by CLI argument parsing to gracefully handle invalid view names."
+      },
+      {
+        "symbolName": "ViewDefinition",
+        "description": "Interface specifying the structure of a view: its unique id, title, description, and flags for default enablement, full-sync requirement, and LLM requirement."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "View Registry – defines all available system views and provides type-safe lookup and validation functions used by the CLI, view-service, and other modules to discover and select views for rendering.",
+        "responsibilities": [
+          "Maintain the canonical list of all system views (ViewDefinition) as an exported constant VIEW_DEFINITIONS.",
+          "Provide a type guard (isViewId) to validate whether a string is a known ViewId.",
+          "Expose a lookup function (getViewDefinition) that returns the ViewDefinition for a given ViewId.",
+          "Supply a function (getDefaultEnabledViewIds) that returns the subset of ViewIds marked as default enabled.",
+          "Offer a normalizer (normalizeViewIds) that splits a user-provided string array into known ViewIds and unrecognized strings, facilitating CLI argument parsing."
+        ],
+        "outOfScope": [
+          "Rendering or generating view output (handled by individual view producers and renderers).",
+          "Collecting or analyzing repository data for views.",
+          "Interacting with the LLM or external AI providers.",
+          "File I/O or data persistence.",
+          "Defining view-specific business logic (delegated to dedicated view modules like public-surface-view.ts, risk-hotspots-view.ts, etc.)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "isViewId",
+        "kind": "function",
+        "signature": "isViewId(value: string)"
+      },
+      {
+        "name": "getViewDefinition",
+        "kind": "function",
+        "signature": "getViewDefinition(viewId: ViewId)"
+      },
+      {
+        "name": "getDefaultEnabledViewIds",
+        "kind": "function",
+        "signature": "getDefaultEnabledViewIds()"
+      },
+      {
+        "name": "normalizeViewIds",
+        "kind": "function",
+        "signature": "normalizeViewIds(values: string[] | undefined)"
+      },
+      {
+        "name": "ViewDefinition",
+        "kind": "interface",
+        "signature": "interface ViewDefinition"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "isViewId",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/view-registry.ts#"
+      },
+      {
+        "name": "getViewDefinition",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/view-registry.ts#"
+      },
+      {
+        "name": "getDefaultEnabledViewIds",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/view-registry.ts#"
+      },
+      {
+        "name": "normalizeViewIds",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/view-registry.ts#"
+      },
+      {
+        "name": "ViewDefinition",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/view/view-registry.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 5,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../types/view.js",
+        "relation": "import",
+        "symbols": [
+          "ViewId"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/view/view-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:04:06.556Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

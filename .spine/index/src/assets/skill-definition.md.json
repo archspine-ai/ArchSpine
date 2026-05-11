@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/assets/skill-definition.md",
+    "contentHash": "124a9a68f022265df4f8bd0ae14eb1cd2160d45535a3d46ab09d7917cc7f57e4",
+    "semanticHash": "18a8d508dc63847489a167de05ff4419498e6ba266d231de48fd41f4b9973a1b",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": "src/assets"
+  },
+  "semantic": {
+    "role": "Agent skill definition that instructs an AI assistant on how to detect, query, and respect an ArchSpine control plane inside a repository to gain architectural awareness.",
+    "responsibilities": [
+      "Detect presence of `.spine/` directory and decide whether to prompt for installation or to use the existing control plane",
+      "Read overview files (SPINE.md, agent-briefing.md, project-health.md) to understand module topology, architecture, and health",
+      "Use MCP-based query tools (graph, semantic match, diagnostics, change impact, module context) for structured exploration",
+      "Review architecture rules in `.spine/rules/` before making changes",
+      "Respect the boundary between human-edited control-plane files and generated artifacts"
+    ],
+    "outOfScope": [
+      "Modifying generated files under `.spine/index/` or `.spine/view/` directly",
+      "Manually editing ArchSpine-managed outputs instead of using `spine` CLI commands",
+      "Broad workspace searches when MCP tools are available",
+      "Performing maintenance or configuration of the ArchSpine system itself beyond reading its outputs"
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This document serves as an agent skill that defines how an AI coding assistant should behave when it enters a repository equipped with the ArchSpine architectural awareness system. It standardises the discovery, reading, and respectful handling of the .spine/ control plane so that the agent can understand the codebase structure, constraints, and health without manual intervention.",
+        "context_and_audience": "The intended audience is an AI agent that helps developers with code understanding and engineering tasks. The document is triggered upon entering any Git repository. It assumes the agent has access to shell commands, file reading, globbing, and optionally an MCP server exposing ArchSpine tools. The skill must be followed every time the agent starts working in a repository containing a .spine/ directory.",
+        "key_takeaways": [
+          "ArchSpine provides a control plane (.spine/) that makes repositories queryable, governable, and auditable for AI-assisted engineering.",
+          "If .spine/ does not exist, the agent may suggest `npx archspine try` but only once per repository per calendar day with a persisted reminder state.",
+          "If .spine/ exists, the agent must first read SPINE.md and agent-briefing.md, then use MCP tools for detailed queries and check project-health.md before making changes.",
+          "The agent must never directly edit generated files under .spine/index/ or .spine/view/; instead it should refresh them via `spine sync`, `spine build`, or `spine publish` commands.",
+          "Architecture rules in .spine/rules/ should be reviewed before major edits to ensure compliance with project constraints."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:51:30.825Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 47,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,222 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/mcp.ts",
+    "contentHash": "69d52650d2c09f4a64481ef1c9ec9c73af3a2e6e6d612184adcdd8faa531dd11",
+    "skeletonHash": "3b10ce5eae8005b38b9443d0430f3be0991ffb14dfedbf85836900a44b249dbb",
+    "semanticHash": "ad3e5ea3dd7b64f79c20ace17319d727a3148db3b67207b4f18056c1c03b0d97",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command adapter for the MCP (Model Context Protocol) subcommands: start, setup, and general command routing.",
+    "responsibilities": [
+      "Start an MCP server by instantiating ArchSpineMCPServer and calling start()",
+      "Configure MCP client config files by invoking setupMcpConfigs and presenting results to the user",
+      "Route MCP subcommands based on CLI arguments, calling the appropriate handler with validated options"
+    ],
+    "outOfScope": [
+      "MCP server implementation details (handled by ArchSpineMCPServer in infra)",
+      "MCP configuration file generation logic (handled by setupMcpConfigs)",
+      "Any pipeline, persistence, or scanning logic"
+    ],
+    "invariants": [
+      "Must remain a thin CLI adapter: no business logic, no database access, no pipeline orchestration; all substantive work must be delegated to infra modules.",
+      "Must use throwCliUsage for invalid argument scenarios to maintain consistent CLI error presentation."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a thin CLI adapter that exposes MCP-related functionality (start, setup) to the command-line interface, strictly delegating to infra-layer modules.",
+      "recentChangeIntent": "Refactored MCP command handling to align with new CLI architecture, removing legacy alias support and simplifying subcommand routing."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ExecuteMcpCommandOptions",
+        "description": "Interface that defines the options object for the MCP command handler: args, rootDir, and config."
+      },
+      {
+        "symbolName": "executeMcpStart",
+        "description": "Starts an MCP server for the given root directory by creating an ArchSpineMCPServer instance and calling its start method."
+      },
+      {
+        "symbolName": "executeMcpSetup",
+        "description": "Configures MCP client settings for the project by calling setupMcpConfigs and logging status to the user."
+      },
+      {
+        "symbolName": "executeMcpCommand",
+        "description": "Dispatches the MCP subcommand (start, setup) based on the provided args array, or throws usage on invalid arguments."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command adapter for the MCP (Model Context Protocol) subcommands: start, setup, and general command routing.",
+        "responsibilities": [
+          "Start an MCP server by instantiating ArchSpineMCPServer and calling start()",
+          "Configure MCP client config files by invoking setupMcpConfigs and presenting results to the user",
+          "Route MCP subcommands based on CLI arguments, calling the appropriate handler with validated options"
+        ],
+        "outOfScope": [
+          "MCP server implementation details (handled by ArchSpineMCPServer in infra)",
+          "MCP configuration file generation logic (handled by setupMcpConfigs)",
+          "Any pipeline, persistence, or scanning logic"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../infra/mcp/server.js'",
+        "symbols": [
+          "ArchSpineMCPServer"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/mcp/setup.js'",
+        "symbols": [
+          "setupMcpConfigs",
+          "formatResolvedCommand"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "throwCliUsage"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeMcpStart",
+        "kind": "function",
+        "signature": "executeMcpStart(rootDir: string)"
+      },
+      {
+        "name": "executeMcpSetup",
+        "kind": "function",
+        "signature": "executeMcpSetup(rootDir: string)"
+      },
+      {
+        "name": "executeMcpCommand",
+        "kind": "function",
+        "signature": "executeMcpCommand({\n  args,\n  rootDir,\n  config: _config,\n}: ExecuteMcpCommandOptions)"
+      },
+      {
+        "name": "ExecuteMcpCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteMcpCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeMcpStart",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/mcp.ts#"
+      },
+      {
+        "name": "executeMcpSetup",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/mcp.ts#"
+      },
+      {
+        "name": "executeMcpCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/mcp.ts#"
+      },
+      {
+        "name": "ExecuteMcpCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/mcp.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 4,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../infra/mcp/server.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineMCPServer"
+        ]
+      },
+      {
+        "targetPath": "../../infra/mcp/setup.js",
+        "relation": "import",
+        "symbols": [
+          "setupMcpConfigs",
+          "formatResolvedCommand"
+        ]
+      },
+      {
+        "targetPath": "../../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "throwCliUsage"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/mcp.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/throwCliUsage#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/mcp.ts/_file_#",
+        "targetSymbol": "src/infra/mcp/server.ts/ArchSpineMCPServer#",
+        "targetPath": "src/infra/mcp/server.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:53:49.888Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 53,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

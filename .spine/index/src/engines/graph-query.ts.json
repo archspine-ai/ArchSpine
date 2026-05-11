@@ -1,0 +1,257 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/graph-query.ts",
+    "contentHash": "331529653dbc2259dd460616f28be8af53afb748ea4859bf1396c9ee135f2535",
+    "skeletonHash": "8740717bd5f3102d88bd7821f29f6273b3f6c3a67458c6b0b59d54ee946dabe3",
+    "semanticHash": "dd2fc41b5b83f2361ecc1daf8d15768f0dbe923e7df0b865e908603fd449a70a",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Query interface for the project's knowledge graph, providing reusable functions to traverse dependencies, extract violations, perform change impact analysis, and match modules semantically.",
+    "responsibilities": [
+      "Provide upstream dependency traversal: given a module, return modules that depend on it.",
+      "Provide downstream dependency traversal: given a module, return modules it depends on.",
+      "Extract all non-compliant edges from the graph as violation reports.",
+      "Perform change impact analysis starting from a file path or module ID, with configurable depth.",
+      "Provide semantic matching of modules against a free-text query using metadata like role, layer, and path."
+    ],
+    "outOfScope": [
+      "Persistent storage or database access.",
+      "CLI command handling or user interaction.",
+      "UI rendering or presentation formatting.",
+      "Pipeline orchestration or scheduling.",
+      "Configuration loading or environment setup."
+    ],
+    "invariants": [
+      "Functions are pure: they depend only on the supplied KnowledgeGraph object and do not perform I/O or side effects.",
+      "No imports from CLI or service layers, preserving engine independence.",
+      "All exported functions and interfaces form the query contract for downstream consumers."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provides a dedicated query layer for the dependency graph, separating graph traversal logic from analysis engines and service orchestration.",
+      "recentChangeIntent": "Part of a broader refactor removing legacy CLI aliases and rebuilding docs; the file's contract likely remained stable."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "upstreamOf",
+        "description": "Given a module ID, returns an array of ModuleContext objects representing modules that directly or transitively depend on the specified module (its consumers)."
+      },
+      {
+        "symbolName": "downstreamOf",
+        "description": "Given a module ID, returns an array of ModuleContext objects representing modules that the specified module directly or transitively depends on (its dependencies)."
+      },
+      {
+        "symbolName": "violationEdges",
+        "description": "Filters the graph edges to return only those marked as non-compliant, providing simplified ViolationEdge objects with source, target, and rule information."
+      },
+      {
+        "symbolName": "changeImpact",
+        "description": "Accepts a file path or module ID and performs a breadth-first traversal up to maxDepth to produce a ChangeImpactReport grouping affected modules by distance and layer."
+      },
+      {
+        "symbolName": "matchSemantic",
+        "description": "Searches the graph for modules whose metadata (role, layer, path) matches a free-text query string, returning an array of ModuleMatch objects."
+      },
+      {
+        "symbolName": "ModuleContext",
+        "description": "Interface describing a module's metadata (id, path, layer, role, fanIn, violationCount) and its distance in hops from a query origin."
+      },
+      {
+        "symbolName": "ViolationEdge",
+        "description": "Interface representing a simplified violation edge with source module ID, target module ID, and the rule that was violated."
+      },
+      {
+        "symbolName": "AffectedModuleGroup",
+        "description": "Interface grouping affected modules by their distance and layer in a change impact report."
+      },
+      {
+        "symbolName": "ChangeImpactReport",
+        "description": "Interface containing the complete change impact analysis, including affected groups, upstream and downstream impact counts, and the query origin."
+      },
+      {
+        "symbolName": "ModuleMatch",
+        "description": "Interface representing a module that matches a semantic query, with its module ID, path, and a context description explaining why it matched."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Query interface for the project's knowledge graph, providing reusable functions to traverse dependencies, extract violations, perform change impact analysis, and match modules semantically.",
+        "responsibilities": [
+          "Provide upstream dependency traversal: given a module, return modules that depend on it.",
+          "Provide downstream dependency traversal: given a module, return modules it depends on.",
+          "Extract all non-compliant edges from the graph as violation reports.",
+          "Perform change impact analysis starting from a file path or module ID, with configurable depth.",
+          "Provide semantic matching of modules against a free-text query using metadata like role, layer, and path."
+        ],
+        "outOfScope": [
+          "Persistent storage or database access.",
+          "CLI command handling or user interaction.",
+          "UI rendering or presentation formatting.",
+          "Pipeline orchestration or scheduling.",
+          "Configuration loading or environment setup."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "upstreamOf",
+        "kind": "function",
+        "signature": "upstreamOf(graph: KnowledgeGraph, moduleId: string)"
+      },
+      {
+        "name": "downstreamOf",
+        "kind": "function",
+        "signature": "downstreamOf(graph: KnowledgeGraph, moduleId: string)"
+      },
+      {
+        "name": "violationEdges",
+        "kind": "function",
+        "signature": "violationEdges(graph: KnowledgeGraph)"
+      },
+      {
+        "name": "changeImpact",
+        "kind": "function",
+        "signature": "changeImpact(\n  graph: KnowledgeGraph,\n  filePathOrModuleId: string,\n  maxDepth: number = 3,\n)"
+      },
+      {
+        "name": "matchSemantic",
+        "kind": "function",
+        "signature": "matchSemantic(graph: KnowledgeGraph, query: string)"
+      },
+      {
+        "name": "ModuleContext",
+        "kind": "interface",
+        "signature": "interface ModuleContext"
+      },
+      {
+        "name": "ViolationEdge",
+        "kind": "interface",
+        "signature": "interface ViolationEdge"
+      },
+      {
+        "name": "AffectedModuleGroup",
+        "kind": "interface",
+        "signature": "interface AffectedModuleGroup"
+      },
+      {
+        "name": "ChangeImpactReport",
+        "kind": "interface",
+        "signature": "interface ChangeImpactReport"
+      },
+      {
+        "name": "ModuleMatch",
+        "kind": "interface",
+        "signature": "interface ModuleMatch"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "upstreamOf",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/graph-query.ts#"
+      },
+      {
+        "name": "downstreamOf",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/graph-query.ts#"
+      },
+      {
+        "name": "violationEdges",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/graph-query.ts#"
+      },
+      {
+        "name": "changeImpact",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/graph-query.ts#"
+      },
+      {
+        "name": "matchSemantic",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/graph-query.ts#"
+      },
+      {
+        "name": "ModuleContext",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/graph-query.ts#"
+      },
+      {
+        "name": "ViolationEdge",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/graph-query.ts#"
+      },
+      {
+        "name": "AffectedModuleGroup",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/graph-query.ts#"
+      },
+      {
+        "name": "ChangeImpactReport",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/graph-query.ts#"
+      },
+      {
+        "name": "ModuleMatch",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/graph-query.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 10,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./dependency-graph.js",
+        "relation": "import",
+        "symbols": [
+          "KnowledgeGraph",
+          "KnowledgeGraphEdge",
+          "KnowledgeGraphNode"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:56:34.485Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 71,
+    "inCycle": true,
+    "cycleId": "src/core → src/types → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/mcp/context.ts",
+    "contentHash": "a66c13eed03c05bb997a5f92a881faa8054e3f34ee0c9873323faac957a8375e",
+    "skeletonHash": "493271f7d8046adac2593aa0d5a7b30d08a8dbc388bfdf316546a30971fb383d",
+    "semanticHash": "979d5f5d72afe3b2e0043c32b8db827a26b36de160f51df9e031b7f4db82406f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/mcp"
+  },
+  "semantic": {
+    "role": "MCP context priming state machine that gates tool invocation based on the current context mode (off, project-first, or search-first).",
+    "responsibilities": [
+      "Define the MCPContextMode union type for context priming strategies.",
+      "Track whether project or search context has been primed via boolean flags.",
+      "Determine whether a tool call is allowed based on the current mode and the set of search-priming tools."
+    ],
+    "outOfScope": [
+      "Actual tool execution or LLM interaction.",
+      "Low-level MCP protocol serialization or transport.",
+      "Project or search context data retrieval."
+    ],
+    "invariants": [
+      "The module must remain a stable low-level infra component; callers should use it only through the intended MCP tool gating path, not reach into its internals."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Introduce a configurable gating mechanism for MCP context priming to control when tools that require project or search context can be invoked, improving resource efficiency and user experience.",
+      "recentChangeIntent": "Hardened credential store and optimized LLM summarization pipeline; no direct impact on this MCP context gate module."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "MCPContextMode",
+        "description": "Union type defining the three context priming modes: 'off', 'project-first', and 'search-first'. Used to configure MCP tool gating behavior."
+      },
+      {
+        "symbolName": "MCPContextGate",
+        "description": "Class that tracks priming state and provides methods to evaluate whether a given tool is allowed to execute based on the current mode. Consumed by MCP server and tool dispatch logic."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "MCP context priming state machine that gates tool invocation based on the current context mode (off, project-first, or search-first).",
+        "responsibilities": [
+          "Define the MCPContextMode union type for context priming strategies.",
+          "Track whether project or search context has been primed via boolean flags.",
+          "Determine whether a tool call is allowed based on the current mode and the set of search-priming tools."
+        ],
+        "outOfScope": [
+          "Actual tool execution or LLM interaction.",
+          "Low-level MCP protocol serialization or transport.",
+          "Project or search context data retrieval."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "MCPContextGate",
+        "kind": "class",
+        "signature": "class MCPContextGate"
+      },
+      {
+        "name": "MCPContextMode",
+        "kind": "type",
+        "signature": "type MCPContextMode"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "MCPContextGate",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/mcp/context.ts#"
+      },
+      {
+        "name": "MCPContextMode",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/mcp/context.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/mcp/server.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/integration/system/error-system.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:59:27.730Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

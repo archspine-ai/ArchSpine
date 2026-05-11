@@ -1,0 +1,237 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/runtime-session.ts",
+    "contentHash": "ac6d975ffb41999c2c36ce52e30d9cf6b01ecbf92ed4d14ec969928a00e9d1ac",
+    "skeletonHash": "65cf8a6c2eb0002ab34162ba13dcf06bda183234311957146f5bc8c3d5193d23",
+    "semanticHash": "318369b9b1a32da28d5b949f37278cc21fc6d4e054629b88755f0c226ed828fc",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Runtime session orchestrator that manages lifecycle of a single command execution (sync, check, fix) with resumability, protected-output safety, and error handling.",
+    "responsibilities": [
+      "Acquire and release a lock for the command to prevent concurrent runtime sessions.",
+      "Load execution checkpoint state and detect whether the session can resume from a previous incomplete run.",
+      "Warn the user if the session is resumable and if protected output mutations were detected.",
+      "Prepare the execution context via the provided `prepare` callback.",
+      "Execute the command with protected output write access wrapped.",
+      "Handle errors by recording a failed run in the checkpoint and invoking the `onError` callback.",
+      "Support runtime I/O abstraction via `RuntimeIO` for consistent console/log output.",
+      "Define the `RuntimeCommand` type union of 'sync' | 'check' | 'fix'."
+    ],
+    "outOfScope": [
+      "Does not define or manage task-level granularity (e.g., individual file scans).",
+      "Does not interact with the database or repository nor handle manifest state.",
+      "Does not parse CLI arguments or route commands—only provides session orchestration for a given command."
+    ],
+    "invariants": [
+      "The module must always import from infra modules (execution-checkpoint, spine-gate, runtime-io, writer-boundary) to fulfill its orchestration role.",
+      "The export `runWithRuntimeSession` is the only entry point for initiating a runtime session; all logic is encapsulated."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable, safe, and resumable runtime session layer that sits between the command handler and the actual task execution, ensuring atomicity and checkpoint consistency.",
+      "recentChangeIntent": "General maintenance and release gate fixes applied across the repository; no semantic changes to this module's contract."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "runWithRuntimeSession",
+        "description": "Executes a runtime session for a given command (sync, check, fix). Handles checkpoint loading, protected output mutation detection, lock acquisition, context preparation, command execution, and error recording. Returns the result of the execute callback."
+      },
+      {
+        "symbolName": "RuntimeCommand",
+        "description": "Type union representing the three runtime commands: 'sync', 'check', 'fix'. Used by callers to specify which command is being run."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Runtime session orchestrator that manages the lifecycle of a single command execution (sync, check, fix) with resumability, protected-output safety, and error handling.",
+        "responsibilities": [
+          "Acquire and release a lock for the command to prevent concurrent runtime sessions.",
+          "Load execution checkpoint state and detect whether the session can resume from a previous incomplete run.",
+          "Warn the user if the session is resumable and if protected output mutations were detected.",
+          "Prepare the execution context via the provided `prepare` callback.",
+          "Execute the command with protected output write access wrapped.",
+          "Handle errors by recording a failed run in the checkpoint and invoking the `onError` callback.",
+          "Support runtime I/O abstraction via `RuntimeIO` for consistent console/log output.",
+          "Define the `RuntimeCommand` type union of 'sync' | 'check' | 'fix'."
+        ],
+        "outOfScope": [
+          "Does not define or manage task-level granularity (e.g., individual file scans).",
+          "Does not interact with the database or repository nor handle manifest state.",
+          "Does not parse CLI arguments or route commands—only provides session orchestration for a given command."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../infra/execution-checkpoint.js'",
+        "symbols": [
+          "ExecutionCheckpointStore",
+          "isResumableCheckpoint",
+          "type ExecutionCheckpointState"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/spine-gate.js'",
+        "symbols": [
+          "detectProtectedOutputMutations",
+          "formatProtectedOutputMutationWarning"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO",
+          "type RuntimeIO"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/writer-boundary.js'",
+        "symbols": [
+          "withProtectedOutputsWriteAccess"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "runWithRuntimeSession",
+        "kind": "function",
+        "signature": "runWithRuntimeSession(\n  options: RuntimeSessionOptions<TContext, TResult>,\n)"
+      },
+      {
+        "name": "RuntimeCommand",
+        "kind": "type",
+        "signature": "type RuntimeCommand"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "runWithRuntimeSession",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/runtime-session.ts#"
+      },
+      {
+        "name": "RuntimeCommand",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/services/runtime-session.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../infra/execution-checkpoint.js",
+        "relation": "import",
+        "symbols": [
+          "ExecutionCheckpointStore",
+          "isResumableCheckpoint",
+          "ExecutionCheckpointState"
+        ]
+      },
+      {
+        "targetPath": "../infra/spine-gate.js",
+        "relation": "import",
+        "symbols": [
+          "detectProtectedOutputMutations",
+          "formatProtectedOutputMutationWarning"
+        ]
+      },
+      {
+        "targetPath": "../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "../infra/writer-boundary.js",
+        "relation": "import",
+        "symbols": [
+          "withProtectedOutputsWriteAccess"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/unit/services/runtime-session.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/runtime-session.ts/_file_#",
+        "targetSymbol": "src/infra/writer-boundary.ts/withProtectedOutputsWriteAccess#",
+        "targetPath": "src/infra/writer-boundary.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/runtime-session.ts/_file_#",
+        "targetSymbol": "src/infra/execution-checkpoint.ts/isResumableCheckpoint#",
+        "targetPath": "src/infra/execution-checkpoint.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/runtime-session.ts/_file_#",
+        "targetSymbol": "src/infra/spine-gate.ts/formatProtectedOutputMutationWarning#",
+        "targetPath": "src/infra/spine-gate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/runtime-session.ts/_file_#",
+        "targetSymbol": "src/infra/spine-gate.ts/detectProtectedOutputMutations#",
+        "targetPath": "src/infra/spine-gate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/runtime-session.ts/_file_#",
+        "targetSymbol": "src/infra/execution-checkpoint.ts/ExecutionCheckpointStore#",
+        "targetPath": "src/infra/execution-checkpoint.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:02:35.566Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

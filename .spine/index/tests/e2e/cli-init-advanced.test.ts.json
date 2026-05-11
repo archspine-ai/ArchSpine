@@ -1,0 +1,202 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/e2e/cli-init-advanced.test.ts",
+    "contentHash": "13717ed6b0bb4431c360a69d71789aa140674638b93ed9361c69598ef15d600f",
+    "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
+    "semanticHash": "72277436f9a4cbd496fd3bea628ce7a6e7d06bf0cdc0d18938b1cb75405fcd3d",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/e2e"
+  },
+  "semantic": {
+    "role": "End-to-end test suite for the advanced CLI initialization workflow.",
+    "responsibilities": [
+      "Verifies that the CLI init command creates the required .spine directory structure, configuration files, and manifest when advanced options are used.",
+      "Tests the behavior of CLI flags such as --yes, --skip-git, and --template during initialization.",
+      "Uses temporary directories and Git initialization to simulate a fresh project environment without side-effects.",
+      "Ensures that the CLI exits with expected codes and produces expected output under various scenarios."
+    ],
+    "outOfScope": [
+      "Does not test the init command against an existing real Git repository or remote integration.",
+      "Does not cover runtime bootstrap logic or plugin loading.",
+      "Does not include unit tests for individual init functions."
+    ],
+    "invariants": [
+      "The test file name ends with '.test.ts', satisfying the test-file-suffix rule."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "The test suite ensures that the advanced CLI initialization workflow remains reliable after changes such as security hardening and infrastructure updates.",
+      "recentChangeIntent": "Updated test suite for security hardening and infrastructure changes in the CLI init flow."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "End-to-end test suite for the advanced CLI initialization workflow.",
+        "responsibilities": [
+          "Verifies that the CLI init command creates the required .spine directory structure, configuration files, and manifest when advanced options are used.",
+          "Tests the behavior of CLI flags such as --yes, --skip-git, and --template during initialization.",
+          "Uses temporary directories and Git initialization to simulate a fresh project environment without side-effects.",
+          "Ensures that the CLI exits with expected codes and produces expected output under various scenarios."
+        ],
+        "outOfScope": [
+          "Does not test the init command against an existing real Git repository or remote integration.",
+          "Does not cover runtime bootstrap logic or plugin loading.",
+          "Does not include unit tests for individual init functions."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ]
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:06:38.224Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

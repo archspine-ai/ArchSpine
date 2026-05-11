@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/config/supported-values.ts",
+    "contentHash": "736dde10c8a22629a960be53ead87d3fcde58cbf62e9c900d347f9370ed65cf5",
+    "skeletonHash": "cf6a2060469336710579daa7f36768cf280c615b830d596d6049a54af2ae3fc7",
+    "semanticHash": "cf15a7358b3999e55c130104cf03d01957e94c726144c54b0deba6ac7f2ca64a",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/config"
+  },
+  "semantic": {
+    "role": "Abstraction layer for reading and writing supported configuration values (LLM provider, model, pre-commit, etc.). Provides a type-safe accessor interface and mapping between configuration keys and concrete accessor methods.",
+    "responsibilities": [
+      "Define the ConfigSupportedValueAccess interface with getter and setter methods for each supported configuration key.",
+      "Implement getSupportedValue, which delegates to the appropriate accessor method based on the SuppportedConfigKey.",
+      "Implement setSupportedValue, which validates the key and delegates to the appropriate setter method.",
+      "Centralize type-safe access to configuration values such as LLM provider, model, base URL, pre-commit flag, hook sync mode, artifact strategy, view layer, enabled views, agent instructions file, gitignore/gitattributes management flags."
+    ],
+    "outOfScope": [
+      "Configuration file parsing or environment variable reading (handled by other modules).",
+      "Persistent storage of configuration values (delegated to the ConfigSupportedValueAccess implementation).",
+      "Validation of configuration values beyond key existence (basic error on unknown key).",
+      "Handling of arbitrary or unsupported configuration keys."
+    ],
+    "invariants": [
+      "All supported configuration keys have a corresponding getter/setter pair in ConfigSupportedValueAccess.",
+      "getSupportedValue and setSupportedValue will throw an Error if the key does not match a known supported key.",
+      "The interface must be implemented by a concrete facade that provides the actual storage/retrieval mechanism."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, type-safe access pattern for configuration values that are explicitly supported by ArchSpine, insulating callers from the underlying storage mechanism.",
+      "recentChangeIntent": "No recent changes detected; this file is consistent with the overall architecture."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ConfigSupportedValueAccess",
+        "description": "Interface defining getter and setter methods for each supported configuration key (LLM provider, model, base URL, pre-commit, hook sync mode, artifact strategy, view layer, enabled views, agent instructions, gitignore/gitattributes management)."
+      },
+      {
+        "symbolName": "getSupportedValue",
+        "description": "Reads a supported configuration value by delegating to the appropriate accessor method on a ConfigSupportedValueAccess instance. Throws for unknown keys."
+      },
+      {
+        "symbolName": "setSupportedValue",
+        "description": "Writes a supported configuration value by delegating to the appropriate setter method on a ConfigSupportedValueAccess instance. Throws for unknown keys."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Abstraction layer for reading and writing supported configuration values (LLM provider, model, pre-commit, etc.). Provides a type-safe accessor interface and mapping between configuration keys and concrete accessor methods.",
+        "responsibilities": [
+          "Define the ConfigSupportedValueAccess interface with getter and setter methods for each supported configuration key.",
+          "Implement getSupportedValue, which delegates to the appropriate accessor method based on the SuppportedConfigKey.",
+          "Implement setSupportedValue, which validates the key and delegates to the appropriate setter method.",
+          "Centralize type-safe access to configuration values such as LLM provider, model, base URL, pre-commit flag, hook sync mode, artifact strategy, view layer, enabled views, agent instructions file, gitignore/gitattributes management flags."
+        ],
+        "outOfScope": [
+          "Configuration file parsing or environment variable reading (handled by other modules).",
+          "Persistent storage of configuration values (delegated to the ConfigSupportedValueAccess implementation).",
+          "Validation of configuration values beyond key existence (basic error on unknown key).",
+          "Handling of arbitrary or unsupported configuration keys."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./types.js'",
+        "symbols": [
+          "ArtifactStrategy",
+          "HookSyncMode",
+          "SupportedConfigKey"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "getSupportedValue",
+        "kind": "function",
+        "signature": "getSupportedValue(\n  access: ConfigSupportedValueAccess,\n  key: SupportedConfigKey,\n)"
+      },
+      {
+        "name": "setSupportedValue",
+        "kind": "function",
+        "signature": "setSupportedValue(\n  access: ConfigSupportedValueAccess,\n  key: SupportedConfigKey,\n  value: unknown,\n)"
+      },
+      {
+        "name": "ConfigSupportedValueAccess",
+        "kind": "interface",
+        "signature": "interface ConfigSupportedValueAccess"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "getSupportedValue",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/config/supported-values.ts#"
+      },
+      {
+        "name": "setSupportedValue",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/config/supported-values.ts#"
+      },
+      {
+        "name": "ConfigSupportedValueAccess",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/config/supported-values.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 3,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "ArtifactStrategy",
+          "HookSyncMode",
+          "SupportedConfigKey"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:57:11.886Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

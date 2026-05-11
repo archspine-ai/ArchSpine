@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db/schema.ts",
+    "contentHash": "c386fbaf3a4ded43c2ed18546c07b599b9b611081bffa8469da718c19a0706d5",
+    "skeletonHash": "f4d6cfd9132f3217b774aa5ceff60f21d12918571aff5e4a33514ef0d1e69e33",
+    "semanticHash": "1cc806f9152df4cdddfb75b078112c7a7be36cbc3afea9f3e9529181678936cb",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/db"
+  },
+  "semantic": {
+    "role": "Infrastructure schema initialization module for the runtime SQLite database. Called once at startup to establish the core `files` table and enable Write-Ahead Logging.",
+    "responsibilities": [
+      "Enable SQLite WAL journal mode for concurrent read performance.",
+      "Create the `files` table if it does not exist, defining columns for path, hash, kind, lastIndexedAt, docs, is_authoritative, mtime, and size.",
+      "Serve as the single point of schema definition for the runtime database, ensuring idempotent initialization."
+    ],
+    "outOfScope": [
+      "Database migration or schema evolution beyond the `files` table.",
+      "Data access logic (queries, inserts, updates) — those belong in repository modules.",
+      "Connection management or pool lifecycle."
+    ],
+    "invariants": [
+      "The `files` table must exist before any repository operations.",
+      "WAL mode must be enabled before table creation.",
+      "Schema initialization is idempotent — calling multiple times is safe."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a clean, composable schema initialization that can be invoked by the runtime database bootstrap.",
+      "recentChangeIntent": "Harden credential store and optimize LLM summarization pipeline (from git intent, but no evidence of changes in this file)."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "initializeRuntimeSchema",
+        "description": "Takes a better-sqlite3 Database instance and initializes the runtime schema by enabling WAL mode and creating the `files` table if it does not exist. Must be called once at database startup before any data operations."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure schema initialization module for the runtime SQLite database. Called once at startup to establish the core `files` table and enable Write-Ahead Logging.",
+        "responsibilities": [
+          "Enable SQLite WAL journal mode for concurrent read performance.",
+          "Create the `files` table if it does not exist, defining columns for path, hash, kind, lastIndexedAt, docs, is_authoritative, mtime, and size.",
+          "Serve as the single point of schema definition for the runtime database, ensuring idempotent initialization."
+        ],
+        "outOfScope": [
+          "Database migration or schema evolution beyond the `files` table.",
+          "Data access logic (queries, inserts, updates) — those belong in repository modules.",
+          "Connection management or pool lifecycle."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "initializeRuntimeSchema",
+        "kind": "function",
+        "signature": "initializeRuntimeSchema(db: Database.Database)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "initializeRuntimeSchema",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/schema.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "better-sqlite3",
+        "relation": "import",
+        "symbols": [
+          "Database"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:57:54.956Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

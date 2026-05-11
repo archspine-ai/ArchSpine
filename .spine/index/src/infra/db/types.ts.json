@@ -1,0 +1,232 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db/types.ts",
+    "contentHash": "9fc9e62f2bb06e6eef36c15c574e63322c2c430944469eb8473c62749033ece1",
+    "skeletonHash": "709d7ab124b62db41e26f0326c603385b09674da629906bcbe5ec37a23163216",
+    "semanticHash": "2415aed2260065904ed37343aa8167ed42ab93d3a795325b9145bdfaff1b8911",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/db"
+  },
+  "semantic": {
+    "role": "Type definitions for database record shapes consumed by the repository data-access layer.",
+    "responsibilities": [
+      "Define the FileRecord interface specifying the structure for indexed file metadata (path, hash, kind, timestamps, docs, authority status).",
+      "Define the FileStatusRecord interface for tracking file status during indexing (hash, kind, modification time).",
+      "Define the FileCommitRecord interface for associating file changes with commits.",
+      "Define the DriftEvent interface for recording semantic drift occurrences.",
+      "Define the UsageSummaryRow and UsageTotals interfaces for aggregating symbol usage statistics.",
+      "Define the ViolationRecord interface for representing architectural rule violations.",
+      "Define the GlobalStatus interface for capturing aggregate system state."
+    ],
+    "outOfScope": [
+      "Data access methods (queries, inserts, updates) — this file only provides type contracts.",
+      "Business or domain logic.",
+      "Runtime state or mutable objects.",
+      "API or CLI surface — pure internal data layer."
+    ],
+    "invariants": [
+      "Infra repositories must not import from deep implementation paths when a facade exists — this module imports from src/types/protocol.js which is a public types facade, satisfying the rule."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide stable, reusable type definitions for the database record layer, ensuring type safety and consistency across repository implementations.",
+      "recentChangeIntent": "Part of the v1.0.0 release of ArchSpine establishing the initial record schema contracts."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "FileRecord",
+        "description": "Describes a file entry stored in the index: contains path, hash, file kind, last indexed timestamp, documentation text, and an authoritative flag. Used by file repository implementations for read/write operations."
+      },
+      {
+        "symbolName": "FileStatusRecord",
+        "description": "Captures the current indexing status of a file: hash, kind, and modification time. Consumed by the scanner to decide whether re-indexing is required."
+      },
+      {
+        "symbolName": "FileCommitRecord",
+        "description": "Associates a file with a commit identifier. Used by change tracking and post-commit derivation logic."
+      },
+      {
+        "symbolName": "DriftEvent",
+        "description": "Represents a detected semantic drift event with relevant metadata. Employed by the drift detection engine and drift repository."
+      },
+      {
+        "symbolName": "UsageSummaryRow",
+        "description": "A row in the usage summary aggregating per-symbol usage counts. Consumed by the usage engine and reporting views."
+      },
+      {
+        "symbolName": "UsageTotals",
+        "description": "Aggregate totals of symbol usage across the codebase. Used by the usage engine and dashboard summaries."
+      },
+      {
+        "symbolName": "ViolationRecord",
+        "description": "Stores a single architectural rule violation with context. Used by the check engine, violation repository, and view generators."
+      },
+      {
+        "symbolName": "GlobalStatus",
+        "description": "Global aggregate status of the repository indexing, including health indicators. Used by the health view and administrative services."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Type definitions for database record shapes consumed by the repository data-access layer.",
+        "responsibilities": [
+          "Define the FileRecord interface specifying the structure for indexed file metadata.",
+          "Define the FileStatusRecord interface for tracking file status during indexing.",
+          "Define the FileCommitRecord interface for associating file changes with commits.",
+          "Define the DriftEvent interface for recording semantic drift occurrences.",
+          "Define the UsageSummaryRow and UsageTotals interfaces for aggregating symbol usage statistics.",
+          "Define the ViolationRecord interface for representing architectural rule violations.",
+          "Define the GlobalStatus interface for capturing aggregate system state."
+        ],
+        "outOfScope": [
+          "Data access methods (queries, inserts, updates) — this file only provides type contracts.",
+          "Business or domain logic.",
+          "Runtime state or mutable objects.",
+          "API or CLI surface — pure internal data layer."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "FileRecord",
+        "kind": "interface",
+        "signature": "interface FileRecord"
+      },
+      {
+        "name": "FileStatusRecord",
+        "kind": "interface",
+        "signature": "interface FileStatusRecord"
+      },
+      {
+        "name": "FileCommitRecord",
+        "kind": "interface",
+        "signature": "interface FileCommitRecord"
+      },
+      {
+        "name": "DriftEvent",
+        "kind": "interface",
+        "signature": "interface DriftEvent"
+      },
+      {
+        "name": "UsageSummaryRow",
+        "kind": "interface",
+        "signature": "interface UsageSummaryRow"
+      },
+      {
+        "name": "UsageTotals",
+        "kind": "interface",
+        "signature": "interface UsageTotals"
+      },
+      {
+        "name": "ViolationRecord",
+        "kind": "interface",
+        "signature": "interface ViolationRecord"
+      },
+      {
+        "name": "GlobalStatus",
+        "kind": "interface",
+        "signature": "interface GlobalStatus"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "FileRecord",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/db/types.ts#"
+      },
+      {
+        "name": "FileStatusRecord",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/db/types.ts#"
+      },
+      {
+        "name": "FileCommitRecord",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/db/types.ts#"
+      },
+      {
+        "name": "DriftEvent",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/db/types.ts#"
+      },
+      {
+        "name": "UsageSummaryRow",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/db/types.ts#"
+      },
+      {
+        "name": "UsageTotals",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/db/types.ts#"
+      },
+      {
+        "name": "ViolationRecord",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/db/types.ts#"
+      },
+      {
+        "name": "GlobalStatus",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/db/types.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 8,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SpineUnit"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:58:16.663Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

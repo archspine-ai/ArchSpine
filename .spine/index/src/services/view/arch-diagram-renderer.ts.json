@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/arch-diagram-renderer.ts",
+    "contentHash": "adf6e626e010231ee8a3263e0f6cf0a5f1799d7a4bbf074ae4f1edd07c1c7b42",
+    "skeletonHash": "9f46acb2cfd710ddac4fff293e7ddd6d98b3bf3b0ca1597f3ff5d59538534b91",
+    "semanticHash": "0a016a433021919336708945272fbb3e338e707820885b09f68ebff7a1271cd0",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "View service SVG renderer for architecture diagrams. Transforms structured diagram specifications into safe, styled SVG markup, organizing nodes by layer and computing layout positions.",
+    "responsibilities": [
+      "Define visual styles (fill, stroke) for each architecture node type.",
+      "Layout nodes by a fixed layer order to produce consistent vertical grouping.",
+      "Calculate horizontal positions for nodes within each layer.",
+      "Escape all dynamic text to prevent SVG injection.",
+      "Generate a complete, self-contained SVG document string."
+    ],
+    "outOfScope": [
+      "Diagram editing or interactive behavior.",
+      "Non-SVG output formats.",
+      "Dependency on external rendering engines or infrastructure modules.",
+      "Handling of non-architecture diagram types."
+    ],
+    "invariants": [
+      "Every ArchNodeType must have a corresponding entry in NODE_STYLES (enforced by static Record).",
+      "Layer order is fixed as: frontend, backend, messagebus, database, security, cloud, external.",
+      "Output is always a valid SVG string with width/height viewBox and proper element nesting.",
+      "Module does not depend on infra modules (only imports view types).",
+      "File location respects service-runtime-boundary rule (src/services/view/)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain a lightweight, isolated SVG renderer for the architecture diagram view, ensuring it stays decoupled from any infrastructure or business logic.",
+      "recentChangeIntent": "chore: apply release gate fixes and sync accumulated source changes — no semantic alteration to the renderer contract."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ArchitectureDiagramRenderer",
+        "description": "Class with a single static method 'render(spec: IArchDiagramSpec): string' that produces an SVG diagram string. Called by the diagram view producer to generate graphical output for architecture diagrams."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "View service SVG renderer for architecture diagrams. Transforms structured diagram specifications into safe, styled SVG markup, organizing nodes by layer and computing layout positions.",
+        "responsibilities": [
+          "Define visual styles (fill, stroke) for each architecture node type.",
+          "Layout nodes by a fixed layer order to produce consistent vertical grouping.",
+          "Calculate horizontal positions for nodes within each layer.",
+          "Escape all dynamic text to prevent SVG injection.",
+          "Generate a complete, self-contained SVG document string."
+        ],
+        "outOfScope": [
+          "Diagram editing or interactive behavior.",
+          "Non-SVG output formats.",
+          "Dependency on external rendering engines or infrastructure modules.",
+          "Handling of non-architecture diagram types."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "ArchitectureDiagramRenderer",
+        "kind": "class",
+        "signature": "class ArchitectureDiagramRenderer"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ArchitectureDiagramRenderer",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/services/view/arch-diagram-renderer.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/types/view.ts",
+        "relation": "import",
+        "symbols": [
+          "IArchDiagramSpec",
+          "IArchDiagramNode",
+          "ArchNodeType"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:03:04.218Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

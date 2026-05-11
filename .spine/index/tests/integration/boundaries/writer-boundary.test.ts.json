@@ -1,0 +1,200 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integration/boundaries/writer-boundary.test.ts",
+    "contentHash": "1c3d8c5024da2b9442f8516e78928a3102c7282d2b5614cd9384f117756854e8",
+    "skeletonHash": "d3773fc4d8a381c7e6682a765ace320432bb21294ef0ee72f80bee093db3856f",
+    "semanticHash": "fcfa990a789eab38bd77d78291c80a13c01a2327ca129f96d001b3c88ac61a6c",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/integration/boundaries"
+  },
+  "semantic": {
+    "role": "Unit/integration test suite for the SpineWriterBoundary module, verifying write access protection and output isolation.",
+    "responsibilities": [
+      "Validate that withProtectedOutputsWriteAccess correctly restricts write operations to allowed output directories.",
+      "Verify that SpineWriterBoundary properly handles allowed paths, disallowed paths, and edge cases like non-writable directories.",
+      "Ensure test scenarios are self-contained, using temporary directories to avoid side effects."
+    ],
+    "outOfScope": [
+      "The implementation details of SpineWriterBoundary and withProtectedOutputsWriteAccess.",
+      "End-to-end integration with actual LLM or file system beyond local temp directories."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts (satisfied).",
+      "All tests must clean up temporary directories and files after execution."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide isolated, verifiable test coverage for the writer boundary module to prevent accidental writes outside allowed zones.",
+      "recentChangeIntent": "Refactor and removal of legacy CLI aliases; rebuild of docs; fixes to schema and tests (from git intent). This test file may have been adjusted to match updated boundary contracts."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Unit/integration test suite for the SpineWriterBoundary module, verifying write access protection and output isolation.",
+        "responsibilities": [
+          "Validate that withProtectedOutputsWriteAccess correctly restricts write operations to allowed output directories.",
+          "Verify that SpineWriterBoundary properly handles allowed paths, disallowed paths, and edge cases like non-writable directories.",
+          "Ensure test scenarios are self-contained, using temporary directories to avoid side effects."
+        ],
+        "outOfScope": [
+          "The implementation details of SpineWriterBoundary and withProtectedOutputsWriteAccess.",
+          "End-to-end integration with actual LLM or file system beyond local temp directories."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/writer-boundary.js'",
+        "symbols": [
+          "SpineWriterBoundary",
+          "withProtectedOutputsWriteAccess"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/infra/writer-boundary.js",
+        "relation": "import",
+        "symbols": [
+          "SpineWriterBoundary",
+          "withProtectedOutputsWriteAccess"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/integration/boundaries/writer-boundary.test.ts/_file_#",
+        "targetSymbol": "src/infra/writer-boundary.ts/withProtectedOutputsWriteAccess#",
+        "targetPath": "src/infra/writer-boundary.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/boundaries/writer-boundary.test.ts/_file_#",
+        "targetSymbol": "src/infra/writer-boundary.ts/SpineWriterBoundary#",
+        "targetPath": "src/infra/writer-boundary.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:07:03.412Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

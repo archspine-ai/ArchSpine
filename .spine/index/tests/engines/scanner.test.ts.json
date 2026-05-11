@@ -1,0 +1,184 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/engines/scanner.test.ts",
+    "contentHash": "0fabba4b153351db1e9604c2ea2b5bd7a20d178680f2ffd674492eb6388b3746",
+    "skeletonHash": "9179efab4ba245d22daeb49e88fefeeeac6d9c779db3ddc91e1f5dfa6220c7eb",
+    "semanticHash": "c743801a5cb790258922bf69f5957f60bc872e5976d4ad1355c0f2e504c65949",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/engines"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite for the Scanner engine, verifying basic scanning and policy-driven file exclusion in a temporary directory.",
+    "responsibilities": [
+      "Create a temporary project structure with sample files, a .spine config, and node_modules.",
+      "Instantiate Scanner and resolveScanPolicy to scan the temporary directory.",
+      "Assert that expected source files are included in scan results.",
+      "Assert that excluded paths (e.g., .spine, node_modules) are omitted from scan results.",
+      "Clean up temporary directories after each test run."
+    ],
+    "outOfScope": [
+      "Does not test scanner performance or concurrency.",
+      "Does not validate AST extraction or symbol resolution.",
+      "Does not test full pipeline integration beyond minimal scan."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (rule test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a lightweight smoke test to ensure the Scanner respects scan-policy exclusions in a realistic but minimal file tree.",
+      "recentChangeIntent": "No relevant recent commit explicitly touches this file; the v1.0.0 intent suggests overall project maturity but no specific changes here."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite for the Scanner engine, verifying basic scanning and policy-driven file exclusion in a temporary directory.",
+        "responsibilities": [
+          "Create a temporary project structure with sample files, a .spine config, and node_modules.",
+          "Instantiate Scanner and resolveScanPolicy to scan the temporary directory.",
+          "Assert that expected source files are included in scan results.",
+          "Assert that excluded paths (e.g., .spine, node_modules) are omitted from scan results.",
+          "Clean up temporary directories after each test run."
+        ],
+        "outOfScope": [
+          "Does not test scanner performance or concurrency.",
+          "Does not validate AST extraction or symbol resolution.",
+          "Does not test full pipeline integration beyond minimal scan."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../src/engines/scanner.js'",
+        "symbols": [
+          "Scanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../src/core/scan-policy.js'",
+        "symbols": [
+          "resolveScanPolicy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../src/engines/scanner.js",
+        "relation": "import",
+        "symbols": [
+          "Scanner"
+        ]
+      },
+      {
+        "targetPath": "../../src/core/scan-policy.js",
+        "relation": "import",
+        "symbols": [
+          "resolveScanPolicy"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/engines/scanner.test.ts/_file_#",
+        "targetSymbol": "src/core/scan-policy.ts/resolveScanPolicy#",
+        "targetPath": "src/core/scan-policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/engines/scanner.test.ts/_file_#",
+        "targetSymbol": "src/engines/scanner.ts/Scanner#",
+        "targetPath": "src/engines/scanner.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:06:40.902Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

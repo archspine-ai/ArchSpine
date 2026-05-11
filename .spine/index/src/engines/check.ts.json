@@ -1,0 +1,143 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/check.ts",
+    "contentHash": "237363c71acc6a9b577d4fd3b49bee914f9ee849216368fd7765e32d6cff182b",
+    "skeletonHash": "8ce85aba1d7bb560bf0d5e64cc224c65b60f8535a19af745812630c09303493e",
+    "semanticHash": "c72b4f3f387e30e6f087c437ea59a025ae347534647f094a17d1a41daf7a4a59",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Package entry point (barrel) that aggregates and re-exports the public API of the ArchSpine governance library.",
+    "responsibilities": [
+      "Serve as the primary import target for consumers of the ArchSpine package, providing a single entry point for the public API.",
+      "Re-export the CheckService class and runCheck function from the check-service module, enabling CLI commands, MCP tools, and service orchestration to import them from one location.",
+      "Re-export the ValidationSummary type from the validate task module, allowing clients to type-check validation results without importing internal task modules."
+    ],
+    "outOfScope": [
+      "This file does not implement any business logic, analysis, or orchestration—it only re-exports symbols.",
+      "It does not perform any transformations, validations, or state management."
+    ],
+    "invariants": [
+      "Must only contain re-exports; no new symbol definitions, side effects, or logic.",
+      "Should not import CLI or presentation layers to maintain separation of concerns."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a clean, minimal public surface for the ArchSpine library by bundling essential governance symbols into a single entry point.",
+      "recentChangeIntent": "Align with ArchSpine v1.0.0 release by stabilizing the public API surface and ensuring only the intended symbols (CheckService, runCheck, ValidationSummary) are exported."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "CheckService",
+        "description": "Service class that orchestrates architecture rule checking across the codebase. Called by CLI commands, MCP tools, and the sync service to execute validation scans."
+      },
+      {
+        "symbolName": "runCheck",
+        "description": "Function that runs a single architecture rule validation against a given context and returns a structured result. Used internally by CheckService and the fix service for single-rule execution."
+      },
+      {
+        "symbolName": "ValidationSummary",
+        "description": "Type definition for the summary result of a validation pass, including counts of violations, warnings, errors, and overall pass/fail status. Consumed by output renderers, view services, and CI integrations."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Package entry point (barrel) that aggregates and re-exports the public API of the ArchSpine governance library.",
+        "responsibilities": [
+          "Serve as the primary import target for consumers of the ArchSpine package, providing a single entry point for the public API.",
+          "Re-export the CheckService class and runCheck function from the check-service module, enabling CLI commands, MCP tools, and service orchestration to import them from one location.",
+          "Re-export the ValidationSummary type from the validate task module, allowing clients to type-check validation results without importing internal task modules."
+        ],
+        "outOfScope": [
+          "This file does not implement any business logic, analysis, or orchestration—it only re-exports symbols.",
+          "It does not perform any transformations, validations, or state management."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "CheckService",
+        "kind": "unknown",
+        "signature": "export { CheckService }"
+      },
+      {
+        "name": "runCheck",
+        "kind": "unknown",
+        "signature": "export { runCheck }"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "CheckService",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/engines/check.ts#"
+      },
+      {
+        "name": "runCheck",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/engines/check.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./src/services/check-service.ts",
+        "relation": "import (re-export)",
+        "symbols": [
+          "CheckService",
+          "runCheck"
+        ]
+      },
+      {
+        "targetPath": "./src/tasks/validate.ts",
+        "relation": "import (type re-export)",
+        "symbols": [
+          "ValidationSummary"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/integration/system/demo-governance.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:55:27.422Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 71,
+    "inCycle": true,
+    "cycleId": "src/core → src/types → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

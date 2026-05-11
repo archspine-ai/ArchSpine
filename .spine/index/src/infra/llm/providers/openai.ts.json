@@ -1,0 +1,133 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/llm/providers/openai.ts",
+    "contentHash": "9155c2a99795dee5ce839d4a6f05bf605be2451dc0658ff4b5e6c6c43268fbf7",
+    "skeletonHash": "801f1c67d17c73d67393043fa07ba766158aaf65d0bae8d61efd966b32d9db79",
+    "semanticHash": "2b69a1b1e8d14eaf6ce4d6330a3dd9f21d5008151c4f59f9ac64ae4a5ab54080",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/llm/providers"
+  },
+  "semantic": {
+    "role": "LLM transport provider for OpenAI-compatible APIs. Implements the LLMTransport interface to make chat completion requests through the OpenAI SDK.",
+    "responsibilities": [
+      "Initialize and configure the OpenAI client with credentials, base URL, and timeout from ProviderConfig.",
+      "Invoke chat completion requests via the OpenAI SDK and return structured responses.",
+      "Parse response payloads (choices, message content, usage tokens) and map them to the internal UsageInfo structure.",
+      "Expose as a pluggable provider under the LLM transport abstraction for dynamic selection by the factory."
+    ],
+    "outOfScope": [
+      "Prompt construction or generation – this is a thin API caller only.",
+      "Error retry or fallback logic – handled by retry wrappers or higher layers.",
+      "Response formatting or rendering – output is raw structured data.",
+      "Logging, auditing, or credential management – external to this provider."
+    ],
+    "invariants": [
+      "Must implement the LLMTransport interface from ../base.ts.",
+      "Uses the OpenAI SDK as the sole underlying HTTP client.",
+      "Does not perform prompt generation or response parsing beyond extracting structured fields."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide an OpenAI-compatible LLM transport implementation as part of the pluggable provider architecture.",
+      "recentChangeIntent": "Package maintenance release; no functional changes to this provider."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "OpenAICompatibleClient",
+        "description": "Implements the LLMTransport interface for OpenAI-compatible chat completion API calls. Consumed by the LLM transport layer (factory or runtime)."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "LLM transport provider for OpenAI-compatible APIs. Implements the LLMTransport interface to make chat completion requests through the OpenAI SDK.",
+        "responsibilities": [
+          "Initialize and configure the OpenAI client with credentials, base URL, and timeout from ProviderConfig.",
+          "Invoke chat completion requests via the OpenAI SDK and return structured responses.",
+          "Parse response payloads (choices, message content, usage tokens) and map them to the internal UsageInfo structure.",
+          "Expose as a pluggable provider under the LLM transport abstraction for dynamic selection by the factory."
+        ],
+        "outOfScope": [
+          "Prompt construction or generation – this is a thin API caller only.",
+          "Error retry or fallback logic – handled by retry wrappers or higher layers.",
+          "Response formatting or rendering – output is raw structured data.",
+          "Logging, auditing, or credential management – external to this provider."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'openai'",
+        "symbols": [
+          "OpenAI"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "OpenAICompatibleClient",
+        "kind": "class",
+        "signature": "class OpenAICompatibleClient"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "OpenAICompatibleClient",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/llm/providers/openai.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../base.js",
+        "relation": "import",
+        "symbols": [
+          "LLMTransport",
+          "ProviderConfig",
+          "UsageInfo"
+        ]
+      },
+      {
+        "targetPath": "openai",
+        "relation": "import",
+        "symbols": [
+          "OpenAI"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:58:45.800Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

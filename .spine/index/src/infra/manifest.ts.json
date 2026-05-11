@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/manifest.ts",
+    "contentHash": "f69e3cd6a70d8acd0e476a9c38f2df23a0bcb69dd348a319395275cfab90512f",
+    "skeletonHash": "d6c62eec9fd2da76c4c9cb9dc44e589ad2fd5acce386e21836e48285a450b12c",
+    "semanticHash": "250cbc631bd0f66728172e2a7e973fce700bd335dff153f4f84a8ff4d1a9c9b9",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure barrel module re-exporting the public API of the manifest subsystem.",
+    "responsibilities": [
+      "Expose the Manifest type/class and hasManifestBaseline function as the stable public interface for manifest operations.",
+      "Provide a single import point for consumers to access manifest capabilities without depending on deeper implementation modules."
+    ],
+    "outOfScope": [
+      "Manifest internals, serialization, validation, or state management logic.",
+      "Any symbols not re-exported through this file."
+    ],
+    "invariants": [
+      "All re-exports originate from the public facade submodule (./manifest/facade.js).",
+      "The public surface is limited to the two explicitly re-exported symbols."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain a clean, documented public API surface for the manifest infrastructure layer.",
+      "recentChangeIntent": "The file was modified as part of the v1.0.0 release, but the semantic role remains unchanged — it still serves as the barrel re-export for the manifest facade."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "Manifest",
+        "description": "Represents the full manifest entity, including metadata and state. Consumed by services and tasks that need read or write access to the project manifest."
+      },
+      {
+        "symbolName": "hasManifestBaseline",
+        "description": "Checks whether a manifest baseline exists for the current project context. Used by initialization and sync logic to decide whether to create or update the manifest."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure barrel module re-exporting the public API of the manifest subsystem.",
+        "responsibilities": [
+          "Expose the Manifest type/class and hasManifestBaseline function as the stable public interface for manifest operations.",
+          "Provide a single import point for consumers to access manifest capabilities without depending on deeper implementation modules."
+        ],
+        "outOfScope": [
+          "Manifest internals, serialization, validation, or state management logic.",
+          "Any symbols not re-exported through this file."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "Manifest",
+        "kind": "unknown",
+        "signature": "export { Manifest }"
+      },
+      {
+        "name": "hasManifestBaseline",
+        "kind": "unknown",
+        "signature": "export { hasManifestBaseline }"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "Manifest",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/manifest.ts#"
+      },
+      {
+        "name": "hasManifestBaseline",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/manifest.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./manifest/facade.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest",
+          "hasManifestBaseline"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/mcp/server.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/integration/system/demo-governance.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/integration/system/error-system.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:58:57.192Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

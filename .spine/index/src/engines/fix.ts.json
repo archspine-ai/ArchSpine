@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/fix.ts",
+    "contentHash": "31ba18382e030465e08de1fb2335a59f09428d609f419ea9426e8b7b81196d73",
+    "skeletonHash": "100469579be0729b112cc27d69947f5b1dbb539ebb5f8055dfbd978ca6779815",
+    "semanticHash": "a0865b7200c16bcebfdadaf3c4aef5dddac659b10d33a2d443d16a1d9ffd9054",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Barrel module aggregating and re-exporting the fix service's public API for external consumers.",
+    "responsibilities": [
+      "Re-export the FixService class for use by other modules.",
+      "Re-export the runFix function for direct invocation of fix workflows.",
+      "Re-export the FixRunSummary type for type-safe consumption of fix results.",
+      "Act as a single entry point for all fix-related functionality from the fix-service module."
+    ],
+    "outOfScope": [
+      "Does not contain any fix logic or service orchestration.",
+      "Does not define any new symbols or behavior.",
+      "Does not handle CLI interaction or HTTP serving."
+    ],
+    "invariants": [
+      "Must only re-export symbols from the fix-service module; no imports from CLI entrypoints or orchestration layers.",
+      "Must not introduce any side effects or initialization logic."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a clean, centralized point of access to the fix subsystem, decoupling consumers from the internal path of the fix-service module.",
+      "recentChangeIntent": "No specific change intent captured; the barrel pattern supports modularity and reusability."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "FixService",
+        "description": "Service class exposing methods to perform and manage automated fix operations on source code. Consumed by task runners and CLI commands."
+      },
+      {
+        "symbolName": "runFix",
+        "description": "Top-level function that executes a complete fix workflow, typically integrating analysis, patching, and validation. Invoked by task orchestrators or directly."
+      },
+      {
+        "symbolName": "FixRunSummary",
+        "description": "Type definition representing the result of a fix execution, including counts of applied, skipped, and failed fixes. Used for reporting and decision-making."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Barrel module aggregating and re-exporting the fix service's public API for external consumers.",
+        "responsibilities": [
+          "Re-export the FixService class for use by other modules.",
+          "Re-export the runFix function for direct invocation of fix workflows.",
+          "Re-export the FixRunSummary type for type-safe consumption of fix results.",
+          "Act as a single entry point for all fix-related functionality from the fix-service module."
+        ],
+        "outOfScope": [
+          "Does not contain any fix logic or service orchestration.",
+          "Does not define any new symbols or behavior.",
+          "Does not handle CLI interaction or HTTP serving."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "FixService",
+        "kind": "unknown",
+        "signature": "export { FixService }"
+      },
+      {
+        "name": "runFix",
+        "kind": "unknown",
+        "signature": "export { runFix }"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "FixService",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/engines/fix.ts#"
+      },
+      {
+        "name": "runFix",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/engines/fix.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../services/fix-service.js",
+        "relation": "import",
+        "symbols": [
+          "FixService",
+          "runFix",
+          "FixRunSummary"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/integration/system/demo-governance.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:55:48.252Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 71,
+    "inCycle": true,
+    "cycleId": "src/core → src/types → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,222 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/config/loader.ts",
+    "contentHash": "676ad0cc3a9d427d0665ce25b11fc8d732124a3794194b8539fad1ec4750a0c7",
+    "skeletonHash": "704cc33605a58c3c3ef2184f7da96415df606d29c71faf5fb0b64a307935a01d",
+    "semanticHash": "1c55830391e8c9358564296381d8f055f06be963fccafc9a9bee04a28f68edf8",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/config"
+  },
+  "semantic": {
+    "role": "Infrastructure configuration loader that merges default settings with user-provided overrides and loads validated SpineConfig from a JSON file path.",
+    "responsibilities": [
+      "Deep-merge a default configuration object with an overrides object, filtering out non-object or invalid overrides.",
+      "Load configuration from a specified file path: read the file, parse JSON, validate the payload, merge with defaults, and return a SpineConfig.",
+      "Provide graceful fallback to defaults with warning messages when the configuration file is missing, unreadable, or contains invalid data."
+    ],
+    "outOfScope": [
+      "Environment-specific configuration injection or secret management.",
+      "Hot-reloading or runtime configuration change detection.",
+      "Command-line argument parsing or in-memory configuration overrides beyond file-based loading."
+    ],
+    "invariants": [
+      "loadConfigData always returns a valid SpineConfig, even if the file is missing or invalid (returns defaults with warnings).",
+      "mergeConfigWithDefaults skips overrides that are not plain objects or are arrays, preserving the defaults for those keys.",
+      "The configuration file path must be a string; no relative path resolution beyond what Node.js provides."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a robust configuration loading mechanism that merges defaults with user-provided overrides and validates the resulting configuration.",
+      "recentChangeIntent": "No specific recent changes identified for this file."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "mergeConfigWithDefaults",
+        "description": "Deep-merges a defaults object with an overrides object. If overrides is not a plain object, returns defaults unchanged. Used by loadConfigData and potentially by other configuration assemblers."
+      },
+      {
+        "symbolName": "loadConfigData",
+        "description": "Reads a JSON file from configPath, parses it, validates against the SpineConfig schema, merges with defaults, and returns the resulting SpineConfig. Emits warnings via defaultRuntimeIO when the file is missing, unparseable, or invalid."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure configuration loader that merges default settings with user-provided overrides and loads validated SpineConfig from a JSON file path.",
+        "responsibilities": [
+          "Deep-merge a default configuration object with an overrides object, filtering out non-object or invalid overrides.",
+          "Load configuration from a specified file path: read the file, parse JSON, validate the payload, merge with defaults, and return a SpineConfig.",
+          "Provide graceful fallback to defaults with warning messages when the configuration file is missing, unreadable, or contains invalid data."
+        ],
+        "outOfScope": [
+          "Environment-specific configuration injection or secret management.",
+          "Hot-reloading or runtime configuration change detection.",
+          "Command-line argument parsing or in-memory configuration overrides beyond file-based loading."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./types.js'",
+        "symbols": [
+          "SpineConfig"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./defaults.js'",
+        "symbols": [
+          "createDefaultConfig"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./validation.js'",
+        "symbols": [
+          "buildConfigParseWarning",
+          "validateConfigPayload"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "mergeConfigWithDefaults",
+        "kind": "function",
+        "signature": "mergeConfigWithDefaults(\n  defaults: Record<string, unknown>,\n  overrides: unknown,\n)"
+      },
+      {
+        "name": "loadConfigData",
+        "kind": "function",
+        "signature": "loadConfigData(configPath: string)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "mergeConfigWithDefaults",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/config/loader.ts#"
+      },
+      {
+        "name": "loadConfigData",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/config/loader.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "SpineConfig"
+        ]
+      },
+      {
+        "targetPath": "./defaults.js",
+        "relation": "import",
+        "symbols": [
+          "createDefaultConfig"
+        ]
+      },
+      {
+        "targetPath": "./validation.js",
+        "relation": "import",
+        "symbols": [
+          "buildConfigParseWarning",
+          "validateConfigPayload"
+        ]
+      },
+      {
+        "targetPath": "../runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "external:fs",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/config/loader.ts/_file_#",
+        "targetSymbol": "src/infra/config/defaults.ts/createDefaultConfig#",
+        "targetPath": "src/infra/config/defaults.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/config/loader.ts/_file_#",
+        "targetSymbol": "src/infra/config/validation.ts/buildConfigParseWarning#",
+        "targetPath": "src/infra/config/validation.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/config/loader.ts/_file_#",
+        "targetSymbol": "src/infra/config/validation.ts/validateConfigPayload#",
+        "targetPath": "src/infra/config/validation.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:57:07.370Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

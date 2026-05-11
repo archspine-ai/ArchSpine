@@ -1,0 +1,80 @@
+# ArchSpine Sync & Check — GitLab CI Template
+#
+# Automatically runs architecture sync and check on every Merge Request,
+# posting MR comments when violations are detected.
+#
+# Usage:
+#   # When the project has no .gitlab-ci.yml:
+#   curl -o .gitlab-ci.yml \
+#     https://raw.githubusercontent.com/archspine-ai/archspine/main/.gitlab-ci.spine.yml.example
+#
+#   # When .gitlab-ci.yml already exists, merge the spine-check job from this
+#   # file into your existing config, or reference it via include:
+#   # include:
+#   #   - remote: 'https://raw.githubusercontent.com/archspine-ai/archspine/main/.gitlab-ci.spine.yml.example'
+#
+# Prerequisites:
+#   1. `spine init` has been run in the repository and .spine/config.json is configured
+#   2. Add the following variables in Project Settings → CI/CD → Variables:
+#      - LLM_API_KEY: API Key required for LLM calls
+#      - GITLAB_TOKEN: Personal Access Token for MR comments (scope: api)
+#
+# Customization:
+#   Modify the `rules` or `script` sections as needed. See docs/how-to/ci-integration.md for details
+
+stages:
+  - test
+
+spine-check:
+  image: node:22
+  stage: test
+  timeout: 20 minutes
+
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+  variables:
+    OPENAI_API_KEY: $LLM_API_KEY
+
+  before_script:
+    - npm install -g archspine
+
+  script:
+    - spine sync --no-docs
+    - spine check 2>&1 | tee spine-check-output.txt; CHECK_EXIT=${PIPESTATUS[0]}
+    - |
+      if [ "$CHECK_EXIT" != "0" ]; then
+        echo "ArchSpine check found violations. Posting MR comment..."
+
+        apk add --no-cache curl jq > /dev/null 2>&1 || true
+        apt-get update -qq && apt-get install -y -qq curl jq > /dev/null 2>&1 || true
+
+        OUTPUT=$(cat spine-check-output.txt | head -c 60000)
+        BODY=$(jq -n --arg out "$OUTPUT" '[
+          "## ArchSpine Architecture Check",
+          "",
+          "Architecture violations detected. Please resolve before merging:",
+          "",
+          "```",
+          $out,
+          "```",
+          "",
+          "> Run `spine check` locally for full control-plane details."
+        ] | join("\n")')
+
+        curl --request POST \
+          --silent \
+          --show-error \
+          --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
+          --header "Content-Type: application/json" \
+          --data "{\"body\": $(echo "$BODY" | jq -Rs .)}" \
+          "$CI_API_V4_URL/projects/$CI_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID/notes"
+
+        exit 1
+      fi
+
+  artifacts:
+    when: on_failure
+    paths:
+      - spine-check-output.txt
+    expire_in: 7 days

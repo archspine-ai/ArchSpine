@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-context/constants.ts",
+    "contentHash": "b668bf4aae4e62ca2d522ec2ec6f79c4b42c63c39b541389b76069e858885b05",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "e9a8783916751a58b3ce49da67992344f48933e393dfb80422f5d4b7d44b41df",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt-context"
+  },
+  "semantic": {
+    "role": "Infrastructure configuration constants module providing canonical lists of validation policies and prompt budget profiles for the prompt engine.",
+    "responsibilities": [
+      "Define the set of accepted validation policy names ('default', 'strict') via `VALIDATE_POLICIES`.",
+      "Define per-task-mode prompt budget profiles used by the prompt engine to allocate token/line budgets for header, skeleton, and detail sections.",
+      "Serve as a single source of truth for supported validation policies and budget configurations consumed by other infra modules."
+    ],
+    "outOfScope": [
+      "Does not perform any validation or enforcement logic.",
+      "Does not read or write any external configuration.",
+      "Does not handle user input, errors, or state."
+    ],
+    "invariants": [
+      "`VALIDATE_POLICIES` must be a non-empty array of strings.",
+      "`PROMPT_BUDGET_PROFILES` must contain exactly the key set corresponding to all `PromptTaskMode` values.",
+      "Each `PromptBudgetProfile` must have valid numeric constraints (baseLines, minLines, maxLines, etc.) that are consistent with the prompt engine's expectations."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable, declarative constants module that decouples validation policy names and prompt budget configurations from the core logic, enabling easier maintenance and single-point updates.",
+      "recentChangeIntent": "The recent commit 'chore: apply release gate fixes and sync accumulated source changes' likely includes adjustments to budget profile values or new task modes to align with pipeline changes, but no direct evidence of modification is visible in the AST snippet."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "VALIDATE_POLICIES",
+        "description": "An array of allowed validation policy names (e.g., 'default', 'strict'). Used by validation tasks to determine which policy mode to apply."
+      },
+      {
+        "symbolName": "PROMPT_BUDGET_PROFILES",
+        "description": "A record mapping each PromptTaskMode (e.g., 'summarize', 'detail') to its budget profile (header, skeleton, detail line limits). Consumed by the prompt builder to allocate space for generated content."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure configuration constants module providing canonical lists of validation policies and prompt budget profiles for the prompt engine.",
+        "responsibilities": [
+          "Define the set of accepted validation policy names ('default', 'strict') via `VALIDATE_POLICIES`.",
+          "Define per-task-mode prompt budget profiles used by the prompt engine to allocate token/line budgets for header, skeleton, and detail sections.",
+          "Serve as a single source of truth for supported validation policies and budget configurations consumed by other infra modules."
+        ],
+        "outOfScope": [
+          "Does not perform any validation or enforcement logic.",
+          "Does not read or write any external configuration.",
+          "Does not handle user input, errors, or state."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/config/types.js",
+        "relation": "import",
+        "symbols": [
+          "PromptBudgetProfile",
+          "PromptTaskMode",
+          "ValidatePolicy"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:59:53.020Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

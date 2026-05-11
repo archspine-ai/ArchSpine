@@ -1,0 +1,167 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/infra/index-reader.test.ts",
+    "contentHash": "b66b4e2d8767553d810b27be893cf31921f5399d1123427c6005f8da190876ed",
+    "skeletonHash": "0dc9155c79c318f5df6a300a615d5c5567930f869a8b0efb28e16f0a46d8da87",
+    "semanticHash": "678fd474daa521e74ac3386ac0d49dc68bb595494af2f3e1bbf702966a7fa5d5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/infra"
+  },
+  "semantic": {
+    "role": "Vitest test suite for schema enforcement of the index-reader module.",
+    "responsibilities": [
+      "Verify that readIndexDocument rejects unsupported index file units and returns a descriptive error including the required schema version.",
+      "Ensure temporary directories created during tests are cleaned up after each test case."
+    ],
+    "outOfScope": [
+      "Production source code; this file is part of the test infrastructure and has no runtime behavior in the ArchSpine application."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (rule test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Add automated verification that the index-reader enforces schema version constraints, catching malformed index files before they are consumed by the rest of the system.",
+      "recentChangeIntent": "Introduce a dedicated test suite for schema enforcement in the index reader; the test creates a temporary index file with an unsupported version and asserts rejection."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite for schema enforcement of the index-reader module.",
+        "responsibilities": [
+          "Verify that readIndexDocument rejects unsupported index file units and returns a descriptive error including the required schema version.",
+          "Ensure temporary directories created during tests are cleaned up after each test case."
+        ],
+        "outOfScope": [
+          "Production source code; this file is part of the test infrastructure and has no runtime behavior in the ArchSpine application."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/index-reader.js'",
+        "symbols": [
+          "readIndexDocument"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/infra/index-reader.js",
+        "relation": "import",
+        "symbols": [
+          "readIndexDocument"
+        ]
+      },
+      {
+        "targetPath": "../../../src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/infra/index-reader.test.ts/_file_#",
+        "targetSymbol": "src/infra/index-reader.ts/readIndexDocument#",
+        "targetPath": "src/infra/index-reader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:09:47.960Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

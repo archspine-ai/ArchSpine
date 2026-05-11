@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/core/repair-policy.test.ts",
+    "contentHash": "4c9898ec886910a4d6e8c76985eda6b6f710d2720444291d90dbfaea550d3ef6",
+    "skeletonHash": "7cb9143371e678469323b12daf8e852484f7dd377ef6aefc0a10fdab5df28fbc",
+    "semanticHash": "0306f6fbd620a7630bf98e736edeac3e54f0a6dd48fe5008b8be8a40f2444ed5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/core"
+  },
+  "semantic": {
+    "role": "Test suite for the repair-policy module.",
+    "responsibilities": [
+      "Validates targeted repair decision for small file-level violations with an existing baseline.",
+      "Validates forced full repair decision when the baseline is missing.",
+      "Validates forced full repair decision on branch-level changes."
+    ],
+    "outOfScope": [
+      "Does not define any production logic or public API.",
+      "Does not test integration with other modules beyond the repair-policy interface."
+    ],
+    "invariants": [
+      "File must end with .test.ts or .spec.ts (rule test-file-suffix).",
+      "Tests must import `evaluateRepairPolicy` from the correct source path.",
+      "Test cases must cover targeted-repair, missing-baseline, and branch-change scenarios."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain comprehensive test coverage for the repair policy engine to ensure correct decision-making under different conditions.",
+      "recentChangeIntent": "Updated test cases to align with modifications in the repair policy logic (e.g., new aggregated path handling)."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Test suite for the repair-policy module.",
+        "responsibilities": [
+          "Validates targeted repair decision for small file-level violations with an existing baseline.",
+          "Validates forced full repair decision when the baseline is missing.",
+          "Validates forced full repair decision on branch-level changes."
+        ],
+        "outOfScope": [
+          "Does not define any production logic or public API.",
+          "Does not test integration with other modules beyond the repair-policy interface."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/repair-policy.js'",
+        "symbols": [
+          "evaluateRepairPolicy"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/infra/repair-policy.ts",
+        "relation": "import",
+        "symbols": [
+          "evaluateRepairPolicy"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/core/repair-policy.test.ts/_file_#",
+        "targetSymbol": "src/infra/repair-policy.ts/evaluateRepairPolicy#",
+        "targetPath": "src/infra/repair-policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:08:56.258Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

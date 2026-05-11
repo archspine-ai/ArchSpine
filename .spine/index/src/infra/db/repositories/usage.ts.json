@@ -1,0 +1,150 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db/repositories/usage.ts",
+    "contentHash": "4a09021e3a4f46a2ada0d28508baf7a33420b7806a41f7efc9cbdd32dca6979e",
+    "skeletonHash": "cceb818449dcbe3f5da3dc12bd3eb28d054840ee850f85d997313c9069ef7154",
+    "semanticHash": "97b1bdbef63393081ca1559eb76c9b158af8f83587b9f0feed58dc32c3509452",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/db/repositories"
+  },
+  "semantic": {
+    "role": "Infrastructure repository (DAO) for recording and querying LLM token usage logs in the SQLite database.",
+    "responsibilities": [
+      "Records token usage entries for each sync session with metadata (sync ID, date, mode, tokens).",
+      "Retrieves aggregated daily usage summaries grouped by sync mode, returning the last 30 days.",
+      "Provides total aggregated usage statistics across all sessions (sum of input/output/total tokens and session count)."
+    ],
+    "outOfScope": [
+      "Configuration or credential management.",
+      "Any non-usage-related database operations (e.g., file tracking, symbol storage).",
+      "High-level business logic or orchestration of sync workflows."
+    ],
+    "invariants": [
+      "Every usage record is inserted with a unique sync ID (process-pid-timestamp) and the current date.",
+      "Usage summaries always group by date and sync_mode, ordered by date descending, limited to 30 rows.",
+      "Total usage query is a global aggregation across all rows in the usage_logs table."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable SQLite-backed persistence layer for tracking LLM usage, supporting per-mode daily summaries and total aggregation.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era: this file implements the foundational usage-tracking repository required for governance cost monitoring."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "recordUsage",
+        "description": "Inserts a usage log row with the given mode, token counts, and a generated sync ID. Called by sync orchestration services to record every LLM interaction."
+      },
+      {
+        "symbolName": "getUsageSummary",
+        "description": "Returns an array of daily usage summaries (input/output/total tokens) grouped by sync mode, limited to the last 30 days. Used by reporting views and dashboards."
+      },
+      {
+        "symbolName": "getTotalUsage",
+        "description": "Returns total aggregated input/output/total tokens and session count across all recorded usage. Used by billing or overview modules."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure repository (DAO) for recording and querying LLM token usage logs in the SQLite database.",
+        "responsibilities": [
+          "Records token usage entries for each sync session with metadata (sync ID, date, mode, tokens).",
+          "Retrieves aggregated daily usage summaries grouped by sync mode, returning the last 30 days.",
+          "Provides total aggregated usage statistics across all sessions (sum of input/output/total tokens and session count)."
+        ],
+        "outOfScope": [
+          "Configuration or credential management.",
+          "Any non-usage-related database operations (e.g., file tracking, symbol storage).",
+          "High-level business logic or orchestration of sync workflows."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "recordUsage",
+        "kind": "function",
+        "signature": "recordUsage(\n  db: Database.Database,\n  mode: string,\n  input: number,\n  output: number,\n  total: number,\n)"
+      },
+      {
+        "name": "getUsageSummary",
+        "kind": "function",
+        "signature": "getUsageSummary(db: Database.Database)"
+      },
+      {
+        "name": "getTotalUsage",
+        "kind": "function",
+        "signature": "getTotalUsage(db: Database.Database)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "recordUsage",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/usage.ts#"
+      },
+      {
+        "name": "getUsageSummary",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/usage.ts#"
+      },
+      {
+        "name": "getTotalUsage",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/usage.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 3,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "better-sqlite3",
+        "relation": "import",
+        "symbols": [
+          "Database"
+        ]
+      },
+      {
+        "targetPath": "../types.js",
+        "relation": "import",
+        "symbols": [
+          "UsageSummaryRow",
+          "UsageTotals"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:57:44.343Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

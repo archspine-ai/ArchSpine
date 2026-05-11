@@ -1,0 +1,570 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/mcp/tools.ts",
+    "contentHash": "1c131800d8e3bdc8f4a10de881e820061b256f5709f3f0de01f91d52e07a4f4a",
+    "skeletonHash": "4323a03669eaf1c9299ea08e580a1c2988c3693865f4a51ba108b3634b2931c4",
+    "semanticHash": "9ddb05e02aec142a283e06af5202d3436ad1df23c7b906f8c2f9f30c77f9972f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/mcp"
+  },
+  "semantic": {
+    "role": "MCP tool collection exposing ArchSpine's introspection, scanning, drift detection, and dependency graph capabilities as callable MCP tools for LLM agent integration.",
+    "responsibilities": [
+      "Provide MCP tool definitions and handlers for all ArchSpine core features.",
+      "Expose methods to query project baseline and sync status.",
+      "Enable querying of architectural invariants and responsibilities from rules and spine units.",
+      "Facilitate symbol search across the indexed project symbols.",
+      "Support preview scans without persisting results.",
+      "Retrieve drift history for symbols or modules.",
+      "Provide file context, view data, and violation summaries.",
+      "List available MCP resource templates.",
+      "Offer dependency graph queries (upstream, downstream, violation edges) and diagnostics (cycles, dead code).",
+      "Perform semantic matching and change impact analysis on the dependency graph.",
+      "Compute semantic diffs between states."
+    ],
+    "outOfScope": [
+      "Direct filesystem management or file I/O (handled via fs/path imports internally only).",
+      "HTTP server or REST API handling.",
+      "Authentication or authorization logic.",
+      "CLI command parsing or UI rendering."
+    ],
+    "invariants": [
+      "All tool invocations are recorded through the MCPContextGate for call tracking.",
+      "Errors are uniformly wrapped using ArchSpineError or toArchSpineError."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Expose ArchSpine's internal capabilities as a set of MCP tools for LLM agents to query project status, rules, symbols, dependency graph, and diagnostics.",
+      "recentChangeIntent": "Refactored to remove legacy CLI aliases, rebuilt documentation, fixed schema and tests. This file may have been updated as part of the broader rebuild effort."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "SpineTools",
+        "description": "Class that encapsulates all MCP tool definitions, providing methods for every ArchSpine introspection and analysis operation."
+      },
+      {
+        "symbolName": "getBaselineStatus",
+        "description": "Returns the current baseline status of the project, indicating whether it is initialized and up-to-date."
+      },
+      {
+        "symbolName": "getSyncStatus",
+        "description": "Returns the synchronization status between the spine state and the actual project structure."
+      },
+      {
+        "symbolName": "queryInvariants",
+        "description": "Queries and returns the defined architectural invariants extracted from spine rules."
+      },
+      {
+        "symbolName": "queryResponsibilities",
+        "description": "Returns documented responsibilities for a set of spine units, as recorded in the index."
+      },
+      {
+        "symbolName": "searchSymbols",
+        "description": "Searches for indexed symbols by name or pattern, returning matching symbols with metadata."
+      },
+      {
+        "symbolName": "previewScan",
+        "description": "Executes a quick scan preview to detect changes without persisting results to the spine index."
+      },
+      {
+        "symbolName": "getDriftHistory",
+        "description": "Retrieves historical drift records for a given symbol or module path."
+      },
+      {
+        "symbolName": "getFileContext",
+        "description": "Returns contextual information about a specific file, including its AST and symbol definitions."
+      },
+      {
+        "symbolName": "getViewData",
+        "description": "Retrieves rendered view data for a specified view type (e.g., architecture diagram, risk hotspots)."
+      },
+      {
+        "symbolName": "getViolationsSummary",
+        "description": "Returns a summary of architectural rule violations across the project."
+      },
+      {
+        "symbolName": "listResourceTemplates",
+        "description": "Lists available MCP resource templates that can be used to access spine data."
+      },
+      {
+        "symbolName": "queryGraph",
+        "description": "Queries the dependency graph using operations such as upstream, downstream, walk, and violation edges."
+      },
+      {
+        "symbolName": "getDiagnostics",
+        "description": "Returns diagnostic information from the dependency graph, including cycles, dead code, and hub modules."
+      },
+      {
+        "symbolName": "matchSemanticTool",
+        "description": "Performs semantic matching against indexed symbols to find conceptually similar symbols."
+      },
+      {
+        "symbolName": "getChangeImpact",
+        "description": "Computes the impact of a proposed change on the dependency graph, identifying affected modules."
+      },
+      {
+        "symbolName": "getModuleContext",
+        "description": "Returns context for a specific module path, including its imports and dependents."
+      },
+      {
+        "symbolName": "getSemanticDiff",
+        "description": "Computes semantic differences between two project states, highlighting added, removed, or changed symbols."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "MCP tool collection exposing ArchSpine's introspection, scanning, drift detection, and dependency graph capabilities as callable MCP tools for LLM agent integration.",
+        "responsibilities": [
+          "Provide MCP tool definitions and handlers for all ArchSpine core features.",
+          "Expose methods to query project baseline and sync status.",
+          "Enable querying of architectural invariants and responsibilities from rules and spine units.",
+          "Facilitate symbol search across the indexed project symbols.",
+          "Support preview scans without persisting results.",
+          "Retrieve drift history for symbols or modules.",
+          "Provide file context, view data, and violation summaries.",
+          "List available MCP resource templates.",
+          "Offer dependency graph queries (upstream, downstream, violation edges) and diagnostics (cycles, dead code).",
+          "Perform semantic matching and change impact analysis on the dependency graph.",
+          "Compute semantic diffs between states."
+        ],
+        "outOfScope": [
+          "Direct filesystem management or file I/O (handled via fs/path imports internally only).",
+          "HTTP server or REST API handling.",
+          "Authentication or authorization logic.",
+          "CLI command parsing or UI rendering."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../engines/scanner.js'",
+        "symbols": [
+          "Scanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../engines/rules.js'",
+        "symbols": [
+          "RuleEngine"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../rules-loader.js'",
+        "symbols": [
+          "loadRulesFromDir"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./context.js'",
+        "symbols": [
+          "MCPContextGate"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes",
+          "toArchSpineError"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../index-reader.js'",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./tool-utils.js'",
+        "symbols": [
+          "normalizeToolFilePath",
+          "assertPathWithinParent"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../engines/graph-query.js'",
+        "symbols": [
+          "upstreamOf",
+          "downstreamOf",
+          "violationEdges",
+          "changeImpact",
+          "matchSemantic"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "SpineTools",
+        "kind": "class",
+        "signature": "class SpineTools"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "SpineTools",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/mcp/tools.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 15,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execSync"
+        ]
+      },
+      {
+        "targetPath": "../manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "../config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../../engines/scanner.js",
+        "relation": "import",
+        "symbols": [
+          "Scanner"
+        ]
+      },
+      {
+        "targetPath": "../../engines/rules.js",
+        "relation": "import",
+        "symbols": [
+          "RuleEngine"
+        ]
+      },
+      {
+        "targetPath": "../rules-loader.js",
+        "relation": "import",
+        "symbols": [
+          "loadRulesFromDir"
+        ]
+      },
+      {
+        "targetPath": "./context.js",
+        "relation": "import",
+        "symbols": [
+          "MCPContextGate"
+        ]
+      },
+      {
+        "targetPath": "../../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes",
+          "toArchSpineError"
+        ]
+      },
+      {
+        "targetPath": "../index-reader.js",
+        "relation": "import",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument"
+        ]
+      },
+      {
+        "targetPath": "./tool-utils.js",
+        "relation": "import",
+        "symbols": [
+          "normalizeToolFilePath",
+          "assertPathWithinParent"
+        ]
+      },
+      {
+        "targetPath": "../../engines/graph-query.js",
+        "relation": "import",
+        "symbols": [
+          "upstreamOf",
+          "downstreamOf",
+          "violationEdges",
+          "changeImpact",
+          "matchSemantic"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/mcp/server.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/integration/system/error-system.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/unit/infra/mcp/tools.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/toArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/infra/rules-loader.ts/loadRulesFromDir#",
+        "targetPath": "src/infra/rules-loader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/infra/index-reader.ts/isCompatibleIndexDocument#",
+        "targetPath": "src/infra/index-reader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/engines/quick-scan.ts/runQuickScan#",
+        "targetPath": "src/engines/quick-scan.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/engines/graph-query.ts/matchSemantic#",
+        "targetPath": "src/engines/graph-query.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/engines/graph-query.ts/changeImpact#",
+        "targetPath": "src/engines/graph-query.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/engines/graph-query.ts/upstreamOf#",
+        "targetPath": "src/engines/graph-query.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/engines/graph-query.ts/downstreamOf#",
+        "targetPath": "src/engines/graph-query.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/engines/graph-query.ts/violationEdges#",
+        "targetPath": "src/engines/graph-query.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/engines/rules.ts/RuleEngine#",
+        "targetPath": "src/engines/rules.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/ArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/engines/scanner.ts/Scanner#",
+        "targetPath": "src/engines/scanner.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/services/sync-service.ts/SyncService#",
+        "targetPath": "src/services/sync-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/symbols.ts/searchSymbols#",
+        "targetPath": "src/infra/db/repositories/symbols.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/drift.ts/getDriftHistory#",
+        "targetPath": "src/infra/db/repositories/drift.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getTrackedFiles#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/symbols.ts/resolveSymbol#",
+        "targetPath": "src/infra/db/repositories/symbols.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/engines/scanner-utils.ts/formatDryRunReport#",
+        "targetPath": "src/engines/scanner-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/mcp/tools.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/getActiveViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:39:49.682Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

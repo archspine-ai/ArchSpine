@@ -1,0 +1,726 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/utils/agent-instructions.sync.ts",
+    "contentHash": "a9bc4825c082b84c00508031b0ed47a5f2028f67fb2877c2df9a37b193feb741",
+    "skeletonHash": "5a535d2fbc7c3479a9e0ab2b241d7505afa70580159a5a58eb71383d660dc4a3",
+    "semanticHash": "a441cd01644069d5e170019bba314740a68edee08b510f1d269282226b6f65fb",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/utils"
+  },
+  "semantic": {
+    "role": "File sync orchestrator for ArchSpine-managed project artifacts (agent instructions, gitignore, scripts, blocks).",
+    "responsibilities": [
+      "Normalize agent instruction filenames to ensure they match allowed patterns.",
+      "Synchronize managed gitignore entries into the project's .gitignore file.",
+      "Remove managed gitignore entries from the project's .gitignore file.",
+      "Synchronize managed gitattributes entries into the project's .gitattributes file.",
+      "Remove managed gitattributes entries from the project's .gitattributes file.",
+      "Synchronize the managed agent instructions file (e.g., CLAUDE.md) with ArchSpine blocks.",
+      "Remove the managed agent instructions file content from the host file.",
+      "Synchronize the managed search ignore file (e.g., .searchignore) with ArchSpine-managed lines.",
+      "Remove managed search ignore file content.",
+      "Synchronize the managed .spineignore file with ArchSpine-recommended lines.",
+      "Remove managed .spineignore file content.",
+      "Inject ArchSpine npm scripts (build, dev, etc.) into the project's package.json.",
+      "Remove ArchSpine npm scripts from package.json based on a tracked scripts list.",
+      "Synchronize the V2 briefing block content inside an agent instructions file.",
+      "Remove the V2 briefing block from an agent instructions file.",
+      "Synchronize the MCP tools block content inside an agent instructions file.",
+      "Remove the MCP tools block from an agent instructions file.",
+      "Synchronize the health block content inside an agent instructions file.",
+      "Remove the health block from an agent instructions file."
+    ],
+    "outOfScope": [
+      "Direct manipulation of CI/CD pipeline configuration files.",
+      "Managing dependency lock files (package-lock.json, yarn.lock).",
+      "Performing any git operations beyond file synchronization.",
+      "Generating or interpreting AST data — this module only deals with file content pattern replacement."
+    ],
+    "invariants": [
+      "All synchronized blocks are wrapped by start/end markers defined in templates.",
+      "Managed file content is inserted or removed using bounded block patterns (start line + content + end line).",
+      "Normalized filenames are validated against a set of allowed agent instruction filenames.",
+      "Removal operations require the caller to specify whether the managed file itself should be deleted after clearing content."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized file-sync boundary between ArchSpine's governance artifacts and the repository's host files, enabling declarative lifecycle management (sync/remove) for agent instructions, ignore files, scripts, and embedded blocks.",
+      "recentChangeIntent": "refactor: remove legacy CLI aliases, rebuild docs, fix schema and tests — does not directly affect this module's interface."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "normalizeAgentInstructionsFilename",
+        "description": "Normalizes a filename string for agent instructions, returns empty string if invalid; used by sync/remove functions to validate target filenames."
+      },
+      {
+        "symbolName": "ArtifactStrategy",
+        "description": "Imported enum from templates; determines whether managed files are local (repository-scoped) or distributable (committed to VCS)."
+      },
+      {
+        "symbolName": "syncGitIgnoreFile",
+        "description": "Creates or updates .gitignore with ArchSpine-managed lines based on distribution strategy; returns sync status."
+      },
+      {
+        "symbolName": "removeManagedGitIgnoreFile",
+        "description": "Removes the ArchSpine-managed section from .gitignore; optionally deletes the file if empty."
+      },
+      {
+        "symbolName": "syncGitAttributesFile",
+        "description": "Creates or updates .gitattributes with ArchSpine-managed lines; returns sync status."
+      },
+      {
+        "symbolName": "removeManagedGitAttributesFile",
+        "description": "Removes the ArchSpine-managed section from .gitattributes; optionally deletes the file if empty."
+      },
+      {
+        "symbolName": "syncAgentInstructionsFile",
+        "description": "Creates or replaces the managed agent instructions file with full ArchSpine content (CLAUDE.md, etc.); returns sync status."
+      },
+      {
+        "symbolName": "removeManagedAgentInstructionsFile",
+        "description": "Removes managed content from the agent instructions file; optionally deletes the host file if empty."
+      },
+      {
+        "symbolName": "syncSearchIgnoreFile",
+        "description": "Creates or updates .searchignore with ArchSpine-managed lines; returns sync status."
+      },
+      {
+        "symbolName": "removeManagedSearchIgnoreFile",
+        "description": "Removes managed content from .searchignore; optionally deletes the file if empty."
+      },
+      {
+        "symbolName": "syncSpineIgnoreFile",
+        "description": "Creates or updates .spineignore with ArchSpine-recommended lines; returns sync status."
+      },
+      {
+        "symbolName": "removeManagedSpineIgnoreFile",
+        "description": "Removes managed content from .spineignore; optionally deletes the file if empty."
+      },
+      {
+        "symbolName": "injectArchSpineScripts",
+        "description": "Injects ArchSpine build, dev, and other scripts into package.json; returns status."
+      },
+      {
+        "symbolName": "removeArchSpineScripts",
+        "description": "Removes specific tracked scripts from package.json scripts section."
+      },
+      {
+        "symbolName": "syncV2BriefingBlock",
+        "description": "Inserts or updates the V2 briefing block in the agent instructions file; returns sync status."
+      },
+      {
+        "symbolName": "removeV2BriefingBlock",
+        "description": "Removes the V2 briefing block from the agent instructions file; returns removal status."
+      },
+      {
+        "symbolName": "syncMCPToolsBlock",
+        "description": "Inserts or updates the MCP tools block in the agent instructions file; returns sync status."
+      },
+      {
+        "symbolName": "removeMCPToolsBlock",
+        "description": "Removes the MCP tools block from the agent instructions file; returns removal status."
+      },
+      {
+        "symbolName": "syncHealthBlock",
+        "description": "Inserts or updates the health block in the agent instructions file; returns sync status."
+      },
+      {
+        "symbolName": "removeHealthBlock",
+        "description": "Removes the health block from the agent instructions file; returns removal status."
+      },
+      {
+        "symbolName": "AgentInstructionsSyncStatus",
+        "description": "Type describing the result of an agent instructions sync operation (e.g., created, updated, skipped)."
+      },
+      {
+        "symbolName": "V2BlockSyncStatus",
+        "description": "Type describing the result of a V2 brief block sync operation."
+      },
+      {
+        "symbolName": "V2BlockRemovalStatus",
+        "description": "Type describing the result of a V2 brief block removal operation."
+      },
+      {
+        "symbolName": "PackageScriptStatus",
+        "description": "Type describing the result of a package.json script injection operation."
+      },
+      {
+        "symbolName": "SearchIgnoreSyncStatus",
+        "description": "Type describing the result of a search ignore file sync operation."
+      },
+      {
+        "symbolName": "SpineIgnoreSyncStatus",
+        "description": "Type describing the result of a .spineignore sync operation."
+      },
+      {
+        "symbolName": "GitIgnoreSyncStatus",
+        "description": "Type describing the result of a .gitignore sync operation."
+      },
+      {
+        "symbolName": "GitAttributesSyncStatus",
+        "description": "Type describing the result of a .gitattributes sync operation."
+      },
+      {
+        "symbolName": "getGitIgnoreManagedLines",
+        "description": "Returns the appropriate set of gitignore lines based on strategy; used by sync and remove internally."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "File sync orchestrator for ArchSpine-managed project artifacts (agent instructions, gitignore, scripts, blocks).",
+        "responsibilities": [
+          "Normalize agent instruction filenames to ensure they match allowed patterns.",
+          "Synchronize managed gitignore entries into the project's .gitignore file.",
+          "Remove managed gitignore entries from the project's .gitignore file.",
+          "Synchronize managed gitattributes entries into the project's .gitattributes file.",
+          "Remove managed gitattributes entries from the project's .gitattributes file.",
+          "Synchronize the managed agent instructions file (e.g., CLAUDE.md) with ArchSpine blocks.",
+          "Remove the managed agent instructions file content from the host file.",
+          "Synchronize the managed search ignore file (e.g., .searchignore) with ArchSpine-managed lines.",
+          "Remove managed search ignore file content.",
+          "Synchronize the managed .spineignore file with ArchSpine-recommended lines.",
+          "Remove managed .spineignore file content.",
+          "Inject ArchSpine npm scripts (build, dev, etc.) into the project's package.json.",
+          "Remove ArchSpine npm scripts from package.json based on a tracked scripts list.",
+          "Synchronize the V2 briefing block content inside an agent instructions file.",
+          "Remove the V2 briefing block from an agent instructions file.",
+          "Synchronize the MCP tools block content inside an agent instructions file.",
+          "Remove the MCP tools block from an agent instructions file.",
+          "Synchronize the health block content inside an agent instructions file.",
+          "Remove the health block from an agent instructions file."
+        ],
+        "outOfScope": [
+          "Direct manipulation of CI/CD pipeline configuration files.",
+          "Managing dependency lock files (package-lock.json, yarn.lock).",
+          "Performing any git operations beyond file synchronization.",
+          "Generating or interpreting AST data — this module only deals with file content pattern replacement."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./agent-instructions.templates.js'",
+        "symbols": [
+          "AGENT_BLOCK_END",
+          "AGENT_BLOCK_START",
+          "ARCHSPINE_AGENT_BLOCK",
+          "ARCHSPINE_HEALTH_BLOCK_END",
+          "ARCHSPINE_HEALTH_BLOCK_START",
+          "ARCHSPINE_HEALTH_CONTENT",
+          "ARCHSPINE_MCP_BLOCK_END",
+          "ARCHSPINE_MCP_BLOCK_START",
+          "ARCHSPINE_MCP_TOOLS_CONTENT",
+          "ARCHSPINE_PACKAGE_SCRIPTS",
+          "ARCHSPINE_V2_BLOCK_END",
+          "ARCHSPINE_V2_BLOCK_START",
+          "ARCHSPINE_V2_BRIEFING_CONTENT",
+          "ArtifactStrategy",
+          "DISTRIBUTABLE_GITATTRIBUTES_LINES",
+          "DISTRIBUTABLE_GITIGNORE_LINES",
+          "GITATTRIBUTES_BLOCK_END",
+          "GITATTRIBUTES_BLOCK_START",
+          "GITIGNORE_BLOCK_END",
+          "GITIGNORE_BLOCK_START",
+          "LOCAL_GITIGNORE_LINES",
+          "SEARCH_IGNORE_CONTENT",
+          "SEARCH_IGNORE_LINES",
+          "SEARCH_IGNORE_PATH",
+          "SPINEIGNORE_BLOCK_END",
+          "SPINEIGNORE_BLOCK_START",
+          "SPINEIGNORE_PATH",
+          "SPINEIGNORE_RECOMMENDED_LINES"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "normalizeAgentInstructionsFilename",
+        "kind": "function",
+        "signature": "normalizeAgentInstructionsFilename(filename: string)"
+      },
+      {
+        "name": "getGitIgnoreManagedLines",
+        "kind": "function",
+        "signature": "getGitIgnoreManagedLines(strategy: ArtifactStrategy)"
+      },
+      {
+        "name": "syncGitIgnoreFile",
+        "kind": "function",
+        "signature": "syncGitIgnoreFile(\n  rootDir: string,\n  strategy: ArtifactStrategy,\n)"
+      },
+      {
+        "name": "removeManagedGitIgnoreFile",
+        "kind": "function",
+        "signature": "removeManagedGitIgnoreFile(\n  rootDir: string,\n  deleteManagedFile: boolean,\n)"
+      },
+      {
+        "name": "syncGitAttributesFile",
+        "kind": "function",
+        "signature": "syncGitAttributesFile(rootDir: string)"
+      },
+      {
+        "name": "removeManagedGitAttributesFile",
+        "kind": "function",
+        "signature": "removeManagedGitAttributesFile(\n  rootDir: string,\n  deleteManagedFile: boolean,\n)"
+      },
+      {
+        "name": "syncAgentInstructionsFile",
+        "kind": "function",
+        "signature": "syncAgentInstructionsFile(\n  rootDir: string,\n  filename: string,\n)"
+      },
+      {
+        "name": "syncSearchIgnoreFile",
+        "kind": "function",
+        "signature": "syncSearchIgnoreFile(rootDir: string)"
+      },
+      {
+        "name": "syncSpineIgnoreFile",
+        "kind": "function",
+        "signature": "syncSpineIgnoreFile(rootDir: string)"
+      },
+      {
+        "name": "injectArchSpineScripts",
+        "kind": "function",
+        "signature": "injectArchSpineScripts(rootDir: string)"
+      },
+      {
+        "name": "removeManagedAgentInstructionsFile",
+        "kind": "function",
+        "signature": "removeManagedAgentInstructionsFile(\n  rootDir: string,\n  filename: string,\n  deleteEmptyHostFile: boolean,\n)"
+      },
+      {
+        "name": "removeManagedSearchIgnoreFile",
+        "kind": "function",
+        "signature": "removeManagedSearchIgnoreFile(\n  rootDir: string,\n  deleteManagedFile: boolean,\n)"
+      },
+      {
+        "name": "removeManagedSpineIgnoreFile",
+        "kind": "function",
+        "signature": "removeManagedSpineIgnoreFile(\n  rootDir: string,\n  deleteManagedFile: boolean,\n)"
+      },
+      {
+        "name": "removeArchSpineScripts",
+        "kind": "function",
+        "signature": "removeArchSpineScripts(\n  rootDir: string,\n  trackedScripts: string[],\n)"
+      },
+      {
+        "name": "syncV2BriefingBlock",
+        "kind": "function",
+        "signature": "syncV2BriefingBlock(\n  rootDir: string,\n  filename: string,\n)"
+      },
+      {
+        "name": "removeV2BriefingBlock",
+        "kind": "function",
+        "signature": "removeV2BriefingBlock(\n  rootDir: string,\n  filename: string,\n)"
+      },
+      {
+        "name": "syncMCPToolsBlock",
+        "kind": "function",
+        "signature": "syncMCPToolsBlock(\n  rootDir: string,\n  filename: string,\n)"
+      },
+      {
+        "name": "removeMCPToolsBlock",
+        "kind": "function",
+        "signature": "removeMCPToolsBlock(\n  rootDir: string,\n  filename: string,\n)"
+      },
+      {
+        "name": "syncHealthBlock",
+        "kind": "function",
+        "signature": "syncHealthBlock(\n  rootDir: string,\n  filename: string,\n)"
+      },
+      {
+        "name": "removeHealthBlock",
+        "kind": "function",
+        "signature": "removeHealthBlock(\n  rootDir: string,\n  filename: string,\n)"
+      },
+      {
+        "name": "AgentInstructionsSyncStatus",
+        "kind": "type",
+        "signature": "type AgentInstructionsSyncStatus"
+      },
+      {
+        "name": "V2BlockSyncStatus",
+        "kind": "type",
+        "signature": "type V2BlockSyncStatus"
+      },
+      {
+        "name": "V2BlockRemovalStatus",
+        "kind": "type",
+        "signature": "type V2BlockRemovalStatus"
+      },
+      {
+        "name": "PackageScriptStatus",
+        "kind": "type",
+        "signature": "type PackageScriptStatus"
+      },
+      {
+        "name": "SearchIgnoreSyncStatus",
+        "kind": "type",
+        "signature": "type SearchIgnoreSyncStatus"
+      },
+      {
+        "name": "SpineIgnoreSyncStatus",
+        "kind": "type",
+        "signature": "type SpineIgnoreSyncStatus"
+      },
+      {
+        "name": "GitIgnoreSyncStatus",
+        "kind": "type",
+        "signature": "type GitIgnoreSyncStatus"
+      },
+      {
+        "name": "GitAttributesSyncStatus",
+        "kind": "type",
+        "signature": "type GitAttributesSyncStatus"
+      },
+      {
+        "name": "AgentInstructionsRemovalStatus",
+        "kind": "type",
+        "signature": "type AgentInstructionsRemovalStatus"
+      },
+      {
+        "name": "SearchIgnoreRemovalStatus",
+        "kind": "type",
+        "signature": "type SearchIgnoreRemovalStatus"
+      },
+      {
+        "name": "SpineIgnoreRemovalStatus",
+        "kind": "type",
+        "signature": "type SpineIgnoreRemovalStatus"
+      },
+      {
+        "name": "GitIgnoreRemovalStatus",
+        "kind": "type",
+        "signature": "type GitIgnoreRemovalStatus"
+      },
+      {
+        "name": "GitAttributesRemovalStatus",
+        "kind": "type",
+        "signature": "type GitAttributesRemovalStatus"
+      },
+      {
+        "name": "PackageScriptRemovalStatus",
+        "kind": "type",
+        "signature": "type PackageScriptRemovalStatus"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "normalizeAgentInstructionsFilename",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "getGitIgnoreManagedLines",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "syncGitIgnoreFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "removeManagedGitIgnoreFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "syncGitAttributesFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "removeManagedGitAttributesFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "syncAgentInstructionsFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "syncSearchIgnoreFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "syncSpineIgnoreFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "injectArchSpineScripts",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "removeManagedAgentInstructionsFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "removeManagedSearchIgnoreFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "removeManagedSpineIgnoreFile",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "removeArchSpineScripts",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "syncV2BriefingBlock",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "removeV2BriefingBlock",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "syncMCPToolsBlock",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "removeMCPToolsBlock",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "syncHealthBlock",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "removeHealthBlock",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "AgentInstructionsSyncStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "V2BlockSyncStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "V2BlockRemovalStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "PackageScriptStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "SearchIgnoreSyncStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "SpineIgnoreSyncStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "GitIgnoreSyncStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "GitAttributesSyncStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "AgentInstructionsRemovalStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "SearchIgnoreRemovalStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "SpineIgnoreRemovalStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "GitIgnoreRemovalStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "GitAttributesRemovalStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      },
+      {
+        "name": "PackageScriptRemovalStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/utils/agent-instructions.sync.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 34,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./agent-instructions.templates.js",
+        "relation": "import",
+        "symbols": [
+          "AGENT_BLOCK_END",
+          "AGENT_BLOCK_START",
+          "ARCHSPINE_AGENT_BLOCK",
+          "ARCHSPINE_HEALTH_BLOCK_END",
+          "ARCHSPINE_HEALTH_BLOCK_START",
+          "ARCHSPINE_HEALTH_CONTENT",
+          "ARCHSPINE_MCP_BLOCK_END",
+          "ARCHSPINE_MCP_BLOCK_START",
+          "ARCHSPINE_MCP_TOOLS_CONTENT",
+          "ARCHSPINE_PACKAGE_SCRIPTS",
+          "ARCHSPINE_V2_BLOCK_END",
+          "ARCHSPINE_V2_BLOCK_START",
+          "ARCHSPINE_V2_BRIEFING_CONTENT",
+          "ArtifactStrategy",
+          "DISTRIBUTABLE_GITATTRIBUTES_LINES",
+          "DISTRIBUTABLE_GITIGNORE_LINES",
+          "GITATTRIBUTES_BLOCK_END",
+          "GITATTRIBUTES_BLOCK_START",
+          "GITIGNORE_BLOCK_END",
+          "GITIGNORE_BLOCK_START",
+          "LOCAL_GITIGNORE_LINES",
+          "SEARCH_IGNORE_CONTENT",
+          "SEARCH_IGNORE_LINES",
+          "SEARCH_IGNORE_PATH",
+          "SPINEIGNORE_BLOCK_END",
+          "SPINEIGNORE_BLOCK_START",
+          "SPINEIGNORE_PATH",
+          "SPINEIGNORE_RECOMMENDED_LINES"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:06:13.355Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 82,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

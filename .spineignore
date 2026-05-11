@@ -1,0 +1,98 @@
+# ==============================================================================
+# ArchSpine Semantic Ignore Configuration
+# ==============================================================================
+# [English]
+# Purpose: Fine-tune the AI's "reading scope". Exclude files tracked by Git 
+# that provide no architectural value, saving tokens and reducing AI hallucinations.
+# 
+# Notes:
+# - Auto-inherits .gitignore (do not repeat node_modules, dist, etc.).
+# - Internal .spine/ files (like cache.db) are automatically shielded.
+#
+# Examples:
+# 1. Tracked by Git, but ignore for AI (Reduce noise)
+# benchmarks/data/
+# tests/fixtures/large-snapshots/
+# src/locales/generated-*.json
+# *.svg
+# 
+# 2. Ignored by Git, but include for AI (Recall context)
+# !vendor/our-patches/
+# !.env.example
+
+# ==============================================================================
+# ArchSpine 语义忽略配置
+# ==============================================================================
+# [中文]
+# 核心定位：微调 AI 的“代码阅读范围”。排除已提交到 Git 但对 AI 理解架构毫无帮助的
+# 噪音文件，从而节省 Token 并减少 AI 幻觉。
+#
+# 注意事项：
+# - 自动继承 .gitignore（无需重复添加 node_modules、dist 等）。
+# - 系统自动屏蔽 .spine/ 内部缓存文件（如 cache.db）。
+#
+# 配置示例：
+# 1. Git 已跟踪，但 AI 不该阅读（减少噪音）
+# benchmarks/data/
+# tests/fixtures/large-snapshots/
+# src/locales/generated-*.json
+# *.svg
+#
+# 2. Git 已忽略，但 AI 需要阅读（特殊召回）
+# !vendor/our-patches/
+# !.env.example
+
+# >>> ArchSpine repo-specific >>>
+# Specific to ArchSpine development: exclude large external test corpora and coverage reports.
+research/bench/corpus/
+coverage/
+# <<< ArchSpine repo-specific <<<
+
+# >>> ArchSpine recommended >>>
+# Recommended semantic exclusions for high-noise, low-information local and generated content.
+# Human-facing repository docs usually already have an authoritative readable form.
+# Edit or remove these suggestions if they are intentional architecture inputs in this repository.
+
+# Common local secrets
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+
+# Common generated, cache, and runtime noise not worth indexing by default
+.next/
+.nuxt/
+.svelte-kit/
+.parcel-cache/
+.turbo/
+.cache/
+tmp/
+temp/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.tox/
+.venv/
+venv/
+target/
+
+# Common semantic-noise outputs
+docs/
+README.md
+README.en.md
+README.zh-CN.md
+CONTRIBUTING.md
+SECURITY.md
+SUPPORT.md
+CODE_OF_CONDUCT.md
+docs/.vitepress/dist/
+externaldocs/
+
+# Keep repository automation and control-plane inputs indexable by default
+!schemas/
+!.github/workflows/
+# <<< ArchSpine recommended <<<

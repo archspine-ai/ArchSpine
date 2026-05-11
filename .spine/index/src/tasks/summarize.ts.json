@@ -1,0 +1,456 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/summarize.ts",
+    "contentHash": "ac021e2adc0ad1793a428bc49617de3c54d2b7be200bd0af30821af11554af91",
+    "skeletonHash": "4fddbd514a9ab22f66bde18d90498a02583ae97bc17d355e89898d2e112b1f65",
+    "semanticHash": "d2b61df899ecf6f6eddaf5425d0e7b3920474339aee4bf36184b348d92827dc5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "Pipeline stage task that orchestrates LLM-based semantic summarization and synthesis from extracted source artifacts, consuming skeletons and units to produce structured semantic output with drift awareness and validation.",
+    "responsibilities": [
+      "Process extracted artifacts (skeletons, units, violations) by invoking the LLM to generate per-file semantic summaries and structured symbols.",
+      "Build prompt artifacts using `buildSourcePromptArtifacts` and resolve validation policies via `resolveValidatePolicy` to guide the LLM generation.",
+      "Handle semantic drift detection by comparing the new LLM output against the previous semantic context (`PreviousSemanticContext`), adding drift warnings when the contract changes.",
+      "Retry LLM calls on transient failures using `isRetryableError` and `p-limit` concurrency control.",
+      "Calculate structural and semantic footprints (`calculateStructuralFootprint`, `calculateSemanticFootprint`) for each processed file.",
+      "Manage task state transitions: mark processed files, queue commits, increment success/failure/skipped counters, and record usage and diagnostics.",
+      "Produce and return `SummarizationStageOutput` containing the synthesized semantics, updated skeletons, and accumulated violations.",
+      "Integrate with the manifest to record violations and trigger index updates when forced sync is requested."
+    ],
+    "outOfScope": [
+      "CLI command parsing or direct user interaction",
+      "Unrelated service orchestration (e.g., view rendering, MCP server, database CRUD outside task state)",
+      "Source code extraction (handled by preceding ExtractionTask stage)",
+      "File system scanning or repository index building",
+      "Final artifact output formatting (delegated to writer boundary or output manager)"
+    ],
+    "invariants": [
+      "Task modules shall implement stage-local work on top of core contracts (SpineTask, TaskContext) and engines, and shall not take over CLI command parsing or unrelated service orchestration."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a self-contained summarization stage within the pipeline that leverages LLM calls to transform raw extracted data into structured semantic representations, with built-in drift detection and validation.",
+      "recentChangeIntent": "chore: apply release gate fixes and sync accumulated source changes — likely includes minor corrections to LLM prompt assembly, error handling, or task state integration, but no change to the module's core contract."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "SummarizationTask",
+        "description": "Pipeline stage that orchestrates LLM-based semantic summarization and synthesis from extracted source artifacts, consuming skeletons and units to produce structured semantic output with drift awareness and validation. This is the only exported symbol and forms the module contract."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Pipeline stage task that orchestrates LLM-based semantic summarization and synthesis from extracted source artifacts, consuming skeletons and units to produce structured semantic output with drift awareness and validation.",
+        "responsibilities": [
+          "Process extracted artifacts (skeletons, units, violations) by invoking the LLM to generate per-file semantic summaries and structured symbols.",
+          "Build prompt artifacts using `buildSourcePromptArtifacts` and resolve validation policies via `resolveValidatePolicy` to guide the LLM generation.",
+          "Handle semantic drift detection by comparing the new LLM output against the previous semantic context, adding drift warnings when the contract changes.",
+          "Retry LLM calls on transient failures using `isRetryableError` and concurrency control via `p-limit`.",
+          "Calculate structural and semantic footprints for each processed file.",
+          "Manage task state transitions: mark processed files, queue commits, increment success/failure/skipped counters, and record usage and diagnostics.",
+          "Produce and return `SummarizationStageOutput` containing the synthesized semantics, updated skeletons, and accumulated violations.",
+          "Integrate with the manifest to record violations and trigger index updates when forced sync is requested."
+        ],
+        "outOfScope": [
+          "CLI command parsing or direct user interaction",
+          "Unrelated service orchestration (e.g., view rendering, MCP server, database CRUD outside task state)",
+          "Source code extraction (handled by preceding ExtractionTask stage)",
+          "File system scanning or repository index building",
+          "Final artifact output formatting (delegated to writer boundary or output manager)"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext",
+          "TaskContextFor"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "FileKind",
+          "RuleViolation",
+          "SpineSemantic",
+          "SpineSkeleton",
+          "SpineUnit",
+          "SymbolDependencyEdge",
+          "SymbolKind",
+          "CURRENT_SCHEMA_VERSION",
+          "GENERATOR_VERSION"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/lang-registry.js'",
+        "symbols": [
+          "LangRegistry"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/prompt-context.js'",
+        "symbols": [
+          "buildSourcePromptArtifacts",
+          "RelevanceDiagnosticsSnapshot"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/prompt-policy.js'",
+        "symbols": [
+          "resolveValidatePolicy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/task-state.js'",
+        "symbols": [
+          "addTaskDriftWarning",
+          "addTaskUsage",
+          "incrementTaskFailed",
+          "incrementTaskSkipped",
+          "markTaskProcessedFile",
+          "pushSummarizeDiagnostics",
+          "queueTaskCommit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/llm/retry.js'",
+        "symbols": [
+          "isRetryableError"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../utils/footprint.js'",
+        "symbols": [
+          "calculateSemanticFootprint",
+          "calculateStructuralFootprint"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'p-limit'",
+        "symbols": [
+          "pLimit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "SummarizationTask",
+        "kind": "class",
+        "signature": "class SummarizationTask"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "SummarizationTask",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/tasks/summarize.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 13,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext",
+          "TaskContextFor"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "FileKind",
+          "RuleViolation",
+          "SpineSemantic",
+          "SpineSkeleton",
+          "SpineUnit",
+          "SymbolDependencyEdge",
+          "SymbolKind",
+          "CURRENT_SCHEMA_VERSION",
+          "GENERATOR_VERSION"
+        ]
+      },
+      {
+        "targetPath": "../ast/lang-registry.js",
+        "relation": "import",
+        "symbols": [
+          "LangRegistry"
+        ]
+      },
+      {
+        "targetPath": "../infra/prompt-context.js",
+        "relation": "import",
+        "symbols": [
+          "buildSourcePromptArtifacts",
+          "RelevanceDiagnosticsSnapshot"
+        ]
+      },
+      {
+        "targetPath": "../infra/prompt-policy.js",
+        "relation": "import",
+        "symbols": [
+          "resolveValidatePolicy"
+        ]
+      },
+      {
+        "targetPath": "../core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "addTaskDriftWarning",
+          "addTaskUsage",
+          "incrementTaskFailed",
+          "incrementTaskSkipped",
+          "markTaskProcessedFile",
+          "pushSummarizeDiagnostics",
+          "queueTaskCommit"
+        ]
+      },
+      {
+        "targetPath": "../infra/llm/retry.js",
+        "relation": "import",
+        "symbols": [
+          "isRetryableError"
+        ]
+      },
+      {
+        "targetPath": "../utils/footprint.js",
+        "relation": "import",
+        "symbols": [
+          "calculateSemanticFootprint",
+          "calculateStructuralFootprint"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "p-limit",
+        "relation": "import",
+        "symbols": [
+          "pLimit"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/resolveValidatePolicy#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-policy.ts/resolveValidatePolicy#",
+        "targetPath": "src/infra/prompt-policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/policy.ts/resolveValidatePolicy#",
+        "targetPath": "src/infra/prompt-context/policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/queueTaskCommit#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/incrementTaskSkipped#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/markTaskProcessedFile#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/incrementTaskFailed#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/infra/llm/retry.ts/isRetryableError#",
+        "targetPath": "src/infra/llm/retry.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/utils/footprint.ts/calculateStructuralFootprint#",
+        "targetPath": "src/utils/footprint.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/utils/footprint.ts/calculateSemanticFootprint#",
+        "targetPath": "src/utils/footprint.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/buildSourcePromptArtifacts#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/artifacts.ts/buildSourcePromptArtifacts#",
+        "targetPath": "src/infra/prompt-context/artifacts.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/pushSummarizeDiagnostics#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/addTaskUsage#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/addTaskDriftWarning#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/clearViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/recordViolation#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/integrity.ts/calculateHash#",
+        "targetPath": "src/infra/manifest/integrity.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/summarize.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getFileDocs#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:05:04.077Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 2,
+    "isHub": true,
+    "hubPercentile": 59,
+    "inCycle": true,
+    "cycleId": "src/core → src/tasks → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

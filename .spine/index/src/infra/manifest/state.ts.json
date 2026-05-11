@@ -1,0 +1,347 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/manifest/state.ts",
+    "contentHash": "3c804d04f25db77916c68d65da444cb25a44fe66eb6911dc4bc1bca4c12b9a33",
+    "skeletonHash": "71677de97144ed84dd3d87453644fb364262ccb75a6343fb9ef269b82a4a8aa5",
+    "semanticHash": "a697e6e03a5752eee2a49de6aecbb6227ac3a2956c6557451420b659755f4ff2",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/manifest"
+  },
+  "semantic": {
+    "role": "State persistence and lifecycle manager for the Spine manifest runtime state and language detection snapshots.",
+    "responsibilities": [
+      "Persist and load runtime state (ManifestRuntimeState) to/from the manifest JSON file under `.spine/manifest.json`.",
+      "Save and load language detection snapshots (LanguageSnapshot) to/from the language snapshot file.",
+      "Determine if a manifest is in a 'virgin' state by checking the lastSync timestamp – used to decide whether to perform a full scan.",
+      "Check for the existence of a manifest baseline file to support incremental sync decisions.",
+      "Record and persist scan metadata (mode, duration, LLM provider/model) alongside runtime state and violation counts from a status source."
+    ],
+    "outOfScope": [
+      "Manifest schema validation and integrity checks (handled by `infra/manifest/integrity.ts`).",
+      "Index document management or knowledge graph operations.",
+      "Triggering or orchestrating scan operations – this module only persists results."
+    ],
+    "invariants": [
+      "All state files are persisted as JSON under the `.spine` directory using paths defined in `io.ts`.",
+      "The `saveManifestState` function requires a valid `ManifestStatusSource` with `getGlobalStatus` and `getActiveViolations` methods.",
+      "Language snapshots are written atomically via `FileSystemManager.safeWriteFile` to prevent partial writes.",
+      "The `reverseIndexComplete` flag is the only mutable runtime state field; all other fields are derived or metadata."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized persistence layer for Spine manifest runtime state, decoupling state I/O from business logic and scan orchestration.",
+      "recentChangeIntent": "Initial production release of ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era; this module was created to support the core manifest state lifecycle."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ManifestRuntimeState",
+        "description": "Interface representing the persisted runtime state of the manifest, currently only containing a `reverseIndexComplete` flag."
+      },
+      {
+        "symbolName": "ManifestStatusSource",
+        "description": "Interface for an external status source that provides global status (`getGlobalStatus`) and active violation counts (`getActiveViolations`) for inclusion in saved manifest state."
+      },
+      {
+        "symbolName": "loadManifestState",
+        "description": "Reads and returns the `ManifestRuntimeState` from the manifest JSON file, or returns a default state with `reverseIndexComplete: false` if the file does not exist."
+      },
+      {
+        "symbolName": "isVirginManifestState",
+        "description": "Checks whether the manifest has ever been synced by examining the lastSyncAt timestamp; returns `true` if the manifest file is missing, empty, or has no valid sync timestamp."
+      },
+      {
+        "symbolName": "hasManifestBaseline",
+        "description": "Returns `true` if the manifest JSON file exists on disk and can be read, indicating a prior scan baseline is available."
+      },
+      {
+        "symbolName": "persistReverseIndexState",
+        "description": "Persists the `reverseIndexComplete` flag into the manifest file without overwriting other state, used to mark completion of reverse index derivation."
+      },
+      {
+        "symbolName": "saveManifestState",
+        "description": "Writes the complete manifest runtime state, scan metadata (mode, duration, LLM provider/model), and current violation count from the status source to the manifest JSON file."
+      },
+      {
+        "symbolName": "loadLanguageSnapshot",
+        "description": "Loads and returns the `LanguageSnapshot` from the language snapshot file, or `null` if the file does not exist or cannot be parsed."
+      },
+      {
+        "symbolName": "saveLanguageSnapshot",
+        "description": "Saves the given `LanguageSnapshot` to the language snapshot file using atomic file write."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "State persistence and lifecycle manager for the Spine manifest runtime state and language detection snapshots.",
+        "responsibilities": [
+          "Persist and load runtime state (ManifestRuntimeState) to/from the manifest JSON file under `.spine/manifest.json`.",
+          "Save and load language detection snapshots (LanguageSnapshot) to/from the language snapshot file.",
+          "Determine if a manifest is in a 'virgin' state by checking the lastSync timestamp – used to decide whether to perform a full scan.",
+          "Check for the existence of a manifest baseline file to support incremental sync decisions.",
+          "Record and persist scan metadata (mode, duration, LLM provider/model) alongside runtime state and violation counts from a status source."
+        ],
+        "outOfScope": [
+          "Manifest schema validation and integrity checks (handled by `infra/manifest/integrity.ts`).",
+          "Index document management or knowledge graph operations.",
+          "Triggering or orchestrating scan operations – this module only persists results."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../utils/fs.js'",
+        "symbols": [
+          "FileSystemManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "GENERATOR_VERSION",
+          "LanguageSnapshot"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../core/errors.js'",
+        "symbols": [
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./io.js'",
+        "symbols": [
+          "getLanguageSnapshotPath",
+          "getManifestPath",
+          "readJsonFile",
+          "readJsonFileWithWarning"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "loadManifestState",
+        "kind": "function",
+        "signature": "loadManifestState(rootDir: string)"
+      },
+      {
+        "name": "isVirginManifestState",
+        "kind": "function",
+        "signature": "isVirginManifestState(\n  rootDir: string,\n  statusSource: ManifestStatusSource,\n)"
+      },
+      {
+        "name": "hasManifestBaseline",
+        "kind": "function",
+        "signature": "hasManifestBaseline(rootDir: string)"
+      },
+      {
+        "name": "persistReverseIndexState",
+        "kind": "function",
+        "signature": "persistReverseIndexState(rootDir: string, complete: boolean)"
+      },
+      {
+        "name": "saveManifestState",
+        "kind": "function",
+        "signature": "saveManifestState(\n  rootDir: string,\n  runtimeState: ManifestRuntimeState,\n  statusSource: ManifestStatusSource,\n  mode: 'incremental' | 'full',\n  durationMs: number,\n  llm?: {\n    provider?: { value?: string; source: string };\n    model?: { value?: string; source: string };\n  },\n)"
+      },
+      {
+        "name": "loadLanguageSnapshot",
+        "kind": "function",
+        "signature": "loadLanguageSnapshot(rootDir: string)"
+      },
+      {
+        "name": "saveLanguageSnapshot",
+        "kind": "function",
+        "signature": "saveLanguageSnapshot(rootDir: string, snapshot: LanguageSnapshot)"
+      },
+      {
+        "name": "ManifestRuntimeState",
+        "kind": "interface",
+        "signature": "interface ManifestRuntimeState"
+      },
+      {
+        "name": "ManifestStatusSource",
+        "kind": "interface",
+        "signature": "interface ManifestStatusSource"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "loadManifestState",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/manifest/state.ts#"
+      },
+      {
+        "name": "isVirginManifestState",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/manifest/state.ts#"
+      },
+      {
+        "name": "hasManifestBaseline",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/manifest/state.ts#"
+      },
+      {
+        "name": "persistReverseIndexState",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/manifest/state.ts#"
+      },
+      {
+        "name": "saveManifestState",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/manifest/state.ts#"
+      },
+      {
+        "name": "loadLanguageSnapshot",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/manifest/state.ts#"
+      },
+      {
+        "name": "saveLanguageSnapshot",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/manifest/state.ts#"
+      },
+      {
+        "name": "ManifestRuntimeState",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/manifest/state.ts#"
+      },
+      {
+        "name": "ManifestStatusSource",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/manifest/state.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 9,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/manifest/io.ts",
+        "relation": "import",
+        "symbols": [
+          "getLanguageSnapshotPath",
+          "getManifestPath",
+          "readJsonFile",
+          "readJsonFileWithWarning"
+        ]
+      },
+      {
+        "targetPath": "src/utils/fs.ts",
+        "relation": "import",
+        "symbols": [
+          "FileSystemManager"
+        ]
+      },
+      {
+        "targetPath": "src/types/protocol.ts",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "GENERATOR_VERSION",
+          "LanguageSnapshot"
+        ]
+      },
+      {
+        "targetPath": "src/core/errors.ts",
+        "relation": "import",
+        "symbols": [
+          "ErrorCodes"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/manifest/state.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/io.ts/getManifestPath#",
+        "targetPath": "src/infra/manifest/io.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/state.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/io.ts/getLanguageSnapshotPath#",
+        "targetPath": "src/infra/manifest/io.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/state.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getGlobalStatus#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/state.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/getActiveViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:00:23.437Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

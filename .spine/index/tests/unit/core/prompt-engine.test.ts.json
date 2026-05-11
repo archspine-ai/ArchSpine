@@ -1,0 +1,198 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/core/prompt-engine.test.ts",
+    "contentHash": "c9fea84d91138df786a1479d5006a07b7c85049853488853b120e2218832aae2",
+    "skeletonHash": "6458b76f9322e794fa5a9ab3cb1b882c11609dab809040342176d4d21b8ce1a7",
+    "semanticHash": "ef192b549b18455beb10c5aef043669dfc880fa2b3904a02fe605810f9d3a839",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/core"
+  },
+  "semantic": {
+    "role": "Test suite for the source prompt artifact compaction and prompt rendering pipeline.",
+    "responsibilities": [
+      "Verifies that buildSourcePromptArtifacts, calculateSourcePromptBudgets, and generateSourcePrompt correctly compact a large set of source lines and rule blocks into a prompt with a structural skeleton.",
+      "Validates that the structural skeleton usages array is populated to the expected count after compaction.",
+      "Acts as a forward-looking test (P0) to guard the prompt engine's core behavior against regressions."
+    ],
+    "outOfScope": [
+      "File system I/O or network operations – the test uses in-memory string generation only.",
+      "Real LLM calls or external service integration – imports are synchronous and mock-friendly.",
+      "User interface or CLI command handling – purely unit-level test logic."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts suffix per rule 'test-file-suffix' (severity: error).",
+      "Imports from prompt-context.ts and prompt-rendering.ts must remain stable for the test to compile."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintains automated regression coverage for the prompt engine's core artifact-compaction workflow, ensuring that source prompt generation continues to adhere to budget constraints.",
+      "recentChangeIntent": "Synchronized test coverage alongside prompt engine refactoring (see recent commit: 'chore: apply release gate fixes and sync accumulated source changes'). The test validates that compaction still functions correctly after changes."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Test suite for the source prompt artifact compaction and prompt rendering pipeline.",
+        "responsibilities": [
+          "Verifies that buildSourcePromptArtifacts, calculateSourcePromptBudgets, and generateSourcePrompt correctly compact a large set of source lines and rule blocks into a prompt with a structural skeleton.",
+          "Validates that the structural skeleton usages array is populated to the expected count after compaction.",
+          "Acts as a forward-looking test (P0) to guard the prompt engine's core behavior against regressions."
+        ],
+        "outOfScope": [
+          "File system I/O or network operations – the test uses in-memory string generation only.",
+          "Real LLM calls or external service integration – imports are synchronous and mock-friendly.",
+          "User interface or CLI command handling – purely unit-level test logic."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/prompt-context.js'",
+        "symbols": [
+          "buildSourcePromptArtifacts",
+          "calculateSourcePromptBudgets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/prompt-rendering.js'",
+        "symbols": [
+          "generateMarkdownPrompt",
+          "generateSourcePrompt"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/infra/prompt-context.ts",
+        "relation": "import",
+        "symbols": [
+          "buildSourcePromptArtifacts",
+          "calculateSourcePromptBudgets"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/prompt-rendering.ts",
+        "relation": "import",
+        "symbols": [
+          "generateMarkdownPrompt",
+          "generateSourcePrompt"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/core/prompt-engine.test.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/buildSourcePromptArtifacts#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/prompt-engine.test.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/artifacts.ts/buildSourcePromptArtifacts#",
+        "targetPath": "src/infra/prompt-context/artifacts.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/prompt-engine.test.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/generateSourcePrompt#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/prompt-engine.test.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/generateSourcePrompt#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/prompt-engine.test.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/source.ts/generateSourcePrompt#",
+        "targetPath": "src/infra/prompt/source.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/prompt-engine.test.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/generateMarkdownPrompt#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/prompt-engine.test.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/generateMarkdownPrompt#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/prompt-engine.test.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/markdown.ts/generateMarkdownPrompt#",
+        "targetPath": "src/infra/prompt/markdown.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/prompt-engine.test.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/calculateSourcePromptBudgets#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/prompt-engine.test.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/budgets.ts/calculateSourcePromptBudgets#",
+        "targetPath": "src/infra/prompt-context/budgets.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:08:44.998Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

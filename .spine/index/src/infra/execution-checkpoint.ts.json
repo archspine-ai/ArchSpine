@@ -1,0 +1,342 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/execution-checkpoint.ts",
+    "contentHash": "fab50a2007f1cea70b4f006606cc9378638bc56c70a1f3d373e524cf89b89ba7",
+    "skeletonHash": "0a9fba44f4065db3d5709dfa08832c9ef33004d20f723e2f58db272369d973b1",
+    "semanticHash": "12505439c617b479b4eb26096560684be24398d3587fd0a3a632e36aeb470046",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure module providing checkpoint persistence and query logic for pipeline execution states (sync, check) to enable resumability.",
+    "responsibilities": [
+      "Define type aliases and interfaces for execution checkpoint statuses and state structure.",
+      "Provide pure utility functions to test checkpoint resumability and retrieve stage data or items filtered by status.",
+      "Derive candidate file paths for resume or failure handling from a stored checkpoint state.",
+      "Implement the ExecutionCheckpointStore class that loads, persists, and updates checkpoint state via FileSystemManager."
+    ],
+    "outOfScope": [
+      "Coordinating or orchestrating pipeline execution; only state persistence and querying.",
+      "Directly managing other infrastructure concerns like LLM calls or configuration."
+    ],
+    "invariants": [
+      "Checkpoint state must follow the defined type hierarchy (run → stage → item).",
+      "Status transitions follow a linear lifecycle: pending → running → (completed | failed).",
+      "File persistence is delegated to the injected FileSystemManager, not handled directly."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Encapsulate execution checkpoint state management so that pipeline services can query and persist incremental progress without coupling to file I/O details.",
+      "recentChangeIntent": "General maintenance and sync of accumulated source changes; no specific checkpoint logic change indicated."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ExecutionCheckpointRunStatus",
+        "description": "Union type indicating the overall state of a checkpoint run: 'running', 'completed', or 'failed'."
+      },
+      {
+        "symbolName": "ExecutionCheckpointStageStatus",
+        "description": "Union type indicating the state of a checkpoint stage: 'pending', 'running', 'completed', or 'failed'."
+      },
+      {
+        "symbolName": "ExecutionCheckpointItemStatus",
+        "description": "Union type indicating the state of a checkpoint item: 'running', 'completed', 'failed', or 'skipped'."
+      },
+      {
+        "symbolName": "ExecutionCheckpointItemState",
+        "description": "Interface describing a single checkpoint item, including status, timestamps, optional metadata, and error string."
+      },
+      {
+        "symbolName": "ExecutionCheckpointStageState",
+        "description": "Interface describing a checkpoint stage, including status, timestamps, and a map of item states keyed by item ID."
+      },
+      {
+        "symbolName": "ExecutionCheckpointState",
+        "description": "Interface describing the full checkpoint: run status, timestamps, and a map of stage states keyed by stage ID."
+      },
+      {
+        "symbolName": "isResumableCheckpoint",
+        "description": "Type guard that returns true when the given state object is a non-null, non-undefined ExecutionCheckpointState with run status 'running'."
+      },
+      {
+        "symbolName": "getStageData",
+        "description": "Retrieves the state data for a specific stage from the checkpoint, returns undefined if the stage is absent."
+      },
+      {
+        "symbolName": "getStageItemsByStatus",
+        "description": "Filters and returns the item IDs within a given stage whose status matches any of the provided statuses."
+      },
+      {
+        "symbolName": "deriveSyncResumeCandidateFiles",
+        "description": "Extracts file paths from the 'sync' stage that are in 'completed' status, representing files that should be skipped on resume."
+      },
+      {
+        "symbolName": "deriveSyncFailedCandidateFiles",
+        "description": "Extracts file paths from the 'sync' stage that are in 'failed' status, representing files that need retry."
+      },
+      {
+        "symbolName": "deriveCheckResumeCandidateFiles",
+        "description": "Extracts file paths from the 'check' stage that are in 'completed' or 'failed' status, representing files that should be handled on resume."
+      },
+      {
+        "symbolName": "ExecutionCheckpointStore",
+        "description": "Class that manages loading, saving, and mutating checkpoint state on disk. Provides methods to update stage and item status, persist the state, and retrieve candidate file lists for resume/retry."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure module providing checkpoint persistence and query logic for pipeline execution states (sync, check) to enable resumability.",
+        "responsibilities": [
+          "Define type aliases and interfaces for execution checkpoint statuses and state structure.",
+          "Provide pure utility functions to test checkpoint resumability and retrieve stage data or items filtered by status.",
+          "Derive candidate file paths for resume or failure handling from a stored checkpoint state.",
+          "Implement the ExecutionCheckpointStore class that loads, persists, and updates checkpoint state via FileSystemManager."
+        ],
+        "outOfScope": [
+          "Coordinating or orchestrating pipeline execution; only state persistence and querying.",
+          "Directly managing other infrastructure concerns like LLM calls or configuration."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../utils/fs.js'",
+        "symbols": [
+          "FileSystemManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "isResumableCheckpoint",
+        "kind": "function",
+        "signature": "isResumableCheckpoint(\n  state: ExecutionCheckpointState | null | undefined,\n)"
+      },
+      {
+        "name": "getStageData",
+        "kind": "function",
+        "signature": "getStageData(\n  state: ExecutionCheckpointState | null | undefined,\n  stageId: string,\n)"
+      },
+      {
+        "name": "getStageItemsByStatus",
+        "kind": "function",
+        "signature": "getStageItemsByStatus(\n  state: ExecutionCheckpointState | null | undefined,\n  stageId: string,\n  statuses: ExecutionCheckpointItemStatus[],\n)"
+      },
+      {
+        "name": "deriveSyncResumeCandidateFiles",
+        "kind": "function",
+        "signature": "deriveSyncResumeCandidateFiles(\n  state: ExecutionCheckpointState | null | undefined,\n)"
+      },
+      {
+        "name": "deriveSyncFailedCandidateFiles",
+        "kind": "function",
+        "signature": "deriveSyncFailedCandidateFiles(\n  state: ExecutionCheckpointState | null | undefined,\n)"
+      },
+      {
+        "name": "deriveCheckResumeCandidateFiles",
+        "kind": "function",
+        "signature": "deriveCheckResumeCandidateFiles(\n  state: ExecutionCheckpointState | null | undefined,\n)"
+      },
+      {
+        "name": "ExecutionCheckpointStore",
+        "kind": "class",
+        "signature": "class ExecutionCheckpointStore"
+      },
+      {
+        "name": "ExecutionCheckpointItemState",
+        "kind": "interface",
+        "signature": "interface ExecutionCheckpointItemState"
+      },
+      {
+        "name": "ExecutionCheckpointStageState",
+        "kind": "interface",
+        "signature": "interface ExecutionCheckpointStageState"
+      },
+      {
+        "name": "ExecutionCheckpointState",
+        "kind": "interface",
+        "signature": "interface ExecutionCheckpointState"
+      },
+      {
+        "name": "ExecutionCheckpointRunStatus",
+        "kind": "type",
+        "signature": "type ExecutionCheckpointRunStatus"
+      },
+      {
+        "name": "ExecutionCheckpointStageStatus",
+        "kind": "type",
+        "signature": "type ExecutionCheckpointStageStatus"
+      },
+      {
+        "name": "ExecutionCheckpointItemStatus",
+        "kind": "type",
+        "signature": "type ExecutionCheckpointItemStatus"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "isResumableCheckpoint",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "getStageData",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "getStageItemsByStatus",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "deriveSyncResumeCandidateFiles",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "deriveSyncFailedCandidateFiles",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "deriveCheckResumeCandidateFiles",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "ExecutionCheckpointStore",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "ExecutionCheckpointItemState",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "ExecutionCheckpointStageState",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "ExecutionCheckpointState",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "ExecutionCheckpointRunStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "ExecutionCheckpointStageStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      },
+      {
+        "name": "ExecutionCheckpointItemStatus",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/execution-checkpoint.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 13,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../utils/fs.js",
+        "relation": "import",
+        "symbols": [
+          "FileSystemManager"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:39:49.623Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/ast/rules/kotlin.yml",
+    "contentHash": "4b4e177f05a8719b52b274a4efbf19615c70b3b52cf4abc852d7a0bb9dc02641",
+    "semanticHash": "ae9ebded40bfd6a302d6b288a8fa3a68b92b465983e44ad0e43466413bf1c229",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": "src/ast/rules"
+  },
+  "semantic": {
+    "role": "Defines AST extraction rules for Kotlin language syntax within the ArchSpine mirror system",
+    "responsibilities": [
+      "Specifies patterns for importing modules",
+      "Defines export patterns for declarations: functions (including private and suspend), classes (standard, data, sealed), interfaces, objects, companion objects, variables (val/var), and typealiases",
+      "Provides usage patterns for function calls and property accesses",
+      "Serves as a Kotlin-specific grammar rule file for the ArchSpine scanner engine"
+    ],
+    "outOfScope": [
+      "Does not cover other programming languages",
+      "Does not handle advanced Kotlin idioms (inline functions, destructuring declarations, lambda expressions, extension functions)",
+      "Excludes semantic analysis, type resolution, or control flow patterns beyond simple call and property usage",
+      "Does not address Kotlin multiplatform or scripting contexts"
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This document defines the syntactic patterns used by the ArchSpine AST extractor to parse Kotlin source code. It maps Kotlin language constructs (imports, declarations, and usage references) to standardized identifiers so the system can build an index of symbols, dependencies, and usage across a repository.",
+        "context_and_audience": "This rules file is part of the ArchSpine project's language support system. It is primarily intended for developers and maintainers of the ArchSpine tool itself, as well as for AI agents that process Kotlin-based repositories. Understanding these patterns helps ensure accurate extraction of code structure and dependencies.",
+        "key_takeaways": [
+          "The file covers three categories: imports, exports (functions, classes, objects, variables, typealiases), and usages (calls, property accesses).",
+          "Each pattern uses a placeholder syntax (e.g., $NAME, $ARGS) to match variable parts of Kotlin code.",
+          "This is one of many language rule files; ArchSpine supports multiple languages through similar rule definitions.",
+          "The patterns are intentionally limited to common Kotlin constructs and do not cover all idiomatic features."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:52:43.716Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 8,
+    "isHub": true,
+    "hubPercentile": 94,
+    "inCycle": true,
+    "cycleId": "src/ast → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

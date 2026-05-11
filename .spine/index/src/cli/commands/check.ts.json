@@ -1,0 +1,159 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/check.ts",
+    "contentHash": "559ae17c682ecd0e412256f1411037bf38e786743df8b3f3cc40757ed05cef6a",
+    "skeletonHash": "230d77ed520c0f971f11f751931895015916fb795aa0b977aaf8017c333c88fe",
+    "semanticHash": "096669b59cdba183f5e8050e0e1563e780a837e13afa61d59428cd8cd7268643",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command handler for the `spine check` subcommand, adapting the RuntimeService to expose architectural validation as a terminal entrypoint.",
+    "responsibilities": [
+      "Prints an experimental warning banner before running the check to inform users about the feature's maturity.",
+      "Delegates the actual architectural rule validation to `RuntimeService.getCheckService().run()`, keeping the CLI layer thin.",
+      "Catches `ArchSpineError` with code `CliCommandFailed` and surfaces the error to the user.",
+      "Defines `ExecuteCheckCommandOptions` interface to inject the required RuntimeService dependency."
+    ],
+    "outOfScope": [
+      "Architectural rule evaluation logic (handled by services/core).",
+      "Persistent storage access (handled by infra layer).",
+      "Any business logic beyond CLI orchestration and error handling."
+    ],
+    "invariants": [
+      "Must not contain pipeline or persistence logic (enforced by rule `cli-entrypoint-separation`).",
+      "Must only import services/errors for delegation, not core/engine implementations."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintains the pattern of thin CLI entrypoints that delegate to services, ensuring the `spine check` command remains a lightweight adapter.",
+      "recentChangeIntent": "Based on the recent commit 'feat: add violation lifecycle management and --fresh check flag', this file likely processes the `--fresh` flag argument to reset check state, but the delegation architecture remains intact."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "executeCheckCommand",
+        "description": "Orchestrates the `spine check` subcommand: parses flags (e.g. --fresh), delegates to the runtime service for validation, and presents results/errors to the console. Called by the CLI router."
+      },
+      {
+        "symbolName": "ExecuteCheckCommandOptions",
+        "description": "Configuration interface for the check command, requiring an array of CLI arguments and an instance of RuntimeService. Injected by the CLI entrypoint to keep the handler decoupled."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command handler for the `spine check` subcommand, adapting the RuntimeService to expose architectural validation as a terminal entrypoint.",
+        "responsibilities": [
+          "Prints an experimental warning banner before running the check to inform users about the feature's maturity.",
+          "Delegates the actual architectural rule validation to `RuntimeService.getCheckService().run()`, keeping the CLI layer thin.",
+          "Catches `ArchSpineError` with code `CliCommandFailed` and surfaces the error to the user.",
+          "Defines `ExecuteCheckCommandOptions` interface to inject the required RuntimeService dependency."
+        ],
+        "outOfScope": [
+          "Architectural rule evaluation logic (handled by services/core).",
+          "Persistent storage access (handled by infra layer).",
+          "Any business logic beyond CLI orchestration and error handling."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../services/runtime-service.js'",
+        "symbols": [
+          "RuntimeService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeCheckCommand",
+        "kind": "function",
+        "signature": "executeCheckCommand({\n  args,\n  runtimeService,\n}: ExecuteCheckCommandOptions)"
+      },
+      {
+        "name": "ExecuteCheckCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteCheckCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeCheckCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/check.ts#"
+      },
+      {
+        "name": "ExecuteCheckCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/check.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../services/runtime-service.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeService"
+        ]
+      },
+      {
+        "targetPath": "../../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/check.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/ArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:40:17.101Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 53,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

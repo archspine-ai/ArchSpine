@@ -1,0 +1,318 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/try-service.ts",
+    "contentHash": "68d63bdd41079f63d72e91bb444ae48611ec5bb677f96dd78796d43dc804eace",
+    "skeletonHash": "89fb5633afa69f5b031fcaf8d38611cd17f580e1f1cdd799b17f18f09d8e1624",
+    "semanticHash": "f67d37c72c2e5fda145ff1ba90f7b66c9ca3eb564dce05279e9c28a6e14eb318",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Service orchestrating repository landscape analysis by combining scanning, configuration, language discovery, and AST extraction.",
+    "responsibilities": [
+      "Check the existence of key files (config, rules, manifest, index, view) in the .spine directory to determine repo posture.",
+      "Discover the language landscape: classify files by language using Scanner, Config, LangRegistry, and discoverLanguages, producing aggregated snapshots per language.",
+      "Generate AST previews for each discovered language by selecting up to 10 files per language, extracting AST via ASTExtractor, and returning preview results."
+    ],
+    "outOfScope": [
+      "Actual file scanning logic (delegated to Scanner).",
+      "Configuration management (delegated to Config).",
+      "Language detection internals (delegated to discoverLanguages and LangRegistry).",
+      "AST extraction algorithm (delegated to ASTExtractor).",
+      "Persistent storage or UI rendering."
+    ],
+    "invariants": [
+      "[Rule: service-runtime-boundary] This service must not be placed under src/infra/; it correctly lives in src/services/.",
+      "All orchestration dependencies (Scanner, Config, discoverLanguages, LangRegistry, ASTExtractor) are sourced from engines, infra, or ast directories, consistent with the allowed boundary."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Introduce a centralized landscape service that aggregates structural and language metadata for the repository, enabling downstream tooling to understand the project layout.",
+      "recentChangeIntent": "Added the landscape service (landscape.ts) to provide repo posture checking, language discovery orchestration, and AST preview generation."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "checkRepoPosture",
+        "description": "Returns a RepoPosture object indicating the presence of key .spine files (config, rules, manifest, index, view) in the given root directory."
+      },
+      {
+        "symbolName": "discoverLanguageLandscape",
+        "description": "Scans the repository to classify files by programming language, producing a LanguagePreview map with file counts and total sizes per language."
+      },
+      {
+        "symbolName": "generateASTPreviews",
+        "description": "For each language in a snapshot, selects non-test source files and returns AST previews (file path, size, and extracted AST) for up to 10 files per language."
+      },
+      {
+        "symbolName": "RepoPosture",
+        "description": "Interface representing the boolean presence of canonical .spine configuration/metadata files."
+      },
+      {
+        "symbolName": "LanguagePreview",
+        "description": "Interface containing language name, file count, and total bytes for a discovered language."
+      },
+      {
+        "symbolName": "ASTPreviewResult",
+        "description": "Interface containing an array of language AST snapshots (LanguageASTSnapshot) and the set of languages with previews."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Service orchestrating repository landscape analysis by combining scanning, configuration, language discovery, and AST extraction.",
+        "responsibilities": [
+          "Check the existence of key files (config, rules, manifest, index, view) in the .spine directory to determine repo posture.",
+          "Discover the language landscape: classify files by language using Scanner, Config, LangRegistry, and discoverLanguages, producing aggregated snapshots per language.",
+          "Generate AST previews for each discovered language by selecting up to 10 files per language, extracting AST via ASTExtractor, and returning preview results."
+        ],
+        "outOfScope": [
+          "Actual file scanning logic (delegated to Scanner).",
+          "Configuration management (delegated to Config).",
+          "Language detection internals (delegated to discoverLanguages and LangRegistry).",
+          "AST extraction algorithm (delegated to ASTExtractor).",
+          "Persistent storage or UI rendering."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../engines/scanner.js'",
+        "symbols": [
+          "Scanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/lang-discovery.js'",
+        "symbols": [
+          "discoverLanguages"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/lang-registry.js'",
+        "symbols": [
+          "LangRegistry"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/extractor.js'",
+        "symbols": [
+          "ASTExtractor"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "checkRepoPosture",
+        "kind": "function",
+        "signature": "checkRepoPosture(rootDir: string)"
+      },
+      {
+        "name": "discoverLanguageLandscape",
+        "kind": "function",
+        "signature": "discoverLanguageLandscape(\n  rootDir: string,\n  config: Config,\n)"
+      },
+      {
+        "name": "generateASTPreviews",
+        "kind": "function",
+        "signature": "generateASTPreviews(\n  rootDir: string,\n  languageSnapshot: LanguageSnapshot,\n)"
+      },
+      {
+        "name": "RepoPosture",
+        "kind": "interface",
+        "signature": "interface RepoPosture"
+      },
+      {
+        "name": "LanguagePreview",
+        "kind": "interface",
+        "signature": "interface LanguagePreview"
+      },
+      {
+        "name": "ASTPreviewResult",
+        "kind": "interface",
+        "signature": "interface ASTPreviewResult"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "checkRepoPosture",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/try-service.ts#"
+      },
+      {
+        "name": "discoverLanguageLandscape",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/try-service.ts#"
+      },
+      {
+        "name": "generateASTPreviews",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/try-service.ts#"
+      },
+      {
+        "name": "RepoPosture",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/try-service.ts#"
+      },
+      {
+        "name": "LanguagePreview",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/try-service.ts#"
+      },
+      {
+        "name": "ASTPreviewResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/try-service.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 6,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../engines/scanner.js",
+        "relation": "import",
+        "symbols": [
+          "Scanner"
+        ]
+      },
+      {
+        "targetPath": "../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../ast/lang-discovery.js",
+        "relation": "import",
+        "symbols": [
+          "discoverLanguages"
+        ]
+      },
+      {
+        "targetPath": "../ast/lang-registry.js",
+        "relation": "import",
+        "symbols": [
+          "LangRegistry"
+        ]
+      },
+      {
+        "targetPath": "../ast/extractor.js",
+        "relation": "import",
+        "symbols": [
+          "ASTExtractor"
+        ]
+      },
+      {
+        "targetPath": "node:fs",
+        "relation": "import",
+        "symbols": [
+          "fs"
+        ]
+      },
+      {
+        "targetPath": "node:path",
+        "relation": "import",
+        "symbols": [
+          "path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/try-service.ts/_file_#",
+        "targetSymbol": "src/ast/lang-discovery.ts/discoverLanguages#",
+        "targetPath": "src/ast/lang-discovery.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/try-service.ts/_file_#",
+        "targetSymbol": "src/engines/scanner.ts/Scanner#",
+        "targetPath": "src/engines/scanner.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/try-service.ts/_file_#",
+        "targetSymbol": "src/ast/extractor.ts/ASTExtractor#",
+        "targetPath": "src/ast/extractor.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T10:02:46.081Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

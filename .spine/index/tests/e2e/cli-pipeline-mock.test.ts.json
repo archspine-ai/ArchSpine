@@ -1,0 +1,200 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/e2e/cli-pipeline-mock.test.ts",
+    "contentHash": "e0e3e39403356ad3a2342f61d1faf5aeb3a2918a1c730aba6d5325ed7ba68fb2",
+    "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
+    "semanticHash": "7a19f7457849766cb51316ab962f556ce36d1b07101c012af02c8449df72358e",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/e2e"
+  },
+  "semantic": {
+    "role": "Vitest end-to-end test suite that validates the ArchSpine CLI pipeline via mock (simulated) commands in isolated temporary git repositories.",
+    "responsibilities": [
+      "Create temporary directories and initialize git repositories to serve as isolated test environments for each scenario.",
+      "Execute the pre-built CLI binary (`dist/cli/index.js`) with various subcommands and assertions.",
+      "Clean up test artifacts and restore state after each test execution via vitest lifecycle hooks.",
+      "Validate that CLI pipeline steps (scan, sync, etc.) produce expected outputs, error codes, and side effects in a controlled mock setting.",
+      "Adapt test expectations to reflect changes from CLI refactoring, such as removed legacy aliases and updated schemas."
+    ],
+    "outOfScope": [
+      "Production logic of the CLI or its subsystems (scanning, AST extraction, LLM integration, etc.).",
+      "Real network calls or interactions with external LLM providers.",
+      "Unit tests of individual modules or services.",
+      "Integration tests that require a fully initialized ArchSpine repository or multi-language project."
+    ],
+    "invariants": [
+      "Test file must end with `.test.ts` or `.spec.ts` as per repository convention."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain end-to-end test coverage for the CLI pipeline to ensure that refactored components (e.g., removed legacy CLI aliases, schema changes) behave correctly in a simulated environment.",
+      "recentChangeIntent": "Updated to align with removal of legacy CLI aliases and rebuilt documentation/schema, adjusting test expectations accordingly."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest end-to-end test suite that validates the ArchSpine CLI pipeline via mock (simulated) commands in isolated temporary git repositories.",
+        "responsibilities": [
+          "Create temporary directories and initialize git repositories to serve as isolated test environments for each scenario.",
+          "Execute the pre-built CLI binary (`dist/cli/index.js`) with various subcommands and assertions.",
+          "Clean up test artifacts and restore state after each test execution via vitest lifecycle hooks.",
+          "Validate that CLI pipeline steps (scan, sync, etc.) produce expected outputs, error codes, and side effects in a controlled mock setting.",
+          "Adapt test expectations to reflect changes from CLI refactoring, such as removed legacy aliases and updated schemas."
+        ],
+        "outOfScope": [
+          "Production logic of the CLI or its subsystems (scanning, AST extraction, LLM integration, etc.).",
+          "Real network calls or interactions with external LLM providers.",
+          "Unit tests of individual modules or services.",
+          "Integration tests that require a fully initialized ArchSpine repository or multi-language project."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ]
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:39:49.760Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,212 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/build.ts",
+    "contentHash": "2590a4810be42948dba110a527c7c6abc777c2de5766018c41620518c075a3fc",
+    "skeletonHash": "cfc2786a65f610761f653d432e282d0dfbebc9fa1406b4cae2c70efa107b6fa3",
+    "semanticHash": "e32c6aa927b7ea09508ae13a2c1098e97742ebd18fb999119a3985f01eaf8bff",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command adapter for the `build` subcommand. Orchestrates build workflow by invoking the sync pipeline and runtime service.",
+    "responsibilities": [
+      "Parse and validate CLI arguments for the build command and display a UI banner.",
+      "Delegate to runBuildWorkflow and runSyncWorkflow to execute build and sync steps.",
+      "Export a reusable runBuildWorkflow function for invocation by other modules (e.g., try, sync) without CLI coupling."
+    ],
+    "outOfScope": [
+      "Actual compilation or build logic (handled by runtime service and sync pipeline).",
+      "Persistence or database operations.",
+      "Other CLI commands."
+    ],
+    "invariants": [
+      "Must be invoked from CLI entrypoint (though runBuildWorkflow is exportable for reuse).",
+      "Must not contain pipeline or persistence logic (rule: cli-entrypoint-separation)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a thin CLI adapter for the build command, with a reusable workflow function to support programmatic builds from other modules.",
+      "recentChangeIntent": "Refactored to extract runBuildWorkflow as a separate export, enabling reuse across CLI commands and aligning with sync workflow reuse."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "executeBuildCommand",
+        "description": "CLI handler for the build command; parses arguments and triggers the build workflow. Called by the CLI router after command dispatch."
+      },
+      {
+        "symbolName": "runBuildWorkflow",
+        "description": "Executes the build workflow (sync + build) programmatically, accepting rootDir, Config, and RuntimeService. Used by other CLI commands and services to run builds without CLI context."
+      },
+      {
+        "symbolName": "ExecuteBuildCommandOptions",
+        "description": "Configuration interface for executeBuildCommand, defining CLI args, rootDir, config, runtimeService, and a displayUIBanner callback."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command adapter for the `build` subcommand. It orchestrates the build workflow by invoking the sync pipeline and runtime service, while keeping pipeline logic separate.",
+        "responsibilities": [
+          "Parse and validate CLI arguments for the build command and display a UI banner to indicate start.",
+          "Delegate to runBuildWorkflow and runSyncWorkflow to execute the build and sync steps.",
+          "Export a reusable runBuildWorkflow function that can be called by other modules (like `try`, `sync`) without requiring CLI context."
+        ],
+        "outOfScope": [
+          "Actual compilation or build implementation (delegated to the runtime service and sync pipeline).",
+          "Any persistence or database operations.",
+          "Other CLI commands or unrelated functionality."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../services/runtime-service.js'",
+        "symbols": [
+          "RuntimeService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "throwCliUsage"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./sync.js'",
+        "symbols": [
+          "runSyncWorkflow"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeBuildCommand",
+        "kind": "function",
+        "signature": "executeBuildCommand(options: ExecuteBuildCommandOptions)"
+      },
+      {
+        "name": "runBuildWorkflow",
+        "kind": "function",
+        "signature": "runBuildWorkflow(options: {\n  rootDir: string;\n  config: Config;\n  runtimeService: RuntimeService;\n})"
+      },
+      {
+        "name": "ExecuteBuildCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteBuildCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeBuildCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/build.ts#"
+      },
+      {
+        "name": "runBuildWorkflow",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/build.ts#"
+      },
+      {
+        "name": "ExecuteBuildCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/build.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../services/runtime-service.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeService"
+        ]
+      },
+      {
+        "targetPath": "../../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "throwCliUsage"
+        ]
+      },
+      {
+        "targetPath": "./sync.js",
+        "relation": "import",
+        "symbols": [
+          "runSyncWorkflow"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/build.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/displayUIBanner#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/build.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/throwCliUsage#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/build.ts/_file_#",
+        "targetSymbol": "src/cli/commands/sync.ts/runSyncWorkflow#",
+        "targetPath": "src/cli/commands/sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:53:08.700Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 53,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

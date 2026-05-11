@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/utils",
+  "role": "Core utilities and infrastructure modules for ArchSpine CLI, covering CLI presentation, filesystem operations, user prompts, git hook management, locking, path normalization, and agent instruction synchronization.",
+  "responsibility": "Handles CLI banner rendering, interactive confirmations, atomic file writes, git hook lifecycle (install/remove), file-based locking for concurrency, POSIX path normalization, and synchronizing ArchSpine-managed blocks (agent instructions, gitignore, etc.) into project files.",
+  "children": [
+    {
+      "filePath": "src/utils/agent-instructions.sync.ts",
+      "role": "File sync orchestrator for ArchSpine-managed project artifacts (agent instructions, gitignore, scripts, blocks).",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/utils/agent-instructions.templates.ts",
+      "role": "Constants and template definitions module for ArchSpine's agent briefing blocks, MCP tools documentation, health snapshot content, and managed ignore-file entries (.gitignore, .spineignore, .gitattributes, .ignore).",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/utils/agent-instructions.ts",
+      "role": "Barrel module aggregating agent instruction utility exports from two submodules.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/utils/banner.ts",
+      "role": "CLI presentation module that renders colored ASCII art banners for the ArchSpine command-line interface.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/utils/confirm.ts",
+      "role": "CLI utility providing interactive user confirmation prompts for terminal-based workflows.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/utils/footprint.ts",
+      "role": "Pure utility module for computing deterministic content-addressed hashes (structural and semantic footprints) of file skeletons and semantic summaries.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/utils/fs.ts",
+      "role": "Infrastructure utility class for atomic filesystem operations. Provides safe file write and file copy operations with temporary file staging and directory creation.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/utils/git-hook.ts",
+      "role": "Git hook lifecycle manager responsible for installing, updating, and removing the ArchSpine pre-commit hook in a Git repository.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/utils/lock.ts",
+      "role": "File-based distributed mutex utility ensuring exclusive access to the ArchSpine runtime directory across concurrent processes.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/utils/repo-path.ts",
+      "role": "Internal path normalization utility that converts arbitrary OS-specific paths to a canonical POSIX-separator, repo-relative format.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:13:22.608Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

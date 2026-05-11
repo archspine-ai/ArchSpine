@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integration/boundaries/help-boundary-contract.test.ts",
+    "contentHash": "e67dd34cb261caef5262c3fcb594730733653b876797db2955fc03c6de72d7b9",
+    "skeletonHash": "c711e38e7e362007180a1aa023fe2d4c436baca0aac0a6d2c18ed4cf8bd62f23",
+    "semanticHash": "e923183679304cce149c7baaea01e9bdcc59349739dd30a36829da72ce15e596",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/integration/boundaries"
+  },
+  "semantic": {
+    "role": "Automated test suite that verifies the help text contract for CLI commands, ensuring that `spine sync` help directs users to `spine build` for baseline rebuilds and that general help contains expected usage line.",
+    "responsibilities": [
+      "Verifies that printCommandHelp('sync') outputs the incremental sync usage line and directs users to 'spine build' for a full baseline rebuild.",
+      "Verifies that printCommandHelp('sync') does not contain legacy rebuild options.",
+      "Verifies that printGeneralHelp() outputs the expected usage line for the spine CLI."
+    ],
+    "outOfScope": [
+      "Production logic. This module does not implement any CLI functionality or help generation; it only validates the output of the help functions."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts to be picked up by test runner."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Enforces the public contract of CLI help output, ensuring that help strings remain accurate after refactors.",
+      "recentChangeIntent": "Adapt help boundary contract test to reflect removal of legacy CLI aliases and to point sync help to build for baseline."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Automated test suite that verifies the help text contract for CLI commands, ensuring that `spine sync` help directs users to `spine build` for baseline rebuilds and that general help contains expected usage line.",
+        "responsibilities": [
+          "Verifies that `printCommandHelp('sync')` outputs the incremental sync usage line and directs users to `spine build` for a full baseline rebuild.",
+          "Verifies that `printCommandHelp('sync')` does not contain legacy rebuild options.",
+          "Verifies that `printGeneralHelp()` outputs the expected usage line for the spine CLI."
+        ],
+        "outOfScope": [
+          "Production logic. This module does not implement any CLI functionality or help generation; it only validates the output of the help functions."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/cli/help.js'",
+        "symbols": [
+          "printCommandHelp",
+          "printGeneralHelp"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/cli/help.ts",
+        "relation": "import",
+        "symbols": [
+          "printCommandHelp",
+          "printGeneralHelp"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/integration/boundaries/help-boundary-contract.test.ts/_file_#",
+        "targetSymbol": "src/cli/help.ts/printCommandHelp#",
+        "targetPath": "src/cli/help.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/boundaries/help-boundary-contract.test.ts/_file_#",
+        "targetSymbol": "src/cli/help.ts/printGeneralHelp#",
+        "targetPath": "src/cli/help.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:06:59.223Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/config/precommit.ts",
+    "contentHash": "8bc02a17858bd9e9c6f1997c4f5523987503a520f1f8c8aacede07388a0f7eec",
+    "skeletonHash": "a9eea3b569ed92f4f8234d3a0b742a1a43676f1046724aa63efef0227d88db5b",
+    "semanticHash": "82a1f6d0cfd7e143807aade49d506e18a6bd1ac0706367ec148800e633ea30c7",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/config"
+  },
+  "semantic": {
+    "role": "Low-level configuration resolver for pre-commit hook enablement within the Infra Config layer. It centralizes the decision logic between environment variable overrides and explicit configuration, providing a structured resolution result to consumers.",
+    "responsibilities": [
+      "Check the SPINE_PRE_COMMIT environment variable first to determine pre-commit enablement, giving it highest priority.",
+      "Fall back to the explicit boolean parameter when the environment variable is not set, enabling or disabling pre-commit accordingly.",
+      "Return a BooleanSettingResolution object that clearly indicates the resolved value and its source (env var or explicit parameter).",
+      "Abstract away the environment variable name and parsing logic, keeping the implementation details hidden from callers."
+    ],
+    "outOfScope": [
+      "Loading or writing configuration files to disk.",
+      "Validating configuration schemas or types.",
+      "Handling any configuration settings other than pre-commit enablement.",
+      "Any UI, CLI interaction, or user-facing prompts.",
+      "Direct interaction with the database or persistence layer."
+    ],
+    "invariants": [
+      "Environment variable (SPINE_PRE_COMMIT) override always takes precedence over the explicit boolean argument.",
+      "The module uses the PRE_COMMIT_ENV_VAR constant from env.js to avoid hardcoding the variable name.",
+      "No side effects: the function only reads process.env and returns a value; it does not mutate state or perform I/O beyond environment variable access."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Part of the Infra Config layer that isolates environment-specific pre-commit configuration logic into a dedicated module, keeping the decision policy clear and testable.",
+      "recentChangeIntent": "Refined or added the resolvePreCommitSetting function to support structured resolution output with source tracking, aligning with enhanced configuration diagnostics in ArchSpine v1.0.0."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "resolvePreCommitSetting",
+        "description": "Determines whether pre-commit hooks should be enabled by checking the SPINE_PRE_COMMIT environment variable first, falling back to the provided boolean parameter. Returns a BooleanSettingResolution object with value and source fields."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Low-level configuration resolver for pre-commit hook enablement within the Infra Config layer. It centralizes the decision logic between environment variable overrides and explicit configuration, providing a structured resolution result to consumers.",
+        "responsibilities": [
+          "Check the SPINE_PRE_COMMIT environment variable first to determine pre-commit enablement, giving it highest priority.",
+          "Fall back to the explicit boolean parameter when the environment variable is not set, enabling or disabling pre-commit accordingly.",
+          "Return a BooleanSettingResolution object that clearly indicates the resolved value and its source (env var or explicit parameter).",
+          "Abstract away the environment variable name and parsing logic, keeping the implementation details hidden from callers."
+        ],
+        "outOfScope": [
+          "Loading or writing configuration files to disk.",
+          "Validating configuration schemas or types.",
+          "Handling any configuration settings other than pre-commit enablement.",
+          "Any UI, CLI interaction, or user-facing prompts.",
+          "Direct interaction with the database or persistence layer."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./types.js'",
+        "symbols": [
+          "BooleanSettingResolution"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./env.js'",
+        "symbols": [
+          "PRE_COMMIT_ENV_VAR",
+          "parseBooleanEnv"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "resolvePreCommitSetting",
+        "kind": "function",
+        "signature": "resolvePreCommitSetting(preCommit: boolean | undefined)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "resolvePreCommitSetting",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/config/precommit.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "BooleanSettingResolution"
+        ]
+      },
+      {
+        "targetPath": "./env.js",
+        "relation": "import",
+        "symbols": [
+          "PRE_COMMIT_ENV_VAR",
+          "parseBooleanEnv"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/config/precommit.ts/_file_#",
+        "targetSymbol": "src/infra/config/env.ts/parseBooleanEnv#",
+        "targetPath": "src/infra/config/env.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:57:09.521Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

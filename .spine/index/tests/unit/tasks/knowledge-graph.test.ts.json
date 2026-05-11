@@ -1,0 +1,222 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/tasks/knowledge-graph.test.ts",
+    "contentHash": "52d5c47d5558d3aebc5f093df92130f0489200b4bf84790e523faec2217107f3",
+    "skeletonHash": "a3793b64b82ffd28b9eee73d6734e5a6d596e01ca329b1e86ad54bb7aedc43ff",
+    "semanticHash": "74edb0b027e39bfaaad693df0845bd08274f00aff71b21500f77d1f9597d5d7d",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/tasks"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for the KnowledgeGraphTask module, validating knowledge graph construction and persistence from dependency data.",
+    "responsibilities": [
+      "Validates that KnowledgeGraphTask builds a knowledge graph from a list of file dependencies",
+      "Verifies that the constructed graph is persisted to disk via OutputManager with correct schema versioning",
+      "Tests file system setup and cleanup patterns for isolated test environments",
+      "Ensures graph nodes and edges correctly represent module dependency relationships"
+    ],
+    "outOfScope": [
+      "Does not define or export any production API surface",
+      "Does not implement knowledge graph logic itself",
+      "Does not handle production configuration or runtime execution",
+      "Does not perform integration or end-to-end tests against real LLM providers"
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (rule: test-file-suffix)",
+      "All tests use vitest framework (describe/it/expect)",
+      "Temporary directories are created and cleaned up per test lifecycle"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "This test file exists solely to validate the KnowledgeGraphTask's ability to construct and persist a dependency knowledge graph to disk. It follows isolated test patterns with temp directories and mocks.",
+      "recentChangeIntent": "The git intent references removal of legacy CLI aliases, docs rebuild, and schema fixes—none of which directly alter this test file's contract or purpose."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for the KnowledgeGraphTask module, validating knowledge graph construction and persistence from dependency data.",
+        "responsibilities": [
+          "Validates that KnowledgeGraphTask builds a knowledge graph from a list of file dependencies",
+          "Verifies that the constructed graph is persisted to disk via OutputManager with correct schema versioning",
+          "Tests file system setup and cleanup patterns for isolated test environments",
+          "Ensures graph nodes and edges correctly represent module dependency relationships"
+        ],
+        "outOfScope": [
+          "Does not define or export any production API surface",
+          "Does not implement knowledge graph logic itself",
+          "Does not handle production configuration or runtime execution",
+          "Does not perform integration or end-to-end tests against real LLM providers"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/tasks/knowledge-graph.js'",
+        "symbols": [
+          "KnowledgeGraphTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/output.js'",
+        "symbols": [
+          "OutputManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/tasks/knowledge-graph.js",
+        "relation": "import",
+        "symbols": [
+          "KnowledgeGraphTask"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/output.js",
+        "relation": "import",
+        "symbols": [
+          "OutputManager"
+        ]
+      },
+      {
+        "targetPath": "../../../src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION"
+        ]
+      },
+      {
+        "targetPath": "../../../src/core/task.js",
+        "relation": "import-type",
+        "symbols": [
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "../../../src/core/task-types.js",
+        "relation": "import-type",
+        "symbols": [
+          "CommitStageOutput"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/tasks/knowledge-graph.test.ts/_file_#",
+        "targetSymbol": "src/infra/output.ts/OutputManager#",
+        "targetPath": "src/infra/output.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/tasks/knowledge-graph.test.ts/_file_#",
+        "targetSymbol": "src/tasks/knowledge-graph.ts/KnowledgeGraphTask#",
+        "targetPath": "src/tasks/knowledge-graph.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/tasks/knowledge-graph.test.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/updateFileStatusWithDocs#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:11:22.229Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,223 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/utils/lock.ts",
+    "contentHash": "02fd415aaa7feb158cc923ff786af8fe0d04d96964d5d774af0c1b25d0596a89",
+    "skeletonHash": "f2d44976b68a40de5617ea527f444056db47a95757b88e4e182c10cbf3ea315b",
+    "semanticHash": "15cc536f158bcbac95eec94231ba7bdad888c046ad0eb7434d4fb4a765f4adab",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/utils"
+  },
+  "semantic": {
+    "role": "File-based distributed mutex utility ensuring exclusive access to the ArchSpine runtime directory across concurrent processes.",
+    "responsibilities": [
+      "Manage file-based lock files under the .spine directory to prevent concurrent access conflicts.",
+      "Acquire locks with retry logic (MAX_LOCK_RETRIES) and token generation using randomUUID.",
+      "Release locks and enforce cleanup on graceful shutdown, process exit, and uncaught exceptions via process event handlers.",
+      "Serialize and deserialize lock payloads (token + timestamp) for persistence and inspection.",
+      "Provide parse/serialize utility functions for external consumers to read or write lock files."
+    ],
+    "outOfScope": [
+      "Distributed locks across network boundaries.",
+      "Deadlock detection beyond simple retry count.",
+      "Semantic interpretation of lock payload content beyond token and timestamp.",
+      "Lock migration or multi-directory coordination."
+    ],
+    "invariants": [
+      "At most one process can hold the lock for a given .spine directory at any moment.",
+      "Lock files are always cleaned up when a process releases the lock or exits.",
+      "A lock token is a UUID unique per acquisition attempt."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a lightweight, file-based mutual exclusion primitive for the ArchSpine CLI and services that require exclusive access to shared state (e.g., manifest updates, runtime checkpoints).",
+      "recentChangeIntent": "No specific recent changes detected beyond general maintenance; the lock module remains stable as a core infrastructure utility."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "LockManager",
+        "description": "Class that acquires and releases file-based locks on the .spine directory. Used by any ArchSpine component that needs exclusive access to the runtime environment."
+      },
+      {
+        "symbolName": "parseLockPayload",
+        "description": "Parses a JSON string into a RuntimeLockPayload object. Enables external code to inspect the content of an existing lock file."
+      },
+      {
+        "symbolName": "serializeLockPayload",
+        "description": "Serializes a RuntimeLockPayload object into a JSON string. Used to write lock files with the correct payload structure."
+      },
+      {
+        "symbolName": "RuntimeLockPayload",
+        "description": "Interface defining the shape of a lock payload (token and timestamp). Implemented by lock files and used by consumers creating or validating locks."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "File-based distributed mutex utility ensuring exclusive access to the ArchSpine runtime directory across concurrent processes.",
+        "responsibilities": [
+          "Manage file-based lock files under the .spine directory to prevent concurrent access conflicts.",
+          "Acquire locks with retry logic (MAX_LOCK_RETRIES) and token generation using randomUUID.",
+          "Release locks and enforce cleanup on graceful shutdown, process exit, and uncaught exceptions via process event handlers.",
+          "Serialize and deserialize lock payloads (token + timestamp) for persistence and inspection.",
+          "Provide parse/serialize utility functions for external consumers to read or write lock files."
+        ],
+        "outOfScope": [
+          "Distributed locks across network boundaries.",
+          "Deadlock detection beyond simple retry count.",
+          "Semantic interpretation of lock payload content beyond token and timestamp.",
+          "Lock migration or multi-directory coordination."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'crypto'",
+        "symbols": [
+          "randomUUID"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "parseLockPayload",
+        "kind": "function",
+        "signature": "parseLockPayload(content: string)"
+      },
+      {
+        "name": "serializeLockPayload",
+        "kind": "function",
+        "signature": "serializeLockPayload(payload: RuntimeLockPayload)"
+      },
+      {
+        "name": "LockManager",
+        "kind": "class",
+        "signature": "class LockManager"
+      },
+      {
+        "name": "RuntimeLockPayload",
+        "kind": "interface",
+        "signature": "interface RuntimeLockPayload"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "parseLockPayload",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/lock.ts#"
+      },
+      {
+        "name": "serializeLockPayload",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/lock.ts#"
+      },
+      {
+        "name": "LockManager",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/utils/lock.ts#"
+      },
+      {
+        "name": "RuntimeLockPayload",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/utils/lock.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 4,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/core/errors.ts",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/integration/system/error-system.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/utils/lock.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/ArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:06:14.592Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 82,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

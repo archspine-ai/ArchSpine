@@ -1,0 +1,223 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/assets/templates/prompts/blocks.ts",
+    "contentHash": "dea9b628744261e839aa9294bb8aa8d2dbee697a48d43b60d3686e189ca457fc",
+    "skeletonHash": "eb0c10de757af39f1c3377ef6c89047a31f1ba1ab13cb17ce67ed28d523d4f98",
+    "semanticHash": "7ac2316b5c9658a696dcc1ccd45ee24f2d114c242bd808b9de6e58e47538b8ef",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/assets/templates/prompts"
+  },
+  "semantic": {
+    "role": "Prompt Template Rendering Utility — generates standardized Markdown text blocks for constructing AI agent prompts and structured documents within the ArchSpine mirror system.",
+    "responsibilities": [
+      "Generate a formatted identity block that declares the role and target for the user of the generated document.",
+      "Generate a formatted instructions block enumerating critical instructions as a numbered list.",
+      "Generate a context block wrapping input data in an XML-style tag derived from the title.",
+      "Generate an environmental context block describing the current Git branch and status, or an empty string if both are absent.",
+      "Generate a rule violation check block that wraps rule data in a structured tag, or empty if no data.",
+      "Generate a Git intent block that wraps a commit message in a structured tag, or empty if no intent.",
+      "Generate a JSON schema block that wraps the schema in a Markdown code fence tagged with ---JSON---.",
+      "Generate a source content block wrapping content in a labeled XML-style tag, or empty if no content."
+    ],
+    "outOfScope": [
+      "File I/O and persistence",
+      "Network communication or HTTP handling",
+      "State management or caching",
+      "Argument validation beyond empty-string checks",
+      "Any form of conditional logic beyond simple falsiness checks"
+    ],
+    "invariants": [
+      "Functions renderContextBlock, renderEnvironmentalContextBlock, renderRuleViolationCheckBlock, renderGitIntentBlock, and renderSourceContentBlock return an empty string when their main data parameter is falsy.",
+      "renderInstructionsBlock always prepends 'CRITICAL INSTRUCTIONS:\\n' before the enumerated list.",
+      "renderJSONSchemaBlock always returns a string with the exact delimiter line '---JSON---'.",
+      "The output of each function is a plain string; no formatting beyond Markdown and templating."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a modular set of pure rendering functions that compose standardized text blocks for AI agent prompts and structured document generation.",
+      "recentChangeIntent": "0c6bd73 ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era. This module supports the governance layer by providing reusable formatting blocks for generating prompt summaries and structured outputs."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "renderIdentityBlock",
+        "description": "Returns a Markdown string that introduces the role and target for the generated document. Used at the beginning of prompt documents to define the agent's persona."
+      },
+      {
+        "symbolName": "renderInstructionsBlock",
+        "description": "Returns a numbered list of critical instructions prefixed with 'CRITICAL INSTRUCTIONS:'. Consumed by modules that assemble multi-step instruction blocks for agents."
+      },
+      {
+        "symbolName": "renderContextBlock",
+        "description": "Returns a heading and an XML-style block tag containing context data, or an empty string if no data. Used to wrap arbitrary input data for analysis."
+      },
+      {
+        "symbolName": "renderEnvironmentalContextBlock",
+        "description": "Returns a heading and a tag block with Git branch and status information, or empty if both parameters are empty. Called to inject repository state into prompts."
+      },
+      {
+        "symbolName": "renderRuleViolationCheckBlock",
+        "description": "Returns a heading and a block tag containing rule data, or empty if no data. Used to include architectural rule content in agent prompts."
+      },
+      {
+        "symbolName": "renderGitIntentBlock",
+        "description": "Returns a heading and a block tag containing the most recent Git commit message, or empty if none. Used to communicate historical intent to analysis agents."
+      },
+      {
+        "symbolName": "renderJSONSchemaBlock",
+        "description": "Returns the required JSON output schema wrapped in Markdown code fence with the '---JSON---' delimiter. Used to enforce structured output format in agent responses."
+      },
+      {
+        "symbolName": "renderSourceContentBlock",
+        "description": "Returns a heading and a block tag containing source code content, or empty if no content. Used to embed file contents into prompts for analysis."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Prompt Template Rendering Utility — generates standardized Markdown text blocks for constructing AI agent prompts and structured documents within the ArchSpine mirror system.",
+        "responsibilities": [
+          "Generate a formatted identity block that declares the role and target for the user of the generated document.",
+          "Generate a formatted instructions block enumerating critical instructions as a numbered list.",
+          "Generate a context block wrapping input data in an XML-style tag derived from the title.",
+          "Generate an environmental context block describing the current Git branch and status, or an empty string if both are absent.",
+          "Generate a rule violation check block that wraps rule data in a structured tag, or empty if no data.",
+          "Generate a Git intent block that wraps a commit message in a structured tag, or empty if no intent.",
+          "Generate a JSON schema block that wraps the schema in a Markdown code fence tagged with ---JSON---.",
+          "Generate a source content block wrapping content in a labeled XML-style tag, or empty if no content."
+        ],
+        "outOfScope": [
+          "File I/O and persistence",
+          "Network communication or HTTP handling",
+          "State management or caching",
+          "Argument validation beyond empty-string checks",
+          "Any form of conditional logic beyond simple falsiness checks"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "renderIdentityBlock",
+        "kind": "function",
+        "signature": "renderIdentityBlock(role: string, target: string)"
+      },
+      {
+        "name": "renderInstructionsBlock",
+        "kind": "function",
+        "signature": "renderInstructionsBlock(instructions: string[])"
+      },
+      {
+        "name": "renderContextBlock",
+        "kind": "function",
+        "signature": "renderContextBlock(title: string, contextData: string)"
+      },
+      {
+        "name": "renderEnvironmentalContextBlock",
+        "kind": "function",
+        "signature": "renderEnvironmentalContextBlock(branch: string, status: string)"
+      },
+      {
+        "name": "renderRuleViolationCheckBlock",
+        "kind": "function",
+        "signature": "renderRuleViolationCheckBlock(ruleData: string)"
+      },
+      {
+        "name": "renderGitIntentBlock",
+        "kind": "function",
+        "signature": "renderGitIntentBlock(gitIntent: string)"
+      },
+      {
+        "name": "renderJSONSchemaBlock",
+        "kind": "function",
+        "signature": "renderJSONSchemaBlock(schema: string)"
+      },
+      {
+        "name": "renderSourceContentBlock",
+        "kind": "function",
+        "signature": "renderSourceContentBlock(label: string, content: string)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "renderIdentityBlock",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/assets/templates/prompts/blocks.ts#"
+      },
+      {
+        "name": "renderInstructionsBlock",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/assets/templates/prompts/blocks.ts#"
+      },
+      {
+        "name": "renderContextBlock",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/assets/templates/prompts/blocks.ts#"
+      },
+      {
+        "name": "renderEnvironmentalContextBlock",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/assets/templates/prompts/blocks.ts#"
+      },
+      {
+        "name": "renderRuleViolationCheckBlock",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/assets/templates/prompts/blocks.ts#"
+      },
+      {
+        "name": "renderGitIntentBlock",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/assets/templates/prompts/blocks.ts#"
+      },
+      {
+        "name": "renderJSONSchemaBlock",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/assets/templates/prompts/blocks.ts#"
+      },
+      {
+        "name": "renderSourceContentBlock",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/assets/templates/prompts/blocks.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 8,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:52:06.950Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 47,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

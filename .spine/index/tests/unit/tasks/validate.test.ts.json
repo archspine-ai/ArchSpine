@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/tasks/validate.test.ts",
+    "contentHash": "a6daca839c861f5cd3a21d3150f8b804188e34c71c678990be403ddbc63a7376",
+    "skeletonHash": "394c8f73514d8eb1ffb160d200dcb5fa3dfd7c989964d613360747884cbc0391",
+    "semanticHash": "1744c0fe8fb7fb1de8ad885bf6a11937c63767150bb2972a70ba73be1b613b09",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/tasks"
+  },
+  "semantic": {
+    "role": "Unit test suite for the `normalizeRuleViolations` function from the validate task module.",
+    "responsibilities": [
+      "Test normalization of valid violation objects with expected id, severity, and reason fields.",
+      "Test normalization of an empty array of violations.",
+      "Test normalization when input is null, expecting an empty array.",
+      "Test normalization when input is undefined, expecting an empty array.",
+      "Test normalization when input is a string or number (non-array), expecting an empty array."
+    ],
+    "outOfScope": [
+      "Integration or end-to-end testing of the validate pipeline.",
+      "Testing other functions from the validate module (e.g., validateRules, checkViolations).",
+      "Production logic or runtime execution."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a dedicated unit test suite to ensure the normalizeRuleViolations function handles edge cases robustly, maintaining data integrity in the validation pipeline.",
+      "recentChangeIntent": "Added as part of a broader refactor that removed legacy CLI aliases, rebuilt documentation, fixed schema, and updated tests to align with the new validate module contract."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Unit test suite for the `normalizeRuleViolations` function from the validate task module.",
+        "responsibilities": [
+          "Tests normalization of valid violation objects with id, severity, and reason fields.",
+          "Tests normalization of an empty array of violations.",
+          "Tests normalization when input is null, expecting an empty array.",
+          "Tests normalization when input is undefined, expecting an empty array.",
+          "Tests normalization when input is a string or number (non-array), expecting an empty array."
+        ],
+        "outOfScope": [
+          "Integration or end-to-end testing of the validate pipeline.",
+          "Testing other functions from the validate module.",
+          "Production logic or runtime execution."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/tasks/validate.js'",
+        "symbols": [
+          "normalizeRuleViolations"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/tasks/validate.js",
+        "relation": "import",
+        "symbols": [
+          "normalizeRuleViolations"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/tasks/validate.test.ts/_file_#",
+        "targetSymbol": "src/tasks/validate.ts/normalizeRuleViolations#",
+        "targetPath": "src/tasks/validate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:11:30.583Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

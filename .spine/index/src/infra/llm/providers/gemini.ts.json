@@ -1,0 +1,133 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/llm/providers/gemini.ts",
+    "contentHash": "f0fcf9508600769d786e5c54888b3f9850c9b7f32e9dbe0e65ebad4d96dcb49e",
+    "skeletonHash": "0c1eca1bb59ba539fce7305f68f7cab9500969e4e585122b13a453e84499f2db",
+    "semanticHash": "8f2d3e3fda4c98e519926e5cc0cd1a539122e69412f3288026c67fbfc22eae8a",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/llm/providers"
+  },
+  "semantic": {
+    "role": "Infrastructure LLM transport provider implementing the LLMTransport interface for Google Gemini models. A thin API caller that wraps the @google/generative-ai SDK.",
+    "responsibilities": [
+      "Initializes the GoogleGenerativeAI client using the API key from ProviderConfig.",
+      "Sends text generation requests to the specified Gemini model via the SDK's generateContent method.",
+      "Returns generated text and usage information (token counts) to the caller.",
+      "Supports configurable request timeout."
+    ],
+    "outOfScope": [
+      "Prompt generation or prompt engineering — this module takes complete prompts as input.",
+      "Response parsing beyond extracting text and basic usage metadata.",
+      "LLM orchestration, retry logic, or fallback between providers.",
+      "Configuration loading or validation — config is injected via ProviderConfig."
+    ],
+    "invariants": [
+      "Must implement the LLMTransport interface (contract with base.ts).",
+      "Must not modify or interpret the prompt content — it is a pass-through API caller.",
+      "Uses only the @google/generative-ai SDK for Gemini interactions."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a concrete Gemini transport implementation in the LLM provider layer, maintaining a clean separation between SDK calling and higher-level LLM orchestration.",
+      "recentChangeIntent": "The recent commit was a general release gate fix and synchronization of accumulated source changes; there is no evidence of specific semantic changes to this file."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "GeminiClient",
+        "description": "Implements LLMTransport to send content generation requests to the Gemini API. Consumed by LLM orchestration layers that require a standard transport interface for Gemini."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure LLM transport provider implementing the LLMTransport interface for Google Gemini models. A thin API caller that wraps the @google/generative-ai SDK.",
+        "responsibilities": [
+          "Initializes the GoogleGenerativeAI client using the API key from ProviderConfig.",
+          "Sends text generation requests to the specified Gemini model via the SDK's generateContent method.",
+          "Returns generated text and usage information (token counts) to the caller.",
+          "Supports configurable request timeout."
+        ],
+        "outOfScope": [
+          "Prompt generation or prompt engineering — this module takes complete prompts as input.",
+          "Response parsing beyond extracting text and basic usage metadata.",
+          "LLM orchestration, retry logic, or fallback between providers.",
+          "Configuration loading or validation — config is injected via ProviderConfig."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'@google/generative-ai'",
+        "symbols": [
+          "GoogleGenerativeAI"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "GeminiClient",
+        "kind": "class",
+        "signature": "class GeminiClient"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "GeminiClient",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/llm/providers/gemini.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "@google/generative-ai",
+        "relation": "import",
+        "symbols": [
+          "GoogleGenerativeAI"
+        ]
+      },
+      {
+        "targetPath": "../base.js",
+        "relation": "import",
+        "symbols": [
+          "LLMTransport",
+          "ProviderConfig",
+          "UsageInfo"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:58:30.745Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

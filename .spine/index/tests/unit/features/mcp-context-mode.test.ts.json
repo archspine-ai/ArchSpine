@@ -1,0 +1,245 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/features/mcp-context-mode.test.ts",
+    "contentHash": "a9cba55f3c830fb971266e9b03159701a31695391394de566890280c38d74239",
+    "skeletonHash": "9e183d647cef871c0491f128a3a694c83fab6bca38eee1e91b5035fe3b93a2e0",
+    "semanticHash": "6db18353624481b61c035ab77ee1bc879e1bc259ddf17e2bfc158b2359d8649b",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/features"
+  },
+  "semantic": {
+    "role": "Vitest test suite for MCP context mode behavior, validating the interaction of MCPContextGate, SpineResources, and SpineTools under different context modes.",
+    "responsibilities": [
+      "Sets up temporary file system structures mimicking a .spine repository with mock index data.",
+      "Instantiates and configures MCP components (context gate, resources, tools) for each test scenario.",
+      "Runs tests to verify correct behavior of resource fetching and tool availability based on context mode.",
+      "Cleans up temporary directories after each test."
+    ],
+    "outOfScope": [
+      "This file is a development-time test artifact and is not part of the runtime library.",
+      "It does not define any interfaces, services, or reusable modules consumed by other parts of the system."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts (enforced by project rule `test-file-suffix`).",
+      "The file uses Vitest as the test framework."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Verify that MCP context mode switching (strict/permissive) correctly affects resource and tool availability, ensuring the system behaves according to the context policy.",
+      "recentChangeIntent": "The file was modified as part of ongoing work on MCP components. The exact intent is unclear from the sparse commit message ('2'), but it likely reflects updates to how context modes are handled or tested."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite for MCP context mode behavior, validating the interaction of MCPContextGate, SpineResources, and SpineTools under different context modes.",
+        "responsibilities": [
+          "Sets up temporary file system structures mimicking a .spine repository with mock index data.",
+          "Instantiates and configures MCP components (context gate, resources, tools) for each test scenario.",
+          "Runs tests to verify correct behavior of resource fetching and tool availability based on context mode.",
+          "Cleans up temporary directories after each test."
+        ],
+        "outOfScope": [
+          "This file is a development-time test artifact and is not part of the runtime library.",
+          "It does not define any interfaces, services, or reusable modules consumed by other parts of the system."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/mcp/resources.js'",
+        "symbols": [
+          "SpineResources"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/mcp/tools.js'",
+        "symbols": [
+          "SpineTools"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/mcp/context.js'",
+        "symbols": [
+          "MCPContextGate"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "GENERATOR_VERSION"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 11,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/mcp/resources.js",
+        "relation": "import",
+        "symbols": [
+          "SpineResources"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/mcp/tools.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTools"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/mcp/context.js",
+        "relation": "import",
+        "symbols": [
+          "MCPContextGate"
+        ]
+      },
+      {
+        "targetPath": "../../../src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "GENERATOR_VERSION"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/features/mcp-context-mode.test.ts/_file_#",
+        "targetSymbol": "src/infra/mcp/context.ts/MCPContextGate#",
+        "targetPath": "src/infra/mcp/context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/features/mcp-context-mode.test.ts/_file_#",
+        "targetSymbol": "src/infra/mcp/resources.ts/SpineResources#",
+        "targetPath": "src/infra/mcp/resources.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/features/mcp-context-mode.test.ts/_file_#",
+        "targetSymbol": "src/infra/mcp/tools.ts/SpineTools#",
+        "targetPath": "src/infra/mcp/tools.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:09:49.220Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

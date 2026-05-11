@@ -1,0 +1,391 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integration/cli/cli.test.ts",
+    "contentHash": "faf9a6b861c904a61be33b7b227d47bbbbcb50ca62f671fcd84c43151f280823",
+    "skeletonHash": "99924dcdc079e651dda39014299906669db530c54874a61b3b13f4611ce1d320",
+    "semanticHash": "84f631b10862404d49172cdd5ede1f8efddf9cee9eb2fb5394430de7de96f789",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/integration/cli"
+  },
+  "semantic": {
+    "role": "E2E integration test suite for the CLI sync workflow and related operations, validating the full lifecycle including initialization, sync, check, fix, usage reporting, and LLM interaction with a custom mock client.",
+    "responsibilities": [
+      "Test the full lifecycle of the sync workflow runSyncWorkflow, including setup, execution, and teardown.",
+      "Validate that runCheck, runFix, and runUsageReport work correctly in an integrated E2E environment.",
+      "Provide a custom mock LLM client (E2EMockClient) that simulates an LLM for reproducible tests.",
+      "Exercise real filesystem operations (temp directory creation, file writes, git commands) to test CLI behavior against a realistic project structure.",
+      "Ensure that the sync service, runtime service, and manifest modules collaborate correctly during an E2E run."
+    ],
+    "outOfScope": [
+      "Production business logic or LLM model serving.",
+      "Unit-level testing of individual functions or modules.",
+      "Performance or security testing.",
+      "Documentation or schema validation."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts (rule test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "This test file ensures that the CLI sync workflow integrates correctly with internal services and engines, serving as a safety net for refactoring and new feature development.",
+      "recentChangeIntent": "The recent commit 'refactor: remove legacy CLI aliases, rebuild docs, fix schema and tests' aligns with this file's purpose of validating the sync workflow after such changes; no direct modifications are implied by the AST."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "E2E integration test suite for the CLI sync workflow and related operations, validating the full lifecycle including initialization, sync, check, fix, usage reporting, and LLM interaction with a custom mock client.",
+        "responsibilities": [
+          "Test the full lifecycle of the sync workflow runSyncWorkflow, including setup, execution, and teardown.",
+          "Validate that runCheck, runFix, and runUsageReport work correctly in an integrated E2E environment.",
+          "Provide a custom mock LLM client (E2EMockClient) that simulates an LLM for reproducible tests.",
+          "Exercise real filesystem operations (temp directory creation, file writes, git commands) to test CLI behavior against a realistic project structure.",
+          "Ensure that the sync service, runtime service, and manifest modules collaborate correctly during an E2E run."
+        ],
+        "outOfScope": [
+          "Production business logic or LLM model serving.",
+          "Unit-level testing of individual functions or modules.",
+          "Performance or security testing.",
+          "Documentation or schema validation."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "beforeEach",
+          "afterEach",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/engines/check.js'",
+        "symbols": [
+          "runCheck"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/engines/fix.js'",
+        "symbols": [
+          "runFix"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/engines/usage.js'",
+        "symbols": [
+          "runUsageReport"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/services/sync-service.js'",
+        "symbols": [
+          "SyncService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/llm/base.js'",
+        "symbols": [
+          "LLMClient"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/llm/providers/mock.js'",
+        "symbols": [
+          "MockClient"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/services/runtime-service.js'",
+        "symbols": [
+          "RuntimeService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/cli/commands/sync.js'",
+        "symbols": [
+          "runSyncWorkflow"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'prompts'",
+        "symbols": [
+          "prompts"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 19,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/engines/check.js",
+        "relation": "import",
+        "symbols": [
+          "runCheck"
+        ]
+      },
+      {
+        "targetPath": "../../../src/engines/fix.js",
+        "relation": "import",
+        "symbols": [
+          "runFix"
+        ]
+      },
+      {
+        "targetPath": "../../../src/engines/usage.js",
+        "relation": "import",
+        "symbols": [
+          "runUsageReport"
+        ]
+      },
+      {
+        "targetPath": "../../../src/services/sync-service.js",
+        "relation": "import",
+        "symbols": [
+          "SyncService"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/llm/base.js",
+        "relation": "import",
+        "symbols": [
+          "LLMClient"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/llm/providers/mock.js",
+        "relation": "import",
+        "symbols": [
+          "MockClient"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../../../src/services/runtime-service.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeService"
+        ]
+      },
+      {
+        "targetPath": "../../../src/cli/commands/sync.js",
+        "relation": "import",
+        "symbols": [
+          "runSyncWorkflow"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/integration/cli/cli.test.ts/_file_#",
+        "targetSymbol": "src/cli/commands/sync.ts/runSyncWorkflow#",
+        "targetPath": "src/cli/commands/sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/cli/cli.test.ts/_file_#",
+        "targetSymbol": "src/engines/check.ts/runCheck#",
+        "targetPath": "src/engines/check.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/cli/cli.test.ts/_file_#",
+        "targetSymbol": "src/services/check-service.ts/runCheck#",
+        "targetPath": "src/services/check-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/cli/cli.test.ts/_file_#",
+        "targetSymbol": "src/engines/fix.ts/runFix#",
+        "targetPath": "src/engines/fix.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/cli/cli.test.ts/_file_#",
+        "targetSymbol": "src/services/fix-service.ts/runFix#",
+        "targetPath": "src/services/fix-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/cli/cli.test.ts/_file_#",
+        "targetSymbol": "src/engines/usage.ts/runUsageReport#",
+        "targetPath": "src/engines/usage.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/cli/cli.test.ts/_file_#",
+        "targetSymbol": "src/services/sync-service.ts/SyncService#",
+        "targetPath": "src/services/sync-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/cli/cli.test.ts/_file_#",
+        "targetSymbol": "src/infra/__mocks__/llm.ts/MockClient#",
+        "targetPath": "src/infra/__mocks__/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/cli/cli.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/mock.ts/MockClient#",
+        "targetPath": "src/infra/llm/providers/mock.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/cli/cli.test.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/cli/cli.test.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/cli/cli.test.ts/_file_#",
+        "targetSymbol": "src/services/runtime-service.ts/RuntimeService#",
+        "targetPath": "src/services/runtime-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/cli/cli.test.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/getActiveViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:07:12.190Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

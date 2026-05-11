@@ -1,0 +1,330 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-context/types.ts",
+    "contentHash": "1309c33df3491246d1c3d8faf793a573589788e1dca43e1e558b43c3cd97d057",
+    "skeletonHash": "7347e10330d6591d26bedda4d13596f6acd9c038ca649fd48f71d86079246830",
+    "semanticHash": "54c40611d8aee45d5a796a82726d83e6ff05a8d662fdf6322269d0c65cfc8490",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt-context"
+  },
+  "semantic": {
+    "role": "Type contract definitions for prompt context budgets, diagnostics, and generation modes within the infrastructure layer.",
+    "responsibilities": [
+      "Define the PromptBudgetProfile interface to cap header lines with base/min/max/divisor boundaries.",
+      "Define the PromptBudgets interface to aggregate budgets for header, source, rules, and diagnostics sections.",
+      "Define the SourcePromptArtifactsInput interface as the input contract for constructing prompt artifacts from raw data.",
+      "Define the SourcePromptArtifacts interface as the output contract for processed prompt artifacts.",
+      "Define the PromptContextDiagnostics interface to capture diagnostic snapshots from the prompt context engine.",
+      "Define the PromptRuleBlockDiagnostics interface to report rule block processing diagnostics.",
+      "Define the PromptRelevanceDiagnostics interface to measure and flag relevance scores.",
+      "Define the SourceFileDiagnosticsSnapshot interface to snapshot per-file diagnostic state.",
+      "Define the RelevanceDiagnosticsSnapshot interface to snapshot relevance metrics.",
+      "Export literal union types PromptTaskMode, ValidatePolicy, GenerationStrategy, and RelevanceDiagnosticsMode as configuration enums."
+    ],
+    "outOfScope": [
+      "Runtime generation or manipulation of prompt content.",
+      "Execution of validation or summarization logic.",
+      "Direct file I/O or LLM API interactions.",
+      "Any business logic beyond type definitions."
+    ],
+    "invariants": [
+      "All exports are pure TypeScript type definitions with no runtime side effects.",
+      "This module acts as a stable type facade within infra; external callers should import these types rather than reaching into deeper implementation modules.",
+      "Imported type references (FileSkeleton, ContextResolutionDiagnostics, etc.) are used only for type composition."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain a centralized type contract layer for prompt context configuration, diagnostics, and policies to decouple infrastructure logic from type definitions.",
+      "recentChangeIntent": "No specific recent change intent provided; the commit message 'chore: apply release gate fixes and sync accumulated source changes' suggests maintenance and synchronization of accumulated changes."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "PromptBudgetProfile",
+        "description": "Defines line budget parameters (base, min, max, divisor) for structuring prompt headers."
+      },
+      {
+        "symbolName": "PromptBudgets",
+        "description": "Aggregates budget values for header, source, rules, and diagnostics sections controlling prompt generation."
+      },
+      {
+        "symbolName": "SourcePromptArtifactsInput",
+        "description": "Input type capturing raw file skeletons and context diagnostics needed to construct prompt artifacts."
+      },
+      {
+        "symbolName": "SourcePromptArtifacts",
+        "description": "Output type containing processed prompt artifacts ready for rendering."
+      },
+      {
+        "symbolName": "PromptContextDiagnostics",
+        "description": "Diagnostic snapshot of the prompt context process including rule blocks and relevance diagnostics."
+      },
+      {
+        "symbolName": "PromptRuleBlockDiagnostics",
+        "description": "Diagnostic information about rule block processing in the prompt context engine."
+      },
+      {
+        "symbolName": "PromptRelevanceDiagnostics",
+        "description": "Metrics and flags for measuring file relevance in the prompt context."
+      },
+      {
+        "symbolName": "SourceFileDiagnosticsSnapshot",
+        "description": "Snapshot of diagnostic state for a single source file during prompt processing."
+      },
+      {
+        "symbolName": "RelevanceDiagnosticsSnapshot",
+        "description": "Snapshot of relevance diagnostic metrics aggregated from context analysis."
+      },
+      {
+        "symbolName": "PromptTaskMode",
+        "description": "Literal union type 'summarize' | 'validate' controlling the prompt generation mode."
+      },
+      {
+        "symbolName": "ValidatePolicy",
+        "description": "Literal union type 'default' | 'strict' for validation strictness level."
+      },
+      {
+        "symbolName": "GenerationStrategy",
+        "description": "Literal union type 'together' | 'json-only' for output generation strategy."
+      },
+      {
+        "symbolName": "RelevanceDiagnosticsMode",
+        "description": "Literal union type 'off' | 'debug' | 'diagnostic' for diagnostics verbosity."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Type contract definitions for prompt context budgets, diagnostics, and generation modes within the infrastructure layer.",
+        "responsibilities": [
+          "Define the PromptBudgetProfile interface to cap header lines with base/min/max/divisor boundaries.",
+          "Define the PromptBudgets interface to aggregate budgets for header, source, rules, and diagnostics sections.",
+          "Define the SourcePromptArtifactsInput interface as the input contract for constructing prompt artifacts from raw data.",
+          "Define the SourcePromptArtifacts interface as the output contract for processed prompt artifacts.",
+          "Define the PromptContextDiagnostics interface to capture diagnostic snapshots from the prompt context engine.",
+          "Define the PromptRuleBlockDiagnostics interface to report rule block processing diagnostics.",
+          "Define the PromptRelevanceDiagnostics interface to measure and flag relevance scores.",
+          "Define the SourceFileDiagnosticsSnapshot interface to snapshot per-file diagnostic state.",
+          "Define the RelevanceDiagnosticsSnapshot interface to snapshot relevance metrics.",
+          "Export literal union types PromptTaskMode, ValidatePolicy, GenerationStrategy, and RelevanceDiagnosticsMode as configuration enums."
+        ],
+        "outOfScope": [
+          "Runtime generation or manipulation of prompt content.",
+          "Execution of validation or summarization logic.",
+          "Direct file I/O or LLM API interactions.",
+          "Any business logic beyond type definitions."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "PromptBudgetProfile",
+        "kind": "interface",
+        "signature": "interface PromptBudgetProfile"
+      },
+      {
+        "name": "PromptBudgets",
+        "kind": "interface",
+        "signature": "interface PromptBudgets"
+      },
+      {
+        "name": "SourcePromptArtifactsInput",
+        "kind": "interface",
+        "signature": "interface SourcePromptArtifactsInput"
+      },
+      {
+        "name": "SourcePromptArtifacts",
+        "kind": "interface",
+        "signature": "interface SourcePromptArtifacts"
+      },
+      {
+        "name": "PromptContextDiagnostics",
+        "kind": "interface",
+        "signature": "interface PromptContextDiagnostics"
+      },
+      {
+        "name": "PromptRuleBlockDiagnostics",
+        "kind": "interface",
+        "signature": "interface PromptRuleBlockDiagnostics"
+      },
+      {
+        "name": "PromptRelevanceDiagnostics",
+        "kind": "interface",
+        "signature": "interface PromptRelevanceDiagnostics"
+      },
+      {
+        "name": "SourceFileDiagnosticsSnapshot",
+        "kind": "interface",
+        "signature": "interface SourceFileDiagnosticsSnapshot"
+      },
+      {
+        "name": "RelevanceDiagnosticsSnapshot",
+        "kind": "interface",
+        "signature": "interface RelevanceDiagnosticsSnapshot"
+      },
+      {
+        "name": "PromptTaskMode",
+        "kind": "type",
+        "signature": "type PromptTaskMode"
+      },
+      {
+        "name": "ValidatePolicy",
+        "kind": "type",
+        "signature": "type ValidatePolicy"
+      },
+      {
+        "name": "GenerationStrategy",
+        "kind": "type",
+        "signature": "type GenerationStrategy"
+      },
+      {
+        "name": "RelevanceDiagnosticsMode",
+        "kind": "type",
+        "signature": "type RelevanceDiagnosticsMode"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "PromptBudgetProfile",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "PromptBudgets",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "SourcePromptArtifactsInput",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "SourcePromptArtifacts",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "PromptContextDiagnostics",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "PromptRuleBlockDiagnostics",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "PromptRelevanceDiagnostics",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "SourceFileDiagnosticsSnapshot",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "RelevanceDiagnosticsSnapshot",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "PromptTaskMode",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "ValidatePolicy",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "GenerationStrategy",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      },
+      {
+        "name": "RelevanceDiagnosticsMode",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/types.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 13,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../ast/extractor.js",
+        "relation": "import",
+        "symbols": [
+          "FileSkeleton"
+        ]
+      },
+      {
+        "targetPath": "../../engines/context.js",
+        "relation": "import",
+        "symbols": [
+          "ContextResolutionDiagnostics",
+          "DependencyCandidateDiagnostics"
+        ]
+      },
+      {
+        "targetPath": "../llm/base.js",
+        "relation": "import",
+        "symbols": [
+          "PreviousSemanticContext"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/prompt-context/trim.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:00:52.316Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

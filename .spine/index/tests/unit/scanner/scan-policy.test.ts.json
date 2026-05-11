@@ -1,0 +1,232 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/scanner/scan-policy.test.ts",
+    "contentHash": "f46fe4395f18403648a85789c8ce88360e36b0c0640f87e80d02ff29061f37c3",
+    "skeletonHash": "8f4f2331b2b808a82c9415b15069416d2a06b75c13ba0e5572acc61a8e26963b",
+    "semanticHash": "73471d1bd551942998bd5b7e5075a7767560d06ebcd83a1707408e3b21f9eaec",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/scanner"
+  },
+  "semantic": {
+    "role": "Test suite for ArchSpine's scan policy engine — validates that scan behavior respects policy settings (exclusions, depth, etc.) when integrated with Scanner and Config.",
+    "responsibilities": [
+      "Test that the scan policy is correctly loaded from the project configuration.",
+      "Test that scanning behavior (e.g., skipping excluded files, respecting scan depth) matches the policy definition.",
+      "Test integration between Scanner, Config, and DEFAULT_SCAN_POLICY.",
+      "Set up temporary project structures with various .spine/config.json files to simulate different policy scenarios.",
+      "Assert that the scanner produces expected results under each policy configuration."
+    ],
+    "outOfScope": [
+      "This file is a test artifact and does not provide runtime functionality in production.",
+      "It does not contribute to the public API of the ArchSpine system."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (test-file-suffix rule)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain and validate the correctness of the scan policy system as part of the core pipeline.",
+      "recentChangeIntent": "Unclear from git intent 'e9cba38 2' — likely a minor fix or update to test cases."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Test suite for ArchSpine's scan policy engine — validates that scan behavior respects policy settings (exclusions, depth, etc.) when integrated with Scanner and Config.",
+        "responsibilities": [
+          "Test that the scan policy is correctly loaded from the project configuration.",
+          "Test that scanning behavior (e.g., skipping excluded files, respecting scan depth) matches the policy definition.",
+          "Test integration between Scanner, Config, and DEFAULT_SCAN_POLICY.",
+          "Set up temporary project structures with various .spine/config.json files to simulate different policy scenarios.",
+          "Assert that the scanner produces expected results under each policy configuration."
+        ],
+        "outOfScope": [
+          "This file is a test artifact and does not provide runtime functionality in production.",
+          "It does not contribute to the public API of the ArchSpine system."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "beforeEach",
+          "afterEach"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/engines/scanner.js'",
+        "symbols": [
+          "Scanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/core/scan-policy.js'",
+        "symbols": [
+          "DEFAULT_SCAN_POLICY"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_CONFIG_SCHEMA_VERSION"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 12,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/engines/scanner.js",
+        "relation": "import",
+        "symbols": [
+          "Scanner"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../../../src/core/scan-policy.js",
+        "relation": "import",
+        "symbols": [
+          "DEFAULT_SCAN_POLICY"
+        ]
+      },
+      {
+        "targetPath": "../../../src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_CONFIG_SCHEMA_VERSION"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/scanner/scan-policy.test.ts/_file_#",
+        "targetSymbol": "src/engines/scanner.ts/Scanner#",
+        "targetPath": "src/engines/scanner.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/scanner/scan-policy.test.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/scanner/scan-policy.test.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/scanner/scan-policy.test.ts/_file_#",
+        "targetSymbol": "src/engines/scanner-utils.ts/formatDryRunReport#",
+        "targetPath": "src/engines/scanner-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:10:26.891Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

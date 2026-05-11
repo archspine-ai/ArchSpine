@@ -1,0 +1,205 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/common.ts",
+    "contentHash": "1cb5900a53adda3c87b4c09810a8685e793e829937a413802357a8cc30e8803f",
+    "skeletonHash": "cf67e2ad8e2a3bedbdef55bf12d22980fc5e1ae91d19d684455d27198aa8b938",
+    "semanticHash": "910087812b3449c256b81af863320473d35f3507bd10ad0dcc9ab9fbdf149284",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "Shared utility module for the view subsystem within the services layer, providing pure helper functions for path suppression, score aggregation, confidence computation, and boundary analysis used by view producers like risk-hotspots-view and public-surface-view.",
+    "responsibilities": [
+      "Filter out test, fixture, example, doc, dist, and build paths from analysis to avoid noise.",
+      "Aggregate individual contribution scores into a total sum for risk or health metrics.",
+      "Compute a normalized confidence value between 0 and 0.99 based on total score and number of supporting signals.",
+      "Extract the top-level directory boundary from a file path (first segment of normalized path).",
+      "Count how many incoming edges from other top-level boundaries a given SpineUnit receives, used for cross-boundary dependency analysis.",
+      "Resolve the target top-level boundary from a dependency path, handling internal and external references."
+    ],
+    "outOfScope": [
+      "Direct I/O operations (filesystem, network).",
+      "CLI command execution.",
+      "LLM interaction or prompt building.",
+      "Database queries or repository access.",
+      "UI rendering or output formatting."
+    ],
+    "invariants": [
+      "All exported functions are synchronous and pure (no side effects, no external state).",
+      "Dependencies are limited to built-in `path` module and project-internal type definitions (`SpineUnit`, `IViewScoreContribution`).",
+      "Suppressed path patterns are hard-coded as a regular expression; no runtime configuration alters this behavior.",
+      "Confidence calculation caps at 0.99 and floors at 0, using a fixed formula."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable set of utility primitives shared across view producers to enforce consistent path handling and scoring logic.",
+      "recentChangeIntent": "Part of ArchSpine v1.0.0 architectural governance release, stabilizing view computation utilities for public API."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "isSuppressedPath",
+        "description": "Returns true if the given file path matches known suppressed directories (tests, fixtures, examples, docs, dist, build). Used to exclude non-essential paths from analysis."
+      },
+      {
+        "symbolName": "sumScores",
+        "description": "Sums an array of score contributions to produce a total score for a given view metric."
+      },
+      {
+        "symbolName": "toConfidence",
+        "description": "Converts a total score and support count into a normalized confidence value between 0 and 0.99 for display or threshold checks."
+      },
+      {
+        "symbolName": "topLevelBoundary",
+        "description": "Extracts the top-level directory segment from a normalized file path, used for boundary detection."
+      },
+      {
+        "symbolName": "countCrossBoundaryEdges",
+        "description": "Counts how many incoming dependencies cross top-level boundaries for a given SpineUnit, used to identify architectural coupling risks."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Shared utility module for the view subsystem within the services layer, providing pure helper functions for path suppression, score aggregation, confidence computation, and boundary analysis used by view producers like risk-hotspots-view and public-surface-view.",
+        "responsibilities": [
+          "Filter out test, fixture, example, doc, dist, and build paths from analysis to avoid noise.",
+          "Aggregate individual contribution scores into a total sum for risk or health metrics.",
+          "Compute a normalized confidence value between 0 and 0.99 based on total score and number of supporting signals.",
+          "Extract the top-level directory boundary from a file path (first segment of normalized path).",
+          "Count how many incoming edges from other top-level boundaries a given SpineUnit receives, used for cross-boundary dependency analysis.",
+          "Resolve the target top-level boundary from a dependency path, handling internal and external references."
+        ],
+        "outOfScope": [
+          "Direct I/O operations (filesystem, network).",
+          "CLI command execution.",
+          "LLM interaction or prompt building.",
+          "Database queries or repository access.",
+          "UI rendering or output formatting."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "isSuppressedPath",
+        "kind": "function",
+        "signature": "isSuppressedPath(filePath: string)"
+      },
+      {
+        "name": "sumScores",
+        "kind": "function",
+        "signature": "sumScores(scoreBreakdown: IViewScoreContribution[])"
+      },
+      {
+        "name": "toConfidence",
+        "kind": "function",
+        "signature": "toConfidence(totalScore: number, supportCount: number)"
+      },
+      {
+        "name": "topLevelBoundary",
+        "kind": "function",
+        "signature": "topLevelBoundary(filePath: string)"
+      },
+      {
+        "name": "countCrossBoundaryEdges",
+        "kind": "function",
+        "signature": "countCrossBoundaryEdges(unit: SpineUnit)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "isSuppressedPath",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/common.ts#"
+      },
+      {
+        "name": "sumScores",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/common.ts#"
+      },
+      {
+        "name": "toConfidence",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/common.ts#"
+      },
+      {
+        "name": "topLevelBoundary",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/common.ts#"
+      },
+      {
+        "name": "countCrossBoundaryEdges",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/common.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 5,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "src/types/view.js",
+        "relation": "import",
+        "symbols": [
+          "IViewScoreContribution"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:03:19.499Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

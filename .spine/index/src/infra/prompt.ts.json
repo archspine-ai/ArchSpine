@@ -1,0 +1,206 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt.ts",
+    "contentHash": "84b84bbc9221716be4873d1c9be1ec59e13658c46dac9215a8d9a9e1b5087253",
+    "skeletonHash": "873da5f2597100fecfc531e63e38bed3632a7fadd2dbad19b29811da2ff44591",
+    "semanticHash": "8e141386b05fd7a2b8b2f4168ff2f2b69521054bad948f5aa287d235718d1836",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Prompt generation public facade – re-exports high-level prompt constructors for atlas documents, configs, folders, projects, sources, and markdown prompts, shielding consumers from internal prompt module restructuring.",
+    "responsibilities": [
+      "Provide a stable import boundary for all prompt generation capabilities used by CLI commands, views, and service layers.",
+      "Re-export PromptBuilder as the primary builder pattern for constructing prompt objects.",
+      "Re-export generateConfigPrompt to produce prompts for atlas configuration settings.",
+      "Re-export generateDocumentPrompt to produce prompts for atlas documentation units.",
+      "Re-export generateFolderPrompt to produce prompts for folder-level index or summary.",
+      "Re-export generateProjectPrompt to produce prompts for overall project context.",
+      "Re-export generateMarkdownPrompt to produce markdown-formatted prompts from structured data.",
+      "Re-export generateSourcePrompt to produce prompts for individual source file analysis."
+    ],
+    "outOfScope": [
+      "Internal prompt rendering logic, retry mechanics, language model interaction, context assembly, and low-level formatting utilities – these live in submodules under src/infra/prompt/ and should not be resolved through this facade."
+    ],
+    "invariants": [
+      "All external callers MUST import prompt generation symbols from this re-export module, NEVER from the deep implementation submodules (src/infra/prompt/*)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish a stable, single-point-of-entry for prompt generation to isolate the codebase from refactors of the internal prompt module structure.",
+      "recentChangeIntent": "No significant semantic changes to this file; recent commits performed release gate fixes and synced accumulated source changes without altering the re-export contract."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "PromptBuilder",
+        "description": "Primary class/factory for constructing prompt objects step-by-step. Consumed by services that need to assemble a prompt from parts."
+      },
+      {
+        "symbolName": "generateConfigPrompt",
+        "description": "Generates a prompt string or structure for atlas configuration. Called by the config command and bootstrap logic."
+      },
+      {
+        "symbolName": "generateDocumentPrompt",
+        "description": "Generates a prompt for a single atlas document (e.g., source descriptions, rule docs). Used by document-backfill and summarize tasks."
+      },
+      {
+        "symbolName": "generateFolderPrompt",
+        "description": "Generates a prompt for a folder-level summary or index. Consumed by the summarizer when processing directories."
+      },
+      {
+        "symbolName": "generateProjectPrompt",
+        "description": "Generates a prompt for the entire project context. Used by init and top-level aggregation flows."
+      },
+      {
+        "symbolName": "generateMarkdownPrompt",
+        "description": "Generates a markdown-formatted prompt from structured data. Used by the view rendering subsystem for producing human-readable outputs."
+      },
+      {
+        "symbolName": "generateSourcePrompt",
+        "description": "Generates a prompt for a single source file's analysis (AST, public surface, etc.). Consumed by the scanner and AST extractor tasks."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Prompt generation public facade – re-exports high-level prompt constructors for atlas documents, configs, folders, projects, sources, and markdown prompts, shielding consumers from internal prompt module restructuring.",
+        "responsibilities": [
+          "Provide a stable import boundary for all prompt generation capabilities used by CLI commands, views, and service layers.",
+          "Re-export PromptBuilder as the primary builder pattern for constructing prompt objects.",
+          "Re-export generateConfigPrompt to produce prompts for atlas configuration settings.",
+          "Re-export generateDocumentPrompt to produce prompts for atlas documentation units.",
+          "Re-export generateFolderPrompt to produce prompts for folder-level index or summary.",
+          "Re-export generateProjectPrompt to produce prompts for overall project context.",
+          "Re-export generateMarkdownPrompt to produce markdown-formatted prompts from structured data.",
+          "Re-export generateSourcePrompt to produce prompts for individual source file analysis."
+        ],
+        "outOfScope": [
+          "Internal prompt rendering logic, retry mechanics, language model interaction, context assembly, and low-level formatting utilities – these live in submodules under src/infra/prompt/ and should not be resolved through this facade."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "PromptBuilder",
+        "kind": "unknown",
+        "signature": "export { PromptBuilder }"
+      },
+      {
+        "name": "generateConfigPrompt",
+        "kind": "unknown",
+        "signature": "export { generateConfigPrompt }"
+      },
+      {
+        "name": "generateDocumentPrompt",
+        "kind": "unknown",
+        "signature": "export { generateDocumentPrompt }"
+      },
+      {
+        "name": "generateFolderPrompt",
+        "kind": "unknown",
+        "signature": "export { generateFolderPrompt }"
+      },
+      {
+        "name": "generateProjectPrompt",
+        "kind": "unknown",
+        "signature": "export { generateProjectPrompt }"
+      },
+      {
+        "name": "generateMarkdownPrompt",
+        "kind": "unknown",
+        "signature": "export { generateMarkdownPrompt }"
+      },
+      {
+        "name": "generateSourcePrompt",
+        "kind": "unknown",
+        "signature": "export { generateSourcePrompt }"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "PromptBuilder",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt.ts#"
+      },
+      {
+        "name": "generateConfigPrompt",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt.ts#"
+      },
+      {
+        "name": "generateDocumentPrompt",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt.ts#"
+      },
+      {
+        "name": "generateFolderPrompt",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt.ts#"
+      },
+      {
+        "name": "generateProjectPrompt",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt.ts#"
+      },
+      {
+        "name": "generateMarkdownPrompt",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt.ts#"
+      },
+      {
+        "name": "generateSourcePrompt",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 7,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/prompt-rendering.js",
+        "relation": "import",
+        "symbols": [
+          "PromptBuilder"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:01:09.185Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

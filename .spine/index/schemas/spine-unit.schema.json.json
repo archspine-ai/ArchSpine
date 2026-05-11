@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "schemas/spine-unit.schema.json",
+    "contentHash": "2a15f4549d00cb96f53ac672e7e2b84093d9ab1b6cc83a0509bb433345a2d3db",
+    "semanticHash": "383bae8be8029fa97030cb7bd619e8c271e1ea94327e9362f75fa6f6ed972f37",
+    "language": "unsupported",
+    "fileKind": "config",
+    "scope": "schemas"
+  },
+  "semantic": {
+    "role": "Define the purpose, constraints, and public interface of a source file unit within the ArchSpine governance system.",
+    "responsibilities": [
+      "Source file metadata tracking and indexing",
+      "Semantic enrichment for code analysis and rule enforcement",
+      "Management of enforceable invariants per unit",
+      "Recording architectural intent and change history",
+      "Exposing public surface (symbols) for dependency analysis"
+    ],
+    "outOfScope": [],
+    "invariants": [
+      "Unit must include schemaVersion, identity, semantic, skeleton, graph, provenance",
+      "Identity must provide filePath, contentHash, language, fileKind, scope",
+      "Semantic object must contain role, responsibilities, outOfScope, invariants, changeIntent, publicSurface",
+      "Each invariant in the invariants array must have id, description, enforceable boolean",
+      "ChangeIntent must include architecturalIntent and recentChangeIntent (both nullable strings)",
+      "No additional properties are allowed beyond the defined schema (additionalProperties: false everywhere)"
+    ],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "This schema governs the structure of a SpineUnit — a metadata document that describes a single source file in the ArchSpine system. It ensures that every tracked file has a consistent identity, semantic annotation, skeleton summary, graph links, and provenance record. The semantic block is the heart of governance: it captures why the file exists, what it is responsible for, what invariants it must uphold, and what symbols it exposes to other modules.",
+        "parameter_definitions": {
+          "identity.filePath": "Repository-relative path identifying the source file. Used for lookup and cross-referencing. Incorrect paths can break dependency tracking.",
+          "identity.contentHash": "SHA-like hash of the file content at the time of indexing. Used to detect drift and trigger re-analysis. A mismatch may cause stale governance enforcement.",
+          "identity.language": "Programming language of the file (e.g., TypeScript, Python). Determines which AST rules and scanners apply. Wrong language leads to incorrect rule evaluation.",
+          "semantic.role": "One-line description of the file's purpose. Used in views and reports. Misleading roles propagate confusion across the system.",
+          "semantic.responsibilities": "List of responsibilities assigned to this unit. Enforced by architectural rules. Missing or incorrect responsibilities may allow violations.",
+          "semantic.outOfScope": "Explicit boundary definition: what this unit is NOT responsible for. Essential for layered architecture enforcement. Omitting out-of-scope can cause false positives or gaps.",
+          "semantic.invariants": "Array of condition objects (id, description, enforceable) that must hold true for this unit. The ‘enforceable’ flag controls whether violation checking is active. A misconfigured invariant with enforceable:true but an incorrect ID can cause the system to block safe changes or allow harmful ones.",
+          "semantic.changeIntent.architecturalIntent": "Original reason this file was created. Used to detect architectural drift. A null value means unknown intent, reducing confidence in drift detection.",
+          "semantic.changeIntent.recentChangeIntent": "Purpose of the most recent modification. Used by change-impact analysis. If missing, the system cannot reason about recent changes’ alignment with architecture.",
+          "semantic.publicSurface": "List of exported symbols and their descriptions. Used for API surface tracking and dependency graph. Missing or inaccurate symbols break dependency analysis and rule checking."
+        },
+        "stability_and_risks": "The SpineUnit schema is a critical control plane for ArchSpine. Its strict validation (no extra properties, required fields) ensures data integrity across the pipeline — from scanning to aggregation, rule checking, and view generation. If a unit violates this schema (e.g., missing a required field like semantic.role), the entire system may reject the unit or skip it, leading to incomplete governance coverage. The most risky parameters are the invariants array and the publicSurface list: a mis-specified invariant (wrong description, incorrect enforceable flag) can silently allow architectural violations or flag false positives. The outOfScope list also carries safety implications — if it is too narrow, unintended responsibilities are not caught; if too broad, valid boundaries are missed. The additionalProperties: false setting is a safety feature that prevents data corruption from unrecognized fields. Overall, this schema enforces a self-describing, checkable unit that every source file must conform to for ArchSpine to function reliably. Operators should treat schema validation as a gate: any unit that fails validation must be fixed before it enters the governance pipeline."
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:51:37.799Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 41,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

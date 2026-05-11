@@ -1,0 +1,206 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/e2e/cli-readonly.test.ts",
+    "contentHash": "789ac11793e27c6abbceec373f66c13b60d5a5b96583e1183c43a3d996a47cc7",
+    "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
+    "semanticHash": "bfe437fdb93d7ab951c76914b1abc7e24bb9004fea1c6bc253fc94f2932734e7",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/e2e"
+  },
+  "semantic": {
+    "role": "Test harness for integration testing of the ArchSpine CLI; spawns the built CLI binary in a child process against isolated temporary workspaces.",
+    "responsibilities": [
+      "Provide a `runCli` helper function that executes the built CLI (`dist/cli/index.js`) via `spawnSync` and returns stdout, stderr, and exit status.",
+      "Set up temporary test directories using `fs.mkdtempSync` to isolate each test run.",
+      "Execute CLI command scenarios (e.g. `init`, `sync`, `build`, `scan`) and assert output correctness and exit codes.",
+      "Clean up temporary test artefacts after each test via vitest lifecycle hooks (`afterEach`, `beforeAll`).",
+      "Simulate interactive CLI flows if needed by writing input files or using `execFileSync` (e.g., for prompts module)."
+    ],
+    "outOfScope": [
+      "Not a production or runtime module; does not contribute to the application's public API.",
+      "Does not define any exported symbols for external consumption.",
+      "Does not implement CLI command logic; only invokes it externally."
+    ],
+    "invariants": [
+      "Requires the CLI to be pre-built at `dist/cli/index.js` before test execution.",
+      "Assumes `node_modules/prompts` is available for interactive mode simulation.",
+      "Test isolation is achieved through unique temporary directories per test."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a black-box integration test suite that validates the compiled CLI behaviour end-to-end in a clean environment.",
+      "recentChangeIntent": "Updated test suite for security hardening and infrastructure changes."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Test harness for integration testing of the ArchSpine CLI; spawns the built CLI binary in a child process against isolated temporary workspaces.",
+        "responsibilities": [
+          "Provide a `runCli` helper function that executes the built CLI (`dist/cli/index.js`) via `spawnSync` and returns stdout, stderr, and exit status.",
+          "Set up temporary test directories using `fs.mkdtempSync` to isolate each test run.",
+          "Execute CLI command scenarios (e.g. `init`, `sync`, `build`, `scan`) and assert output correctness and exit codes.",
+          "Clean up temporary test artefacts after each test via vitest lifecycle hooks (`afterEach`, `beforeAll`).",
+          "Simulate interactive CLI flows if needed by writing input files or using `execFileSync` (e.g., for prompts module)."
+        ],
+        "outOfScope": [
+          "Not a production or runtime module; does not contribute to the application's public API.",
+          "Does not define any exported symbols for external consumption.",
+          "Does not implement CLI command logic; only invokes it externally."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ]
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:06:41.375Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

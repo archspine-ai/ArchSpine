@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt/markdown.ts",
+    "contentHash": "064d4eda44eb8563be07bd89326f4616c2fae95cbd8759b087fcca6876e8bd06",
+    "skeletonHash": "27933fdd6135e5c2cdd66420a3c2ab31ccd3a08ab4406b56036d51936ffe0841",
+    "semanticHash": "43d72a0291f4217673728e734f7cb7cc7c41a6f1f801b58a8833602b04ddde49",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt"
+  },
+  "semantic": {
+    "role": "Unknown role",
+    "responsibilities": [],
+    "outOfScope": [],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./builder.js'",
+        "symbols": [
+          "PromptBuilder"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./shared.js'",
+        "symbols": [
+          "buildLocalizedLanguageInstructions",
+          "buildMarkdownSectionGuidance"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "generateMarkdownPrompt",
+        "kind": "function",
+        "signature": "generateMarkdownPrompt(input: MarkdownPromptInput)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "generateMarkdownPrompt",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt/markdown.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/prompt/markdown.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/shared.ts/buildMarkdownSectionGuidance#",
+        "targetPath": "src/infra/prompt/shared.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/markdown.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/shared.ts/buildLocalizedLanguageInstructions#",
+        "targetPath": "src/infra/prompt/shared.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/markdown.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/builder.ts/PromptBuilder#",
+        "targetPath": "src/infra/prompt/builder.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/markdown.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/PromptBuilder#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/markdown.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/PromptBuilder#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:01:06.040Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

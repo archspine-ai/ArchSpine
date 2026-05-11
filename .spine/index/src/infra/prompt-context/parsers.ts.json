@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-context/parsers.ts",
+    "contentHash": "806a2695c2125f3c535f6bea437e11214bc3ec2ea897c060eb2b1811a9792ede",
+    "skeletonHash": "c3ff234ee22299b2af7657f2944ee35f60a37db77037e946ec4e512ff14031ce",
+    "semanticHash": "d5a4616c984db3316430484eb14067e9b1b74d6e69cf0638e83eee357993721e",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt-context"
+  },
+  "semantic": {
+    "role": "Configuration value parsing utility for validation policy and relevance diagnostics mode — a leaf-level helper within the infra config tier that converts raw string inputs into typed domain enums.",
+    "responsibilities": [
+      "Parse and validate the `ValidatePolicy` configuration value (accepted: 'default', 'strict'); return `undefined` for unrecognized values.",
+      "Parse and validate the `RelevanceDiagnosticsMode` configuration value; return `undefined` for unrecognized values.",
+      "Provide case-insensitive, safe parsing that never throws."
+    ],
+    "outOfScope": [
+      "Loading or persisting configuration files.",
+      "Broader configuration schema validation.",
+      "Retrieving configuration from environment or CLI flags.",
+      "Any runtime-side or service-side logic."
+    ],
+    "invariants": [
+      "The module must return `undefined` for any string value that does not match the known set — never throw or coerce.",
+      "Input strings are trimmed and lowercased before comparison.",
+      "The only dependency is local type definitions (`./types.js`)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a low-type-dependency, safe parsing bridge between raw config values and internal domain types, ensuring robustness at the boundary.",
+      "recentChangeIntent": "Part of broader release gate fixes and accumulated source changes; no structural alteration to the module's contract."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "parseValidatePolicy",
+        "description": "Parses a string value into a ValidatePolicy enum ('default' or 'strict') if valid; otherwise returns undefined. Used by config loading code to interpret policy configuration."
+      },
+      {
+        "symbolName": "parseRelevanceDiagnosticsMode",
+        "description": "Parses a string value into a RelevanceDiagnosticsMode enum if valid; otherwise returns undefined. Used by config loading code to interpret diagnostics mode configuration."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Configuration value parsing utility for validation policy and relevance diagnostics mode — a leaf-level helper within the infra config tier that converts raw string inputs into typed domain enums.",
+        "responsibilities": [
+          "Parse and validate the `ValidatePolicy` configuration value (accepted: 'default', 'strict'); return `undefined` for unrecognized values.",
+          "Parse and validate the `RelevanceDiagnosticsMode` configuration value; return `undefined` for unrecognized values.",
+          "Provide case-insensitive, safe parsing that never throws."
+        ],
+        "outOfScope": [
+          "Loading or persisting configuration files.",
+          "Broader configuration schema validation.",
+          "Retrieving configuration from environment or CLI flags.",
+          "Any runtime-side or service-side logic."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "parseValidatePolicy",
+        "kind": "function",
+        "signature": "parseValidatePolicy(value: string | undefined)"
+      },
+      {
+        "name": "parseRelevanceDiagnosticsMode",
+        "kind": "function",
+        "signature": "parseRelevanceDiagnosticsMode(\n  value: string | undefined,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "parseValidatePolicy",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/parsers.ts#"
+      },
+      {
+        "name": "parseRelevanceDiagnosticsMode",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-context/parsers.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "RelevanceDiagnosticsMode",
+          "ValidatePolicy"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:59:58.883Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

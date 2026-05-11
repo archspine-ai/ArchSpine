@@ -1,0 +1,221 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/services/view/agent-briefing-view.test.ts",
+    "contentHash": "72dc8ac0399e5450e41f450ca5353347fdfa23472590a19a1c6becab4e48e263",
+    "skeletonHash": "25db9a03547aeb5ceb36d482cb8d52ee9e476f8fa4818314f50cdd569d2f66ee",
+    "semanticHash": "24e31491bb5973137f4b651721a8a5992d7701ce48ea362e83cb600c7776cce2",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/services/view"
+  },
+  "semantic": {
+    "role": "Vitest test suite for the agent briefing view producer.",
+    "responsibilities": [
+      "Unit test the agentBriefingProducer function to verify correct generation of agent briefing view artifacts.",
+      "Provide test infrastructure (temp directories, mock runtime IO) for isolated test execution.",
+      "Validate that produced JSON matches expected schema version and content structure."
+    ],
+    "outOfScope": [
+      "Production code or implementation of the agent briefing view.",
+      "Integration or end-to-end tests.",
+      "Any module other than agent-briefing-view."
+    ],
+    "invariants": [
+      "Test file must be named with .test.ts suffix as required by project convention.",
+      "Tests must not modify production state or leave artifacts outside temp directories."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide automated verification for the agent briefing view producer to ensure contract compliance and correctness.",
+      "recentChangeIntent": "refactor: remove legacy CLI aliases, rebuild docs, fix schema and tests"
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite for the agent briefing view producer.",
+        "responsibilities": [
+          "Unit test the agentBriefingProducer function to verify correct generation of agent briefing view artifacts.",
+          "Provide test infrastructure (temp directories, mock runtime IO) for isolated test execution.",
+          "Validate that produced JSON matches expected schema version and content structure."
+        ],
+        "outOfScope": [
+          "Production code or implementation of the agent briefing view.",
+          "Integration or end-to-end tests.",
+          "Any module other than agent-briefing-view."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../../src/services/view/agent-briefing-view.js'",
+        "symbols": [
+          "agentBriefingProducer"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../../src/infra/output.js'",
+        "symbols": [
+          "OutputManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../../src/services/view/agent-briefing-view.js",
+        "relation": "import",
+        "symbols": [
+          "agentBriefingProducer"
+        ]
+      },
+      {
+        "targetPath": "../../../../src/infra/output.js",
+        "relation": "import",
+        "symbols": [
+          "OutputManager"
+        ]
+      },
+      {
+        "targetPath": "../../../../src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/services/view/agent-briefing-view.test.ts/_file_#",
+        "targetSymbol": "src/infra/output.ts/OutputManager#",
+        "targetPath": "src/infra/output.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:10:46.822Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

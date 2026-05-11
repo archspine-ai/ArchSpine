@@ -1,0 +1,195 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integration/system/spine-gate.test.ts",
+    "contentHash": "8d3f7669bc8aa786f960ea170a75ea96097a9a4945f58d21796414c5e780cecf",
+    "skeletonHash": "3519268b4591ded4b0966e978a7c36d1f1e12b70afa75265f099c11393d2a4cb",
+    "semanticHash": "458795f4ba6a5c0fa40efc0ec42229c9db76e5e046aa6c61ea39457c8c2094aa",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/integration/system"
+  },
+  "semantic": {
+    "role": "Vitest test suite for the Spine Gate infrastructure module, verifying protected output mutation detection and baseline writing integrity.",
+    "responsibilities": [
+      "Test the writeProtectedOutputBaseline function to ensure it correctly writes baseline files for the first time.",
+      "Test the detectProtectedOutputMutations function to verify it detects newly added paths after baseline is written.",
+      "Ensure proper cleanup of temporary test directories between tests.",
+      "Validate that formatProtectedOutputMutationWarning (not directly tested in snippet) is callable by integration.",
+      "Exercise the spine-gate module's public contract: baseline creation and mutation detection."
+    ],
+    "outOfScope": [
+      "No production symbols are exported; the file serves no runtime module contract.",
+      "Does not test edge cases like concurrent file writes or permission errors.",
+      "Does not provide any CLI commands, HTTP handlers, or MCP tools."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts to satisfy the naming convention rule.",
+      "Temporary test directory must be created and cleaned up for isolation.",
+      "All imports from vitest must be used appropriately."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain a comprehensive test suite for the spine-gate module to prevent regressions in protected output handling.",
+      "recentChangeIntent": "No recent change intent provided beyond the generic commit message."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite for the Spine Gate infrastructure module, verifying protected output mutation detection and baseline writing integrity.",
+        "responsibilities": [
+          "Test the writeProtectedOutputBaseline function to ensure it correctly writes baseline files for the first time.",
+          "Test the detectProtectedOutputMutations function to verify it detects newly added paths after baseline is written.",
+          "Ensure proper cleanup of temporary test directories between tests.",
+          "Validate that formatProtectedOutputMutationWarning is callable by integration.",
+          "Exercise the spine-gate module's public contract: baseline creation and mutation detection."
+        ],
+        "outOfScope": [
+          "No production symbols are exported; the file serves no runtime module contract.",
+          "Does not test edge cases like concurrent file writes or permission errors.",
+          "Does not provide any CLI commands, HTTP handlers, or MCP tools."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/spine-gate.js'",
+        "symbols": [
+          "detectProtectedOutputMutations",
+          "formatProtectedOutputMutationWarning",
+          "writeProtectedOutputBaseline"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/spine-gate.ts",
+        "relation": "import",
+        "symbols": [
+          "detectProtectedOutputMutations",
+          "formatProtectedOutputMutationWarning",
+          "writeProtectedOutputBaseline"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/integration/system/spine-gate.test.ts/_file_#",
+        "targetSymbol": "src/infra/spine-gate.ts/writeProtectedOutputBaseline#",
+        "targetPath": "src/infra/spine-gate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/spine-gate.test.ts/_file_#",
+        "targetSymbol": "src/infra/spine-gate.ts/detectProtectedOutputMutations#",
+        "targetPath": "src/infra/spine-gate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/spine-gate.test.ts/_file_#",
+        "targetSymbol": "src/infra/spine-gate.ts/formatProtectedOutputMutationWarning#",
+        "targetPath": "src/infra/spine-gate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:08:12.123Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

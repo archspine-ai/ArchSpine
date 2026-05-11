@@ -1,0 +1,190 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/init/runtime-bootstrap.ts",
+    "contentHash": "3d268f21e2dc10fba2b799a88540f8962b863a335208eb6642c3b40baafae3cf",
+    "skeletonHash": "feb1374da88adb7fcc6ac6528e33ba549adad974498cd8aa4b12aca2f8e180a1",
+    "semanticHash": "90dc1f3d05624e8ed1cb23aec187897c94f8285c5121eed4cc6653973ab486f3",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/init"
+  },
+  "semantic": {
+    "role": "CLI runtime bootstrap orchestrator for initializing a new ArchSpine project: coordinates LLM credential setup, language discovery, and optional build run during `spine init`.",
+    "responsibilities": [
+      "Orchestrate the full bootstrap sequence for a new project: resolve LLM settings, prompt for LLM setup if not configured, discover project languages, and optionally run the initial build.",
+      "Prompt the user to confirm initial synchronization (sync) before proceeding with the build.",
+      "Display language discovery results and step-by-step progress via console output."
+    ],
+    "outOfScope": [
+      "Repository file operations (handled by repository-bootstrap).",
+      "LLM provider selection and provider-specific API calls (handled by LLM services).",
+      "Build logic and compilation (delegated to runBuildWorkflow).",
+      "Language detection algorithms (delegated to discoverProjectLanguages)."
+    ],
+    "invariants": [
+      "CLI entrypoints must remain thin adapters and not absorb core pipeline or persistence logic (Rule: cli-entrypoint-separation)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a clean, interactive bootstrap experience for new ArchSpine users via the CLI, separating orchestration from business logic.",
+      "recentChangeIntent": "Part of the v1.0.0 GA release establishing ArchSpine as an architectural governance and semantic layer tool."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "runRuntimeBootstrap",
+        "description": "Orchestrates the full runtime initialization sequence: checks LLM settings, prompts for setup, discovers languages, and optionally runs the build workflow. Called by the `spine init` CLI command."
+      },
+      {
+        "symbolName": "promptForInitialSync",
+        "description": "Interactive confirmation prompt asking the user to agree to an initial file synchronization before the bootstrap proceeds."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI runtime bootstrap orchestrator for initializing a new ArchSpine project: coordinates LLM credential setup, language discovery, and optional build run during `spine init`.",
+        "responsibilities": [
+          "Orchestrate the full bootstrap sequence for a new project: resolve LLM settings, prompt for LLM setup if not configured, discover project languages, and optionally run the initial build.",
+          "Prompt the user to confirm initial synchronization (sync) before proceeding with the build.",
+          "Display language discovery results and step-by-step progress via console output."
+        ],
+        "outOfScope": [
+          "Repository file operations (handled by repository-bootstrap).",
+          "LLM provider selection and provider-specific API calls (handled by LLM services).",
+          "Build logic and compilation (delegated to runBuildWorkflow).",
+          "Language detection algorithms (delegated to discoverProjectLanguages)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../services/init-service.js'",
+        "symbols": [
+          "discoverProjectLanguages"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../commands/build.js'",
+        "symbols": [
+          "runBuildWorkflow"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "runRuntimeBootstrap",
+        "kind": "function",
+        "signature": "runRuntimeBootstrap(options: RuntimeBootstrapOptions)"
+      },
+      {
+        "name": "promptForInitialSync",
+        "kind": "function",
+        "signature": "promptForInitialSync(options: RuntimeBootstrapOptions)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "runRuntimeBootstrap",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/init/runtime-bootstrap.ts#"
+      },
+      {
+        "name": "promptForInitialSync",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/init/runtime-bootstrap.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../services/init-service.js",
+        "relation": "import",
+        "symbols": [
+          {
+            "symbolName": "discoverProjectLanguages",
+            "usage": "call"
+          }
+        ]
+      },
+      {
+        "targetPath": "../commands/build.js",
+        "relation": "import",
+        "symbols": [
+          {
+            "symbolName": "runBuildWorkflow",
+            "usage": "call"
+          }
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/init/runtime-bootstrap.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/printStep#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/init/runtime-bootstrap.ts/_file_#",
+        "targetSymbol": "src/utils/confirm.ts/promptForImmediateConfirmation#",
+        "targetPath": "src/utils/confirm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/init/runtime-bootstrap.ts/_file_#",
+        "targetSymbol": "src/cli/commands/llm.ts/promptForLLMSetup#",
+        "targetPath": "src/cli/commands/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/init/runtime-bootstrap.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/printLanguageDiscovery#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/init/runtime-bootstrap.ts/_file_#",
+        "targetSymbol": "src/cli/commands/build.ts/runBuildWorkflow#",
+        "targetPath": "src/cli/commands/build.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:54:48.628Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 53,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

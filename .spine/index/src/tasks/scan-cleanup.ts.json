@@ -1,0 +1,214 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/scan-cleanup.ts",
+    "contentHash": "e1ca1e2f74ad6107bd515ed37d39a7c99367f0cef87ba3aeb1e9a71c1f3c8340",
+    "skeletonHash": "fb0094923c9c7b410bb10b5725be53fd1c2f71115a8cf305790da5ad893f535d",
+    "semanticHash": "454fd5c936cdf84095b2d13fcacdc130c5d89973c0ccddff36ab71c6aff4b7dd",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "Pipeline task responsible for scanning orphan files (files tracked by the manifest but no longer present in the scanner's file set) and cleaning up their state from the project's knowledge base.",
+    "responsibilities": [
+      "Compare the set of files tracked by the scanner (from language snapshot and changed files) against the set of files recorded in the manifest.",
+      "Filter candidate target files to only those that physically exist on disk, avoiding cleanup of legitimate deleted or renamed files.",
+      "Remove orphan file state from the manifest via ctx.manifest.removeFileState, ensuring the manifest stays consistent with the actual project structure.",
+      "Delete orphan file database entries via ctx.outputManager.deleteFile, preventing stale indices from polluting queries.",
+      "Utilize language-snapshot extension information to narrow the candidate file set and reduce unnecessary filesystem operations."
+    ],
+    "outOfScope": [
+      "Does not perform initial file scanning or discovery; it operates solely on existing scanner output.",
+      "Does not orchestrate other services or interact with the LLM, MCP, or CLI directly.",
+      "Does not handle rule violation detection or fix generation.",
+      "Does not modify source code on disk; it only removes internal state entries."
+    ],
+    "invariants": [
+      "All decisions are based on the scanner's output as a trusted source of truth for currently tracked files.",
+      "The manifest is the sole authority for which files have been previously recorded.",
+      "Only files confirmed absent from both scanner results and filesystem are eligible for state removal.",
+      "The task must not alter files outside the repository root."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "ArchSpine is an architectural governance tool that uses a staged pipeline to maintain consistent project state. This task implements the 'scan-cleanup' stage for removing stale entries, enforcing the separation between pipeline stages and higher-level CLI or service orchestration.",
+      "recentChangeIntent": "The v1.0.0 commit established the task-stage-boundary pattern, making stage-local tasks responsible only for their specific pipeline work. This file was created (or refactored) to embody that pattern by encapsulating orphan-file cleanup logic without straying into CLI parsing or service orchestration."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ScanAndCleanupTask",
+        "description": "Pipeline stage task that removes orphan file state from the manifest and database by comparing scanner-tracked files with manifest-tracked files. Exported as a SpineTask subclass and consumed by the pipeline executor."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Pipeline task responsible for scanning orphan files (files tracked by the manifest but no longer present in the scanner's file set) and cleaning up their state from the project's knowledge base.",
+        "responsibilities": [
+          "Compare the set of files tracked by the scanner against the set recorded in the manifest.",
+          "Filter candidate files to only those physically present on disk before cleanup.",
+          "Remove orphan file state from the manifest to keep it consistent with the project structure.",
+          "Delete stale database entries for orphan files to prevent index pollution.",
+          "Use language-snapshot extension information to narrow the candidate file set."
+        ],
+        "outOfScope": [
+          "Does not perform initial file scanning or discovery.",
+          "Does not orchestrate other services or interact with LLM, MCP, or CLI.",
+          "Does not handle rule violations or fix generation.",
+          "Does not modify source code on disk; only removes internal state."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/lang-registry.js'",
+        "symbols": [
+          "LangRegistry"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "ScanAndCleanupTask",
+        "kind": "class",
+        "signature": "class ScanAndCleanupTask"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "ScanAndCleanupTask",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/tasks/scan-cleanup.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/core/task.js",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "src/ast/lang-registry.js",
+        "relation": "import",
+        "symbols": [
+          "LangRegistry"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/tasks/scan-cleanup.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/state.ts/loadLanguageSnapshot#",
+        "targetPath": "src/infra/manifest/state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/scan-cleanup.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/integrity.ts/calculateHash#",
+        "targetPath": "src/infra/manifest/integrity.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/scan-cleanup.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getTrackedFiles#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/scan-cleanup.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/deleteFile#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:05:01.306Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 2,
+    "isHub": true,
+    "hubPercentile": 59,
+    "inCycle": true,
+    "cycleId": "src/core → src/tasks → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

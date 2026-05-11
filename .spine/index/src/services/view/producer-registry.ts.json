@@ -1,0 +1,248 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/producer-registry.ts",
+    "contentHash": "3823648f9da9e63464e7ee19b0040f76cebc2be8bc5ae6b24d23cfd32cc2fb9c",
+    "skeletonHash": "6dd0ba0552d5e79fdd74128422d5e3aebd456ebf7aa79db87b71367609254b8b",
+    "semanticHash": "c9e3efdd6468fd4dd005e5e1f37e41637a29d8930f9cc9fea2fdb3e2328b0140",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "In-memory registry for view producers, mapping ViewType strings to their corresponding ViewProducer functions. Acts as the central service locator and extension point for the view rendering subsystem.",
+    "responsibilities": [
+      "Provide a global registry mapping view types (ViewType) to view producer functions (ViewProducer).",
+      "Allow registration of producers via registerViewProducer, typically called during module initialization for built-in views.",
+      "Provide lookup of a producer by view type via getViewProducer, returning undefined if unregistered.",
+      "Enumerate all registered view types via listViewTypes."
+    ],
+    "outOfScope": [
+      "View execution, rendering, data fetching, or business logic.",
+      "Producer lifecycle management beyond registration.",
+      "Caching or persistence of registry state."
+    ],
+    "invariants": [
+      "The registry must be populated before any view execution request is processed.",
+      "Each view type can have at most one producer; re-registration overwrites the previous producer."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "This file establishes a clean extension point for view producers, decoupling view type resolution from individual producer implementations. It enables lazy registration and type-safe producer discovery.",
+      "recentChangeIntent": "The recent commit refactors legacy CLI aliases and rebuilds documentation; this file's role as a registry is unchanged, but its consumption in the view-rendering pipeline may have been reorganized."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "registerViewProducer",
+        "description": "Registers a ViewProducer function for a given ViewType. Called by each built-in view module to announce its producer during initialization."
+      },
+      {
+        "symbolName": "getViewProducer",
+        "description": "Retrieves the registered ViewProducer for the specified ViewType, or undefined if no producer has been registered."
+      },
+      {
+        "symbolName": "listViewTypes",
+        "description": "Returns an array of all ViewType strings for which a producer has been registered."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "In-memory registry for view producers, mapping ViewType strings to their corresponding ViewProducer functions. Acts as the central service locator and extension point for the view rendering subsystem.",
+        "responsibilities": [
+          "Provide a global registry mapping view types (ViewType) to view producer functions (ViewProducer).",
+          "Allow registration of producers via registerViewProducer, typically called during module initialization for built-in views.",
+          "Provide lookup of a producer by view type via getViewProducer, returning undefined if unregistered.",
+          "Enumerate all registered view types via listViewTypes."
+        ],
+        "outOfScope": [
+          "View execution, rendering, data fetching, or business logic.",
+          "Producer lifecycle management beyond registration.",
+          "Caching or persistence of registry state."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./risk-hotspots-view.js'",
+        "symbols": [
+          "riskHotspotsProducer"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./architecture-diagram-view.js'",
+        "symbols": [
+          "architectureDiagramProducer"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./project-health-view.js'",
+        "symbols": [
+          "projectHealthProducer"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./agent-briefing-view.js'",
+        "symbols": [
+          "agentBriefingProducer"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./change-impact-view.js'",
+        "symbols": [
+          "changeImpactProducer"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./public-surface-view.js'",
+        "symbols": [
+          "publicSurfaceProducer"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "registerViewProducer",
+        "kind": "function",
+        "signature": "registerViewProducer(viewType: ViewType, producer: ViewProducer)"
+      },
+      {
+        "name": "getViewProducer",
+        "kind": "function",
+        "signature": "getViewProducer(viewType: ViewType)"
+      },
+      {
+        "name": "listViewTypes",
+        "kind": "function",
+        "signature": "listViewTypes()"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "registerViewProducer",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/producer-registry.ts#"
+      },
+      {
+        "name": "getViewProducer",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/producer-registry.ts#"
+      },
+      {
+        "name": "listViewTypes",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/producer-registry.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../types/view.js",
+        "relation": "import",
+        "symbols": [
+          "ViewType"
+        ]
+      },
+      {
+        "targetPath": "./producer.js",
+        "relation": "import",
+        "symbols": [
+          "ViewProducer"
+        ]
+      },
+      {
+        "targetPath": "./risk-hotspots-view.js",
+        "relation": "import",
+        "symbols": [
+          "riskHotspotsProducer"
+        ]
+      },
+      {
+        "targetPath": "./architecture-diagram-view.js",
+        "relation": "import",
+        "symbols": [
+          "architectureDiagramProducer"
+        ]
+      },
+      {
+        "targetPath": "./project-health-view.js",
+        "relation": "import",
+        "symbols": [
+          "projectHealthProducer"
+        ]
+      },
+      {
+        "targetPath": "./agent-briefing-view.js",
+        "relation": "import",
+        "symbols": [
+          "agentBriefingProducer"
+        ]
+      },
+      {
+        "targetPath": "./change-impact-view.js",
+        "relation": "import",
+        "symbols": [
+          "changeImpactProducer"
+        ]
+      },
+      {
+        "targetPath": "./public-surface-view.js",
+        "relation": "import",
+        "symbols": [
+          "publicSurfaceProducer"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/view/view-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "src/tasks/view-derivation.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:03:38.932Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

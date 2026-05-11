@@ -1,0 +1,175 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/document-languages.ts",
+    "contentHash": "6210016ff939d1db3db9e1d8f80d91eca4ad038618d57a817b9ae5ec5bcecb14",
+    "skeletonHash": "b06438f1e5dcb8e3b548654968b1512ce57108c8c05bd06856a1d5d8c70ddba7",
+    "semanticHash": "89b40735378286a8b660f94b00a63c69b5e37967e75b1b8535e9eaafbf6b3a4f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli"
+  },
+  "semantic": {
+    "role": "CLI utility module that generates a list of document language choices for interactive configuration prompts, including a separator for high-capacity languages.",
+    "responsibilities": [
+      "Define the DocumentLanguageChoice interface for representing a selectable language option in a CLI prompt.",
+      "Export the sentinel value HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE for use as a UI separator marker.",
+      "Export the visible separator label text HIGH_CAPACITY_LANGUAGE_SEPARATOR.",
+      "Export the DOCUMENT_LANGUAGE_QUALITY_NOTE constant (currently empty) for optional quality advisories.",
+      "Export getDocumentLanguageChoices function that accepts selected languages and returns a full list of language choice objects with selection state."
+    ],
+    "outOfScope": [
+      "Persistence or database access",
+      "Pipeline orchestration or LLM interaction",
+      "File I/O or network communication",
+      "User input handling beyond building choice options"
+    ],
+    "invariants": [
+      "Must remain free of any persistence, pipeline, or LLM logic (per cli-entrypoint-separation rule).",
+      "Must only provide data structure definitions and a pure function to transform language lists into choice objects."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized, reusable definition of document language choices for CLI prompts, ensuring consistent language selection across the interactive workflow.",
+      "recentChangeIntent": "No recent changes evident in this file's source; the referenced recent git intent (credential store hardening and summarization pipeline optimization) does not apply to this module."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "DocumentLanguageChoice",
+        "description": "Interface for a language option item used in CLI prompts, providing title, value, and optional selection/disabled state."
+      },
+      {
+        "symbolName": "HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE",
+        "description": "Sentinel string value representing a UI separator for high-capacity languages in the language choice list."
+      },
+      {
+        "symbolName": "HIGH_CAPACITY_LANGUAGE_SEPARATOR",
+        "description": "Human-readable label text for the separator line displayed between standard and high-capacity language groups."
+      },
+      {
+        "symbolName": "DOCUMENT_LANGUAGE_QUALITY_NOTE",
+        "description": "Constant note (currently empty) that can be used to display a quality or capability advisory alongside the language list."
+      },
+      {
+        "symbolName": "getDocumentLanguageChoices",
+        "description": "Pure function that builds a full array of DocumentLanguageChoice objects from default and high-capacity language lists, marking selected items based on the input array of selected languages."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI utility module that generates a list of document language choices for interactive configuration prompts, including a separator for high-capacity languages.",
+        "responsibilities": [
+          "Define the DocumentLanguageChoice interface for representing a selectable language option in a CLI prompt.",
+          "Export the sentinel value HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE for use as a UI separator marker.",
+          "Export the visible separator label text HIGH_CAPACITY_LANGUAGE_SEPARATOR.",
+          "Export the DOCUMENT_LANGUAGE_QUALITY_NOTE constant (currently empty) for optional quality advisories.",
+          "Export getDocumentLanguageChoices function that accepts selected languages and returns a full list of language choice objects with selection state."
+        ],
+        "outOfScope": [
+          "Persistence or database access",
+          "Pipeline orchestration or LLM interaction",
+          "File I/O or network communication",
+          "User input handling beyond building choice options"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "getDocumentLanguageChoices",
+        "kind": "function",
+        "signature": "getDocumentLanguageChoices(\n  selectedLanguages: string[] = [],\n)"
+      },
+      {
+        "name": "DocumentLanguageChoice",
+        "kind": "interface",
+        "signature": "interface DocumentLanguageChoice"
+      },
+      {
+        "name": "HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE",
+        "kind": "variable",
+        "signature": "const HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE"
+      },
+      {
+        "name": "HIGH_CAPACITY_LANGUAGE_SEPARATOR",
+        "kind": "variable",
+        "signature": "const HIGH_CAPACITY_LANGUAGE_SEPARATOR"
+      },
+      {
+        "name": "DOCUMENT_LANGUAGE_QUALITY_NOTE",
+        "kind": "variable",
+        "signature": "const DOCUMENT_LANGUAGE_QUALITY_NOTE"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "getDocumentLanguageChoices",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/document-languages.ts#"
+      },
+      {
+        "name": "DocumentLanguageChoice",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/document-languages.ts#"
+      },
+      {
+        "name": "HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/cli/document-languages.ts#"
+      },
+      {
+        "name": "HIGH_CAPACITY_LANGUAGE_SEPARATOR",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/cli/document-languages.ts#"
+      },
+      {
+        "name": "DOCUMENT_LANGUAGE_QUALITY_NOTE",
+        "kind": "variable",
+        "exported": true,
+        "symbolUri": "src/cli/document-languages.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 5,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [
+      {
+        "targetPath": "tests/unit/infra/document-languages.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:54:23.127Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 53,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

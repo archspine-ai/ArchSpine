@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "schemas/examples/spine-rule-document.example.json",
+    "contentHash": "0091b0a51af342ef54f9e690cbfd5389df755cf4a7e5d74cf048ed33b24b2d3b",
+    "semanticHash": "e805e7405aebe62f92e42cf812a14d7e65aad5396a2f4bd709813d41bb945bab",
+    "language": "unsupported",
+    "fileKind": "config",
+    "scope": "schemas/examples"
+  },
+  "semantic": {
+    "role": "Defines a single architectural governance rule that prevents direct imports from the database layer into service or middle-tier code.",
+    "responsibilities": [
+      "Enforcing layer separation between business logic and database adapters",
+      "Controlling which file paths are subject to the import restriction",
+      "Setting severity for violation handling (error level blocks pipeline)",
+      "Providing human-readable rationale and examples for the rule"
+    ],
+    "outOfScope": [],
+    "invariants": [
+      "appliesTo patterns must exclude the database source folder to avoid internal false positives",
+      "severity must be set to 'error' for blocking enforcement (if enforceable is true)",
+      "The ruleId must be unique across all rules to prevent conflicts in violation tracking"
+    ],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "This configuration file defines a single governance rule within the ArchSpine system. It establishes an import restriction that prevents service-layer code from directly referencing database adapter modules.",
+        "parameter_definitions": {
+          "ruleId": "A unique identifier for the rule, used for indexing, violation reporting, and cross-referencing with other system components.",
+          "title": "Human-readable short name for the rule, displayed in reports and user interfaces.",
+          "summary": "Concise one-line description of the rule's purpose, useful for quick scanning by both humans and agents.",
+          "appliesTo": "Array of glob patterns that determine which files are checked by this rule. Must be carefully scoped to avoid false positives or missed violations.",
+          "severity": "Controls the criticality of violations—'error' means the rule is blocking and will cause the pipeline to fail if violated. Setting this too low may weaken architectural enforcement.",
+          "enforceable": "Boolean flag; when true, the rule is actively validated during scans and checks. Setting it false disables enforcement while keeping the rule definition for documentation.",
+          "rationale": "Provides the business or technical justification for the rule, helping teams understand the intent behind the constraint.",
+          "bodyMarkdown": "Contains the full rule text with examples and guidance. This is the primary reference for developers on how to comply with the rule."
+        },
+        "stability_and_risks": "This rule reinforces a critical architectural boundary—separating business logic from database implementation. If the appliesTo patterns are incorrectly written, violations may go undetected (if too narrow) or legitimate imports may be flagged (if too broad), leading to false positives that degrade developer trust. Setting severity to 'error' with enforceable true ensures compliance is mandatory, preventing architectural drift at the cost of potentially blocking builds if violated. The rationale and bodyMarkdown fields are not enforced programmatically but are essential for human and agent understanding, reducing the risk of misinterpreting the rule. Overall, proper configuration of this rule is vital for maintaining a clean layered architecture and preventing tight coupling between system layers."
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:51:04.377Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 41,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

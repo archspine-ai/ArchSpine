@@ -1,0 +1,283 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt/builder.ts",
+    "contentHash": "0b52d314a4fec087f5dee6e8bca398c3b805e7c41e8775dd4bfe41021ec1bebe",
+    "skeletonHash": "b68ed8d71aef362aa0894d71c7f27b01027b68884e497a364ce1719d8f7623cc",
+    "semanticHash": "fdfb47fb063a1f7c7e3efb0627a5ac92e657165970cfe1a0a8de47dbcb6e3a81",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt"
+  },
+  "semantic": {
+    "role": "Prompt builder composing multi-block LLM prompts from reusable template rendering functions.",
+    "responsibilities": [
+      "Assemble a structured prompt string by appending ordered blocks (identity, instructions, context, environmental context, rule violation check, git intent, JSON schema, source content).",
+      "Provide a fluent builder interface for composing prompts in a declarative manner.",
+      "Encapsulate the prompt-building logic, keeping it separate from template rendering (handled by imported render* functions)."
+    ],
+    "outOfScope": [
+      "Tokenization, truncation, or management of LLM context windows.",
+      "Direct LLM API invocation or response handling.",
+      "Template rendering logic for each block type."
+    ],
+    "invariants": [
+      "Each set* method appends one block to the internal parts array in the order called.",
+      "The build() method joins all parts into a single string, forming the final prompt.",
+      "No block is rendered or validated at build time; all rendering occurs at set* time via the imported functions."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provides a builder pattern for constructing multi-block LLM prompts from reusable rendering functions, separating prompt assembly from template logic.",
+      "recentChangeIntent": "Part of the prompt-building infrastructure introduced in v1.0.0 to support structured prompt composition for LLM-driven governance checks."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "PromptBuilder",
+        "description": "Class that accumulates ordered prompt blocks and produces a final prompt string. The primary public API for prompt assembly in the system."
+      },
+      {
+        "symbolName": "PromptBuilder.setIdentity",
+        "description": "Appends an identity block to the prompt, specifying the assistant's role and target. Called during initialization of a prompt."
+      },
+      {
+        "symbolName": "PromptBuilder.setInstructions",
+        "description": "Appends an instructions block containing high-level task directives. Called after setting identity."
+      },
+      {
+        "symbolName": "PromptBuilder.setContext",
+        "description": "Appends a context block with relevant repository or environment data. Called to inject dynamic context."
+      },
+      {
+        "symbolName": "PromptBuilder.setEnvironmentalContext",
+        "description": "Appends an environmental context block describing the current execution environment. Called to provide system-level state."
+      },
+      {
+        "symbolName": "PromptBuilder.setRuleViolationCheck",
+        "description": "Appends a rule violation check block, instructing the LLM to audit architecture rules. Called when governance checks are needed."
+      },
+      {
+        "symbolName": "PromptBuilder.setGitIntent",
+        "description": "Appends a git intent block supplying recent commit or change context. Called when change analysis is required."
+      },
+      {
+        "symbolName": "PromptBuilder.setJSONSchema",
+        "description": "Appends a JSON schema block defining expected output structure. Called when structured output is needed."
+      },
+      {
+        "symbolName": "PromptBuilder.setSourceContent",
+        "description": "Appends a source content block with code or documentation for analysis. Called to provide the material the LLM must process."
+      },
+      {
+        "symbolName": "PromptBuilder.build",
+        "description": "Finalizes and returns the composed prompt string by joining all accumulated parts with newlines. Called after all set* methods have been invoked."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Prompt builder composing multi-block LLM prompts from reusable template rendering functions.",
+        "responsibilities": [
+          "Assemble a structured prompt string by appending ordered blocks (identity, instructions, context, environmental context, rule violation check, git intent, JSON schema, source content).",
+          "Provide a fluent builder interface for composing prompts in a declarative manner.",
+          "Encapsulate the prompt-building logic, keeping it separate from template rendering (handled by imported render* functions)."
+        ],
+        "outOfScope": [
+          "Tokenization, truncation, or management of LLM context windows.",
+          "Direct LLM API invocation or response handling.",
+          "Template rendering logic for each block type."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../assets/templates/prompts/index.js'",
+        "symbols": [
+          "renderContextBlock",
+          "renderEnvironmentalContextBlock",
+          "renderGitIntentBlock",
+          "renderIdentityBlock",
+          "renderInstructionsBlock",
+          "renderJSONSchemaBlock",
+          "renderRuleViolationCheckBlock",
+          "renderSourceContentBlock"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "PromptBuilder",
+        "kind": "class",
+        "signature": "class PromptBuilder"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "PromptBuilder",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/prompt/builder.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../assets/templates/prompts/index.js",
+        "relation": "import",
+        "symbols": [
+          "renderContextBlock",
+          "renderEnvironmentalContextBlock",
+          "renderGitIntentBlock",
+          "renderIdentityBlock",
+          "renderInstructionsBlock",
+          "renderJSONSchemaBlock",
+          "renderRuleViolationCheckBlock",
+          "renderSourceContentBlock"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/prompt/builder.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/blocks.ts/renderIdentityBlock#",
+        "targetPath": "src/assets/templates/prompts/blocks.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/builder.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/index.ts/renderIdentityBlock#",
+        "targetPath": "src/assets/templates/prompts/index.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/builder.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/blocks.ts/renderInstructionsBlock#",
+        "targetPath": "src/assets/templates/prompts/blocks.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/builder.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/index.ts/renderInstructionsBlock#",
+        "targetPath": "src/assets/templates/prompts/index.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/builder.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/blocks.ts/renderContextBlock#",
+        "targetPath": "src/assets/templates/prompts/blocks.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/builder.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/index.ts/renderContextBlock#",
+        "targetPath": "src/assets/templates/prompts/index.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/builder.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/blocks.ts/renderEnvironmentalContextBlock#",
+        "targetPath": "src/assets/templates/prompts/blocks.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/builder.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/index.ts/renderEnvironmentalContextBlock#",
+        "targetPath": "src/assets/templates/prompts/index.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/builder.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/blocks.ts/renderRuleViolationCheckBlock#",
+        "targetPath": "src/assets/templates/prompts/blocks.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/builder.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/index.ts/renderRuleViolationCheckBlock#",
+        "targetPath": "src/assets/templates/prompts/index.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/builder.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/blocks.ts/renderGitIntentBlock#",
+        "targetPath": "src/assets/templates/prompts/blocks.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/builder.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/index.ts/renderGitIntentBlock#",
+        "targetPath": "src/assets/templates/prompts/index.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/builder.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/blocks.ts/renderJSONSchemaBlock#",
+        "targetPath": "src/assets/templates/prompts/blocks.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/builder.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/index.ts/renderJSONSchemaBlock#",
+        "targetPath": "src/assets/templates/prompts/index.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/builder.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/blocks.ts/renderSourceContentBlock#",
+        "targetPath": "src/assets/templates/prompts/blocks.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/builder.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/index.ts/renderSourceContentBlock#",
+        "targetPath": "src/assets/templates/prompts/index.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:01:04.843Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,283 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/init/repository-bootstrap.ts",
+    "contentHash": "82825e58209afb60a008629f459f4aa1af6a4f8105a23e69b7375b9fc5b07e88",
+    "skeletonHash": "505fe356130e59f54fbff4abd5b6a9137d01c450cf05522205b54b84ab6b8501",
+    "semanticHash": "633055e200c7c63194bae34b6458c8f44101b1a350b100dfc883d79bd5796505",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/init"
+  },
+  "semantic": {
+    "role": "CLI command handler for interactive repository initialization in ArchSpine's bootstrap flow.",
+    "responsibilities": [
+      "Determines the artifact strategy (e.g., git-based tracking) by querying configuration based on init options.",
+      "Prompts the user to confirm installation of recommended rule templates and delegates installation to the repository admin service.",
+      "Offers to install a pre-commit git hook, manages user consent, and updates configuration accordingly.",
+      "Collects and validates the user's name and email for agent instructions attribution.",
+      "Synchronizes agent instructions configuration by calling the repository admin service.",
+      "Manages the overall interactive bootstrap sequence, providing progress feedback via console output."
+    ],
+    "outOfScope": [
+      "Direct file system operations beyond the bootstrap directory (e.g., scanning, analysis, view generation).",
+      "Any runtime pipeline execution (scan, check, fix, sync commands).",
+      "MCP server or tool definitions and management.",
+      "Data persistence or database operations."
+    ],
+    "invariants": [
+      "CLI modules must remain thin entrypoints, delegating business logic to service or utility modules (rule: cli-entrypoint-separation).",
+      "Bootstrap operations should be idempotent where possible, allowing re-initialization without corrupting existing state."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide an interactive CLI flow to bootstrap a new or existing repository with ArchSpine's governance infrastructure (rules, hooks, agent instructions, and configuration).",
+      "recentChangeIntent": "No recent change evident from the provided context; the file appears stable."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "runRepositoryBootstrap",
+        "description": "Orchestrates the interactive initialization of a repository's ArchSpine configuration. Called by the CLI init command to guide the user through setting up rules, pre-commit hooks, agent instructions, and artifact strategy."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command handler for interactive repository initialization in ArchSpine's bootstrap flow.",
+        "responsibilities": [
+          "Determines the artifact strategy (e.g., git-based tracking) by querying configuration based on init options.",
+          "Prompts the user to confirm installation of recommended rule templates and delegates installation to the repository admin service.",
+          "Offers to install a pre-commit git hook, manages user consent, and updates configuration accordingly.",
+          "Collects and validates the user's name and email for agent instructions attribution.",
+          "Synchronizes agent instructions configuration by calling the repository admin service.",
+          "Manages the overall interactive bootstrap sequence, providing progress feedback via console output."
+        ],
+        "outOfScope": [
+          "Direct file system operations beyond the bootstrap directory (e.g., scanning, analysis, view generation).",
+          "Any runtime pipeline execution (scan, check, fix, sync commands).",
+          "MCP server or tool definitions and management.",
+          "Data persistence or database operations."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../utils/git-hook.js'",
+        "symbols": [
+          "installGitHook"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../services/repository-admin-service.js'",
+        "symbols": [
+          "injectRepositoryPackageScripts",
+          "installRecommendedRuleTemplates",
+          "syncAgentInstructionsConfiguration",
+          "syncManagedRepositoryFiles"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "normalizeOptionalString",
+          "wrapPromptText"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'prompts'",
+        "symbols": [
+          "prompts"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "runRepositoryBootstrap",
+        "kind": "function",
+        "signature": "runRepositoryBootstrap(\n  options: RepositoryBootstrapOptions,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "runRepositoryBootstrap",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/init/repository-bootstrap.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../utils/git-hook.js",
+        "relation": "import",
+        "symbols": [
+          "installGitHook"
+        ]
+      },
+      {
+        "targetPath": "../../services/repository-admin-service.js",
+        "relation": "import",
+        "symbols": [
+          "injectRepositoryPackageScripts",
+          "installRecommendedRuleTemplates",
+          "syncAgentInstructionsConfiguration",
+          "syncManagedRepositoryFiles"
+        ]
+      },
+      {
+        "targetPath": "../cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "normalizeOptionalString",
+          "wrapPromptText"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "prompts",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/integration/system/agent-host-init.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/init/repository-bootstrap.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/printStep#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/init/repository-bootstrap.ts/_file_#",
+        "targetSymbol": "src/utils/confirm.ts/promptForImmediateConfirmation#",
+        "targetPath": "src/utils/confirm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/init/repository-bootstrap.ts/_file_#",
+        "targetSymbol": "src/services/repository-admin-service.ts/installRecommendedRuleTemplates#",
+        "targetPath": "src/services/repository-admin-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/init/repository-bootstrap.ts/_file_#",
+        "targetSymbol": "src/utils/git-hook.ts/installGitHook#",
+        "targetPath": "src/utils/git-hook.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/init/repository-bootstrap.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/normalizeOptionalString#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/init/repository-bootstrap.ts/_file_#",
+        "targetSymbol": "src/services/repository-admin-service.ts/syncAgentInstructionsConfiguration#",
+        "targetPath": "src/services/repository-admin-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/init/repository-bootstrap.ts/_file_#",
+        "targetSymbol": "src/services/repository-admin-service.ts/syncManagedRepositoryFiles#",
+        "targetPath": "src/services/repository-admin-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/init/repository-bootstrap.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/wrapPromptText#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/init/repository-bootstrap.ts/_file_#",
+        "targetSymbol": "src/services/repository-admin-service.ts/injectRepositoryPackageScripts#",
+        "targetPath": "src/services/repository-admin-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:54:43.427Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 53,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

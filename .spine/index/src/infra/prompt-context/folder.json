@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/infra/prompt-context",
+  "role": "Infrastructure layer for constructing and managing source prompt artifacts used in LLM prompts within the ArchSpine mirror system.",
+  "responsibility": "Provides a cohesive set of utilities for building compacted source prompt artifacts, including budget calculation, validation policy resolution, text trimming and compaction, diagnostic generation, configuration parsing, and type contracts for prompt context budgets and artifacts.",
+  "children": [
+    {
+      "filePath": "src/infra/prompt-context/artifacts.ts",
+      "role": "Orchestrator for building compacted source prompt artifacts used in LLM prompts, integrating policy resolution, budget calculation, trimming, and diagnostics from sub-modules.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/prompt-context/budgets.ts",
+      "role": "Budget calculator for source prompt artifacts. Selects a budget profile (standard or strict validate) based on the task mode and validation policy, then computes numeric budget limits (e.g., max tokens, lines, sections) from the source content and its structural skeleton.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/prompt-context/constants.ts",
+      "role": "Infrastructure configuration constants module providing canonical lists of validation policies and prompt budget profiles for the prompt engine.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/prompt-context/diagnostics.ts",
+      "role": "Prompt context diagnostics module that produces structured metadata about which rule blocks and dependency candidates were retained or dropped during context assembly. Provides transparent introspection into trimming and selection decisions.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/prompt-context/parsers.ts",
+      "role": "Configuration value parsing utility for validation policy and relevance diagnostics mode — a leaf-level helper within the infra config tier that converts raw string inputs into typed domain enums.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/prompt-context/policy.ts",
+      "role": "Infra utility providing default validation policy selection for prompt tasks, mapping task mode to 'strict' or 'default' with optional override.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/prompt-context/trim.ts",
+      "role": "Infrastructure utility module providing text truncation and compaction functions for prompt context budget enforcement.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/prompt-context/types.ts",
+      "role": "Type contract definitions for prompt context budgets, diagnostics, and generation modes within the infrastructure layer.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:12:04.470Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

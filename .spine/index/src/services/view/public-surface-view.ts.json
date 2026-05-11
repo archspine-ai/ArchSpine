@@ -1,0 +1,237 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/public-surface-view.ts",
+    "contentHash": "ac49ee4dbbe61a6369766b8c379ee498e9b702478a0d43427e229f876851ce78",
+    "skeletonHash": "be6088688c8f0df96e93b85e5d0cd00c5550e19e18b9cb8bce9af6ccd12171b8",
+    "semanticHash": "0bc3d522e4ff7386a95d9bf65936a87d40a8ef157f95daf80e9cd4a337e04ed3",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "View artifact producer that evaluates loaded code units to identify, score, and rank symbols forming the project's public API surface.",
+    "responsibilities": [
+      "Classify each spine unit into a PublicSurfaceKind (function, class, CLI command, HTTP handler, etc.) using heuristics on the unit symbol data.",
+      "Score each candidate symbol based on documentation presence, naming convention compliance, re-export depth, and structural importance.",
+      "Filter out suppressed paths (via isSuppressedPath) to exclude noise like test files or temporary artifacts.",
+      "Sort and rank candidates by totalScore and remainingScore, capping the list to a manageable size.",
+      "Build and return a IViewArtifactEnvelope carrying IPublicSurfaceViewItem[], including metadata (schemaVersion, totalCount, score, confidence)."
+    ],
+    "outOfScope": [
+      "Rendering the public surface view into a human-readable format (delegated to ViewRenderer).",
+      "Orchestrating the full view pipeline (handled by view-service.ts or view-server.ts).",
+      "Interacting with the runtime database or external configuration systems.",
+      "Defining the protocol types themselves (imported from ../../types/)."
+    ],
+    "invariants": [
+      "The output artifact envelope must always set metadata.schemaVersion to CURRENT_SCHEMA_VERSION.",
+      "Every non-suppressed LoadedUnit must produce at most one ScoredCandidate entry.",
+      "Scoring computation must be deterministic for identical input units.",
+      "The totalScore at the envelope level is derived from aggregated subset of individual candidate scores."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a self-contained, scored public surface view artifact for the ArchSpine mirror system, enabling other system components (rendering, dashboard, agents) to understand the externally visible API of the scanned project.",
+      "recentChangeIntent": "No recent change intent provided; the file appears to be stable as part of the view subsystem."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "buildPublicSurfaceView",
+        "description": "Main entry point that consumes an array of LoadedUnit objects, filters and scores each unit into a ScoredCandidate, sorts by score, and returns an IViewArtifactEnvelope with IPublicSurfaceViewItem data. Called by the view runtime or view server to produce the public-surface artifact."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "View artifact producer that evaluates loaded code units to identify, score, and rank symbols forming the project's public API surface.",
+        "responsibilities": [
+          "Classify each spine unit into a PublicSurfaceKind (function, class, CLI command, HTTP handler, etc.) using heuristics on the unit symbol data.",
+          "Score each candidate symbol based on documentation presence, naming convention compliance, re-export depth, and structural importance.",
+          "Filter out suppressed paths (via isSuppressedPath) to exclude noise like test files or temporary artifacts.",
+          "Sort and rank candidates by totalScore and remainingScore, capping the list to a manageable size.",
+          "Build and return a IViewArtifactEnvelope carrying IPublicSurfaceViewItem[], including metadata (schemaVersion, totalCount, score, confidence)."
+        ],
+        "outOfScope": [
+          "Rendering the public surface view into a human-readable format (delegated to ViewRenderer).",
+          "Orchestrating the full view pipeline (handled by view-service.ts or view-server.ts).",
+          "Interacting with the runtime database or external configuration systems.",
+          "Defining the protocol types themselves (imported from ../../types/)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "type SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./common.js'",
+        "symbols": [
+          "isSuppressedPath",
+          "sumScores",
+          "toConfidence"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./view-renderer.js'",
+        "symbols": [
+          "ViewRenderer"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "buildPublicSurfaceView",
+        "kind": "function",
+        "signature": "buildPublicSurfaceView(\n  units: LoadedUnit[],\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "buildPublicSurfaceView",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/public-surface-view.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "../../types/view.js",
+        "relation": "import",
+        "symbols": [
+          "PublicSurfaceKind",
+          "IPublicSurfaceViewItem",
+          "IViewArtifactEnvelope",
+          "IViewScoreContribution"
+        ]
+      },
+      {
+        "targetPath": "./common.js",
+        "relation": "import",
+        "symbols": [
+          "isSuppressedPath",
+          "sumScores",
+          "toConfidence"
+        ]
+      },
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "LoadedUnit"
+        ]
+      },
+      {
+        "targetPath": "./producer.js",
+        "relation": "import",
+        "symbols": [
+          "ViewArtifact",
+          "ViewContext",
+          "ViewProducer"
+        ]
+      },
+      {
+        "targetPath": "./view-renderer.js",
+        "relation": "import",
+        "symbols": [
+          "ViewRenderer"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "path"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/view/view-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/view/public-surface-view.ts/_file_#",
+        "targetSymbol": "src/services/view/common.ts/isSuppressedPath#",
+        "targetPath": "src/services/view/common.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/view/public-surface-view.ts/_file_#",
+        "targetSymbol": "src/services/view/common.ts/sumScores#",
+        "targetPath": "src/services/view/common.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/view/public-surface-view.ts/_file_#",
+        "targetSymbol": "src/services/view/common.ts/toConfidence#",
+        "targetPath": "src/services/view/common.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:03:55.925Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

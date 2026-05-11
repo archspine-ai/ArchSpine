@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/cli/commands",
+  "role": "This directory contains all CLI command handler modules, each responsible for parsing and executing a specific subcommand of the ArchSpine tool.",
+  "responsibility": "These modules collectively implement the command-line interface of ArchSpine, orchestrating user interactions for build, check, config, info, init, LLM configuration, MCP server, removal, rules, scan, skill management, sync, try, and view operations. They serve as thin controllers that parse arguments, validate inputs, delegate to service layers, and handle output formatting.",
+  "children": [
+    {
+      "filePath": "src/cli/commands/build.ts",
+      "role": "CLI command adapter for the `build` subcommand. Orchestrates build workflow by invoking the sync pipeline and runtime service.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/cli/commands/check.ts",
+      "role": "CLI command handler for the `spine check` subcommand, adapting the RuntimeService to expose architectural validation as a terminal entrypoint.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/cli/commands/config.ts",
+      "role": "CLI command handler for the `spine config` subcommand, responsible for reading and writing project configuration, managing documentation languages, repo settings, and git hooks via interactive prompts or direct argument-driven commands.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/cli/commands/info.ts",
+      "role": "CLI command adapter for the `info` subcommand, orchestrating sync status display and optional detailed reports by delegating to engine and service modules.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/cli/commands/init.ts",
+      "role": "CLI command adapter for 'spine init', orchestrating initial project and runtime setup.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/cli/commands/llm.ts",
+      "role": "CLI command adapter for interactive LLM (Language Model) provider and API key configuration, supporting both global and project-level scopes.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/cli/commands/mcp.ts",
+      "role": "CLI command adapter for the MCP (Model Context Protocol) subcommands: start, setup, and general command routing.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/cli/commands/remove.ts",
+      "role": "CLI command adapter responsible for uninstalling ArchSpine from a target repository by removing managed configuration files, git hooks, and package scripts.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/cli/commands/rules.ts",
+      "role": "CLI command adapter for rule management (list, add, info) that delegates to the rule service layer.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/cli/commands/scan.ts",
+      "role": "CLI command adapter for the `scan` operation, routing user arguments to scanning engines and formatting output as console text.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/cli/commands/skill.ts",
+      "role": "CLI command adapter for skill management operations (install, uninstall, list). It is a thin controller that parses CLI arguments, displays help/usage, and delegates to the skill service layer.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/cli/commands/sync.ts",
+      "role": "CLI command adapter and orchestration handler for the `sync` command. Routes parsed CLI arguments to the appropriate sync workflow mode and orchestrates the full synchronization pipeline including scanning, LLM analysis, manifest update, repair, and protected output mutation detection.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/cli/commands/try.ts",
+      "role": "CLI command handler for the 'try' subcommand. Orchestrates a three-stage operation (repository posture validation, language landscape discovery, and AST preview generation) by delegating entirely to the TryService.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/cli/commands/view.ts",
+      "role": "CLI command adapter for view operations (show, list, info, configure). Acts as the entrypoint for view-related CLI subcommands, delegating to view service layer for resolving views and layers, and directly orchestrating protected output baseline writes via infra utilities.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-11T05:40:44.355Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

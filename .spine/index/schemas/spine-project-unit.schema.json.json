@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "schemas/spine-project-unit.schema.json",
+    "contentHash": "c7274001b0270538fec96a7e7437a48b44e5c3b2c7419d4cd35bd096b6b2367a",
+    "semanticHash": "4194abc049160a90cff8009fd1c45d2d295cbea310effc19bd42086f4bb9ee45",
+    "language": "unsupported",
+    "fileKind": "config",
+    "scope": "schemas"
+  },
+  "semantic": {
+    "role": "Define the structure and validation rules for ArchSpine project unit configuration files.",
+    "responsibilities": [
+      "Schema validation system",
+      "Project unit data model",
+      "Configuration integrity checking"
+    ],
+    "outOfScope": [],
+    "invariants": [
+      "All required fields must be present: schemaVersion, projectName, role, responsibility, modules, provenance",
+      "Additional properties are forbidden",
+      "childCount must be a non-negative integer",
+      "All string fields must be non-empty"
+    ],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Defines the structure and validation rules for ArchSpine project unit configuration files.",
+        "parameter_definitions": {
+          "schemaVersion": "Controls the schema version compatibility. Must match the expected version to prevent parsing errors.",
+          "projectName": "Identifies the project. Used across the system for routing and display. Must be non-empty.",
+          "role": "Describes the functional role of this project unit. Used for architectural classification.",
+          "responsibility": "Describes the responsibility of the project unit. Used for context and governance.",
+          "modules": "Array of module descriptors. Each specifies a directory, role, and number of child items. Controls the system's understanding of the module structure.",
+          "provenance": "Tracks metadata about when and how this configuration was generated. Includes timestamp, generator version, and pipeline stages. Important for auditing and replay."
+        },
+        "stability_and_risks": "This schema defines the contract for project unit configuration files. Any violation of required fields or constraints will cause validation failures, potentially halting pipeline processing. Incorrect values (e.g., non-existent directories, non-integer childCount) can lead to downstream errors in aggregation, scanning, and view generation. The schema's strict additionalProperties enforcement ensures no unknown fields are accidentally introduced, which could cause silent data loss or misinterpretation. Maintaining backward compatibility when evolving this schema is crucial to avoid breaking existing configurations."
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:51:21.999Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 41,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

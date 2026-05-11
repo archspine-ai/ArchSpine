@@ -1,0 +1,193 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/manifest/integrity.ts",
+    "contentHash": "41893fab664aca7d03e99d990e6aeb06627f27b4a4982bb48a057fc5f7f0ecf2",
+    "skeletonHash": "9b75cca045fb6e64cc6b241b40e98867bc2786a4f02e3ea449fdcd25d13ffbeb",
+    "semanticHash": "d9b7bf1daab6baeaf2c1ca3491194909b94bc4943b921325d273cc2e540da6c4",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/manifest"
+  },
+  "semantic": {
+    "role": "Infrastructure utility for computing file integrity hashes, used by the Spine gate to detect file changes.",
+    "responsibilities": [
+      "Validate that the target file exists and is a regular file before hashing.",
+      "Compute a SHA-256 hash of the file content combined with its mtime and size metadata.",
+      "Integrate with the SpineDB to retrieve file status (e.g., stored hash) for comparison or skipping redundant reads.",
+      "Provide a deterministic hash result that reflects both content and metadata changes."
+    ],
+    "outOfScope": [
+      "Decision-making about whether a file has changed (only computes the hash).",
+      "Higher-level orchestration of the Spine gate pipeline.",
+      "Handling of directories, symlinks, or non-regular files."
+    ],
+    "invariants": [
+      "The hash is computed deterministically from the same file content, mtimeMs, and size.",
+      "The function throws an Error if the filePath does not exist or is not a regular file.",
+      "The function uses `normalizeRepoPath` to ensure consistent path representation before any database lookups."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a standalone, low-level hashing primitive that the Spine gate can rely on for integrity verification.",
+      "recentChangeIntent": "This file was modified as part of the ArchSpine v1.0.0 release, possibly aligning hashing with the new semantic layer and database schema changes."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "calculateHash",
+        "description": "Computes a SHA-256 hash of a file, combining its content with mtime and size. Returns the hex digest. Throws if the file does not exist or is not a regular file."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure utility for computing file integrity hashes, used by the Spine gate to detect file changes.",
+        "responsibilities": [
+          "Validate that the target file exists and is a regular file before hashing.",
+          "Compute a SHA-256 hash of the file content combined with its mtime and size metadata.",
+          "Integrate with the SpineDB to retrieve file status (e.g., stored hash) for comparison or skipping redundant reads.",
+          "Provide a deterministic hash result that reflects both content and metadata changes."
+        ],
+        "outOfScope": [
+          "Decision-making about whether a file has changed (only computes the hash).",
+          "Higher-level orchestration of the Spine gate pipeline.",
+          "Handling of directories, symlinks, or non-regular files."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../utils/repo-path.js'",
+        "symbols": [
+          "normalizeRepoPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../db.js'",
+        "symbols": [
+          "SpineDB"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'crypto'",
+        "symbols": [
+          "* as crypto"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'crypto'",
+        "symbols": [
+          "* as crypto"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "calculateHash",
+        "kind": "function",
+        "signature": "calculateHash(db: SpineDB, filePath: string)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "calculateHash",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/manifest/integrity.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../utils/repo-path.js",
+        "relation": "import",
+        "symbols": [
+          "normalizeRepoPath"
+        ]
+      },
+      {
+        "targetPath": "../db.js",
+        "relation": "import",
+        "symbols": [
+          "SpineDB"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "crypto",
+        "relation": "import",
+        "symbols": [
+          "* as crypto"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/manifest/integrity.ts/_file_#",
+        "targetSymbol": "src/utils/repo-path.ts/normalizeRepoPath#",
+        "targetPath": "src/utils/repo-path.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/manifest/integrity.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getFileStatus#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:59:19.773Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

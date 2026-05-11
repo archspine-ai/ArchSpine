@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/manifest/types.ts",
+    "contentHash": "c8c6f6b7821d81911bc78aac24d04b639766d5fc11c5bef8cffbff1ed75b0efe",
+    "skeletonHash": "a0539c7a32f68301e14cb80a4f05eeff4b81b3f8b320f6129f299f85218146d5",
+    "semanticHash": "25d5f452ec6223e8b6823b433e44bc84f30a4b2ffa9e2435c0ed0a80be559ab7",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/manifest"
+  },
+  "semantic": {
+    "role": "Protocol type definition defining the shape of a file status snapshot for use across the ArchSpine scanning and synchronization layers.",
+    "responsibilities": [
+      "Define the data contract for capturing file modification time and size, consumed by scanners, aggregators, and manifest utilities.",
+      "Provide a stable TypeScript interface that external modules depend on for type safety when tracking file state changes."
+    ],
+    "outOfScope": [
+      "File I/O, reading actual file system metadata.",
+      "Validation or transformation of mtime/size values.",
+      "Business logic related to change detection."
+    ],
+    "invariants": [
+      "The interface must remain a pure value type with no methods; consumers should treat instances as immutable data.",
+      "Any consumer that derives change detection from mtime and size must base its logic solely on the fields defined here."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish a clean type contract for file status snapshots to decouple scanning from change detection logic.",
+      "recentChangeIntent": "Part of ArchSpine v1.0.0 release introducing a governed type system for semantic layer and architectural governance."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "FileStatusSnapshot",
+        "description": "Data interface representing the immutable state of a file at a point in time (modification timestamp and byte size). Used by the scanner and aggregator to track file changes."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Protocol type definition that defines the shape of a file status snapshot used across the ArchSpine scanning and synchronization layers.",
+        "responsibilities": [
+          "Define the data contract for capturing file modification time and size, consumed by scanners, aggregators, and manifest utilities.",
+          "Provide a stable TypeScript interface that external modules depend on for type safety when tracking file state changes."
+        ],
+        "outOfScope": [
+          "File I/O, reading actual file system metadata.",
+          "Validation or transformation of mtime/size values.",
+          "Business logic related to change detection."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "FileStatusSnapshot",
+        "kind": "interface",
+        "signature": "interface FileStatusSnapshot"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "FileStatusSnapshot",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/manifest/types.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:59:10.248Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

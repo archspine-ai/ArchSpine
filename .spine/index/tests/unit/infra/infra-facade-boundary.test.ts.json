@@ -1,0 +1,145 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/infra/infra-facade-boundary.test.ts",
+    "contentHash": "7b5b9d28b8e8c2fa2ff4d18a33365eaf6b78aed82fe0b48401d6c207ebb28547",
+    "skeletonHash": "6802200e0efc0c1d902b90ecbf4f198286487c450b3ae0515e683b7869c318a0",
+    "semanticHash": "20f6810cc49d6e126a3586f8d6ba0e756e19aae2fccaa4a0a18aee8f3e13876a",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/infra"
+  },
+  "semantic": {
+    "role": "Vitest-based test suite for verifying the Writer Boundary Layer (facade-based import rules). Ensures that internal modules within a directory can only be imported through a designated facade file, and validates that importers are explicitly allowed.",
+    "responsibilities": [
+      "Define a `BoundaryRule` type and a `collectFiles` utility for recursively gathering source files.",
+      "Test that each internal directory has a corresponding facade file and that all imports to internal modules go through that facade.",
+      "Validate that importers are listed in the `allowedImporters` set of the boundary rule."
+    ],
+    "outOfScope": [
+      "Production enforcement of import boundaries (runtime checks are elsewhere).",
+      "CLI commands, HTTP handlers, MCP tools, or service interfaces.",
+      "Any code related to project scanning, pipeline execution, or LLM interaction."
+    ],
+    "invariants": [
+      "Test file must end with `.test.ts` or `.spec.ts` (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Reinforce the writer boundary contract by ensuring that internal implementation details are only accessed through a single facade entry point.",
+      "recentChangeIntent": "No recent change intent provided; the file appears to be an established test for facade-based import rules."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest-based test suite for verifying the Writer Boundary Layer (facade-based import rules). Ensures that internal modules within a directory can only be imported through a designated facade file, and validates that importers are explicitly allowed.",
+        "responsibilities": [
+          "Define a `BoundaryRule` type and a `collectFiles` utility for recursively gathering source files.",
+          "Test that each internal directory has a corresponding facade file and that all imports to internal modules go through that facade.",
+          "Validate that importers are listed in the `allowedImporters` set of the boundary rule."
+        ],
+        "outOfScope": [
+          "Production enforcement of import boundaries (runtime checks are elsewhere).",
+          "CLI commands, HTTP handlers, MCP tools, or service interfaces.",
+          "Any code related to project scanning, pipeline execution, or LLM interaction."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:09:57.432Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

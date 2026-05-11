@@ -1,0 +1,22 @@
+imports:
+  - id: require
+    pattern: 'require $SOURCE'
+  - id: require_relative
+    pattern: 'require_relative $SOURCE'
+  - id: load
+    pattern: 'load $SOURCE'
+exports:
+  - id: class
+    pattern: 'class $NAME'
+    kind: Class
+  - id: module
+    pattern: 'module $NAME'
+    kind: Class
+  - id: function
+    pattern: 'def $NAME'
+    kind: Function
+usages:
+  - id: call
+    pattern: '$NAME($$$ARGS)'
+  - id: method
+    pattern: '$OBJ.$NAME'

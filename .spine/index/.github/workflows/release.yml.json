@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": ".github/workflows/release.yml",
+    "contentHash": "09b58df3db95c4828f285cb31c16c7ab8472977117442ffda9f49ccbb4feb371",
+    "semanticHash": "e7baf0f13cf4cb1855e18a93a2102bc2068095ae89618dafb69c3d763f09afa6",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": ".github/workflows"
+  },
+  "semantic": {
+    "role": "This document defines the automated release pipeline for the ArchSpine project, triggered by version tags.",
+    "responsibilities": [
+      "Specifies the workflow that runs on pushes to tags matching 'v*'",
+      "Checks out the repository, sets up Node.js 20, installs dependencies and builds",
+      "Publishes the package to the npm registry using the NPM_TOKEN secret",
+      "Creates a GitHub Release with auto-generated release notes"
+    ],
+    "outOfScope": [
+      "Manual or ad-hoc release steps",
+      "Other CI workflows (e.g., testing, linting)",
+      "Pre-release validation or changelog generation beyond GitHub notes",
+      "Multi-platform builds or deployment to other registries"
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This document describes the release workflow of the ArchSpine project, an automated pipeline that builds, publishes to npm, and creates a GitHub release whenever a version tag is pushed.",
+        "context_and_audience": "It is intended for maintainers and contributors who need to understand how official releases are cut, as well as for developers integrating ArchSpine via npm who want assurance about the release automation.",
+        "key_takeaways": [
+          "The release is triggered by any tag starting with 'v' (e.g., v1.2.3).",
+          "The workflow runs on Ubuntu, uses Node 20, and caches npm dependencies.",
+          "After building, it publishes to npm using a secret token and creates a GitHub Release with auto-generated notes."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:49:46.258Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 29,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

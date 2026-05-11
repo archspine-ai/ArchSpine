@@ -1,0 +1,238 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/core/post-commit-derivation.test.ts",
+    "contentHash": "0bda112de1ccc98f52b95d6e3b0627b5ff0b41007aaee2290c0a28d7fc3faf65",
+    "skeletonHash": "eff8d19083d929417db004e04478ff059a6bc0223d93e1d91502506ec4d05590",
+    "semanticHash": "be225cc44a61523d647329e5435b1037b9b7b2d1e66873f90b7bb56f0c631db5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/core"
+  },
+  "semantic": {
+    "role": "Test suite for the PostCommitDerivationTask orchestrating reverse indexing, aggregation, knowledge graph, and view derivation tasks in the correct sequential order.",
+    "responsibilities": [
+      "Verify that PostCommitDerivationTask.execute() triggers ReverseIndexingTask, AggregationTask, KnowledgeGraphTask, and ViewDerivationTask in the correct order.",
+      "Ensure that ViewService is correctly invoked after view derivation with VIEW_DEFINITIONS.",
+      "Validate that task telemetry state is initialized before execution.",
+      "Provide coverage for the post-commit derivation pipeline orchestration logic."
+    ],
+    "outOfScope": [
+      "Implementation details of the individual sub-tasks (ReverseIndexingTask, AggregationTask, KnowledgeGraphTask, ViewDerivationTask).",
+      "Public API surface of the system (CLI commands, MCP tools, configuration loading).",
+      "Runtime configuration or environment setup.",
+      "Error handling or recovery logic inside the production tasks."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts suffix per architectural rule test-file-suffix."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide automated regression coverage for the post-commit derivation pipeline that ensures cross-cutting indexing, aggregation, and view generation steps execute in dependency order.",
+      "recentChangeIntent": "Part of refactoring that removed legacy CLI aliases, rebuilt documentation, and fixed schema/tests; this test file was updated to align with the new pipeline dependencies."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Test suite for the PostCommitDerivationTask that orchestrates reverse indexing, aggregation, knowledge graph, and view derivation tasks in the correct sequential order.",
+        "responsibilities": [
+          "Verify that PostCommitDerivationTask.execute() triggers ReverseIndexingTask, AggregationTask, KnowledgeGraphTask, and ViewDerivationTask in the expected order.",
+          "Ensure that ViewService is correctly called after view derivation with the predefined VIEW_DEFINITIONS.",
+          "Validate that task telemetry state is properly initialized before execution begins.",
+          "Provide comprehensive regression coverage for the post-commit derivation orchestration logic."
+        ],
+        "outOfScope": [
+          "Implementation details of the individual sub-tasks (ReverseIndexingTask, AggregationTask, KnowledgeGraphTask, ViewDerivationTask).",
+          "Public API surface of the system (CLI commands, MCP tools, configuration loading).",
+          "Runtime configuration or environment setup specifics.",
+          "Error handling or recovery logic inside the production tasks."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it",
+          "vi",
+          "afterEach"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/tasks/post-commit-derivation.js'",
+        "symbols": [
+          "PostCommitDerivationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/tasks/reverse-index.js'",
+        "symbols": [
+          "ReverseIndexingTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/tasks/knowledge-graph.js'",
+        "symbols": [
+          "KnowledgeGraphTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/tasks/aggregate.js'",
+        "symbols": [
+          "AggregationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/tasks/view-derivation.js'",
+        "symbols": [
+          "ViewDerivationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/services/view/view-service.js'",
+        "symbols": [
+          "ViewService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/services/view/view-registry.js'",
+        "symbols": [
+          "VIEW_DEFINITIONS"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/core/task-state.js'",
+        "symbols": [
+          "createTaskTelemetryState"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it",
+          "vi",
+          "afterEach"
+        ]
+      },
+      {
+        "targetPath": "../../../src/tasks/post-commit-derivation.js",
+        "relation": "import",
+        "symbols": [
+          "PostCommitDerivationTask"
+        ]
+      },
+      {
+        "targetPath": "../../../src/tasks/reverse-index.js",
+        "relation": "import",
+        "symbols": [
+          "ReverseIndexingTask"
+        ]
+      },
+      {
+        "targetPath": "../../../src/tasks/knowledge-graph.js",
+        "relation": "import",
+        "symbols": [
+          "KnowledgeGraphTask"
+        ]
+      },
+      {
+        "targetPath": "../../../src/tasks/aggregate.js",
+        "relation": "import",
+        "symbols": [
+          "AggregationTask"
+        ]
+      },
+      {
+        "targetPath": "../../../src/tasks/view-derivation.js",
+        "relation": "import",
+        "symbols": [
+          "ViewDerivationTask"
+        ]
+      },
+      {
+        "targetPath": "../../../src/services/view/view-service.js",
+        "relation": "import",
+        "symbols": [
+          "ViewService"
+        ]
+      },
+      {
+        "targetPath": "../../../src/services/view/view-registry.js",
+        "relation": "import",
+        "symbols": [
+          "VIEW_DEFINITIONS"
+        ]
+      },
+      {
+        "targetPath": "../../../src/core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "createTaskTelemetryState"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/core/post-commit-derivation.test.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/createTaskTelemetryState#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/post-commit-derivation.test.ts/_file_#",
+        "targetSymbol": "src/tasks/post-commit-derivation.ts/PostCommitDerivationTask#",
+        "targetPath": "src/tasks/post-commit-derivation.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:39:49.836Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

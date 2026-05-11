@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "scripts/dev-build.mjs",
+    "contentHash": "3556aade1deb02ae67ce4badc916245c1da1afdd9b980d08b85eab2500283953",
+    "semanticHash": "3f55351bc467f4fe37993b0bb4a605a5d3ab34e47b4afc89679296daac5dec0b",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": "scripts"
+  },
+  "semantic": {
+    "role": "Development build watcher script that polls source files and triggers rebuilds on changes.",
+    "responsibilities": [
+      "Automatically rebuilds the ArchSpine project when source files change.",
+      "Polls specified directories and files for modification timestamps and sizes.",
+      "Queues builds if one is already in progress to avoid concurrent builds.",
+      "Reports build success or failure to the console."
+    ],
+    "outOfScope": [
+      "Does not perform incremental compilation or hot module replacement.",
+      "Does not integrate with IDE or editor watch modes.",
+      "Does not clean the build output or handle complex dependency tracking."
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This script provides a simple polling-based file watcher for the ArchSpine development process. It continuously monitors key source directories and configuration files, automatically invoking the build process whenever it detects a change. This reduces the need for manual rebuilds and speeds up the development feedback loop.",
+        "context_and_audience": "Targeted at ArchSpine developers who need a lightweight, cross-platform method to automatically rebuild the project during active development. It avoids relying on system-specific file watchers and works reliably across different operating systems.",
+        "key_takeaways": [
+          "The script polls every 1 second for changes in specified source files and directories.",
+          "It debounces builds by queuing requests if a build is already in progress.",
+          "The build is triggered via `npm run build`, and the console provides clear feedback on success or failure.",
+          "No external dependencies are required beyond Node.js and npm."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:51:28.645Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 6,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

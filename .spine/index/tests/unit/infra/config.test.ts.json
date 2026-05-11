@@ -1,0 +1,222 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/infra/config.test.ts",
+    "contentHash": "87667cfea1ad11131d0515843ebc353f21af73575ff3d399dfcaba1283cd22b2",
+    "skeletonHash": "8cfe176e6bf1f6c638a66fd2f7323f1d7f288bf18d980cf397b5d48b60c93c35",
+    "semanticHash": "532ab2ad5e281a248d1594c5aa444b778f3527d9929428efc1a2ee89439db3b1",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/infra"
+  },
+  "semantic": {
+    "role": "Test suite for the Config configuration management class.",
+    "responsibilities": [
+      "Verifies that Config.hasPersistedConfig() correctly detects whether a persistent config file exists.",
+      "Tests the round-trip persistence of LLM provider and model settings via setLLMProvider, setLLMModel, getLLMProvider, getLLMModel.",
+      "Ensures that the config file is persisted to the expected .spine/config.json path.",
+      "Cleans up temporary directories and environment stubs after each test."
+    ],
+    "outOfScope": [
+      "This test file does not define or export any production symbols.",
+      "Does not test other Config methods beyond persistence and LLM settings."
+    ],
+    "invariants": [
+      "The test file must end with .test.ts suffix to comply with naming conventions."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Test infrastructure to validate config persistence behaviors for the ArchSpine mirror system.",
+      "recentChangeIntent": "No recent changes indicated beyond test maintenance."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Test suite for the Config configuration management class.",
+        "responsibilities": [
+          "Verifies that Config.hasPersistedConfig() correctly detects whether a persistent config file exists.",
+          "Tests the round-trip persistence of LLM provider and model settings via setLLMProvider, setLLMModel, getLLMProvider, getLLMModel.",
+          "Ensures that the config file is persisted to the expected .spine/config.json path.",
+          "Cleans up temporary directories and environment stubs after each test."
+        ],
+        "outOfScope": [
+          "This test file does not define or export any production symbols.",
+          "Does not test other Config methods beyond persistence and LLM settings."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "beforeEach",
+          "afterEach",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "beforeEach",
+          "afterEach",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/infra/config.test.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/config.test.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/config.test.ts/_file_#",
+        "targetSymbol": "src/infra/config/env.ts/parseBooleanEnv#",
+        "targetPath": "src/infra/config/env.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/config.test.ts/_file_#",
+        "targetSymbol": "src/infra/config/supported-values.ts/setSupportedValue#",
+        "targetPath": "src/infra/config/supported-values.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/config.test.ts/_file_#",
+        "targetSymbol": "src/infra/config/supported-values.ts/getSupportedValue#",
+        "targetPath": "src/infra/config/supported-values.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:09:30.051Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

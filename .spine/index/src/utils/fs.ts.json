@@ -1,0 +1,186 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/utils/fs.ts",
+    "contentHash": "626129714884864cb8452ab7bf28806b02bfffa233939589d0cc5cdb1d26be62",
+    "skeletonHash": "e4c99c023f257f0ab23ba5fc9ab3c6d4eeaa22b57d26fd50caf919511f06880c",
+    "semanticHash": "1c66233dcb17029cdaab70b76012afd694a7af7c5822662f40d353c108f1f28f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/utils"
+  },
+  "semantic": {
+    "role": "Infrastructure utility class for atomic filesystem operations. Provides safe file write and file copy operations with temporary file staging and directory creation.",
+    "responsibilities": [
+      "Atomic file write: writes content to a temporary file and renames to target path, preventing corruption from partial writes.",
+      "Automatic directory creation: creates parent directories if they do not exist before writing.",
+      "Unique temporary file naming: uses cryptographic randomness (crypto.randomBytes) to generate temp file names.",
+      "File copy operation: provides a method to copy a file from source to destination (inferred from fs.copyFileSync usage).",
+      "Cleanup of stale temporary files: possibly removes leftover temp files (fs.unlinkSync usage)."
+    ],
+    "outOfScope": [
+      "Business logic or domain-specific operations.",
+      "Configuration management or environment variable handling.",
+      "User interfaces or CLI command processing.",
+      "Higher-level orchestration (e.g., pipeline execution, scanning, LLM calls)."
+    ],
+    "invariants": [
+      "File writes are atomic: the target file is either completely updated or untouched if the process is interrupted.",
+      "All parent directories required for a file path are created before any write.",
+      "Temporary files are always cleaned up after a successful write."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reliable, atomic file I/O utility for the entire ArchSpine system to prevent data corruption during writes.",
+      "recentChangeIntent": "No specific recent change information from git history; file appears to be part of the initial v1.0.0 architectural governance foundation."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "FileSystemManager",
+        "description": "Class exposing static methods for atomic filesystem operations. Consumed by infrastructure modules that need safe write or copy capabilities."
+      },
+      {
+        "symbolName": "FileSystemManager.safeWriteFile",
+        "description": "Writes content to a file atomically by writing to a temporary file and then renaming it. Used to ensure data integrity during scans, syncs, and artifact generation."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure utility class for atomic filesystem operations. Provides safe file write and file copy operations with temporary file staging and directory creation.",
+        "responsibilities": [
+          "Safely writes file content by first writing to a temporary file, then renaming it to the target. This makes the operation atomic and prevents file corruption from interrupted processes.",
+          "Automatically creates parent directories if they do not exist when writing a file.",
+          "Generates unique temporary filenames using cryptographic random bytes to avoid collisions.",
+          "Offers a file copy operation that copies a source file to a destination path.",
+          "Cleans up stale or leftover temporary files as needed."
+        ],
+        "outOfScope": [
+          "Business logic or domain-specific features.",
+          "Configuration management or environment variable handling.",
+          "User interface commands or CLI handling.",
+          "Orchestration of higher-level tasks like scanning, pipeline execution, or LLM interactions."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'crypto'",
+        "symbols": [
+          "* as crypto"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'crypto'",
+        "symbols": [
+          "* as crypto"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "FileSystemManager",
+        "kind": "class",
+        "signature": "class FileSystemManager"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "FileSystemManager",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/utils/fs.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "built-in:fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "built-in:path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "built-in:crypto",
+        "relation": "import",
+        "symbols": [
+          "* as crypto"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/manifest/state.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:06:06.580Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 82,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,64 @@
+imports:
+  - id: use
+    pattern: 'use $SOURCE;'
+exports:
+  - id: function
+    pattern:
+      rule:
+        kind: function_item
+        not:
+          inside:
+            kind: impl_item
+            stopBy: end
+        all:
+          - has:
+              kind: identifier
+              pattern: $NAME
+              stopBy: end
+          - has:
+              kind: parameters
+              pattern: $ARGS
+              stopBy: end
+    kind: Function
+  - id: struct
+    pattern:
+      rule:
+        kind: struct_item
+        has:
+          kind: type_identifier
+          pattern: $NAME
+          stopBy: end
+    kind: Class
+  - id: trait
+    pattern:
+      rule:
+        kind: trait_item
+        has:
+          kind: type_identifier
+          pattern: $NAME
+          stopBy: end
+    kind: Interface
+  - id: impl
+    pattern:
+      rule:
+        kind: impl_item
+        any:
+          - has:
+              kind: type_identifier
+              pattern: $NAME
+          - has:
+              kind: generic_type
+              stopBy: end
+              has:
+                kind: type_identifier
+                pattern: $NAME
+                stopBy: end
+    kind: Type
+  - id: variable
+    pattern: 'let $NAME = $VAL;'
+    kind: Variable
+usages:
+  - id: call
+    pattern: '$NAME($$$ARGS)'
+  - id: path
+    pattern: '$OBJ::$NAME'

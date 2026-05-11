@@ -1,0 +1,203 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/view-runtime.ts",
+    "contentHash": "531a639c1988a3f63e88e8b5083eac898ffb86851cfaf75969f2889b936c58b0",
+    "skeletonHash": "e45a815b24bf751a93dfcd1b646007f541c11620213f5647a597cfb833a87551",
+    "semanticHash": "6c1b0d759bb3ccb27b221a870d7cdc739b654706a26b5128331e5fee8410836a",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "Configuration resolution layer for the view subsystem: reads project config and environment variables to determine whether the view layer is enabled and which view IDs are active.",
+    "responsibilities": [
+      "Resolve the boolean view layer state (enabled/disabled) from project config and env var SPINE_VIEW_LAYER, with fallback to default.",
+      "Resolve the set of enabled ViewIds by merging project-configured views, normalizing them, and identifying unknown IDs.",
+      "Track the source of each resolved value (project-config, env, or default) for transparency."
+    ],
+    "outOfScope": [
+      "View rendering, data production, or orchestration of view tasks.",
+      "Direct access to databases or file systems.",
+      "Mutating configuration or writing state back to config."
+    ],
+    "invariants": [
+      "The module does not mutate the Config object; it only reads via defined accessors.",
+      "All resolved outputs are derived from inputs; no side effects on external state.",
+      "Normalization of view IDs is delegated to view-registry functions."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized, traceable resolution layer that decouples view configuration parsing from the rest of the view subsystem.",
+      "recentChangeIntent": "Maintenance pass aligned with release gate fixes; no semantic change to the module's contract."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ResolvedViewLayer",
+        "description": "Interface representing the resolved boolean state of the view layer, including the source of resolution (project-config, env, or default)."
+      },
+      {
+        "symbolName": "ResolvedEnabledViews",
+        "description": "Interface representing the resolved list of enabled ViewId values, their resolution source, and any unknown IDs that were not recognized."
+      },
+      {
+        "symbolName": "resolveViewLayer",
+        "description": "Reads the view layer setting from project config (via getViewLayer) and env var SPINE_VIEW_LAYER, then returns a ResolvedViewLayer with source tracking. Called during system startup to decide whether the view system is active."
+      },
+      {
+        "symbolName": "resolveEnabledViews",
+        "description": "Reads the configured enabled views from project config, normalizes them using view-registry, falls back to defaults, and returns a ResolvedEnabledViews with source and unknown IDs. Called to determine which specific views are active."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Configuration resolution layer for the view subsystem: reads project config and environment variables to determine whether the view layer is enabled and which view IDs are active.",
+        "responsibilities": [
+          "Resolve the boolean view layer state (enabled/disabled) from project config and env var SPINE_VIEW_LAYER, with fallback to default.",
+          "Resolve the set of enabled ViewIds by merging project-configured views, normalizing them, and identifying unknown IDs.",
+          "Track the source of each resolved value (project-config, env, or default) for transparency."
+        ],
+        "outOfScope": [
+          "View rendering, data production, or orchestration of view tasks.",
+          "Direct access to databases or file systems.",
+          "Mutating configuration or writing state back to config."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./view-registry.js'",
+        "symbols": [
+          "getDefaultEnabledViewIds",
+          "normalizeViewIds"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "resolveViewLayer",
+        "kind": "function",
+        "signature": "resolveViewLayer(config: Pick<Config, 'getViewLayer'>)"
+      },
+      {
+        "name": "resolveEnabledViews",
+        "kind": "function",
+        "signature": "resolveEnabledViews(\n  config: Pick<Config, 'getConfiguredEnabledViews'>,\n)"
+      },
+      {
+        "name": "ResolvedViewLayer",
+        "kind": "interface",
+        "signature": "interface ResolvedViewLayer"
+      },
+      {
+        "name": "ResolvedEnabledViews",
+        "kind": "interface",
+        "signature": "interface ResolvedEnabledViews"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "resolveViewLayer",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/view-runtime.ts#"
+      },
+      {
+        "name": "resolveEnabledViews",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/view-runtime.ts#"
+      },
+      {
+        "name": "ResolvedViewLayer",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/view/view-runtime.ts#"
+      },
+      {
+        "name": "ResolvedEnabledViews",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/view/view-runtime.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 4,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "./view-registry.js",
+        "relation": "import",
+        "symbols": [
+          "getDefaultEnabledViewIds",
+          "normalizeViewIds"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/view/view-runtime.ts/_file_#",
+        "targetSymbol": "src/services/view/view-registry.ts/normalizeViewIds#",
+        "targetPath": "src/services/view/view-registry.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/view/view-runtime.ts/_file_#",
+        "targetSymbol": "src/services/view/view-registry.ts/getDefaultEnabledViewIds#",
+        "targetPath": "src/services/view/view-registry.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/view/view-runtime.ts/_file_#",
+        "targetSymbol": "src/infra/config/env.ts/parseBooleanEnv#",
+        "targetPath": "src/infra/config/env.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:04:06.040Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,184 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/infra/rules-loader.test.ts",
+    "contentHash": "14e6ecec4044006e0daa5d011d9b364756e723cc9c546ebf05cd87e34c4f5360",
+    "skeletonHash": "d762b2d90d8637713bf022d462a0e2c0700e87126c67949dda3cb0173c03c63d",
+    "semanticHash": "88d57a9a1d362aaaa4c8a4e789e8aae704dfe09af01c653ea5995e7924f9d591",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/infra"
+  },
+  "semantic": {
+    "role": "Unit test suite for the rules-loader module validating the loadRulesFromDir function.",
+    "responsibilities": [
+      "Verify that loadRulesFromDir correctly loads and normalizes YAML rule files from a directory.",
+      "Verify that loaded rules contain expected ruleId, appliesTo, severity, and summary fields."
+    ],
+    "outOfScope": [
+      "Integration tests or end-to-end validation of rule enforcement.",
+      "Performance or stress testing of the rules loader."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide regression safety for the rules-loader module's YAML parsing and normalization by covering typical rule formats.",
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Unit test suite for the rules-loader module validating the loadRulesFromDir function.",
+        "responsibilities": [
+          "Verify that loadRulesFromDir correctly loads and normalizes YAML rule files from a directory.",
+          "Verify that loaded rules contain expected ruleId, appliesTo, severity, and summary fields."
+        ],
+        "outOfScope": [
+          "Integration tests or end-to-end validation of rule enforcement.",
+          "Performance or stress testing of the rules loader."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/rules-loader.js'",
+        "symbols": [
+          "loadRulesFromDir"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "src/infra/rules-loader.ts",
+        "relation": "import",
+        "symbols": [
+          "loadRulesFromDir"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/infra/rules-loader.test.ts/_file_#",
+        "targetSymbol": "src/infra/rules-loader.ts/loadRulesFromDir#",
+        "targetPath": "src/infra/rules-loader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:10:50.028Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

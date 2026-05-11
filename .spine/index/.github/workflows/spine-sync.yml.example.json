@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": ".github/workflows/spine-sync.yml.example",
+    "contentHash": "10a204a37aedf1d299c2d003237678aa99f69f97c0c4a9a4833660c3db804ad1",
+    "semanticHash": "d21119785b84983c940e197ebaf2367b051bc0e81b809d1d896f8b27a6d31545",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": ".github/workflows"
+  },
+  "semantic": {
+    "role": "GitHub Actions workflow template for automated architecture sync and compliance checking in pull requests",
+    "responsibilities": [
+      "Run spine sync and check on pull request events (opened, synchronize, reopened)",
+      "Post a PR comment with architecture violations when check fails",
+      "Fail the workflow on violations to block merging",
+      "Update existing comments instead of creating duplicates"
+    ],
+    "outOfScope": [
+      "Detailed configuration of ArchSpine rules or sync options",
+      "Setup for multi-language repositories",
+      "Non-GitHub CI platforms (GitLab, Jenkins, etc.)",
+      "Manual troubleshooting of violations"
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This document provides a ready-to-use GitHub Actions workflow that enforces architectural governance automatically on every pull request. It runs ArchSpine's sync and check commands, reports violations as PR comments, and blocks merging if architecture rules are violated.",
+        "context_and_audience": "This template is intended for DevOps engineers and project maintainers who want to integrate ArchSpine into their CI pipeline using GitHub Actions. It assumes the repository has already been initialized with spine init and that an LLM API key has been configured as a GitHub secret.",
+        "key_takeaways": [
+          "Automates architecture validation on every PR for consistent governance",
+          "Requires only basic setup: initializing spine and adding an LLM API key",
+          "Provides clear failure feedback via PR comments and workflow exit code",
+          "Keeps comments concise and updates them on new pushes to avoid spam"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:49:53.629Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 29,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/llm/providers/mock.ts",
+    "contentHash": "5b322bc6cf92f02d9d44248e661b0ef2eb37b0af6c74cfde2a8a2e0631ca6575",
+    "skeletonHash": "78850bda7dba85ae5c5a5ce5250f5481c331a94a7d53f30765e74d0d6f998f20",
+    "semanticHash": "fa8219aa0d7140964f471ebcc99789b1500b16cc1137d70e4686b8eb384661ac",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/llm/providers"
+  },
+  "semantic": {
+    "role": "Mock implementation of the LLMClient provider interface, providing deterministic simulated responses and built-in architectural rule violation detection for testing purposes.",
+    "responsibilities": [
+      "Implement the LLMClient interface with deterministic mock responses for use in tests and simulations.",
+      "Parse architectural rule definitions from text format (e.g., Rule blocks with id, severity, body) into structured objects via extractRuleBlocks.",
+      "Analyze prompt content and rule data to detect mock violations of import rules, specifically enforcing the infra-facade-imports rule that restricts direct imports into deep infra paths when a facade exists.",
+      "Return structured LLMResponse objects that include detected violations and rule evaluations."
+    ],
+    "outOfScope": [
+      "Real LLM API calls or any network communication.",
+      "Authentication, authorization, or credential management.",
+      "Streaming response handling (if the interface supports it).",
+      "Production-grade response generation; purely for test and development environments."
+    ],
+    "invariants": [
+      "Must fully implement the LLMClient interface contract including all required methods.",
+      "Responses must be deterministic and reproducible for consistent test results.",
+      "The extractRuleBlocks method must correctly parse the standard rule text format with [Rule: id] markers."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "This module provides a mock provider for the LLM abstraction layer, allowing the system to operate without real API keys during development and testing. It also serves as a validation tool by embedding rule checking logic that can be invoked by other components to verify import compliance.",
+      "recentChangeIntent": "The git intent mentions 'apply release gate fixes and sync accumulated source changes' which likely involved adjustments to ensure the mock client correctly integrates with updated LLM interfaces and rule formats."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "MockClient",
+        "description": "Mock implementation of LLMClient for testing. Parses rule data, detects violations of infra facade import rules, and returns deterministic LLM responses. Instantiated by the provider factory."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Mock implementation of the LLMClient provider interface, providing deterministic simulated responses and built-in architectural rule violation detection for testing purposes.",
+        "responsibilities": [
+          "Implement the LLMClient interface with deterministic mock responses for use in tests and simulations.",
+          "Parse architectural rule definitions from text format into structured objects via extractRuleBlocks.",
+          "Analyze prompt content and rule data to detect mock violations of import rules, specifically enforcing the infra-facade-imports rule.",
+          "Return structured LLMResponse objects that include detected violations and rule evaluations."
+        ],
+        "outOfScope": [
+          "Real LLM API calls or any network communication.",
+          "Authentication, authorization, or credential management.",
+          "Streaming response handling (if the interface supports it).",
+          "Production-grade response generation; purely for test and development environments."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../base.js'",
+        "symbols": [
+          "LLMClient",
+          "LLMResponse",
+          "PreviousSemanticContext",
+          "ProviderConfig"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "MockClient",
+        "kind": "class",
+        "signature": "class MockClient"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "MockClient",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/llm/providers/mock.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../base.js",
+        "relation": "import",
+        "symbols": [
+          "LLMClient",
+          "LLMResponse",
+          "PreviousSemanticContext",
+          "ProviderConfig"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/__mocks__/llm.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:58:44.930Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

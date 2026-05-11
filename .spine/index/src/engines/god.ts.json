@@ -1,0 +1,233 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/god.ts",
+    "contentHash": "185dfccc9ffea55cb9c7b559096bfe9bbca33bcfda76518f41c1124d1b07995d",
+    "skeletonHash": "5cabf5ac02b61ffc161749cd069ecf346fa8fcaef8582e5fdb19a59773a38035",
+    "semanticHash": "1bde88772e788bda93d3ab70012281d410bfd0f14bb923b5f59bb856f270a7f5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Engine that aggregates all scanned index documents into a comprehensive architectural dossier (God Document) for the entire repository.",
+    "responsibilities": [
+      "Read and parse the .spine/index directory to discover all folder and file index documents.",
+      "Build a consolidated ledger (FileLedgerEntry) for every indexed file, summarizing role, responsibilities, public surface, dependencies, and drift status.",
+      "Aggregate the ledger into a structured report that covers statistics, dependency analysis, drift tracking, and architectural highlights.",
+      "Write the final God Document to .spine/view/pages/god.md using the OutputManager infrastructure."
+    ],
+    "outOfScope": [
+      "Source code scanning and AST extraction (handled by scanner engines).",
+      "CLI command dispatch and user interaction (handled by cli/ layer).",
+      "LLM-based summarization or fix generation (handled by fix/infra/llm modules).",
+      "Real-time incremental change detection (handled by git scanner or sync service)."
+    ],
+    "invariants": [
+      "Must not import any CLI entrypoint or command module.",
+      "Must remain decoupled from service-level orchestration; it is a standalone analytical engine.",
+      "All data must be sourced from the .spine/index directory; no direct filesystem reads of source code."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a holistic, machine-readable view of the entire repository's architecture by collapsing index data into a single authoritative dossier.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era: establish the god mode as the ultimate aggregator for cross-module architectural insight."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "runGodMode",
+        "description": "Reads all index documents under .spine/index, constructs a complete architectural dossier (FileLedgerEntry array), aggregates statistics and drift information, and writes the result as a Markdown document (god.md) to the view output directory. Called by the pipeline or directly for full-repository architecture reports."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Engine that aggregates all scanned index documents into a comprehensive architectural dossier (God Document) for the entire repository.",
+        "responsibilities": [
+          "Read and parse the .spine/index directory to discover all folder and file index documents.",
+          "Build a consolidated ledger (FileLedgerEntry) for every indexed file, summarizing role, responsibilities, public surface, dependencies, and drift status.",
+          "Aggregate the ledger into a structured report that covers statistics, dependency analysis, drift tracking, and architectural highlights.",
+          "Write the final God Document to .spine/view/pages/god.md using the OutputManager infrastructure."
+        ],
+        "outOfScope": [
+          "Source code scanning and AST extraction (handled by scanner engines).",
+          "CLI command dispatch and user interaction (handled by cli/ layer).",
+          "LLM-based summarization or fix generation (handled by fix/infra/llm modules).",
+          "Real-time incremental change detection (handled by git scanner or sync service)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../infra/output.js'",
+        "symbols": [
+          "OutputManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "FileKind",
+          "SpineFolderUnit",
+          "SpineProjectUnit",
+          "SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/index-reader.js'",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "runGodMode",
+        "kind": "function",
+        "signature": "runGodMode(rootDir: string)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "runGodMode",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/god.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../infra/output.js",
+        "relation": "import",
+        "symbols": [
+          "OutputManager"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "FileKind",
+          "SpineFolderUnit",
+          "SpineProjectUnit",
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "../infra/index-reader.js",
+        "relation": "import",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/unit/features/god-mode.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/engines/god.ts/_file_#",
+        "targetSymbol": "src/infra/index-reader.ts/isCompatibleIndexDocument#",
+        "targetPath": "src/infra/index-reader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/god.ts/_file_#",
+        "targetSymbol": "src/infra/index-reader.ts/reportIndexReadIssueOnce#",
+        "targetPath": "src/infra/index-reader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/god.ts/_file_#",
+        "targetSymbol": "src/infra/output.ts/OutputManager#",
+        "targetPath": "src/infra/output.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:55:54.224Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 71,
+    "inCycle": true,
+    "cycleId": "src/core → src/types → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

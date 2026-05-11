@@ -1,0 +1,174 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/architecture-diagram-view.ts",
+    "contentHash": "651e9fca9648ccff875e51faf5b7c66db79106f54aa2b95bab099d3c71444efe",
+    "skeletonHash": "4aed2d490957839359f35a462d603efb31ddea948ae7d08affb9e28e9395486d",
+    "semanticHash": "dba8a4dc8592f9fa69ea32b70573469b0fd445b5bd1fc475abe7e23fb5077603",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "View producer for generating architecture diagram artifacts (SVG and JSON) from the knowledge graph, integrating with the output manager to persist view data.",
+    "responsibilities": [
+      "Reads the knowledge graph from a well-known JSON file under .spine/view/data/.",
+      "Derives architecture diagram data (SVG rendering and structured JSON) from the knowledge graph.",
+      "Saves the generated SVG and JSON artifacts via the output manager, adhering to view artifact contracts.",
+      "Implements the ViewProducer interface for the architecture diagram view type."
+    ],
+    "outOfScope": [
+      "Extracting or updating the knowledge graph itself — that is owned by the knowledge-graph engine.",
+      "Rendering other view types (e.g., risk hotspots, public surface).",
+      "Performing file I/O outside the boundaries of the output manager abstraction."
+    ],
+    "invariants": [
+      "The knowledge graph must exist at .spine/view/data/knowledge-graph.json; if absent, the producer should gracefully skip generation.",
+      "Output files are always named architecture-diagram.svg and architecture-diagram.json, placed relative to the knowledge graph path.",
+      "Implements the ViewProducer contract defined in ./producer.ts."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a dedicated view producer for the architecture diagram, decoupling diagram generation from other view logic and centralizing SVG/JSON artifact creation.",
+      "recentChangeIntent": "The recent commit 'refactor: remove legacy CLI aliases, rebuild docs, fix schema and tests' does not directly affect this view producer; no semantic changes to this module are inferred."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "deriveFromKnowledgeGraph",
+        "description": "Primary function that reads the knowledge graph, produces architecture diagram artifacts (SVG and JSON), and persists them via the output manager. Consumed by the view runtime to generate the architecture diagram view."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "View producer for generating architecture diagram artifacts (SVG and JSON) from the knowledge graph, integrating with the output manager to persist view data.",
+        "responsibilities": [
+          "Reads the knowledge graph from a well-known JSON file under .spine/view/data/.",
+          "Derives architecture diagram data (SVG rendering and structured JSON) from the knowledge graph.",
+          "Saves the generated SVG and JSON artifacts via the output manager, adhering to view artifact contracts.",
+          "Implements the ViewProducer interface for the architecture diagram view type."
+        ],
+        "outOfScope": [
+          "Extracting or updating the knowledge graph itself — that is owned by the knowledge-graph engine.",
+          "Rendering other view types (e.g., risk hotspots, public surface).",
+          "Performing file I/O outside the boundaries of the output manager abstraction."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./arch-diagram-svg-renderer.js'",
+        "symbols": [
+          "generateArchitectureDiagramSvg"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./arch-diagram-svg-renderer.js",
+        "relation": "import",
+        "symbols": [
+          "generateArchitectureDiagramSvg"
+        ]
+      },
+      {
+        "targetPath": "./producer.js",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "../../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "../../engines/dependency-graph.js",
+        "relation": "import",
+        "symbols": [
+          "KnowledgeGraph"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/view/architecture-diagram-view.ts/_file_#",
+        "targetSymbol": "src/services/view/arch-diagram-svg-renderer.ts/generateArchitectureDiagramSvg#",
+        "targetPath": "src/services/view/arch-diagram-svg-renderer.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:03:35.441Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,233 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/spine-gate.ts",
+    "contentHash": "d3f6624b49ac239629dad5db91ff6feaf49bbd839fdd4cc988e781cba4813e08",
+    "skeletonHash": "9537badb8459c915b489a690b0065f2b2d81162d3e6095334ed33b97c34e9b7d",
+    "semanticHash": "2bae0727c8f116d1c57390880ed2e9b3a6a072c852e95231492ad81d5c1d6317",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Protected output integrity guard for the ArchSpine system's generated artifacts. Detects unauthorized mutations to .spine/index and .spine/view directories by comparing current file hashes against a stored baseline snapshot.",
+    "responsibilities": [
+      "Detect additions, changes, or deletions of files in the protected .spine/index and .spine/view output directories relative to a stored baseline.",
+      "Write a baseline snapshot (SHA-256 hashes) of all files in protected directories to .spine/protected-output-baseline.json.",
+      "Format a human-readable warning string summarizing detected mutations for CLI or other consumers."
+    ],
+    "outOfScope": [
+      "Mutating or restoring any protected output files; this module only monitors and reports.",
+      "Reading or writing files outside the .spine subtree.",
+      "User-facing UI beyond the formatted warning string."
+    ],
+    "invariants": [
+      "Baseline always stored at {rootDir}/.spine/protected-output-baseline.json.",
+      "Protected directories are always [.spine/index, .spine/view] relative to rootDir.",
+      "File hashes computed via SHA-256 using Node's crypto module."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain integrity of generated outputs by providing a tamper-detection layer over critical .spine artifact directories.",
+      "recentChangeIntent": "Sync accumulated source changes including release gate fixes; likely refines the baseline comparison or warning formatting logic."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ProtectedOutputMutationReport",
+        "description": "Interface describing the result of a protected output mutation scan: whether baseline exists, and lists of added, changed, and removed file paths."
+      },
+      {
+        "symbolName": "detectProtectedOutputMutations",
+        "description": "Scans protected output directories under rootDir, compares current file hashes against stored baseline, and returns a report of any added, changed, or removed paths."
+      },
+      {
+        "symbolName": "writeProtectedOutputBaseline",
+        "description": "Computes SHA-256 hashes for all files in protected directories and writes a new baseline snapshot to .spine/protected-output-baseline.json."
+      },
+      {
+        "symbolName": "formatProtectedOutputMutationWarning",
+        "description": "Formats the mutation report into a human-readable warning string (or returns null if no mutations detected), showing up to 5 sample changed paths."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Protected output integrity guard for the ArchSpine system's generated artifacts. Detects unauthorized mutations to .spine/index and .spine/view directories by comparing current file hashes against a stored baseline snapshot.",
+        "responsibilities": [
+          "Detect additions, changes, or deletions of files in the protected .spine/index and .spine/view output directories relative to a stored baseline.",
+          "Write a baseline snapshot (SHA-256 hashes) of all files in protected directories to .spine/protected-output-baseline.json.",
+          "Format a human-readable warning string summarizing detected mutations for CLI or other consumers."
+        ],
+        "outOfScope": [
+          "Mutating or restoring any protected output files; this module only monitors and reports.",
+          "Reading or writing files outside the .spine subtree.",
+          "User-facing UI beyond the formatted warning string."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'crypto'",
+        "symbols": [
+          "* as crypto"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'crypto'",
+        "symbols": [
+          "* as crypto"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "detectProtectedOutputMutations",
+        "kind": "function",
+        "signature": "detectProtectedOutputMutations(rootDir: string)"
+      },
+      {
+        "name": "writeProtectedOutputBaseline",
+        "kind": "function",
+        "signature": "writeProtectedOutputBaseline(rootDir: string)"
+      },
+      {
+        "name": "formatProtectedOutputMutationWarning",
+        "kind": "function",
+        "signature": "formatProtectedOutputMutationWarning(\n  report: ProtectedOutputMutationReport,\n)"
+      },
+      {
+        "name": "ProtectedOutputMutationReport",
+        "kind": "interface",
+        "signature": "interface ProtectedOutputMutationReport"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "detectProtectedOutputMutations",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/spine-gate.ts#"
+      },
+      {
+        "name": "writeProtectedOutputBaseline",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/spine-gate.ts#"
+      },
+      {
+        "name": "formatProtectedOutputMutationWarning",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/spine-gate.ts#"
+      },
+      {
+        "name": "ProtectedOutputMutationReport",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/spine-gate.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 4,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "crypto",
+        "relation": "import",
+        "symbols": [
+          "* as crypto"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/view/view-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/integration/system/spine-gate.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/unit/services/runtime-session.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:01:57.723Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

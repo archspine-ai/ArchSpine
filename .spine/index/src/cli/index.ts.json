@@ -1,0 +1,615 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/index.ts",
+    "contentHash": "903d152810dcb311e8247b6a9e118b62a55788acd2eb8724c8aa0227b1f9a16c",
+    "skeletonHash": "25d4e9e04785143ea769073141ac1f32da6ba6a5405750c67ea862a1bdd378f6",
+    "semanticHash": "d9d1393a7ef18caacc17ca10b04187bfaa3f1dabe1e1a9992e4796ed7ed08217",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli"
+  },
+  "semantic": {
+    "role": "CLI entrypoint and command dispatcher for the ArchSpine mirror system. Routes top-level commands to dedicated handler modules after setting up global HTTP proxy and environment configuration.",
+    "responsibilities": [
+      "Configure global HTTP/HTTPS proxy agent from environment variables at startup using the 'undici' library.",
+      "Parse CLI arguments and display banners, general help, or command-specific help as appropriate.",
+      "Dispatch top-level commands (init, sync, build, llm, remove, check, scan, config, mcp, info, view, try, skill, rules) to their respective execute*Command functions.",
+      "Provide usage error messages and early exit for unrecognized commands or missing arguments.",
+      "Load configuration via Config, Manifest, Secrets, and LLM configuration to determine if a project or baseline exists, influencing the command flow."
+    ],
+    "outOfScope": [
+      "Business logic or pipeline execution (delegated to services and core modules).",
+      "Persistence or data storage operations (handled by infra modules).",
+      "LLM provider implementations or orchestration (handled by infra/llm).",
+      "File-level source analysis or summary generation (handled by engines and tasks)."
+    ],
+    "invariants": [
+      "Must not absorb pipeline or persistence logic (rule cli-entrypoint-separation).",
+      "Must remain a thin command adapter; all substantive work must be delegated to services, core, engines, or infra.",
+      "Must be the single entry point for the CLI tool, executable via '#!/usr/bin/env node'."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain a thin CLI entrypoint that delegates all functional behavior to modular command handlers and service layers, ensuring reusability and testability outside the CLI.",
+      "recentChangeIntent": "Recent commit 'd63e898 1' introduced additional modular command imports (scan, view, try, skill, rules, mcp, etc.) to expand CLI capabilities without bloating the entrypoint."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Primary CLI entrypoint for ArchSpine. On startup it configures a global HTTP proxy from environment variables, then parses command-line arguments to display help, a dashboard, or route to one of many command modules (init, sync, build, check, scan, config, view, try, skill, rules, mcp, info, llm, remove).",
+        "responsibilities": [
+          "Set up global HTTP/HTTPS proxy via the 'undici' ProxyAgent if environment variables are present.",
+          "Print a banner and route requests to general help, command-specific help, or a dashboard view.",
+          "Dispatch recognized commands to execute*Command functions imported from separate command modules.",
+          "Exit with a usage error when an unknown command or missing subcommand is encountered.",
+          "Load configuration, manifest, secrets, and LLM settings early to conditionally guide CLI behavior."
+        ],
+        "outOfScope": [
+          "Core business logic, LLM orchestration, file analysis, or state persistence — these are delegated to dedicated service and infrastructure modules."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'undici'",
+        "symbols": [
+          "setGlobalDispatcher",
+          "ProxyAgent"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/secrets.js'",
+        "symbols": [
+          "Secrets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/llm.js'",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../utils/confirm.js'",
+        "symbols": [
+          "promptForImmediateConfirmation"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../services/runtime-service.js'",
+        "symbols": [
+          "RuntimeService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/errors.js'",
+        "symbols": [
+          "ErrorCodes",
+          "toArchSpineError"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./commands/init.js'",
+        "symbols": [
+          "executeInitCommand"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./cli-utils.js'",
+        "symbols": [
+          "throwCliUsage",
+          "printStep",
+          "printLanguageDiscovery",
+          "displayUIBanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./help.js'",
+        "symbols": [
+          "printGeneralHelp",
+          "printCommandHelp",
+          "printDashboard"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./commands/sync.js'",
+        "symbols": [
+          "executeSyncCommand"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./commands/build.js'",
+        "symbols": [
+          "executeBuildCommand"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./commands/llm.js'",
+        "symbols": [
+          "executeLlmCommand",
+          "getLLMTarget",
+          "promptForLLMSetup"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./commands/remove.js'",
+        "symbols": [
+          "executeRemoveCommand"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./commands/check.js'",
+        "symbols": [
+          "executeCheckCommand"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./commands/scan.js'",
+        "symbols": [
+          "executeScanCommand"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./commands/config.js'",
+        "symbols": [
+          "executeConfigCommand"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./commands/mcp.js'",
+        "symbols": [
+          "executeMcpCommand"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./commands/info.js'",
+        "symbols": [
+          "executeInfoCommand"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./commands/view.js'",
+        "symbols": [
+          "executeViewCommand"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./commands/try.js'",
+        "symbols": [
+          "executeTryCommand"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./commands/skill.js'",
+        "symbols": [
+          "executeSkillCommand"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./commands/rules.js'",
+        "symbols": [
+          "executeRulesCommand"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 24,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "undici",
+        "relation": "import",
+        "symbols": [
+          "setGlobalDispatcher",
+          "ProxyAgent"
+        ]
+      },
+      {
+        "targetPath": "../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "../infra/secrets.js",
+        "relation": "import",
+        "symbols": [
+          "Secrets"
+        ]
+      },
+      {
+        "targetPath": "../infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets"
+        ]
+      },
+      {
+        "targetPath": "../utils/confirm.js",
+        "relation": "import",
+        "symbols": [
+          "promptForImmediateConfirmation"
+        ]
+      },
+      {
+        "targetPath": "../services/runtime-service.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeService"
+        ]
+      },
+      {
+        "targetPath": "../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ErrorCodes",
+          "toArchSpineError"
+        ]
+      },
+      {
+        "targetPath": "./commands/init.js",
+        "relation": "import",
+        "symbols": [
+          "executeInitCommand"
+        ]
+      },
+      {
+        "targetPath": "./cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "throwCliUsage",
+          "printStep",
+          "printLanguageDiscovery",
+          "displayUIBanner"
+        ]
+      },
+      {
+        "targetPath": "./help.js",
+        "relation": "import",
+        "symbols": [
+          "printGeneralHelp",
+          "printCommandHelp",
+          "printDashboard"
+        ]
+      },
+      {
+        "targetPath": "./commands/sync.js",
+        "relation": "import",
+        "symbols": [
+          "executeSyncCommand"
+        ]
+      },
+      {
+        "targetPath": "./commands/build.js",
+        "relation": "import",
+        "symbols": [
+          "executeBuildCommand"
+        ]
+      },
+      {
+        "targetPath": "./commands/llm.js",
+        "relation": "import",
+        "symbols": [
+          "executeLlmCommand",
+          "getLLMTarget",
+          "promptForLLMSetup"
+        ]
+      },
+      {
+        "targetPath": "./commands/remove.js",
+        "relation": "import",
+        "symbols": [
+          "executeRemoveCommand"
+        ]
+      },
+      {
+        "targetPath": "./commands/check.js",
+        "relation": "import",
+        "symbols": [
+          "executeCheckCommand"
+        ]
+      },
+      {
+        "targetPath": "./commands/scan.js",
+        "relation": "import",
+        "symbols": [
+          "executeScanCommand"
+        ]
+      },
+      {
+        "targetPath": "./commands/config.js",
+        "relation": "import",
+        "symbols": [
+          "executeConfigCommand"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/help.ts/printDashboard#",
+        "targetPath": "src/cli/help.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/displayUIBanner#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/help.ts/printGeneralHelp#",
+        "targetPath": "src/cli/help.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/help.ts/printCommandHelp#",
+        "targetPath": "src/cli/help.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/throwCliUsage#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/commands/check.ts/executeCheckCommand#",
+        "targetPath": "src/cli/commands/check.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/commands/scan.ts/executeScanCommand#",
+        "targetPath": "src/cli/commands/scan.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/commands/try.ts/executeTryCommand#",
+        "targetPath": "src/cli/commands/try.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/commands/init.ts/executeInitCommand#",
+        "targetPath": "src/cli/commands/init.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/commands/llm.ts/getLLMTarget#",
+        "targetPath": "src/cli/commands/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/commands/llm.ts/promptForLLMSetup#",
+        "targetPath": "src/cli/commands/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/commands/sync.ts/executeSyncCommand#",
+        "targetPath": "src/cli/commands/sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/commands/build.ts/executeBuildCommand#",
+        "targetPath": "src/cli/commands/build.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/commands/config.ts/executeConfigCommand#",
+        "targetPath": "src/cli/commands/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/commands/llm.ts/executeLlmCommand#",
+        "targetPath": "src/cli/commands/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/commands/remove.ts/executeRemoveCommand#",
+        "targetPath": "src/cli/commands/remove.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/commands/mcp.ts/executeMcpCommand#",
+        "targetPath": "src/cli/commands/mcp.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/commands/info.ts/executeInfoCommand#",
+        "targetPath": "src/cli/commands/info.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/commands/view.ts/executeViewCommand#",
+        "targetPath": "src/cli/commands/view.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/commands/skill.ts/executeSkillCommand#",
+        "targetPath": "src/cli/commands/skill.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/cli/commands/rules.ts/executeRulesCommand#",
+        "targetPath": "src/cli/commands/rules.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/toArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/infra/secrets.ts/Secrets#",
+        "targetPath": "src/infra/secrets.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/GlobalLLMConfig#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/GlobalLLMConfig#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/GlobalLLMSecrets#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/GlobalLLMSecrets#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/index.ts/_file_#",
+        "targetSymbol": "src/services/runtime-service.ts/RuntimeService#",
+        "targetPath": "src/services/runtime-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:39:49.506Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 53,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

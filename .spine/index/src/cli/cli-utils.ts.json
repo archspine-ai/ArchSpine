@@ -1,0 +1,305 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/cli-utils.ts",
+    "contentHash": "41a669693d805c0df730adf6a730009250e749ec5eaf05b9702c239630a6511b",
+    "skeletonHash": "486d5453914f23e64110a2b5efc9f8175fe0104850d688383c688ae278ab5320",
+    "semanticHash": "a7d8de64623211a01b3a23585ab6cb3eec866927c98405b3e7b7171b1741b438",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli"
+  },
+  "semantic": {
+    "role": "CLI utility module providing formatting, error handling, banner display, and help text wrapping for the ArchSpine command-line interface.",
+    "responsibilities": [
+      "Parse raw string configuration values into typed equivalents (boolean, number, JSON object) for CLI argument handling.",
+      "Format typed configuration values back into display strings for user feedback.",
+      "Throw standardized CLI usage errors with exit code 1 via ArchSpineError, ensuring consistent error behavior across commands.",
+      "Normalize optional string arguments by returning undefined for empty or whitespace-only inputs.",
+      "Print step messages to stdout with optional inline TTY mode for live progress feedback.",
+      "Print a formatted language discovery summary table showing detected languages and their availability counts.",
+      "Display an appropriate UI banner (full or mini) based on the command context, suppressing banners during internal hooks to avoid log pollution.",
+      "Wrap long prompt text to a configurable line width with optional indentation for readable console output."
+    ],
+    "outOfScope": [
+      "Pipeline orchestration or execution logic",
+      "Language detection, AST extraction, or file scanning",
+      "Configuration file loading, validation, or environment parsing",
+      "Database or persistence operations",
+      "Service layer orchestration or business logic"
+    ],
+    "invariants": [
+      "Must not import from infra, engines, or services layers except for allowed utilities (errors, banner, protocol types).",
+      "Must not absorb pipeline or persistence logic; must remain a thin CLI utility layer."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide reusable CLI utilities for consistent UI presentation, input parsing, and error handling across all ArchSpine commands.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era"
+    },
+    "publicSurface": [
+      {
+        "symbolName": "parseConfigValue",
+        "description": "Parses a raw string CLI argument into a typed value (boolean, number, or JSON object) for downstream configuration use."
+      },
+      {
+        "symbolName": "formatConfigValue",
+        "description": "Formats a typed configuration value back into a display-friendly string for user-facing output."
+      },
+      {
+        "symbolName": "throwCliUsage",
+        "description": "Throws an ArchSpineError with CliUsageInvalid code and exit code 1, signaling invalid CLI usage to the user."
+      },
+      {
+        "symbolName": "normalizeOptionalString",
+        "description": "Normalizes an optional string argument by returning undefined if the value is empty or whitespace-only, preserving the original otherwise."
+      },
+      {
+        "symbolName": "printStep",
+        "description": "Prints a step message to stdout with an optional inline TTY mode that overwrites the previous line for live progress updates."
+      },
+      {
+        "symbolName": "printLanguageDiscovery",
+        "description": "Prints a formatted table showing detected programming languages and their available/parseable counts from a LanguageSnapshot."
+      },
+      {
+        "symbolName": "displayUIBanner",
+        "description": "Displays the full or mini ArchSpine banner based on the command context, suppressing it during internal hooks to avoid log pollution."
+      },
+      {
+        "symbolName": "wrapPromptText",
+        "description": "Wraps long prompt text to a specified maximum line width with optional indentation for readable console output."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI utility module providing formatting, error handling, banner display, and help text wrapping for the ArchSpine command-line interface.",
+        "responsibilities": [
+          "Parse raw string configuration values into typed equivalents (boolean, number, JSON object) for CLI argument handling.",
+          "Format typed configuration values back into display strings for user feedback.",
+          "Throw standardized CLI usage errors with exit code 1 via ArchSpineError, ensuring consistent error behavior across commands.",
+          "Normalize optional string arguments by returning undefined for empty or whitespace-only inputs.",
+          "Print step messages to stdout with optional inline TTY mode for live progress feedback.",
+          "Print a formatted language discovery summary table showing detected languages and their availability counts.",
+          "Display an appropriate UI banner (full or mini) based on the command context, suppressing banners during internal hooks to avoid log pollution.",
+          "Wrap long prompt text to a configurable line width with optional indentation for readable console output."
+        ],
+        "outOfScope": [
+          "Pipeline orchestration or execution logic",
+          "Language detection, AST extraction, or file scanning",
+          "Configuration file loading, validation, or environment parsing",
+          "Database or persistence operations",
+          "Service layer orchestration or business logic"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "LanguageSnapshot"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../utils/banner.js'",
+        "symbols": [
+          "printFullBanner",
+          "printMiniBanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'kleur'",
+        "symbols": [
+          "kleur"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "parseConfigValue",
+        "kind": "function",
+        "signature": "parseConfigValue(raw: string)"
+      },
+      {
+        "name": "formatConfigValue",
+        "kind": "function",
+        "signature": "formatConfigValue(value: unknown)"
+      },
+      {
+        "name": "throwCliUsage",
+        "kind": "function",
+        "signature": "throwCliUsage(message: string)"
+      },
+      {
+        "name": "normalizeOptionalString",
+        "kind": "function",
+        "signature": "normalizeOptionalString(value: string | undefined)"
+      },
+      {
+        "name": "printStep",
+        "kind": "function",
+        "signature": "printStep(message: string, options: { inline?: boolean } = {})"
+      },
+      {
+        "name": "printLanguageDiscovery",
+        "kind": "function",
+        "signature": "printLanguageDiscovery(snapshot: LanguageSnapshot)"
+      },
+      {
+        "name": "displayUIBanner",
+        "kind": "function",
+        "signature": "displayUIBanner(cmd?: string, _argsArr: string[] = [])"
+      },
+      {
+        "name": "wrapPromptText",
+        "kind": "function",
+        "signature": "wrapPromptText(text: string, width = 80, indent = 0)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "parseConfigValue",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/cli-utils.ts#"
+      },
+      {
+        "name": "formatConfigValue",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/cli-utils.ts#"
+      },
+      {
+        "name": "throwCliUsage",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/cli-utils.ts#"
+      },
+      {
+        "name": "normalizeOptionalString",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/cli-utils.ts#"
+      },
+      {
+        "name": "printStep",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/cli-utils.ts#"
+      },
+      {
+        "name": "printLanguageDiscovery",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/cli-utils.ts#"
+      },
+      {
+        "name": "displayUIBanner",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/cli-utils.ts#"
+      },
+      {
+        "name": "wrapPromptText",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/cli-utils.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 8,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "LanguageSnapshot"
+        ]
+      },
+      {
+        "targetPath": "../utils/banner.js",
+        "relation": "import",
+        "symbols": [
+          "printFullBanner",
+          "printMiniBanner"
+        ]
+      },
+      {
+        "targetPath": "kleur",
+        "relation": "import",
+        "symbols": [
+          "kleur"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/cli-utils.ts/_file_#",
+        "targetSymbol": "src/utils/banner.ts/printFullBanner#",
+        "targetPath": "src/utils/banner.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/cli-utils.ts/_file_#",
+        "targetSymbol": "src/utils/banner.ts/printMiniBanner#",
+        "targetPath": "src/utils/banner.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/cli-utils.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/ArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:53:31.433Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 53,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

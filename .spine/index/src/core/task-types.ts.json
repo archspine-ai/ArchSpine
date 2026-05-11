@@ -1,0 +1,371 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/core/task-types.ts",
+    "contentHash": "a814574705985da22e3e13bcef2cb71927da66649e69a4f5deb7ca1f2f9ae522",
+    "skeletonHash": "535eda90e9e0c3e80624464b3c6c9e11ef6497a35d25ec21248f4f091d3e5add",
+    "semanticHash": "83ad8f9884d03bcc94efd25b7e2330f48bba9d697b0f159161204550471ce0a9",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/core"
+  },
+  "semantic": {
+    "role": "Core TypeScript type definitions that establish the data contracts for the ArchSpine pipeline stages (scan, extraction, fix, commit, view derivation) and aggregate task state tracking.",
+    "responsibilities": [
+      "Define TaskStats interface for tracking pipeline task counts and token usage.",
+      "Define TaskStageMetric interface for per-stage metrics.",
+      "Define TaskDiagnosticsState, TaskSelectionState, TaskArtifactsState, TaskTelemetryState to represent various aspects of task state.",
+      "Define TaskState as the aggregate container for all task state facets.",
+      "Define ScanStageInput and ScanStageOutput to contract the scan pipeline stage.",
+      "Define ExtractionStageOutput to contract the AST extraction stage.",
+      "Define FixViolation, FixStageInput, FixStageOutput to contract the fix pipeline stage.",
+      "Define CommitStageOutput to contract the commit stage.",
+      "Define ViewDerivationStageOutput to contract the view derivation stage."
+    ],
+    "outOfScope": [
+      "Contains no implementation logic, algorithms, or processing.",
+      "Does not interact with external systems, CLI, or configuration.",
+      "Re-exports of third-party symbols are not present."
+    ],
+    "invariants": [
+      "This module only depends on other core and type protocol modules; it does not import any CLI entry code, satisfying the core-pipeline-isolation rule."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Define the type contracts for the ArchSpine pipeline stages and aggregate task state, ensuring type safety and stage isolation.",
+      "recentChangeIntent": "ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era"
+    },
+    "publicSurface": [
+      {
+        "symbolName": "TaskStats",
+        "description": "Tracks aggregate counts of processed, skipped, and failed tasks along with token usage across a pipeline run."
+      },
+      {
+        "symbolName": "TaskStageMetric",
+        "description": "Captures metrics for a specific pipeline stage, such as duration or counts."
+      },
+      {
+        "symbolName": "TaskDiagnosticsState",
+        "description": "Holds diagnostic information for a task, including errors and warnings."
+      },
+      {
+        "symbolName": "TaskSelectionState",
+        "description": "Records which tasks have been selected for processing or skipping."
+      },
+      {
+        "symbolName": "TaskArtifactsState",
+        "description": "Stores artifacts produced by a task, such as files or data structures."
+      },
+      {
+        "symbolName": "TaskTelemetryState",
+        "description": "Carries telemetry data associated with a task, e.g., duration or token counts."
+      },
+      {
+        "symbolName": "TaskState",
+        "description": "Aggregate state combining diagnostics, selection, artifacts, and telemetry for a single task."
+      },
+      {
+        "symbolName": "ScanStageInput",
+        "description": "Input contract for the scan stage, specifying what to scan."
+      },
+      {
+        "symbolName": "ScanStageOutput",
+        "description": "Output contract for the scan stage, containing scanned file information."
+      },
+      {
+        "symbolName": "ExtractionStageOutput",
+        "description": "Output contract for the AST extraction stage, providing extracted symbols and structure."
+      },
+      {
+        "symbolName": "FixViolation",
+        "description": "Represents a single rule violation detected and targeted for automatic fixing."
+      },
+      {
+        "symbolName": "FixStageInput",
+        "description": "Input contract for the fix stage, specifying violations to fix."
+      },
+      {
+        "symbolName": "FixStageOutput",
+        "description": "Output contract for the fix stage, detailing applied fixes and their results."
+      },
+      {
+        "symbolName": "CommitStageOutput",
+        "description": "Output contract for the commit stage, indicating what was committed."
+      },
+      {
+        "symbolName": "ViewDerivationStageOutput",
+        "description": "Output contract for the view derivation stage, providing derived view data."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core TypeScript type definitions that establish the data contracts for the ArchSpine pipeline stages (scan, extraction, fix, commit, view derivation) and aggregate task state tracking.",
+        "responsibilities": [
+          "Define TaskStats interface for tracking pipeline task counts and token usage.",
+          "Define TaskStageMetric interface for per-stage metrics.",
+          "Define TaskDiagnosticsState, TaskSelectionState, TaskArtifactsState, TaskTelemetryState to represent various aspects of task state.",
+          "Define TaskState as the aggregate container for all task state facets.",
+          "Define ScanStageInput and ScanStageOutput to contract the scan pipeline stage.",
+          "Define ExtractionStageOutput to contract the AST extraction stage.",
+          "Define FixViolation, FixStageInput, FixStageOutput to contract the fix pipeline stage.",
+          "Define CommitStageOutput to contract the commit stage.",
+          "Define ViewDerivationStageOutput to contract the view derivation stage."
+        ],
+        "outOfScope": [
+          "Contains no implementation logic, algorithms, or processing.",
+          "Does not interact with external systems, CLI, or configuration.",
+          "Re-exports of third-party symbols are not present."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "FileKind",
+          "SpineUnit"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "TaskStats",
+        "kind": "interface",
+        "signature": "interface TaskStats"
+      },
+      {
+        "name": "TaskStageMetric",
+        "kind": "interface",
+        "signature": "interface TaskStageMetric"
+      },
+      {
+        "name": "TaskDiagnosticsState",
+        "kind": "interface",
+        "signature": "interface TaskDiagnosticsState"
+      },
+      {
+        "name": "TaskSelectionState",
+        "kind": "interface",
+        "signature": "interface TaskSelectionState"
+      },
+      {
+        "name": "TaskArtifactsState",
+        "kind": "interface",
+        "signature": "interface TaskArtifactsState"
+      },
+      {
+        "name": "TaskTelemetryState",
+        "kind": "interface",
+        "signature": "interface TaskTelemetryState"
+      },
+      {
+        "name": "TaskState",
+        "kind": "interface",
+        "signature": "interface TaskState"
+      },
+      {
+        "name": "ScanStageInput",
+        "kind": "interface",
+        "signature": "interface ScanStageInput"
+      },
+      {
+        "name": "ScanStageOutput",
+        "kind": "interface",
+        "signature": "interface ScanStageOutput"
+      },
+      {
+        "name": "ExtractionStageOutput",
+        "kind": "interface",
+        "signature": "interface ExtractionStageOutput"
+      },
+      {
+        "name": "FixViolation",
+        "kind": "interface",
+        "signature": "interface FixViolation"
+      },
+      {
+        "name": "FixStageInput",
+        "kind": "interface",
+        "signature": "interface FixStageInput"
+      },
+      {
+        "name": "FixStageOutput",
+        "kind": "interface",
+        "signature": "interface FixStageOutput"
+      },
+      {
+        "name": "CommitStageOutput",
+        "kind": "interface",
+        "signature": "interface CommitStageOutput"
+      },
+      {
+        "name": "ViewDerivationStageOutput",
+        "kind": "interface",
+        "signature": "interface ViewDerivationStageOutput"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "TaskStats",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "TaskStageMetric",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "TaskDiagnosticsState",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "TaskSelectionState",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "TaskArtifactsState",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "TaskTelemetryState",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "TaskState",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "ScanStageInput",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "ScanStageOutput",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "ExtractionStageOutput",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "FixViolation",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "FixStageInput",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "FixStageOutput",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "CommitStageOutput",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      },
+      {
+        "name": "ViewDerivationStageOutput",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/core/task-types.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 15,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../ast/extractor.js",
+        "relation": "import",
+        "symbols": [
+          "FileSkeleton"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "FileKind",
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "../infra/prompt-context.js",
+        "relation": "import",
+        "symbols": [
+          "RelevanceDiagnosticsMode",
+          "SourceFileDiagnosticsSnapshot"
+        ]
+      },
+      {
+        "targetPath": "../types/view.js",
+        "relation": "import",
+        "symbols": [
+          "ViewId"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/tasks/state-commit.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:55:31.747Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 7,
+    "isHub": true,
+    "hubPercentile": 88,
+    "inCycle": true,
+    "cycleId": "src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

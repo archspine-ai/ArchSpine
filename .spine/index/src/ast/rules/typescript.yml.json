@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/ast/rules/typescript.yml",
+    "contentHash": "910d8cc916f11a4bce4f9b92c7255ad544c34413509f9ba8ada6987c14a928fd",
+    "semanticHash": "416fd3c9e7a64f7a67f3faaada7082c65475598b37f0fa4fe17e38c376a113d1",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": "src/ast/rules"
+  },
+  "semantic": {
+    "role": "Defines the grammar for extracting TypeScript symbols and relationships in the ArchSpine AST pipeline.",
+    "responsibilities": [
+      "Configures import pattern matching (named, default, namespace)",
+      "Configures export pattern matching (function, class, interface, type, variable, default, list)",
+      "Configures usage pattern matching (call, new, property access)",
+      "Maintenance scope: updated when TypeScript syntax evolves or new patterns are needed"
+    ],
+    "outOfScope": [
+      "Runtime behavior of code",
+      "Other programming languages",
+      "Execution logic or pipeline orchestration"
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This document serves as the pattern definition file for ArchSpine's AST scanner, telling the system how to recognize TypeScript imports, exports, and usages in source code.",
+        "context_and_audience": "Intended for developers maintaining ArchSpine's TypeScript analysis capabilities, as well as for the AST scanner engine itself. It is part of the scanner configuration and should be updated when TypeScript syntax changes or when new export/import patterns need to be supported.",
+        "key_takeaways": [
+          "Provides structured patterns that the scanner uses to parse TypeScript files",
+          "Covers imports (named, default, namespace), exports (function, class, interface, type, variable, default, list), and usages (call, new, property)",
+          "Maintenance typically involves adding new patterns for modern TypeScript features or verifying existing patterns against the language grammar"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:52:59.072Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 8,
+    "isHub": true,
+    "hubPercentile": 94,
+    "inCycle": true,
+    "cycleId": "src/ast → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

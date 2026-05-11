@@ -1,0 +1,301 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/infra/llm-config.test.ts",
+    "contentHash": "70b34015920d22468c1235a91dacc1daf1101d70e7dbc1cbfd414e16f50fc84d",
+    "skeletonHash": "53b803c6e4806418bb9b7a73ff1cab893963c460dfb703843b2db08be2283e41",
+    "semanticHash": "d26f1efa03275cf209661921145142f6ea3dce6905d8d2f947068a5359b0d3db",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/infra"
+  },
+  "semantic": {
+    "role": "Vitest test suite for the resolveLLMSettings function and credential backend availability behavior.",
+    "responsibilities": [
+      "Tests that resolveLLMSettings correctly picks the provider, model, and baseURL from Config.",
+      "Tests that resolveLLMSettings falls back to Secrets API key when the credential backend is unavailable.",
+      "Verifies that the credential backend's isAvailable() gate works as expected for configuration resolution."
+    ],
+    "outOfScope": [
+      "Not part of the production runtime module.",
+      "Not intended for import by other modules."
+    ],
+    "invariants": [
+      "Test file must have '.test.ts' or '.spec.ts' suffix (rule: test-file-suffix)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Ensure the LLM configuration resolution service works correctly with respect to config, secrets, and credential backend availability.",
+      "recentChangeIntent": "No specific recent change isolated to this file beyond general maintenance and release gate fixes."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite for the resolveLLMSettings function and credential backend availability behavior.",
+        "responsibilities": [
+          "Tests that resolveLLMSettings correctly picks the provider, model, and baseURL from Config.",
+          "Tests that resolveLLMSettings falls back to Secrets API key when the credential backend is unavailable.",
+          "Verifies that the credential backend's isAvailable() gate works as expected for configuration resolution."
+        ],
+        "outOfScope": [
+          "Not part of the production runtime module.",
+          "Not intended for import by other modules."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it",
+          "beforeEach",
+          "afterEach"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/credentials/backend.js'",
+        "symbols": [
+          "CredentialBackend",
+          "MemoryCredentialBackend"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/secrets.js'",
+        "symbols": [
+          "Secrets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/llm.js'",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets",
+          "resolveLLMSettings"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 11,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it",
+          "beforeEach",
+          "afterEach"
+        ]
+      },
+      {
+        "targetPath": "src/infra/credentials/backend.ts",
+        "relation": "import",
+        "symbols": [
+          "CredentialBackend",
+          "MemoryCredentialBackend"
+        ]
+      },
+      {
+        "targetPath": "src/infra/config.ts",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "src/infra/secrets.ts",
+        "relation": "import",
+        "symbols": [
+          "Secrets"
+        ]
+      },
+      {
+        "targetPath": "src/infra/llm.ts",
+        "relation": "import",
+        "symbols": [
+          "GlobalLLMConfig",
+          "GlobalLLMSecrets",
+          "resolveLLMSettings"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/infra/llm-config.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/resolveLLMSettings#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm-config.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/runtime.ts/resolveLLMSettings#",
+        "targetPath": "src/infra/llm/runtime.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm-config.test.ts/_file_#",
+        "targetSymbol": "src/infra/credentials/backend.ts/MemoryCredentialBackend#",
+        "targetPath": "src/infra/credentials/backend.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm-config.test.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm-config.test.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm-config.test.ts/_file_#",
+        "targetSymbol": "src/infra/secrets.ts/Secrets#",
+        "targetPath": "src/infra/secrets.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm-config.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/GlobalLLMConfig#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm-config.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/GlobalLLMConfig#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm-config.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/GlobalLLMSecrets#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/llm-config.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/GlobalLLMSecrets#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:10:15.571Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

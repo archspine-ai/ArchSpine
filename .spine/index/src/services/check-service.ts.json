@@ -1,0 +1,386 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/check-service.ts",
+    "contentHash": "f1cfdc54f98122ac106991a613407a610ebcab026e3f84db914573d32fbe4772",
+    "skeletonHash": "51c0cdcf730836aa5b2b8c1348b1436735cd150aa4b9708f75bb37246aaed872",
+    "semanticHash": "851ca9cc967c6bc3489170897d728b9af1d450dcb322e26ed6e5332b48e05ffc",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Primary orchestration service for the ArchSpine 'check' pipeline — coordinates scanning, AST extraction, validation, and cleanup tasks in a single workflow. Used by CLI commands and programmatic consumers to run governance checks on a repository.",
+    "responsibilities": [
+      "Expose `runCheck` function for simple CLI/one-shot usage with minimal configuration (rootDir, optional llmClient, optional scanPolicy).",
+      "Expose `CheckService` class for programmatic orchestration with full options via `CheckServiceOptions` (rootDir, llmClient, scanPolicy, runtimeIO).",
+      "Orchestrate the full check workflow: start a runtime session, resolve scan policy, create task context (with checkpoint for resumability), run ScanAndCleanupTask, ASTExtractionTask, and ValidationTask sequentially via TaskRunner.",
+      "Report stage-level metrics (bytes processed, durations) to the runtime IO for observability.",
+      "Handle errors by converting them to ArchSpineError via toArchSpineError and log error details."
+    ],
+    "outOfScope": [
+      "Does not perform file scanning, AST extraction, or validation logic directly — delegates to task classes.",
+      "Does not parse CLI arguments or handle user input parsing.",
+      "Does not manage LLM client lifecycle beyond accepting an optional LLMClient reference.",
+      "Does not implement progress bars or interactive UI — outputs structured log messages via RuntimeIO."
+    ],
+    "invariants": [
+      "The check pipeline always runs ScanAndCleanupTask, ASTExtractionTask, and ValidationTask in that order.",
+      "Task context is created via createTaskContext, which uses deriveCheckResumeCandidateFiles to enable resumable runs.",
+      "Errors are wrapped as ArchSpineError using toArchSpineError before propagation.",
+      "The runtime session is managed via runWithRuntimeSession, ensuring proper lifecycle hooks.",
+      "This service does not implement view-specific logic; it lives under src/services/ not src/services/view/."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a clean orchestration entry point for the check pipeline that separates concerns: service coordinates, tasks execute, infra provides I/O and checkpointing.",
+      "recentChangeIntent": "feat: add violation lifecycle management and --fresh check flag. This is consistent with the orchestration role, adding capability to manage violation lifecycle and support fresh runs, though the specific implementation details are in other files."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "runCheck",
+        "description": "One-shot check function accepting rootDir, optional LLMClient, and optional ScanPolicy. Creates a default runtime I/O, instantiates CheckService internally, and runs the check pipeline. Used by CLI or scripts that need minimal setup."
+      },
+      {
+        "symbolName": "CheckService",
+        "description": "Programmatic orchestration class for the check pipeline. Accepts CheckServiceOptions for full control. Exposes a `run(context?)` method that executes the pipeline tasks in order. Consumed by the CLI command handler and programmatic consumers."
+      },
+      {
+        "symbolName": "CheckServiceOptions",
+        "description": "Configuration interface for CheckService. Includes rootDir (required), optional llmClient, optional scanPolicy, and optional runtimeIO for custom logging and file operations."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Primary orchestration service for the ArchSpine 'check' pipeline — coordinates scanning, AST extraction, validation, and cleanup tasks in a single workflow. Used by CLI commands and programmatic consumers to run governance checks on a repository.",
+        "responsibilities": [
+          "Expose `runCheck` function for simple CLI/one-shot usage with minimal configuration.",
+          "Expose `CheckService` class for programmatic orchestration with full options.",
+          "Orchestrate the check pipeline: runtime session, scan policy, task context with checkpoint, sequential tasks via TaskRunner.",
+          "Report stage-level metrics for observability via RuntimeIO.",
+          "Wrap errors as ArchSpineError and log them."
+        ],
+        "outOfScope": [
+          "Does not implement scanning, AST extraction, or validation logic.",
+          "Does not parse CLI arguments or handle user input.",
+          "Does not manage LLM client lifecycle.",
+          "Does not implement UI or progress bars."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/pipeline.js'",
+        "symbols": [
+          "TaskRunner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../tasks/scan-cleanup.js'",
+        "symbols": [
+          "ScanAndCleanupTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../tasks/ast-extra.js'",
+        "symbols": [
+          "ASTExtractionTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../tasks/validate.js'",
+        "symbols": [
+          "ValidationSummary",
+          "ValidationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/scan-policy.js'",
+        "symbols": [
+          "ScanPolicy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./task-runtime.js'",
+        "symbols": [
+          "createTaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes",
+          "toArchSpineError"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/execution-checkpoint.js'",
+        "symbols": [
+          "deriveCheckResumeCandidateFiles",
+          "ExecutionCheckpointStore"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./runtime-session.js'",
+        "symbols": [
+          "runWithRuntimeSession"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "runCheck",
+        "kind": "function",
+        "signature": "runCheck(\n  rootDir: string,\n  llmClient?: LLMClient,\n  scanPolicy?: ScanPolicy,\n)"
+      },
+      {
+        "name": "CheckService",
+        "kind": "class",
+        "signature": "class CheckService"
+      },
+      {
+        "name": "CheckServiceOptions",
+        "kind": "interface",
+        "signature": "interface CheckServiceOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "runCheck",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/check-service.ts#"
+      },
+      {
+        "name": "CheckService",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/services/check-service.ts#"
+      },
+      {
+        "name": "CheckServiceOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/check-service.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/pipeline.js",
+        "relation": "import",
+        "symbols": [
+          "TaskRunner"
+        ]
+      },
+      {
+        "targetPath": "../tasks/scan-cleanup.js",
+        "relation": "import",
+        "symbols": [
+          "ScanAndCleanupTask"
+        ]
+      },
+      {
+        "targetPath": "../tasks/ast-extra.js",
+        "relation": "import",
+        "symbols": [
+          "ASTExtractionTask"
+        ]
+      },
+      {
+        "targetPath": "../tasks/validate.js",
+        "relation": "import",
+        "symbols": [
+          "ValidationSummary",
+          "ValidationTask"
+        ]
+      },
+      {
+        "targetPath": "../core/scan-policy.js",
+        "relation": "import",
+        "symbols": [
+          "ScanPolicy"
+        ]
+      },
+      {
+        "targetPath": "./task-runtime.js",
+        "relation": "import",
+        "symbols": [
+          "createTaskContext"
+        ]
+      },
+      {
+        "targetPath": "../core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes",
+          "toArchSpineError"
+        ]
+      },
+      {
+        "targetPath": "../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO",
+          "RuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "../infra/execution-checkpoint.js",
+        "relation": "import",
+        "symbols": [
+          "deriveCheckResumeCandidateFiles",
+          "ExecutionCheckpointStore"
+        ]
+      },
+      {
+        "targetPath": "./runtime-session.js",
+        "relation": "import",
+        "symbols": [
+          "runWithRuntimeSession"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/integration/system/error-system.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/services/runtime-session.ts/runWithRuntimeSession#",
+        "targetPath": "src/services/runtime-session.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/infra/execution-checkpoint.ts/deriveCheckResumeCandidateFiles#",
+        "targetPath": "src/infra/execution-checkpoint.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/services/task-runtime.ts/createTaskContext#",
+        "targetPath": "src/services/task-runtime.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/toArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/infra/execution-checkpoint.ts/ExecutionCheckpointStore#",
+        "targetPath": "src/infra/execution-checkpoint.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/ArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/core/pipeline.ts/TaskRunner#",
+        "targetPath": "src/core/pipeline.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/tasks/scan-cleanup.ts/ScanAndCleanupTask#",
+        "targetPath": "src/tasks/scan-cleanup.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/tasks/ast-extra.ts/ASTExtractionTask#",
+        "targetPath": "src/tasks/ast-extra.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/tasks/validate.ts/ValidationTask#",
+        "targetPath": "src/tasks/validate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/engines/check.ts/CheckService#",
+        "targetPath": "src/engines/check.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/check-service.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/usage.ts/recordUsage#",
+        "targetPath": "src/infra/db/repositories/usage.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:40:25.467Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

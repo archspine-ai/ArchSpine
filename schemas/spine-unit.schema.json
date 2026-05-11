@@ -1,0 +1,348 @@
+{
+  "$id": "https://archspine.dev/schema/v1.0.0/spine-unit.schema.json",
+  "title": "ArchSpine SpineUnit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "identity", "semantic", "skeleton", "graph", "provenance"],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "./shared.schema.json#/$defs/schemaVersion"
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["filePath", "contentHash", "language", "fileKind", "scope"],
+      "properties": {
+        "filePath": {
+          "$ref": "./shared.schema.json#/$defs/repoRelativePath"
+        },
+        "contentHash": {
+          "$ref": "./shared.schema.json#/$defs/contentHash"
+        },
+        "skeletonHash": {
+          "$ref": "./shared.schema.json#/$defs/contentHash"
+        },
+        "semanticHash": {
+          "$ref": "./shared.schema.json#/$defs/contentHash"
+        },
+        "language": {
+          "$ref": "./shared.schema.json#/$defs/sourceLanguage"
+        },
+        "fileKind": {
+          "$ref": "./shared.schema.json#/$defs/fileKind"
+        },
+        "scope": {
+          "$ref": "./shared.schema.json#/$defs/scopePath"
+        }
+      }
+    },
+    "semantic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "responsibilities",
+        "outOfScope",
+        "invariants",
+        "changeIntent",
+        "publicSurface"
+      ],
+      "properties": {
+        "role": {
+          "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+        },
+        "responsibilities": {
+          "$ref": "./shared.schema.json#/$defs/stringArray"
+        },
+        "outOfScope": {
+          "$ref": "./shared.schema.json#/$defs/stringArray"
+        },
+        "invariants": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "description", "enforceable"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+              },
+              "description": {
+                "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+              },
+              "enforceable": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "changeIntent": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["architecturalIntent", "recentChangeIntent"],
+          "properties": {
+            "architecturalIntent": {
+              "type": ["string", "null"]
+            },
+            "recentChangeIntent": {
+              "type": ["string", "null"]
+            }
+          }
+        },
+        "publicSurface": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["symbolName", "description"],
+            "properties": {
+              "symbolName": {
+                "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+              },
+              "description": {
+                "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+              }
+            }
+          }
+        },
+        "driftDetected": {
+          "type": "boolean"
+        },
+        "driftReason": {
+          "type": ["string", "null"]
+        },
+        "localized": {
+          "$ref": "./shared.schema.json#/$defs/localizedContentMap"
+        },
+        "ruleViolations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "severity", "reason"],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "severity": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "skeleton": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["imports", "exports", "declaredSymbols", "structuralHints"],
+      "properties": {
+        "imports": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["source", "symbols", "locality"],
+            "properties": {
+              "source": {
+                "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+              },
+              "symbols": {
+                "$ref": "./shared.schema.json#/$defs/stringArray"
+              },
+              "locality": {
+                "type": "string",
+                "enum": ["local", "external"]
+              }
+            }
+          }
+        },
+        "exports": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "kind", "signature"],
+            "properties": {
+              "name": {
+                "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+              },
+              "kind": {
+                "$ref": "./shared.schema.json#/$defs/symbolKind"
+              },
+              "signature": {
+                "type": ["string", "null"]
+              }
+            }
+          }
+        },
+        "declaredSymbols": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "kind", "exported", "symbolUri"],
+            "properties": {
+              "name": {
+                "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+              },
+              "kind": {
+                "$ref": "./shared.schema.json#/$defs/symbolKind"
+              },
+              "exported": {
+                "type": "boolean"
+              },
+              "symbolUri": {
+                "type": "string",
+                "pattern": "^(?!/)(?!\\./)(?!\\.\\./).+/.+#$"
+              }
+            }
+          }
+        },
+        "structuralHints": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["importCount", "exportCount", "isBarrel", "isTypeOnly"],
+          "properties": {
+            "importCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "exportCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "isBarrel": {
+              "type": "boolean"
+            },
+            "isTypeOnly": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "graph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dependsOn", "dependedBy", "reverseIndexComplete", "symbolEdges"],
+      "properties": {
+        "dependsOn": {
+          "$ref": "#/$defs/fileDependencyEdges"
+        },
+        "dependedBy": {
+          "$ref": "#/$defs/fileDependencyEdges"
+        },
+        "reverseIndexComplete": {
+          "type": "boolean"
+        },
+        "symbolEdges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "sourceSymbol",
+              "targetSymbol",
+              "targetPath",
+              "relation",
+              "edgeProvenance"
+            ],
+            "properties": {
+              "sourceSymbol": {
+                "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+              },
+              "targetSymbol": {
+                "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+              },
+              "targetPath": {
+                "$ref": "./shared.schema.json#/$defs/repoRelativePath"
+              },
+              "relation": {
+                "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+              },
+              "edgeProvenance": {
+                "$ref": "./shared.schema.json#/$defs/edgeProvenance"
+              }
+            }
+          }
+        }
+      }
+    },
+    "healthFlags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fanIn", "isHub", "hubPercentile", "inCycle", "isDeadCodeSuspect"],
+      "properties": {
+        "fanIn": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "isHub": {
+          "type": "boolean"
+        },
+        "hubPercentile": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "inCycle": {
+          "type": "boolean"
+        },
+        "cycleId": {
+          "type": "string"
+        },
+        "isDeadCodeSuspect": {
+          "type": "boolean"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["indexedAt", "generatorVersion", "pipelineStages"],
+      "properties": {
+        "indexedAt": {
+          "$ref": "./shared.schema.json#/$defs/isoTimestamp"
+        },
+        "generatorVersion": {
+          "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+        },
+        "pipelineStages": {
+          "type": "array",
+          "items": {
+            "$ref": "./shared.schema.json#/$defs/pipelineStage"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "fileDependencyEdges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["targetPath", "relation", "edgeProvenance", "symbols"],
+        "properties": {
+          "targetPath": {
+            "$ref": "./shared.schema.json#/$defs/repoRelativePath"
+          },
+          "relation": {
+            "$ref": "./shared.schema.json#/$defs/dependencyRelation"
+          },
+          "edgeProvenance": {
+            "$ref": "./shared.schema.json#/$defs/edgeProvenance"
+          },
+          "symbols": {
+            "$ref": "./shared.schema.json#/$defs/stringArray"
+          }
+        }
+      }
+    }
+  }
+}

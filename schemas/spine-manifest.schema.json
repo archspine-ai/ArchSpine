@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://archspine.dev/schema/v1.0.0/spine-manifest.schema.json",
+  "title": "ArchSpine SpineManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "generatorVersion", "createdAt", "updatedAt", "sync", "files"],
+  "properties": {
+    "schemaVersion": {
+      "$ref": "./shared.schema.json#/$defs/schemaVersion"
+    },
+    "generatorVersion": {
+      "$ref": "./shared.schema.json#/$defs/nonEmptyString"
+    },
+    "createdAt": {
+      "$ref": "./shared.schema.json#/$defs/isoTimestamp"
+    },
+    "updatedAt": {
+      "$ref": "./shared.schema.json#/$defs/isoTimestamp"
+    },
+    "sync": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lastSyncAt", "lastSyncMode", "reverseIndexComplete", "indexedUnitCount"],
+      "properties": {
+        "lastSyncAt": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "lastSyncMode": {
+          "type": "string",
+          "enum": ["full", "incremental", "unknown"]
+        },
+        "reverseIndexComplete": {
+          "type": "boolean"
+        },
+        "indexedUnitCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "files": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "./shared.schema.json#/$defs/repoRelativePath"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["contentHash", "fileKind", "lastIndexedAt", "docs", "sourceExists"],
+        "properties": {
+          "contentHash": {
+            "$ref": "./shared.schema.json#/$defs/contentHash"
+          },
+          "fileKind": {
+            "$ref": "./shared.schema.json#/$defs/fileKind"
+          },
+          "lastIndexedAt": {
+            "$ref": "./shared.schema.json#/$defs/isoTimestamp"
+          },
+          "docs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["locale", "path"],
+              "properties": {
+                "locale": {
+                  "$ref": "./shared.schema.json#/$defs/locale"
+                },
+                "path": {
+                  "$ref": "./shared.schema.json#/$defs/repoRelativePath"
+                }
+              }
+            }
+          },
+          "sourceExists": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

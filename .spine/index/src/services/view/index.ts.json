@@ -1,0 +1,165 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/index.ts",
+    "contentHash": "8bc3d063c1d54adb96fce430893ec192d32ec0d46549b71d1840c13ad99a268a",
+    "skeletonHash": "1e4af4e98e6229b9b485fff0325c0f07c50577cb23b1a9ff28809f153386abe5",
+    "semanticHash": "947b3f07c3a4571af9798de86a0e15efbc40c5b6b05cf2ccd349bca0022e37c8",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "Facade barrel module that re-exports all view-provider modules, decoupling consumers from internal module restructuring.",
+    "responsibilities": [
+      "Provide a single, stable import point for all view subsystem functionality.",
+      "Expose architecture diagram rendering (both standard and SVG) via re-exported functions.",
+      "Expose architecture diagram view builder via re-exported symbols.",
+      "Expose shared utility functions and types from the common module.",
+      "Expose index document loader for reading .spine/index documents.",
+      "Expose public-surface view builder for generating public API surface documentation.",
+      "Expose risk-hotspots view builder for generating risk hotspot analysis.",
+      "Enforce boundary isolation so that internal view module changes do not affect external consumers."
+    ],
+    "outOfScope": [
+      "Business logic or domain-specific processing.",
+      "Direct interaction with repositories or databases.",
+      "LLM orchestration or prompt handling.",
+      "CLI command implementation.",
+      "Core pipeline or task execution."
+    ],
+    "invariants": [
+      "All view-specific service modules must reside under src/services/view/.",
+      "This barrel file must re-export only public view subsystem symbols.",
+      "Consumers must import from this index file rather than from individual view modules to maintain encapsulation."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable public API surface for the view subsystem so that internal module restructuring does not affect consumers.",
+      "recentChangeIntent": "Not modified in this commit; the file continues as the stable view facade."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "renderArchitectureDiagram",
+        "description": "Renders the architecture diagram in text format. Exported from arch-diagram-renderer."
+      },
+      {
+        "symbolName": "renderArchitectureDiagramSvg",
+        "description": "Renders the architecture diagram as SVG. Exported from arch-diagram-svg-renderer."
+      },
+      {
+        "symbolName": "buildArchitectureDiagramView",
+        "description": "Builds the architecture diagram view data structure. Exported from architecture-diagram-view."
+      },
+      {
+        "symbolName": "loadIndexDocuments",
+        "description": "Loads and parses index documents from the .spine/index directory. Exported from index-loader."
+      },
+      {
+        "symbolName": "buildPublicSurfaceView",
+        "description": "Builds the public surface view data from scanned symbols. Exported from public-surface-view."
+      },
+      {
+        "symbolName": "buildRiskHotspotsView",
+        "description": "Builds the risk hotspots view data from analysis results. Exported from risk-hotspots-view."
+      },
+      {
+        "symbolName": "shared utilities and types from common",
+        "description": "Various helper functions and type definitions shared across view modules. Exported from common."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Facade barrel module that re-exports all view-provider modules, decoupling consumers from internal module restructuring.",
+        "responsibilities": [
+          "Provide a single, stable import point for all view subsystem functionality.",
+          "Expose architecture diagram rendering (both standard and SVG) via re-exported functions.",
+          "Expose architecture diagram view builder via re-exported symbols.",
+          "Expose shared utility functions and types from the common module.",
+          "Expose index document loader for reading .spine/index documents.",
+          "Expose public-surface view builder for generating public API surface documentation.",
+          "Expose risk-hotspots view builder for generating risk hotspot analysis.",
+          "Enforce boundary isolation so that internal view module changes do not affect external consumers."
+        ],
+        "outOfScope": [
+          "Business logic or domain-specific processing.",
+          "Direct interaction with repositories or databases.",
+          "LLM orchestration or prompt handling.",
+          "CLI command implementation.",
+          "Core pipeline or task execution."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./arch-diagram-renderer.js",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "./arch-diagram-svg-renderer.js",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "./architecture-diagram-view.js",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "./common.js",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "./index-loader.js",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "./public-surface-view.js",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "./risk-hotspots-view.js",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:03:57.410Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

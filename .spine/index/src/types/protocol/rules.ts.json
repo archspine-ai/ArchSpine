@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/types/protocol/rules.ts",
+    "contentHash": "657fa95295251c9402555e31e76bdf43b157473a3d57d5ce95788779682bcb45",
+    "skeletonHash": "ad2abd9d1b272271352f8e13b65722a6258e7dc634ce6dde6519dfcb19626130",
+    "semanticHash": "fd71057fa64a26a2d1c039cf2f426d16fb9df5a3a6164f1766b8c76d850db82b",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/types/protocol"
+  },
+  "semantic": {
+    "role": "Protocol type definition module that declares the canonical interface for rule documents within the ArchSpine system.",
+    "responsibilities": [
+      "Define the `SpineRuleDocument` interface as the schema-contract for all rule documents consumed and produced by the ArchSpine pipeline.",
+      "Import the shared `SchemaVersion` type to ensure version consistency across the protocol type hierarchy."
+    ],
+    "outOfScope": [
+      "Rule validation logic or enforcement mechanisms – this module defines the data shape only.",
+      "Loading, parsing, or serializing rule documents – those responsibilities lie in dedicated infra modules."
+    ],
+    "invariants": [
+      "All internal interfaces must start with the character 'I' (rule `interface-prefix`)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "To provide a strongly typed, versioned schema definition for rule documents that can be shared across all modules that process or produce rules.",
+      "recentChangeIntent": "Initial creation as part of the ArchSpine v1.0.0 protocol layer – no prior history."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "SpineRuleDocument",
+        "description": "Interface defining the canonical schema for a rule document in the ArchSpine protocol. Contains fields for rule ID, title, summary, applicability criteria, severity, enforceability flag, rationale, and the full body content. Used by rules loaders, validation engines, and view renderers."
+      }
+    ],
+    "ruleViolations": [
+      {
+        "id": "interface-prefix",
+        "severity": "warning",
+        "reason": "The exported interface `SpineRuleDocument` does not start with the required 'I' prefix. It is an internal interface within the protocol types and should be named `ISpineRuleDocument` to comply with the naming convention rule."
+      }
+    ],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Protocol type definition module that declares the canonical interface for rule documents within the ArchSpine system.",
+        "responsibilities": [
+          "Define the `SpineRuleDocument` interface as the schema-contract for all rule documents consumed and produced by the ArchSpine pipeline.",
+          "Import the shared `SchemaVersion` type to ensure version consistency across the protocol type hierarchy."
+        ],
+        "outOfScope": [
+          "Rule validation logic or enforcement mechanisms – this module defines the data shape only.",
+          "Loading, parsing, or serializing rule documents – those responsibilities lie in dedicated infra modules."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "SpineRuleDocument",
+        "kind": "interface",
+        "signature": "interface SpineRuleDocument"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "SpineRuleDocument",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/rules.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./versions.js",
+        "relation": "import",
+        "symbols": [
+          "SchemaVersion"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:05:29.511Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 9,
+    "isHub": true,
+    "hubPercentile": 100,
+    "inCycle": true,
+    "cycleId": "src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

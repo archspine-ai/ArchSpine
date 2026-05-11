@@ -1,0 +1,218 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt/source.ts",
+    "contentHash": "b2766f3e04208513a6460f07f5b1fee05ae198430cb308200ede3fc5f0d4a0f1",
+    "skeletonHash": "9f1a245c74966af2bb39c1f6066588678990c131f2c43d5144dcebd0043d52e6",
+    "semanticHash": "93ce5f072c77c8b8a6303ffc98ab66a68d259a1a7e64a0f82f46a30b86d63692",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/prompt"
+  },
+  "semantic": {
+    "role": "Prompt generator for source file semantic analysis in the ArchSpine mirror system. It constructs a structured instruction set for an AI assistant to extract architectural roles, public surfaces, and drift detection from source code.",
+    "responsibilities": [
+      "Generate a complete prompt for analyzing a single source file, incorporating file path, content, context data, architectural rules, recent git intent, and target languages.",
+      "Compose identity, instructions, examples, schema, environmental context, and output contract using the PromptBuilder fluent API.",
+      "Incorporate localization instructions via `buildLocalizedLanguageInstructions` to produce multilingual prompts.",
+      "Adapt prompt content based on task mode (`summarize`, `validate`, or `fix`) and validate policy (`default` or `strict`).",
+      "Include previous semantic contract data when provided, enabling drift detection across analyses.",
+      "Render the output contract (JSON or markdown) via `renderOutputContract` according to the requested response mode.",
+      "Integrate source file schema and role examples from the centralized template assets.",
+      "Output a single string prompt ready for submission to an LLM."
+    ],
+    "outOfScope": [
+      "Direct interaction with LLM APIs or execution of prompt responses.",
+      "Scanning or reading source files from disk.",
+      "Storing or caching generated prompts.",
+      "Validation or enforcement of architectural rules (rule data is passed in as a string for instruction inclusion only).",
+      "Multi-file analysis or aggregation of results."
+    ],
+    "invariants": [
+      "All prompts are constructed via a single `PromptBuilder` instance with a fixed chain of `.add*` calls.",
+      "The generated prompt always requires a JSON output with localized descriptions for the specified languages.",
+      "Source schema and role examples are loaded from a single canonical template module.",
+      "The function signature exposes all parameters with defaults, ensuring backward-compatible calls for common tasks."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establishes a reusable, parameterized prompt factory for source file analysis, centralizing instruction composition and enabling consistent output contracts across the ArchSpine pipeline.",
+      "recentChangeIntent": "Aligns with the repository-wide refactor that removed legacy CLI aliases and rebuilt documentation tooling; this source prompt generator is a core component of the new pipeline, replacing any ad-hoc prompt construction."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "generateSourcePrompt",
+        "description": "Constructs a structured prompt for an AI assistant to analyze a source file, including instructions for role extraction, public surface listing, drift detection, and rule violation identification. The generated prompt conforms to the ArchSpine mirror system's output contract and supports localization."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Prompt generator for source file semantic analysis in the ArchSpine mirror system. It constructs a structured instruction set for an AI assistant to extract architectural roles, public surfaces, and drift detection from source code.",
+        "responsibilities": [
+          "Generate a complete prompt for analyzing a single source file, incorporating file path, content, context data, architectural rules, recent git intent, and target languages.",
+          "Compose identity, instructions, examples, schema, environmental context, and output contract using the PromptBuilder fluent API.",
+          "Incorporate localization instructions via `buildLocalizedLanguageInstructions` to produce multilingual prompts.",
+          "Adapt prompt content based on task mode (`summarize`, `validate`, or `fix`) and validate policy (`default` or `strict`).",
+          "Include previous semantic contract data when provided, enabling drift detection across analyses.",
+          "Render the output contract (JSON or markdown) via `renderOutputContract` according to the requested response mode.",
+          "Integrate source file schema and role examples from the centralized template assets.",
+          "Output a single string prompt ready for submission to an LLM."
+        ],
+        "outOfScope": [
+          "Direct interaction with LLM APIs or execution of prompt responses.",
+          "Scanning or reading source files from disk.",
+          "Storing or caching generated prompts.",
+          "Validation or enforcement of architectural rules (rule data is passed in as a string for instruction inclusion only).",
+          "Multi-file analysis or aggregation of results."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../assets/templates/prompts/index.js'",
+        "symbols": [
+          "sourceFileSchema",
+          "sourceRoleExamples"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./builder.js'",
+        "symbols": [
+          "PromptBuilder"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./shared.js'",
+        "symbols": [
+          "buildLocalizedLanguageInstructions",
+          "renderOutputContract"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "generateSourcePrompt",
+        "kind": "function",
+        "signature": "generateSourcePrompt(\n  filePath: string,\n  content: string,\n  contextData: string = '',\n  ruleData: string = '',\n  gitIntent: string = '',\n  languages: string[] = ['English'],\n  branch: string = '',\n  status: string = '',\n  previousSemantic?: { role: string; responsibilities: string[] },\n  taskMode: PromptTaskMode = 'summarize',\n  validatePolicy: ValidatePolicy = taskMode === 'validate' ? 'strict' : 'default',\n  responseMode: PromptResponseMode = 'json-only',\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "generateSourcePrompt",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/prompt/source.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/assets/templates/prompts/index.js",
+        "relation": "import",
+        "symbols": [
+          "sourceFileSchema",
+          "sourceRoleExamples"
+        ]
+      },
+      {
+        "targetPath": "src/infra/prompt/builder.js",
+        "relation": "import",
+        "symbols": [
+          "PromptBuilder"
+        ]
+      },
+      {
+        "targetPath": "src/infra/prompt/shared.js",
+        "relation": "import",
+        "symbols": [
+          "buildLocalizedLanguageInstructions",
+          "renderOutputContract"
+        ]
+      },
+      {
+        "targetPath": "src/infra/prompt-policy.js",
+        "relation": "import",
+        "symbols": [
+          "PromptTaskMode",
+          "ValidatePolicy"
+        ]
+      },
+      {
+        "targetPath": "src/infra/prompt/types.js",
+        "relation": "import",
+        "symbols": [
+          "PromptResponseMode"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/prompt/source.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/shared.ts/buildLocalizedLanguageInstructions#",
+        "targetPath": "src/infra/prompt/shared.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/source.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/shared.ts/renderOutputContract#",
+        "targetPath": "src/infra/prompt/shared.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/source.ts/_file_#",
+        "targetSymbol": "src/infra/prompt/builder.ts/PromptBuilder#",
+        "targetPath": "src/infra/prompt/builder.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/source.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-rendering.ts/PromptBuilder#",
+        "targetPath": "src/infra/prompt-rendering.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/infra/prompt/source.ts/_file_#",
+        "targetSymbol": "src/infra/prompt.ts/PromptBuilder#",
+        "targetPath": "src/infra/prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:01:45.502Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

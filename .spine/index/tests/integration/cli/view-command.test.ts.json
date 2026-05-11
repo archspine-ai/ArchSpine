@@ -1,0 +1,210 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integration/cli/view-command.test.ts",
+    "contentHash": "3fa854b5bf7d78a3325036a377489649d4f8b36c7ccc47b45acaa500812def18",
+    "skeletonHash": "8cfe176e6bf1f6c638a66fd2f7323f1d7f288bf18d980cf397b5d48b60c93c35",
+    "semanticHash": "a8058c9bc77855b1c3284a7539396686f288d758c55c402ae630ae0ccdc48c27",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/integration/cli"
+  },
+  "semantic": {
+    "role": "Test suite for the ArchSpine view command.",
+    "responsibilities": [
+      "Set up a temporary directory and mock configuration to test the view command in isolation.",
+      "Execute the view command and verify that it outputs expected messages (e.g., 'View layer: enabled').",
+      "Clean up the temporary directory after each test to avoid pollution.",
+      "Ensure the view command integrates correctly with the configuration system."
+    ],
+    "outOfScope": [
+      "Not a production module; does not export any functionality for consumption by other modules.",
+      "Does not test the full pipeline or other commands, only the view command."
+    ],
+    "invariants": [
+      "Temporary directory is created and removed per test to maintain isolation.",
+      "Test file must follow naming convention (ends with .test.ts or .spec.ts) per repository rule."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Validate behavior of the view command's integration with configuration and output.",
+      "recentChangeIntent": "Part of release gate fixes and syncing accumulated source changes; this test ensures the view command still works correctly after recent modifications."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Test suite for the ArchSpine view command.",
+        "responsibilities": [
+          "Set up a temporary directory and mock configuration to test the view command in isolation.",
+          "Execute the view command and verify that it outputs expected messages (e.g., 'View layer: enabled').",
+          "Clean up the temporary directory after each test to avoid pollution.",
+          "Ensure the view command integrates correctly with the configuration system."
+        ],
+        "outOfScope": [
+          "Not a production module; does not export any functionality for consumption by other modules.",
+          "Does not test the full pipeline or other commands, only the view command."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "../../../src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "src/cli/commands/view.ts",
+        "relation": "import",
+        "symbols": [
+          "executeViewCommand"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/integration/cli/view-command.test.ts/_file_#",
+        "targetSymbol": "src/cli/commands/view.ts/executeViewCommand#",
+        "targetPath": "src/cli/commands/view.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/cli/view-command.test.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/cli/view-command.test.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:07:58.822Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

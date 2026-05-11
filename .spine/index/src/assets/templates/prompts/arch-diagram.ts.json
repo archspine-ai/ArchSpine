@@ -1,0 +1,176 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/assets/templates/prompts/arch-diagram.ts",
+    "contentHash": "e995858793c70d1bbe156f91dad757c1a2450db6f34a2967cda4e27caddd14c3",
+    "skeletonHash": "32dcc65ed2baa26614b071f3902905a1c808d062a6819d90e1db63aaca0a9cf4",
+    "semanticHash": "ce1fa2ad59f5ac7ec5876fddfa616f6bcc1cd6dde472cff52387b73328322e99",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/assets/templates/prompts"
+  },
+  "semantic": {
+    "role": "Prompt template factory for generating architecture diagram views. Consumed by the view derivation pipeline to produce structured LLM prompts.",
+    "responsibilities": [
+      "Construct LLM prompts that request a JSON architecture diagram specification from project and folder summaries.",
+      "Render project context and folder summaries into formatted Markdown blocks using shared template helpers.",
+      "Inject strict output instructions (JSON only, allowed node types, edge validation, summary cards).",
+      "Embed a JSON schema of the expected architecture diagram structure to guide model output."
+    ],
+    "outOfScope": [
+      "Parsing or validating the LLM response after generation.",
+      "Rendering SVG, Mermaid, or other diagram formats directly.",
+      "Storing or caching generated diagrams."
+    ],
+    "invariants": [
+      "The prompt always includes the instruction 'Return STRICT JSON only' as a guard against markdown-wrapped output.",
+      "The prompt always produces exactly 3 summary cards with fixed headings.",
+      "The function relies exclusively on the provided project and folder summaries, never on external data."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable prompt factory for the architecture diagram view within the view derivation system, ensuring LLM-generated diagrams conform to a strict schema.",
+      "recentChangeIntent": "New module introduced as part of v1.0.0 release establishing the architectural governance layer."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "generateArchitectureDiagramPrompt",
+        "description": "Builds a complete LLM prompt string for generating a JSON architecture diagram specification, given a project unit and an array of folder units. Called by the view derivation pipeline when producing architecture diagram views."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Prompt template factory for generating architecture diagram views. Consumed by the view derivation pipeline to produce structured LLM prompts.",
+        "responsibilities": [
+          "Construct LLM prompts that request a JSON architecture diagram specification from project and folder summaries.",
+          "Render project context and folder summaries into formatted Markdown blocks using shared template helpers.",
+          "Inject strict output instructions (JSON only, allowed node types, edge validation, summary cards).",
+          "Embed a JSON schema of the expected architecture diagram structure to guide model output."
+        ],
+        "outOfScope": [
+          "Parsing or validating the LLM response after generation.",
+          "Rendering SVG, Mermaid, or other diagram formats directly.",
+          "Storing or caching generated diagrams."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'./index.js'",
+        "symbols": [
+          "renderContextBlock",
+          "renderInstructionsBlock",
+          "renderJSONSchemaBlock"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "generateArchitectureDiagramPrompt",
+        "kind": "function",
+        "signature": "generateArchitectureDiagramPrompt(\n  project: SpineProjectUnit,\n  folders: SpineFolderUnit[],\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "generateArchitectureDiagramPrompt",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/assets/templates/prompts/arch-diagram.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/assets/templates/prompts/index.js",
+        "relation": "import",
+        "symbols": [
+          "renderContextBlock",
+          "renderInstructionsBlock",
+          "renderJSONSchemaBlock"
+        ]
+      },
+      {
+        "targetPath": "src/types/protocol.js",
+        "relation": "import-type",
+        "symbols": [
+          "SpineFolderUnit",
+          "SpineProjectUnit"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/assets/templates/prompts/arch-diagram.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/blocks.ts/renderInstructionsBlock#",
+        "targetPath": "src/assets/templates/prompts/blocks.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/assets/templates/prompts/arch-diagram.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/index.ts/renderInstructionsBlock#",
+        "targetPath": "src/assets/templates/prompts/index.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/assets/templates/prompts/arch-diagram.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/blocks.ts/renderContextBlock#",
+        "targetPath": "src/assets/templates/prompts/blocks.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/assets/templates/prompts/arch-diagram.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/index.ts/renderContextBlock#",
+        "targetPath": "src/assets/templates/prompts/index.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/assets/templates/prompts/arch-diagram.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/blocks.ts/renderJSONSchemaBlock#",
+        "targetPath": "src/assets/templates/prompts/blocks.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/assets/templates/prompts/arch-diagram.ts/_file_#",
+        "targetSymbol": "src/assets/templates/prompts/index.ts/renderJSONSchemaBlock#",
+        "targetPath": "src/assets/templates/prompts/index.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:51:47.091Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 47,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

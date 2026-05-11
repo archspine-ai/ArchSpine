@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integration/system/footprint.test.ts",
+    "contentHash": "53d93801408075ee1ad7e061b4bd410cacd22790f96e6d6c080ff86b91a363f8",
+    "skeletonHash": "b77e776222afea2ee33b75ba2e4b3d2fedcdf509e76a9b7240a37bfd14b6f84c",
+    "semanticHash": "86759aa315e4da3c67418f3249d960bc9e398682bb4a0dc4172366a1743f93d2",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/integration/system"
+  },
+  "semantic": {
+    "role": "Unit test suite for the structural and semantic footprint calculation utilities in the ArchSpine infrastructure layer.",
+    "responsibilities": [
+      "Verify that calculateStructuralFootprint produces consistent output despite reordering of import/export entries within the same module.",
+      "Verify that calculateSemanticFootprint produces different output when module dependency signatures change (e.g., a dependency export type changes).",
+      "Act as a regression guard against accidental behaviour change in the footprint module."
+    ],
+    "outOfScope": [
+      "Integration or end-to-end testing of the footprint module with real files.",
+      "Performance or stress testing of footprint calculations.",
+      "Any other utility or service modules beyond the footprint functions."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts (enforced by rule test-file-suffix). This file satisfies that invariant."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide automated regression coverage for the footprint utility, ensuring that reordering noise and semantic changes are correctly detected by the footprint functions.",
+      "recentChangeIntent": "Commit e9cba38 appears to have updated or added tests for footprint stability – the exact intent is unclear, but the tests themselves verify ordering and semantic invariance."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Unit test suite for the structural and semantic footprint calculation utilities in the ArchSpine infrastructure layer.",
+        "responsibilities": [
+          "Verify that calculateStructuralFootprint produces consistent output despite reordering of import/export entries within the same module.",
+          "Verify that calculateSemanticFootprint produces different output when module dependency signatures change (e.g., a dependency export type changes).",
+          "Act as a regression guard against accidental behaviour change in the footprint module."
+        ],
+        "outOfScope": [
+          "Integration or end-to-end testing of the footprint module with real files.",
+          "Performance or stress testing of footprint calculations.",
+          "Any other utility or service modules beyond the footprint functions."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/utils/footprint.js'",
+        "symbols": [
+          "calculateSemanticFootprint",
+          "calculateStructuralFootprint"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/utils/footprint.js",
+        "relation": "import",
+        "symbols": [
+          "calculateSemanticFootprint",
+          "calculateStructuralFootprint"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/integration/system/footprint.test.ts/_file_#",
+        "targetSymbol": "src/utils/footprint.ts/calculateStructuralFootprint#",
+        "targetPath": "src/utils/footprint.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/footprint.test.ts/_file_#",
+        "targetSymbol": "src/utils/footprint.ts/calculateSemanticFootprint#",
+        "targetPath": "src/utils/footprint.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:07:52.055Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

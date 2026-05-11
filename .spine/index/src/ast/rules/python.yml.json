@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/ast/rules/python.yml",
+    "contentHash": "a42746ecb518eb1bfce2c6a98bb878edff7650b2e13fdaa3ae3234a56cfda574",
+    "semanticHash": "168b5790aecc424f00166e3e7ca03efa2919fe14bcf8cd0757d018e59c6c2b96",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": "src/ast/rules"
+  },
+  "semantic": {
+    "role": "Defines AST extraction rules for the ArchSpine scanner to detect imports, exports, and usages in Python source code.",
+    "responsibilities": [
+      "Specifies pattern templates for matching import statements (from-import and simple import).",
+      "Specifies pattern templates for matching export declarations (__all__, functions, classes, async functions, variables).",
+      "Specifies pattern templates for matching usage occurrences (function calls and property access).",
+      "Acts as a language-specific rule file that the ArchSpine AST extractor uses to build a symbol map of a Python codebase."
+    ],
+    "outOfScope": [
+      "Does not cover other programming languages or their syntax variants.",
+      "Does not define runtime behavior, compilation, or execution semantics.",
+      "Does not include architectural governance or naming conventions for the project itself."
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This document provides the ArchSpine scanner with a precise set of pattern definitions needed to parse Python code and extract structural information such as imports, exports, and usage references.",
+        "context_and_audience": "The intended readers are the ArchSpine system itself (especially the AST extractor module and its maintainers) and developers contributing to ArchSpine’s multi-language scanning capabilities. It is used during the indexing phase to automatically build a symbol graph of a repository’s Python code.",
+        "key_takeaways": [
+          "The file defines three categories of patterns: imports, exports, and usages.",
+          "Export patterns distinguish between list-type exports, functions, classes, async functions, and plain variable assignments.",
+          "Each pattern uses a template syntax with placeholders like $SOURCE, $$$SYMBOLS, $NAME, $$$ARGS, $BODY, $OBJ, and $VAL.",
+          "The patterns are language-specific and are deployed alongside other language rule files (e.g., for TypeScript, Rust, Go) to support cross-language scanning.",
+          "ArchSpine uses these patterns to detect dependencies, public surfaces, and usage hotspots during a scan."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:52:50.164Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 8,
+    "isHub": true,
+    "hubPercentile": 94,
+    "inCycle": true,
+    "cycleId": "src/ast → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

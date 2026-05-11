@@ -1,0 +1,340 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integration/system/demo-governance.test.ts",
+    "contentHash": "4500cc39870650252d7e9b8c8826cfce557a5491ee9aaafe00c4416cbcb37999",
+    "skeletonHash": "35a4bcb1102c9c97c0f99bc57f1f7e942113868eb8a4c59429807f8024c2f74c",
+    "semanticHash": "15ebcef8f1e89dd6228686b635ac6e495fb960f25ed10d8f3b6b98f7ed650fc4",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/integration/system"
+  },
+  "semantic": {
+    "role": "Integration test suite validating the demo project's governance lifecycle using the built CLI and core services.",
+    "responsibilities": [
+      "Sets up a temporary sandbox directory and populates it with demo project structure files.",
+      "Runs the built CLI (spawnSync) commands (check, fix) against the demo project to verify architecture rule enforcement.",
+      "Validates that the system detects violations (e.g., layered architecture constraints) and can apply fixes correctly.",
+      "Cleans up temporary directories after each test."
+    ],
+    "outOfScope": [
+      "Production runtime behavior beyond the demo project.",
+      "Performance, security, or load testing.",
+      "Unit-level component testing of individual functions or classes."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts (rule: test-file-suffix).",
+      "All imports from the project source must resolve to valid modules."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a repeatable acceptance test that exercises the end-to-end governance pipeline using a minimal demo project, catching regressions in CLI, check/fix engines, and sync service integration.",
+      "recentChangeIntent": "The recent commit removed legacy CLI aliases, rebuilt documentation, fixed schema mismatches, and updated tests; this file may have been adjusted to match those changes."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Integration test suite validating the demo project's governance lifecycle using the built CLI and core services.",
+        "responsibilities": [
+          "Sets up a temporary sandbox directory and populates it with demo project structure files.",
+          "Runs the built CLI (spawnSync) commands (check, fix) against the demo project to verify architecture rule enforcement.",
+          "Validates that the system detects violations (e.g., layered architecture constraints) and can apply fixes correctly.",
+          "Cleans up temporary directories after each test."
+        ],
+        "outOfScope": [
+          "Production runtime behavior beyond the demo project.",
+          "Performance, security, or load testing.",
+          "Unit-level component testing of individual functions or classes."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execSync",
+          "spawnSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/services/sync-service.js'",
+        "symbols": [
+          "SyncService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/engines/check.js'",
+        "symbols": [
+          "runCheck"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/engines/fix.js'",
+        "symbols": [
+          "runFix"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/__mocks__/llm.js'",
+        "symbols": [
+          "MockClient"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'prompts'",
+        "symbols": [
+          "prompts"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 15,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execSync",
+          "spawnSync"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "prompts",
+        "relation": "import",
+        "symbols": [
+          "prompts"
+        ]
+      },
+      {
+        "targetPath": "src/services/sync-service.ts",
+        "relation": "import",
+        "symbols": [
+          "SyncService"
+        ]
+      },
+      {
+        "targetPath": "src/engines/check.ts",
+        "relation": "import",
+        "symbols": [
+          "runCheck"
+        ]
+      },
+      {
+        "targetPath": "src/engines/fix.ts",
+        "relation": "import",
+        "symbols": [
+          "runFix"
+        ]
+      },
+      {
+        "targetPath": "src/infra/__mocks__/llm.ts",
+        "relation": "import",
+        "symbols": [
+          "MockClient"
+        ]
+      },
+      {
+        "targetPath": "src/infra/manifest.ts",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/integration/system/demo-governance.test.ts/_file_#",
+        "targetSymbol": "src/engines/check.ts/runCheck#",
+        "targetPath": "src/engines/check.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/demo-governance.test.ts/_file_#",
+        "targetSymbol": "src/services/check-service.ts/runCheck#",
+        "targetPath": "src/services/check-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/demo-governance.test.ts/_file_#",
+        "targetSymbol": "src/engines/fix.ts/runFix#",
+        "targetPath": "src/engines/fix.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/demo-governance.test.ts/_file_#",
+        "targetSymbol": "src/services/fix-service.ts/runFix#",
+        "targetPath": "src/services/fix-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/demo-governance.test.ts/_file_#",
+        "targetSymbol": "src/infra/__mocks__/llm.ts/MockClient#",
+        "targetPath": "src/infra/__mocks__/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/demo-governance.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/providers/mock.ts/MockClient#",
+        "targetPath": "src/infra/llm/providers/mock.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/demo-governance.test.ts/_file_#",
+        "targetSymbol": "src/services/sync-service.ts/SyncService#",
+        "targetPath": "src/services/sync-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/demo-governance.test.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/violations.ts/getActiveViolations#",
+        "targetPath": "src/infra/db/repositories/violations.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:08:12.218Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

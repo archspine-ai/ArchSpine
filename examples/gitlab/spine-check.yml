@@ -1,0 +1,54 @@
+# ArchSpine Architecture Check — GitLab CI 模板
+#
+# 使用方法：将此内容合并到你的 .gitlab-ci.yml，或在 include 段引用
+# 前提条件：仓库中已运行过 `spine init` 并配置好 .spine/config.json
+# 需要设置 CI/CD Variables：
+#   - LLM_API_KEY：调用 LLM 所需的 API Key
+#   - GITLAB_TOKEN：用于 MR 评论的 GitLab Personal Access Token（scope: api）
+
+spine-check:
+  image: node:20
+  stage: test
+  timeout: 20 minutes
+
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+  variables:
+    OPENAI_API_KEY: $LLM_API_KEY
+
+  before_script:
+    - npm install -g archspine
+    - apk add --no-cache curl jq # 用于 MR 评论
+
+  script:
+    - spine sync --no-docs
+    - spine check > spine-check-output.txt 2>&1 || CHECK_EXIT=$?
+    - |
+      if [ "$CHECK_EXIT" != "0" ]; then
+        echo "ArchSpine check 发现违例，正在向 MR 添加评论..."
+        OUTPUT=$(cat spine-check-output.txt | head -c 60000)
+        BODY=$(jq -n --arg out "$OUTPUT" '[
+          "## 🔍 ArchSpine 架构检查结果",
+          "",
+          "检测到架构违例，请在合并前修复：",
+          "",
+          "```",
+          $out,
+          "```",
+          "",
+          "> 查看完整控制面数据：拉取分支后运行 `spine check`"
+        ] | join("\n")')
+        curl --request POST \
+          --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
+          --header "Content-Type: application/json" \
+          --data "{\"body\": $(echo "$BODY" | jq -Rs .)}" \
+          "$CI_API_V4_URL/projects/$CI_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID/notes"
+        exit 1
+      fi
+
+  artifacts:
+    when: on_failure
+    paths:
+      - spine-check-output.txt
+    expire_in: 7 days

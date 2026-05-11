@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/ast/rules/swift.yml",
+    "contentHash": "799f69b1fd4cd0007b1643be1620fe69142e14f05282e652e52512a3f6378072",
+    "semanticHash": "ccdf8d6590d5af7039956f5404868615c73ea76b92873c21795fb1df359afb35",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": "src/ast/rules"
+  },
+  "semantic": {
+    "role": "Defines the AST extraction patterns for the Swift programming language within the ArchSpine mirror system, enabling the automatic analysis and capture of Swift code structures for repository mirroring and documentation.",
+    "responsibilities": [
+      "Provides import detection patterns (e.g., 'import $SOURCE') to map Swift module dependencies.",
+      "Defines export/declaration patterns for Swift constructs: classes, structs, enums, protocols, and functions, with appropriate kind classification (Class, Interface, Function).",
+      "Specifies usage patterns for function calls and method invocations to trace how symbols are used across the codebase.",
+      "Serves as a machine-readable rule file that the ArchSpine AST extractor uses to parse Swift source files during a scan."
+    ],
+    "outOfScope": [
+      "Does not cover other programming languages (e.g., Python, TypeScript) – those have separate rule files.",
+      "Does not include documentation templates, CLI commands, or storage schemas – it is solely an AST pattern definition.",
+      "Does not handle non‑code assets such as configuration files, images, or markdown documentation."
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This document defines the pattern-based rules that ArchSpine uses when scanning Swift source code. It tells the system how to recognise imports, detect exported symbols (classes, structs, enums, protocols, functions) and identify usages like function calls or method invocations. In essence, it is the Swift language adapter for ArchSpine's code analysis pipeline.",
+        "context_and_audience": "This file is part of ArchSpine's internal rule set for AST extraction. Its primary audience is developers contributing to ArchSpine who need to understand or modify how Swift code is mirrored and documented. It may also be read by users who want to know exactly which Swift constructs are captured and how they are categorised during a scan.",
+        "key_takeaways": [
+          "ArchSpine uses pattern‑based rule files to extract code structure from different languages, and this one is for Swift.",
+          "The rules cover imports, exports (classes, structs, enums, protocols, functions), and usages (calls and methods).",
+          "Each export pattern is assigned a kind (Class, Interface, Function) to support architectural views and dependency analysis.",
+          "The document is not human‑readable prose but a structured YAML file used by the ArchSpine engine."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:52:55.796Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 8,
+    "isHub": true,
+    "hubPercentile": 94,
+    "inCycle": true,
+    "cycleId": "src/ast → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,223 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/output.ts",
+    "contentHash": "2f7937e9e9d1f054d34c71ecd412d93ed2937a6595cf57ac7fb88f218507bf73",
+    "skeletonHash": "31ad2026a7a68294dca5607d520320e3dda57ebe51ee1b5d9a4f7d6e56c6f504",
+    "semanticHash": "328509cce617b660f21657d7d58b19fc5f065e6276e2ede9d472906435886412",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure facade for persisting view data as JSON files to the local `.spine` directory, providing atomic file writes and directory structure management.",
+    "responsibilities": [
+      "Write public-surface, risk-hotspots, architecture-diagram, project-health, change-impact, and agent-briefing JSON data to the configured .spine directory.",
+      "Ensure the output directory and parent paths exist before writing files.",
+      "Use atomic safe-write operations via FileSystemManager.safeWriteFile to prevent partial writes.",
+      "Serialize structured view data objects to JSON strings with standard formatting."
+    ],
+    "outOfScope": [
+      "Computing or generating the view data itself (e.g., aggregation, analysis, rendering).",
+      "Reading input files, database queries, or external data sources.",
+      "Managing any authentication, LLM interaction, or configuration loading.",
+      "Handling database operations or schema migrations."
+    ],
+    "invariants": [
+      "All output files are written under the `.spine` directory inside the configured rootDir.",
+      "File writes use safeWriteFile from FileSystemManager, guaranteeing atomicity.",
+      "Parent directories are created automatically before attempting to write a file.",
+      "The `rootDir` is resolved from the provided OutputConfig."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized, safe output mechanism for persisting view data as JSON files to the .spine directory, ensuring atomicity and directory integrity.",
+      "recentChangeIntent": "Refactored to consolidate output writing logic and support new view data formats as part of broader migration away from legacy CLI aliases and schema updates."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "OutputConfig",
+        "description": "Configuration interface that specifies the root directory for all output operations. Consumed by the OutputManager constructor."
+      },
+      {
+        "symbolName": "OutputManager",
+        "description": "Primary class for writing view data JSON files (public-surface, risk-hotspots, architecture-diagram, etc.) to the .spine directory. Provides atomic writes and automatic directory creation."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure facade for persisting view data as JSON files to the local `.spine` directory, providing atomic file writes and directory structure management.",
+        "responsibilities": [
+          "Write public-surface, risk-hotspots, architecture-diagram, project-health, change-impact, and agent-briefing JSON data to the configured .spine directory.",
+          "Ensure the output directory and parent paths exist before writing files.",
+          "Use atomic safe-write operations via FileSystemManager.safeWriteFile to prevent partial writes.",
+          "Serialize structured view data objects to JSON strings with standard formatting."
+        ],
+        "outOfScope": [
+          "Computing or generating the view data itself (e.g., aggregation, analysis, rendering).",
+          "Reading input files, database queries, or external data sources.",
+          "Managing any authentication, LLM interaction, or configuration loading.",
+          "Handling database operations or schema migrations."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "SpineUnit",
+          "SpineFolderUnit",
+          "SpineProjectUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../utils/fs.js'",
+        "symbols": [
+          "FileSystemManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "OutputManager",
+        "kind": "class",
+        "signature": "class OutputManager"
+      },
+      {
+        "name": "OutputConfig",
+        "kind": "interface",
+        "signature": "interface OutputConfig"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "OutputManager",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/output.ts#"
+      },
+      {
+        "name": "OutputConfig",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/infra/output.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SpineUnit",
+          "SpineFolderUnit",
+          "SpineProjectUnit"
+        ]
+      },
+      {
+        "targetPath": "../utils/fs.js",
+        "relation": "import",
+        "symbols": [
+          "FileSystemManager"
+        ]
+      },
+      {
+        "targetPath": "./runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "existsSync",
+          "readFileSync"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "join",
+          "dirname"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/view/view-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:00:38.427Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

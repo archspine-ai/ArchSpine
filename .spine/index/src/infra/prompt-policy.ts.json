@@ -1,0 +1,223 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/prompt-policy.ts",
+    "contentHash": "51fb03732555e77413898170aa6b6c970d81ac61fed04c84f58fda03fbf0c3fb",
+    "skeletonHash": "19009eebcb46c6a3a1653532f6ccca8dca006df8d7e0155d2a5f81475710e852",
+    "semanticHash": "8dc481afae90bb007c83854b0cfe41df22570d62ad88b8c67a66adf4300d101b",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Infrastructure facade module for prompt policy, validation, and parsing utilities. Provides a stable import surface for constants, parsers, and policy resolvers used in prompt validation tasks.",
+    "responsibilities": [
+      "Re-export prompt policy constants (STRICT_VALIDATE_BUDGET_PROFILES, VALIDATE_POLICIES, PROMPT_BUDGET_PROFILES) for configuring validation budgets and policies.",
+      "Re-export parsing utilities (parseRelevanceDiagnosticsMode, parseValidatePolicy) to convert configuration strings into runtime policy enums.",
+      "Re-export policy resolution functions (defaultValidatePolicyForTask, resolveValidatePolicy) to determine effective validation policies for tasks.",
+      "Re-export task-mode and policy types to support type-safe usage by callers.",
+      "Provide a single import entry point that hides the internal structure of prompt-context submodules."
+    ],
+    "outOfScope": [
+      "Prompt artifact generation or rendering.",
+      "Prompt context construction (artifact building, checkpoints, budgets).",
+      "Direct access to prompt-context internals such as artifacts, budgets, diagnostics, trim, or deep implementation details."
+    ],
+    "invariants": [
+      "Callers MUST import prompt policy utilities via this facade rather than reaching into prompt-context submodules directly.",
+      "All re-exported functions and constants produce the same behavior as their source definitions."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Reduce import coupling by centralizing prompt policy exports into a single stable facade, making refactors of prompt-context internals safer without affecting downstream consumers.",
+      "recentChangeIntent": "No recent changes to this file; the last commit was a general release gate sync."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "STRICT_VALIDATE_BUDGET_PROFILES",
+        "description": "Constant containing the set of budget profile names that trigger strict validation. Used by validation logic to enforce tight budgets."
+      },
+      {
+        "symbolName": "VALIDATE_POLICIES",
+        "description": "Constant enumeration of all available validation policy names. Consumed by policy resolvers and configuration validation."
+      },
+      {
+        "symbolName": "PROMPT_BUDGET_PROFILES",
+        "description": "Constant mapping of budget profiles to their numeric or object budget definitions. Used to configure prompt token budgets per mode."
+      },
+      {
+        "symbolName": "parseRelevanceDiagnosticsMode",
+        "description": "Parses a relevance diagnostics mode from a configuration string (e.g., 'on', 'off', 'summarize'). Returns the corresponding enum value."
+      },
+      {
+        "symbolName": "parseValidatePolicy",
+        "description": "Parses a validate policy from a configuration string (e.g., 'strict', 'normal', 'off'). Returns a ValidatePolicy enum."
+      },
+      {
+        "symbolName": "defaultValidatePolicyForTask",
+        "description": "Returns the default ValidatePolicy for a given task type. Used when no explicit policy is configured."
+      },
+      {
+        "symbolName": "resolveValidatePolicy",
+        "description": "Resolves the effective validate policy by combining defaults and explicit configuration. Returns the policy to apply for a task."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Infrastructure facade module for prompt policy, validation, and parsing utilities. Provides a stable import surface for constants, parsers, and policy resolvers used in prompt validation tasks.",
+        "responsibilities": [
+          "Re-export prompt policy constants (STRICT_VALIDATE_BUDGET_PROFILES, VALIDATE_POLICIES, PROMPT_BUDGET_PROFILES) for configuring validation budgets and policies.",
+          "Re-export parsing utilities (parseRelevanceDiagnosticsMode, parseValidatePolicy) to convert configuration strings into runtime policy enums.",
+          "Re-export policy resolution functions (defaultValidatePolicyForTask, resolveValidatePolicy) to determine effective validation policies for tasks.",
+          "Re-export task-mode and policy types to support type-safe usage by callers.",
+          "Provide a single import entry point that hides the internal structure of prompt-context submodules."
+        ],
+        "outOfScope": [
+          "Prompt artifact generation or rendering.",
+          "Prompt context construction (artifact building, checkpoints, budgets).",
+          "Direct access to prompt-context internals such as artifacts, budgets, diagnostics, trim, or deep implementation details."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "STRICT_VALIDATE_BUDGET_PROFILES",
+        "kind": "unknown",
+        "signature": "export { STRICT_VALIDATE_BUDGET_PROFILES }"
+      },
+      {
+        "name": "VALIDATE_POLICIES",
+        "kind": "unknown",
+        "signature": "export { VALIDATE_POLICIES }"
+      },
+      {
+        "name": "PROMPT_BUDGET_PROFILES",
+        "kind": "unknown",
+        "signature": "export { PROMPT_BUDGET_PROFILES }"
+      },
+      {
+        "name": "parseRelevanceDiagnosticsMode",
+        "kind": "unknown",
+        "signature": "export { parseRelevanceDiagnosticsMode }"
+      },
+      {
+        "name": "parseValidatePolicy",
+        "kind": "unknown",
+        "signature": "export { parseValidatePolicy }"
+      },
+      {
+        "name": "defaultValidatePolicyForTask",
+        "kind": "unknown",
+        "signature": "export { defaultValidatePolicyForTask }"
+      },
+      {
+        "name": "resolveValidatePolicy",
+        "kind": "unknown",
+        "signature": "export { resolveValidatePolicy }"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "STRICT_VALIDATE_BUDGET_PROFILES",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-policy.ts#"
+      },
+      {
+        "name": "VALIDATE_POLICIES",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-policy.ts#"
+      },
+      {
+        "name": "PROMPT_BUDGET_PROFILES",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-policy.ts#"
+      },
+      {
+        "name": "parseRelevanceDiagnosticsMode",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-policy.ts#"
+      },
+      {
+        "name": "parseValidatePolicy",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-policy.ts#"
+      },
+      {
+        "name": "defaultValidatePolicyForTask",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-policy.ts#"
+      },
+      {
+        "name": "resolveValidatePolicy",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/prompt-policy.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 7,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./prompt-context/constants.js",
+        "relation": "import",
+        "symbols": [
+          "STRICT_VALIDATE_BUDGET_PROFILES",
+          "VALIDATE_POLICIES",
+          "PROMPT_BUDGET_PROFILES"
+        ]
+      },
+      {
+        "targetPath": "./prompt-context/parsers.js",
+        "relation": "import",
+        "symbols": [
+          "parseRelevanceDiagnosticsMode",
+          "parseValidatePolicy"
+        ]
+      },
+      {
+        "targetPath": "./prompt-context/policy.js",
+        "relation": "import",
+        "symbols": [
+          "defaultValidatePolicyForTask",
+          "resolveValidatePolicy"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:00:53.657Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/tasks/state-commit.ts",
+    "contentHash": "c8ee286d6d83b88a58a80d34acf69105b40beefd5c046dee5c137bd09f88dd90",
+    "skeletonHash": "d7e2b3fcabbc8c55ea5144984734084084bc0b5a388287a9988c1ddbb04792b3",
+    "semanticHash": "e234c77d1274d850a7f7a5640c08906de5486f5ab269517a5853ff625c4e3fa0",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/tasks"
+  },
+  "semantic": {
+    "role": "Pipeline task implementing the state commitment stage for the ArchSpine synchronization pipeline.",
+    "responsibilities": [
+      "Commit file hashes and metadata to the SQLite database after AST extraction and LLM summarization are complete to prevent write competition.",
+      "Ensure that partial failures during summarization do not leave the database in a synced state for failed files.",
+      "Iterate over pending files retrieved from the manifest and write their state atomically in a batch operation.",
+      "Mark items as completed in the execution checkpoint for progress tracking and checkpoint recovery."
+    ],
+    "outOfScope": [
+      "Not responsible for AST extraction or LLM summarization itself.",
+      "Does not handle CLI command parsing or user interaction.",
+      "Does not perform scanning or file discovery.",
+      "Does not define database schema or migration logic."
+    ],
+    "invariants": [
+      "Runs strictly after AST extraction and summarization stages in the pipeline execution graph.",
+      "Assumes a valid TaskContext with runtimeIO, manifest, and executionCheckpoint provided by the pipeline orchestrator.",
+      "Commit operation is non-destructive: does not roll back or delete previously committed state."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "ArchSpine v1.0.0 introduces an architectural governance and semantic layer. The state-commit task is a focused pipeline stage ensuring atomic writes of synchronized state after LLM processing.",
+      "recentChangeIntent": "The commit message 'ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era' suggests a major release focused on governance. This task enforces integrity by committing completed state only after successful summarization."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "StateCommitTask",
+        "description": "Pipeline task that commits file hashes and metadata to SQLite after AST extraction and LLM summarization complete. Consumed by the pipeline orchestrator as a stage in the sync workflow."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Pipeline task implementing the state commitment stage for the ArchSpine synchronization pipeline.",
+        "responsibilities": [
+          "Commit file hashes and metadata to the SQLite database after AST extraction and LLM summarization are complete, preventing write competition from partial failures.",
+          "Iterate over pending files from the manifest and write their state in a batch to ensure atomicity.",
+          "Mark items as completed in the execution checkpoint for progress tracking and checkpoint recovery."
+        ],
+        "outOfScope": [
+          "Not responsible for AST extraction, LLM summarization, or file scanning.",
+          "Does not handle CLI command parsing, configuration management, or user interaction.",
+          "Does not define the database schema or perform migrations."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "StateCommitTask",
+        "kind": "class",
+        "signature": "class StateCommitTask"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "StateCommitTask",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/tasks/state-commit.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/core/task.ts",
+        "relation": "import",
+        "symbols": [
+          "SpineTask",
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "src/core/task-types.ts",
+        "relation": "import",
+        "symbols": [
+          "CommitStageOutput",
+          "SummarizationStageOutput"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/tasks/state-commit.ts/_file_#",
+        "targetSymbol": "src/infra/db/batch.ts/commitBatch#",
+        "targetPath": "src/infra/db/batch.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/state-commit.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getFileDocs#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:05:14.227Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 2,
+    "isHub": true,
+    "hubPercentile": 59,
+    "inCycle": true,
+    "cycleId": "src/core → src/tasks → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

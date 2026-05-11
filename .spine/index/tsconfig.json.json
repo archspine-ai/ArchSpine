@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tsconfig.json",
+    "contentHash": "0e5c4b2152da8ae2fbaf9c642a032447aab868c798faefa922bee1dfcb4af953",
+    "semanticHash": "0178566455cca15e807ca2974cce19e9ec7c53ce4d2aa8fc268b33614a4ddd56",
+    "language": "unsupported",
+    "fileKind": "config",
+    "scope": ""
+  },
+  "semantic": {
+    "role": "TypeScript compiler configuration for the ArchSpine project",
+    "responsibilities": [
+      "Define compilation target, module system, and output directory",
+      "Enforce type-checking strictness and consistency",
+      "Control inclusion of source files"
+    ],
+    "outOfScope": [],
+    "invariants": [
+      "strict must be true to ensure type safety",
+      "forceConsistentCasingInFileNames must be true to avoid cross-platform casing issues",
+      "rootDir must be './src' to keep output structure mirroring source",
+      "include must cover all source files under src/"
+    ],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "TypeScript compiler configuration for the ArchSpine project",
+        "parameter_definitions": {
+          "target": "Sets the ECMAScript target version. 'ESNext' uses the latest supported features, balancing compatibility with modern runtime support.",
+          "module": "Specifies module code generation. 'NodeNext' enables Node.js native ESM support, impacting how imports/exports are emitted.",
+          "moduleResolution": "Determines how modules are resolved. 'NodeNext' aligns with Node.js modern resolution algorithm, affecting how external packages are located.",
+          "outDir": "Output directory for compiled JavaScript files. Must be accessible by the runtime; ensures separation from source.",
+          "rootDir": "Root directory of input source files. Must match project structure to avoid unexpected output paths.",
+          "strict": "Enables all strict type-checking options. Prevents many common errors at compile time, improving runtime reliability.",
+          "esModuleInterop": "Enables compatibility between ES modules and CommonJS. Reduces errors when using default imports from CJS modules.",
+          "skipLibCheck": "Skips type checking of declaration files. Speeds up compilation but may miss issues in third-party types. Use cautiously.",
+          "forceConsistentCasingInFileNames": "Enforces case-sensitive file names across platforms. Prevents subtle bugs on case-insensitive file systems.",
+          "types": "List of type definition packages to include. 'node' provides Node.js API types.",
+          "sourceMap": "Generates source map files for debugging. Increases output size but aids development and production error tracking."
+        },
+        "stability_and_risks": "This tsconfig.json defines the TypeScript compilation pipeline. Setting strict to true is a critical safety invariant that prevents many type-related bugs. The use of ESNext and NodeNext ensures the project uses modern JavaScript features and module resolution, but requires a compatible Node.js version. skipLibCheck improves build speed but may hide type errors in dependencies; periodic full checks are recommended. Consistent casing enforcement avoids platform-dependent failures. Overall, this configuration promotes robust and maintainable code but must be kept in sync with the actual runtime environment, especially module resolution and target."
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:11:27.055Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 24,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

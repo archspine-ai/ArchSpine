@@ -1,0 +1,165 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/engines/graph-diagnostics.test.ts",
+    "contentHash": "373384a8f8203544d4c3edb11424d6c29955dab93983485b2e6062844715307b",
+    "skeletonHash": "e2957197f8f3998285a1a9cbc67799ce230915ce3850e0f731bd8054351bdbd6",
+    "semanticHash": "fc8ea3b71c1056022577aa2d8d8a7697db77449a65916986a03bcd8987f8a0f0",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/engines"
+  },
+  "semantic": {
+    "role": "TypeScript test suite for the graph diagnostics engine (graph-diagnostics.ts).",
+    "responsibilities": [
+      "Verify correct cycle detection from a knowledge graph via detectCycles.",
+      "Verify correct dead code identification via detectDeadCode.",
+      "Verify correct hub detection via detectHubs.",
+      "Verify correct structural drift detection via detectStructuralDrift.",
+      "Provide test fixtures (makeNode, makeEdge, makeGraph) for consistent graph construction."
+    ],
+    "outOfScope": [
+      "Production implementation of graph diagnostics.",
+      "Runtime execution or orchestration.",
+      "End-to-end integration tests."
+    ],
+    "invariants": [
+      "Test file must conform to the project naming convention: *.test.ts or *.spec.ts."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Test the correctness of the graph diagnostics module that identifies cycles, dead code, hubs, and structural drift.",
+      "recentChangeIntent": "Updated tests to align with refactored graph diagnostics exports after legacy CLI alias removal."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "TypeScript test suite for the graph diagnostics engine (graph-diagnostics.ts).",
+        "responsibilities": [
+          "Verify correct cycle detection from a knowledge graph via detectCycles.",
+          "Verify correct dead code identification via detectDeadCode.",
+          "Verify correct hub detection via detectHubs.",
+          "Verify correct structural drift detection via detectStructuralDrift.",
+          "Provide test fixtures (makeNode, makeEdge, makeGraph) for consistent graph construction."
+        ],
+        "outOfScope": [
+          "Production implementation of graph diagnostics.",
+          "Runtime execution or orchestration.",
+          "End-to-end integration tests."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/engines/graph-diagnostics.js'",
+        "symbols": [
+          "detectCycles",
+          "detectDeadCode",
+          "detectHubs",
+          "detectStructuralDrift"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "../../../src/engines/graph-diagnostics.js",
+        "relation": "import",
+        "symbols": [
+          "detectCycles",
+          "detectDeadCode",
+          "detectHubs",
+          "detectStructuralDrift"
+        ]
+      },
+      {
+        "targetPath": "../../../src/engines/dependency-graph.js",
+        "relation": "import",
+        "symbols": [
+          "KnowledgeGraph",
+          "KnowledgeGraphNode",
+          "KnowledgeGraphEdge"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/engines/graph-diagnostics.test.ts/_file_#",
+        "targetSymbol": "src/engines/graph-diagnostics.ts/detectCycles#",
+        "targetPath": "src/engines/graph-diagnostics.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/engines/graph-diagnostics.test.ts/_file_#",
+        "targetSymbol": "src/engines/graph-diagnostics.ts/detectDeadCode#",
+        "targetPath": "src/engines/graph-diagnostics.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/engines/graph-diagnostics.test.ts/_file_#",
+        "targetSymbol": "src/engines/graph-diagnostics.ts/detectHubs#",
+        "targetPath": "src/engines/graph-diagnostics.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/engines/graph-diagnostics.test.ts/_file_#",
+        "targetSymbol": "src/engines/graph-diagnostics.ts/detectStructuralDrift#",
+        "targetPath": "src/engines/graph-diagnostics.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:09:19.445Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

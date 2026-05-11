@@ -1,0 +1,159 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/change-impact-view.ts",
+    "contentHash": "d48f3e66ff705da5d25b9f350577aae2835699771c4ee514a5bb952be70e89f4",
+    "skeletonHash": "4d8937396774e37208b4fdba6ea260af78c285a5d7c1fd185fa25b4ade6fc343",
+    "semanticHash": "850fc6ff48f27735bd03a3b2473545da68face58b98dd1f668341a9dfd3dec27",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "View producer that generates a change impact report by analyzing dependency graph impact radii.",
+    "responsibilities": [
+      "Load the knowledge graph from disk using fs/path.",
+      "Compute change impact (blast radius) for each module via the changeImpact engine function.",
+      "Filter out modules with zero impact and sort entries by totalAffected descending.",
+      "Render a Markdown report with a table showing total affected, depth breakdown, and rules affected for each module.",
+      "Save the view artifact and Markdown through ctx.outputManager.",
+      "Log progress information via ctx.runtimeIO."
+    ],
+    "outOfScope": [
+      "Direct mutation of the knowledge graph or dependency graph.",
+      "Real-time change detection (requires separate trigger).",
+      "Interactive CLI or HTTP handling."
+    ],
+    "invariants": [
+      "Impact calculation relies on the pre-computed knowledge graph under .spine/view/data/knowledge-graph.json.",
+      "Each module in the report must have an entry in the knowledge graph.",
+      "Depth values are capped at 3; if the impact cone exceeds depth 3, the entry is flagged as truncated."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Integrate dependency graph analysis into the view system by providing a dedicated producer for change impact reports.",
+      "recentChangeIntent": "Built as part of the view-producer refactor to migrate legacy view logic into modular, service-owned subsystems."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "changeImpactViewProducer",
+        "description": "Exports a ViewProducer component that generates the change impact Markdown report for the ArchSpine view system. Consumed by view-registry to populate the change-impact view."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "View producer that generates a change impact report by analyzing dependency graph impact radii.",
+        "responsibilities": [
+          "Load the knowledge graph from disk using fs/path.",
+          "Compute change impact (blast radius) for each module via the changeImpact engine function.",
+          "Filter out modules with zero impact and sort entries by totalAffected descending.",
+          "Render a Markdown report with a table showing total affected, depth breakdown, and rules affected for each module.",
+          "Save the view artifact and Markdown through ctx.outputManager.",
+          "Log progress information via ctx.runtimeIO."
+        ],
+        "outOfScope": [
+          "Direct mutation of the knowledge graph or dependency graph.",
+          "Real-time change detection (requires separate trigger).",
+          "Interactive CLI or HTTP handling."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../engines/graph-query.js'",
+        "symbols": [
+          "changeImpact"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../engines/graph-query.js",
+        "relation": "import",
+        "symbols": [
+          "changeImpact"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/view/change-impact-view.ts/_file_#",
+        "targetSymbol": "src/engines/graph-query.ts/changeImpact#",
+        "targetPath": "src/engines/graph-query.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:03:15.398Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/arch-diagram-svg-renderer.ts",
+    "contentHash": "69da0502b98ae35fdb1621d63756a368703cc2828149dc4460ebb60db1fac096",
+    "skeletonHash": "1fa871622ad04a037e065d52d28046b4eddfbd0b84f2d2f58e6edc8a3ab37668",
+    "semanticHash": "e91812a067074a5335522c3d38f7aab161d970daf9a300b0dfcdf1fbc515d26f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "SVG architecture diagram renderer that transforms a knowledge graph into an SVG representation using a layered (Sugiyama-style) layout engine.",
+    "responsibilities": [
+      "Converts a KnowledgeGraph (nodes and edges) into an SVG string suitable for architecture diagram visualization.",
+      "Implements a topological-sort based layered layout algorithm (Sugiyama-equivalent) to assign y-coordinates to layers and position nodes within layers.",
+      "Generates SVG elements for nodes (rectangles with labels) and edges (polylines with arrowheads), handling XML escaping and basic styling.",
+      "Provides the single exported function `generateArchitectureDiagramSvg` as the public API for downstream view services."
+    ],
+    "outOfScope": [
+      "Does not produce architecture diagrams in non-SVG formats (e.g., ASCII, Mermaid).",
+      "Does not handle interactive features like click events or zoom controls.",
+      "Does not perform semantic analysis or filtering of the knowledge graph; it only renders whatever graph is passed.",
+      "Does not read or write files directly; SVG output is returned as a string."
+    ],
+    "invariants": [
+      "Input must be a valid KnowledgeGraph object with nodes and edges arrays.",
+      "Output SVG must be a well-formed XML string that can be embedded in HTML or saved as .svg file.",
+      "Node positions are computed deterministically based on graph topology; the same graph always produces the same layout."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a standalone, deterministic SVG renderer for architecture diagrams that can be used by view rendering pipelines without external layout dependencies (e.g., dagre).",
+      "recentChangeIntent": "Part of ongoing refactor to remove legacy CLI aliases and rebuild documentation; no direct changes to layout algorithm or public API expected from this commit."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "generateArchitectureDiagramSvg",
+        "description": "Takes a KnowledgeGraph and returns an SVG string representing a layered architecture diagram. This is the sole public API consumed by the view service layer to produce diagram views."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "SVG architecture diagram renderer that transforms a knowledge graph into an SVG representation using a layered (Sugiyama-style) layout engine.",
+        "responsibilities": [
+          "Converts a KnowledgeGraph (nodes and edges) into an SVG string suitable for architecture diagram visualization.",
+          "Implements a topological-sort based layered layout algorithm to assign y-coordinates to layers and position nodes within layers.",
+          "Generates SVG elements for nodes (rectangles with labels) and edges (polylines with arrowheads), handling XML escaping and basic styling.",
+          "Provides the single exported function `generateArchitectureDiagramSvg` as the public API for downstream view services."
+        ],
+        "outOfScope": [
+          "Does not produce architecture diagrams in non-SVG formats (e.g., ASCII, Mermaid).",
+          "Does not handle interactive features like click events or zoom controls.",
+          "Does not perform semantic analysis or filtering of the knowledge graph; it only renders whatever graph is passed.",
+          "Does not read or write files directly; SVG output is returned as a string."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "generateArchitectureDiagramSvg",
+        "kind": "function",
+        "signature": "generateArchitectureDiagramSvg(graph: KnowledgeGraph)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "generateArchitectureDiagramSvg",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/arch-diagram-svg-renderer.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/engines/dependency-graph.ts",
+        "relation": "import",
+        "symbols": [
+          "KnowledgeGraph",
+          "KnowledgeGraphNode",
+          "KnowledgeGraphEdge"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:03:08.812Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

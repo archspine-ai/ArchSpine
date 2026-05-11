@@ -1,0 +1,197 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/rule-service.ts",
+    "contentHash": "9c00deac81f6c4e40076865dac9fc5dafeae1b9614e41027eb3e614188436434",
+    "skeletonHash": "8731b53b8c86dcbd1811f53a0b20b5868ad3c95261ecf4c37bfe273d3dc0e41e",
+    "semanticHash": "0779f61abc497e157505d92fbe7c3b0d43069a270d731bc043730c5cda6090b4",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Rule template registry providing predefined architectural constraint definitions for the ArchSpine project.",
+    "responsibilities": [
+      "Define hardcoded rule templates (e.g., 'no-core-to-cli') with filenames and YAML content.",
+      "Expose a list of all available rule templates as RuleTemplateEntry objects.",
+      "Add a specified rule template to a project directory by writing the template file to a predefined path.",
+      "Retrieve metadata (severity, title, summary) from a rule template's content by parsing its header lines."
+    ],
+    "outOfScope": [
+      "Enforcing or evaluating rules at runtime.",
+      "Loading external or user-defined rule templates beyond the hardcoded set.",
+      "Validating the structure or correctness of added template files.",
+      "Managing rule template versions or dependencies."
+    ],
+    "invariants": [
+      "All template names must be keys in the internal RULE_TEMPLATES record.",
+      "Adding a template always writes the template file to rootDir/<derived-subdirectory>/<filename> based on template content.",
+      "The getRuleTemplateInfo function assumes the template content follows a specific Markdown header format: first line '# title', second line '# summary', etc."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a centralized, reusable mechanism for defining and distributing architectural rule templates across ArchSpine projects to enforce consistent dependency boundaries.",
+      "recentChangeIntent": "No evidence of recent changes to this file; the git intent message 'd63e898 1' does not map to observable code modifications."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "listRuleTemplates",
+        "description": "Returns an array of all available rule template entries, each containing the template name, filename, and parsed title. Used by consumers that need to enumerate or display rule options."
+      },
+      {
+        "symbolName": "addRuleTemplate",
+        "description": "Adds a predefined rule template by name to the specified project root directory, writing the template file to the correct subpath. Used by scaffolding or configuration commands to populate rule definitions."
+      },
+      {
+        "symbolName": "getRuleTemplateInfo",
+        "description": "Parses and returns metadata (severity, title, summary) from a given rule template's content. Used by UI or CLI to display rule properties without loading external files."
+      },
+      {
+        "symbolName": "RuleTemplateEntry",
+        "description": "Interface defining the shape of a rule template entry: name, filename, and title. Used as the return type of listRuleTemplates and as a data contract for consumers."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Rule template registry providing predefined architectural constraint definitions for the ArchSpine project.",
+        "responsibilities": [
+          "Define hardcoded rule templates (e.g., 'no-core-to-cli') with filenames and YAML content.",
+          "Expose a list of all available rule templates as RuleTemplateEntry objects.",
+          "Add a specified rule template to a project directory by writing the template file to a predefined path.",
+          "Retrieve metadata (severity, title, summary) from a rule template's content by parsing its header lines."
+        ],
+        "outOfScope": [
+          "Enforcing or evaluating rules at runtime.",
+          "Loading external or user-defined rule templates beyond the hardcoded set.",
+          "Validating the structure or correctness of added template files.",
+          "Managing rule template versions or dependencies."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'node:fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "listRuleTemplates",
+        "kind": "function",
+        "signature": "listRuleTemplates()"
+      },
+      {
+        "name": "addRuleTemplate",
+        "kind": "function",
+        "signature": "addRuleTemplate(\n  rootDir: string,\n  templateName: string,\n)"
+      },
+      {
+        "name": "getRuleTemplateInfo",
+        "kind": "function",
+        "signature": "getRuleTemplateInfo(templateName: string)"
+      },
+      {
+        "name": "RuleTemplateEntry",
+        "kind": "interface",
+        "signature": "interface RuleTemplateEntry"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "listRuleTemplates",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/rule-service.ts#"
+      },
+      {
+        "name": "addRuleTemplate",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/rule-service.ts#"
+      },
+      {
+        "name": "getRuleTemplateInfo",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/rule-service.ts#"
+      },
+      {
+        "name": "RuleTemplateEntry",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/rule-service.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 4,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "node:fs",
+        "relation": "import",
+        "symbols": [
+          "fs"
+        ]
+      },
+      {
+        "targetPath": "node:path",
+        "relation": "import",
+        "symbols": [
+          "path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T10:02:45.617Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

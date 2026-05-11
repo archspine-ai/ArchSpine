@@ -1,0 +1,172 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/context-relevance.ts",
+    "contentHash": "6ea99dc98e44c48f923d807588b2a84c1789d42a31324e3631722c4ade4202df",
+    "skeletonHash": "628bc2de038c7c5e492ace61851d1d0a6fd90b5573f9100005cca842df27a758",
+    "semanticHash": "0fcebcdd58fefbd5ed10c3e9bc06264b990c6f560a6077af3605c5b3bc7b15f1",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Core engine computing relevance scores for dependency candidates: extracts keywords from architectural rules, scores how relevant a dependency candidate is to a given file based on path distance, symbol evidence, and rule keyword overlap, and scores target paths against import usage maps.",
+    "responsibilities": [
+      "Extract meaningful keywords from rule documents by tokenizing and filtering stopwords.",
+      "Compute a composite relevance score for a dependency candidate by combining path distance, symbol evidence, and rule keyword match signals.",
+      "Score a target path against import usage data and imported symbol maps to determine its contextual relevance.",
+      "Provide reusable scoring primitives consumed by the context engine (./context.ts) for dependency ranking."
+    ],
+    "outOfScope": [
+      "This module does not orchestrate service-level workflows or CLI command execution.",
+      "It does not manage state or persist scores beyond computation."
+    ],
+    "invariants": [
+      "Engine modules (src/engines/) must not import CLI entrypoints or service-level orchestration modules.",
+      "Scoring functions must remain pure (deterministic, no side effects) to ensure reproducible relevance computation."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provides the scoring kernel for the context engine, enabling ArchSpine to rank dependency candidates and target paths by relevance during semantic analysis.",
+      "recentChangeIntent": "Part of the v1.0.0 release establishing the architectural governance and semantic layer, adding precise relevance scoring for context-aware auditing."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "extractRuleKeywords",
+        "description": "Extracts and deduplicates up to 16 meaningful tokens from a rule document by tokenizing the input and filtering against a set of architectural stopwords (e.g., 'rule', 'severity', 'must')."
+      },
+      {
+        "symbolName": "scoreDependencyCandidate",
+        "description": "Computes a composite relevance score (0-1) for a potential dependency by combining path distance, symbol evidence, and rule keyword match contributions. Used by the context engine to rank files for inclusion in a file's dependency set."
+      },
+      {
+        "symbolName": "scoreTargetPath",
+        "description": "Scores a target file path against import usage data and an imported symbol map to determine its relevance to a given file. Returns a score contribution object used in context assembly."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Core engine computing relevance scores for dependency candidates: extracts keywords from architectural rules, scores how relevant a dependency candidate is to a given file based on path distance, symbol evidence, and rule keyword overlap, and scores target paths against import usage maps.",
+        "responsibilities": [
+          "Extract meaningful keywords from rule documents by tokenizing and filtering stopwords.",
+          "Compute a composite relevance score for a dependency candidate by combining path distance, symbol evidence, and rule keyword match signals.",
+          "Score a target path against import usage data and imported symbol maps to determine its contextual relevance.",
+          "Provide reusable scoring primitives consumed by the context engine (./context.ts) for dependency ranking."
+        ],
+        "outOfScope": [
+          "This module does not orchestrate service-level workflows or CLI command execution.",
+          "It does not manage state or persist scores beyond computation."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "PublicSurfaceEntry",
+          "SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "extractRuleKeywords",
+        "kind": "function",
+        "signature": "extractRuleKeywords(ruleData: string)"
+      },
+      {
+        "name": "scoreDependencyCandidate",
+        "kind": "function",
+        "signature": "scoreDependencyCandidate(\n  relativeFilePath: string,\n  targetPath: string,\n  importedSymbols: string[],\n  doc: IndexedDoc,\n  ruleKeywords: string[],\n)"
+      },
+      {
+        "name": "scoreTargetPath",
+        "kind": "function",
+        "signature": "scoreTargetPath(\n  relativeFilePath: string,\n  usage: string,\n  targetPath: string,\n  importTargets: Set<string>,\n  importedSymbolMap: Map<string, string>,\n  doc: IndexedDoc,\n  ruleKeywords: string[],\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "extractRuleKeywords",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/context-relevance.ts#"
+      },
+      {
+        "name": "scoreDependencyCandidate",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/context-relevance.ts#"
+      },
+      {
+        "name": "scoreTargetPath",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/context-relevance.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "PublicSurfaceEntry",
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "./context.js",
+        "relation": "import",
+        "symbols": [
+          "RelevanceScoreContribution"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:55:19.249Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 71,
+    "inCycle": true,
+    "cycleId": "src/core → src/types → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

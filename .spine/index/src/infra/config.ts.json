@@ -1,0 +1,153 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/config.ts",
+    "contentHash": "093988ca1e757dc6bccd88d0bb6c5f9a0298ce4833df9aee9fe276e081420daa",
+    "skeletonHash": "1963300d6fbe2edc8a64d516da63a4f9ca87fd3932872fc2c2e7ec24d23aa535",
+    "semanticHash": "ae635ee04ce7c26d165b2055dd8307c2d49e18e0aa4dab5c362ef25dc81d36d0",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Barrel index file that aggregates and re-exports the public API of the infra/config module, providing a single import entry point for the Config facade and all configuration type definitions.",
+    "responsibilities": [
+      "Re-export the Config class/interface from the config facade to provide a stable, public configuration interface.",
+      "Re-export all type definitions from config/types.js (e.g., SpineConfig and related types) to deliver a consistent type surface for configuration consumers."
+    ],
+    "outOfScope": [
+      "Configuration validation, loading, or defaulting logic — those reside in the individual module files (facade, loader, validation, etc.).",
+      "Business logic or application-layer concerns — this file is purely an aggregation layer."
+    ],
+    "invariants": [
+      "This file must remain a lightweight barrel that only re-exports from the config facade and types; it must not contain any implementation logic or imports from other submodules.",
+      "Any addition or removal of a re-export constitutes a change to the public API surface and must be reviewed accordingly."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a clean, unified import point for all configuration-related public symbols, shielding consumers from the internal module structure.",
+      "recentChangeIntent": "No recent changes detected for this file; the commit message references a v1.0.0 release with architectural governance, but this barrel likely remains stable."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "Config",
+        "description": "The primary configuration interface for ArchSpine, exposed via the config facade. Consumers use this to access resolved configuration values."
+      },
+      {
+        "symbolName": "* (all exports from ./config/types.js)",
+        "description": "All configuration type definitions (e.g., SpineConfig, environment settings) re‑exported to provide a stable, singular type surface for configuration consumers."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Barrel index file that aggregates and re-exports the public API of the infra/config module, providing a single import entry point for the Config facade and all configuration type definitions.",
+        "responsibilities": [
+          "Re-export the Config class/interface from the config facade to provide a stable, public configuration interface.",
+          "Re-export all type definitions from config/types.js (e.g., SpineConfig and related types) to deliver a consistent type surface for configuration consumers."
+        ],
+        "outOfScope": [
+          "Configuration validation, loading, or defaulting logic — those reside in the individual module files (facade, loader, validation, etc.).",
+          "Business logic or application-layer concerns — this file is purely an aggregation layer."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "Config",
+        "kind": "unknown",
+        "signature": "export { Config }"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "Config",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/config.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./config/facade.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "./config/types.js",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/mcp/server.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "src/services/repository-admin-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/integration/system/agent-host-init.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/integration/system/error-system.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/unit/infra/llm-config.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/unit/infra/repo-strategy.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:56:49.931Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

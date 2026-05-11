@@ -1,0 +1,21 @@
+# 🏛️ 分层架构约束 (Layered Architecture Constraints)
+# 
+# 该规则用于维护经典的分层模型，确保高层模块不会被低层模块反向依赖。
+
+- [Rule: Domain Isolation]
+  - Scope: src/domain/**
+  - Constraint: Domain modules must not import from 'src/infra/**' or 'src/cli/**'.
+  - Severity: Error
+  - Reason: The domain layer should be pure and independent of infrastructure or presentation concerns.
+
+- [Rule: Interface Only Dependency]
+  - Scope: src/domain/**
+  - Constraint: Domain should only depend on internal domain logic or generic utils.
+  - Severity: Warning
+  - Reason: Keep domain logic focused.
+
+- [Rule: API Layer Separation]
+  - Scope: src/api/**
+  - Constraint: API layers should only call Service or Domain layers.
+  - Severity: Error
+  - Reason: Prevent bypassing business logic.

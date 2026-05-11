@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/infra/db",
+  "role": "This directory contains the core SQLite database infrastructure layer for the ArchSpine system, providing database initialization, schema management, batch operations, error handling, and WAL recovery.",
+  "responsibility": "The components in this directory collectively manage the runtime SQLite database lifecycle, including opening and initializing the database, defining the schema for file indexing, performing batch commits of file records, recovering from stale WAL files, mapping database errors to domain-specific errors, and defining type definitions for database records, while the nested repositories folder provides data access objects for domain entities.",
+  "children": [
+    {
+      "filePath": "src/infra/db/batch.ts",
+      "role": "Batch commit handler for file indexing records in the SQLite infrastructure layer.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/db/errors.ts",
+      "role": "Utility function that maps low-level database errors into typed ArchSpineError instances for the runtime DB initialization and opening stages.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/db/repositories",
+      "role": "Data access layer for the ArchSpine system, providing repository objects for each domain entity.",
+      "fileKind": "folder"
+    },
+    {
+      "filePath": "src/infra/db/runtime.ts",
+      "role": "Infrastructure module providing a managed SQLite runtime database for the ArchSpine system. Handles database file creation, WAL recovery, and provides a simple open/readonly interface.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/db/schema.ts",
+      "role": "Infrastructure schema initialization module for the runtime SQLite database. Called once at startup to establish the core `files` table and enable Write-Ahead Logging.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/db/types.ts",
+      "role": "Type definitions for database record shapes consumed by the repository data-access layer.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/db/wal-recovery.ts",
+      "role": "SQLite WAL recovery utility for the infra database layer. Performs safe checkpointing of uncommitted WAL data before the main database connection is opened.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:12:07.872Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

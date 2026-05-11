@@ -1,0 +1,412 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/task-runtime.ts",
+    "contentHash": "392d90f8a64e73c29db2366acf5f242de87bd327eec28fc59a0cccaaea50616d",
+    "skeletonHash": "e4b9058f835a6593006e86dd0fceb5fd1767e9f35cba4630ec00cd1fe05eaecf",
+    "semanticHash": "64d34e595b7b92a707b9059a435432d223a26f1c898e68bd785125246d47e527",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Central factory module that assembles a fully wired task execution context, composing Scanner, Aggregator, ASTExtractor, RuleEngine, OutputManager, ContextEngine, LockManager, Manifest, and RuntimeIO into a single PreparedTaskContext object.",
+    "responsibilities": [
+      "Construct a PreparedTaskContext by opening a Manifest, creating task state and artifacts state, instantiating Scanner, Aggregator, ASTExtractor, RuleEngine, OutputManager, ContextEngine, and LockManager, and binding RuntimeIO.",
+      "Parse the SPINE_DIAGNOSTICS_MODE environment variable to configure diagnostic mode via parseRelevanceDiagnosticsMode.",
+      "Provide the ServiceOptions interface to specify rootDir, llmClient, targetLocales, scanPolicy, and other optional dependencies for task context creation.",
+      "Provide the PreparedTaskContext interface that exposes all assembled components and state for downstream task execution."
+    ],
+    "outOfScope": [
+      "Actual execution of scan, check, fix, or sync tasks (delegated to the engines).",
+      "Manifest persistence or file system operations beyond what RuntimeIO handles.",
+      "Lock management internals (delegated to LockManager).",
+      "LLM client initialization (injected via options).",
+      "View-specific rendering or agent briefing (handled by separate view services)."
+    ],
+    "invariants": [
+      "The module must remain under src/services/ as a core service, not view-specific; view-specific service modules should live under src/services/view/ as per the service-runtime-boundary rule.",
+      "The returned PreparedTaskContext must include all required engines (Scanner, Aggregator, ASTExtractor, RuleEngine, ContextEngine) and state (taskState, artifactsState) for any task to function."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Centralize task context creation to reduce duplication across runtime entry points and enforce consistent wiring of engines, state, and I/O.",
+      "recentChangeIntent": "Stabilized the task context preparation interface and aligned it with recent runtime service restructuring; incorporates accumulated sync and release gate fixes."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "createTaskContext",
+        "description": "Factory function that accepts TaskContextOptions (rootDir, llmClient, targetLocales, scanPolicy, etc.) and returns a fully prepared PreparedTaskContext with all engines, state, and runtime I/O wired together. Called by task runtime executors."
+      },
+      {
+        "symbolName": "ServiceOptions",
+        "description": "TypeScript interface defining the configuration shape for createTaskContext, including rootDir, scanPolicy, llmClient, targetLocales, and optional overrides for individual engines and state stores."
+      },
+      {
+        "symbolName": "PreparedTaskContext",
+        "description": "TypeScript interface describing the assembled context object that exposes scanner, aggregator, astExtractor, ruleEngine, outputManager, contextEngine, lockManager, manifest, taskState, artifactsState, and runtimeIO, ready for task execution."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Central factory module that assembles a fully wired task execution context, composing Scanner, Aggregator, ASTExtractor, RuleEngine, OutputManager, ContextEngine, LockManager, Manifest, and RuntimeIO into a single PreparedTaskContext object.",
+        "responsibilities": [
+          "Construct a PreparedTaskContext by opening a Manifest, creating task state and artifacts state, instantiating Scanner, Aggregator, ASTExtractor, RuleEngine, OutputManager, ContextEngine, and LockManager, and binding RuntimeIO.",
+          "Parse the SPINE_DIAGNOSTICS_MODE environment variable to configure diagnostic mode via parseRelevanceDiagnosticsMode.",
+          "Provide the ServiceOptions interface to specify rootDir, llmClient, targetLocales, scanPolicy, and other optional dependencies for task context creation.",
+          "Provide the PreparedTaskContext interface that exposes all assembled components and state for downstream task execution."
+        ],
+        "outOfScope": [
+          "Actual execution of scan, check, fix, or sync tasks (delegated to the engines).",
+          "Manifest persistence or file system operations beyond what RuntimeIO handles.",
+          "Lock management internals (delegated to LockManager).",
+          "LLM client initialization (injected via options).",
+          "View-specific rendering or agent briefing (handled by separate view services)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../engines/scanner.js'",
+        "symbols": [
+          "Scanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../engines/aggregator.js'",
+        "symbols": [
+          "Aggregator"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/extractor.js'",
+        "symbols": [
+          "ASTExtractor"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../engines/rules.js'",
+        "symbols": [
+          "RuleEngine"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/output.js'",
+        "symbols": [
+          "OutputManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../engines/context.js'",
+        "symbols": [
+          "ContextEngine"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/task.js'",
+        "symbols": [
+          "TaskContext"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/task-state.js'",
+        "symbols": [
+          "createTaskArtifactsState",
+          "createTaskState"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../utils/lock.js'",
+        "symbols": [
+          "LockManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/scan-policy.js'",
+        "symbols": [
+          "ScanPolicy"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/prompt-policy.js'",
+        "symbols": [
+          "parseRelevanceDiagnosticsMode"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/runtime-io.js'",
+        "symbols": [
+          "RuntimeIO",
+          "defaultRuntimeIO"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "createTaskContext",
+        "kind": "function",
+        "signature": "createTaskContext(options: TaskContextOptions)"
+      },
+      {
+        "name": "ServiceOptions",
+        "kind": "interface",
+        "signature": "interface ServiceOptions"
+      },
+      {
+        "name": "PreparedTaskContext",
+        "kind": "interface",
+        "signature": "interface PreparedTaskContext"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "createTaskContext",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/task-runtime.ts#"
+      },
+      {
+        "name": "ServiceOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/task-runtime.ts#"
+      },
+      {
+        "name": "PreparedTaskContext",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/task-runtime.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 13,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../engines/scanner.js",
+        "relation": "import",
+        "symbols": [
+          "Scanner"
+        ]
+      },
+      {
+        "targetPath": "../infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "../engines/aggregator.js",
+        "relation": "import",
+        "symbols": [
+          "Aggregator"
+        ]
+      },
+      {
+        "targetPath": "../ast/extractor.js",
+        "relation": "import",
+        "symbols": [
+          "ASTExtractor"
+        ]
+      },
+      {
+        "targetPath": "../engines/rules.js",
+        "relation": "import",
+        "symbols": [
+          "RuleEngine"
+        ]
+      },
+      {
+        "targetPath": "../infra/output.js",
+        "relation": "import",
+        "symbols": [
+          "OutputManager"
+        ]
+      },
+      {
+        "targetPath": "../engines/context.js",
+        "relation": "import",
+        "symbols": [
+          "ContextEngine"
+        ]
+      },
+      {
+        "targetPath": "../core/task.js",
+        "relation": "import",
+        "symbols": [
+          "TaskContext"
+        ]
+      },
+      {
+        "targetPath": "../core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "createTaskArtifactsState",
+          "createTaskState"
+        ]
+      },
+      {
+        "targetPath": "../utils/lock.js",
+        "relation": "import",
+        "symbols": [
+          "LockManager"
+        ]
+      },
+      {
+        "targetPath": "../core/scan-policy.js",
+        "relation": "import",
+        "symbols": [
+          "ScanPolicy"
+        ]
+      },
+      {
+        "targetPath": "../infra/prompt-policy.js",
+        "relation": "import",
+        "symbols": [
+          "parseRelevanceDiagnosticsMode"
+        ]
+      },
+      {
+        "targetPath": "../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeIO",
+          "defaultRuntimeIO"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/parseRelevanceDiagnosticsMode#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-policy.ts/parseRelevanceDiagnosticsMode#",
+        "targetPath": "src/infra/prompt-policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/parsers.ts/parseRelevanceDiagnosticsMode#",
+        "targetPath": "src/infra/prompt-context/parsers.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/createTaskArtifactsState#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/createTaskState#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/engines/scanner.ts/Scanner#",
+        "targetPath": "src/engines/scanner.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/engines/aggregator.ts/Aggregator#",
+        "targetPath": "src/engines/aggregator.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/ast/extractor.ts/ASTExtractor#",
+        "targetPath": "src/ast/extractor.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/engines/rules.ts/RuleEngine#",
+        "targetPath": "src/engines/rules.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/infra/output.ts/OutputManager#",
+        "targetPath": "src/infra/output.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/engines/context.ts/ContextEngine#",
+        "targetPath": "src/engines/context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/task-runtime.ts/_file_#",
+        "targetSymbol": "src/utils/lock.ts/LockManager#",
+        "targetPath": "src/utils/lock.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:03:12.520Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

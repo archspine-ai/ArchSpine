@@ -1,0 +1,265 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/view/risk-hotspots-view.ts",
+    "contentHash": "44c0df800142ad598fc4a6312323454d7bf56e04964a20cf5a30914664944613",
+    "skeletonHash": "725dd3dbe443d0181075ba49887732527f85ed68b204330874b87646b0f34569",
+    "semanticHash": "c49524916d093396ca46665a3fa6c21ab3beba13cb14defd2dabaaca11431fa4",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services/view"
+  },
+  "semantic": {
+    "role": "View Producer module that computes risk hotspot rankings from parsed source units for the ArchSpine diagnostic dashboard.",
+    "responsibilities": [
+      "Analyzes loaded SpineUnit objects to identify code areas with elevated technical risk based on composite scoring.",
+      "Computes risk scores across multiple factors: rule violations, cross-boundary edges, adjacent test coverage, file age/churn, size/complexity, dependency fan-in, and suppression status.",
+      "Applies path suppression logic via isSuppressedPath to exclude non-actionable units.",
+      "Ranks and filters results to the top 12 risk hotspots, ordered by descending total score.",
+      "Produces structured IViewArtifactEnvelope payloads conforming to the view artifact schema, consumable by the view rendering pipeline."
+    ],
+    "outOfScope": [
+      "Direct file system I/O or database access beyond reading provided units.",
+      "Real-time scanning or live change detection on source files.",
+      "LLM invocation or prompt engineering.",
+      "CI/CD pipeline integration or execution orchestration."
+    ],
+    "invariants": [
+      "Output is always limited to MAX_RISK_HOTSPOTS (12) items.",
+      "Scoring algorithm keys on seven discrete risk factors; no factor is added or removed without changing the analysis contract.",
+      "Path suppression via isSuppressedPath is applied before scoring, not after."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a pluggable View Producer within src/services/view/ that implements the risk-hotspot analysis domain logic, decoupled from rendering concerns through the ViewRenderer abstraction.",
+      "recentChangeIntent": "General project refactor removing legacy CLI aliases, rebuilding documentation, and fixing schema; no evidence of tangible changes to risk-hotspot-view logic."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "buildRiskHotspotsView",
+        "description": "Analyzes an array of LoadedUnit objects and produces a structured IViewArtifactEnvelope containing up to 12 ranked risk hotspot items with composite scores, factor breakdowns, and confidence levels. Consumed by the view runtime for rendering the risk hotspots dashboard page."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "View Producer module that computes risk hotspot rankings from parsed source units for the ArchSpine diagnostic dashboard.",
+        "responsibilities": [
+          "Analyzes loaded SpineUnit objects to identify code areas with elevated technical risk based on composite scoring.",
+          "Computes risk scores across multiple factors: rule violations, cross-boundary edges, adjacent test coverage, file age/churn, size/complexity, dependency fan-in, and suppression status.",
+          "Applies path suppression logic via isSuppressedPath to exclude non-actionable units.",
+          "Ranks and filters results to the top 12 risk hotspots, ordered by descending total score.",
+          "Produces structured IViewArtifactEnvelope payloads conforming to the view artifact schema, consumable by the view rendering pipeline."
+        ],
+        "outOfScope": [
+          "Direct file system I/O or database access beyond reading provided units.",
+          "Real-time scanning or live change detection on source files.",
+          "LLM invocation or prompt engineering.",
+          "CI/CD pipeline integration or execution orchestration."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "type SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./common.js'",
+        "symbols": [
+          "countCrossBoundaryEdges",
+          "isSuppressedPath",
+          "sumScores",
+          "toConfidence"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./view-renderer.js'",
+        "symbols": [
+          "ViewRenderer"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "buildRiskHotspotsView",
+        "kind": "function",
+        "signature": "buildRiskHotspotsView(\n  units: LoadedUnit[],\n  rootDir?: string,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "buildRiskHotspotsView",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/view/risk-hotspots-view.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "../../types/view.js",
+        "relation": "import",
+        "symbols": [
+          "IRiskHotspotViewItem",
+          "IViewArtifactEnvelope",
+          "IViewScoreContribution"
+        ]
+      },
+      {
+        "targetPath": "./common.js",
+        "relation": "import",
+        "symbols": [
+          "countCrossBoundaryEdges",
+          "isSuppressedPath",
+          "sumScores",
+          "toConfidence"
+        ]
+      },
+      {
+        "targetPath": "./types.js",
+        "relation": "import",
+        "symbols": [
+          "LoadedUnit"
+        ]
+      },
+      {
+        "targetPath": "./producer.js",
+        "relation": "import",
+        "symbols": [
+          "ViewArtifact",
+          "ViewContext",
+          "ViewProducer"
+        ]
+      },
+      {
+        "targetPath": "./view-renderer.js",
+        "relation": "import",
+        "symbols": [
+          "ViewRenderer"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/services/view/view-service.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/view/risk-hotspots-view.ts/_file_#",
+        "targetSymbol": "src/services/view/common.ts/isSuppressedPath#",
+        "targetPath": "src/services/view/common.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/view/risk-hotspots-view.ts/_file_#",
+        "targetSymbol": "src/services/view/common.ts/countCrossBoundaryEdges#",
+        "targetPath": "src/services/view/common.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/view/risk-hotspots-view.ts/_file_#",
+        "targetSymbol": "src/services/view/common.ts/sumScores#",
+        "targetPath": "src/services/view/common.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/view/risk-hotspots-view.ts/_file_#",
+        "targetSymbol": "src/services/view/common.ts/toConfidence#",
+        "targetPath": "src/services/view/common.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:03:55.590Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

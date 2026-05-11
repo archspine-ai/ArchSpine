@@ -1,0 +1,391 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integration/system/agent-host-init.test.ts",
+    "contentHash": "1cb04664b1019991fd3322c91b5ee80474fc9914a628b3e2bfbbc0d13e444154",
+    "skeletonHash": "4113305a50a0d02d7d00300961fc49ad0f625a60fd4607b21fc76ed0ab8ba1ac",
+    "semanticHash": "f577d5801d81a4f41aa1710b00c19a2c2f9ee9277c16b073339dd1498fc9a8b4",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/integration/system"
+  },
+  "semantic": {
+    "role": "Unit test suite for the agent-instructions synchronization utility module.",
+    "responsibilities": [
+      "Verify that syncAgentInstructionsFile and related sync functions correctly write agent instructions, git attributes, git ignore, search ignore, and spine ignore files into a repository.",
+      "Verify that syncHealthBlock, syncMCPToolsBlock, and syncV2BriefingBlock insert the expected content blocks.",
+      "Verify that remove functions remove the managed files/blocks.",
+      "Ensure the synchronization works with a temporary repository created via repository-bootstrap.",
+      "Use Config from infra/config to retrieve configuration, though the specific Config usage is not directly tested in the visible shell."
+    ],
+    "outOfScope": [
+      "Production functionality: the file is test-only and does not implement any features.",
+      "Integration or end-to-end scenarios: only unit-level verification with isolated temporary directories."
+    ],
+    "invariants": [
+      "All test files must end with .test.ts or .spec.ts (rule: test-file-suffix).",
+      "The sync functions should not modify files outside the target temporary repository.",
+      "The test fixtures are cleaned up after each test via afterEach."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Test the agent-instructions module's ability to synchronize managed configuration files (e.g., .gitattributes, .gitignore) into a repository's root, supporting the broader CLI initialization and instruction injection pipeline.",
+      "recentChangeIntent": "Part of a broader refactor that removed legacy CLI aliases, rebuilt documentation, and fixed schema and tests. This test file ensures that the agent instruction synchronization remains correct after those changes."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Unit test suite for the agent-instructions synchronization utility module.",
+        "responsibilities": [
+          "Verify that syncAgentInstructionsFile and related sync functions correctly write agent instructions, git attributes, git ignore, search ignore, and spine ignore files into a repository.",
+          "Verify that syncHealthBlock, syncMCPToolsBlock, and syncV2BriefingBlock insert the expected content blocks.",
+          "Verify that remove functions remove the managed files/blocks.",
+          "Ensure the synchronization works with a temporary repository created via repository-bootstrap."
+        ],
+        "outOfScope": [
+          "Production functionality: the file is test-only and does not implement any features.",
+          "Integration or end-to-end scenarios: only unit-level verification with isolated temporary directories."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "beforeEach",
+          "afterEach"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/utils/agent-instructions.js'",
+        "symbols": [
+          "injectArchSpineScripts",
+          "removeArchSpineScripts",
+          "removeManagedAgentInstructionsFile",
+          "removeManagedGitAttributesFile",
+          "removeManagedGitIgnoreFile",
+          "removeManagedSearchIgnoreFile",
+          "removeManagedSpineIgnoreFile",
+          "syncAgentInstructionsFile",
+          "syncGitAttributesFile",
+          "syncGitIgnoreFile",
+          "syncHealthBlock",
+          "syncMCPToolsBlock",
+          "syncSearchIgnoreFile",
+          "syncSpineIgnoreFile",
+          "syncV2BriefingBlock",
+          "removeHealthBlock",
+          "removeMCPToolsBlock",
+          "removeV2BriefingBlock"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/cli/init/repository-bootstrap.js'",
+        "symbols": [
+          "runRepositoryBootstrap"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "it",
+          "expect",
+          "beforeEach",
+          "afterEach"
+        ]
+      },
+      {
+        "targetPath": "src/utils/agent-instructions.ts",
+        "relation": "import",
+        "symbols": [
+          "injectArchSpineScripts",
+          "removeArchSpineScripts",
+          "removeManagedAgentInstructionsFile",
+          "removeManagedGitAttributesFile",
+          "removeManagedGitIgnoreFile",
+          "removeManagedSearchIgnoreFile",
+          "removeManagedSpineIgnoreFile",
+          "syncAgentInstructionsFile",
+          "syncGitAttributesFile",
+          "syncGitIgnoreFile",
+          "syncHealthBlock",
+          "syncMCPToolsBlock",
+          "syncSearchIgnoreFile",
+          "syncSpineIgnoreFile",
+          "syncV2BriefingBlock",
+          "removeHealthBlock",
+          "removeMCPToolsBlock",
+          "removeV2BriefingBlock"
+        ]
+      },
+      {
+        "targetPath": "src/cli/init/repository-bootstrap.ts",
+        "relation": "import",
+        "symbols": [
+          "runRepositoryBootstrap"
+        ]
+      },
+      {
+        "targetPath": "src/infra/config.ts",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncAgentInstructionsFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/injectArchSpineScripts#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncSearchIgnoreFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncSpineIgnoreFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncGitIgnoreFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncGitAttributesFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeManagedAgentInstructionsFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeArchSpineScripts#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeManagedSearchIgnoreFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeManagedGitIgnoreFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeManagedSpineIgnoreFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeManagedGitAttributesFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncV2BriefingBlock#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeV2BriefingBlock#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncMCPToolsBlock#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeMCPToolsBlock#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/syncHealthBlock#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeHealthBlock#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/cli/init/repository-bootstrap.ts/runRepositoryBootstrap#",
+        "targetPath": "src/cli/init/repository-bootstrap.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/agent-host-init.test.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:39:49.798Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

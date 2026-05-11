@@ -1,0 +1,92 @@
+# ArchSpine Architecture Check — GitHub Actions 模板
+#
+# 使用方法：复制此文件到你的仓库 .github/workflows/spine-check.yml
+# 前提条件：仓库中已运行过 `spine init` 并配置好 .spine/config.json
+# 需要设置 Secrets：LLM_API_KEY（调用 LLM 所需的 API Key）
+
+name: ArchSpine Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  spine-check:
+    name: ArchSpine Architecture Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install ArchSpine
+        run: npm install -g archspine
+
+      - name: Sync spine
+        env:
+          OPENAI_API_KEY: ${{ secrets.LLM_API_KEY }}
+        run: spine sync --no-docs
+
+      - name: Run spine check
+        id: check
+        continue-on-error: true
+        run: spine check > spine-check-output.txt 2>&1
+
+      - name: Post PR comment on failure
+        if: steps.check.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('node:fs');
+            const output = fs.readFileSync('spine-check-output.txt', 'utf8');
+
+            const body = [
+              '## 🔍 ArchSpine 架构检查结果',
+              '',
+              '检测到架构违例，请在合并前修复：',
+              '',
+              '```',
+              output.slice(0, 60000),
+              '```',
+              '',
+              '> 查看完整控制面数据：拉取分支后运行 `spine check`',
+            ].join('\n');
+
+            const { data: comments } = await github.rest.issues.listComments({
+              ...context.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(
+              c => c.user.type === 'Bot' && c.body.startsWith('## 🔍 ArchSpine')
+            );
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                ...context.repo,
+                comment_id: botComment.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                ...context.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
+
+      - name: Fail workflow on violations
+        if: steps.check.outcome == 'failure'
+        run: |
+          cat spine-check-output.txt
+          exit 1

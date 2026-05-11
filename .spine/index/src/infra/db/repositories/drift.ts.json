@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db/repositories/drift.ts",
+    "contentHash": "67f7212bfd6100321ed2a93c5e033628e4dbce2bca4665dc285caa3e649d08cb",
+    "skeletonHash": "9773c88ec588ca0c78fe5294e003fb2039377c68fb9997e7c267caedd04dc0cc",
+    "semanticHash": "eee0b13237a01d5e218e1336b40ffc77a29558c6df3a7a99477bd99b3cc9baee",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/db/repositories"
+  },
+  "semantic": {
+    "role": "Database repository (Data Access Object) for semantic drift events.",
+    "responsibilities": [
+      "Persist a record of a semantic drift event (file path, previous role/ responsibilities, drift reason, detection timestamp) into the drift_events table.",
+      "Retrieve the most recent drift events for a given file path, with configurable row limit, returning structured history including parsed previous responsibilities."
+    ],
+    "outOfScope": [
+      "Drift detection logic itself (comparison of previous vs. current analysis).",
+      "Triggering or scheduling drift checks.",
+      "Schema creation or migration for the drift_events table.",
+      "Any higher-level aggregation or reporting of drift trends."
+    ],
+    "invariants": [
+      "Infra module should expose stable low-level capabilities; this repository is a direct database access layer and should not be bypassed by own facades? Actually, the rule infra-facade-imports advises callers to prefer facades; this repository is a valid low-level component that a facade might wrap."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a durable store for semantic drift events so that the system can track how a source file's role and responsibilities evolve across analyses.",
+      "recentChangeIntent": "Established database repository for tracking semantic drift events, supporting the v1.0.0 governance and semantic layer release."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "recordDriftEvent",
+        "description": "Inserts a drift event into the database using a prepared statement. Takes filePath, previousRole, previousResponsibilities, driftReason, and detectedAt. Called when the scanner or aggregation pipeline detects a semantic contract change."
+      },
+      {
+        "symbolName": "getDriftHistory",
+        "description": "Queries the drift_events table for the most recent events matching a given filePath, ordered by detection time descending, with an optional limit. Returns parsed previousResponsibilities as an array of strings. Used by view services and diagnostic tools to present drift history."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Database repository (Data Access Object) for semantic drift events.",
+        "responsibilities": [
+          "Persist a record of a semantic drift event (file path, previous role/ responsibilities, drift reason, detection timestamp) into the drift_events table.",
+          "Retrieve the most recent drift events for a given file path, with configurable row limit, returning structured history including parsed previous responsibilities."
+        ],
+        "outOfScope": [
+          "Drift detection logic itself (comparison of previous vs. current analysis).",
+          "Triggering or scheduling drift checks.",
+          "Schema creation or migration for the drift_events table.",
+          "Any higher-level aggregation or reporting of drift trends."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "recordDriftEvent",
+        "kind": "function",
+        "signature": "recordDriftEvent(\n  stmt: Database.Statement,\n  filePath: string,\n  previousRole: string,\n  previousResponsibilities: string[],\n  driftReason: string,\n  detectedAt: string,\n)"
+      },
+      {
+        "name": "getDriftHistory",
+        "kind": "function",
+        "signature": "getDriftHistory(\n  db: Database.Database,\n  filePath: string,\n  limit: number,\n)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "recordDriftEvent",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/drift.ts#"
+      },
+      {
+        "name": "getDriftHistory",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/repositories/drift.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "better-sqlite3",
+        "relation": "import",
+        "symbols": [
+          "Database"
+        ]
+      },
+      {
+        "targetPath": "../types.js",
+        "relation": "import",
+        "symbols": [
+          "DriftEvent"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:57:38.394Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,227 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/renderer.ts",
+    "contentHash": "e3452ff2bfe0a45911b7bd96fc37503e598307f7d0afa0cded0d956b89c25e61",
+    "skeletonHash": "0ba3888a287a2e0d33b85e6320eaa64930e42f484b1281f3a310ea5cf2a1ea9b",
+    "semanticHash": "80a0f662e855d8972c389cb7bfbfe8799b8775c79ed0c8e626081ff8010097f9",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Documentation rendering utility for the ArchSpine view layer. Provides a static class and helper functions to produce formatted Markdown or text documentation from structured data (lists, sections, layout types).",
+    "responsibilities": [
+      "Render an array of string items as a structured list (e.g., Markdown bullet or numbered list).",
+      "Render an array of section strings into a single block by joining with separators.",
+      "Provide a static DocumentationRenderer.render() method that takes a LayoutType and generates the appropriate documentation output.",
+      "Define the LayoutType union type for categorizing rendering contexts (source, document, config, folder, project)."
+    ],
+    "outOfScope": [
+      "No LLM or database interaction.",
+      "No MCP tool or resource definitions.",
+      "No file system scanning or analysis.",
+      "No external I/O beyond utility imports (fs, path) which are used for path resolution only."
+    ],
+    "invariants": [
+      "Exports are stable utility functions and a class with a static method.",
+      "Does not depend on runtime state or configuration.",
+      "Dependencies limited to Node.js built-in modules and internal protocol types."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable, stateless rendering layer for documentation output across different layout types.",
+      "recentChangeIntent": "ArchSpine v1.0.0 release – part of architectural governance and semantic layer consolidation."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "renderStructureList",
+        "description": "Takes an array of strings and joins them into a structured list format (e.g., each item on a new line). Used by documentation producers to render enumerations."
+      },
+      {
+        "symbolName": "renderExtraSections",
+        "description": "Takes an array of section strings and joins them into a single block, filtering empty entries. Used to append additional sections to documentation output."
+      },
+      {
+        "symbolName": "DocumentationRenderer",
+        "description": "Class with a static `render(type: LayoutType, ...?)` method that generates the complete documentation text for a given layout type. Called by view producers and renderers."
+      },
+      {
+        "symbolName": "LayoutType",
+        "description": "Union type alias defining valid layout categories: 'source', 'document', 'config', 'folder', 'project'. Used to discriminate rendering behavior."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Documentation rendering utility for the ArchSpine view layer. Provides a static class and helper functions to produce formatted Markdown or text documentation from structured data (lists, sections, layout types).",
+        "responsibilities": [
+          "Render an array of string items as a structured list (e.g., Markdown bullet or numbered list).",
+          "Render an array of section strings into a single block by joining with separators.",
+          "Provide a static DocumentationRenderer.render() method that takes a LayoutType and generates the appropriate documentation output.",
+          "Define the LayoutType union type for categorizing rendering contexts (source, document, config, folder, project)."
+        ],
+        "outOfScope": [
+          "No LLM or database interaction.",
+          "No MCP tool or resource definitions.",
+          "No file system scanning or analysis.",
+          "No external I/O beyond utility imports (fs, path) which are used for path resolution only."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "renderStructureList",
+        "kind": "function",
+        "signature": "renderStructureList(items: string[])"
+      },
+      {
+        "name": "renderExtraSections",
+        "kind": "function",
+        "signature": "renderExtraSections(sections: string[])"
+      },
+      {
+        "name": "DocumentationRenderer",
+        "kind": "class",
+        "signature": "class DocumentationRenderer"
+      },
+      {
+        "name": "LayoutType",
+        "kind": "type",
+        "signature": "type LayoutType"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "renderStructureList",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/renderer.ts#"
+      },
+      {
+        "name": "renderExtraSections",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/renderer.ts#"
+      },
+      {
+        "name": "DocumentationRenderer",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/infra/renderer.ts#"
+      },
+      {
+        "name": "LayoutType",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/infra/renderer.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 5,
+      "exportCount": 4,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "FileDependencyEdge",
+          "SpineFolderUnit",
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/unit/renderers/renderer.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:01:28.228Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

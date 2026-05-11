@@ -1,0 +1,174 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/core/validate-task.test.ts",
+    "contentHash": "c60b62e75797a89438e565abd270935238711045f2d803b5c5727e8d84e6c183",
+    "skeletonHash": "7b0b7f4f7a28896d46b4097a957635dde1c6045fa8059d8890ea1455f9a068b7",
+    "semanticHash": "0cd17ff77731eb5e8328f265c83cf8f094197e6d6db1aa629d3bd300c45a9269",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/core"
+  },
+  "semantic": {
+    "role": "Vitest test suite for the ValidationTask class, covering construction, rule violation normalization, and scan mode selection.",
+    "responsibilities": [
+      "Test the ValidationTask constructor behavior with default and custom options.",
+      "Test the execute method to ensure it returns a result with summary, stage selection, and filtered files.",
+      "Test the normalizeRuleViolations helper to confirm it converts internal violation structures to the expected output format."
+    ],
+    "outOfScope": [
+      "Integration with real LLM providers or external services.",
+      "End-to-end pipeline execution in a real repository."
+    ],
+    "invariants": [
+      "Must use .test.ts suffix for test file naming."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide isolated unit tests for the validation task logic to ensure correctness of rule violation processing and scan mode selection.",
+      "recentChangeIntent": "chore: apply release gate fixes and sync accumulated source changes"
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite for the ValidationTask class, covering construction, rule violation normalization, and scan mode selection.",
+        "responsibilities": [
+          "Test the ValidationTask constructor behavior with default and custom options.",
+          "Test the execute method to ensure it returns a result with summary, stage selection, and filtered files.",
+          "Test the normalizeRuleViolations helper to confirm it converts internal violation structures to the expected output format."
+        ],
+        "outOfScope": [
+          "Integration with real LLM providers or external services.",
+          "End-to-end pipeline execution in a real repository."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/tasks/validate.js'",
+        "symbols": [
+          "normalizeRuleViolations"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/tasks/validate.js'",
+        "symbols": [
+          "ValidationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/tasks/validate.ts",
+        "relation": "import",
+        "symbols": [
+          "normalizeRuleViolations",
+          "ValidationTask"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/core/validate-task.test.ts/_file_#",
+        "targetSymbol": "src/tasks/validate.ts/normalizeRuleViolations#",
+        "targetPath": "src/tasks/validate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/validate-task.test.ts/_file_#",
+        "targetSymbol": "src/tasks/validate.ts/ValidationTask#",
+        "targetPath": "src/tasks/validate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:39:49.875Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

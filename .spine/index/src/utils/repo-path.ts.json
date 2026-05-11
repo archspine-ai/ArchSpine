@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/utils/repo-path.ts",
+    "contentHash": "972952ddfcb9ae4edd9f866718f7f850ae75d1bcc1a2d668a48cc47d73586e5a",
+    "skeletonHash": "5cb1b7cf9751f5e72cd05a96e747ee4e09e7b94a5afbf2c4af22f59dcd48a7c5",
+    "semanticHash": "ed77bc4671e464f8dae6c1ccd9c26cf435bcce4d827b9bfda39fb91fdf9caa61",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/utils"
+  },
+  "semantic": {
+    "role": "Internal path normalization utility that converts arbitrary OS-specific paths to a canonical POSIX-separator, repo-relative format.",
+    "responsibilities": [
+      "Replace backslashes with forward slashes to enforce POSIX path separators.",
+      "Strip leading './' and '/' to ensure repo-relative logical paths.",
+      "Provide a single deterministic normalization function used across all database and file system index operations."
+    ],
+    "outOfScope": [
+      "File system I/O, path resolution, or directory traversal.",
+      "URL or URI parsing.",
+      "Handling of network paths or absolute file system paths."
+    ],
+    "invariants": [
+      "Output always uses forward slashes as separators.",
+      "Output never starts with './' or '/'.",
+      "The function is pure and deterministic: same input always produces same output."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish a single standard for representing repository file paths internally, ensuring consistency in database primary keys and across all modules.",
+      "recentChangeIntent": "Initial implementation of canonical path normalization for ArchSpine v1.0.0."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "normalizeRepoPath",
+        "description": "Normalizes a raw file system path string to a canonical repo-relative path with forward slashes. Input backslashes are replaced, and leading './' or '/' are removed. Used by all modules that interact with the database and file system indices."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Internal path normalization utility that converts arbitrary OS-specific paths to a canonical POSIX-separator, repo-relative format.",
+        "responsibilities": [
+          "Replace backslashes with forward slashes to enforce POSIX path separators.",
+          "Strip leading './' and '/' to ensure repo-relative logical paths.",
+          "Provide a single deterministic normalization function used across all database and file system index operations."
+        ],
+        "outOfScope": [
+          "File system I/O, path resolution, or directory traversal.",
+          "URL or URI parsing.",
+          "Handling of network paths or absolute file system paths."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "normalizeRepoPath",
+        "kind": "function",
+        "signature": "normalizeRepoPath(rawPath: string)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "normalizeRepoPath",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/repo-path.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:06:00.129Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 82,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

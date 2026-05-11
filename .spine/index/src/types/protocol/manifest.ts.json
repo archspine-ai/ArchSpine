@@ -1,0 +1,168 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/types/protocol/manifest.ts",
+    "contentHash": "fcf284698e43bd8557ea0f75e6df128be134bb54b3465c015032e7b158acf454",
+    "skeletonHash": "3393b13cceab58c08fd79f9761e2b65ecc7267dcf537a5df536090d7e0828a64",
+    "semanticHash": "d8107c11ec8f2cf5d5d013e459523fb22345d605798a8a098302a1228f5466f1",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/types/protocol"
+  },
+  "semantic": {
+    "role": "Type definitions for the Spine manifest protocol, defining the structure of manifest files and sync state.",
+    "responsibilities": [
+      "Define the SyncBlock interface for tracking synchronization state",
+      "Define the DocRef interface for referencing documents by locale and path",
+      "Define the FileStatus interface for tracking file-level status in the manifest",
+      "Define the SpineManifest interface as the root schema for the entire Spine project manifest"
+    ],
+    "outOfScope": [
+      "Runtime validation of manifest data",
+      "Serialization or deserialization logic",
+      "File I/O or storage operations",
+      "Business logic or processing of manifest contents"
+    ],
+    "invariants": [
+      "All manifest data must conform to the defined TypeScript interfaces",
+      "SyncBlock.lastSyncMode must be one of 'full', 'incremental', or 'unknown'",
+      "DocRef must always include a locale string and a path string"
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a stable type contract for the Spine manifest format, enabling cross-module consistency and protocol versioning.",
+      "recentChangeIntent": "Part of the v1.0.0 foundational release establishing the manifest schema as a core protocol type."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "SyncBlock",
+        "description": "Interface describing the current synchronization state of the manifest, including the last sync timestamp, mode, reverse index completion flag, and count of indexed units."
+      },
+      {
+        "symbolName": "DocRef",
+        "description": "Interface representing a reference to a localized document, containing a locale identifier and a file path."
+      },
+      {
+        "symbolName": "FileStatus",
+        "description": "Interface for tracking the status of a single file within the manifest, such as whether it is indexed, dirty, or unchanged."
+      },
+      {
+        "symbolName": "SpineManifest",
+        "description": "Top-level interface for the Spine project manifest, aggregating all metadata, languages, rules, and sync state into a single schema object."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Type definitions for the Spine manifest protocol, defining the structure of manifest files and sync state.",
+        "responsibilities": [
+          "Define the SyncBlock interface for tracking synchronization state",
+          "Define the DocRef interface for referencing documents by locale and path",
+          "Define the FileStatus interface for tracking file-level status in the manifest",
+          "Define the SpineManifest interface as the root schema for the entire Spine project manifest"
+        ],
+        "outOfScope": [
+          "Runtime validation of manifest data",
+          "Serialization or deserialization logic",
+          "File I/O or storage operations",
+          "Business logic or processing of manifest contents"
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "SyncBlock",
+        "kind": "interface",
+        "signature": "interface SyncBlock"
+      },
+      {
+        "name": "DocRef",
+        "kind": "interface",
+        "signature": "interface DocRef"
+      },
+      {
+        "name": "FileStatus",
+        "kind": "interface",
+        "signature": "interface FileStatus"
+      },
+      {
+        "name": "SpineManifest",
+        "kind": "interface",
+        "signature": "interface SpineManifest"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "SyncBlock",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/manifest.ts#"
+      },
+      {
+        "name": "DocRef",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/manifest.ts#"
+      },
+      {
+        "name": "FileStatus",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/manifest.ts#"
+      },
+      {
+        "name": "SpineManifest",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/types/protocol/manifest.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 4,
+      "isBarrel": false,
+      "isTypeOnly": true
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./index-documents.js",
+        "relation": "import",
+        "symbols": [
+          "FileKind"
+        ]
+      },
+      {
+        "targetPath": "./versions.js",
+        "relation": "import",
+        "symbols": [
+          "SchemaVersion"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:05:35.084Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 9,
+    "isHub": true,
+    "hubPercentile": 100,
+    "inCycle": true,
+    "cycleId": "src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

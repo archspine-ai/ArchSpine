@@ -1,0 +1,303 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/remove.ts",
+    "contentHash": "dd3c82c8882288e516a438d9a23bc86829087c16ca17b2b364d7429a67b79514",
+    "skeletonHash": "a4ea4970c9d68f3116a45bb016a91cb346fb4f35966a0c4039d3163e927ceb8b",
+    "semanticHash": "4ae56b24e3de94b2bfe8a18c59d5195c3a933d4cc18a21685cf7c98c49078fed",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command adapter responsible for uninstalling ArchSpine from a target repository by removing managed configuration files, git hooks, and package scripts.",
+    "responsibilities": [
+      "Orchestrates the removal of ArchSpine-managed files from a repository (agent instructions, .gitignore, .gitattributes, .spineignore, .searchignore).",
+      "Uninstalls the pre-commit git hook installed by ArchSpine.",
+      "Removes ArchSpine-injected scripts from package.json.",
+      "Prompts for user confirmation before performing destructive removal (unless --yes flag is provided)."
+    ],
+    "outOfScope": [
+      "Core pipeline logic for scanning, validation, or aggregation.",
+      "AST extraction, language discovery, or rule evaluation.",
+      "Persistent storage operations beyond file system removal."
+    ],
+    "invariants": [
+      "The remove command must only invoke utility functions from infra or utils; it must not implement file removal or configuration logic directly.",
+      "The remove command must confirm destructive actions with the user unless the --yes flag is present."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provides a CLI entrypoint to cleanly uninstall ArchSpine's footprint from a repository, ensuring no stale artifacts remain.",
+      "recentChangeIntent": "Initial implementation of the remove command as part of the ArchSpine v1.0.0 CLI suite."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ExecuteRemoveCommandOptions",
+        "description": "Configuration interface for the remove command, specifying CLI arguments, root directory, and config instance."
+      },
+      {
+        "symbolName": "executeRemoveCommand",
+        "description": "Main entrypoint that uninstalls all ArchSpine-managed artifacts from a repository. Called by the CLI dispatcher when the 'remove' subcommand is invoked."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command adapter responsible for uninstalling ArchSpine from a target repository by removing managed configuration files, git hooks, and package scripts.",
+        "responsibilities": [
+          "Orchestrates the removal of ArchSpine-managed files from a repository (agent instructions, .gitignore, .gitattributes, .spineignore, .searchignore).",
+          "Uninstalls the pre-commit git hook installed by ArchSpine.",
+          "Removes ArchSpine-injected scripts from package.json.",
+          "Prompts for user confirmation before performing destructive removal (unless --yes flag is provided)."
+        ],
+        "outOfScope": [
+          "Core pipeline logic for scanning, validation, or aggregation.",
+          "AST extraction, language discovery, or rule evaluation.",
+          "Persistent storage operations beyond file system removal."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../utils/confirm.js'",
+        "symbols": [
+          "promptForExplicitConfirmation"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../utils/agent-instructions.js'",
+        "symbols": [
+          "removeArchSpineScripts",
+          "removeManagedAgentInstructionsFile",
+          "removeManagedGitAttributesFile",
+          "removeManagedGitIgnoreFile",
+          "removeManagedSearchIgnoreFile",
+          "removeManagedSpineIgnoreFile"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../utils/git-hook.js'",
+        "symbols": [
+          "uninstallGitHook"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "printStep"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeRemoveCommand",
+        "kind": "function",
+        "signature": "executeRemoveCommand(options: ExecuteRemoveCommandOptions)"
+      },
+      {
+        "name": "ExecuteRemoveCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteRemoveCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeRemoveCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/remove.ts#"
+      },
+      {
+        "name": "ExecuteRemoveCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/remove.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../../utils/confirm.js",
+        "relation": "import",
+        "symbols": [
+          "promptForExplicitConfirmation"
+        ]
+      },
+      {
+        "targetPath": "../../utils/agent-instructions.js",
+        "relation": "import",
+        "symbols": [
+          "removeArchSpineScripts",
+          "removeManagedAgentInstructionsFile",
+          "removeManagedGitAttributesFile",
+          "removeManagedGitIgnoreFile",
+          "removeManagedSearchIgnoreFile",
+          "removeManagedSpineIgnoreFile"
+        ]
+      },
+      {
+        "targetPath": "../../utils/git-hook.js",
+        "relation": "import",
+        "symbols": [
+          "uninstallGitHook"
+        ]
+      },
+      {
+        "targetPath": "../cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "printStep"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/remove.ts/_file_#",
+        "targetSymbol": "src/utils/confirm.ts/promptForExplicitConfirmation#",
+        "targetPath": "src/utils/confirm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/remove.ts/_file_#",
+        "targetSymbol": "src/utils/git-hook.ts/uninstallGitHook#",
+        "targetPath": "src/utils/git-hook.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/remove.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeManagedAgentInstructionsFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/remove.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/printStep#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/remove.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeManagedSearchIgnoreFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/remove.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeManagedSpineIgnoreFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/remove.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeManagedGitIgnoreFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/remove.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeManagedGitAttributesFile#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/remove.ts/_file_#",
+        "targetSymbol": "src/utils/agent-instructions.sync.ts/removeArchSpineScripts#",
+        "targetPath": "src/utils/agent-instructions.sync.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:53:32.456Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 53,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

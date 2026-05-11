@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/services/view",
+  "role": "The view subsystem that produces all output artifacts (Markdown, SVG, JSON) from the internal knowledge graph and index data for the ArchSpine mirror system.",
+  "responsibility": "Generates user-facing documentation and diagnostic reports by orchestrating specialized view producers (agent briefings, architecture diagrams, change impact, project health, public surface, risk hotspots), rendering them through SVG and Markdown pipelines, managing producer registrations, and optionally serving preview pages via a lightweight HTTP server.",
+  "children": [
+    {
+      "filePath": "src/services/view/agent-briefing-view.ts",
+      "role": "View producer that generates the agent briefing artifact by loading architectural rules, knowledge graph data, and diagnostic reports, then formatting the output as localized Markdown.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/view/arch-diagram-renderer.ts",
+      "role": "View service SVG renderer for architecture diagrams. Transforms structured diagram specifications into safe, styled SVG markup, organizing nodes by layer and computing layout positions.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/view/arch-diagram-svg-renderer.ts",
+      "role": "SVG architecture diagram renderer that transforms a knowledge graph into an SVG representation using a layered (Sugiyama-style) layout engine.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/view/architecture-diagram-view.ts",
+      "role": "View producer for generating architecture diagram artifacts (SVG and JSON) from the knowledge graph, integrating with the output manager to persist view data.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/view/change-impact-view.ts",
+      "role": "View producer that generates a change impact report by analyzing dependency graph impact radii.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/view/common.ts",
+      "role": "Shared utility module for the view subsystem within the services layer, providing pure helper functions for path suppression, score aggregation, confidence computation, and boundary analysis used by view producers like risk-hotspots-view and public-surface-view.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/view/index-loader.ts",
+      "role": "View service responsible for loading and caching indexed Spine units (folders, projects, source files) from the filesystem index documents.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/view/index.ts",
+      "role": "Facade barrel module that re-exports all view-provider modules, decoupling consumers from internal module restructuring.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/view/producer-registry.ts",
+      "role": "In-memory registry for view producers, mapping ViewType strings to their corresponding ViewProducer functions. Acts as the central service locator and extension point for the view rendering subsystem.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/view/producer.ts",
+      "role": "View producer interface definitions that establish the abstract contract between view producers and the output/persistence layer in the ArchSpine mirror system.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/view/project-health-view.ts",
+      "role": "Internal Markdown formatter for knowledge graph diagnostics within the view subsystem.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/view/public-surface-view.ts",
+      "role": "View artifact producer that evaluates loaded code units to identify, score, and rank symbols forming the project's public API surface.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/view/risk-hotspots-view.ts",
+      "role": "View Producer module that computes risk hotspot rankings from parsed source units for the ArchSpine diagnostic dashboard.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/view/types.ts",
+      "role": "Type definition for loaded units from the spine index.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/view/view-registry.ts",
+      "role": "View Registry – defines all available system views and provides type-safe lookup and validation functions used by the CLI, view-service, and other modules to discover and select views for rendering.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/view/view-renderer.ts",
+      "role": "View data to Markdown renderer — transforms structured view artifacts (risk hotspots, public surface, etc.) into formatted Markdown output using embedded templates.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/view/view-runtime.ts",
+      "role": "Configuration resolution layer for the view subsystem: reads project config and environment variables to determine whether the view layer is enabled and which view IDs are active.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/view/view-server.ts",
+      "role": "Lightweight HTTP server that serves generated .spine view pages (Markdown→HTML) for local browser preview during development.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:12:08.823Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

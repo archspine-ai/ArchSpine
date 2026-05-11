@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/infra/mcp",
+  "role": "This directory contains the MCP (Model Context Protocol) server implementation, tool definitions, and context management layer that expose ArchSpine's core capabilities to external AI agents and IDE clients.",
+  "responsibility": "Collectively, the components in this directory implement a complete MCP interface: the server bootstrap (`server.ts`) initializes and connects the MCP server, registers handlers for tools, resources, and prompts; the context gate (`context.ts`) enforces a state machine that controls tool invocation based on context priming modes; the tool definitions (`tools.ts`) expose ArchSpine's introspection, scanning, drift detection, dependency graph, and semantic analysis as callable MCP tools; and the resources module (`resources.ts`) provides resource template listings for the MCP protocol.",
+  "children": [
+    {
+      "filePath": "src/infra/mcp/context.ts",
+      "role": "MCP context priming state machine that gates tool invocation based on the current context mode (off, project-first, or search-first).",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/mcp/resources.ts",
+      "role": "Unknown role",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/mcp/server.ts",
+      "role": "MCP (Model Context Protocol) server bootstrap that initializes the MCP server instance, registers all request handlers for tools, resources, and prompts, and connects to stdio transport. Serves as the primary entry point for external MCP clients (e.g., IDEs, AI agents) to interact with ArchSpine capabilities.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/mcp/tools.ts",
+      "role": "MCP tool collection exposing ArchSpine's introspection, scanning, drift detection, and dependency graph capabilities as callable MCP tools for LLM agent integration.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:12:04.338Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

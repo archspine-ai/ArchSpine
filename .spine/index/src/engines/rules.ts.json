@@ -1,0 +1,218 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/rules.ts",
+    "contentHash": "5263b1460241f013d9fa5938d55a56f5fd754c45d7c509196d63138e8156c827",
+    "skeletonHash": "a5466a7c269cc1f0daeef408ec536411d52081f34fd52db28a437d68d4b55069",
+    "semanticHash": "e4c92a30d0cc7b0421104c7b972b92b39590b212d68ce4d6551b040b7cd13049",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Engine module that loads, manages, and matches architectural rules against source file paths in a repository.",
+    "responsibilities": [
+      "Load all SpineRuleDocument rules from the configured root directory's .spine/rules folder using the rules-loader infrastructure.",
+      "Match incoming file paths against each rule's `appliesTo` patterns (including negation patterns) to determine applicable rules.",
+      "Provide a public method for consumers (e.g., check engine, scanner) to retrieve the ordered list of rules that apply to a given file.",
+      "Expose the full set of loaded rules for inspection or enumeration."
+    ],
+    "outOfScope": [
+      "Rule validation or schema enforcement (delegated to rules-loader and external schema).",
+      "CLI command handling or presentation logic.",
+      "Service-level orchestration or session management.",
+      "Persistent storage or caching of rule matches."
+    ],
+    "invariants": [
+      "Engine modules must not import CLI entrypoints; this module imports only from infra and utility layers, which is acceptable.",
+      "Rule loading is performed once at construction time; the rule set is immutable for the lifetime of the engine instance.",
+      "Negation patterns (prefixed with '!') are used to exclude paths from a rule's applicability."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable, decoupled rule-matching engine that forms the analytical backbone for governance checks and compliance views.",
+      "recentChangeIntent": "Chore commits indicate release gate fixes and accumulation of source changes; no semantic change to the rule-matching logic is evident."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "RuleEngine",
+        "kind": "Class",
+        "description": "Primary entry point for loading and querying architectural rules. Instantiate with the repository root directory; then call `getRulesForFile(filePath)` to retrieve all rules that apply to a given source file. Also provides access to the complete rule list via a getter or property.",
+        "signature": "export class RuleEngine"
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Engine module that loads, manages, and matches architectural rules against source file paths in a repository.",
+        "responsibilities": [
+          "Load all SpineRuleDocument rules from the configured root directory's .spine/rules folder using the rules-loader infrastructure.",
+          "Match incoming file paths against each rule's `appliesTo` patterns (including negation patterns) to determine applicable rules.",
+          "Provide a public method for consumers (e.g., check engine, scanner) to retrieve the ordered list of rules that apply to a given file.",
+          "Expose the full set of loaded rules for inspection or enumeration."
+        ],
+        "outOfScope": [
+          "Rule validation or schema enforcement (delegated to rules-loader and external schema).",
+          "CLI command handling or presentation logic.",
+          "Service-level orchestration or session management.",
+          "Persistent storage or caching of rule matches."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "SpineRuleDocument"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/rules-loader.js'",
+        "symbols": [
+          "loadRulesFromDir"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'picomatch'",
+        "symbols": [
+          "picomatch"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "RuleEngine",
+        "kind": "class",
+        "signature": "class RuleEngine"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "RuleEngine",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/engines/rules.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SpineRuleDocument"
+        ]
+      },
+      {
+        "targetPath": "../infra/rules-loader.js",
+        "relation": "import",
+        "symbols": [
+          "loadRulesFromDir"
+        ]
+      },
+      {
+        "targetPath": "../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "picomatch",
+        "relation": "import",
+        "symbols": [
+          "picomatch"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/engines/rules.ts/_file_#",
+        "targetSymbol": "src/infra/rules-loader.ts/loadRulesFromDir#",
+        "targetPath": "src/infra/rules-loader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:39:49.542Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 71,
+    "inCycle": true,
+    "cycleId": "src/core → src/types → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

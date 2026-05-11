@@ -1,0 +1,194 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/infra/mcp/tools.test.ts",
+    "contentHash": "6a335753977ea6e4cfebf585bf0a75825685d5220559a0121497aa01abed9e82",
+    "skeletonHash": "f39b7ddf31c2eeb94b7f9e4547481c32e2771ba9bbb8cb880b0f4155f59392f7",
+    "semanticHash": "f94513951060bdf5e2acc47531cd4d7e3ee8c8a4582ea770c785d1cc424ff677",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/infra/mcp"
+  },
+  "semantic": {
+    "role": "Vitest test suite for the SpineTools MCP module, validating tool definitions, resource handlers, and context enrichment against a temporary .spine directory.",
+    "responsibilities": [
+      "Provide unit test coverage for SpineTools class methods, including tool definitions and resource resolution.",
+      "Create and manage temporary .spine directories with minimal configuration to simulate real working environments.",
+      "Clean up temporary directories after test execution to prevent file system pollution.",
+      "Verify that SpineTools correctly reads and parses the manifest and configuration files."
+    ],
+    "outOfScope": [
+      "Production code execution (test file only).",
+      "Definition or implementation of the SpineTools class itself.",
+      "Integration with live MCP servers or real project repositories.",
+      "End-to-end testing of the full MCP toolchain."
+    ],
+    "invariants": [
+      "The test file must end with `.test.ts` (enforced by rule).",
+      "All tests must operate on isolated temporary directories to avoid side effects.",
+      "Tests must not depend on external network resources or real LLM endpoints."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Test the internal behavior of the SpineTools MCP module in isolation.",
+      "recentChangeIntent": "Part of broader refactor to remove legacy CLI aliases and rebuild documentation; this test ensures the SpineTools module remains correct after those changes."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite for the SpineTools MCP module, validating tool definitions, resource handlers, and context enrichment against a temporary .spine directory.",
+        "responsibilities": [
+          "Provide unit test coverage for SpineTools class methods, including tool definitions and resource resolution.",
+          "Create and manage temporary .spine directories with minimal configuration to simulate real working environments.",
+          "Clean up temporary directories after test execution to prevent file system pollution.",
+          "Verify that SpineTools correctly reads and parses the manifest and configuration files."
+        ],
+        "outOfScope": [
+          "Production code execution (test file only).",
+          "Definition or implementation of the SpineTools class itself.",
+          "Integration with live MCP servers or real project repositories.",
+          "End-to-end testing of the full MCP toolchain."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../../src/infra/mcp/tools.js'",
+        "symbols": [
+          "SpineTools"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/mcp/tools.ts",
+        "relation": "import",
+        "symbols": [
+          "SpineTools"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/infra/mcp/tools.test.ts/_file_#",
+        "targetSymbol": "src/infra/mcp/tools.ts/SpineTools#",
+        "targetPath": "src/infra/mcp/tools.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-11T05:39:49.913Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

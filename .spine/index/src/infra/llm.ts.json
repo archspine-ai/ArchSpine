@@ -1,0 +1,237 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/llm.ts",
+    "contentHash": "af9241b9e57c28db064f6b18909ab366e162efd5c683972e6c2feebca7425d05",
+    "skeletonHash": "b3a7488ae22d0195ba1801802dd922d85e22b940335e056dea57e440b8b17501",
+    "semanticHash": "6c82f814f62d21552ca76b020ffe794a01ce61a52390742a38fbbf4e64b79cf0",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra"
+  },
+  "semantic": {
+    "role": "Public facade that re-exports stable LLM runtime contracts and configuration resolution functions from lower-level infra modules, intended as the single import point for higher layers.",
+    "responsibilities": [
+      "Re-export GlobalLLMConfig to provide access to the global LLM configuration singleton.",
+      "Re-export GlobalLLMSecrets to provide access to the global LLM secrets store.",
+      "Re-export getGlobalArchSpineDir to expose the ArchSpine global directory path.",
+      "Re-export assertResolvedLLMUsable to assert that a resolved LLM configuration is usable before making API calls.",
+      "Re-export createResolvedLLMClient to create an LLM client based on resolved settings.",
+      "Re-export providerRequiresApiKey to check whether a given provider requires an API key.",
+      "Re-export resolveLLMSettings to resolve user-provided LLM configuration against environment defaults.",
+      "Re-export LLMRuntimeOverrides, ResolvedLLMSettings, and ResolvedLLMValue type definitions to enable type-safe consumption of runtime settings."
+    ],
+    "outOfScope": [
+      "Implementing actual LLM API calls or provider-specific logic.",
+      "Managing authentication tokens or secrets rotation.",
+      "Providing any UI for LLM configuration.",
+      "Performing validation or business logic beyond re-exporting resolved contracts.",
+      "Caching or memoizing resolved settings."
+    ],
+    "invariants": [
+      "Higher layers must import from this facade instead of reaching into src/infra/llm/ directly, ensuring stable import surface and safe infra refactors.",
+      "The re-exported symbols must remain stable and backward-compatible to avoid breaking downstream consumers."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish a stable, single-entry-point facade for LLM runtime contracts and configuration resolution, decoupling higher layers from internal implementation details and aligning with the architectural governance principles of ArchSpine.",
+      "recentChangeIntent": "Part of the v1.0.0 release that introduced an architectural governance and semantic layer for the AI era, establishing clean public facades for infrastructure modules."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "GlobalLLMConfig",
+        "description": "Exposes the singleton global LLM configuration object, allowing read access to default provider, model, and endpoint settings."
+      },
+      {
+        "symbolName": "GlobalLLMSecrets",
+        "description": "Exposes the global LLM secrets store, providing read access to API keys and sensitive credentials for configured providers."
+      },
+      {
+        "symbolName": "getGlobalArchSpineDir",
+        "description": "Returns the absolute path to the global ArchSpine directory (e.g., ~/.archspine) used for storing config and runtime data."
+      },
+      {
+        "symbolName": "assertResolvedLLMUsable",
+        "description": "Validates that a resolved LLM settings object has all required fields and throws if the configuration is not usable for making API calls."
+      },
+      {
+        "symbolName": "createResolvedLLMClient",
+        "description": "Factory function that creates an LLM client instance (e.g., OpenAI, Gemini) based on the provided resolved settings and optional overrides."
+      },
+      {
+        "symbolName": "providerRequiresApiKey",
+        "description": "Checks whether a given LLM provider name (e.g., 'openai', 'gemini') requires an API key to be set before making requests."
+      },
+      {
+        "symbolName": "resolveLLMSettings",
+        "description": "Merges user-provided LLM configuration overrides with global/default settings and environment variables, returning a fully resolved settings object."
+      },
+      {
+        "symbolName": "LLMRuntimeOverrides",
+        "description": "Type definition for optional overrides (provider, model, etc.) that can be passed to createResolvedLLMClient at runtime."
+      },
+      {
+        "symbolName": "ResolvedLLMSettings",
+        "description": "Type definition representing the fully resolved LLM configuration object with all required fields populated."
+      },
+      {
+        "symbolName": "ResolvedLLMValue",
+        "description": "Type definition for a single resolved LLM instance configuration, typically embedded within a multi-model setup."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Public facade that re-exports stable LLM runtime contracts and configuration resolution functions from lower-level infra modules, intended as the single import point for higher layers.",
+        "responsibilities": [
+          "Re-export GlobalLLMConfig to provide access to the global LLM configuration singleton.",
+          "Re-export GlobalLLMSecrets to provide access to the global LLM secrets store.",
+          "Re-export getGlobalArchSpineDir to expose the ArchSpine global directory path.",
+          "Re-export assertResolvedLLMUsable to assert that a resolved LLM configuration is usable before making API calls.",
+          "Re-export createResolvedLLMClient to create an LLM client based on resolved settings.",
+          "Re-export providerRequiresApiKey to check whether a given provider requires an API key.",
+          "Re-export resolveLLMSettings to resolve user-provided LLM configuration against environment defaults.",
+          "Re-export LLMRuntimeOverrides, ResolvedLLMSettings, and ResolvedLLMValue type definitions to enable type-safe consumption of runtime settings."
+        ],
+        "outOfScope": [
+          "Implementing actual LLM API calls or provider-specific logic.",
+          "Managing authentication tokens or secrets rotation.",
+          "Providing any UI for LLM configuration.",
+          "Performing validation or business logic beyond re-exporting resolved contracts.",
+          "Caching or memoizing resolved settings."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [
+      {
+        "name": "GlobalLLMConfig",
+        "kind": "unknown",
+        "signature": "export { GlobalLLMConfig }"
+      },
+      {
+        "name": "GlobalLLMSecrets",
+        "kind": "unknown",
+        "signature": "export { GlobalLLMSecrets }"
+      },
+      {
+        "name": "getGlobalArchSpineDir",
+        "kind": "unknown",
+        "signature": "export { getGlobalArchSpineDir }"
+      },
+      {
+        "name": "assertResolvedLLMUsable",
+        "kind": "unknown",
+        "signature": "export { assertResolvedLLMUsable }"
+      },
+      {
+        "name": "createResolvedLLMClient",
+        "kind": "unknown",
+        "signature": "export { createResolvedLLMClient }"
+      },
+      {
+        "name": "providerRequiresApiKey",
+        "kind": "unknown",
+        "signature": "export { providerRequiresApiKey }"
+      },
+      {
+        "name": "resolveLLMSettings",
+        "kind": "unknown",
+        "signature": "export { resolveLLMSettings }"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "GlobalLLMConfig",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/llm.ts#"
+      },
+      {
+        "name": "GlobalLLMSecrets",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/llm.ts#"
+      },
+      {
+        "name": "getGlobalArchSpineDir",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/llm.ts#"
+      },
+      {
+        "name": "assertResolvedLLMUsable",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/llm.ts#"
+      },
+      {
+        "name": "createResolvedLLMClient",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/llm.ts#"
+      },
+      {
+        "name": "providerRequiresApiKey",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/llm.ts#"
+      },
+      {
+        "name": "resolveLLMSettings",
+        "kind": "unknown",
+        "exported": true,
+        "symbolUri": "src/infra/llm.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 7,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "./llm/global.js",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "./llm/runtime.js",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/unit/infra/llm-config.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:58:42.166Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,494 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/sync-service.ts",
+    "contentHash": "fc13ba1abcd2d6ea6c107795a196171cc113ddc5a98aa6cb537c5448542f8ca8",
+    "skeletonHash": "0ba94d1b0ea911f8c0a48294f5e7b2812bc4eb77668b833849644be2ebd0062a",
+    "semanticHash": "d87704afa35265ef7a869f370f952b8191c5e6713161dd777ee1d8699f7c1b1f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Orchestrator service that coordinates the full synchronization pipeline (scan, reconcile, AST extraction, summarization, state commit, post-commit derivation). It is the primary entry point for the sync command and manages runtime sessions, protected output detection, and resume logic.",
+    "responsibilities": [
+      "Orchestrates the complete sync pipeline by instantiating and running TaskRunner with a sequence of tasks (ScanAndCleanupTask, ReconcileTask, ASTExtractionTask, SummarizationTask, StateCommitTask, PostCommitDerivationTask).",
+      "Detects protected output mutations before sync execution via detectProtectedOutputMutations and emits warnings.",
+      "Constructs a task context (createTaskContext) with scanner, runtime IO, and manifest for pipeline execution.",
+      "Supports sync resumption by deriving candidate files from execution checkpoints (deriveSyncResumeCandidateFiles).",
+      "Tracks sync statistics (bytes processed, file counts) and returns a SyncStats report.",
+      "Runs the pipeline within a runtime session (runWithRuntimeSession) for lifecycle management."
+    ],
+    "outOfScope": [
+      "Does not handle individual task implementations (those are in src/tasks/).",
+      "Does not manage authentication or network transport.",
+      "Does not directly manipulate the database or file system (delegates to infra modules).",
+      "Does not provide CLI argument parsing or output formatting (handled by CLI commands)."
+    ],
+    "invariants": [
+      "Must run within a runtime session via runWithRuntimeSession.",
+      "Must check for protected output mutations before pipeline execution using detectProtectedOutputMutations.",
+      "Must use TaskRunner to sequence tasks in the defined order (scan → reconcile → AST extraction → summarization → state commit → post-commit derivation).",
+      "Services may orchestrate core/tasks/engines/infra modules, but view-specific service modules must reside under src/services/view/ (as per rule service-runtime-boundary)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Defines the top-level sync orchestration service that sequences all project snapshot update tasks.",
+      "recentChangeIntent": "Apply release gate fixes and sync accumulated source changes."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "SyncService",
+        "description": "Primary service class that orchestrates the full synchronization pipeline. Called by the sync CLI command to update the project state."
+      },
+      {
+        "symbolName": "SyncStats",
+        "description": "Interface describing sync execution results including bytes processed, file counts, and task completion status."
+      },
+      {
+        "symbolName": "SyncExecutionOptions",
+        "description": "Interface defining configurable options for sync execution, such as target paths and resume flags."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Orchestrator service that coordinates the full synchronization pipeline (scan, reconcile, AST extraction, summarization, state commit, post-commit derivation). It is the primary entry point for the sync command and manages runtime sessions, protected output detection, and resume logic.",
+        "responsibilities": [
+          "Orchestrates the complete sync pipeline by instantiating and running TaskRunner with a sequence of tasks (ScanAndCleanupTask, ReconcileTask, ASTExtractionTask, SummarizationTask, StateCommitTask, PostCommitDerivationTask).",
+          "Detects protected output mutations before sync execution via detectProtectedOutputMutations and emits warnings.",
+          "Constructs a task context (createTaskContext) with scanner, runtime IO, and manifest for pipeline execution.",
+          "Supports sync resumption by deriving candidate files from execution checkpoints (deriveSyncResumeCandidateFiles).",
+          "Tracks sync statistics (bytes processed, file counts) and returns a SyncStats report.",
+          "Runs the pipeline within a runtime session (runWithRuntimeSession) for lifecycle management."
+        ],
+        "outOfScope": [
+          "Does not handle individual task implementations (those are in src/tasks/).",
+          "Does not manage authentication or network transport.",
+          "Does not directly manipulate the database or file system (delegates to infra modules).",
+          "Does not provide CLI argument parsing or output formatting (handled by CLI commands)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../core/pipeline.js'",
+        "symbols": [
+          "TaskRunner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../tasks/reconcile.js'",
+        "symbols": [
+          "ReconcileTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../tasks/scan-cleanup.js'",
+        "symbols": [
+          "ScanAndCleanupTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../tasks/ast-extra.js'",
+        "symbols": [
+          "ASTExtractionTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../tasks/summarize.js'",
+        "symbols": [
+          "SummarizationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../tasks/state-commit.js'",
+        "symbols": [
+          "StateCommitTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../tasks/post-commit-derivation.js'",
+        "symbols": [
+          "PostCommitDerivationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/lang-registry.js'",
+        "symbols": [
+          "LangRegistry"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/spine-gate.js'",
+        "symbols": [
+          "detectProtectedOutputMutations",
+          "formatProtectedOutputMutationWarning",
+          "writeProtectedOutputBaseline"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./task-runtime.js'",
+        "symbols": [
+          "createTaskContext",
+          "ServiceOptions"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/runtime-io.js'",
+        "symbols": [
+          "defaultRuntimeIO"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/execution-checkpoint.js'",
+        "symbols": [
+          "deriveSyncResumeCandidateFiles"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./runtime-session.js'",
+        "symbols": [
+          "runWithRuntimeSession"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "SyncService",
+        "kind": "class",
+        "signature": "class SyncService"
+      },
+      {
+        "name": "SyncStats",
+        "kind": "interface",
+        "signature": "interface SyncStats"
+      },
+      {
+        "name": "SyncExecutionOptions",
+        "kind": "interface",
+        "signature": "interface SyncExecutionOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "SyncService",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/services/sync-service.ts#"
+      },
+      {
+        "name": "SyncStats",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/sync-service.ts#"
+      },
+      {
+        "name": "SyncExecutionOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/sync-service.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 17,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../core/pipeline.js",
+        "relation": "import",
+        "symbols": [
+          "TaskRunner"
+        ]
+      },
+      {
+        "targetPath": "../tasks/reconcile.js",
+        "relation": "import",
+        "symbols": [
+          "ReconcileTask"
+        ]
+      },
+      {
+        "targetPath": "../tasks/scan-cleanup.js",
+        "relation": "import",
+        "symbols": [
+          "ScanAndCleanupTask"
+        ]
+      },
+      {
+        "targetPath": "../tasks/ast-extra.js",
+        "relation": "import",
+        "symbols": [
+          "ASTExtractionTask"
+        ]
+      },
+      {
+        "targetPath": "../tasks/summarize.js",
+        "relation": "import",
+        "symbols": [
+          "SummarizationTask"
+        ]
+      },
+      {
+        "targetPath": "../tasks/state-commit.js",
+        "relation": "import",
+        "symbols": [
+          "StateCommitTask"
+        ]
+      },
+      {
+        "targetPath": "../tasks/post-commit-derivation.js",
+        "relation": "import",
+        "symbols": [
+          "PostCommitDerivationTask"
+        ]
+      },
+      {
+        "targetPath": "../ast/lang-registry.js",
+        "relation": "import",
+        "symbols": [
+          "LangRegistry"
+        ]
+      },
+      {
+        "targetPath": "../infra/spine-gate.js",
+        "relation": "import",
+        "symbols": [
+          "detectProtectedOutputMutations",
+          "formatProtectedOutputMutationWarning",
+          "writeProtectedOutputBaseline"
+        ]
+      },
+      {
+        "targetPath": "./task-runtime.js",
+        "relation": "import",
+        "symbols": [
+          "createTaskContext",
+          "ServiceOptions"
+        ]
+      },
+      {
+        "targetPath": "../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "defaultRuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "../infra/execution-checkpoint.js",
+        "relation": "import",
+        "symbols": [
+          "deriveSyncResumeCandidateFiles"
+        ]
+      },
+      {
+        "targetPath": "./runtime-session.js",
+        "relation": "import",
+        "symbols": [
+          "runWithRuntimeSession"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "path"
+        ]
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "tests/integration/system/demo-governance.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/unit/features/god-mode.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/infra/spine-gate.ts/formatProtectedOutputMutationWarning#",
+        "targetPath": "src/infra/spine-gate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/infra/spine-gate.ts/detectProtectedOutputMutations#",
+        "targetPath": "src/infra/spine-gate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/services/task-runtime.ts/createTaskContext#",
+        "targetPath": "src/services/task-runtime.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/services/runtime-session.ts/runWithRuntimeSession#",
+        "targetPath": "src/services/runtime-session.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/infra/execution-checkpoint.ts/deriveSyncResumeCandidateFiles#",
+        "targetPath": "src/infra/execution-checkpoint.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/infra/spine-gate.ts/writeProtectedOutputBaseline#",
+        "targetPath": "src/infra/spine-gate.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/core/pipeline.ts/TaskRunner#",
+        "targetPath": "src/core/pipeline.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/tasks/reconcile.ts/ReconcileTask#",
+        "targetPath": "src/tasks/reconcile.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/tasks/scan-cleanup.ts/ScanAndCleanupTask#",
+        "targetPath": "src/tasks/scan-cleanup.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/tasks/ast-extra.ts/ASTExtractionTask#",
+        "targetPath": "src/tasks/ast-extra.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/tasks/summarize.ts/SummarizationTask#",
+        "targetPath": "src/tasks/summarize.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/tasks/state-commit.ts/StateCommitTask#",
+        "targetPath": "src/tasks/state-commit.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/tasks/post-commit-derivation.ts/PostCommitDerivationTask#",
+        "targetPath": "src/tasks/post-commit-derivation.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/integrity.ts/calculateHash#",
+        "targetPath": "src/infra/manifest/integrity.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/usage.ts/recordUsage#",
+        "targetPath": "src/infra/db/repositories/usage.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:03:12.820Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

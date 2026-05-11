@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/cli/skill.test.ts",
+    "contentHash": "2758b0cdf4b526feca5536618df60ba4b086f918bedfece57651756336d96d66",
+    "skeletonHash": "879c978a212ad565f7167d0083cca1358c4253ad9522001e941b6f705cb7e847",
+    "semanticHash": "628538d9923b8e785675db94574755fdb0a190148476cc67530aec852bd7a90d",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/cli"
+  },
+  "semantic": {
+    "role": "Test suite for the ArchSpine skill CLI command.",
+    "responsibilities": [
+      "Verifies the executeSkillCommand function behavior under controlled, isolated conditions (mocked home directory and filesystem)."
+    ],
+    "outOfScope": [
+      "Production functionality of the skill command.",
+      "Integration with real LLM providers or filesystem paths.",
+      "Any exported symbols intended for external consumption."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts (rule test-file-suffix). This file satisfies that."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Maintain a comprehensive test suite for CLI commands, ensuring isolation via mocking and cleanup.",
+      "recentChangeIntent": "Refactor: remove legacy CLI aliases, rebuild docs, fix schema and tests (from git log). This test file may have been adjusted accordingly."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "executeSkillCommand",
+        "description": "The single imported function under test. It executes the skill-related CLI command. Tested via mock environment."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Test suite for the ArchSpine skill CLI command.",
+        "responsibilities": [
+          "Verifies the executeSkillCommand function behavior under controlled, isolated conditions (mocked home directory and filesystem)."
+        ],
+        "outOfScope": [
+          "Production functionality of the skill command.",
+          "Integration with real LLM providers or filesystem paths.",
+          "Any exported symbols intended for external consumption."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterAll",
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/cli/commands/skill.js'",
+        "symbols": [
+          "executeSkillCommand"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/cli/commands/skill.ts",
+        "relation": "import",
+        "symbols": [
+          "executeSkillCommand"
+        ]
+      },
+      {
+        "targetPath": "external:vitest",
+        "relation": "import",
+        "symbols": [
+          "afterAll",
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "external:fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "external:path",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/cli/skill.test.ts/_file_#",
+        "targetSymbol": "src/cli/commands/skill.ts/executeSkillCommand#",
+        "targetPath": "src/cli/commands/skill.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:08:12.480Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

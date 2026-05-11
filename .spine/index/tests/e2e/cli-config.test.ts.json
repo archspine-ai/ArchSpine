@@ -1,0 +1,198 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/e2e/cli-config.test.ts",
+    "contentHash": "b84344199f6b16f75f24d338e8d7d157e2918ce370599d34797c5864d2513181",
+    "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
+    "semanticHash": "20ddfec4c1e3ebed1a2e6901e0596a2fb34aac364bd9d983e42003a06114192c",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/e2e"
+  },
+  "semantic": {
+    "role": "Vitest-based integration test suite for the ArchSpine CLI commands.",
+    "responsibilities": [
+      "Provides utility function `runCli` to execute the built CLI binary with specified arguments in a given working directory, capturing stdout, stderr, and exit status.",
+      "Sets up temporary test environments (e.g., creating directories, initializing git repos) to simulate real CLI invocation contexts.",
+      "Verifies correct CLI behavior across multiple commands (e.g., init, sync, scan, view, mcp, check, build, skill, rules) including output content, error messages, and exit codes.",
+      "Part of the automated E2E test suite that ensures CLI contracts are maintained across code changes."
+    ],
+    "outOfScope": [
+      "Does not define any production application logic or configuration.",
+      "Does not interact with external LLM services or real repositories; uses mocked or isolated environments.",
+      "Does not test the CLI help text formatting or interactive prompts beyond spawning the process."
+    ],
+    "invariants": [
+      "The built CLI binary must exist at the path derived from repository root + 'dist/cli/index.js'.",
+      "Test execution assumes Node.js is available and the project has been built before running tests.",
+      "The test file suffix follows the project rule requiring `.test.ts` or `.spec.ts`."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a comprehensive integration test harness that validates the CLI's public behavior from an end-user perspective, ensuring regression protection for the command-line interface.",
+      "recentChangeIntent": "This test file is part of a new E2E test suite that adds 37 tests across 7 files, covering major CLI commands and their expected outputs."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest-based integration test suite for the ArchSpine CLI commands.",
+        "responsibilities": [
+          "Provides utility function `runCli` to execute the built CLI binary with specified arguments in a given working directory, capturing stdout, stderr, and exit status.",
+          "Sets up temporary test environments (e.g., creating directories, initializing git repos) to simulate real CLI invocation contexts.",
+          "Verifies correct CLI behavior across multiple commands (e.g., init, sync, scan, view, mcp, check, build, skill, rules) including output content, error messages, and exit codes.",
+          "Part of the automated E2E test suite that ensures CLI contracts are maintained across code changes."
+        ],
+        "outOfScope": [
+          "Does not define any production application logic or configuration.",
+          "Does not interact with external LLM services or real repositories; uses mocked or isolated environments.",
+          "Does not test the CLI help text formatting or interactive prompts beyond spawning the process."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ]
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:06:20.643Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

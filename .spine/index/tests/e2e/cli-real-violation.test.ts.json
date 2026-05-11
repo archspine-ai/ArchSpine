@@ -1,0 +1,198 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/e2e/cli-real-violation.test.ts",
+    "contentHash": "a435493b3a99e543b9953d4982dd56c2173ed639c81cf3974db0e37442e60477",
+    "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
+    "semanticHash": "aad5866ba457edf07cdb2ffac0d98ee79ec03b2bbf5a2aefef0e36c4b301bef5",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/e2e"
+  },
+  "semantic": {
+    "role": "E2E test suite verifying the CLI's detection of real architectural violations in a temporary Git repository.",
+    "responsibilities": [
+      "Tests that the CLI scan command correctly identifies intentional code violations.",
+      "Sets up temporary Git repositories with pre-configured rule files and deliberate code violations.",
+      "Validates that scan output reports the expected violations with proper severity and location."
+    ],
+    "outOfScope": [
+      "Does not cover unit-level validation logic.",
+      "Does not test other CLI commands outside scan."
+    ],
+    "invariants": [
+      "Test file suffix must be .test.ts (currently satisfied)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Reinforce end-to-end correctness of violation detection after CLI and schema refactoring.",
+      "recentChangeIntent": "Updated to match schema changes and CLI argument removals after legacy alias cleanup."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "E2E test suite verifying the CLI's detection of real architectural violations in a temporary Git repository.",
+        "responsibilities": [
+          "Tests that the CLI scan command correctly identifies intentional code violations.",
+          "Sets up temporary Git repositories with pre-configured rule files and deliberate code violations.",
+          "Validates that scan output reports the expected violations with proper severity and location."
+        ],
+        "outOfScope": [
+          "Does not cover unit-level validation logic.",
+          "Does not test other CLI commands outside scan."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 9,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeAll",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execFileSync",
+          "spawnSync"
+        ]
+      },
+      {
+        "targetPath": "url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:06:47.848Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

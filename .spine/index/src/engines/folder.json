@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/engines",
+  "role": "Core engine directory containing all primary processing, analysis, and reporting modules for the ArchSpine system.",
+  "responsibility": "Collectively, these modules handle file scanning, dependency graph construction, architectural rule loading and matching, context resolution for LLM integration, violation detection, fix prompt generation, diagnostic analysis (cycles, dead code, hubs, drift), project information and usage reporting, and aggregation of index documents into a unified architectural dossier.",
+  "children": [
+    {
+      "filePath": "src/engines/aggregator.ts",
+      "role": "Engine module responsible for reading, validating, and aggregating spine index documents (folder units, project units) from the .spine/index directory into a unified in-memory structure for downstream analysis and transformation.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/check.ts",
+      "role": "Package entry point (barrel) that aggregates and re-exports the public API of the ArchSpine governance library.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/context-path-resolver.ts",
+      "role": "Utility for resolving relative import statements to absolute file paths, used by the scanner and AST extractor to map import directives to concrete source files.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/context-relevance.ts",
+      "role": "Core engine computing relevance scores for dependency candidates: extracts keywords from architectural rules, scores how relevant a dependency candidate is to a given file based on path distance, symbol evidence, and rule keyword overlap, and scores target paths against import usage maps.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/context.ts",
+      "role": "Engine for resolving and scoring relevant dependency context to support LLM-driven code analysis and fix generation.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/dependency-graph.ts",
+      "role": "Engine module that builds a typed dependency graph (knowledge graph) of project modules, deriving module identity, architectural layers, and structural relationships from file paths and architectural rules.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/fix-prompt.ts",
+      "role": "Prompt generation engine for architectural violation fix suggestions.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/fix.ts",
+      "role": "Barrel module aggregating and re-exporting the fix service's public API for external consumers.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/god.ts",
+      "role": "Engine that aggregates all scanned index documents into a comprehensive architectural dossier (God Document) for the entire repository.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/graph-diagnostics.ts",
+      "role": "Deterministic pure-function engine for structural diagnostics over a module-level dependency graph (KnowledgeGraph). Provides cycle, dead code, hub, and structural drift detection without any LLM cost.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/graph-query.ts",
+      "role": "Query interface for the project's knowledge graph, providing reusable functions to traverse dependencies, extract violations, perform change impact analysis, and match modules semantically.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/info.ts",
+      "role": "Engine module that generates a comprehensive informational report about the project state, including configuration, manifest integrity, LLM settings, scan statistics, and file counts. Used by the CLI info command and potentially by service-level orchestrators.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/quick-scan.ts",
+      "role": "Engine module for fast, LLM-free source code analysis that discovers module dependency graphs via regex-based extraction of imports and exports.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/rules.ts",
+      "role": "Engine module that loads, manages, and matches architectural rules against source file paths in a repository.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/scanner-git.ts",
+      "role": "Git command execution abstraction layer for the scanner engine, providing a testable interface and default synchronous implementation for running git subprocesses.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/scanner-utils.ts",
+      "role": "Utility module providing path normalization, glob-pattern matching, and dry-run report formatting for the scanner engine.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/scanner.ts",
+      "role": "Core file system scanner engine that recursively traverses the project directory, applies `.gitignore` and `.spineignore` exclusion rules via the `ignore` library, integrates with git for change detection, and produces a normalized, sorted list of all files and changed files for downstream processing.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/engines/usage.ts",
+      "role": "Engine module that generates and outputs a usage and audit report for an ArchSpine project by querying the manifest for token usage, usage summaries, and active violations.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:13:21.375Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

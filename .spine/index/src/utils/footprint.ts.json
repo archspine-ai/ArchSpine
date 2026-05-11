@@ -1,0 +1,146 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/utils/footprint.ts",
+    "contentHash": "f66fd38661d5c0d938ee82507d4c7826e27adee49dc956dad99a7ca90664d066",
+    "skeletonHash": "e0793366a5ce771e80c2b06fd7ad1b773711bfe5d34b7b5636040fff375e5cbc",
+    "semanticHash": "5e521b7b7113339093fce476410644d88cf7aa666ac1a5b601e12d0e9c0d04f3",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/utils"
+  },
+  "semantic": {
+    "role": "Pure utility module for computing deterministic content-addressed hashes (structural and semantic footprints) of file skeletons and semantic summaries.",
+    "responsibilities": [
+      "Calculate a deterministic SHA-256 hash of a FileSkeleton, normalizing import and export ordering for stable comparison.",
+      "Calculate a deterministic SHA-256 hash of a SpineSemantic summary, normalizing public surface entries for stable comparison."
+    ],
+    "outOfScope": [
+      "AST extraction or parsing of source code.",
+      "Semantic analysis or summarization.",
+      "File I/O or storage of footprints."
+    ],
+    "invariants": [
+      "Footprints are deterministic: same input always produces the same hash.",
+      "Normalization (sorting, trimming, deduplication) ensures stability regardless of source data ordering."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide stable, content-addressed identifiers for file structure and semantic summaries to enable change detection and semantic drift tracking.",
+      "recentChangeIntent": "No evidence of recent changes beyond the initial implementation to support the v1.0.0 architectural governance release."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "calculateStructuralFootprint",
+        "description": "Computes a stable SHA-256 hash of a file's structural skeleton, including normalized imports and exports. Used for detecting structural change in source files."
+      },
+      {
+        "symbolName": "calculateSemanticFootprint",
+        "description": "Computes a stable SHA-256 hash of a semantic summary, including normalized public surface symbols. Used for detecting semantic drift."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Pure utility module for computing deterministic content-addressed hashes (structural and semantic footprints) of file skeletons and semantic summaries.",
+        "responsibilities": [
+          "Calculate a deterministic SHA-256 hash of a FileSkeleton, normalizing import and export ordering for stable comparison.",
+          "Calculate a deterministic SHA-256 hash of a SpineSemantic summary, normalizing public surface entries for stable comparison."
+        ],
+        "outOfScope": [
+          "AST extraction or parsing of source code.",
+          "Semantic analysis or summarization.",
+          "File I/O or storage of footprints."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'crypto'",
+        "symbols": [
+          "createHash"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "calculateStructuralFootprint",
+        "kind": "function",
+        "signature": "calculateStructuralFootprint(skeleton: FileSkeleton)"
+      },
+      {
+        "name": "calculateSemanticFootprint",
+        "kind": "function",
+        "signature": "calculateSemanticFootprint(semantic: SpineSemantic)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "calculateStructuralFootprint",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/footprint.ts#"
+      },
+      {
+        "name": "calculateSemanticFootprint",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/utils/footprint.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 1,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "crypto",
+        "relation": "import",
+        "symbols": [
+          "createHash"
+        ]
+      },
+      {
+        "targetPath": "../ast/extractor.js",
+        "relation": "import",
+        "symbols": [
+          "FileSkeleton"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "SpineSemantic"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:06:03.155Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 82,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

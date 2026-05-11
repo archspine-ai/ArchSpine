@@ -1,0 +1,199 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/services/skill-service.ts",
+    "contentHash": "acf55e2fbded2c09319d28988d8e13d76b4bd642273d8087ed41ab807b3d52d6",
+    "skeletonHash": "884d2d666ecd6967b6765adf8a6d2aaf137a2f5b7a762d34b5dfa24111e2bad4",
+    "semanticHash": "40e4475c248a4e5c040d33c29b262ff98d4addc879e76a4876accfab48e68b20",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/services"
+  },
+  "semantic": {
+    "role": "Claude skill lifecycle installer/uninstaller for the ArchSpine project.",
+    "responsibilities": [
+      "Install the ArchSpine skill definition into Claude's skill directory under ~/.claude/skills/archspine/.",
+      "Write a state file to ~/.archspine/skill-state.json recording the skill installation.",
+      "Uninstall the skill by removing the skill file and state file, and cleaning up empty directories.",
+      "Ensure required directories exist before writing files."
+    ],
+    "outOfScope": [
+      "Indexing or rendering project files.",
+      "CLI command definitions.",
+      "MCP tool handlers."
+    ],
+    "invariants": [
+      "Skill and state directories are always under the user's home directory.",
+      "State file is JSON-serializable."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a self-contained mechanism to register and unregister ArchSpine as a Claude skill, enabling IDE integration.",
+      "recentChangeIntent": "No recent changes indicated beyond initial implementation."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "installSkill",
+        "description": "Installs the ArchSpine skill definition to ~/.claude/skills/archspine/SKILL.md and creates a state file. Returns success or failure with a message."
+      },
+      {
+        "symbolName": "uninstallSkill",
+        "description": "Removes the installed skill file and state file, cleaning up empty directories. Returns removal status."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Claude skill lifecycle installer/uninstaller for the ArchSpine project.",
+        "responsibilities": [
+          "Installs the ArchSpine skill definition into Claude's skill directory under ~/.claude/skills/archspine/.",
+          "Writes a state file to ~/.archspine/skill-state.json recording the skill installation.",
+          "Uninstalls the skill by removing the skill file and state file, and cleaning up empty directories.",
+          "Ensures required directories exist before writing files."
+        ],
+        "outOfScope": [
+          "Indexing or rendering project files.",
+          "CLI command definitions.",
+          "MCP tool handlers."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'node:url'",
+        "symbols": [
+          "fileURLToPath"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'node:os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "installSkill",
+        "kind": "function",
+        "signature": "installSkill(\n  _rootDir: string,\n)"
+      },
+      {
+        "name": "uninstallSkill",
+        "kind": "function",
+        "signature": "uninstallSkill()"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "installSkill",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/skill-service.ts#"
+      },
+      {
+        "name": "uninstallSkill",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/services/skill-service.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "node:url",
+        "relation": "import",
+        "symbols": [
+          "fileURLToPath"
+        ]
+      },
+      {
+        "targetPath": "node:fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "node:path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "node:os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T10:02:45.922Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "fallback"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 4,
+    "isHub": true,
+    "hubPercentile": 65,
+    "inCycle": true,
+    "cycleId": "src/core → src/services → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

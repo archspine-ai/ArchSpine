@@ -1,0 +1,257 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/cli/commands/try.ts",
+    "contentHash": "20d32fe0bbbaf20bb556e1adb77356e2bc98315d7eb9fa634a04cb06090b0cf9",
+    "skeletonHash": "e2d724416a686261cfa1f5e7eb7851dd0dceaa807cac8aa0b166385436b62578",
+    "semanticHash": "1f06385e7062f1ed182d622ece34db9cbabb7d8e63c153a75e2a09c235908a8e",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/cli/commands"
+  },
+  "semantic": {
+    "role": "CLI command handler for the 'try' subcommand. Orchestrates a three-stage operation (repository posture validation, language landscape discovery, and AST preview generation) by delegating entirely to the TryService.",
+    "responsibilities": [
+      "Parse and validate CLI arguments for the 'try' command, providing usage instructions on failure.",
+      "Delegate to TryService.checkRepoPosture to validate the repository state.",
+      "Delegate to TryService.discoverLanguageLandscape to detect programming languages used in the project.",
+      "Delegate to TryService.generateASTPreviews to produce AST samples for detected languages.",
+      "Format and print the combined result (posture, languages, AST previews) to the console via console.log.",
+      "Accept optional banner callback for consistent UI display across commands."
+    ],
+    "outOfScope": [
+      "Persistence of any kind (database writes, file storage).",
+      "Pipeline orchestration or multi-step sequencing beyond the single try command.",
+      "Cross-command state management or runtime session coordination.",
+      "Architectural rule checking or validation logic (those belong in engines).",
+      "LLM interaction or prompt rendering."
+    ],
+    "invariants": [
+      "Must remain a thin entrypoint: all business logic belongs in services/engines/infra, never absorbed into this module.",
+      "Must always validate arguments via throwCliUsage before performing any service call.",
+      "Must delegate checkRepoPosture, discoverLanguageLandscape, and generateASTPreviews to the TryService — never implement them locally."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Implement the 'try' CLI command as a thin entrypoint that delegates to a dedicated service layer, maintaining separation between CLI adapters and business logic.",
+      "recentChangeIntent": "Part of a broader refactoring that removed legacy CLI aliases, rebuilt documentation, fixed schemas, and updated tests. No semantic change to this file's contract."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "ExecuteTryCommandOptions",
+        "description": "Options interface for the try command handler, providing CLI arguments, project root directory, and an optional banner display callback. Used by the CLI framework to invoke the command."
+      },
+      {
+        "symbolName": "executeTryCommand",
+        "description": "Main entry point for the 'try' CLI command. It validates arguments, calls TryService to check repo posture, discover languages, and generate AST previews, then prints results to stdout."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "CLI command handler for the 'try' subcommand. Orchestrates a three-stage operation (repository posture validation, language landscape discovery, and AST preview generation) by delegating entirely to the TryService.",
+        "responsibilities": [
+          "Parse and validate CLI arguments for the 'try' command, providing usage instructions on failure.",
+          "Delegate to TryService.checkRepoPosture to validate the repository state.",
+          "Delegate to TryService.discoverLanguageLandscape to detect programming languages used in the project.",
+          "Delegate to TryService.generateASTPreviews to produce AST samples for detected languages.",
+          "Format and print the combined result (posture, languages, AST previews) to the console via console.log.",
+          "Accept optional banner callback for consistent UI display across commands."
+        ],
+        "outOfScope": [
+          "Persistence of any kind (database writes, file storage).",
+          "Pipeline orchestration or multi-step sequencing beyond the single try command.",
+          "Cross-command state management or runtime session coordination.",
+          "Architectural rule checking or validation logic (those belong in engines).",
+          "LLM interaction or prompt rendering."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../../infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../ast/lang-registry.js'",
+        "symbols": [
+          "LangRegistry"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../cli-utils.js'",
+        "symbols": [
+          "throwCliUsage"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../services/try-service.js'",
+        "symbols": [
+          "checkRepoPosture",
+          "discoverLanguageLandscape",
+          "generateASTPreviews"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "executeTryCommand",
+        "kind": "function",
+        "signature": "executeTryCommand({\n  args,\n  rootDir,\n  displayUIBanner,\n}: ExecuteTryCommandOptions)"
+      },
+      {
+        "name": "ExecuteTryCommandOptions",
+        "kind": "interface",
+        "signature": "interface ExecuteTryCommandOptions"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "executeTryCommand",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/cli/commands/try.ts#"
+      },
+      {
+        "name": "ExecuteTryCommandOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/cli/commands/try.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 8,
+      "exportCount": 2,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "../../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../../ast/lang-registry.js",
+        "relation": "import",
+        "symbols": [
+          "LangRegistry"
+        ]
+      },
+      {
+        "targetPath": "../cli-utils.js",
+        "relation": "import",
+        "symbols": [
+          "throwCliUsage"
+        ]
+      },
+      {
+        "targetPath": "../../services/try-service.js",
+        "relation": "import",
+        "symbols": [
+          "checkRepoPosture",
+          "discoverLanguageLandscape",
+          "generateASTPreviews"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/cli/commands/try.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/throwCliUsage#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/try.ts/_file_#",
+        "targetSymbol": "src/cli/cli-utils.ts/displayUIBanner#",
+        "targetPath": "src/cli/cli-utils.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/try.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/try.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:54:15.405Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 53,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

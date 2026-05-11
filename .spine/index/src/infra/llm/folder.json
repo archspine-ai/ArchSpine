@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/infra/llm",
+  "role": "Defines the core abstractions and runtime infrastructure for interacting with Large Language Models (LLMs) in the ArchSpine system, including type contracts, provider factory, global configuration management, retry logic, and runtime resolution.",
+  "responsibility": "Provides a unified interface for LLM communication by specifying transport contracts, managing provider-agnostic configuration and secrets, constructing provider-specific clients via a central factory, implementing resilient retry mechanisms for transient errors, and resolving runtime settings from multiple sources (project, global, environment) to deliver a ready-to-use LLM client.",
+  "children": [
+    {
+      "filePath": "src/infra/llm/base.ts",
+      "role": "Type contract layer defining the core abstractions for LLM interaction: transport, provider, client, and response contracts. Serves as the canonical type specification that all LLM providers must implement.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/llm/factory.ts",
+      "role": "LLM Transport Factory — Central factory that constructs LLMTransport instances for specific providers based on a provider string, acting as the public entry point for provider instantiation.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/llm/global.ts",
+      "role": "Global LLM configuration and secrets manager for the ArchSpine CLI tool. Provides platform-aware directory detection, persistent config loading/saving, and credential management via a CredentialStore.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/llm/providers",
+      "role": "LLM transport providers and utility modules for interacting with large language models across different AI platforms.",
+      "fileKind": "folder"
+    },
+    {
+      "filePath": "src/infra/llm/retry.ts",
+      "role": "Retry utility with exponential backoff for transient LLM provider errors.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/llm/runtime.ts",
+      "role": "LLM runtime configuration resolution layer. It bridges project-level and global-level configuration with secrets to produce a validated, ready-to-use LLM client instance. Encapsulates the resolution logic and validation.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:12:10.519Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

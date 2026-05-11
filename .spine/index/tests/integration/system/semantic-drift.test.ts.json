@@ -1,0 +1,237 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integration/system/semantic-drift.test.ts",
+    "contentHash": "d70994cab946c7478984ed9ada4c0c9b484c18c0a9820bf46a187942ec11040a",
+    "skeletonHash": "290613a070adf2328bcb8455c0c7284f28c5cc3ce74e5d8979eb10cbc2822a59",
+    "semanticHash": "f236e366f93cb8390f5a4b55e57671d71262d84b04d80f62dfc65db7ab71391f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/integration/system"
+  },
+  "semantic": {
+    "role": "Integration test suite for the semantic drift detection feature of the ArchSpine mirror system.",
+    "responsibilities": [
+      "Validates that the sync pipeline correctly detects when code contracts change (semantic drift).",
+      "Ensures the LLM client integration for drift summaries behaves as expected under drift conditions.",
+      "Verifies that the overall drift detection algorithm works end-to-end through simulated scenarios."
+    ],
+    "outOfScope": [
+      "Production logic for other features (e.g., build, check, scan).",
+      "UI components or user-facing interfaces.",
+      "Unit-level testing of individual modules not covered by this integration suite."
+    ],
+    "invariants": [
+      "Must comply with test file naming convention: file must end with .test.ts or .spec.ts (enforced by 'test-file-suffix' rule)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide confidence that the drift detection mechanism is robust through integration-level verification.",
+      "recentChangeIntent": "Implicitly part of ongoing test infrastructure updates; no explicit intent documented in git history."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Integration test suite for the semantic drift detection feature of the ArchSpine mirror system.",
+        "responsibilities": [
+          "Validates that the sync pipeline correctly detects when code contracts change (semantic drift).",
+          "Ensures the LLM client integration for drift summaries behaves as expected under drift conditions.",
+          "Verifies that the overall drift detection algorithm works end-to-end through simulated scenarios."
+        ],
+        "outOfScope": [
+          "Production logic for other features (e.g., build, check, scan).",
+          "UI components or user-facing interfaces.",
+          "Unit-level testing of individual modules not covered by this integration suite."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/services/sync-service.js'",
+        "symbols": [
+          "SyncService"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "execSync"
+        ]
+      },
+      {
+        "targetPath": "../../../src/services/sync-service.js",
+        "relation": "import",
+        "symbols": [
+          "SyncService"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/llm.js",
+        "relation": "importType",
+        "symbols": [
+          "LLMClient",
+          "PreviousSemanticContext"
+        ]
+      },
+      {
+        "targetPath": "../../../src/infra/manifest.js",
+        "relation": "import",
+        "symbols": [
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/integration/system/semantic-drift.test.ts/_file_#",
+        "targetSymbol": "src/services/sync-service.ts/SyncService#",
+        "targetPath": "src/services/sync-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/semantic-drift.test.ts/_file_#",
+        "targetSymbol": "src/infra/db/repositories/files.ts/getFileDocs#",
+        "targetPath": "src/infra/db/repositories/files.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:08:06.394Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

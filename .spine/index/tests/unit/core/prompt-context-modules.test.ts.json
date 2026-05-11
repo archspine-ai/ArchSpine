@@ -1,0 +1,162 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/core/prompt-context-modules.test.ts",
+    "contentHash": "59ef2c9afc3090135131f87ef741a2aa43a20b812e767bca4920d5e94ad41ecd",
+    "skeletonHash": "fa5bf77be134b77456d6df03c7287ccbdf719bb10e2c386906f8d18c34db9096",
+    "semanticHash": "bdf0a6fc867b166bdd3426ae45a0c7751f95822293ae2dd0ab5bff1c7b353e3c",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/core"
+  },
+  "semantic": {
+    "role": "Vitest unit test suite for the prompt-context infrastructure module's budget and diagnostic functions.",
+    "responsibilities": [
+      "Verifies that calculateSourcePromptBudgets correctly allocates stricter validation budgets based on content length and skeleton size.",
+      "Verifies that buildDependencySelectionDiagnostics produces diagnostics with retained and truncated dependency candidates matching budget limits.",
+      "Implicitly validates buildRuleBlockDiagnostics (likely tested in the same suite).",
+      "Isolates prompt-context budget and diagnostic logic for regression detection."
+    ],
+    "outOfScope": [
+      "Production runtime behavior – this file does not execute in production.",
+      "Real LLM API calls or network I/O.",
+      "File system operations or database access.",
+      "End-to-end CLI or integration scenarios.",
+      "User-facing UI or rendering logic."
+    ],
+    "invariants": [
+      "All tests must be written using the vitest framework (describe, expect, it).",
+      "The test file must end with .test.ts or .spec.ts to be discovered by the test runner.",
+      "No circular imports are introduced by this file.",
+      "Mock implementations may be used in place of real dependencies."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Establish regression-safe unit tests for the core budget and diagnostic algorithms used by the prompt-context pipeline, enabling refactoring without behavioral breakage.",
+      "recentChangeIntent": "No changes specific to this test file are indicated by the git history; the broader commit 'chore: apply release gate fixes and sync accumulated source changes' suggests stabilization across the codebase."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest unit test suite for the prompt-context infrastructure module's budget and diagnostic functions.",
+        "responsibilities": [
+          "Verifies that calculateSourcePromptBudgets correctly allocates stricter validation budgets based on content length and skeleton size.",
+          "Verifies that buildDependencySelectionDiagnostics produces diagnostics with retained and truncated dependency candidates matching budget limits.",
+          "Implicitly validates buildRuleBlockDiagnostics (likely tested in the same suite).",
+          "Isolates prompt-context budget and diagnostic logic for regression detection."
+        ],
+        "outOfScope": [
+          "Production runtime behavior – this file does not execute in production.",
+          "Real LLM API calls or network I/O.",
+          "File system operations or database access.",
+          "End-to-end CLI or integration scenarios.",
+          "User-facing UI or rendering logic."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/prompt-context/budgets.js'",
+        "symbols": [
+          "calculateSourcePromptBudgets"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/prompt-context/diagnostics.js'",
+        "symbols": [
+          "buildDependencySelectionDiagnostics",
+          "buildRuleBlockDiagnostics"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/infra/prompt-context/budgets.ts",
+        "relation": "import",
+        "symbols": [
+          "calculateSourcePromptBudgets"
+        ]
+      },
+      {
+        "targetPath": "src/infra/prompt-context/diagnostics.ts",
+        "relation": "import",
+        "symbols": [
+          "buildDependencySelectionDiagnostics",
+          "buildRuleBlockDiagnostics"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/core/prompt-context-modules.test.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context.ts/calculateSourcePromptBudgets#",
+        "targetPath": "src/infra/prompt-context.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/prompt-context-modules.test.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/budgets.ts/calculateSourcePromptBudgets#",
+        "targetPath": "src/infra/prompt-context/budgets.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/prompt-context-modules.test.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/diagnostics.ts/buildDependencySelectionDiagnostics#",
+        "targetPath": "src/infra/prompt-context/diagnostics.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/core/prompt-context-modules.test.ts/_file_#",
+        "targetSymbol": "src/infra/prompt-context/diagnostics.ts/buildRuleBlockDiagnostics#",
+        "targetPath": "src/infra/prompt-context/diagnostics.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:08:51.445Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

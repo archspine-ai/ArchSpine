@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "directory": "src/infra/prompt",
+  "role": "This directory contains the prompt-building infrastructure for the ArchSpine mirror system, providing factory functions and a fluent builder to construct structured LLM prompts for summarizing and validating various artifact types.",
+  "responsibility": "Collectively, the components in this directory orchestrate the generation of structured prompts that drive AI agents to produce semantic summaries, validate architectural rules, and detect drift across documents, configuration files, directory indexes, source code, and project overviews. They handle output contract formatting (JSON + Markdown), localization instructions, environmental context (branch, status), and response mode control (json-only or mixed), while maintaining a clean separation between template rendering, builder logic, and type definitions.",
+  "children": [
+    {
+      "filePath": "src/infra/prompt/aggregate.ts",
+      "role": "Infrastructure module providing factory functions for building structured LLM prompts used to drive AI summarization of different artifact types (documents, configuration files, folder indexes, and project overviews).",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/prompt/builder.ts",
+      "role": "Prompt builder composing multi-block LLM prompts from reusable template rendering functions.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/prompt/markdown.ts",
+      "role": "Unknown role",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/prompt/shared.ts",
+      "role": "Prompt template utility generating the standardized output contract instructions (JSON + Markdown) for language model responses. Part of the prompt-building infrastructure.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/prompt/source.ts",
+      "role": "Prompt generator for source file semantic analysis in the ArchSpine mirror system. It constructs a structured instruction set for an AI assistant to extract architectural roles, public surfaces, and drift detection from source code.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/prompt/types.ts",
+      "role": "Type definitions for markdown prompt input and response mode within the prompt rendering infrastructure.",
+      "fileKind": "source"
+    }
+  ],
+  "provenance": {
+    "indexedAt": "2026-05-10T05:12:06.423Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/ast/lang-registry.ts",
+    "contentHash": "99c3af22215ece8105a5e73371365222db0f0119156d2f3ca2a53a70bfba1adc",
+    "skeletonHash": "164ad3e302494ce0fbec8dcd5770d68a0ca482b77d4179423b9f844e4bf69dbd",
+    "semanticHash": "09e9b9d6e56f8c55ed868266659e7c8198a75f5837ed03448680ff495a3af4f8",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/ast"
+  },
+  "semantic": {
+    "role": "Central language registry mapping project source languages (e.g., TypeScript, Python) to @ast-grep/napi Lang objects. Supports both static built-in languages and dynamically loaded plugin languages via registerDynamicLanguage.",
+    "responsibilities": [
+      "Maintain a registry of LangConfig entries that associate source language identifiers (SourceLanguage) with corresponding @ast-grep/napi Lang objects and optional dynamic loaders.",
+      "Provide lookup methods for retrieving the correct Lang object given a file path or SourceLanguage, enabling AST extraction for scanning and analysis.",
+      "Manage dynamic language registration (e.g., for plugins) by ensuring idempotent calls to registerDynamicLanguage and caching the promise to avoid concurrent re-registration.",
+      "Expose configuration interfaces (LangConfig, InternalLangConfig) for defining language support in the system's language rules and scanner configuration."
+    ],
+    "outOfScope": [
+      "AST extraction or traversal – this module only provides the Lang object, not the extraction logic.",
+      "Definition of per-language parsing rules or semantic analysis – those reside in separate rule files.",
+      "File system scanning, Git diff parsing, or any I/O operations beyond importing language packages.",
+      "Loading or validation of language-specific rule sets (e.g., naming conventions)."
+    ],
+    "invariants": [
+      "For a given SourceLanguage, getLanguage() always returns the same Lang instance within a process lifetime.",
+      "Dynamic language registration is performed at most once; subsequent calls return the cached promise without re-registering.",
+      "All registered LangConfigs have a unique langKey and sourceLanguage to avoid conflicts."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a lightweight, extensible language registry that decouples language support definitions from scanning and analysis engines. New languages can be added via configuration and dynamic imports without modifying core scanner code.",
+      "recentChangeIntent": "The recent commit (refactor: remove legacy CLI aliases, rebuild docs, fix schema and tests) does not directly modify this file's contract. Any changes to lang-registry.ts were likely refactoring for consistency with the updated CLI and schema, not a change in role."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "LangRegistry",
+        "description": "Singleton-style class that manages the mapping from SourceLanguage to @ast-grep/napi Lang objects. Provides static methods for language resolution and dynamic registration. Consumed by the scanner, AST extractor, and any component that needs to obtain a Lang instance for a given source file."
+      },
+      {
+        "symbolName": "LangConfig",
+        "description": "Interface defining the configuration for a single language entry: ruleName (written name), langKey (the Lang or string identifier), sourceLanguage (canonical SourceLanguage enum), and an optional loader function for dynamic imports. Used when populating the registry with built-in or plugin languages."
+      },
+      {
+        "symbolName": "InternalLangConfig",
+        "description": "Extends LangConfig with an optional packageName field used internally to track the npm package that provides dynamic language support. Exported for type consistency across the language registration system."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Central language registry mapping project source languages (e.g., TypeScript, Python) to @ast-grep/napi Lang objects. Supports both static built-in languages and dynamically loaded plugin languages via registerDynamicLanguage.",
+        "responsibilities": [
+          "Maintain a registry of LangConfig entries that associate source language identifiers (SourceLanguage) with corresponding @ast-grep/napi Lang objects and optional dynamic loaders.",
+          "Provide lookup methods for retrieving the correct Lang object given a file path or SourceLanguage, enabling AST extraction for scanning and analysis.",
+          "Manage dynamic language registration (e.g., for plugins) by ensuring idempotent calls to registerDynamicLanguage and caching the promise to avoid concurrent re-registration.",
+          "Expose configuration interfaces (LangConfig, InternalLangConfig) for defining language support in the system's language rules and scanner configuration."
+        ],
+        "outOfScope": [
+          "AST extraction or traversal – this module only provides the Lang object, not the extraction logic.",
+          "Definition of per-language parsing rules or semantic analysis – those reside in separate rule files.",
+          "File system scanning, Git diff parsing, or any I/O operations beyond importing language packages.",
+          "Loading or validation of language-specific rule sets (e.g., naming conventions)."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'@ast-grep/napi'",
+        "symbols": [
+          "Lang",
+          "registerDynamicLanguage",
+          "type DynamicLangRegistrations"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "LangRegistry",
+        "kind": "class",
+        "signature": "class LangRegistry"
+      },
+      {
+        "name": "LangConfig",
+        "kind": "interface",
+        "signature": "interface LangConfig"
+      },
+      {
+        "name": "InternalLangConfig",
+        "kind": "type",
+        "signature": "type InternalLangConfig"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "LangRegistry",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/ast/lang-registry.ts#"
+      },
+      {
+        "name": "LangConfig",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/ast/lang-registry.ts#"
+      },
+      {
+        "name": "InternalLangConfig",
+        "kind": "type",
+        "exported": true,
+        "symbolUri": "src/ast/lang-registry.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 3,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "@ast-grep/napi",
+        "relation": "import",
+        "symbols": [
+          "Lang",
+          "registerDynamicLanguage",
+          "DynamicLangRegistrations"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "path"
+        ]
+      },
+      {
+        "targetPath": "../types/protocol",
+        "relation": "import",
+        "symbols": [
+          "SourceLanguage"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/ast/lang-registry.ts/_file_#",
+        "targetSymbol": "eslint.config.js/default#",
+        "targetPath": "eslint.config.js",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/ast/lang-registry.ts/_file_#",
+        "targetSymbol": "vitest.config.e2e.ts/default#",
+        "targetPath": "vitest.config.e2e.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/ast/lang-registry.ts/_file_#",
+        "targetSymbol": "vitest.config.ts/default#",
+        "targetPath": "vitest.config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:52:36.986Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 8,
+    "isHub": true,
+    "hubPercentile": 94,
+    "inCycle": true,
+    "cycleId": "src/ast → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

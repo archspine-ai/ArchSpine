@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "examples/rules/layered-architecture.yml",
+    "contentHash": "0de48a7c61fe6f1c8f51b0886997c2cdef8dbf5ba768236889f92c07eba43050",
+    "semanticHash": "e9264272e79f1c31aec48045343a6efcfdf8929261d414f416c2b6775a8cbabe",
+    "language": "unsupported",
+    "fileKind": "document",
+    "scope": "examples/rules"
+  },
+  "semantic": {
+    "role": "Defines layered architecture constraints to enforce domain isolation and proper layer dependencies.",
+    "responsibilities": [
+      "Specify that domain modules must not depend on infrastructure or CLI layers.",
+      "Ensure domain modules depend only on internal domain logic or generic utilities.",
+      "Mandate that API layers can only call Service or Domain layers, preventing bypass of business logic."
+    ],
+    "outOfScope": [
+      "Conventions for naming, file organization, or technology choices.",
+      "Other architectural patterns (e.g., microservices, event-driven).",
+      "Implementation details of specific frameworks or tools."
+    ],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "To maintain a clean layered architecture by preventing reverse dependencies and ensuring that each layer adheres to its defined responsibilities.",
+        "context_and_audience": "This document is intended for developers and code reviewers who need to enforce architectural constraints within a project. It serves as a rule set for both human review and automated compliance checking.",
+        "key_takeaways": [
+          "Domain layer must be pure and independent of infrastructure or presentation concerns.",
+          "Domain should only depend on internal domain logic or generic utilities.",
+          "API layers must route through Service or Domain layers, not bypass business logic.",
+          "Violations are treated as errors or warnings with clear rationale."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:50:36.166Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 12,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

@@ -1,0 +1,212 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/quick-scan.ts",
+    "contentHash": "4f48e0c14c0bd6ea54d95593bf9dfdce6e636d8865e014f7a11a6fec5a0cfd17",
+    "skeletonHash": "5c3cbebd6b3e7376f4c59ec5353bbb335407ec09888982af74903edf75e45e3d",
+    "semanticHash": "55478e59ad6144160e5c89295837ebb54ac9e44a5a4dbae80dc44ae3f5621b11",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Engine module for fast, LLM-free source code analysis that discovers module dependency graphs via regex-based extraction of imports and exports.",
+    "responsibilities": [
+      "Walk the repository file tree to discover all supported source files.",
+      "Extract import and export statements using regex patterns per language.",
+      "Build a directed graph of nodes (modules) and edges (dependencies) with counts.",
+      "Provide a function to persist the quick-scan result as JSON to a designated directory.",
+      "Ensure the scan completes quickly (under 30 seconds) for repos up to 50k lines."
+    ],
+    "outOfScope": [
+      "Any LLM-based analysis or semantic understanding.",
+      "AST parsing using full parsers (uses regex only).",
+      "Service-level orchestration or CLI command handling.",
+      "Multi-language support beyond a predefined set of extensions."
+    ],
+    "invariants": [
+      "Engine Independence: This module must not import any CLI entrypoints or service-level orchestration modules."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a fast, standalone analysis engine for generating quick module dependency overviews without relying on LLMs, enabling rapid feedback in CI or editor contexts.",
+      "recentChangeIntent": "Refactor of legacy CLI aliases and rebuild of documentation; this quick-scan engine is part of the overall rebuilt analysis pipeline."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "runQuickScan",
+        "description": "Performs a fast, regex-based scan of the repository rooted at the given directory and returns a QuickScanResult containing nodes (modules) and edges (dependencies)."
+      },
+      {
+        "symbolName": "saveQuickScanResults",
+        "description": "Writes the given QuickScanResult as a JSON file to the .spine/view/data/ directory under the root, creating directories as needed."
+      },
+      {
+        "symbolName": "QuickScanNode",
+        "description": "Interface representing a single module node in the quick-scan graph, including its file path, language, and counts of exports and imports."
+      },
+      {
+        "symbolName": "QuickScanEdge",
+        "description": "Interface representing a dependency edge from one module to another, storing source and target file paths."
+      },
+      {
+        "symbolName": "QuickScanResult",
+        "description": "Interface representing the complete quick-scan output, containing an array of nodes and edges, plus a timestamp of when the scan was performed."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Engine module for fast, LLM-free source code analysis that discovers module dependency graphs via regex-based extraction of imports and exports.",
+        "responsibilities": [
+          "Walk the repository file tree to discover all supported source files.",
+          "Extract import and export statements using regex patterns per language.",
+          "Build a directed graph of nodes (modules) and edges (dependencies) with counts.",
+          "Provide a function to persist the quick-scan result as JSON to a designated directory.",
+          "Ensure the scan completes quickly (under 30 seconds) for repos up to 50k lines."
+        ],
+        "outOfScope": [
+          "Any LLM-based analysis or semantic understanding.",
+          "AST parsing using full parsers (uses regex only).",
+          "Service-level orchestration or CLI command handling.",
+          "Multi-language support beyond a predefined set of extensions."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "saveQuickScanResults",
+        "kind": "function",
+        "signature": "saveQuickScanResults(rootDir: string, result: QuickScanResult)"
+      },
+      {
+        "name": "runQuickScan",
+        "kind": "function",
+        "signature": "runQuickScan(rootDir: string)"
+      },
+      {
+        "name": "QuickScanNode",
+        "kind": "interface",
+        "signature": "interface QuickScanNode"
+      },
+      {
+        "name": "QuickScanEdge",
+        "kind": "interface",
+        "signature": "interface QuickScanEdge"
+      },
+      {
+        "name": "QuickScanResult",
+        "kind": "interface",
+        "signature": "interface QuickScanResult"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "saveQuickScanResults",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/quick-scan.ts#"
+      },
+      {
+        "name": "runQuickScan",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/engines/quick-scan.ts#"
+      },
+      {
+        "name": "QuickScanNode",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/quick-scan.ts#"
+      },
+      {
+        "name": "QuickScanEdge",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/quick-scan.ts#"
+      },
+      {
+        "name": "QuickScanResult",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/engines/quick-scan.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 4,
+      "exportCount": 5,
+      "isBarrel": true,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:56:27.113Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 71,
+    "inCycle": true,
+    "cycleId": "src/core → src/types → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

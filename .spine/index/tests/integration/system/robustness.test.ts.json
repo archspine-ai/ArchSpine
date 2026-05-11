@@ -1,0 +1,267 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integration/system/robustness.test.ts",
+    "contentHash": "0edcfe17b81a4e88a6b1e413cbbb7834a754b90049f82c0830e1cdbd15d185c0",
+    "skeletonHash": "2d171b281ffbe681c4f5144128102c70b7cf97e292f89daabbf3911680cffc86",
+    "semanticHash": "b0d575677550ffb28117fdd51e65ac3a81910d3dc12a5f4582aaa84b9874b5f3",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/integration/system"
+  },
+  "semantic": {
+    "role": "Vitest integration test suite for the distributed lock worker (lock-worker.mjs), validating cross-process acquire, release, and payload rewrite semantics.",
+    "responsibilities": [
+      "Spawn multiple lock-worker child processes to simulate concurrent lock operations.",
+      "Verify that a lock can be acquired and released cleanly without corruption.",
+      "Test lock payload rewrite via acquire-release-rewrite mode.",
+      "Capture stdout/err from workers and parse structured JSON results.",
+      "Assert correct error codes (e.g., ErrorCodes) on invalid lock states.",
+      "Exercise the serializeLockPayload / parseLockPayload utilities within a multi-process scenario."
+    ],
+    "outOfScope": [
+      "Does not test UI, MCP tools, CLI commands, or REST endpoints.",
+      "Does not cover database schema modifications or manifest operations.",
+      "Does not perform end-to-end project scans or rule enforcement."
+    ],
+    "invariants": [
+      "All test files must end with .test.ts or .spec.ts (rule: test-file-suffix).",
+      "Lock worker processes must produce valid JSON on stdout.",
+      "Lock acquire and release operations are atomic at the OS file-lock level."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide comprehensive multi-process test coverage for the distributed lock primitive used internally by the ArchSpine pipeline.",
+      "recentChangeIntent": "No specific recent change identifiable from this test file alone; the file provides regression coverage for lock semantics."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest integration test suite for the distributed lock worker (lock-worker.mjs), validating cross-process acquire, release, and payload rewrite semantics.",
+        "responsibilities": [
+          "Spawn multiple lock-worker child processes to simulate concurrent lock operations.",
+          "Verify that a lock can be acquired and released cleanly without corruption.",
+          "Test lock payload rewrite via acquire-release-rewrite mode.",
+          "Capture stdout/err from workers and parse structured JSON results.",
+          "Assert correct error codes (e.g., ErrorCodes) on invalid lock states.",
+          "Exercise the serializeLockPayload / parseLockPayload utilities within a multi-process scenario."
+        ],
+        "outOfScope": [
+          "Does not test UI, MCP tools, CLI commands, or REST endpoints.",
+          "Does not cover database schema modifications or manifest operations.",
+          "Does not perform end-to-end project scans or rule enforcement."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "ChildProcess",
+          "spawn"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'events'",
+        "symbols": [
+          "once"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/utils/fs.js'",
+        "symbols": [
+          "FileSystemManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/core/errors.js'",
+        "symbols": [
+          "ErrorCodes"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/utils/lock.js'",
+        "symbols": [
+          "parseLockPayload",
+          "serializeLockPayload"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 12,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "child_process",
+        "relation": "import",
+        "symbols": [
+          "ChildProcess",
+          "spawn"
+        ]
+      },
+      {
+        "targetPath": "events",
+        "relation": "import",
+        "symbols": [
+          "once"
+        ]
+      },
+      {
+        "targetPath": "src/utils/fs.js",
+        "relation": "import",
+        "symbols": [
+          "FileSystemManager"
+        ]
+      },
+      {
+        "targetPath": "src/core/errors.js",
+        "relation": "import",
+        "symbols": [
+          "ErrorCodes"
+        ]
+      },
+      {
+        "targetPath": "src/utils/lock.js",
+        "relation": "import",
+        "symbols": [
+          "parseLockPayload",
+          "serializeLockPayload"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/integration/system/robustness.test.ts/_file_#",
+        "targetSymbol": "src/utils/lock.ts/serializeLockPayload#",
+        "targetPath": "src/utils/lock.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/system/robustness.test.ts/_file_#",
+        "targetSymbol": "src/utils/lock.ts/parseLockPayload#",
+        "targetPath": "src/utils/lock.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:08:38.441Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

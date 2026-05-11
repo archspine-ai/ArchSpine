@@ -1,0 +1,223 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/engines/aggregator.ts",
+    "contentHash": "e88ed21e47ed1c1f26106e78e17e8192c5f348705938b90c88ce3d3230eff8af",
+    "skeletonHash": "7d7bf89dae497d21fcebb9e9a09222462895c887ca10bec8a392576fc5054dad",
+    "semanticHash": "b35564510da9725ee133a838fb7dfc944858043c3fddfcb91ff395b85ecf4c6d",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/engines"
+  },
+  "semantic": {
+    "role": "Engine module responsible for reading, validating, and aggregating spine index documents (folder units, project units) from the .spine/index directory into a unified in-memory structure for downstream analysis and transformation.",
+    "responsibilities": [
+      "Load and parse all spine index documents (folder units and project units) from the filesystem under the .spine/index directory.",
+      "Validate index documents for compatibility with the current schema using isCompatibleIndexDocument.",
+      "Aggregate individual folder units and project units into a combined representation that preserves hierarchy and provenance.",
+      "Report read issues (e.g., invalid or incompatible index files) via reportIndexReadIssueOnce.",
+      "Provide a central access point for other engine modules to retrieve the aggregated spine index for further processing."
+    ],
+    "outOfScope": [
+      "Writing or modifying index documents on disk (read-only operation).",
+      "Direct filesystem management — delegated to FileSystemManager.",
+      "CLI interaction or user-facing output.",
+      "Service-level orchestration or scheduling logic."
+    ],
+    "invariants": [
+      "Must not import any CLI entrypoint modules or service orchestrators (engine-independence rule).",
+      "All index documents must be checked for schema compatibility before inclusion in the aggregate.",
+      "The aggregated structure must preserve the original folder hierarchy and provenance metadata."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide a reusable engine that reads and aggregates spine index documents from the filesystem, serving as the data foundation for analysis and transformation pipelines while maintaining decoupling from presentation and orchestration layers.",
+      "recentChangeIntent": "This file was part of a bulk sync and release gate fix pass; no specific functional change is indicated by the commit message alone."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "Aggregator",
+        "description": "Primary class for reading and merging spine index documents from the .spine/index directory. Provides methods to load folder units and project units, validate compatibility, and aggregate them into a unified data structure. Consumed by other engine modules and services that need the aggregated index."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Engine module responsible for reading, validating, and aggregating spine index documents (folder units, project units) from the .spine/index directory into a unified in-memory structure for downstream analysis and transformation.",
+        "responsibilities": [
+          "Load and parse all spine index documents (folder units and project units) from the filesystem under the .spine/index directory.",
+          "Validate index documents for compatibility with the current schema using isCompatibleIndexDocument.",
+          "Aggregate individual folder units and project units into a combined representation that preserves hierarchy and provenance.",
+          "Report read issues (e.g., invalid or incompatible index files) via reportIndexReadIssueOnce.",
+          "Provide a central access point for other engine modules to retrieve the aggregated spine index for further processing."
+        ],
+        "outOfScope": [
+          "Writing or modifying index documents on disk (read-only operation).",
+          "Direct filesystem management — delegated to FileSystemManager.",
+          "CLI interaction or user-facing output.",
+          "Service-level orchestration or scheduling logic."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'../types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "GENERATOR_VERSION",
+          "SpineUnit",
+          "SpineFolderUnit",
+          "SpineProjectUnit",
+          "SpineProvenance",
+          "FileKind"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../utils/fs.js'",
+        "symbols": [
+          "FileSystemManager"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/index-reader.js'",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "Aggregator",
+        "kind": "class",
+        "signature": "class Aggregator"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "Aggregator",
+        "kind": "class",
+        "exported": true,
+        "symbolUri": "src/engines/aggregator.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 7,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "GENERATOR_VERSION",
+          "SpineUnit",
+          "SpineFolderUnit",
+          "SpineProjectUnit",
+          "SpineProvenance",
+          "FileKind"
+        ]
+      },
+      {
+        "targetPath": "../utils/fs.js",
+        "relation": "import",
+        "symbols": [
+          "FileSystemManager"
+        ]
+      },
+      {
+        "targetPath": "../infra/index-reader.js",
+        "relation": "import",
+        "symbols": [
+          "isCompatibleIndexDocument",
+          "readIndexDocument",
+          "reportIndexReadIssueOnce"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/engines/aggregator.ts/_file_#",
+        "targetSymbol": "src/infra/index-reader.ts/isCompatibleIndexDocument#",
+        "targetPath": "src/infra/index-reader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/engines/aggregator.ts/_file_#",
+        "targetSymbol": "src/infra/index-reader.ts/reportIndexReadIssueOnce#",
+        "targetPath": "src/infra/index-reader.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:55:16.560Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 71,
+    "inCycle": true,
+    "cycleId": "src/core → src/types → src/engines → src/infra",
+    "isDeadCodeSuspect": false
+  }
+}

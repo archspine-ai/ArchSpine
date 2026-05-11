@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/engines/fix-prompt.test.ts",
+    "contentHash": "0b03cbdadcda03dc439496aeadd26113dec54c0f5071bf01a04d4612a920ddfc",
+    "skeletonHash": "15981d1b34242e166330b7d6550453d1ac743a20b44f0a09e8bf6025678bea06",
+    "semanticHash": "7499e27a9f36a78500e87381806bc6eed644aaaf433daae8a13d6a40344f79ba",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/engines"
+  },
+  "semantic": {
+    "role": "Unit test suite for the fix-prompt engine module.",
+    "responsibilities": [
+      "Verify that generateFixPrompt produces correct LLM prompts given a FixViolationContext.",
+      "Ensure the generated prompt includes expected contextual information (file path, content, structural skeleton, violation details).",
+      "Exercise edge cases in the fix prompt generation logic."
+    ],
+    "outOfScope": [
+      "Integration or end-to-end testing of the fix engine.",
+      "Testing LLM provider behavior or prompt execution."
+    ],
+    "invariants": [
+      "Test file must end with .test.ts or .spec.ts (rule: test-file-suffix).",
+      "Test suite imports only vitest and the module under test."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Isolate fix-prompt generation logic behind a testable unit boundary.",
+      "recentChangeIntent": "Refactoring to remove legacy CLI aliases, rebuild documentation, fix schema and tests. This test suite aligns with the updated module structure."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Unit test suite for the fix-prompt engine module.",
+        "responsibilities": [
+          "Verify that generateFixPrompt produces correct LLM prompts given a FixViolationContext.",
+          "Ensure the generated prompt includes expected contextual information (file path, content, structural skeleton, violation details).",
+          "Exercise edge cases in the fix prompt generation logic."
+        ],
+        "outOfScope": [
+          "Integration or end-to-end testing of the fix engine.",
+          "Testing LLM provider behavior or prompt execution."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/engines/fix-prompt.js'",
+        "symbols": [
+          "generateFixPrompt",
+          "FixViolationContext"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 2,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "src/engines/fix-prompt.ts",
+        "relation": "import",
+        "symbols": [
+          "generateFixPrompt",
+          "FixViolationContext"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/engines/fix-prompt.test.ts/_file_#",
+        "targetSymbol": "src/engines/fix-prompt.ts/generateFixPrompt#",
+        "targetPath": "src/engines/fix-prompt.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:09:07.316Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

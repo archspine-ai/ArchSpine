@@ -1,0 +1,174 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/integration/platform/windows-platform.test.ts",
+    "contentHash": "ab58ad89b522d65999462004022e219a0f6dda320a30fa40c6238c7599984eb3",
+    "skeletonHash": "3c15fef7469ff0152211ee3493d4e428b133131320aa9cf79c491e66f27b6ff1",
+    "semanticHash": "0dbd641e2654800b1dd428fe669217b388d07014cd499409e4068eecf3667ac3",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/integration/platform"
+  },
+  "semantic": {
+    "role": "Vitest test suite for getGlobalArchSpineDir — validates the platform-specific resolution of the global ArchSpine configuration directory across win32, darwin, and linux.",
+    "responsibilities": [
+      "Tests that on win32 with SPINE_HOME set returns that path.",
+      "Tests that on win32 without SPINE_HOME falls back to process.env.LOCALAPPDATA or path.join(os.homedir(), '.config').",
+      "Tests that on darwin with XDG_CONFIG_HOME set returns that path.",
+      "Tests that on darwin without XDG_CONFIG_HOME falls back to path.join(os.homedir(), '.config').",
+      "Tests that on linux with XDG_CONFIG_HOME set returns that path.",
+      "Tests that on linux without XDG_CONFIG_HOME falls back to path.join(os.homedir(), '.config').",
+      "Restores the original platform and environment variables after each test via afterEach."
+    ],
+    "outOfScope": [],
+    "invariants": [],
+    "changeIntent": {
+      "architecturalIntent": "Provide automated validation that the global directory resolver behaves correctly on each major OS, ensuring deterministic configuration lookup.",
+      "recentChangeIntent": "No recent changes indicated beyond the test suite itself."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite for getGlobalArchSpineDir — validates the platform-specific resolution of the global ArchSpine configuration directory across win32, darwin, and linux.",
+        "responsibilities": [
+          "Tests that on win32 with SPINE_HOME set returns that path.",
+          "Tests that on win32 without SPINE_HOME falls back to process.env.LOCALAPPDATA or path.join(os.homedir(), '.config').",
+          "Tests that on darwin with XDG_CONFIG_HOME set returns that path.",
+          "Tests that on darwin without XDG_CONFIG_HOME falls back to path.join(os.homedir(), '.config').",
+          "Tests that on linux with XDG_CONFIG_HOME set returns that path.",
+          "Tests that on linux without XDG_CONFIG_HOME falls back to path.join(os.homedir(), '.config').",
+          "Restores the original platform and environment variables after each test via afterEach."
+        ],
+        "outOfScope": []
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/llm/global.js'",
+        "symbols": [
+          "getGlobalArchSpineDir"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 6,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/infra/llm/global.js",
+        "relation": "import",
+        "symbols": [
+          "getGlobalArchSpineDir"
+        ]
+      },
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/integration/platform/windows-platform.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm.ts/getGlobalArchSpineDir#",
+        "targetPath": "src/infra/llm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/integration/platform/windows-platform.test.ts/_file_#",
+        "targetSymbol": "src/infra/llm/global.ts/getGlobalArchSpineDir#",
+        "targetPath": "src/infra/llm/global.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:07:27.702Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

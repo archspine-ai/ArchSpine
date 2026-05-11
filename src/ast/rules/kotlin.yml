@@ -1,0 +1,45 @@
+imports:
+  - id: import
+    pattern: 'import $SOURCE'
+exports:
+  - id: function
+    pattern: 'fun $NAME($$$ARGS) $$$'
+    kind: Function
+  - id: private_function
+    pattern: 'private fun $NAME($$$ARGS) $$$'
+    kind: Function
+  - id: suspend_function
+    pattern: 'suspend fun $NAME($$$ARGS) $$$'
+    kind: Function
+  - id: class
+    pattern: 'class $NAME $$$ { $$$BODY }'
+    kind: Class
+  - id: data_class
+    pattern: 'data class $NAME $$$ { $$$BODY }'
+    kind: Class
+  - id: sealed_class
+    pattern: 'sealed class $NAME $$$ { $$$BODY }'
+    kind: Class
+  - id: interface
+    pattern: 'interface $NAME $$$ { $$$BODY }'
+    kind: Interface
+  - id: object
+    pattern: 'object $NAME $$$ { $$$BODY }'
+    kind: Class
+  - id: companion_object
+    pattern: 'companion object $$$ { $$$BODY }'
+    kind: Class
+  - id: val
+    pattern: 'val $NAME = $VAL'
+    kind: Variable
+  - id: var
+    pattern: 'var $NAME = $VAL'
+    kind: Variable
+  - id: typealias
+    pattern: 'typealias $NAME = $VAL'
+    kind: Type
+usages:
+  - id: call
+    pattern: '$NAME($$$ARGS)'
+  - id: property
+    pattern: '$OBJ.$NAME'

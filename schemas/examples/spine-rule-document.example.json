@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0.0",
+  "ruleId": "no-direct-db-import",
+  "title": "禁止直接导入数据库层",
+  "summary": "服务层和中间层不得直接依赖底层数据库适配器。",
+  "appliesTo": ["src/**/*.ts", "!src/db/**"],
+  "severity": "error",
+  "enforceable": true,
+  "rationale": "保持领域边界清晰，避免业务层耦合底层存储实现。",
+  "bodyMarkdown": "## Rule\nApplication services must not import from `src/db/*` directly.\n\n## Allowed\nUse service abstractions or repository interfaces instead."
+}

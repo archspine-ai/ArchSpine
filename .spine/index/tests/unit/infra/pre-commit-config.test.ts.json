@@ -1,0 +1,209 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/unit/infra/pre-commit-config.test.ts",
+    "contentHash": "240811b1e912f6b89e88e15f786d7257af96cba500f765a995f7a2499920f4a6",
+    "skeletonHash": "87d494f91425f0d949f5268ccad0f4a6715265734050337ceb7631db656f662d",
+    "semanticHash": "511b708993160ee3db7a8c89c6b36a1fb6a941499b80e0b54327a91f8643330e",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/unit/infra"
+  },
+  "semantic": {
+    "role": "Vitest test suite validating the pre-commit git hook configuration loading, resolution, and installation logic.",
+    "responsibilities": [
+      "Verifies that Config.getPreCommitResolution returns the correct resolution based on the config file's pre-commit settings.",
+      "Verifies that Config.getHookSyncMode returns the expected synchronization mode for git hooks.",
+      "Ensures that the installGitHook function is invoked correctly under relevant configurations."
+    ],
+    "outOfScope": [
+      "Production application logic; this file is test infrastructure only.",
+      "Does not implement or expose any production symbols, endpoints, or utilities."
+    ],
+    "invariants": [
+      "The test must be executed from a clean temporary directory to avoid side effects.",
+      "The test assumes the Config class can read and parse a .spine/config.json file.",
+      "The test assumes installGitHook is a callable function that sets up git hooks."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provide repeatable validation for the pre-commit configuration subsystem to ensure correctness of config resolution and hook installation, preventing regressions.",
+      "recentChangeIntent": "Recent changes likely aligned with release gate fixes and sync of accumulated source changes, ensuring the pre-commit tests remain consistent with the updated config schema and git hook behavior."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Vitest test suite validating the pre-commit git hook configuration loading, resolution, and installation logic.",
+        "responsibilities": [
+          "Verifies that Config.getPreCommitResolution returns the correct resolution based on the config file's pre-commit settings.",
+          "Verifies that Config.getHookSyncMode returns the expected synchronization mode for git hooks.",
+          "Ensures that the installGitHook function is invoked correctly under relevant configurations."
+        ],
+        "outOfScope": [
+          "Production application logic; this file is test infrastructure only.",
+          "Does not implement or expose any production symbols, endpoints, or utilities."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'child_process'",
+        "symbols": [
+          "execSync"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/infra/config.js'",
+        "symbols": [
+          "Config"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/utils/git-hook.js'",
+        "symbols": [
+          "installGitHook"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_CONFIG_SCHEMA_VERSION"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 11,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "../../../src/infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
+        ]
+      },
+      {
+        "targetPath": "../../../src/utils/git-hook.js",
+        "relation": "import",
+        "symbols": [
+          "installGitHook"
+        ]
+      },
+      {
+        "targetPath": "../../../src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_CONFIG_SCHEMA_VERSION"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/unit/infra/pre-commit-config.test.ts/_file_#",
+        "targetSymbol": "src/utils/git-hook.ts/installGitHook#",
+        "targetPath": "src/utils/git-hook.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/pre-commit-config.test.ts/_file_#",
+        "targetSymbol": "src/infra/config.ts/Config#",
+        "targetPath": "src/infra/config.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/unit/infra/pre-commit-config.test.ts/_file_#",
+        "targetSymbol": "src/infra/config/facade.ts/Config#",
+        "targetPath": "src/infra/config/facade.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:10:44.962Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

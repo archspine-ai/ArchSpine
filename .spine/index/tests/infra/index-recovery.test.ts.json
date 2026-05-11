@@ -1,0 +1,238 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "tests/infra/index-recovery.test.ts",
+    "contentHash": "a6ae607a3217fa2b902958bbd2b32032c54302cb538eaf4bdb6dbb48919147c3",
+    "skeletonHash": "e2ebc69ef5c00f0f92614bf3179a8a04cb008eacb564dee74c75c4ca0a74852d",
+    "semanticHash": "695f0ab0e195e23079c425dbe0207a4cf4e382a1656dd84bbd1877b8f8a0381f",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "tests/infra"
+  },
+  "semantic": {
+    "role": "Test suite for the SummarizationTask, focusing on index-based resume recovery from aggregated state.",
+    "responsibilities": [
+      "Verify that SummarizationTask can resume correctly from a previously saved index.",
+      "Ensure task initialization from state handles telemetry and checkpoint data.",
+      "Clean up temporary directories after each test to maintain isolation."
+    ],
+    "outOfScope": [
+      "Does not provide runtime production functionality; only test assertions.",
+      "Does not define any public API for other modules.",
+      "Does not handle configuration, CLI, or deployment logic."
+    ],
+    "invariants": [
+      "Test files must end with .test.ts or .spec.ts suffix (as per architectural rule)."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Validates the SummarizationTask's ability to recover from checkpoints, ensuring resilience in the aggregation pipeline.",
+      "recentChangeIntent": "Part of ongoing release gate fixes and source synchronization, which may include updates to the SummarizationTask implementation."
+    },
+    "publicSurface": [],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "Test suite for the SummarizationTask, focusing on index-based resume recovery from aggregated state.",
+        "responsibilities": [
+          "Verify that SummarizationTask can resume correctly from a previously saved index.",
+          "Ensure task initialization from state handles telemetry and checkpoint data.",
+          "Clean up temporary directories after each test to maintain isolation."
+        ],
+        "outOfScope": [
+          "Does not provide runtime production functionality; only test assertions.",
+          "Does not define any public API for other modules.",
+          "Does not handle configuration, CLI, or deployment logic."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'vitest'",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../src/tasks/summarize.js'",
+        "symbols": [
+          "SummarizationTask"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../src/core/task-state.js'",
+        "symbols": [
+          "createTaskTelemetryState",
+          "createTaskState"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../../src/types/protocol.js'",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SpineUnit"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'os'",
+        "symbols": [
+          "* as os"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'path'",
+        "symbols": [
+          "* as path"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 10,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
+        "targetPath": "../../src/tasks/summarize.js",
+        "relation": "import",
+        "symbols": [
+          "SummarizationTask"
+        ]
+      },
+      {
+        "targetPath": "../../src/core/task-state.js",
+        "relation": "import",
+        "symbols": [
+          "createTaskTelemetryState",
+          "createTaskState"
+        ]
+      },
+      {
+        "targetPath": "../../src/types/protocol.js",
+        "relation": "import",
+        "symbols": [
+          "CURRENT_SCHEMA_VERSION",
+          "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "*"
+        ]
+      }
+    ],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "tests/infra/index-recovery.test.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/createTaskTelemetryState#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/infra/index-recovery.test.ts/_file_#",
+        "targetSymbol": "src/core/task-state.ts/createTaskState#",
+        "targetPath": "src/core/task-state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "tests/infra/index-recovery.test.ts/_file_#",
+        "targetSymbol": "src/tasks/summarize.ts/SummarizationTask#",
+        "targetPath": "src/tasks/summarize.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T05:07:08.588Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 0,
+    "isHub": true,
+    "hubPercentile": 35,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}

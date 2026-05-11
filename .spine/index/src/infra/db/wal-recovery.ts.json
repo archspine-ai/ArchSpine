@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "src/infra/db/wal-recovery.ts",
+    "contentHash": "dccb50c7447eb99d82f89d85a51595c2f0c22f7f215c49c533fa9fbe61d2b392",
+    "skeletonHash": "6d22d0c5711f719d938d1d06e674b7d541e69d2cd132c5c53b3d16a119f08d7a",
+    "semanticHash": "51187b626deaf6b301c21b929540edc9f871a5cabc074850d82204d6228ceec3",
+    "language": "typescript",
+    "fileKind": "source",
+    "scope": "src/infra/db"
+  },
+  "semantic": {
+    "role": "SQLite WAL recovery utility for the infra database layer. Performs safe checkpointing of uncommitted WAL data before the main database connection is opened.",
+    "responsibilities": [
+      "Detect stale Write-Ahead Log (WAL) files by comparing file size against a threshold (512KB).",
+      "Safely checkpoint the WAL into the main database file using a temporary SQLite connection.",
+      "Clean up WAL and Shared Memory (SHM) files after successful recovery."
+    ],
+    "outOfScope": [
+      "Database connection lifecycle management beyond recovery.",
+      "Schema migrations, queries, or transaction management.",
+      "Cross-database or multi-file recovery coordination."
+    ],
+    "invariants": [
+      "Must be called before opening the primary database connection.",
+      "Assumes no other process has an open connection to the database at the time of recovery."
+    ],
+    "changeIntent": {
+      "architecturalIntent": "Provides a safe, idempotent WAL recovery routine to prevent data loss from interrupted SQLite sessions. Designed as a standalone utility within the infra/db layer.",
+      "recentChangeIntent": "The most recent commit (4a6aac8) is a general release gate fix; no direct changes to this file's contract are implied."
+    },
+    "publicSurface": [
+      {
+        "symbolName": "recoverStaleWal",
+        "description": "Checks the WAL file size at the given database path and, if it exceeds the 512KB threshold, opens a temporary SQLite connection to checkpoint the WAL into the main database. Afterwards, removes the WAL and SHM files. Called by database initialization code before opening the primary connection."
+      }
+    ],
+    "ruleViolations": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "SQLite WAL recovery utility for the infra database layer. Performs safe checkpointing of uncommitted WAL data before the main database connection is opened.",
+        "responsibilities": [
+          "Detect stale Write-Ahead Log (WAL) files by comparing file size against a threshold (512KB).",
+          "Safely checkpoint the WAL into the main database file using a temporary SQLite connection.",
+          "Clean up WAL and Shared Memory (SHM) files after successful recovery."
+        ],
+        "outOfScope": [
+          "Database connection lifecycle management beyond recovery.",
+          "Schema migrations, queries, or transaction management.",
+          "Cross-database or multi-file recovery coordination."
+        ]
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'better-sqlite3'",
+        "symbols": [
+          "Database"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'fs'",
+        "symbols": [
+          "* as fs"
+        ],
+        "locality": "external"
+      }
+    ],
+    "exports": [
+      {
+        "name": "recoverStaleWal",
+        "kind": "function",
+        "signature": "recoverStaleWal(dbPath: string)"
+      }
+    ],
+    "declaredSymbols": [
+      {
+        "name": "recoverStaleWal",
+        "kind": "function",
+        "exported": true,
+        "symbolUri": "src/infra/db/wal-recovery.ts#"
+      }
+    ],
+    "structuralHints": {
+      "importCount": 3,
+      "exportCount": 1,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "better-sqlite3",
+        "relation": "import",
+        "symbols": []
+      }
+    ],
+    "dependedBy": [
+      {
+        "targetPath": "src/infra/db/runtime.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      }
+    ],
+    "reverseIndexComplete": true,
+    "symbolEdges": [
+      {
+        "sourceSymbol": "src/infra/db/wal-recovery.ts/_file_#",
+        "targetSymbol": "examples/demo-project/src/infra/database.ts/Database#",
+        "targetPath": "examples/demo-project/src/infra/database.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      }
+    ]
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:58:22.592Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 6,
+    "isHub": true,
+    "hubPercentile": 76,
+    "inCycle": true,
+    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "isDeadCodeSuspect": false
+  }
+}

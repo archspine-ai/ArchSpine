@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "1.0.0",
+  "identity": {
+    "filePath": "schemas/spine-manifest.schema.json",
+    "contentHash": "63ef3291e0e8d90eebfe8cf16f0263163dee1ebc6b8255f0e00a67023c0a4c4d",
+    "semanticHash": "eb372aed35566d528ca2973c3da1493b01641661820af6d73d8bc000c42764bc",
+    "language": "unsupported",
+    "fileKind": "config",
+    "scope": "schemas"
+  },
+  "semantic": {
+    "role": "Schema definition for the ArchSpine SpineManifest, a JSON configuration file that records the state of indexed files, synchronization metadata, and documentation mappings within a repository.",
+    "responsibilities": [
+      "Defines the structure for tracking synced file metadata (content hashes, file kinds, indexing timestamps)",
+      "Specifies synchronization status including last sync timestamp, mode, and completeness of reverse index",
+      "Maps each indexed file to its associated documentation (locale-specific doc paths)",
+      "Ensures integrity and version alignment via required fields and schema constraints"
+    ],
+    "outOfScope": [],
+    "invariants": [
+      "Files must always have a contentHash, fileKind, lastIndexedAt, docs array, and sourceExists flag",
+      "Each doc entry must include a locale (conforming to locale pattern) and a repo-relative path",
+      "lastSyncMode must be one of 'full', 'incremental', or 'unknown'",
+      "indexedUnitCount must be a non-negative integer",
+      "Top-level properties schemaVersion and generatorVersion are mandatory and must be non-empty",
+      "createdAt and updatedAt must be ISO timestamps"
+    ],
+    "changeIntent": {
+      "architecturalIntent": null,
+      "recentChangeIntent": null
+    },
+    "publicSurface": [],
+    "driftDetected": false,
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "role": "This JSON Schema defines the structure of the ArchSpine SpineManifest, an essential configuration file that records every indexed file, its documentation links, and synchronization state across the repository mirror. It acts as the source of truth for what has been analyzed, when, and how the index relates to the live codebase.",
+        "parameter_definitions": {
+          "schemaVersion": "The version of the manifest schema format used. Ensures forward and backward compatibility between tools.",
+          "generatorVersion": "The version of the ArchSpine generator that produced this manifest. Helps trace which software version created the file.",
+          "createdAt": "ISO 8601 timestamp of when the manifest was first created. Establishes the origin of the index.",
+          "updatedAt": "ISO 8601 timestamp of the last update to the manifest. Allows consumers to detect staleness.",
+          "sync": "An object describing the last synchronization operation. Contains lastSyncAt (nullable timestamp), lastSyncMode (full/incremental/unknown), reverseIndexComplete (boolean), and indexedUnitCount (non-negative integer count of indexed entities). Controls how the mirror knows the completeness of its analysis.",
+          "files": "An object mapping repository-relative file paths to their indexing metadata. Each entry includes: contentHash (hash of file contents for change detection), fileKind (type classification of the file), lastIndexedAt (when it was last analyzed), docs (array of {locale, path} linking the file to its documentation in various languages), and sourceExists (whether the original source file still exists on disk). This dictionary is the core of the mirror’s file-level inventory."
+        },
+        "stability_and_risks": "The SpineManifest is critical to system stability because it drives incremental sync and reverse index completeness. If the schema is violated (e.g., missing required fields, invalid timestamps, or corrupted content hashes), the system may fail to detect changes, skip necessary re-indexing, or misreport documentation coverage. The strict schema validation prevents malformed manifests from being loaded, but manual editing of the manifest outside the tool can cause silent data corruption. Version misalignment between schemaVersion and generatorVersion may lead to interoperability failures when using different ArchSpine versions. The boolean reverseIndexComplete flag is especially important: if incorrectly set to true when the index is incomplete, downstream views and reports may be incorrect."
+      }
+    }
+  },
+  "skeleton": {
+    "imports": [],
+    "exports": [],
+    "declaredSymbols": [],
+    "structuralHints": {
+      "importCount": 0,
+      "exportCount": 0,
+      "isBarrel": false,
+      "isTypeOnly": false
+    }
+  },
+  "graph": {
+    "dependsOn": [],
+    "dependedBy": [],
+    "reverseIndexComplete": false,
+    "symbolEdges": []
+  },
+  "provenance": {
+    "indexedAt": "2026-05-10T04:51:07.669Z",
+    "generatorVersion": "archspine/1.0.0",
+    "pipelineStages": [
+      "ast",
+      "llm"
+    ]
+  },
+  "healthFlags": {
+    "fanIn": 1,
+    "isHub": true,
+    "hubPercentile": 41,
+    "inCycle": false,
+    "isDeadCodeSuspect": false
+  }
+}
