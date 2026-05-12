@@ -2,6 +2,23 @@
 
 ArchSpine public release notes are recorded here.
 
+## [1.0.1] - 2026-05-12
+
+### Changed
+
+- GitHub Actions updated to latest versions: actions/checkout v4->v6, actions/upload-pages-artifact v3->v5, actions/deploy-pages v4->v5, softprops/action-gh-release v2->v3, actions/stale v9->v10
+- Branch protection rulesets updated with 5 required status checks and strict mode
+
+### Fixed
+
+- ESLint errors resolved across 8 files
+- better-sqlite3 native module rebuilt for Node.js v24
+- VitePress documentation build issues resolved
+
+### Documentation
+
+- Deployed to GitHub Pages at archspine-ai.github.io/ArchSpine/
+
 ## [1.0.0] - 2026-05-03
 
 ### Added
