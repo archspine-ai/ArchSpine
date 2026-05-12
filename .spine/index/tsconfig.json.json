@@ -3,7 +3,7 @@
   "identity": {
     "filePath": "tsconfig.json",
     "contentHash": "0e5c4b2152da8ae2fbaf9c642a032447aab868c798faefa922bee1dfcb4af953",
-    "semanticHash": "0178566455cca15e807ca2974cce19e9ec7c53ce4d2aa8fc268b33614a4ddd56",
+    "semanticHash": "5ddc2f2caeb8d32cf7c6b6b7450a06373feae20aaf31f61b4170579999e2496a",
     "language": "unsupported",
     "fileKind": "config",
     "scope": ""
@@ -11,16 +11,18 @@
   "semantic": {
     "role": "TypeScript compiler configuration for the ArchSpine project",
     "responsibilities": [
-      "Define compilation target, module system, and output directory",
-      "Enforce type-checking strictness and consistency",
-      "Control inclusion of source files"
+      "Controls compilation of TypeScript source files into JavaScript output",
+      "Defines module system and resolution strategy (NodeNext)",
+      "Enforces code quality via strict type checking and consistent file naming",
+      "Generates source maps for debugging",
+      "Sets output and root directories for build artifacts"
     ],
     "outOfScope": [],
     "invariants": [
-      "strict must be true to ensure type safety",
-      "forceConsistentCasingInFileNames must be true to avoid cross-platform casing issues",
-      "rootDir must be './src' to keep output structure mirroring source",
-      "include must cover all source files under src/"
+      "Strict mode must remain enabled to ensure type safety",
+      "forceConsistentCasingInFileNames must be true to prevent cross-platform issues",
+      "esModuleInterop must be true for compatibility with CommonJS modules",
+      "skipLibCheck must be true to avoid unnecessary checks on third-party libraries"
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -33,19 +35,19 @@
       "English": {
         "role": "TypeScript compiler configuration for the ArchSpine project",
         "parameter_definitions": {
-          "target": "Sets the ECMAScript target version. 'ESNext' uses the latest supported features, balancing compatibility with modern runtime support.",
-          "module": "Specifies module code generation. 'NodeNext' enables Node.js native ESM support, impacting how imports/exports are emitted.",
-          "moduleResolution": "Determines how modules are resolved. 'NodeNext' aligns with Node.js modern resolution algorithm, affecting how external packages are located.",
-          "outDir": "Output directory for compiled JavaScript files. Must be accessible by the runtime; ensures separation from source.",
-          "rootDir": "Root directory of input source files. Must match project structure to avoid unexpected output paths.",
-          "strict": "Enables all strict type-checking options. Prevents many common errors at compile time, improving runtime reliability.",
-          "esModuleInterop": "Enables compatibility between ES modules and CommonJS. Reduces errors when using default imports from CJS modules.",
-          "skipLibCheck": "Skips type checking of declaration files. Speeds up compilation but may miss issues in third-party types. Use cautiously.",
-          "forceConsistentCasingInFileNames": "Enforces case-sensitive file names across platforms. Prevents subtle bugs on case-insensitive file systems.",
-          "types": "List of type definition packages to include. 'node' provides Node.js API types.",
-          "sourceMap": "Generates source map files for debugging. Increases output size but aids development and production error tracking."
+          "target": "ECMAScript target version set to ESNext to leverage latest JavaScript features.",
+          "module": "Module system set to NodeNext (Node.js native ECMAScript module support).",
+          "moduleResolution": "Resolution strategy aligned with NodeNext for modern Node.js compatibility.",
+          "outDir": "Compiled JavaScript output is placed in './dist' to separate source from build artifacts.",
+          "rootDir": "Source files reside in './src'; the compiler uses this to preserve directory structure in output.",
+          "strict": "Enables all strict type-checking options, catching potential runtime errors at compile time.",
+          "esModuleInterop": "Allows default imports from CommonJS modules, simplifying interoperability.",
+          "skipLibCheck": "Skips type checking of declaration files (.d.ts) to speed up compilation.",
+          "forceConsistentCasingInFileNames": "Ensures file name casing matches across imports to avoid issues on case-insensitive filesystems.",
+          "types": "Explicitly includes Node.js type definitions for built-in APIs.",
+          "sourceMap": "Generates source maps for debugging, linking runtime errors back to TypeScript source."
         },
-        "stability_and_risks": "This tsconfig.json defines the TypeScript compilation pipeline. Setting strict to true is a critical safety invariant that prevents many type-related bugs. The use of ESNext and NodeNext ensures the project uses modern JavaScript features and module resolution, but requires a compatible Node.js version. skipLibCheck improves build speed but may hide type errors in dependencies; periodic full checks are recommended. Consistent casing enforcement avoids platform-dependent failures. Overall, this configuration promotes robust and maintainable code but must be kept in sync with the actual runtime environment, especially module resolution and target."
+        "stability_and_risks": "This configuration ensures predictable, type-safe compilation. Risks are low if settings remain unchanged; altering 'strict' or 'forceConsistentCasing' could introduce subtle bugs. The module system (NodeNext) is critical for correct module resolution in modern Node environments. Skipping lib check (skipLibCheck) is a minor risk but standard practice to avoid slowdowns. Overall, this file is foundational for development stability and should be treated as a critical system component."
       }
     }
   },
@@ -67,7 +69,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:11:27.055Z",
+    "indexedAt": "2026-05-12T05:21:09.204Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

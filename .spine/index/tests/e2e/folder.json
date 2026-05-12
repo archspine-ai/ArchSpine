@@ -1,47 +1,47 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "tests/e2e",
-  "role": "Contains end-to-end and integration tests for the ArchSpine CLI.",
-  "responsibility": "Ensures correctness of CLI commands (init, sync, scan, build, view, mcp, check, skill, rules) through automated test suites that verify output, error handling, exit codes, and pipeline behavior in isolated temporary environments.",
+  "role": "Integration and end-to-end test suite for the ArchSpine CLI tool.",
+  "responsibility": "Validates the ArchSpine CLI binary across a wide range of scenarios, including initialization, pipeline execution, configuration, violation detection, removal, and read-only operations, by spawning child processes in isolated temporary directories with mocked inputs and asserting correct exit codes, output, and side effects.",
   "children": [
     {
       "filePath": "tests/e2e/cli-config.test.ts",
-      "role": "Vitest-based integration test suite for the ArchSpine CLI commands.",
+      "role": "Integration test suite for the ArchSpine CLI tool, validating end-to-end execution via child processes.",
       "fileKind": "source"
     },
     {
       "filePath": "tests/e2e/cli-init-advanced.test.ts",
-      "role": "End-to-end test suite for the advanced CLI initialization workflow.",
+      "role": "E2E test suite for the 'archspine init' command, validating advanced initialization scenarios including temporary project creation, git repository initialization, mocked interactive prompts, and configuration generation.",
       "fileKind": "source"
     },
     {
       "filePath": "tests/e2e/cli-pipeline-mock.test.ts",
-      "role": "Vitest end-to-end test suite that validates the ArchSpine CLI pipeline via mock (simulated) commands in isolated temporary git repositories.",
+      "role": "Vitest E2E integration test suite for the ArchSpine CLI pipeline.",
       "fileKind": "source"
     },
     {
       "filePath": "tests/e2e/cli-readonly.test.ts",
-      "role": "Test harness for integration testing of the ArchSpine CLI; spawns the built CLI binary in a child process against isolated temporary workspaces.",
+      "role": "E2E test suite for the ArchSpine CLI, validating the built CLI binary against real filesystem operations and child processes.",
       "fileKind": "source"
     },
     {
       "filePath": "tests/e2e/cli-real-llm.test.ts",
-      "role": "End-to-end test suite for the ArchSpine CLI pipeline with a mock LLM provider.",
+      "role": "End-to-end (E2E) integration test suite for the ArchSpine CLI.",
       "fileKind": "source"
     },
     {
       "filePath": "tests/e2e/cli-real-violation.test.ts",
-      "role": "E2E test suite verifying the CLI's detection of real architectural violations in a temporary Git repository.",
+      "role": "Vitest integration test suite for the ArchSpine CLI violation detection system.",
       "fileKind": "source"
     },
     {
       "filePath": "tests/e2e/cli-remove.test.ts",
-      "role": "End-to-end (E2E) test suite for the ArchSpine CLI pipeline using a mocked LLM provider. Validates that the CLI handles subcommands (scan, sync, etc.) correctly in a controlled environment.",
+      "role": "Vitest end-to-end test suite for validating the CLI binary behavior across various arguments and project states.",
       "fileKind": "source"
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-10T05:13:24.251Z",
+    "indexedAt": "2026-05-12T05:22:00.375Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -2,41 +2,36 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "tests/unit/core/task-runtime.test.ts",
-    "contentHash": "d605ecfc2237c37d1d1145919b4915b6f7a381947deccea5c4f8fc86991076c4",
+    "contentHash": "aca81602c1b27c4d14916ae8ee64076ac16439691c16e832c9d87fe1c79223d1",
     "skeletonHash": "2dd41b21d5e36dcfe2cf28d6ddd4b579d9872c432c8a0ebadcf07e8bbd5ab1b7",
-    "semanticHash": "95c5728aa3a903b240abc686a2b2fa2445ac40aa1bd771166f7d8c1c5b3ac53b",
+    "semanticHash": "112fc88a370dbad3902483e8944cd9aa3df924dfcebcdbc1bae57e32eb71b767",
     "language": "typescript",
     "fileKind": "source",
     "scope": "tests/unit/core"
   },
   "semantic": {
-    "role": "Vitest unit test suite for the task-runtime service and task-state core.",
+    "role": "Unit test suite for task state management and pipeline execution.",
     "responsibilities": [
-      "Verifies that createTaskContext correctly initializes a TaskContext with the expected state structure (telemetry, runtimeCache).",
-      "Verifies that createTaskArtifactsState creates a properly structured artifacts tracking object.",
-      "Verifies that createTaskState initializes a task state with empty telemetry arrays (driftWarnings, diagnostics.summarize, diagnostics.validate).",
-      "Tests that the runtime cache supports tracking skeletons, unsupported files, and pending commits.",
-      "Tests insertion of drift warnings into context.state.telemetry.driftWarnings.",
-      "Tests injection of diagnostic summary and validation entries into context.state.telemetry.diagnostics.",
-      "Tests correct state reset via resetTaskState and related mutation functions (addTaskUsage, markTaskProcessedFile, incrementTaskFailed, incrementTaskSkipped, queueTaskCommit, recordTaskStageMetric).",
-      "Verifies the TaskRunner abstraction from pipeline and the SpineTask/TaskContext types from task module.",
-      "Uses temporary file system setup (fs.mkdtempSync, os.tmpdir, path.join) for sandboxed test execution.",
-      "Cleans up temporary directories after each test via afterEach."
+      "Verifies creation and reset of task state via createTaskState, resetTaskState.",
+      "Tests file marking operations (markTaskProcessedFile, createTaskArtifactsState).",
+      "Validates commit queuing (queueTaskCommit) and task metrics (recordTaskStageMetric, addTaskUsage, incrementTaskFailed, incrementTaskSkipped).",
+      "Exercises TaskRunner and TaskContext integration with mock core objects.",
+      "Ensures proper teardown and cleanup of temporary directories."
     ],
     "outOfScope": [
-      "Implementation details of internal helper functions not exposed by the test suite.",
-      "End-to-end integration with real file systems beyond temporary directory setup.",
-      "Testing of production code outside the imported modules (task-state, pipeline, task, task-runtime).",
-      "Performance or stress testing."
+      "Integration tests against real file systems or external services.",
+      "Performance or stress testing.",
+      "E2E pipeline execution with all stages.",
+      "Validation of configuration loading or user input handling."
     ],
     "invariants": [
-      "Test files must end with .test.ts or .spec.ts (rule: test-file-suffix).",
-      "Test files should not export production symbols.",
-      "All test state is isolated per test via beforeEach/afterEach with temporary directories."
+      "Test files must end with .test.ts or .spec.ts (per project rule).",
+      "All tests use vitest framework and follow describe/it pattern.",
+      "Core functions are imported from relative paths under src/."
     ],
     "changeIntent": {
-      "architecturalIntent": "This test file validates the contract of task-runtime and task-state modules by asserting correct initialization and mutation of task context, task state, and artifact structures. It ensures that the core task management primitives behave as expected when used by the pipeline and task runner.",
-      "recentChangeIntent": "Corresponds to the recent commit which applied release gate fixes and synced accumulated source changes; likely ensures that recent changes to task-runtime or task-state did not break expected behavior."
+      "architecturalIntent": "Ensure correctness of task state lifecycle and pipeline runner behaviour through isolated unit tests.",
+      "recentChangeIntent": "Initial commit establishing test coverage for core task and pipeline modules."
     },
     "publicSurface": [],
     "ruleViolations": [],
@@ -44,24 +39,19 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Vitest unit test suite for the task-runtime service and task-state core.",
+        "role": "Unit test suite for task state management and pipeline execution.",
         "responsibilities": [
-          "Verifies that createTaskContext correctly initializes a TaskContext with the expected state structure (telemetry, runtimeCache).",
-          "Verifies that createTaskArtifactsState creates a properly structured artifacts tracking object.",
-          "Verifies that createTaskState initializes a task state with empty telemetry arrays (driftWarnings, diagnostics.summarize, diagnostics.validate).",
-          "Tests that the runtime cache supports tracking skeletons, unsupported files, and pending commits.",
-          "Tests insertion of drift warnings into context.state.telemetry.driftWarnings.",
-          "Tests injection of diagnostic summary and validation entries into context.state.telemetry.diagnostics.",
-          "Tests correct state reset via resetTaskState and related mutation functions (addTaskUsage, markTaskProcessedFile, incrementTaskFailed, incrementTaskSkipped, queueTaskCommit, recordTaskStageMetric).",
-          "Verifies the TaskRunner abstraction from pipeline and the SpineTask/TaskContext types from task module.",
-          "Uses temporary file system setup (fs.mkdtempSync, os.tmpdir, path.join) for sandboxed test execution.",
-          "Cleans up temporary directories after each test via afterEach."
+          "Verifies creation and reset of task state via createTaskState, resetTaskState.",
+          "Tests file marking operations (markTaskProcessedFile, createTaskArtifactsState).",
+          "Validates commit queuing (queueTaskCommit) and task metrics (recordTaskStageMetric, addTaskUsage, incrementTaskFailed, incrementTaskSkipped).",
+          "Exercises TaskRunner and TaskContext integration with mock core objects.",
+          "Ensures proper teardown and cleanup of temporary directories."
         ],
         "outOfScope": [
-          "Implementation details of internal helper functions not exposed by the test suite.",
-          "End-to-end integration with real file systems beyond temporary directory setup.",
-          "Testing of production code outside the imported modules (task-state, pipeline, task, task-runtime).",
-          "Performance or stress testing."
+          "Integration tests against real file systems or external services.",
+          "Performance or stress testing.",
+          "E2E pipeline execution with all stages.",
+          "Validation of configuration loading or user input handling."
         ]
       }
     }
@@ -172,7 +162,7 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "vitest",
+        "targetPath": "'vitest'",
         "relation": "import",
         "symbols": [
           "afterEach",
@@ -184,7 +174,7 @@
         ]
       },
       {
-        "targetPath": "../../../src/core/task-state.js",
+        "targetPath": "'../../../src/core/task-state.js'",
         "relation": "import",
         "symbols": [
           "addTaskUsage",
@@ -199,14 +189,14 @@
         ]
       },
       {
-        "targetPath": "../../../src/core/pipeline.js",
+        "targetPath": "'../../../src/core/pipeline.js'",
         "relation": "import",
         "symbols": [
           "TaskRunner"
         ]
       },
       {
-        "targetPath": "../../../src/core/task.js",
+        "targetPath": "'../../../src/core/task.js'",
         "relation": "import",
         "symbols": [
           "SpineTask",
@@ -214,31 +204,45 @@
         ]
       },
       {
-        "targetPath": "../../../src/services/task-runtime.js",
+        "targetPath": "'../../../src/core/task-types.js'",
+        "relation": "import",
+        "symbols": [
+          "ScanStageOutput"
+        ]
+      },
+      {
+        "targetPath": "'../../../src/infra/runtime-io.js'",
+        "relation": "import",
+        "symbols": [
+          "RuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "'../../../src/services/task-runtime.js'",
         "relation": "import",
         "symbols": [
           "createTaskContext"
         ]
       },
       {
-        "targetPath": "fs",
+        "targetPath": "'fs'",
         "relation": "import",
         "symbols": [
-          "* as fs"
+          "fs"
         ]
       },
       {
-        "targetPath": "os",
+        "targetPath": "'os'",
         "relation": "import",
         "symbols": [
-          "* as os"
+          "os"
         ]
       },
       {
-        "targetPath": "path",
+        "targetPath": "'path'",
         "relation": "import",
         "symbols": [
-          "* as path"
+          "path"
         ]
       }
     ],
@@ -325,7 +329,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:09:23.755Z",
+    "indexedAt": "2026-05-12T05:21:05.962Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

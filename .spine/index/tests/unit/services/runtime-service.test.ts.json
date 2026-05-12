@@ -2,31 +2,33 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "tests/unit/services/runtime-service.test.ts",
-    "contentHash": "36f76a47a6924301e51939acc198b1a96908e1a5010fe92fe6db3bcf606971f9",
+    "contentHash": "74861c7eb89cc0c471b05d02f7c07e34fd956b493ea635b018e6634a78b0ffe8",
     "skeletonHash": "4f65f81f6fde6c3e28452d57ddcceea2d0003a798dfa55f5f8ff654473a46281",
-    "semanticHash": "3e454fc472f33ad6a5ed8033583744470f7f2482ea8e0fb224fe7ad9d5ddb738",
+    "semanticHash": "6dad4d302d410db922dd7604068f9d1b0f0b05010be1ac7b85c0d954d7227f36",
     "language": "typescript",
     "fileKind": "source",
     "scope": "tests/unit/services"
   },
   "semantic": {
-    "role": "Vitest test suite for the RuntimeService class, validating LLM settings resolution integration with config and secrets.",
+    "role": "Vitest integration test suite for RuntimeService, verifying configuration and LLM settings resolution.",
     "responsibilities": [
-      "Validates that resolved LLM settings reflect the configured provider source and value after setting provider and API key.",
-      "Ensures that LLM API key is correctly propagated through the credential backend and appears in resolved settings.",
-      "Verifies that temporary directory scaffolding for test isolation is properly created and cleaned up."
+      "Set up temporary filesystem directories for test isolation.",
+      "Test that RuntimeService.getResolvedLLMSettings() correctly merges global and local configuration with secrets.",
+      "Test that setting LLM provider and API key on Config and Secrets produces the expected resolved settings.",
+      "Clean up temporary directories after each test."
     ],
     "outOfScope": [
-      "Does not test error paths or runtime service initialization failures.",
-      "Does not test scanning, aggregation, or task execution behavior of RuntimeService.",
-      "Does not verify multi-provider selection logic or fallback behavior."
+      "Production configuration logic.",
+      "Secrets management.",
+      "RuntimeService constructor or lifecycle beyond the tested method.",
+      "Other services or modules not directly exercised by this test file."
     ],
     "invariants": [
-      "Test files must end with .test.ts or .spec.ts (rule: test-file-suffix)."
+      "The test file must follow the project convention: filename must end with .test.ts or .spec.ts."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide automated regression coverage for the LLM settings resolution path in RuntimeService.",
-      "recentChangeIntent": "Adjust test to reflect config/secrets integration changes from recent release gate fixes."
+      "architecturalIntent": "Provide automated verification that RuntimeService correctly resolves LLM settings from Config and Secrets, ensuring configuration merging works as intended.",
+      "recentChangeIntent": "Initial commit setting up the entire repository structure, including this test file."
     },
     "publicSurface": [],
     "ruleViolations": [],
@@ -34,16 +36,18 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Vitest test suite for the RuntimeService class, validating LLM settings resolution integration with config and secrets.",
+        "role": "Vitest integration test suite for RuntimeService, verifying configuration and LLM settings resolution.",
         "responsibilities": [
-          "Validates that resolved LLM settings reflect the configured provider source and value after setting provider and API key.",
-          "Ensures that LLM API key is correctly propagated through the credential backend and appears in resolved settings.",
-          "Verifies that temporary directory scaffolding for test isolation is properly created and cleaned up."
+          "Set up temporary filesystem directories for test isolation.",
+          "Test that RuntimeService.getResolvedLLMSettings() correctly merges global and local configuration with secrets.",
+          "Test that setting LLM provider and API key on Config and Secrets produces the expected resolved settings.",
+          "Clean up temporary directories after each test."
         ],
         "outOfScope": [
-          "Does not test error paths or runtime service initialization failures.",
-          "Does not test scanning, aggregation, or task execution behavior of RuntimeService.",
-          "Does not verify multi-provider selection logic or fallback behavior."
+          "Production configuration logic.",
+          "Secrets management.",
+          "RuntimeService constructor or lifecycle beyond the tested method.",
+          "Other services or modules not directly exercised by this test file."
         ]
       }
     }
@@ -165,6 +169,38 @@
   },
   "graph": {
     "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "os",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
+      },
       {
         "targetPath": "../../../src/infra/config.js",
         "relation": "import",
@@ -292,7 +328,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:10:53.558Z",
+    "indexedAt": "2026-05-12T05:21:07.864Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

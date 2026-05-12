@@ -3,34 +3,35 @@
   "identity": {
     "filePath": "schemas/shared.schema.json",
     "contentHash": "c9cb1ce6d5d97a05a3783e17f4c68854472c69abfdc4ec0f9e978cf1fb03e7d9",
-    "semanticHash": "3b647664f51164c5f1fbf424a26ea05d0fb2fb00b84a8dc06ce19f9aba878be2",
+    "semanticHash": "bbbe803004fcd57b835343f4da967df84a782676185cc95f7bee4f164fa2361c",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas"
   },
   "semantic": {
-    "role": "Defines reusable type constraints and validation patterns for ArchSpine configuration schemas",
+    "role": "Defines reusable type definitions and validation constraints for the ArchSpine shared schema.",
     "responsibilities": [
-      "Schema versioning (semver pattern)",
-      "Timestamp formatting (ISO 8601)",
-      "Repository-relative and scope path validation",
-      "Content integrity via SHA-256 hash pattern",
-      "Locale and language selection key patterns",
-      "Source language classification (typescript, javascript, python, unsupported)",
-      "File and symbol kind enumerations",
-      "Dependency relations and provenance tracking",
-      "Pipeline stage classification",
-      "Localized content map structure"
+      "Standardizes core data types (e.g., version strings, timestamps, file paths) across all ArchSpine subsystems",
+      "Enforces format and pattern constraints for fields like content hashes, locales, and dependency relations",
+      "Provides a foundation for validation of configuration and metadata files throughout the project"
     ],
     "outOfScope": [],
     "invariants": [
-      "All pattern and enum values must match exactly; validation failures reject configurations",
-      "repoRelativePath must not start with /, ./, or ../ and must not contain backslashes or double slashes",
-      "scopePath allows empty string but must not contain backslashes or double slashes",
-      "contentHash must be exactly 64 lowercase hex characters (SHA-256)",
-      "locale must follow IETF BCP47-like pattern (e.g., en, zh-CN, sr-Latn)",
-      "schemaVersion must follow semantic versioning (x.y.z)",
-      "Enums for sourceLanguage, fileKind, symbolKind, dependencyRelation, edgeProvenance, pipelineStage are limited to specified values"
+      "schemaVersion must follow semantic versioning (e.g., 1.0.0)",
+      "isoTimestamp must be valid ISO 8601 date-time",
+      "repoRelativePath must be relative, no leading slash, no parent directory references, no backslashes, no double slashes",
+      "scopePath allows empty string but otherwise same as repoRelativePath",
+      "contentHash must be 64-character lowercase hex",
+      "locale must be a valid language tag (e.g., 'en' or 'en-US')",
+      "sourceLanguage restricted to specific programming languages or 'unsupported'",
+      "fileKind restricted to source/config/document/other",
+      "symbolKind restricted to class/function/variable/interface/type/enum/unknown",
+      "dependencyRelation restricted to import/reexport/type-import",
+      "edgeProvenance restricted to ast/inferred",
+      "pipelineStage restricted to ast/llm/lite-ast/lite-llm/fallback",
+      "nonEmptyString must have at least one character",
+      "stringArray is an array of strings",
+      "localizedContentMap keys must match languageSelectionKey pattern, values are objects"
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -41,26 +42,26 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Defines reusable type constraints and validation patterns for ArchSpine configuration schemas. This schema provides the building blocks for all other configuration files, ensuring data consistency and integrity across the system.",
+        "role": "This shared schema file is the central type definition repository for the ArchSpine project. It does not contain operational configuration but rather defines the 'language' used by all other configuration files to describe versions, paths, hashes, and categorical data. Its primary purpose is to ensure uniformity and correctness when validating fields that appear repeatedly across the system, such as version strings, timestamps, file paths, and enumerated types.",
         "parameter_definitions": {
-          "schemaVersion": "Enforces semantic versioning (e.g., 1.0.0) for schema compatibility checks. A mismatch can cause configuration to be rejected or require migration.",
-          "isoTimestamp": "Requires ISO 8601 date-time format for all timestamps, ensuring consistent ordering and logging across the system.",
-          "repoRelativePath": "Validates paths relative to repository root. Must be non-empty and cannot contain absolute or dot-relative segments; prevents path traversal and ambiguity.",
-          "scopePath": "Allows empty string (root scope) while disallowing backslashes and double slashes. Used for scoping rules or analyses. Impact: flexibility with safety.",
-          "contentHash": "Must be a 64-character hexadecimal string (SHA-256). Used for integrity verification of files and manifests. A mismatch indicates corruption or tampering.",
-          "locale": "Follows IETF language tag pattern (e.g., en, zh-CN). Defines which language a document or configuration is in. Important for multilingual support.",
-          "languageSelectionKey": "Arbitrary non-empty string for selecting among language-specific configurations. Should be kept consistent across related files.",
-          "sourceLanguage": "Classifies a file's language for parsing and analysis. Limited to typescript, javascript, python, or unsupported. Affects which AST rules apply.",
-          "fileKind": "Categorizes files as source, config, document, or other. Influences how files are processed (e.g., document files may be skipped for AST extraction).",
-          "symbolKind": "Classifies symbols (class, function, variable, etc.) found in source code. Used for dependency and architecture analysis. Incorrect classification may skew results.",
-          "dependencyRelation": "Defines how dependencies are expressed: import, reexport, or type-import. Affects graph building and impact analysis.",
-          "edgeProvenance": "Indicates whether a dependency edge came from AST parsing (ast) or was inferred (inferred). Helps in debugging and trust assessment.",
-          "pipelineStage": "Labels the processing stage that produced data: ast, llm, lite-ast, lite-llm, fallback. Important for result provenance and fallback logic.",
-          "nonEmptyString": "Ensures any required text field is at least one character long. Prevents empty strings from entering critical fields.",
-          "stringArray": "Defines a basic array of strings. Used for lists like tags, authors, or dependency paths. No length restriction; allows flexibility but risks unbounded growth.",
-          "localizedContentMap": "A dictionary keyed by language selection keys, where each value is an object (arbitrary). Used for storing translations or localized metadata. Structure must be consistent with language keys defined elsewhere."
+          "schemaVersion": "A string that must match the pattern X.Y.Z, enforcing semantic versioning for any document referencing this schema. Prevents version mismatches and incompatibilities.",
+          "isoTimestamp": "An ISO 8601 date-time string. Ensures all timestamps are in a standard, machine-parseable format, critical for chronological ordering and auditing.",
+          "repoRelativePath": "A relative file path without leading slash, parent directory, backslashes, or double slashes. Prevents path traversal attacks and ensures portability across filesystems.",
+          "scopePath": "Similar to repoRelativePath but allows an empty string (e.g., for root scope). Controls accessibility and path safety.",
+          "contentHash": "A 64-character hexadecimal SHA-256 hash. Provides integrity verification for files and prevents tampering.",
+          "locale": "A language tag following RFC 5646 (e.g., 'en', 'zh-Hans'). Used for multi-language support; improper values can break localization.",
+          "languageSelectionKey": "A non-empty string used as keys in localized maps. Must be at least one character; no further constraints.",
+          "sourceLanguage": "Enumerated type: typescript, javascript, python, unsupported. Determines how source files are parsed and analyzed. Only supported languages are processed; 'unsupported' flags unanalyzable files.",
+          "fileKind": "Categorizes files: source, config, document, other. Influences which analysis pipelines and heuristics are applied.",
+          "symbolKind": "Identifies symbol types in code (class, function, etc.). Affects dependency resolution and code navigation features.",
+          "dependencyRelation": "Describes how one file relates to another in terms of imports: import, reexport, or type-import. Critical for dependency graph accuracy.",
+          "edgeProvenance": "Origin of a dependency edge: 'ast' from static analysis, 'inferred' from heuristics. Affects confidence levels in the dependency graph.",
+          "pipelineStage": "Processing stage: ast, llm, lite-ast, lite-llm, fallback. Controls which analysis mode is used and how results are combined.",
+          "nonEmptyString": "A general-purpose non-empty string constraint. Prevents empty values in critical fields.",
+          "stringArray": "An array where every element must be a string; no other constraints. Used for tags, lists, etc.",
+          "localizedContentMap": "An object whose keys must match languageSelectionKey and whose values are objects. Enables storing translations or locale-specific content without breaking validation."
         },
-        "stability_and_risks": "This shared schema is the foundation for all ArchSpine configuration validation. Any change to patterns or enums cascades across the system, potentially breaking existing configurations. The strict patterns (especially repoRelativePath, scopePath, and contentHash) prevent many injection and path-traversal attacks but may reject legitimate inputs if overly restrictive. The locale pattern may not cover all BCP47 subtags; unknown regions could be rejected. The enum for sourceLanguage is limited; new languages require schema updates. contentHash uses SHA-256 which is cryptographically secure but may add computational overhead for large files. Overall, these definitions promote consistency and security but require careful governance when extending."
+        "stability_and_risks": "This schema file is foundational; any changes to its definitions can have wide-ranging impacts on all subsystems that validate against it. Adding new enumerated values (e.g., a new source language) is safe, but removing or modifying existing constraints (e.g., relaxing the hash pattern) could reduce data integrity or cause validation failures. The invariants listed above serve as safety limits—violating them in a configuration file would cause immediate rejection. However, the schema itself must be versioned carefully to avoid breaking existing configurations. The use of strict patterns and enums reduces ambiguity but limits flexibility; introducing new types requires coordinated updates across consuming parsers."
       }
     }
   },
@@ -82,7 +83,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:51:20.829Z",
+    "indexedAt": "2026-05-12T05:17:11.436Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

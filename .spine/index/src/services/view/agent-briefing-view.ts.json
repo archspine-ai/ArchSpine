@@ -2,52 +2,58 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/services/view/agent-briefing-view.ts",
-    "contentHash": "3429ed7773b1574085bb4ab6da8c545bb354af57b0a4d85e2b1411c43954e420",
+    "contentHash": "6002d53857b2dee2a345c35efdb016c3b6ba09065d88bf103436f8f6db0d0542",
     "skeletonHash": "26585537f2437d5e2c4d70c3eac33938ab911e371a3fdb32d17466151362b5e5",
-    "semanticHash": "8cd9d7f3daf4a02d33c27bf532ce7bd4b81c1bc59a11c1ef8c5f2373a9445c8f",
+    "semanticHash": "8fa58992e82a0fad480c86e39eaec8d69fd1329605609bcc4d1237466d754980",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/services/view"
   },
   "semantic": {
-    "role": "View producer that generates the agent briefing artifact by loading architectural rules, knowledge graph data, and diagnostic reports, then formatting the output as localized Markdown.",
+    "role": "View Producer for Markdown architectural briefing documents in ArchSpine's analytics pipeline.",
     "responsibilities": [
-      "Load architectural rules from a directory via loadRulesFromDir to include in the briefing.",
-      "Ingest knowledge graph (KnowledgeGraph, KnowledgeGraphNode, KnowledgeGraphEdge) and diagnostic data (CycleReport, DeadCodeReport, HubReport) for analysis.",
-      "Compose a Markdown document with sections for entry points, language support, and rule summaries by escaping inline formatting.",
-      "Issue warnings through runtimeIO when data inconsistencies are encountered."
+      "Generate a Markdown artifact that summarizes architectural diagnostics (cycle reports, dead code reports, hub reports) along with loaded rules.",
+      "Escape Markdown inline characters safely to prevent rendering issues.",
+      "Implement the ViewProducer interface, accepting a ViewContext and returning a ViewArtifact.",
+      "Load rules from the configured directory using loadRulesFromDir to include in the briefing output."
     ],
     "outOfScope": [
-      "Direct LLM invocation or prompt construction.",
-      "Scanning source code files for AST extraction.",
-      "Persisting or retrieving checkpoint state."
+      "Execution of graph diagnostics (CycleReport, DeadCodeReport, HubReport) — those are produced by engines.",
+      "Direct rule enforcement or analysis — rules are loaded but only included as data.",
+      "Configuration loading of SpineConfig — passed in via context."
     ],
     "invariants": [
-      "The produced artifact must conform to IViewArtifactEnvelope and ViewArtifact interfaces.",
-      "All user-facing text is Markdown-escaped to prevent injection or formatting corruption.",
-      "Requires a SpineConfig to determine supported locales and rule paths."
+      "The produced artifact must be valid Markdown and safe for rendering (no unescaped special characters).",
+      "The output must handle missing or empty diagnostic data without crashing.",
+      "The rules directory must be readable and JSON well-formed; otherwise, fallback gracefully.",
+      "ViewContext must provide at least the diagnostic reports and rule configuration path."
     ],
     "changeIntent": {
-      "architecturalIntent": "Generate a concise architecture briefing for AI agents by aggregating rules, dependency graphs, and diagnostic summaries into a single Markdown document.",
-      "recentChangeIntent": "Refactor to remove legacy CLI aliases and rebuild documentation artifacts; this file was modified as part of aligning the view producer with the new schema and updated CLI commands."
+      "architecturalIntent": "Provide a view layer to render architectural diagnostics as human-readable Markdown briefings, enabling developers to quickly understand system health without reading raw data.",
+      "recentChangeIntent": "Initial commit — introduces the briefing producer for the ArchSpine analytics pipeline."
     },
-    "publicSurface": [],
+    "publicSurface": [
+      {
+        "symbolName": "createBriefing",
+        "description": "Exported default function that implements the ViewProducer interface. Accepts a ViewContext containing CycleReport, DeadCodeReport, HubReport, and a path to rules; returns a ViewArtifact with the Markdown brief. Called by the view orchestration engine to generate the briefing page."
+      }
+    ],
     "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "View producer that generates the agent briefing artifact by loading architectural rules, knowledge graph data, and diagnostic reports, then formatting the output as localized Markdown.",
+        "role": "View Producer for Markdown architectural briefing documents in ArchSpine's analytics pipeline.",
         "responsibilities": [
-          "Load architectural rules from a directory via loadRulesFromDir to include in the briefing.",
-          "Ingest knowledge graph (KnowledgeGraph, KnowledgeGraphNode, KnowledgeGraphEdge) and diagnostic data (CycleReport, DeadCodeReport, HubReport) for analysis.",
-          "Compose a Markdown document with sections for entry points, language support, and rule summaries by escaping inline formatting.",
-          "Issue warnings through runtimeIO when data inconsistencies are encountered."
+          "Generate a Markdown artifact that summarizes architectural diagnostics (cycle reports, dead code reports, hub reports) along with loaded rules.",
+          "Escape Markdown inline characters safely to prevent rendering issues.",
+          "Implement the ViewProducer interface, accepting a ViewContext and returning a ViewArtifact.",
+          "Load rules from the configured directory using loadRulesFromDir to include in the briefing output."
         ],
         "outOfScope": [
-          "Direct LLM invocation or prompt construction.",
-          "Scanning source code files for AST extraction.",
-          "Persisting or retrieving checkpoint state."
+          "Execution of graph diagnostics (CycleReport, DeadCodeReport, HubReport) — those are produced by engines.",
+          "Direct rule enforcement or analysis — rules are loaded but only included as data.",
+          "Configuration loading of SpineConfig — passed in via context."
         ]
       }
     }
@@ -102,14 +108,14 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "../../infra/rules-loader.js",
+        "targetPath": "../../infra/rules-loader.ts",
         "relation": "import",
         "symbols": [
           "loadRulesFromDir"
         ]
       },
       {
-        "targetPath": "../../engines/dependency-graph.js",
+        "targetPath": "../../engines/dependency-graph.ts",
         "relation": "import",
         "symbols": [
           "KnowledgeGraph",
@@ -118,7 +124,7 @@
         ]
       },
       {
-        "targetPath": "../../engines/graph-diagnostics.js",
+        "targetPath": "../../engines/graph-diagnostics.ts",
         "relation": "import",
         "symbols": [
           "CycleReport",
@@ -127,27 +133,37 @@
         ]
       },
       {
-        "targetPath": "../../types/protocol/config.js",
+        "targetPath": "../../types/protocol/config.ts",
         "relation": "import",
         "symbols": [
           "SpineConfig"
         ]
       },
       {
-        "targetPath": "../../types/view.js",
+        "targetPath": "../../types/view.ts",
         "relation": "import",
         "symbols": [
           "IViewArtifactEnvelope"
         ]
       },
       {
-        "targetPath": "./producer.js",
+        "targetPath": "./producer.ts",
         "relation": "import",
         "symbols": [
           "ViewArtifact",
           "ViewContext",
           "ViewProducer"
         ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
       }
     ],
     "dependedBy": [],
@@ -163,7 +179,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:02:58.162Z",
+    "indexedAt": "2026-05-12T05:19:46.352Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

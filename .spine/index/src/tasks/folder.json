@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/tasks",
-  "role": "This directory contains the individual stage task modules that together form the ArchSpine synchronization pipeline.",
-  "responsibility": "The pipeline stage tasks collectively orchestrate the full lifecycle of repository analysis: reconciling filesystem state against the indexed cache, scanning and cleaning up orphaned files, extracting ASTs and building skeletons, summarizing extracted artifacts via LLM, validating architecture rules, applying automated fixes, aggregating source files into content units, building a knowledge graph with dependency diagnostics, deriving view artifacts, and committing final state. They implement a checkpoint-resumable, parallelized execution model that ensures incremental consistency and produces the structured semantic data, diagnostic outputs, and view artifacts required by downstream consumers.",
+  "role": "Pipeline stage tasks for the ArchSpine mirror system that implement a sequence of processing stages from source discovery to artifact generation.",
+  "responsibility": "This directory contains all pipeline stage tasks that collectively orchestrate the ArchSpine mirror system: scanning and reconciling files, extracting ASTs and language metadata, performing semantic summarization and validation, applying LLM-based fixes, building dependency graphs and knowledge graphs, constructing reverse indexes, generating aggregated content units, committing state to the database, deriving view artifacts, and orchestrating post-commit steps. Each file implements a specific StageTask contract and manages its own execution checkpointing for resumability.",
   "children": [
     {
       "filePath": "src/tasks/aggregate.ts",
@@ -21,22 +21,22 @@
     },
     {
       "filePath": "src/tasks/knowledge-graph.ts",
-      "role": "Stage-local task module that builds a dependency knowledge graph from the repository's tracked source files and runs structural diagnostics (cycles, dead code, hubs), saving the results as view data files for downstream views.",
+      "role": "Pipeline stage task that constructs a knowledge graph from the module dependency graph, runs structural diagnostics (cycle detection, dead code detection, hub detection), and persists views (JSON outputs) and health flags for downstream inspection.",
       "fileKind": "source"
     },
     {
       "filePath": "src/tasks/post-commit-derivation.ts",
-      "role": "Composite task orchestrating the post-commit derivation pipeline: runs aggregation, reverse-indexing, knowledge-graph, and view-derivation sub-tasks, then writes the spine README and regenerates all view artifacts.",
+      "role": "Pipeline orchestration task that executes the post-commit derivation stage of the ArchSpine mirror system. It composes sub-tasks for reverse indexing, aggregation, knowledge graph generation, and view derivation, then writes the control plane README and final artifacts.",
       "fileKind": "source"
     },
     {
       "filePath": "src/tasks/reconcile.ts",
-      "role": "Pipeline task stage that reconciles the file system state against the indexed cache by detecting new, changed, or removed files, updating file statuses, and clearing stale symbol exports.",
+      "role": "Pipeline task module that reconciles the internal manifest state and file cache with the filesystem, ensuring language indices and file metadata are consistent.",
       "fileKind": "source"
     },
     {
       "filePath": "src/tasks/reverse-index.ts",
-      "role": "Pipeline task stage responsible for computing reverse dependency edges by scanning tracked source files for index documents and caching the resulting dependency graph.",
+      "role": "Pipeline stage module that constructs the reverse dependency index (dependency→dependents mapping) from index documents of tracked files.",
       "fileKind": "source"
     },
     {
@@ -46,12 +46,12 @@
     },
     {
       "filePath": "src/tasks/state-commit.ts",
-      "role": "Pipeline task implementing the state commitment stage for the ArchSpine synchronization pipeline.",
+      "role": "Pipeline task for committing synchronized file state to SQLite after AST extraction and LLM summarization. Extends SpineTask to enforce stage-local execution within the ArchSpine pipeline.",
       "fileKind": "source"
     },
     {
       "filePath": "src/tasks/summarize.ts",
-      "role": "Pipeline stage task that orchestrates LLM-based semantic summarization and synthesis from extracted source artifacts, consuming skeletons and units to produce structured semantic output with drift awareness and validation.",
+      "role": "Pipeline task module orchestrating the LLM-based summarization and synthesis stage, consuming extraction artifacts and producing structured semantic summaries.",
       "fileKind": "source"
     },
     {
@@ -66,7 +66,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-10T05:13:27.110Z",
+    "indexedAt": "2026-05-12T05:22:08.717Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

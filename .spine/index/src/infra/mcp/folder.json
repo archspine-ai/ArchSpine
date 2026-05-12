@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/infra/mcp",
-  "role": "This directory contains the MCP (Model Context Protocol) server implementation, tool definitions, and context management layer that expose ArchSpine's core capabilities to external AI agents and IDE clients.",
-  "responsibility": "Collectively, the components in this directory implement a complete MCP interface: the server bootstrap (`server.ts`) initializes and connects the MCP server, registers handlers for tools, resources, and prompts; the context gate (`context.ts`) enforces a state machine that controls tool invocation based on context priming modes; the tool definitions (`tools.ts`) expose ArchSpine's introspection, scanning, drift detection, dependency graph, and semantic analysis as callable MCP tools; and the resources module (`resources.ts`) provides resource template listings for the MCP protocol.",
+  "role": "MCP integration layer that exposes ArchSpine's introspection, scanning, drift detection, and dependency graph features as callable tools and resources for AI agents.",
+  "responsibility": "Provides an MCP server bootstrap, tool definitions, resource handlers, context-gating state machine, and setup utilities to allow IDEs and AI agents to query project baseline, sync status, architectural invariants, symbols, dependency graphs, and perform change impact analysis.",
   "children": [
     {
       "filePath": "src/infra/mcp/context.ts",
@@ -20,13 +20,23 @@
       "fileKind": "source"
     },
     {
+      "filePath": "src/infra/mcp/setup.ts",
+      "role": "Infrastructure facade for discovering, resolving, and writing MCP tool configurations for the ArchSpine CLI.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/infra/mcp/tool-utils.ts",
+      "role": "Infrastructure facade providing path sanitization and containment validation for MCP tool file inputs.",
+      "fileKind": "source"
+    },
+    {
       "filePath": "src/infra/mcp/tools.ts",
       "role": "MCP tool collection exposing ArchSpine's introspection, scanning, drift detection, and dependency graph capabilities as callable MCP tools for LLM agent integration.",
       "fileKind": "source"
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-10T05:12:04.338Z",
+    "indexedAt": "2026-05-12T05:21:37.295Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/services/view",
-  "role": "The view subsystem that produces all output artifacts (Markdown, SVG, JSON) from the internal knowledge graph and index data for the ArchSpine mirror system.",
-  "responsibility": "Generates user-facing documentation and diagnostic reports by orchestrating specialized view producers (agent briefings, architecture diagrams, change impact, project health, public surface, risk hotspots), rendering them through SVG and Markdown pipelines, managing producer registrations, and optionally serving preview pages via a lightweight HTTP server.",
+  "role": "This directory implements the view rendering subsystem for ArchSpine, transforming knowledge graph and index data into actionable visual artifacts (Markdown, SVG, JSON) for developer insight.",
+  "responsibility": "The view subsystem provides a pluggable producer architecture that registers view producers (PublicSurface, RiskHotspots, ArchitectureDiagram, ChangeImpact, etc.), loads indexed units, renders them into structured output artifacts, and serves them via a lightweight HTTP server for local preview. It also includes a registry, a type system, shared utilities, and a runtime configuration layer to enable/disable views.",
   "children": [
     {
       "filePath": "src/services/view/agent-briefing-view.ts",
-      "role": "View producer that generates the agent briefing artifact by loading architectural rules, knowledge graph data, and diagnostic reports, then formatting the output as localized Markdown.",
+      "role": "View Producer for Markdown architectural briefing documents in ArchSpine's analytics pipeline.",
       "fileKind": "source"
     },
     {
@@ -93,10 +93,15 @@
       "filePath": "src/services/view/view-server.ts",
       "role": "Lightweight HTTP server that serves generated .spine view pages (Markdown→HTML) for local browser preview during development.",
       "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/view/view-service.ts",
+      "role": "Service orchestrator for deriving ArchSpine view artifacts (PublicSurface and RiskHotspots) from indexed source units, managing artifact lifecycle (derivation, refresh, deletion).",
+      "fileKind": "source"
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-10T05:12:08.823Z",
+    "indexedAt": "2026-05-12T05:21:47.385Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

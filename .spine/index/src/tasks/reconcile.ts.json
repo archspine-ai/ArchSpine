@@ -2,43 +2,41 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/tasks/reconcile.ts",
-    "contentHash": "5d642058c221eccda07e205cb7f354f41cf58cad386c7c36173c93e4a7334f14",
+    "contentHash": "6cdf6971249e3e76b7956ee8d2c433160f6a85d731b28814071a118ee1260095",
     "skeletonHash": "2a5833fdd24386458fb26dee316c92118b3bd9fbae90eb2048578b7f9240fa2b",
-    "semanticHash": "ed0040a36c07631bf8a7710ad89d2e1043b693e752fd06fbfb05369cac3caefe",
+    "semanticHash": "fb7c0fe4a47e3acd4653e80a8136af33bbfe28067343d42b09a430c09b7e090a",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/tasks"
   },
   "semantic": {
-    "role": "Pipeline task stage that reconciles the file system state against the indexed cache by detecting new, changed, or removed files, updating file statuses, and clearing stale symbol exports.",
+    "role": "Pipeline task module that reconciles the internal manifest state and file cache with the filesystem, ensuring language indices and file metadata are consistent.",
     "responsibilities": [
-      "Load the language snapshot from the manifest to determine which file extensions are tracked per language.",
-      "Query the scanner for all tracked files and filter by the set of tracked extensions.",
-      "For each tracked file, calculate a content hash and compare it with the manifest's cached state to decide if an update is needed.",
-      "Read index documents, validate their compatibility via `isCompatibleIndexDocument`, and produce SpineUnit records.",
-      "Update file status with associated documentation records for new or changed files.",
-      "Clear symbol exports for files that no longer exist on disk.",
-      "Report index read issues once per incompatible document."
+      "Load the current language snapshot from the manifest to determine available language extensions.",
+      "Detect runtime-tracked extensions via LangRegistry and filter scanned files to those with relevant extensions.",
+      "Read existing index documents from the filesystem, verifying compatibility and reporting issues.",
+      "Calculate file hashes and determine whether the manifest's file statuses need updating based on actual file contents.",
+      "Update the manifest's file statuses (tracking, hash, etc.) and clear stale export data for files that no longer exist or are out of sync."
     ],
     "outOfScope": [
-      "CLI command parsing and argument handling.",
-      "Orchestration of unrelated services (e.g., LLM, MCP, view rendering).",
-      "File system scanning of untracked extensions (delegated to scanner).",
-      "Deep AST extraction beyond index document reading."
+      "CLI command parsing or argument handling.",
+      "Service orchestration beyond the pipeline stage.",
+      "Task scheduling or lifecycle management.",
+      "Direct database access (delegated to manifest/repository abstractions)."
     ],
     "invariants": [
-      "Must only depend on core task contracts (`SpineTask`, `TaskContext`) and infrastructure utilities (manifest, scanner, index-reader).",
-      "Must not perform CLI command parsing or service orchestration (rule `task-stage-boundary`).",
-      "Must call `reportIndexReadIssueOnce` at most once per incompatible index document to avoid spam."
+      "Task modules must implement stage-local work on top of core contracts and engines, avoiding CLI command parsing or unrelated orchestration (rule `task-stage-boundary`).",
+      "Only files with extensions tracked by the language registry or explicit compatible types (.md, .json) are processed.",
+      "Index documents must pass compatibility checks (`isCompatibleIndexDocument`) before their contents are used."
     ],
     "changeIntent": {
-      "architecturalIntent": "ArchSpine v1.0.0 establishes a layered pipeline architecture where each task stage performs a focused, local transformation on project state. ReconcileTask is the stage responsible for maintaining cache consistency between the live file system and the index database.",
-      "recentChangeIntent": "0c6bd73 — ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era. Introduces the reconciled pipeline stage as part of the new governance layer."
+      "architecturalIntent": "This task implements the reconcile stage of the ArchSpine pipeline, ensuring that the manifest's representation of files and their metadata matches the actual filesystem state.",
+      "recentChangeIntent": "Initial creation of the ReconcileTask as part of the pipeline infrastructure, per the initial commit of the repository."
     },
     "publicSurface": [
       {
         "symbolName": "ReconcileTask",
-        "description": "Pipeline task class that synchronizes the file system state with the indexed cache. Invoked by the pipeline runner after scanning and before downstream stages like summarization or validation."
+        "description": "Pipeline stage task that reconciles the manifest's file state and cached indexes with the filesystem. It scans files, verifies language index compatibility, updates file statuses, and clears stale exports. Consumed by the task runner as one of the pipeline steps."
       }
     ],
     "ruleViolations": [],
@@ -46,21 +44,19 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Pipeline task stage that reconciles the file system state against the indexed cache by detecting new, changed, or removed files, updating file statuses, and clearing stale symbol exports.",
+        "role": "Pipeline task module that reconciles the internal manifest state and file cache with the filesystem, ensuring language indices and file metadata are consistent.",
         "responsibilities": [
-          "Load the language snapshot from the manifest to determine which file extensions are tracked per language.",
-          "Query the scanner for all tracked files and filter by the set of tracked extensions.",
-          "For each tracked file, calculate a content hash and compare it with the manifest's cached state to decide if an update is needed.",
-          "Read index documents, validate their compatibility via `isCompatibleIndexDocument`, and produce SpineUnit records.",
-          "Update file status with associated documentation records for new or changed files.",
-          "Clear symbol exports for files that no longer exist on disk.",
-          "Report index read issues once per incompatible document."
+          "Load the current language snapshot from the manifest to determine available language extensions.",
+          "Detect runtime-tracked extensions via LangRegistry and filter scanned files to those with relevant extensions.",
+          "Read existing index documents from the filesystem, verifying compatibility and reporting issues.",
+          "Calculate file hashes and determine whether the manifest's file statuses need updating based on actual file contents.",
+          "Update the manifest's file statuses (tracking, hash, etc.) and clear stale export data for files that no longer exist or are out of sync."
         ],
         "outOfScope": [
-          "CLI command parsing and argument handling.",
-          "Orchestration of unrelated services (e.g., LLM, MCP, view rendering).",
-          "File system scanning of untracked extensions (delegated to scanner).",
-          "Deep AST extraction beyond index document reading."
+          "CLI command parsing or argument handling.",
+          "Service orchestration beyond the pipeline stage.",
+          "Task scheduling or lifecycle management.",
+          "Direct database access (delegated to manifest/repository abstractions)."
         ]
       }
     }
@@ -186,14 +182,15 @@
         "targetPath": "fs",
         "relation": "import",
         "symbols": [
-          "*"
+          "fs.existsSync"
         ]
       },
       {
         "targetPath": "path",
         "relation": "import",
         "symbols": [
-          "*"
+          "path.join",
+          "path.extname"
         ]
       }
     ],
@@ -245,7 +242,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:04:26.947Z",
+    "indexedAt": "2026-05-12T05:19:53.537Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

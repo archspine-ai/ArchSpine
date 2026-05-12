@@ -3,23 +3,24 @@
   "identity": {
     "filePath": "src/assets/templates/view/public-surface.md",
     "contentHash": "16b11e6041f2e3cbcab5ceb94eaf7f41c98b263efff45867a00bb3d20cf805bb",
-    "semanticHash": "186936e4597782e8cf6238948fd24e9d2457f7ccec500019910d460c8525ab0d",
+    "semanticHash": "6ea435035bff0520f439b99a6a0d4195674186a6bc820f302d1e006cc6db018e",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/assets/templates/view"
   },
   "semantic": {
-    "role": "View document describing the public API surface of the ArchSpine system.",
+    "role": "Public interface documentation",
     "responsibilities": [
-      "Documents CLI entry points and their usage.",
-      "Lists MCP entry points for agent integration.",
-      "Enumerates exported modules for programmatic consumption.",
-      "Provides a consolidated reference of the external contract."
+      "List all CLI entry points for the ArchSpine system",
+      "List all MCP entry points for the ArchSpine system",
+      "List all exported modules available to consumers",
+      "Provide a machine- and human-readable reference of the system's public surface"
     ],
     "outOfScope": [
-      "Internal implementation details and private APIs.",
-      "Architecture diagrams or risk hotspot analysis.",
-      "Internal module structure beyond exported interfaces."
+      "Internal implementation details",
+      "Non-public or private APIs",
+      "Version history or changelog",
+      "Detailed usage examples beyond listing entry points"
     ],
     "invariants": [],
     "changeIntent": {
@@ -31,12 +32,12 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "To provide a consolidated reference of all publicly accessible interfaces for users and integrators of ArchSpine.",
-        "context_and_audience": "This document is intended for developers, operators, and AI agents who need to understand the external contract of the ArchSpine system. It serves CLI users, MCP clients, and library consumers by enumerating every official entry point.",
+        "purpose": "This document provides a generated map of all public-facing entry points for the ArchSpine system, including CLI commands, MCP (Model Context Protocol) endpoints, and exported modules.",
+        "context_and_audience": "It is intended for developers and AI agents who need to understand the available interfaces for interacting with the system. The map is automatically generated and should be kept in sync via `spine sync`. The document acts as a single source of truth for discovering how to invoke commands, connect MCP tools, or import modules.",
         "key_takeaways": [
-          "The public surface is defined through CLI commands, MCP tools, and exported modules.",
-          "The view is regenerated with `spine sync` and remains experimental.",
-          "It acts as a contract for external interactions, highlighting what is stable and intended for consumption."
+          "The document is generated and must be refreshed manually (e.g., `spine sync`) to stay up to date.",
+          "It covers three categories of public surface: CLI, MCP, and module exports.",
+          "It is an experimental view intended to improve discoverability and maintainability of ArchSpine's public API."
         ]
       }
     }
@@ -59,7 +60,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:52:02.752Z",
+    "indexedAt": "2026-05-12T05:17:11.340Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

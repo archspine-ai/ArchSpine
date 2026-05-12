@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src",
-  "role": "This directory contains all source code for the ArchSpine mirror system, including infrastructure, core pipeline, engines, orchestration services, task stages, CLI interface, type definitions, utilities, AST analysis, and asset templates.",
-  "responsibility": "Collectively, these components implement the full lifecycle of repository mirroring and architectural governance: from configuration and CLI interaction, through file scanning, AST extraction, dependency analysis, rule validation, LLM-based summarization and fix generation, to output generation of views and artifacts, while providing the foundational type contracts and utility support.",
+  "role": "The src directory serves as the main source code root for the ArchSpine mirror system, housing all core logic, infrastructure, services, tasks, types, and utilities that implement the system's architectural awareness and repository mirroring capabilities.",
+  "responsibility": "Collectively, the components in the src directory provide the complete implementation of the ArchSpine system: from asset templates and AST extraction to CLI orchestration, core execution infrastructure, engine modules for scanning/dependency analysis/rule enforcement/fix generation, a comprehensive infrastructure layer (database, configuration, LLM orchestration, MCP integration), service orchestration for all workflows (sync, check, fix, init, publish), pipeline task stages, canonical type definitions, and essential utilities for CLI presentation, filesystem operations, and agent instruction synchronization. Together, they enable ArchSpine to establish and maintain a structured mirror of a repository's architectural state, support AI agent interaction, and enforce governance rules.",
   "children": [
     {
       "filePath": "src/assets",
-      "role": "This directory represents the root of the ArchSpine mirror system, containing the agent skill definition for AI architectural awareness and the centralized template artifacts for governance, prompts, rules, and documentation.",
+      "role": "Root directory for the ArchSpine architectural awareness system, containing the agent entry skill and template artifacts for identity, prompts, rules, and external documentation.",
       "fileKind": "folder"
     },
     {
@@ -16,32 +16,32 @@
     },
     {
       "filePath": "src/cli",
-      "role": "This directory houses the command-line interface entrypoint, command routing, and utility modules for the ArchSpine system.",
+      "role": "Entry point and utility layer for the ArchSpine command-line interface, containing the command dispatcher, formatting helpers, and subcommand handler modules.",
       "fileKind": "folder"
     },
     {
       "filePath": "src/core",
-      "role": "Core pipeline infrastructure and task execution engine for the ArchSpine system.",
+      "role": "Foundational execution infrastructure for the ArchSpine pipeline, providing configuration validation, error handling, task state management, and an abstract task lifecycle.",
       "fileKind": "folder"
     },
     {
       "filePath": "src/engines",
-      "role": "Core engine directory containing all primary processing, analysis, and reporting modules for the ArchSpine system.",
+      "role": "Engine modules that implement core ArchSpine functionality including scanning, dependency analysis, rule enforcement, fix generation, and reporting.",
       "fileKind": "folder"
     },
     {
       "filePath": "src/infra",
-      "role": "Provides the foundational infrastructure layer for the ArchSpine mirror system, encompassing configuration, LLM interaction, database management, prompt building, security, file I/O, and integrity protection.",
+      "role": "Infrastructure directory that contains the core supporting subsystems for the ArchSpine mirror system, including database, configuration, LLM orchestration, credential management, file system operations, and MCP integration.",
       "fileKind": "folder"
     },
     {
       "filePath": "src/services",
-      "role": "Orchestration services that coordinate the core pipelines (sync, check, fix) and manage runtime lifecycle, configuration, repository artifacts, and output generation for the ArchSpine mirror system.",
+      "role": "Orchestration and service layer for the ArchSpine mirror system, providing all core workflows (sync, check, fix, init, publish, administration) and runtime lifecycle management.",
       "fileKind": "folder"
     },
     {
       "filePath": "src/tasks",
-      "role": "This directory contains the individual stage task modules that together form the ArchSpine synchronization pipeline.",
+      "role": "Pipeline stage tasks for the ArchSpine mirror system that implement a sequence of processing stages from source discovery to artifact generation.",
       "fileKind": "folder"
     },
     {
@@ -56,7 +56,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-10T05:14:09.512Z",
+    "indexedAt": "2026-05-12T05:22:39.823Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

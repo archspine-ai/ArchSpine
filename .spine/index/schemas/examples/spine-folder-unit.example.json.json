@@ -3,25 +3,22 @@
   "identity": {
     "filePath": "schemas/examples/spine-folder-unit.example.json",
     "contentHash": "9a6be5a8fb2d48f4401fa10d40e6ce44cfb5c63986d102595be72d01799d9617",
-    "semanticHash": "b4ede9e0a871bc3425d2365f490c7b346da5a10864dc82cf8109e0d25a5aa489",
+    "semanticHash": "f9a27799a4be112b7c386648219a41b43247b2df61c3ec6d46ea8e487bc5ed08",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas/examples"
   },
   "semantic": {
-    "role": "Core application module container.",
+    "role": "Defines a container module that groups source files within the repository indexing pipeline.",
     "responsibilities": [
-      "Groups source files that implement the repository indexing pipeline.",
-      "Defines the structural layout of the source directory and its components.",
-      "Provides provenance metadata for traceability of pipeline executions."
+      "Organizes source files under a specific directory for the ArchSpine indexing system.",
+      "Declares the file roles and kinds to guide pipeline processing (e.g., authentication, synchronization)."
     ],
     "outOfScope": [],
     "invariants": [
-      "Each child entry must include a 'filePath' and 'fileKind' matching the ArchSpine schema.",
-      "'schemaVersion' must be a valid semver string.",
-      "'provenance.indexedAt' must be an ISO 8601 timestamp.",
-      "'provenance.generatorVersion' must follow 'archspine/<semver>' format.",
-      "The 'directory' field must point to an existing or intended directory path."
+      "The 'directory' field must match an actual directory in the repository.",
+      "Each 'children' entry must specify a valid 'filePath' and a recognised 'fileKind' (e.g., 'source').",
+      "The 'schemaVersion' must be respected for compatibility."
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -32,21 +29,16 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Core application module container.",
+        "role": "Defines a container module that groups source files within the repository indexing pipeline.",
         "parameter_definitions": {
-          "schemaVersion": "Defines the version of the folder unit schema; used for compatibility checks.",
-          "directory": "Specifies the target directory path that this unit describes.",
-          "role": "Describes the functional purpose of this directory within the system.",
-          "responsibility": "Summarizes what the directory is responsible for organizing.",
-          "children": "List of files or sub-units with their own path, role, and kind.",
-          "filePath": "Relative path to the source file.",
-          "fileKind": "Classifier for the file (e.g., 'source', 'config', 'documentation').",
-          "provenance": "Metadata block recording when and how this unit was indexed.",
-          "provenance.indexedAt": "Timestamp of the last indexing operation.",
-          "provenance.generatorVersion": "Version of the ArchSpine tool that produced this unit.",
-          "provenance.pipelineStages": "Stages executed during indexing (e.g., 'ast', 'llm')."
+          "schemaVersion": "Controls the expected structure and validation rules for this configuration. Mismatches can break pipeline parsing.",
+          "directory": "Specifies the base directory of the module. All children paths are relative to this. Incorrect values cause file-not-found errors during indexing.",
+          "role": "Human-readable description of the module's purpose in the larger system. Used for documentation not automation.",
+          "responsibility": "Explains what the module is responsible for. Helps maintainers understand dependencies.",
+          "children": "Array of source file entries. Each entry must include a valid filePath and fileKind. Missing or mis-classified children may lead to incomplete indexing or pipeline failures.",
+          "provenance": "Metadata about when and how this configuration was generated. The 'indexedAt' timestamp and 'generatorVersion' help track freshness and compatibility. Pipeline stages (e.g., 'ast', 'llm') indicate processing history."
         },
-        "stability_and_risks": "This configuration file defines a folder unit that is fundamental to the repository's structural integrity. If the 'directory' path is incorrect or the 'children' references are stale, indexing pipelines may miss or misclassify source files, leading to incomplete views (architecture diagrams, public surface, risk hotspots) and broken dependency analysis. The provenance fields ensure traceability; missing or incorrect provenance can cause cache invalidation and re-indexing overhead. Invariants enforce schema compliance; violation would be caught by the validation pipeline. Overall, this file has low runtime risk but high impact on data quality."
+        "stability_and_risks": "This configuration directly controls how the ArchSpine indexing pipeline discovers and processes source files. If children are missing or misconfigured, the pipeline may produce incomplete or incorrect results. The invariants ensure that file paths exist and roles are properly assigned; violating them could cause silent failures or crashes in downstream stages. Provenance data is informational but helps audit the pipeline's execution timeline."
       }
     }
   },
@@ -68,7 +60,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:50:48.461Z",
+    "indexedAt": "2026-05-12T05:16:21.447Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

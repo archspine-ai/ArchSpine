@@ -2,34 +2,32 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "tests/e2e/cli-config.test.ts",
-    "contentHash": "b84344199f6b16f75f24d338e8d7d157e2918ce370599d34797c5864d2513181",
+    "contentHash": "940097c581b4f8096f4d8c6e92813cd51889b9c32b3a08e6391621f3452e5bca",
     "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
-    "semanticHash": "20ddfec4c1e3ebed1a2e6901e0596a2fb34aac364bd9d983e42003a06114192c",
+    "semanticHash": "9bde02f348b271d1a837e6937b8b3835f914c9e8d592ce6598c444577e2518cd",
     "language": "typescript",
     "fileKind": "source",
     "scope": "tests/e2e"
   },
   "semantic": {
-    "role": "Vitest-based integration test suite for the ArchSpine CLI commands.",
+    "role": "Integration test suite for the ArchSpine CLI tool, validating end-to-end execution via child processes.",
     "responsibilities": [
-      "Provides utility function `runCli` to execute the built CLI binary with specified arguments in a given working directory, capturing stdout, stderr, and exit status.",
-      "Sets up temporary test environments (e.g., creating directories, initializing git repos) to simulate real CLI invocation contexts.",
-      "Verifies correct CLI behavior across multiple commands (e.g., init, sync, scan, view, mcp, check, build, skill, rules) including output content, error messages, and exit codes.",
-      "Part of the automated E2E test suite that ensures CLI contracts are maintained across code changes."
+      "Spawning the built CLI binary with controlled arguments and capturing stdout/stderr/exit status.",
+      "Setting up temporary directories and git repositories for testing CLI behavior in isolated environments.",
+      "Providing reusable test utilities (e.g., `runCli`, `writeWrapperScript`) for CLI integration tests."
     ],
     "outOfScope": [
-      "Does not define any production application logic or configuration.",
-      "Does not interact with external LLM services or real repositories; uses mocked or isolated environments.",
-      "Does not test the CLI help text formatting or interactive prompts beyond spawning the process."
+      "Unit testing of internal CLI logic or module internals.",
+      "Production API surface; all exports are test-internal and never consumed by external modules.",
+      "Any runtime behavior outside the test harness."
     ],
     "invariants": [
-      "The built CLI binary must exist at the path derived from repository root + 'dist/cli/index.js'.",
-      "Test execution assumes Node.js is available and the project has been built before running tests.",
-      "The test file suffix follows the project rule requiring `.test.ts` or `.spec.ts`."
+      "Must be located in a file ending with .test.ts or .spec.ts (per architectural rule 'test-file-suffix').",
+      "Imports must remain internal to the test framework and child_process; no production dependencies beyond those allowed for testing."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a comprehensive integration test harness that validates the CLI's public behavior from an end-user perspective, ensuring regression protection for the command-line interface.",
-      "recentChangeIntent": "This test file is part of a new E2E test suite that adds 37 tests across 7 files, covering major CLI commands and their expected outputs."
+      "architecturalIntent": "Provide a stable, isolated integration test harness for the CLI, ensuring that command-line interactions are verified against the built artifact.",
+      "recentChangeIntent": "The commit 'fix: resolve ESLint errors, E2E prompt injection, and better-sqlite3 compat' likely addressed test reliability or tooling compatibility, but no direct evidence of change in this file."
     },
     "publicSurface": [],
     "ruleViolations": [],
@@ -37,17 +35,16 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Vitest-based integration test suite for the ArchSpine CLI commands.",
+        "role": "Integration test suite for the ArchSpine CLI tool, validating end-to-end execution via child processes.",
         "responsibilities": [
-          "Provides utility function `runCli` to execute the built CLI binary with specified arguments in a given working directory, capturing stdout, stderr, and exit status.",
-          "Sets up temporary test environments (e.g., creating directories, initializing git repos) to simulate real CLI invocation contexts.",
-          "Verifies correct CLI behavior across multiple commands (e.g., init, sync, scan, view, mcp, check, build, skill, rules) including output content, error messages, and exit codes.",
-          "Part of the automated E2E test suite that ensures CLI contracts are maintained across code changes."
+          "Spawning the built CLI binary with controlled arguments and capturing stdout/stderr/exit status.",
+          "Setting up temporary directories and git repositories for testing CLI behavior in isolated environments.",
+          "Providing reusable test utilities (e.g., `runCli`, `writeWrapperScript`) for CLI integration tests."
         ],
         "outOfScope": [
-          "Does not define any production application logic or configuration.",
-          "Does not interact with external LLM services or real repositories; uses mocked or isolated environments.",
-          "Does not test the CLI help text formatting or interactive prompts beyond spawning the process."
+          "Unit testing of internal CLI logic or module internals.",
+          "Production API surface; all exports are test-internal and never consumed by external modules.",
+          "Any runtime behavior outside the test harness."
         ]
       }
     }
@@ -135,7 +132,7 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "vitest",
+        "targetPath": "'vitest'",
         "relation": "import",
         "symbols": [
           "afterEach",
@@ -146,7 +143,7 @@
         ]
       },
       {
-        "targetPath": "child_process",
+        "targetPath": "'child_process'",
         "relation": "import",
         "symbols": [
           "execFileSync",
@@ -154,26 +151,53 @@
         ]
       },
       {
-        "targetPath": "url",
+        "targetPath": "'url'",
         "relation": "import",
         "symbols": [
           "fileURLToPath"
         ]
       },
       {
-        "targetPath": "fs",
+        "targetPath": "'fs'",
         "relation": "import",
-        "symbols": []
+        "symbols": [
+          "* as fs"
+        ]
       },
       {
-        "targetPath": "os",
+        "targetPath": "'os'",
         "relation": "import",
-        "symbols": []
+        "symbols": [
+          "* as os"
+        ]
       },
       {
-        "targetPath": "path",
+        "targetPath": "'path'",
         "relation": "import",
-        "symbols": []
+        "symbols": [
+          "* as path"
+        ]
+      },
+      {
+        "targetPath": "'fs'",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "'os'",
+        "relation": "import",
+        "symbols": [
+          "* as os"
+        ]
+      },
+      {
+        "targetPath": "'path'",
+        "relation": "import",
+        "symbols": [
+          "* as path"
+        ]
       }
     ],
     "dependedBy": [],
@@ -181,7 +205,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:06:20.643Z",
+    "indexedAt": "2026-05-12T05:20:10.035Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

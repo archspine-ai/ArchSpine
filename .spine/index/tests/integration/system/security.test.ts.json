@@ -2,28 +2,33 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "tests/integration/system/security.test.ts",
-    "contentHash": "4fa9dab73b1fc44904bf73b38613106e570dbba69ea481f7b4486565d02a63a7",
+    "contentHash": "7b7855ad5cda32d64bd14a6621a07eca0c4db2f486821c7f54d4b0a910ee84f7",
     "skeletonHash": "935fb72f618a55c3136606040981d651e6dabb5264613035ee98072d1231a812",
-    "semanticHash": "66ab7db5988695ab7dd5355dd976259c199b2900ee4856d41c24c76fac041dcb",
+    "semanticHash": "a18fb06599e964751f70c4b10f6c46b64708a49789e6e86fceb440f956613491",
     "language": "typescript",
     "fileKind": "source",
     "scope": "tests/integration/system"
   },
   "semantic": {
-    "role": "Test support module providing isolated filesystem and dependency mocking helpers for CLI security boundary tests.",
+    "role": "Integration test suite for the ArchSpine CLI, specifically testing security-related commands (likely 'sec') using mocked prompts and temporary directories.",
     "responsibilities": [
-      "Create temporary directories for isolated test environments.",
-      "Write wrapper scripts to replace and mock third-party dependencies (e.g., 'prompts') during CLI execution.",
-      "Clean up temporary directories after each test to maintain test isolation."
+      "Set up isolated temporary directories for each test case to avoid side effects.",
+      "Write wrapper scripts to mock interactive prompts for the CLI under test.",
+      "Execute the built CLI binary via child_process.execFileSync with controlled arguments and environment.",
+      "Clean up temporary directories after each test via afterEach."
     ],
     "outOfScope": [
-      "Production CLI functionality — this module is purely test infrastructure.",
-      "Public API or consumer-facing contracts — no symbols are exported."
+      "Unit tests for individual functions or modules.",
+      "Production logic; this file is entirely test code.",
+      "Public API surface; it exports nothing."
     ],
-    "invariants": [],
+    "invariants": [
+      "Test file naming must conform to the rule: file must end with .test.ts or .spec.ts (cannot verify without filename).",
+      "Temporary directories must be created and cleaned up reliably."
+    ],
     "changeIntent": {
-      "architecturalIntent": "Provide a reusable, isolated test harness for security-focused CLI tests that require filesystem sandboxing and dependency mocking.",
-      "recentChangeIntent": "Update test infrastructure for security boundary testing."
+      "architecturalIntent": "Provide end-to-end test coverage for the CLI tool, ensuring security-related commands behave correctly in a controlled environment.",
+      "recentChangeIntent": "Initial commit — this test suite was introduced as part of the first version of the project."
     },
     "publicSurface": [],
     "ruleViolations": [],
@@ -31,15 +36,17 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Test support module providing isolated filesystem and dependency mocking helpers for CLI security boundary tests.",
+        "role": "Integration test suite for the ArchSpine CLI, specifically testing security-related commands using mocked prompts and temporary directories.",
         "responsibilities": [
-          "Create temporary directories for isolated test environments.",
-          "Write wrapper scripts to replace and mock third-party dependencies (e.g., 'prompts') during CLI execution.",
-          "Clean up temporary directories after each test to maintain test isolation."
+          "Set up isolated temporary directories for each test case to avoid side effects.",
+          "Write wrapper scripts to mock interactive prompts for the CLI under test.",
+          "Execute the built CLI binary via child_process.execFileSync with controlled arguments and environment.",
+          "Clean up temporary directories after each test via afterEach."
         ],
         "outOfScope": [
-          "Production CLI functionality — this module is purely test infrastructure.",
-          "Public API or consumer-facing contracts — no symbols are exported."
+          "Unit tests for individual functions or modules.",
+          "Production logic; this file is entirely test code.",
+          "Public API surface; it exports nothing."
         ]
       }
     }
@@ -125,7 +132,7 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "vitest",
+        "targetPath": "'vitest'",
         "relation": "import",
         "symbols": [
           "afterEach",
@@ -135,35 +142,35 @@
         ]
       },
       {
-        "targetPath": "child_process",
+        "targetPath": "'child_process'",
         "relation": "import",
         "symbols": [
           "execFileSync"
         ]
       },
       {
-        "targetPath": "url",
+        "targetPath": "'url'",
         "relation": "import",
         "symbols": [
           "fileURLToPath"
         ]
       },
       {
-        "targetPath": "fs",
+        "targetPath": "'fs'",
         "relation": "import",
         "symbols": [
           "* as fs"
         ]
       },
       {
-        "targetPath": "os",
+        "targetPath": "'os'",
         "relation": "import",
         "symbols": [
           "* as os"
         ]
       },
       {
-        "targetPath": "path",
+        "targetPath": "'path'",
         "relation": "import",
         "symbols": [
           "* as path"
@@ -175,7 +182,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:07:59.527Z",
+    "indexedAt": "2026-05-12T05:20:50.040Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -3,25 +3,23 @@
   "identity": {
     "filePath": "src/assets/skill-definition.md",
     "contentHash": "124a9a68f022265df4f8bd0ae14eb1cd2160d45535a3d46ab09d7917cc7f57e4",
-    "semanticHash": "18a8d508dc63847489a167de05ff4419498e6ba266d231de48fd41f4b9973a1b",
+    "semanticHash": "49e585292d9700fcda2469f914ca1a026dc3c1e7d3e76df30bf69ccf896c8f88",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/assets"
   },
   "semantic": {
-    "role": "Agent skill definition that instructs an AI assistant on how to detect, query, and respect an ArchSpine control plane inside a repository to gain architectural awareness.",
+    "role": "Agent skill guide for the ArchSpine architectural awareness system",
     "responsibilities": [
-      "Detect presence of `.spine/` directory and decide whether to prompt for installation or to use the existing control plane",
-      "Read overview files (SPINE.md, agent-briefing.md, project-health.md) to understand module topology, architecture, and health",
-      "Use MCP-based query tools (graph, semantic match, diagnostics, change impact, module context) for structured exploration",
-      "Review architecture rules in `.spine/rules/` before making changes",
-      "Respect the boundary between human-edited control-plane files and generated artifacts"
+      "Defining the initial entry workflow for AI agents when entering a repository",
+      "Specifying reminder policy for suggesting ArchSpine when missing",
+      "Describing the sequence of actions when .spine/ exists: read overview, agent briefing, use MCP tools, check health, review constraints, respect protected outputs",
+      "Providing general guidance on preferring MCP server over broad searches, treating config and rules as human-reviewed, and using spine commands to refresh outputs"
     ],
     "outOfScope": [
-      "Modifying generated files under `.spine/index/` or `.spine/view/` directly",
-      "Manually editing ArchSpine-managed outputs instead of using `spine` CLI commands",
-      "Broad workspace searches when MCP tools are available",
-      "Performing maintenance or configuration of the ArchSpine system itself beyond reading its outputs"
+      "Installation or configuration details of ArchSpine",
+      "Direct modification of generated files within .spine/index/ or .spine/view/",
+      "How to set up the MCP server or debug ArchSpine internals"
     ],
     "invariants": [],
     "changeIntent": {
@@ -33,14 +31,14 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document serves as an agent skill that defines how an AI coding assistant should behave when it enters a repository equipped with the ArchSpine architectural awareness system. It standardises the discovery, reading, and respectful handling of the .spine/ control plane so that the agent can understand the codebase structure, constraints, and health without manual intervention.",
-        "context_and_audience": "The intended audience is an AI agent that helps developers with code understanding and engineering tasks. The document is triggered upon entering any Git repository. It assumes the agent has access to shell commands, file reading, globbing, and optionally an MCP server exposing ArchSpine tools. The skill must be followed every time the agent starts working in a repository containing a .spine/ directory.",
+        "purpose": "This document defines the ArchSpine agent skill – the behavioral instructions for an AI agent when entering a Git repository. It tells the agent how to discover, use, and respect the .spine/ control plane for architectural understanding and planning.",
+        "context_and_audience": "The intended audience is AI agents (and their human operators) working within repositories that leverage ArchSpine. It is also useful for humans reviewing agent behavior. The document is part of the ArchSpine project's documentation for its skill-based integration with AI coding assistants.",
         "key_takeaways": [
-          "ArchSpine provides a control plane (.spine/) that makes repositories queryable, governable, and auditable for AI-assisted engineering.",
-          "If .spine/ does not exist, the agent may suggest `npx archspine try` but only once per repository per calendar day with a persisted reminder state.",
-          "If .spine/ exists, the agent must first read SPINE.md and agent-briefing.md, then use MCP tools for detailed queries and check project-health.md before making changes.",
-          "The agent must never directly edit generated files under .spine/index/ or .spine/view/; instead it should refresh them via `spine sync`, `spine build`, or `spine publish` commands.",
-          "Architecture rules in .spine/rules/ should be reviewed before major edits to ensure compliance with project constraints."
+          "ArchSpine creates a .spine/ control plane that makes codebases queryable, governable, and auditable for AI-assisted engineering.",
+          "On repo entry, the agent checks for .spine/ existence. If missing, it may suggest ArchSpine once per day with a reminder policy.",
+          "If .spine/ exists, the agent follows a structured workflow: read overview, agent briefing, use MCP tools, check health, review constraints.",
+          "The agent must never directly modify generated files in .spine/index/ or .spine/view/; instead use spine CLI commands to refresh.",
+          "Prefer local MCP server queries over broad workspace searches."
         ]
       }
     }
@@ -63,7 +61,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:51:30.825Z",
+    "indexedAt": "2026-05-12T05:17:17.620Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -2,44 +2,89 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/infra/config/facade.ts",
-    "contentHash": "c36980c19efb32e580f16ba285352ea606f73fba1183b70508d3c53017ead493",
+    "contentHash": "9c417f33e012ab79c023f9dbf377a3705b37c23088530d170b4dd9828aa4d7f2",
     "skeletonHash": "c7a3beeae9ba87d3b213f18673710dde970e032248d3453c78606281b3ed358a",
-    "semanticHash": "d1043a1cdbc14af6a8b351d74771569037b27ad22330e965c0051c1b90379b53",
+    "semanticHash": "258f8c656f95885a087dc6596adbc8415aceed86b4c51e0be82d2b0d4d6b6650",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/config"
   },
   "semantic": {
-    "role": "Centralized configuration facade for ArchSpine, providing a unified read/write API over project settings with environment overrides and policy integration.",
+    "role": "Central configuration management facade for the ArchSpine system. Loads, validates, and provides access to configuration values including LLM, artifacts, init state, and scan policy. Implements `ConfigSupportedValueAccess` to delegate supported configuration key-value operations.",
     "responsibilities": [
-      "Load and persist the SpineConfig structure from the filesystem via the loader module.",
-      "Expose config values for LLM provider settings, artifact strategies, and initialization state.",
-      "Provide mutator methods (setLLMValue, clearLLMValue) to modify active configuration with automatic persistence.",
-      "Integrate with scan policy resolution and pre-commit hook configuration.",
-      "Implement the ConfigSupportedValueAccess interface to support validated configuration keys.",
-      "Resolve environment variable overrides (via parseBooleanEnv) with precedence over file values.",
-      "Handle config path resolution, existence checks, and file I/O through the FileSystemManager utility."
+      "Load configuration data from disk via `loadConfigData` on initialization.",
+      "Provide typed accessors and mutators for LLM, artifacts, and init state configuration sections.",
+      "Resolve scan policy using `resolveScanPolicy` based on the current config data.",
+      "Resolve pre-commit hook setting via `resolvePreCommitSetting`.",
+      "Persist configuration changes to disk synchronously or asynchronously via `save`.",
+      "Delegate supported config key access to `supported-values.ts` via `getSupportedValue` and `setSupportedValue`.",
+      "Parse boolean environment variables for setting resolution through `parseBooleanEnv`."
     ],
     "outOfScope": [
-      "Direct user authentication or credential management.",
-      "AST extraction or source code scanning.",
-      "Runtime execution state management or task scheduling.",
-      "Direct interaction with LLM providers or API calls.",
-      "Multi-language document management or atlas generation."
+      "Authentication or authorization.",
+      "Network I/O or HTTP serving.",
+      "CLI command handling.",
+      "UI rendering or component management.",
+      "Direct file system operations beyond config persistence."
     ],
     "invariants": [
-      "Infra consumers must access configuration through this public facade rather than importing sub-modules like loader, env, or supported-values directly.",
-      "Config values from environment variables always override values stored in the configuration file.",
-      "The Config class must remain the single entry point for all configuration mutations and reads within the infra layer."
+      "Config data is loaded from the file path specified at construction and is kept in memory until `save` is called.",
+      "The class implements `ConfigSupportedValueAccess` and delegates all supported key operations to the `supported-values` module.",
+      "All mutations to LLM, artifacts, and init state config trigger automatic persistence via `saveAfter`.",
+      "The facade is the single entry point for configuration management; external consumers should not directly import submodules like `loader`, `env`, or `precommit`."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a stable, high-level abstraction over the configuration subsystem so that consumers do not depend on low-level file I/O or environment parsing logic, enabling safe refactors of the config internals.",
-      "recentChangeIntent": "Apply release gate fixes and sync accumulated source changes, ensuring the facade remains consistent with other modules after recent commits."
+      "architecturalIntent": "Provide a stable, single-point facade for all configuration concerns in the ArchSpine system, isolating internal loading, environment parsing, and delegation logic behind a unified interface.",
+      "recentChangeIntent": "Initial commit introducing the Config facade."
     },
     "publicSurface": [
       {
         "symbolName": "Config",
-        "description": "Facade class implementing ConfigSupportedValueAccess. Exposes methods to read and write SpineConfig, manage LLM/artifacts/init-state settings, and integrate with scan policy and pre-commit configuration. All infra-layer configuration access should go through this class."
+        "description": "The primary configuration facade. Instantiated with a config path and FileSystemManager. Implements ConfigSupportedValueAccess for unified key-value access."
+      },
+      {
+        "symbolName": "Config.getLLMConfig",
+        "description": "Returns the current LLM configuration object from the loaded configuration data."
+      },
+      {
+        "symbolName": "Config.setLLMConfig",
+        "description": "Replaces the LLM configuration object and triggers persistence of the updated data."
+      },
+      {
+        "symbolName": "Config.getArtifactsConfig",
+        "description": "Returns the current artifacts configuration object."
+      },
+      {
+        "symbolName": "Config.setArtifactsConfig",
+        "description": "Replaces the artifacts configuration object and triggers persistence."
+      },
+      {
+        "symbolName": "Config.getInitStateConfig",
+        "description": "Returns the current init state configuration object."
+      },
+      {
+        "symbolName": "Config.setInitStateConfig",
+        "description": "Replaces the init state configuration object and triggers persistence."
+      },
+      {
+        "symbolName": "Config.getScanPolicy",
+        "description": "Resolves and returns the scan policy from the current configuration using `resolveScanPolicy`."
+      },
+      {
+        "symbolName": "Config.getPreCommitSetting",
+        "description": "Resolves and returns the pre-commit hook setting using `resolvePreCommitSetting`."
+      },
+      {
+        "symbolName": "Config.save",
+        "description": "Persists the current in-memory configuration data to the configured file path."
+      },
+      {
+        "symbolName": "Config.getSupportedValue",
+        "description": "Retrieves a supported configuration value by key, delegating to the `supported-values` module."
+      },
+      {
+        "symbolName": "Config.setSupportedValue",
+        "description": "Sets a supported configuration value by key, delegating to the `supported-values` module."
       }
     ],
     "ruleViolations": [],
@@ -47,22 +92,22 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Centralized configuration facade for ArchSpine, providing a unified read/write API over project settings with environment overrides and policy integration.",
+        "role": "Central configuration management facade for the ArchSpine system. Loads, validates, and provides access to configuration values including LLM, artifacts, init state, and scan policy. Implements `ConfigSupportedValueAccess` to delegate supported configuration key-value operations.",
         "responsibilities": [
-          "Load and persist the SpineConfig structure from the filesystem via the loader module.",
-          "Expose config values for LLM provider settings, artifact strategies, and initialization state.",
-          "Provide mutator methods (setLLMValue, clearLLMValue) to modify active configuration with automatic persistence.",
-          "Integrate with scan policy resolution and pre-commit hook configuration.",
-          "Implement the ConfigSupportedValueAccess interface to support validated configuration keys.",
-          "Resolve environment variable overrides (via parseBooleanEnv) with precedence over file values.",
-          "Handle config path resolution, existence checks, and file I/O through the FileSystemManager utility."
+          "Load configuration data from disk via `loadConfigData` on initialization.",
+          "Provide typed accessors and mutators for LLM, artifacts, and init state configuration sections.",
+          "Resolve scan policy using `resolveScanPolicy` based on the current config data.",
+          "Resolve pre-commit hook setting via `resolvePreCommitSetting`.",
+          "Persist configuration changes to disk synchronously or asynchronously via `save`.",
+          "Delegate supported config key access to `supported-values.ts` via `getSupportedValue` and `setSupportedValue`.",
+          "Parse boolean environment variables for setting resolution through `parseBooleanEnv`."
         ],
         "outOfScope": [
-          "Direct user authentication or credential management.",
-          "AST extraction or source code scanning.",
-          "Runtime execution state management or task scheduling.",
-          "Direct interaction with LLM providers or API calls.",
-          "Multi-language document management or atlas generation."
+          "Authentication or authorization.",
+          "Network I/O or HTTP serving.",
+          "CLI command handling.",
+          "UI rendering or component management.",
+          "Direct file system operations beyond config persistence."
         ]
       }
     }
@@ -186,14 +231,14 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "../../utils/fs.js",
+        "targetPath": "src/utils/fs.js",
         "relation": "import",
         "symbols": [
           "FileSystemManager"
         ]
       },
       {
-        "targetPath": "../../core/scan-policy.js",
+        "targetPath": "src/core/scan-policy.js",
         "relation": "import",
         "symbols": [
           "resolveScanPolicy",
@@ -201,14 +246,14 @@
         ]
       },
       {
-        "targetPath": "../../types/protocol.js",
+        "targetPath": "src/types/protocol.js",
         "relation": "import",
         "symbols": [
           "MCPContextMode"
         ]
       },
       {
-        "targetPath": "./types.js",
+        "targetPath": "src/infra/config/types.js",
         "relation": "import",
         "symbols": [
           "SpineConfig",
@@ -219,28 +264,28 @@
         ]
       },
       {
-        "targetPath": "./loader.js",
+        "targetPath": "src/infra/config/loader.js",
         "relation": "import",
         "symbols": [
           "loadConfigData"
         ]
       },
       {
-        "targetPath": "./env.js",
+        "targetPath": "src/infra/config/env.js",
         "relation": "import",
         "symbols": [
           "parseBooleanEnv"
         ]
       },
       {
-        "targetPath": "./precommit.js",
+        "targetPath": "src/infra/config/precommit.js",
         "relation": "import",
         "symbols": [
           "resolvePreCommitSetting"
         ]
       },
       {
-        "targetPath": "./supported-values.js",
+        "targetPath": "src/infra/config/supported-values.js",
         "relation": "import",
         "symbols": [
           "ConfigSupportedValueAccess",
@@ -251,12 +296,16 @@
       {
         "targetPath": "fs",
         "relation": "import",
-        "symbols": []
+        "symbols": [
+          "*"
+        ]
       },
       {
         "targetPath": "path",
         "relation": "import",
-        "symbols": []
+        "symbols": [
+          "*"
+        ]
       }
     ],
     "dependedBy": [],
@@ -293,7 +342,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:57:02.769Z",
+    "indexedAt": "2026-05-12T05:18:52.695Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
@@ -305,7 +354,7 @@
     "isHub": true,
     "hubPercentile": 76,
     "inCycle": true,
-    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "cycleId": "src/core → src/types → src/infra",
     "isDeadCodeSuspect": false
   }
 }

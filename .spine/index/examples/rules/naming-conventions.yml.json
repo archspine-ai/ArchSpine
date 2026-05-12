@@ -3,22 +3,22 @@
   "identity": {
     "filePath": "examples/rules/naming-conventions.yml",
     "contentHash": "2224edc5dd0f88b0db274a7ae49f86788ce16da076fec2aa2c21c22ef9447dd1",
-    "semanticHash": "f7a2e8d165dae8e1e858f535a2aa8caa3695c91bd84456889e6dda207690333f",
+    "semanticHash": "47c7207f4faee6dd3690b2b3f58b5aaad955faadba05b9874252d519af8fe8f6",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "examples/rules"
   },
   "semantic": {
-    "role": "Naming convention policy document for the ArchSpine project",
+    "role": "Document specifying naming convention rules for interfaces and test files in a monorepo.",
     "responsibilities": [
-      "Defines mandatory naming conventions for TypeScript interfaces (I prefix)",
-      "Defines mandatory naming conventions for test files (suffix .test.ts or .spec.ts)",
-      "Provides scope, constraint, severity, and reasoning for each rule"
+      "Defines the 'I' prefix rule for internal TypeScript interfaces in src/types/**/*.ts.",
+      "Defines the .test.ts or .spec.ts suffix rule for test files under tests/.",
+      "Provides severity levels (Warning for interface rule, Error for test file rule) for tooling integration."
     ],
     "outOfScope": [
-      "Naming conventions for other file types (e.g., components, utilities, configuration)",
-      "Architecture rules or structural guidelines beyond naming",
-      "Formatting or linting rules not related to file/identifier naming"
+      "Naming conventions for variables, functions, classes, CSS, or other code elements.",
+      "Rules for non-TypeScript files (e.g., JavaScript, JSON).",
+      "Configuration details for test runners or linting tools."
     ],
     "invariants": [],
     "changeIntent": {
@@ -30,12 +30,12 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document establishes a consistent naming convention for the codebase to ensure readability and maintainability, especially across large monorepos.",
-        "context_and_audience": "This document is intended for all developers contributing to the ArchSpine project. It serves as a reference for approved naming patterns to avoid style inconsistencies and confusion during code reviews.",
+        "purpose": "To ensure a unified naming style across a large monorepo, reducing cognitive load and improving code readability and tool compatibility.",
+        "context_and_audience": "This document is intended for all developers working in the ArchSpine monorepo who write TypeScript interfaces or test files. It serves as a concise reference for two specific naming rules that have been adopted to enforce consistency and streamline CI tooling.",
         "key_takeaways": [
-          "Internal TypeScript interfaces must be prefixed with 'I' (e.g., IUserRepository). This rule applies to files under src/types/**/*.ts and is enforced as a warning.",
-          "Test files must end with .test.ts or .spec.ts. This rule applies to the tests directory and is enforced as an error.",
-          "Each rule includes its scope, constraint, severity level, and the reasoning behind it to promote understanding and compliance."
+          "Internal interfaces in src/types/**/*.ts must be prefixed with 'I' (e.g., IUserRepository) – warning-level rule.",
+          "Test files under tests/ must end with .test.ts or .spec.ts – error-level rule.",
+          "These rules are part of a broader effort to maintain codebase harmony in a monorepo environment."
         ]
       }
     }
@@ -58,7 +58,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:50:35.620Z",
+    "indexedAt": "2026-05-12T05:16:17.473Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

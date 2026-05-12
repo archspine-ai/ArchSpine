@@ -3,22 +3,25 @@
   "identity": {
     "filePath": ".spine/rules/layered-architecture.yml",
     "contentHash": "a710cbb2beaebf0a60070bb209fc5bc00f9a246a776cf003712a1418300b6581",
-    "semanticHash": "209784add474a35d68e643d9bfb34755507cf9d4cf842f8c15efa1089e099caa",
+    "semanticHash": "1c2b95e6495f16cf558983bde62bf42107f4631c8499b550d2f788140fa80b25",
     "language": "unsupported",
     "fileKind": "document",
     "scope": ".spine/rules"
   },
   "semantic": {
-    "role": "Architectural governance rules that define and enforce the layered architecture constraints for the ArchSpine repository.",
+    "role": "Architectural governance document defining layering constraints for the ArchSpine project",
     "responsibilities": [
-      "Defining the separation between CLI, services, core/tasks/engines, and infra layers.",
-      "Specifying error and warning severity rules to prevent layering violations.",
-      "Maintaining the documented boundaries for module imports and responsibilities."
+      "Defining and enforcing a strict layered architecture (CLI → services → core/tasks/engines → infra)",
+      "Specifying six rules with scopes, constraints, severity levels, and rationale",
+      "Maintaining clear separation of concerns across all layers to ensure reusability and testability",
+      "Guiding contributors on where to place new code and what dependencies are allowed"
     ],
     "outOfScope": [
-      "Detailed implementation of specific modules or services.",
-      "External configuration or deployment concerns.",
-      "Non-layering code style or naming conventions."
+      "Code style or formatting guidelines",
+      "Testing strategies or quality gates",
+      "Deployment or CI/CD procedures",
+      "API documentation beyond dependency rules",
+      "General project onboarding or workflow descriptions"
     ],
     "invariants": [],
     "changeIntent": {
@@ -30,15 +33,15 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document establishes the layered architecture constraints for the ArchSpine project, ensuring clear boundaries between entrypoints, orchestration, pipeline, engine, and infrastructure modules.",
-        "context_and_audience": "Intended for all developers and maintainers of the ArchSpine repository, especially those adding new features or refactoring existing code. It serves as a reference for code review and architectural compliance.",
+        "purpose": "To define and enforce a clean layered architecture (CLI → services → core/tasks/engines → infra) for the ArchSpine project, ensuring separation of concerns, reusability, and maintainability.",
+        "context_and_audience": "This document is intended for all developers contributing to the ArchSpine repository. It describes the architectural constraints that must be followed when adding or modifying code in each layer. The rules are defined with severity (Error or Warning) to indicate strictness and provide clear guidance for code reviews and refactoring.",
         "key_takeaways": [
-          "CLI modules must be thin entrypoints without pipeline or persistence logic.",
-          "Services orchestrate core/tasks/engines/infra, with view-specific services in src/services/view/.",
-          "Core modules define pipeline contracts without depending on CLI.",
-          "Task modules implement stage-local work without command parsing.",
-          "Engine modules provide reusable analysis without CLI or service dependencies.",
-          "Infra modules expose stable facades; prefer facades over deep internal imports."
+          "The CLI layer must remain thin and only handle entrypoints and command adapters, without absorbing pipeline or persistence logic.",
+          "Services orchestrate runtime but must not place view-specific logic in infra; service subsystems should be organized under src/services/view/.",
+          "Core modules define pipeline contracts and must not depend on CLI entry code.",
+          "Task modules implement stage-local work on top of core and engines, avoiding CLI parsing or unrelated orchestration.",
+          "Engines provide reusable analysis and transformation logic and must not depend on CLI or service-level orchestration.",
+          "Infra modules expose stable low-level facades; callers should prefer public facades over private implementation paths."
         ]
       }
     }
@@ -61,7 +64,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:50:06.543Z",
+    "indexedAt": "2026-05-12T05:16:00.827Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -3,23 +3,25 @@
   "identity": {
     "filePath": "tests/helpers/lock-worker.mjs",
     "contentHash": "2478dbdc800821486e1b8fba0ec0ceb566c3cf5989c6a38c04f5fc6e5f975f12",
-    "semanticHash": "6ed08849bb19ab9172ff3a8b9b37d88dd2504a4def0bf7e18ee28f39bae54d0c",
+    "semanticHash": "1c489f106e72d95eb6087aee161fb78782605a0e1f069cbaa311e068d1eccc3e",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "tests/helpers"
   },
   "semantic": {
-    "role": "Placeholder lock worker process for testing lock concurrency in ArchSpine's LockManager",
+    "role": "Implementation of a lock worker script for managing file-based distributed locks in the ArchSpine system.",
     "responsibilities": [
-      "Provides a subprocess that acquires and optionally releases a file-based lock",
-      "Supports test modes: acquire-release, acquire-hold, acquire-release-rewrite",
-      "Emits structured JSON status messages to stdout for test assertions",
-      "Handles signal-based cleanup and timed release"
+      "Provides a CLI tool to acquire and release locks via LockManager.",
+      "Supports three modes: acquire-release, acquire-hold, and acquire-release-rewrite.",
+      "Handles process signals (SIGINT, SIGTERM) for graceful shutdown.",
+      "Emits structured output (JSON) for parent process communication.",
+      "Manages process hold-open timers to prevent premature exit."
     ],
     "outOfScope": [
-      "Not a production lock service",
-      "Does not implement lock conflict resolution or retry logic",
-      "Not part of the user-facing CLI or core pipeline"
+      "LockManager class implementation details.",
+      "Network-based locking or distributed consensus algorithms.",
+      "User authentication or authorization.",
+      "Configuration file parsing or environment setup."
     ],
     "invariants": [],
     "changeIntent": {
@@ -31,13 +33,14 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This lock-worker script is a minimal subprocess used by integration and unit tests to validate the LockManager's ability to acquire and release a file-based lock. It simulates both successful acquisition and scenarios where a lock is held for a duration, enabling concurrency tests without external dependencies.",
-        "context_and_audience": "Target audience: developers contributing to ArchSpine, especially those writing tests for the lock infrastructure. It is used in test suites that require concurrent lock operations to verify correctness and race-condition safety.",
+        "purpose": "This document defines the lock worker script used by larger ArchSpine processes to acquire and release file-system locks. It serves as a standalone executable that communicates via stdout JSON messages.",
+        "context_and_audience": "Intended for developers integrating or debugging the locking subsystem in ArchSpine. It provides a low-level utility that can be called in scripts or test suites.",
         "key_takeaways": [
-          "The script accepts command-line arguments for root directory, mode, and hold duration.",
-          "Modes: 'acquire-release' (default) acquires then immediately releases; 'acquire-hold' holds for a configurable duration before releasing; 'acquire-release-rewrite' acquires and holds indefinitely until signal.",
-          "Output is JSON on stdout (e.g., {\"status\": \"acquired\", \"pid\": ...}) for easy parsing by test runners.",
-          "Signal handlers ensure cleanup on SIGINT/SIGTERM."
+          "The lock worker acquires/releases locks using LockManager with multiple operational modes.",
+          "It supports three modes: immediate acquire-release, acquire-hold with a configurable hold duration, and acquire-release-rewrite for rewrite operations.",
+          "Signal handlers ensure clean exit on SIGINT/SIGTERM.",
+          "Errors are captured and emitted as JSON with error codes.",
+          "The script is intended to be invoked as a child process, not used as a module."
         ]
       }
     }
@@ -60,7 +63,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:06:48.427Z",
+    "indexedAt": "2026-05-12T05:20:25.892Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

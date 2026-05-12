@@ -2,24 +2,25 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": ".github/workflows/docs-deploy.yml",
-    "contentHash": "cb51136f2a9f590be04347f8d08d08a840ef396845ed8ecbc692e721bcd04c2f",
-    "semanticHash": "094890bf9108381ffae7f143da0f045165589d783c044d0d631a1c5e7cafb1b0",
+    "contentHash": "522d35f4393737a67fd4caaab45aa478cd890de1053cff78a53c2b3c01900863",
+    "semanticHash": "c04318e542c59dd2b093b23bbbe33cf97fe7c56ea57890861b432f6b7e44677f",
     "language": "unsupported",
     "fileKind": "document",
     "scope": ".github/workflows"
   },
   "semantic": {
-    "role": "Automates the build and deployment of project documentation to GitHub Pages on changes to documentation or package files.",
+    "role": "CI/CD workflow configuration for automated documentation deployment",
     "responsibilities": [
-      "Trigger documentation build and deploy on pushes to main that modify docs/, package.json, or package-lock.json",
-      "Build documentation using Node.js and npm",
-      "Deploy built documentation artifact to GitHub Pages"
+      "Trigger documentation build and deployment on push to main branch",
+      "Define build steps using Node.js and npm",
+      "Define deployment steps to GitHub Pages",
+      "Manage concurrency to prevent multiple concurrent deployments"
     ],
     "outOfScope": [
-      "Deployment of other project artifacts (e.g., code, binaries)",
-      "Running tests or linting",
-      "Handling pull request previews or staging environments",
-      "Multi-environment deployment strategies"
+      "Documentation content or structure",
+      "Versioning or release management",
+      "Testing or linting steps",
+      "Rollback or failure handling procedures"
     ],
     "invariants": [],
     "changeIntent": {
@@ -31,13 +32,13 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This workflow ensures that whenever documentation or core project configuration files are updated on the main branch, the docs are rebuilt and published automatically to GitHub Pages. It reduces manual overhead for releasing documentation changes.",
-        "context_and_audience": "Maintained by the ArchSpine core team. Relevant for any contributor who is responsible for keeping the project's documentation up to date and published. This workflow runs only on the main branch and only when specific paths are changed, so it is safe for day-to-day development.",
+        "purpose": "This document defines a GitHub Actions workflow that automatically builds and deploys the ArchSpine project documentation to GitHub Pages whenever changes are pushed to the main branch affecting docs/ or package files.",
+        "context_and_audience": "Intended for maintainers and contributors who need to understand how documentation is published. It describes the automated pipeline, not the documentation itself.",
         "key_takeaways": [
-          "Triggers only on pushes to main that affect docs/, package.json, or package-lock.json",
-          "Builds documentation using npm ci and the docs:build script",
-          "Deploys the output (.vitepress/dist) to GitHub Pages using official actions",
-          "No testing or code deployment is included in this workflow"
+          "Documentation is built using npm ci and a custom 'docs:build' script (likely VitePress).",
+          "Deployment only occurs on pushes to the main branch, limited to docs/ or package manifest changes.",
+          "Concurrency is configured to cancel in-progress deployments when a new push arrives.",
+          "The workflow uses GitHub Pages deployment actions, with artifact upload and deploy steps."
         ]
       }
     }
@@ -60,7 +61,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:49:43.809Z",
+    "indexedAt": "2026-05-12T05:15:40.035Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

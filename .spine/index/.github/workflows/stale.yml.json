@@ -2,24 +2,24 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": ".github/workflows/stale.yml",
-    "contentHash": "7c84928e81f53977c2e610490d275dc22906a8ac19029188cc96d0d2549b56b4",
-    "semanticHash": "246a8ba82bc902c51fafda57290d015ed78ec059668c76d76ff84d51a15edc21",
+    "contentHash": "bcf7e6a505f671c3bbc8e4dfd1e7217a6240c2a5404aa8be7eb27f160ce8690c",
+    "semanticHash": "c820a425de3739be07e5655f017893e2f0dc69a57eb6f72bff7abc0dc0c372b5",
     "language": "unsupported",
     "fileKind": "document",
     "scope": ".github/workflows"
   },
   "semantic": {
-    "role": "Stale Issue Automation Policy",
+    "role": "Documentation of the automated stale issue and pull request triage workflow for the ArchSpine repository.",
     "responsibilities": [
-      "Scheduled stale detection",
-      "Automatic labeling of inactive issues/PRs",
-      "Automatic closure after grace period",
-      "Exemption for specific labels"
+      "Defines the schedule (daily at 01:30 UTC) and triggers for the stale triage action.",
+      "Sets thresholds: 60 days of inactivity to mark stale, 14 more days to close.",
+      "Configures labels: applies 'stale' label to issues and PRs; exempts 'security' and 'on-deck' labels.",
+      "Provides the message posted when marking an item as stale."
     ],
     "outOfScope": [
-      "Issue assignment",
-      "Priority management",
-      "Custom triage logic beyond inactivity"
+      "Manual triage processes or human-in-the-loop workflows.",
+      "Other automation rules (e.g., auto-labeling, assignment, or comment moderation).",
+      "Handling of non-issue/non-PR items (e.g., discussions, milestones)."
     ],
     "invariants": [],
     "changeIntent": {
@@ -31,13 +31,13 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document defines the automated workflow for managing stale issues and pull requests within the ArchSpine repository. It ensures that inactive items are systematically flagged and eventually closed, keeping the repository clean and focused.",
-        "context_and_audience": "Repository maintainers and contributors who need to understand how long-dormant issues and PRs are handled automatically. This policy runs on a daily schedule and applies to all open issues and PRs unless they carry exempt labels.",
+        "purpose": "This document describes the automated workflow that helps keep the repository clean by identifying and closing stale issues and pull requests after periods of inactivity.",
+        "context_and_audience": "The primary audience is repository maintainers and contributors who need to understand how and when issues/PRs are automatically marked stale and eventually closed. It is also relevant for anyone submitting issues or PRs, so they know the expected timeline for activity and closure.",
         "key_takeaways": [
-          "Issues and pull requests are marked 'stale' after 60 days of inactivity.",
-          "After being marked stale, they are closed automatically in 14 more days unless activity resumes.",
-          "Items labeled 'security' or 'on-deck' are exempt from this automated triage.",
-          "The workflow is defined as a GitHub Actions cron job, running daily at 1:30 UTC."
+          "Issues and PRs with no activity for 60 days are automatically labeled 'stale' and receive a warning message.",
+          "After 14 more days without activity, they are automatically closed.",
+          "Items labeled 'security' or 'on-deck' are exempt from this process.",
+          "The workflow runs nightly at 1:30 AM UTC."
         ]
       }
     }
@@ -60,7 +60,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:50:00.921Z",
+    "indexedAt": "2026-05-12T05:15:54.104Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -2,39 +2,42 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/engines/info.ts",
-    "contentHash": "73e9538bcb8f9bbddff19efff87b151008cdecb41f2595a27dc52d7b171d9bc2",
+    "contentHash": "eacb2e011071dd24eb037575b6b1bfbe1f423e32b9c24ca38883a4541cb58aef",
     "skeletonHash": "2e92611e2ebf39acfda9948f890b65339ab51194976e5fc4c30561cdede767df",
-    "semanticHash": "5db4c3bc6273dbd36cfd42fb9f722ec92e71aeadd7b3890e031935dac1b63b7a",
+    "semanticHash": "08097dd68d2667f1dad3771c7b567cd1476724e6bce8362f8fd96f6f073aba81",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/engines"
   },
   "semantic": {
-    "role": "Engine module that generates a comprehensive informational report about the project state, including configuration, manifest integrity, LLM settings, scan statistics, and file counts. Used by the CLI info command and potentially by service-level orchestrators.",
+    "role": "Engine module that generates a comprehensive info report summarising the metadata and state of an ArchSpine project.",
     "responsibilities": [
-      "Open and inspect the project manifest to derive index completeness, usage counts, and language snapshots.",
-      "Load and display the project configuration including pre-commit resolution and scan policy settings.",
-      "Resolve and display the effective LLM configuration and secrets (masked) used by the runtime.",
-      "Optionally run a full scan (via Scanner) when manifest info is incomplete, and display updated file tracking statistics.",
-      "Format and output structured info report lines to the provided RuntimeIO or default console output.",
-      "Check for protected output mutations and emit warnings when detected, using spine-gate utilities."
+      "Load and interpret the project manifest (Manifest), configuration (Config), and secrets (Secrets) from the on-disk project.",
+      "Use the Scanner to enumerate all tracked files in the project.",
+      "Retrieve LLM settings (GlobalLLMConfig, GlobalLLMSecrets) and resolve any runtime LLM configuration.",
+      "Detect protected output mutations via spine-gate and format warning messages when applicable.",
+      "Assemble and output a structured report covering manifest completeness, usage statistics, language snapshots, scan policies, pre-commit resolution, and signature-key pairing.",
+      "Accept an optional RuntimeIO abstraction to decouple output from stdout/stderr, allowing reuse in tests or alternative runners."
     ],
     "outOfScope": [
-      "Executing scans on behalf of other engines or services (scanning is triggered only for informational completeness in this report).",
-      "Modifying project files or configuration.",
-      "Performing analysis or transformation of source code (this is purely a reporting/read-only module)."
+      "Command-line argument parsing or user interaction (no CLI imports).",
+      "Direct manipulation of the .spine directory or project files.",
+      "Project initialisation, migration, or transformation operations.",
+      "Long-running processes, streaming, or real-time subscriptions."
     ],
     "invariants": [
-      "Rule engine-independence (error): Engine modules must not import CLI entrypoints and should stay decoupled from service-level orchestration. This file only imports from infra and other engine modules, which satisfies this constraint."
+      "Must not import CLI entrypoint modules (enforced by engine-independence rule).",
+      "Should remain decoupled from service-level orchestration (e.g., HTTP handlers, MCP tools) where practical.",
+      "The emitted report must accurately reflect the current on-disk state of the project at the time of invocation."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a standalone, reusable info report generator that can be used both by the CLI info command and programmatically by other components, aggregating data from multiple infra subsystems.",
-      "recentChangeIntent": "The commit 'chore: apply release gate fixes and sync accumulated source changes' suggests recent modifications to this file as part of release preparation, likely refining the info report output or fixing minor defects; no new public API surface introduced."
+      "architecturalIntent": "Provides a reusable info-report generator that consolidates project metadata from multiple sources (manifest, config, scanner, LLM) and outputs a human-readable summary, keeping the logic separate from presentation or orchestration layers.",
+      "recentChangeIntent": "Initial commit — first version of the info-report engine."
     },
     "publicSurface": [
       {
         "symbolName": "runInfoReport",
-        "description": "Generates and outputs a comprehensive project information report covering manifest, config, LLM settings, scan statistics, and file tracking. Called by the CLI info command and available for programmatic use by other modules."
+        "description": "Generates a structured info report for an ArchSpine project at the given rootDir. Reads the project manifest, configuration, scanner state, and LLM settings, then outputs the report via runtimeIO.info calls. The optional runtimeIO parameter allows callers to supply a custom output adapter."
       }
     ],
     "ruleViolations": [],
@@ -42,19 +45,18 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Engine module that generates a comprehensive informational report about the project state, including configuration, manifest integrity, LLM settings, scan statistics, and file counts. Used by the CLI info command and potentially by service-level orchestrators.",
+        "role": "Engine module for generating a comprehensive info report of an ArchSpine project’s metadata and state.",
         "responsibilities": [
-          "Open and inspect the project manifest to derive index completeness, usage counts, and language snapshots.",
-          "Load and display the project configuration including pre-commit resolution and scan policy settings.",
-          "Resolve and display the effective LLM configuration and secrets (masked) used by the runtime.",
-          "Optionally run a full scan (via Scanner) when manifest info is incomplete, and display updated file tracking statistics.",
-          "Format and output structured info report lines to the provided RuntimeIO or default console output.",
-          "Check for protected output mutations and emit warnings when detected, using spine-gate utilities."
+          "Aggregates data from the project manifest, configuration, scanner, and LLM settings.",
+          "Produces a structured report detailing manifest completeness, usage statistics, language snapshots, scan policy, and configuration.",
+          "Detects and warns about protected output mutations via the spine-gate.",
+          "Consumed by CLI or other tools to present project status to the user."
         ],
         "outOfScope": [
-          "Executing scans on behalf of other engines or services (scanning is triggered only for informational completeness in this report).",
-          "Modifying project files or configuration.",
-          "Performing analysis or transformation of source code (this is purely a reporting/read-only module)."
+          "Command-line argument parsing.",
+          "Direct file system mutations.",
+          "Project initialisation or migration.",
+          "Interactive user workflows."
         ]
       }
     }
@@ -369,7 +371,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:56:23.008Z",
+    "indexedAt": "2026-05-12T05:18:26.892Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

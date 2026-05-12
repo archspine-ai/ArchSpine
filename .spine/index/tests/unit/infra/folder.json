@@ -1,17 +1,17 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "tests/unit/infra",
-  "role": "Unit test suite for ArchSpine's infrastructure layer, covering configuration, credentials, database, document handling, LLM integration, manifest, MCP, git hooks, repository strategy, and rules loading.",
-  "responsibility": "Collectively, these tests validate the correctness, error handling, and integration of key infrastructure modules to ensure reliable operation of the ArchSpine mirror system.",
+  "role": "This directory contains unit tests for the core infrastructure layer of ArchSpine, covering configuration, credentials, database, LLM, repository strategy, and manifest management modules.",
+  "responsibility": "The tests in this directory collectively ensure that ArchSpine's infrastructure components—such as configuration resolution, credential storage, database schema initialization, LLM provider settings, repository drift detection, manifest file management, and boundary enforcement—behave correctly, handle errors gracefully, and maintain test isolation through temporary directories and mock cleanup. They validate both public API contracts and internal utilities, providing confidence that the underlying system is robust and well-integrated.",
   "children": [
     {
       "filePath": "tests/unit/infra/config-validation.test.ts",
-      "role": "Unit test suite for the configuration validation module of ArchSpine.",
+      "role": "Test suite for configuration validation logic, exercising the `Config` facade and `resolveSpineConfig` function.",
       "fileKind": "source"
     },
     {
       "filePath": "tests/unit/infra/config.test.ts",
-      "role": "Test suite for the Config configuration management class.",
+      "role": "Test suite for the Config infrastructure module, validating configuration persistence and LLM provider/model settings.",
       "fileKind": "source"
     },
     {
@@ -51,7 +51,7 @@
     },
     {
       "filePath": "tests/unit/infra/llm-provider-utils.test.ts",
-      "role": "Vitest test suite exercising LLM provider utility functions (parseMarkdownBlocks, parseStructuredResponse, and related helpers).",
+      "role": "Vitest test suite for LLM provider utility functions (parseMarkdownBlocks, parseStructuredResponse, and related helpers).",
       "fileKind": "source"
     },
     {
@@ -86,7 +86,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-10T05:12:33.965Z",
+    "indexedAt": "2026-05-12T05:21:34.160Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

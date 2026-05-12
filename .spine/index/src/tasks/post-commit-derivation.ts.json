@@ -2,45 +2,45 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/tasks/post-commit-derivation.ts",
-    "contentHash": "de87a76130e7be971089ab4d9b4267a1636ba3a239f2e30d22f73ed8641232a9",
+    "contentHash": "9254eec521f7fb088b4b6e99224e88e1f4c74fa8db4f9ba7700037dfde4c3f63",
     "skeletonHash": "0c585f67ed7ec04808d4980c9275203cc9fa6ec1a16109dee0c0c809c6a3f785",
-    "semanticHash": "0c58272758678fe6ea828e4019bc3393f63d97d0018f85809cf1d95605cfbb8d",
+    "semanticHash": "27038b1d9c2bc98a04726b9f28e647272b7024cda30219d5eb168bceffb03e14",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/tasks"
   },
   "semantic": {
-    "role": "Composite task orchestrating the post-commit derivation pipeline: runs aggregation, reverse-indexing, knowledge-graph, and view-derivation sub-tasks, then writes the spine README and regenerates all view artifacts.",
+    "role": "Pipeline orchestration task that executes the post-commit derivation stage of the ArchSpine mirror system. It composes sub-tasks for reverse indexing, aggregation, knowledge graph generation, and view derivation, then writes the control plane README and final artifacts.",
     "responsibilities": [
-      "Executes the AggregationTask via TaskRunner to produce aggregated semantic data.",
-      "Executes the ReverseIndexingTask via TaskRunner to build reverse indexes.",
-      "Executes the KnowledgeGraphTask via TaskRunner to construct the module dependency graph.",
-      "Executes the ViewDerivationTask via TaskRunner to derive view artifacts.",
-      "Writes the `.spine/README.md` control plane document with instructions for AI agents.",
-      "Clears previous view artifacts using ViewService.clearViewArtifacts.",
-      "Regenerates all view artifacts by running the view regeneration function for each view definition (VIEW_DEFINITIONS).",
-      "Saves the final god document via ctx.outputManager.saveGodDoc."
+      "Run the reverse indexing sub-task (ReverseIndexingTask) to build term-to-document mappings.",
+      "Run the aggregation sub-task (AggregationTask) to summarize module-level properties.",
+      "Run the knowledge graph sub-task (KnowledgeGraphTask) to generate module dependency graphs.",
+      "Run the view derivation sub-task (ViewDerivationTask) to produce human-readable views (e.g., agent briefing, diagnostics).",
+      "Write the .spine/README.md file that describes the control plane for AI agents.",
+      "Clear prior view artifacts before regeneration to ensure a clean output set.",
+      "Save the god doc (comprehensive module documentation) to the output manager.",
+      "Orchestrate sub-tasks in a defined order and handle their lifecycle via shared TaskRunner instances."
     ],
     "outOfScope": [
-      "Does not parse CLI commands or handle user input.",
-      "Does not implement the logic of individual derivation sub-tasks (delegates to dedicated task classes).",
-      "Does not manage runtime sessions, checkpoints, or scan policies.",
-      "Does not define view definitions or rendering logic."
+      "CLI command parsing or direct user interaction.",
+      "Core pipeline scheduling beyond this single stage.",
+      "HTTP server or MCP tool definitions.",
+      "Direct manipulation of the file system beyond artifact writing.",
+      "Performing the actual analysis algorithms (delegated to sub-tasks)."
     ],
     "invariants": [
-      "The sub-tasks are always executed in the fixed order: aggregation, reverse-indexing, knowledge-graph, view-derivation.",
-      "After execution completes, the spine README and all view artifacts are guaranteed to reflect the current codebase state.",
-      "Each sub-task is executed through the TaskRunner, respecting pipeline execution semantics and error handling.",
-      "The task operates within the CommitStageOutput context and produces no return value (void)."
+      "PostCommitDerivationTask must run only after a commit stage completes (i.e., it receives CommitStageOutput as input).",
+      "Sub-tasks are executed sequentially and independently; failures in one should not prevent others from being attempted (but current code does not show error handling — assume sequential with possible early exit).",
+      "The control plane README and all view artifacts are overwritten on each execution."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a single, well-defined entry point for all post-commit derivation work, ensuring data consistency across derived artifacts after each commit.",
-      "recentChangeIntent": "Refactored as part of infrastructure cleanup to remove legacy CLI aliases and rebuild documentation; the core orchestration logic remains intact."
+      "architecturalIntent": "Introduce a dedicated pipeline stage that consolidates all derivation work after a commit, ensuring the .spire control plane is always up-to-date and consistent.",
+      "recentChangeIntent": "4a75a38 fix: resolve ESLint errors, E2E prompt injection, and better-sqlite3 compat – this commit likely addressed lint issues and compatibility but did not alter the semantic role or public surface of this file."
     },
     "publicSurface": [
       {
         "symbolName": "PostCommitDerivationTask",
-        "description": "Exported class that orchestrates the full post-commit derivation pipeline. External modules instantiate and run this task to regenerate all derived data (aggregation, indexes, knowledge graph, views) after a commit."
+        "description": "Exported class that orchestrates the post-commit derivation pipeline. Consumers (e.g., the main pipeline) instantiate this task and run it via TaskRunner after a commit. It executes reverse indexing, aggregation, knowledge graph generation, view derivation, and writes the control plane README."
       }
     ],
     "ruleViolations": [],
@@ -48,22 +48,23 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Composite task orchestrating the post-commit derivation pipeline: runs aggregation, reverse-indexing, knowledge-graph, and view-derivation sub-tasks, then writes the spine README and regenerates all view artifacts.",
+        "role": "Pipeline orchestration task that executes the post-commit derivation stage of the ArchSpine mirror system. It composes sub-tasks for reverse indexing, aggregation, knowledge graph generation, and view derivation, then writes the control plane README and final artifacts.",
         "responsibilities": [
-          "Executes the AggregationTask via TaskRunner to produce aggregated semantic data.",
-          "Executes the ReverseIndexingTask via TaskRunner to build reverse indexes.",
-          "Executes the KnowledgeGraphTask via TaskRunner to construct the module dependency graph.",
-          "Executes the ViewDerivationTask via TaskRunner to derive view artifacts.",
-          "Writes the `.spine/README.md` control plane document with instructions for AI agents.",
-          "Clears previous view artifacts using ViewService.clearViewArtifacts.",
-          "Regenerates all view artifacts by running the view regeneration function for each view definition (VIEW_DEFINITIONS).",
-          "Saves the final god document via ctx.outputManager.saveGodDoc."
+          "Run the reverse indexing sub-task (ReverseIndexingTask) to build term-to-document mappings.",
+          "Run the aggregation sub-task (AggregationTask) to summarize module-level properties.",
+          "Run the knowledge graph sub-task (KnowledgeGraphTask) to generate module dependency graphs.",
+          "Run the view derivation sub-task (ViewDerivationTask) to produce human-readable views (e.g., agent briefing, diagnostics).",
+          "Write the .spine/README.md file that describes the control plane for AI agents.",
+          "Clear prior view artifacts before regeneration to ensure a clean output set.",
+          "Save the god doc (comprehensive module documentation) to the output manager.",
+          "Orchestrate sub-tasks in a defined order and handle their lifecycle via shared TaskRunner instances."
         ],
         "outOfScope": [
-          "Does not parse CLI commands or handle user input.",
-          "Does not implement the logic of individual derivation sub-tasks (delegates to dedicated task classes).",
-          "Does not manage runtime sessions, checkpoints, or scan policies.",
-          "Does not define view definitions or rendering logic."
+          "CLI command parsing or direct user interaction.",
+          "Core pipeline scheduling beyond this single stage.",
+          "HTTP server or MCP tool definitions.",
+          "Direct manipulation of the file system beyond artifact writing.",
+          "Performing the actual analysis algorithms (delegated to sub-tasks)."
         ]
       }
     }
@@ -247,11 +248,18 @@
         "targetPath": "src/tasks/view-derivation.ts",
         "relation": "references",
         "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/tasks/post-commit-derivation.ts/_file_#",
+        "targetSymbol": "src/services/view/view-service.ts/ViewService#",
+        "targetPath": "src/services/view/view-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
       }
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:04:53.061Z",
+    "indexedAt": "2026-05-12T05:19:45.795Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

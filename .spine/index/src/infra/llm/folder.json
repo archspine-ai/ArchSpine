@@ -1,17 +1,17 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/infra/llm",
-  "role": "Defines the core abstractions and runtime infrastructure for interacting with Large Language Models (LLMs) in the ArchSpine system, including type contracts, provider factory, global configuration management, retry logic, and runtime resolution.",
-  "responsibility": "Provides a unified interface for LLM communication by specifying transport contracts, managing provider-agnostic configuration and secrets, constructing provider-specific clients via a central factory, implementing resilient retry mechanisms for transient errors, and resolving runtime settings from multiple sources (project, global, environment) to deliver a ready-to-use LLM client.",
+  "role": "LLM abstraction and orchestration layer for the ArchSpine mirror system, providing a unified interface to interact with various language model providers.",
+  "responsibility": "Defines contracts (LLMClient, LLMTransport, etc.) for interacting with external LLMs, implements provider-specific transports (OpenAI, Gemini, mock), manages global and project-level configuration and secrets, resolves runtime LLM settings, generates and parses prompts for different file kinds (config, document, folder, project, source), and includes retry logic with exponential backoff for transient errors — collectively enabling AI-driven architectural evaluation and documentation generation.",
   "children": [
     {
       "filePath": "src/infra/llm/base.ts",
-      "role": "Type contract layer defining the core abstractions for LLM interaction: transport, provider, client, and response contracts. Serves as the canonical type specification that all LLM providers must implement.",
+      "role": "Interface definitions for the LLM abstraction layer, establishing the contract between ArchSpine and external language model providers.",
       "fileKind": "source"
     },
     {
       "filePath": "src/infra/llm/factory.ts",
-      "role": "LLM Transport Factory — Central factory that constructs LLMTransport instances for specific providers based on a provider string, acting as the public entry point for provider instantiation.",
+      "role": "Infrastructure factory implementing the Factory Method pattern to instantiate provider-specific LLM transport clients. Acts as the central point for provider selection and initialization in the ArchSpine LLM subsystem.",
       "fileKind": "source"
     },
     {
@@ -20,8 +20,13 @@
       "fileKind": "source"
     },
     {
+      "filePath": "src/infra/llm/orchestrator.ts",
+      "role": "LLM orchestration service implementing the LLMClient interface. Coordinates prompt generation, LLM transport calls, and structured response parsing for multiple file kinds (config, document, folder, project, source).",
+      "fileKind": "source"
+    },
+    {
       "filePath": "src/infra/llm/providers",
-      "role": "LLM transport providers and utility modules for interacting with large language models across different AI platforms.",
+      "role": "Provides concrete LLM transport implementations and testing utilities for the ArchSpine mirror system.",
       "fileKind": "folder"
     },
     {
@@ -36,7 +41,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-10T05:12:10.519Z",
+    "indexedAt": "2026-05-12T05:21:33.230Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

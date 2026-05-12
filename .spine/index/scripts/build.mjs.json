@@ -3,25 +3,26 @@
   "identity": {
     "filePath": "scripts/build.mjs",
     "contentHash": "5645e777be2a99a7cd0b985fcf960da9b8565edf8ae66f0aec90c7ebd5ab56be",
-    "semanticHash": "316653e99ae29eeb27788bc839107abfd2bfa8a6e26e599dc9e53865a5bddd03",
+    "semanticHash": "5f07e50be12c097d0e8661755a8cd91dbc0fdac19f5694a7e042d54c0ea787d5",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "scripts"
   },
   "semantic": {
-    "role": "Build script for the ArchSpine project that compiles TypeScript, copies assets, and cleans up build artifacts.",
+    "role": "Build orchestration script for the ArchSpine project (TypeScript compilation, resource copying, and mock cleanup).",
     "responsibilities": [
-      "TypeScript compilation via tsc",
-      "Copying AST rule files (YAML) to dist",
-      "Copying project assets (excluding .ts files and mock directories)",
-      "Removing __mocks__ directories from dist",
-      "Setting executable permission on CLI entry point"
+      "Cleans and rebuilds the dist/ directory from scratch",
+      "Runs the TypeScript compiler (tsc) to produce compiled JavaScript",
+      "Copies static rule files from src/ast/rules to dist/ast/rules",
+      "Recursively copies src/assets to dist/assets (excluding .ts files and __mocks__ directories)",
+      "Removes all __mocks__ directories from the dist/ tree after build",
+      "Makes the CLI entry point (dist/cli/index.js) executable"
     ],
     "outOfScope": [
-      "Runtime execution",
-      "Unit testing",
-      "Deployment",
-      "Development environment setup"
+      "Test execution or test infrastructure",
+      "TypeScript configuration or error handling beyond build",
+      "Runtime behavior of the built application",
+      "Package management or dependency installation"
     ],
     "invariants": [],
     "changeIntent": {
@@ -33,14 +34,13 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This script automates the build process for the ArchSpine project. It compiles TypeScript source code using the TypeScript compiler, copies configuration files for abstract syntax tree rules (YAML files) into the distribution directory, and replicates all project assets while excluding TypeScript source files and mock directories. It also cleans up any residual mock directories within the built output to ensure a clean distribution.",
-        "context_and_audience": "This document is intended for developers and maintainers of the ArchSpine project who need to understand how the project is built. It serves as the primary build script invoked during development and release workflows.",
+        "purpose": "This document (a build script) ensures that every developer and CI pipeline produces a consistent, production-ready dist/ output for the ArchSpine mirror system. It eliminates stale artifacts, enforces coverage of critical files (rules and assets), and prevents mock data from leaking into the final build.",
+        "context_and_audience": "Written for developers who maintain the ArchSpine build process, CI/CD engineers, and anyone modifying the project’s compilation steps. The script assumes the repository is already installed and dependencies available, and it runs as part of pre-publish or CI steps.",
         "key_takeaways": [
-          "The build process starts by removing the previous dist directory and running tsc.",
-          "Non-'.ts' asset files are copied from src/assets to dist/assets.",
-          "Rule YAML files under src/ast/rules are copied directly to dist/ast/rules.",
-          "All __mocks__ directories are recursively removed from the dist output.",
-          "The CLI entry point (dist/cli/index.js) is made executable."
+          "The build resets dist/, compiles TypeScript, then copies non-`.ts` resources from `src/ast/rules` and `src/assets`.",
+          "Mock directories (`__mocks__`) are explicitly excluded during copy and removed recursively after build to prevent testing artifacts from appearing in the distribution.",
+          "The CLI entry point is given execute permission automatically.",
+          "Customization points: `shouldExcludeDistEntry()` allows extending exclusion logic for other directory names or patterns."
         ]
       }
     }
@@ -70,7 +70,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:51:28.555Z",
+    "indexedAt": "2026-05-12T05:16:52.615Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

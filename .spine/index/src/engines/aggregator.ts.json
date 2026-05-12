@@ -2,41 +2,40 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/engines/aggregator.ts",
-    "contentHash": "e88ed21e47ed1c1f26106e78e17e8192c5f348705938b90c88ce3d3230eff8af",
+    "contentHash": "8f811aa669695d0f4f44621ca1ad01c3f4c7cc26d7f42f2da566bedd2622f985",
     "skeletonHash": "7d7bf89dae497d21fcebb9e9a09222462895c887ca10bec8a392576fc5054dad",
-    "semanticHash": "b35564510da9725ee133a838fb7dfc944858043c3fddfcb91ff395b85ecf4c6d",
+    "semanticHash": "a7e554d004feaca422fa4c30ba4d2131f0ec833c2a52933f6c4a208c508978dd",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/engines"
   },
   "semantic": {
-    "role": "Engine module responsible for reading, validating, and aggregating spine index documents (folder units, project units) from the .spine/index directory into a unified in-memory structure for downstream analysis and transformation.",
+    "role": "Engine module that aggregates project directory structure into a hierarchical SpineProjectUnit by scanning folders, reading index documents, and validating compatibility.",
     "responsibilities": [
-      "Load and parse all spine index documents (folder units and project units) from the filesystem under the .spine/index directory.",
-      "Validate index documents for compatibility with the current schema using isCompatibleIndexDocument.",
-      "Aggregate individual folder units and project units into a combined representation that preserves hierarchy and provenance.",
-      "Report read issues (e.g., invalid or incompatible index files) via reportIndexReadIssueOnce.",
-      "Provide a central access point for other engine modules to retrieve the aggregated spine index for further processing."
+      "Recursively scan a root project directory to discover all subfolders and nested project structures.",
+      "For each discovered folder, construct a SpineFolderUnit containing references to child folders and projects.",
+      "For each discovered project, read its spine index document (if present) and validate compatibility via `isCompatibleIndexDocument`.",
+      "Assemble the aggregated hierarchy into a single SpineProjectUnit with metadata (schema version, generator version, provenance).",
+      "Provide an idempotent aggregation method that can be called to regenerate the spine structure from disk state."
     ],
     "outOfScope": [
-      "Writing or modifying index documents on disk (read-only operation).",
-      "Direct filesystem management — delegated to FileSystemManager.",
-      "CLI interaction or user-facing output.",
-      "Service-level orchestration or scheduling logic."
+      "LLM interaction or prompt handling (imports LLMClient type only, not used in aggregation logic).",
+      "CLI argument parsing or command execution.",
+      "HTTP server or API endpoint definitions.",
+      "MCP tool definitions or protocol handling."
     ],
     "invariants": [
-      "Must not import any CLI entrypoint modules or service orchestrators (engine-independence rule).",
-      "All index documents must be checked for schema compatibility before inclusion in the aggregate.",
-      "The aggregated structure must preserve the original folder hierarchy and provenance metadata."
+      "Engine Independence: The module must not import CLI entrypoints; it only imports shared types, utilities, and infra helpers – confirmed compliant.",
+      "Decoupling from Service Orchestration: The module should not depend on service orchestration layers; it uses only foundational infra (fs, path, index-reader) – confirmed compliant."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a reusable engine that reads and aggregates spine index documents from the filesystem, serving as the data foundation for analysis and transformation pipelines while maintaining decoupling from presentation and orchestration layers.",
-      "recentChangeIntent": "This file was part of a bulk sync and release gate fix pass; no specific functional change is indicated by the commit message alone."
+      "architecturalIntent": "Provide the core aggregation engine for the ArchSpine system, enabling building of a complete hierarchical spine index from a project directory.",
+      "recentChangeIntent": "Initial commit – established the foundational Aggregator class as the central engine for scanning and indexing project structures."
     },
     "publicSurface": [
       {
         "symbolName": "Aggregator",
-        "description": "Primary class for reading and merging spine index documents from the .spine/index directory. Provides methods to load folder units and project units, validate compatibility, and aggregate them into a unified data structure. Consumed by other engine modules and services that need the aggregated index."
+        "description": "Class that scans a root directory, discovers folders and nested projects, reads their spine index documents (if compatible), and builds a SpineProjectUnit representing the full aggregated hierarchy. Instances are created with rootDir and spineIndexDir, and a public method (likely `aggregate` or `run`) returns the aggregated project unit."
       }
     ],
     "ruleViolations": [],
@@ -44,19 +43,19 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Engine module responsible for reading, validating, and aggregating spine index documents (folder units, project units) from the .spine/index directory into a unified in-memory structure for downstream analysis and transformation.",
+        "role": "Engine module for aggregating project directory structure into a hierarchical SpineProjectUnit.",
         "responsibilities": [
-          "Load and parse all spine index documents (folder units and project units) from the filesystem under the .spine/index directory.",
-          "Validate index documents for compatibility with the current schema using isCompatibleIndexDocument.",
-          "Aggregate individual folder units and project units into a combined representation that preserves hierarchy and provenance.",
-          "Report read issues (e.g., invalid or incompatible index files) via reportIndexReadIssueOnce.",
-          "Provide a central access point for other engine modules to retrieve the aggregated spine index for further processing."
+          "Recursively scan a root project directory to discover subfolders and nested projects.",
+          "Construct SpineFolderUnit objects for each folder, with references to child folders and projects.",
+          "Read and validate spine index documents for each discovered project using `isCompatibleIndexDocument`.",
+          "Assemble the entire tree into a single SpineProjectUnit with metadata including schema version, generator version, and provenance.",
+          "Provide a public method to execute the aggregation and return the final unit."
         ],
         "outOfScope": [
-          "Writing or modifying index documents on disk (read-only operation).",
-          "Direct filesystem management — delegated to FileSystemManager.",
-          "CLI interaction or user-facing output.",
-          "Service-level orchestration or scheduling logic."
+          "LLM interaction or prompt handling.",
+          "CLI argument parsing or command execution.",
+          "HTTP server or API endpoint definitions.",
+          "MCP tool definitions or protocol handling."
         ]
       }
     }
@@ -205,7 +204,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:55:16.560Z",
+    "indexedAt": "2026-05-12T05:18:24.293Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

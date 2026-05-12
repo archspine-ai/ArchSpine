@@ -3,28 +3,25 @@
   "identity": {
     "filePath": "schemas/examples/spine-manifest.example.json",
     "contentHash": "6c1009c06613b2ae16e560f9f4ae8e9a49999f38cb4f2e122cd3caa5d99cf48b",
-    "semanticHash": "d22c83e7819588e2c3806d9463ec60e501d88deb2c93de083c42a38cab0ffd8c",
+    "semanticHash": "d21089f7e4b3e4f6fc2fb249790b905be695a22026ae65f408fd444235cbb933",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas/examples"
   },
   "semantic": {
-    "role": "Index record for the ArchSpine mirror system, tracking the state of indexed source files, synchronization metadata, and reverse index completeness.",
+    "role": "Configuration manifest for the ArchSpine mirror system, tracking indexed files and synchronization state.",
     "responsibilities": [
-      "Maintain content hashes (SHA-256) for each tracked source file to detect modifications",
-      "Record synchronization timestamps and mode (full/incremental) for mirror coherence",
-      "Track the completion status of reverse index construction",
-      "Provide a count of indexed units for verification and reporting"
+      "File index tracking and hash verification",
+      "Sync state management (mode, timestamps, completion flags)",
+      "Reverse index completeness indicator",
+      "Content source existence validation"
     ],
     "outOfScope": [],
     "invariants": [
-      "contentHash must be exactly 64 hexadecimal characters (SHA-256 digest)",
-      "fileKind must be a valid enumerated value such as 'source' or 'doc'",
-      "sourceExists must be a boolean (true or false)",
-      "lastIndexedAt must be a valid ISO 8601 timestamp with timezone",
-      "sync.lastSyncMode must be either 'full' or 'incremental'",
-      "reverseIndexComplete must be a boolean",
-      "indexedUnitCount must be a non-negative integer"
+      "Each file entry must have a unique contentHash matching the source file",
+      "sourceExists must accurately reflect actual filesystem state",
+      "indexedUnitCount must equal the number of file entries in the files block",
+      "reverseIndexComplete must be true before reverse lookups are considered reliable"
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -35,23 +32,22 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "This configuration file functions as the authoritative index for the ArchSpine mirror system. It records every source file that has been indexed, along with its cryptographic hash, last indexing timestamp, and existence status. The sync section logs the most recent synchronization event, including the mode (full or incremental) and whether the reverse index is fully built. The indexedUnitCount provides a quick sanity check on the total number of indexed units.",
+        "role": "Configuration manifest for the ArchSpine mirror system, tracking indexed files and synchronization state.",
         "parameter_definitions": {
-          "schemaVersion": "Defines the version of the index schema. Changing this without migrating can break consumers expecting certain fields.",
-          "generatorVersion": "Identifies the tool and version that generated this index. Useful for debugging and compatibility checks.",
-          "createdAt": "Timestamp when this index was first created. Not updated on subsequent syncs; used for auditing.",
-          "updatedAt": "Timestamp of the last modification to this index. Affects sync decision logic if the index is stale.",
-          "sync.lastSyncAt": "Records when the last synchronization with the source repository completed. Used by orchestrators to decide if a new sync is needed.",
-          "sync.lastSyncMode": "Indicates whether the last sync was a full rebuild or an incremental update. A full sync may overwrite incremental state; safety implications if modes mismatch.",
-          "sync.reverseIndexComplete": "Boolean flag indicating whether the reverse index (mapping from queries to files) is fully built. If false, search and lookup operations may return incomplete results.",
-          "sync.indexedUnitCount": "Total number of indexed units (files or documents). Provides a quick check for data integrity; a mismatch may indicate corruption or incomplete indexing.",
-          "files.<path>.contentHash": "SHA-256 hash of the file content. Used to detect changes. A mismatch between this hash and the actual file could cause stale index or incorrect mirror state.",
-          "files.<path>.fileKind": "Categorizes the file as 'source' or 'doc'. Affects how the file is processed in downstream pipelines (e.g., compilation vs documentation rendering).",
-          "files.<path>.lastIndexedAt": "Timestamp of when the file was last indexed. Helps determine if the file needs re-indexing after modification.",
-          "files.<path>.docs": "Array of associated documentation references. Currently empty; may be used to link documentation to source files. Integrity impacts if not properly populated.",
-          "files.<path>.sourceExists": "Boolean indicating whether the source file still exists on disk. If false, the index may be stale and require cleanup."
+          "schemaVersion": "Defines the expected structure version for parsing. A mismatch may cause the system to reject the file or behave unpredictably.",
+          "generatorVersion": "Records the tool that generated this manifest; important for debugging compatibility issues.",
+          "createdAt / updatedAt": "Timestamps indicating when the manifest was created and last modified, used to detect stale configurations.",
+          "sync.lastSyncAt": "Timestamp of the last full or partial synchronization; used to determine if cached data is fresh.",
+          "sync.lastSyncMode": "Either 'full' or 'incremental' – a full sync ensures all entries are verified, while incremental may miss changes.",
+          "sync.reverseIndexComplete": "When false, reverse lookups (e.g., 'find files containing this term') are unavailable or incomplete; may break features relying on reverse indexing.",
+          "sync.indexedUnitCount": "Number of units (typically files) that have been indexed. Must match the count of file keys for consistency.",
+          "files.<path>.contentHash": "SHA-256 hash of the file content. Used to detect modifications; any mismatch indicates data drift and potential corruption.",
+          "files.<path>.fileKind": "Classifies the file (e.g., 'source'), affecting how it is processed by downstream tools.",
+          "files.<path>.lastIndexedAt": "Timestamp of last indexing of that specific file; older entries may cause stale search results.",
+          "files.<path>.docs": "Array of documentation metadata extracted from the file; empty if not yet parsed.",
+          "files.<path>.sourceExists": "Boolean flag indicating if the file still exists on disk. If false but the entry remains, the index may be stale and cause errors when accessing the file."
         },
-        "stability_and_risks": "The stability of the ArchSpine mirror system depends heavily on the accuracy of the content hashes and synchronization timestamps. An incorrect hash can cause the system to miss file changes, leading to stale index data. If reverseIndexComplete is false, query operations may return incomplete or incorrect results, affecting downstream consumers like AI agents or search interfaces. The indexedUnitCount mismatch may go unnoticed if monitoring is absent, leading to silent data loss. Files marked with sourceExists: false but still present in the index can cause orphaned references. Overall, this file must be kept in strict sync with the actual source repository to ensure system integrity."
+        "stability_and_risks": "This configuration file is critical for the internal consistency of the ArchSpine mirror environment. The most sensitive parameters are `reverseIndexComplete` (if false, many query features degrade) and `sourceExists` flags (false positives can cause runtime errors when attempting to read missing files). Hash mismatches between `contentHash` and actual file content indicate silent data corruption. The `indexedUnitCount` must be manually verified against the actual file list to avoid index drift. Correct synchronization mode and timestamps ensure that downstream consumers operate on up-to-date data. Any manual edits to this file risk breaking the synchronization pipeline."
       }
     }
   },
@@ -73,7 +69,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-11T05:40:14.745Z",
+    "indexedAt": "2026-05-12T05:16:32.299Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

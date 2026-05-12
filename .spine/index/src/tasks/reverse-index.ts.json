@@ -2,43 +2,43 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/tasks/reverse-index.ts",
-    "contentHash": "bbee6a177b4e99c77c9ac349c749e39cbc3e0dc4963cbd54ff2ffb32b4336362",
+    "contentHash": "ea8b0b4869bb0746c1e0bce402cc59c1bd9fd4bc768519b66d8c8ffd7d687892",
     "skeletonHash": "f593abbfd5c146f5c74ba91c743c80938e34b0038713d24fcf13a543729fa96a",
-    "semanticHash": "de5aaa97aa6db8a0926f4a4fc27b23e2a1eadde81985b23e112ed91cfa18f4d6",
+    "semanticHash": "b10979d7284f5f6137b78b2960fcf2017485fb52e012751ca688e08fffc64215",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/tasks"
   },
   "semantic": {
-    "role": "Pipeline task stage responsible for computing reverse dependency edges by scanning tracked source files for index documents and caching the resulting dependency graph.",
+    "role": "Pipeline stage module that constructs the reverse dependency index (dependency→dependents mapping) from index documents of tracked files.",
     "responsibilities": [
-      "Retrieve all tracked files from the scanner context.",
-      "For each tracked file, read its index document if present and compatible.",
-      "Extract source path and target path from each index document to build reverse dependency edges.",
-      "Cache reverse edges in an in-memory map indexed by target path.",
-      "Report warnings for files without a compatible index document via `reportIndexReadIssueOnce`.",
-      "Override `exec` method to orchestrate the iterative scanning and edge-building.",
-      "Provide checkpoint ID 'reverse-index' for pipeline resumption."
+      "Build and persist the reverse dependency index from index documents of all tracked files.",
+      "Leverage the file scanner to enumerate tracked files and read their index documents.",
+      "Cache built reverse edges in memory using indexCache and reverseEdges structures.",
+      "Support idempotent execution via manifest checkpoint (isReverseIndexComplete).",
+      "Report index read issues using reportIndexReadIssueOnce.",
+      "Write reverse index files to disk using the runtime IO system."
     ],
     "outOfScope": [
-      "File content analysis or AST extraction beyond index document reading.",
-      "CLI command parsing or any user-facing I/O.",
-      "Orchestration of services outside the core task contract (e.g., database writes, MCP tools).",
-      "Writing or updating index documents; it is a read-only consumer of the index cache."
+      "File scanning (handled by scanner).",
+      "CLI command parsing or service orchestration.",
+      "Forward index generation or document parsing.",
+      "User interaction or configuration management."
     ],
     "invariants": [
-      "The task must only depend on core contracts (`SpineTask`, `TaskContext`) and index-reader utilities.",
-      "Reverse edges are built purely from the index documents of tracked files, not from dynamic analysis.",
-      "The task must not modify the scanner state or manifest; it only reads from them."
+      "Every input index document must be compatible according to isCompatibleIndexDocument; incompatible documents trigger a warning and are skipped.",
+      "The stage must not execute if ctx.manifest.isReverseIndexComplete is already true.",
+      "The reverse index is built only from tracked files returned by ctx.scanner.getAllTrackedFiles.",
+      "The output reverse index is persisted as a file in the index directory per index document."
     ],
     "changeIntent": {
-      "architecturalIntent": "To compute a reverse dependency graph from existing index documents, enabling downstream views (e.g., change-impact, risk-hotspots) to assess which files depend on a given module.",
-      "recentChangeIntent": "The recent commit 'refactor: remove legacy CLI aliases, rebuild docs, fix schema and tests' does not modify this file's public contract or implementation logic; minimal impact."
+      "architecturalIntent": "Provide reverse dependency indexing capability as a pipeline stage in the ArchSpine dependency graph engine.",
+      "recentChangeIntent": "Initial implementation of the reverse indexing stage."
     },
     "publicSurface": [
       {
         "symbolName": "ReverseIndexingTask",
-        "description": "Class that extends SpineTask to scan tracked files and build a reverse dependency index. Executed as a pipeline stage; exports its results via the checkpointed state for downstream views."
+        "description": "Pipeline stage that builds and persists the reverse dependency index (dependent→dependency edges) for all tracked files. Used by the task runner during the indexing phase."
       }
     ],
     "ruleViolations": [],
@@ -46,21 +46,20 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Pipeline task stage responsible for computing reverse dependency edges by scanning tracked source files for index documents and caching the resulting dependency graph.",
+        "role": "Pipeline stage module that constructs the reverse dependency index (dependency→dependents mapping) from index documents of tracked files.",
         "responsibilities": [
-          "Retrieve all tracked files from the scanner context.",
-          "For each tracked file, read its index document if present and compatible.",
-          "Extract source path and target path from each index document to build reverse dependency edges.",
-          "Cache reverse edges in an in-memory map indexed by target path.",
-          "Report warnings for files without a compatible index document via reportIndexReadIssueOnce.",
-          "Override exec method to orchestrate the iterative scanning and edge-building.",
-          "Provide checkpoint ID 'reverse-index' for pipeline resumption."
+          "Build and persist the reverse dependency index from index documents of all tracked files.",
+          "Leverage the file scanner to enumerate tracked files and read their index documents.",
+          "Cache built reverse edges in memory using indexCache and reverseEdges structures.",
+          "Support idempotent execution via manifest checkpoint (isReverseIndexComplete).",
+          "Report index read issues using reportIndexReadIssueOnce.",
+          "Write reverse index files to disk using the runtime IO system."
         ],
         "outOfScope": [
-          "File content analysis or AST extraction beyond index document reading.",
-          "CLI command parsing or any user-facing I/O.",
-          "Orchestration of services outside the core task contract (e.g., database writes, MCP tools).",
-          "Writing or updating index documents; it is a read-only consumer of the index cache."
+          "File scanning (handled by scanner).",
+          "CLI command parsing or service orchestration.",
+          "Forward index generation or document parsing.",
+          "User interaction or configuration management."
         ]
       }
     }
@@ -145,7 +144,7 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "../core/task.js",
+        "targetPath": "src/core/task.js",
         "relation": "import",
         "symbols": [
           "SpineTask",
@@ -153,14 +152,21 @@
         ]
       },
       {
-        "targetPath": "../types/protocol.js",
+        "targetPath": "src/core/task-types.js",
+        "relation": "import",
+        "symbols": [
+          "CommitStageOutput"
+        ]
+      },
+      {
+        "targetPath": "src/types/protocol.js",
         "relation": "import",
         "symbols": [
           "SpineUnit"
         ]
       },
       {
-        "targetPath": "../infra/index-reader.js",
+        "targetPath": "src/infra/index-reader.js",
         "relation": "import",
         "symbols": [
           "isCompatibleIndexDocument",
@@ -206,7 +212,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:04:41.223Z",
+    "indexedAt": "2026-05-12T05:20:04.056Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

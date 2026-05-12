@@ -3,23 +3,22 @@
   "identity": {
     "filePath": "src/ast/rules/python.yml",
     "contentHash": "a42746ecb518eb1bfce2c6a98bb878edff7650b2e13fdaa3ae3234a56cfda574",
-    "semanticHash": "168b5790aecc424f00166e3e7ca03efa2919fe14bcf8cd0757d018e59c6c2b96",
+    "semanticHash": "a55e667ddf07c3491560e0afb5cae8d37502fc1a5b954e9a2688c29b8707e1c4",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/ast/rules"
   },
   "semantic": {
-    "role": "Defines AST extraction rules for the ArchSpine scanner to detect imports, exports, and usages in Python source code.",
+    "role": "Defines language-specific extraction patterns for code analysis.",
     "responsibilities": [
-      "Specifies pattern templates for matching import statements (from-import and simple import).",
-      "Specifies pattern templates for matching export declarations (__all__, functions, classes, async functions, variables).",
-      "Specifies pattern templates for matching usage occurrences (function calls and property access).",
-      "Acts as a language-specific rule file that the ArchSpine AST extractor uses to build a symbol map of a Python codebase."
+      "Provides pattern templates for identifying import statements in Python source code.",
+      "Specifies pattern templates for extracting exported symbols (functions, classes, variables, async functions, and __all__ lists).",
+      "Defines pattern templates for detecting usages (function calls and property accesses)."
     ],
     "outOfScope": [
-      "Does not cover other programming languages or their syntax variants.",
-      "Does not define runtime behavior, compilation, or execution semantics.",
-      "Does not include architectural governance or naming conventions for the project itself."
+      "Runtime execution or dependency resolution logic.",
+      "Pattern definitions for languages other than Python.",
+      "Configuration of analysis scopes or project-specific rules."
     ],
     "invariants": [],
     "changeIntent": {
@@ -31,14 +30,13 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document provides the ArchSpine scanner with a precise set of pattern definitions needed to parse Python code and extract structural information such as imports, exports, and usage references.",
-        "context_and_audience": "The intended readers are the ArchSpine system itself (especially the AST extractor module and its maintainers) and developers contributing to ArchSpine’s multi-language scanning capabilities. It is used during the indexing phase to automatically build a symbol graph of a repository’s Python code.",
+        "purpose": "This document serves as a configuration file that encodes syntactic patterns for a static analysis tool (part of the ArchSpine system). Its role is to teach the analyzer how to recognize common Python constructs—imports, exports, and usages—by providing template strings with placeholders.",
+        "context_and_audience": "Written for developers and AI agents maintaining the ArchSpine mirror system. It is a low-level pattern definition file, not a user-facing narrative. The intended reader is someone extending or debugging the code analysis engine.",
         "key_takeaways": [
-          "The file defines three categories of patterns: imports, exports, and usages.",
-          "Export patterns distinguish between list-type exports, functions, classes, async functions, and plain variable assignments.",
-          "Each pattern uses a template syntax with placeholders like $SOURCE, $$$SYMBOLS, $NAME, $$$ARGS, $BODY, $OBJ, and $VAL.",
-          "The patterns are language-specific and are deployed alongside other language rule files (e.g., for TypeScript, Rust, Go) to support cross-language scanning.",
-          "ArchSpine uses these patterns to detect dependencies, public surfaces, and usage hotspots during a scan."
+          "Defines two import patterns: 'from X import Y' and 'import Y' with symbol extraction via $$$SYMBOLS.",
+          "Defines export patterns for functions (sync/async), classes, variables, and __all__ lists, with name and argument extraction.",
+          "Defines usage patterns for function calls and property accesses, enabling detection of how symbols are used in code.",
+          "Uses a consistent placeholder syntax: $$$ for variable-length tokens, $NAME/$OBJ for single identifiers."
         ]
       }
     }
@@ -61,7 +59,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:52:50.164Z",
+    "indexedAt": "2026-05-12T05:17:33.216Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

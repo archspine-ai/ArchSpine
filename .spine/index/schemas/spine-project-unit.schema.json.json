@@ -3,24 +3,27 @@
   "identity": {
     "filePath": "schemas/spine-project-unit.schema.json",
     "contentHash": "c7274001b0270538fec96a7e7437a48b44e5c3b2c7419d4cd35bd096b6b2367a",
-    "semanticHash": "4194abc049160a90cff8009fd1c45d2d295cbea310effc19bd42086f4bb9ee45",
+    "semanticHash": "7f0b23737f48c3177a9291264f4511dbb02126eaee5bba38758dc116a982c663",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas"
   },
   "semantic": {
-    "role": "Define the structure and validation rules for ArchSpine project unit configuration files.",
+    "role": "Defines the structure and metadata for a SpineProjectUnit, a core component of the ArchSpine mirror system that describes a project's modules and their responsibilities.",
     "responsibilities": [
-      "Schema validation system",
-      "Project unit data model",
-      "Configuration integrity checking"
+      "Validation of project unit configuration files",
+      "Enforcement of required metadata (schemaVersion, projectName, role, responsibility, modules, provenance)",
+      "Definition of module hierarchy via directory, role, and childCount",
+      "Tracking of configuration provenance (indexedAt, generatorVersion, pipelineStages)"
     ],
     "outOfScope": [],
     "invariants": [
       "All required fields must be present: schemaVersion, projectName, role, responsibility, modules, provenance",
-      "Additional properties are forbidden",
-      "childCount must be a non-negative integer",
-      "All string fields must be non-empty"
+      "No additional properties allowed (additionalProperties: false)",
+      "childCount must be a non-negative integer (minimum: 0)",
+      "All string fields must be non-empty (via nonEmptyString ref)",
+      "directory must be a valid scopePath",
+      "indexedAt must be an ISO timestamp"
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -31,16 +34,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Defines the structure and validation rules for ArchSpine project unit configuration files.",
+        "role": "This JSON Schema validates configuration files for SpineProjectUnit entities in the ArchSpine mirror system. It ensures every project unit carries essential identity, role, responsibility, module list, and provenance metadata.",
         "parameter_definitions": {
-          "schemaVersion": "Controls the schema version compatibility. Must match the expected version to prevent parsing errors.",
-          "projectName": "Identifies the project. Used across the system for routing and display. Must be non-empty.",
-          "role": "Describes the functional role of this project unit. Used for architectural classification.",
-          "responsibility": "Describes the responsibility of the project unit. Used for context and governance.",
-          "modules": "Array of module descriptors. Each specifies a directory, role, and number of child items. Controls the system's understanding of the module structure.",
-          "provenance": "Tracks metadata about when and how this configuration was generated. Includes timestamp, generator version, and pipeline stages. Important for auditing and replay."
+          "schemaVersion": "Schema version identifier. Mismatches can cause validation failures, preventing incompatible configurations from loading.",
+          "projectName": "Unique name for the project unit. Required for system identification, routing, and referencing.",
+          "role": "Functional role of the project unit within the broader mirror system. Influences orchestration decisions and error handling.",
+          "responsibility": "High-level description of the unit's responsibility. Used for documentation, monitoring, and debugging.",
+          "modules": "Array of module definitions. Each module must specify a directory (scopePath), role (non-empty string), and childCount (integer >=0). Controls module hierarchy and resource allocation.",
+          "provenance": "Object tracking configuration origin. Contains indexedAt (timestamp), generatorVersion (version string), and pipelineStages (array). Critical for audit trails, reproducibility, and compatibility checks.",
+          "directory": "Relative filesystem path to the module. Must conform to scopePath constraints; impacts permission checks and file operations.",
+          "childCount": "Number of child modules under this directory. Zero is allowed. Operational impact on scaling, load balancing, and resource provisioning.",
+          "indexedAt": "ISO timestamp of when this unit was last indexed. Used for freshness comparisons and synchronization.",
+          "generatorVersion": "Version of the tool that generated this configuration. Enables compatibility checks and migration decisions.",
+          "pipelineStages": "List of pipeline processing stages that this configuration has passed through. Aids debugging, auditing, and root-cause analysis."
         },
-        "stability_and_risks": "This schema defines the contract for project unit configuration files. Any violation of required fields or constraints will cause validation failures, potentially halting pipeline processing. Incorrect values (e.g., non-existent directories, non-integer childCount) can lead to downstream errors in aggregation, scanning, and view generation. The schema's strict additionalProperties enforcement ensures no unknown fields are accidentally introduced, which could cause silent data loss or misinterpretation. Maintaining backward compatibility when evolving this schema is crucial to avoid breaking existing configurations."
+        "stability_and_risks": "This schema enforces a rigid, predefined structure for all SpineProjectUnits. Validation failures result in immediate rejection of the configuration, preventing misconfigured units from entering the system. The `additionalProperties: false` constraint blocks extraneous keys, reducing the risk of silent inconsistencies but limiting extensibility. The `childCount` minimum of 0 prevents negative values that could cause resource overallocation errors. Required fields ensure critical metadata is always present, which enhances traceability and system predictability. However, any schema changes require coordinated updates across all consuming systems, making backward compatibility a key concern. Overall, this schema promotes system stability by enforcing consistent structure, but introduces coupling that must be managed with care."
       }
     }
   },
@@ -62,7 +70,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:51:21.999Z",
+    "indexedAt": "2026-05-12T05:17:04.552Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

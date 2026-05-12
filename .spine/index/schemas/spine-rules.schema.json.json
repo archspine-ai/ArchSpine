@@ -3,25 +3,27 @@
   "identity": {
     "filePath": "schemas/spine-rules.schema.json",
     "contentHash": "5b225a87d53d0d6e9145d758d0ef11810730c38104b5435b6ddaf17eceda04f6",
-    "semanticHash": "812816860d4068bae5d654ffeeabf437c290e83c11e96e40ed10e9149451e5fd",
+    "semanticHash": "4c5496b66254643003f8d1f0b52d1ee59474c019b2dc76029e30f8e28672e3b0",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas"
   },
   "semantic": {
-    "role": "Defines the formal schema for ArchSpine rule documents, ensuring all rules in the system conform to a consistent structure and validation contract.",
+    "role": "Defines the formal schema for SpineRule documents within ArchSpine, enabling consistent validation and enforcement of architectural or behavioral policies.",
     "responsibilities": [
-      "Rule lifecycle management",
-      "Enforcement severity classification",
-      "Rule applicability scoping",
-      "Rule content validation"
+      "Rule definition system (policy authoring and storage)",
+      "Validation engine (schema compliance checking)",
+      "Enforcement pipeline (severity-based rule activation)",
+      "Documentation generation (bodyMarkdown content)"
     ],
     "outOfScope": [],
     "invariants": [
-      "Every rule document MUST include schemaVersion, ruleId, title, summary, appliesTo, severity, enforceable, and bodyMarkdown.",
-      "ruleId MUST match the pattern ^[a-z0-9]+(?:-[a-z0-9]+)*$.",
-      "severity MUST be one of 'advisory', 'warning', 'error'.",
-      "appliesTo array MUST contain at least one non-empty string."
+      "All SpineRule documents MUST include schemaVersion, ruleId, title, summary, appliesTo (array with at least one item), severity (one of advisory/warning/error), enforceable (boolean), and bodyMarkdown.",
+      "Additional properties beyond the defined ones are strictly prohibited (additionalProperties: false).",
+      "ruleId MUST conform to lowercase kebab-case pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "schemaVersion MUST be a valid version string as defined in shared.schema.json",
+      "AppliesTo array must contain at least one non-empty string item.",
+      "Rationale is optional and can be null or a string."
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -32,19 +34,19 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "This schema defines the required structure and validation rules for any SpineRuleDocument used within the ArchSpine governance system. It acts as the contract that all rule definitions must satisfy before they can be loaded and enforced.",
+        "role": "This schema establishes the required structure and content validation rules for every SpineRule document used across ArchSpine. SpineRules are the backbone of policy-driven configuration – they define what patterns or behaviors are allowed, warned about, or rejected. The schema ensures that all rules are self-documenting (via bodyMarkdown), version-tracked (schemaVersion), and clearly scoped (appliesTo).",
         "parameter_definitions": {
-          "schemaVersion": "Specifies the version of the schema to allow forward compatibility and migration logic.",
-          "ruleId": "Unique identifier for the rule, must be kebab-case. Used for referencing and deduplication across the rule corpus.",
-          "title": "Human-readable short name of the rule, displayed in reports and logs.",
-          "summary": "Brief explanation of the rule's purpose, used for quick understanding in dashboards and rule listings.",
-          "appliesTo": "List of file patterns or module scopes the rule should be evaluated against. An empty list is invalid.",
-          "severity": "Controls the impact level: 'advisory' for suggestions, 'warning' for non-blocking violations, 'error' for blocking violations that can halt CI pipelines.",
-          "enforceable": "Boolean flag indicating whether the rule can be automatically enforced or is purely informational.",
-          "rationale": "Optional field providing design rationale or justification; not used in enforcement logic but aids maintainers.",
-          "bodyMarkdown": "Full rule description in Markdown format, may contain examples and explanations. Must be non-empty."
+          "schemaVersion": "Semantic version string from shared.schema. Controls which version of the rule format is in use; mismatches can break cross-system rule processing.",
+          "ruleId": "Unique, human-readable identifier in kebab-case. Used for referencing and deduplication. Must be globally unique within the rule database.",
+          "title": "Short, human-readable headline for the rule. Shown in dashboards and reports.",
+          "summary": "Brief explanation of what the rule enforces or advises. Used in quick overviews and filtering.",
+          "appliesTo": "Array of scoping tags (e.g., 'modulename', 'architecture-layer') that determine which artifacts this rule targets. At least one tag is required; empty lists are invalid.",
+          "severity": "Enforcement level: advisory (informational), warning (non-blocking alert), error (blocking violation). Higher severity may halt builds or deployments.",
+          "enforceable": "Boolean flag indicating whether automation should enforce this rule. False means the rule is for documentation or manual review only.",
+          "rationale": "Optional reasoning behind the rule. Helps human readers understand intent; null allowed for concise rules.",
+          "bodyMarkdown": "Markdown-formatted long description covering rule details, examples, exceptions, and remediation steps. Must be non-empty to ensure rules remain actionable."
         },
-        "stability_and_risks": "The schema ensures that all rule documents are structurally sound and semantically complete. By enforcing required fields and value constraints, it prevents runtime errors caused by malformed rules. The severity enum directly governs CI pipeline behaviour — setting an 'error' severity will cause pipeline failures on violations, so misconfiguration here can block deployments. The 'enforceable' flag determines whether automated repair attempts are made; incorrect settings could lead to either missed opportunities for auto-fix or unwanted modifications. Overall, this file is critical for maintaining rule integrity and system predictability; any version mismatches or schema drift could cause rules to be silently skipped or produce inconsistent enforcement."
+        "stability_and_risks": "The schema promotes strict consistency: all rules share an identical structure, reducing parsing errors. However, the invariants are rigid – if a rule document lacks any required field or adds an unsupported property, it will be rejected by validators. This could cause deployment failures if legacy rules are not updated. The severity enum prevents misuse of custom levels but limits flexibility. The pattern constraint on ruleId avoids spaces and special characters but rules authored with underscores or mixed case will fail validation. Overall, this schema improves system stability by enforcing a contract, but any change to it (e.g., adding new required fields) will break all existing rule documents until they are migrated."
       }
     }
   },
@@ -66,7 +68,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:51:16.191Z",
+    "indexedAt": "2026-05-12T05:17:01.528Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

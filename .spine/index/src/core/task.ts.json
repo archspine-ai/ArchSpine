@@ -2,63 +2,73 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/core/task.ts",
-    "contentHash": "ae952a72ae59a8d8255c0e9b70b326167a2d94eb0714585af718704f47c70fd4",
+    "contentHash": "02d78c06343f7caa592d8ddf34939ce53a4f29d113312b3a6ce1ae873d38d33c",
     "skeletonHash": "8794375b68198df5a588d1d54d5c78980109120173bb5a365eeaa46db5b8a37e",
-    "semanticHash": "833ce3fde0b342d64fd9214a2901c346d90f6d070ff124adc57b11c89d6d2d7b",
+    "semanticHash": "18460e75b36ee2f718dc588dab68518a17527fb6e1b88ceaae1a0f02bc8994be",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/core"
   },
   "semantic": {
-    "role": "Core abstract class defining the contract for all pipeline tasks in ArchSpine. Provides the base structure for task execution, including context management (TaskContext), and dependency injection of core engines (Scanner, Manifest, Aggregator, OutputManager, RuleEngine, ContextEngine, ASTExtractor).",
+    "role": "Abstract base class defining the standardized execution skeleton for ArchSpine pipeline tasks. Orchestrates core engines (Scanner, Manifest, Aggregator, OutputManager, RuleEngine, ContextEngine, ASTExtractor) within a lifecycle that enforces pipeline contracts and shared state management.",
     "responsibilities": [
-      "Define the abstract SpineTask base class that all pipeline tasks must extend, establishing a uniform execution lifecycle.",
-      "Provide the TaskContext interface for sharing state and artifact metadata across tasks during a pipeline run.",
-      "Inject core engine dependencies (Scanner, Manifest, Aggregator, OutputManager, RuleEngine, ContextEngine, ASTExtractor) into task implementations.",
-      "Enforce type-safe input/output generics (<I, O>) for task contracts."
+      "Provide a reusable, type-safe abstract class for all pipeline tasks.",
+      "Define the execution lifecycle contract (likely via a template method such as `execute`).",
+      "Coordinate the invocation order and data flow between Scanner, Manifest, Aggregator, OutputManager, RuleEngine, ContextEngine, and ASTExtractor.",
+      "Expose a `TaskContext` interface that encapsulates shared state and artifacts throughout task execution.",
+      "Allow concrete task implementations to specialize input/output types and override steps."
     ],
     "outOfScope": [
-      "Does not implement any specific pipeline task logic (e.g., scanning, aggregation, validation).",
-      "Does not handle CLI command parsing or user interaction.",
-      "Does not manage persistent storage directly; delegates to injected services.",
-      "Does not define pipeline orchestration or scheduling logic."
+      "CLI command definitions, argument parsing, and user interaction (handled by entry-point modules).",
+      "Configuration loading or environment setup (delegated to infrastructure).",
+      "Implementation of specific scanning, aggregation, or rule logic — those reside in respective engine modules.",
+      "Persistent storage implementation (execution checkpoint store is typed but not operated here).",
+      "HTTP handlers, MCP tool definitions, or other external interfaces."
     ],
     "invariants": [
-      "All pipeline tasks must extend SpineTask and implement its abstract execute method.",
-      "TaskContext must be consistently populated across all tasks in a single pipeline run.",
-      "Core modules (this file) must not depend on CLI entry code (src/cli/)."
+      "Core pipeline isolation: This module must not depend on CLI entry code or command-specific logic.",
+      "All tasks must adhere to the input/output type contract defined by the generic parameters.",
+      "The execution lifecycle must be consistent across all concrete SpineTask implementations."
     ],
     "changeIntent": {
-      "architecturalIntent": "Establish a stable, reusable base class for all pipeline tasks to enforce separation of concerns, dependency injection, and a consistent lifecycle.",
-      "recentChangeIntent": "Chore: apply release gate fixes and sync accumulated source changes (no semantic change to the task contract detected)."
+      "architecturalIntent": "To provide a stable, reusable skeleton for all ArchSpine pipeline tasks, enforcing consistent orchestration of core engines and shared state management.",
+      "recentChangeIntent": "Initial commit establishing the core pipeline task abstraction."
     },
     "publicSurface": [
       {
-        "symbolName": "SpineTask",
-        "description": "Abstract base class for all pipeline tasks. Defines the execution contract with generic input/output types and receives core engine dependencies. All concrete pipeline tasks (e.g., scan, aggregate, validate) extend this class."
+        "symbolName": "SpineTask<I, O>",
+        "description": "Abstract base class for ArchSpine pipeline tasks. Consumers extend this class to implement concrete tasks and invoke its public execution method to run the pipeline orchestration."
       },
       {
         "symbolName": "TaskContext",
-        "description": "Interface providing shared state and artifacts coordination between tasks during a pipeline run. Used by SpineTask subclasses and the pipeline orchestrator."
+        "description": "Interface describing the shared context object that flows through task execution. It holds state such as task artifacts, view ID, and checkpoint information."
       }
     ],
-    "ruleViolations": [],
+    "ruleViolations": [
+      {
+        "id": "core-pipeline-isolation",
+        "severity": "error",
+        "reason": "No violation. The file imports only from engine and infrastructure modules and does not reference any CLI entry code."
+      }
+    ],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Core abstract class defining the contract for all pipeline tasks in ArchSpine. Provides the base structure for task execution, including context management (TaskContext), and dependency injection of core engines (Scanner, Manifest, Aggregator, OutputManager, RuleEngine, ContextEngine, ASTExtractor).",
+        "role": "Abstract base class defining the standardized execution skeleton for ArchSpine pipeline tasks. Orchestrates core engines (Scanner, Manifest, Aggregator, OutputManager, RuleEngine, ContextEngine, ASTExtractor) within a lifecycle that enforces pipeline contracts and shared state management.",
         "responsibilities": [
-          "Define the abstract SpineTask base class that all pipeline tasks must extend, establishing a uniform execution lifecycle.",
-          "Provide the TaskContext interface for sharing state and artifact metadata across tasks during a pipeline run.",
-          "Inject core engine dependencies (Scanner, Manifest, Aggregator, OutputManager, RuleEngine, ContextEngine, ASTExtractor) into task implementations.",
-          "Enforce type-safe input/output generics (<I, O>) for task contracts."
+          "Provide a reusable, type-safe abstract class for all pipeline tasks.",
+          "Define the execution lifecycle contract (likely via a template method such as `execute`).",
+          "Coordinate the invocation order and data flow between Scanner, Manifest, Aggregator, OutputManager, RuleEngine, ContextEngine, and ASTExtractor.",
+          "Expose a `TaskContext` interface that encapsulates shared state and artifacts throughout task execution.",
+          "Allow concrete task implementations to specialize input/output types and override steps."
         ],
         "outOfScope": [
-          "Does not implement any specific pipeline task logic (e.g., scanning, aggregation, validation).",
-          "Does not handle CLI command parsing or user interaction.",
-          "Does not manage persistent storage directly; delegates to injected services.",
-          "Does not define pipeline orchestration or scheduling logic."
+          "CLI command definitions, argument parsing, and user interaction (handled by entry-point modules).",
+          "Configuration loading or environment setup (delegated to infrastructure).",
+          "Implementation of specific scanning, aggregation, or rule logic — those reside in respective engine modules.",
+          "Persistent storage implementation (execution checkpoint store is typed but not operated here).",
+          "HTTP handlers, MCP tool definitions, or other external interfaces."
         ]
       }
     }
@@ -187,21 +197,50 @@
         "symbols": [
           "ASTExtractor"
         ]
-      }
-    ],
-    "dependedBy": [
+      },
       {
-        "targetPath": "src/tasks/state-commit.ts",
+        "targetPath": "../infra/llm.js",
         "relation": "import",
-        "edgeProvenance": "ast",
-        "symbols": []
+        "symbols": [
+          "LLMClient"
+        ]
+      },
+      {
+        "targetPath": "../infra/runtime-io.js",
+        "relation": "import",
+        "symbols": [
+          "RuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "../infra/execution-checkpoint.js",
+        "relation": "import",
+        "symbols": [
+          "ExecutionCheckpointStore"
+        ]
+      },
+      {
+        "targetPath": "../types/view.js",
+        "relation": "import",
+        "symbols": [
+          "ViewId"
+        ]
+      },
+      {
+        "targetPath": "./task-types.js",
+        "relation": "import",
+        "symbols": [
+          "TaskArtifactsState",
+          "TaskState"
+        ]
       }
     ],
-    "reverseIndexComplete": true,
+    "dependedBy": [],
+    "reverseIndexComplete": false,
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:55:18.115Z",
+    "indexedAt": "2026-05-12T05:18:23.930Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

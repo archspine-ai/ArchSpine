@@ -2,31 +2,35 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "tests/e2e/cli-real-llm.test.ts",
-    "contentHash": "39f8ef113ce0c85b787c88233b2fdf7b7380dfa2aec13737542bf7c112fe5aa8",
+    "contentHash": "e676ce6421728512fdac0062d8eb11f440a854dfd5ce349f71d4c4146963443d",
     "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
-    "semanticHash": "e390d877114a964d5949d27b1d024c5748e0417d15b2b5046d067c25f50426b5",
+    "semanticHash": "714d594805ee67d27cafde9bab667ff7f02550fabe372862bfb89a7a3b2a507e",
     "language": "typescript",
     "fileKind": "source",
     "scope": "tests/e2e"
   },
   "semantic": {
-    "role": "End-to-end test suite for the ArchSpine CLI pipeline with a mock LLM provider.",
+    "role": "End-to-end (E2E) integration test suite for the ArchSpine CLI.",
     "responsibilities": [
-      "Sets up isolated temporary directories with initialized Git repositories for test isolation.",
-      "Invokes the built CLI binary via child_process to simulate user interactions.",
-      "Verifies that CLI commands (scan, sync, etc.) produce correct output and exit codes.",
-      "Ensures the full pipeline (scanning, analysis, indexing) behaves correctly under controlled, mock conditions."
+      "Sets up isolated temporary directories with git initialization to test the CLI in a clean environment.",
+      "Invokes the built CLI binary (`dist/cli/index.js`) and captures its stdout/stderr exit codes to verify behavior.",
+      "Creates configuration files (e.g., `.archspine/arch-spine-config.json`) and validates the CLI's ability to read and output configuration.",
+      "Cleans up temporary directories after each test to ensure isolation between test cases.",
+      "Verifies that the CLI correctly initializes a mirror repository and produces expected log output."
     ],
     "outOfScope": [
-      "Unit-level testing of internal modules; this suite tests the integrated CLI binary end-to-end.",
-      "Testing with real LLM providers; LLM interactions are mocked or simulated."
+      "Not a production module; does not define any public API or export symbols.",
+      "Not intended for unit testing of internal components or library code.",
+      "Does not test the CLI in a production deployment scenario (uses a local build)."
     ],
     "invariants": [
-      "Test files in the repository must end with .test.ts or .spec.ts (architectural rule)."
+      "All tests must use the built CLI from `dist/cli/index.js`.",
+      "Each test must clean up its temporary directory after execution.",
+      "Tests must run in an isolated temporary directory with a fresh git repository."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide deterministic, isolated E2E coverage of the CLI pipeline to catch regressions before release.",
-      "recentChangeIntent": "refactor: remove legacy CLI aliases, rebuild docs, fix schema and tests — this test file was likely updated to match CLI changes."
+      "architecturalIntent": "Provide real-user simulation tests that validate the CLI's end-to-end workflow without mocking the file system or git.",
+      "recentChangeIntent": "The commit message 'fix: resolve ESLint errors, E2E prompt injection, and better-sqlite3 compat' suggests that the test suite may have been adjusted to fix issues with prompt injection and compatibility, though no direct evidence of that is visible in the symbolic AST."
     },
     "publicSurface": [],
     "ruleViolations": [],
@@ -34,16 +38,18 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "End-to-end test suite for the ArchSpine CLI pipeline with a mock LLM provider.",
+        "role": "End-to-end integration test suite for the ArchSpine CLI.",
         "responsibilities": [
-          "Sets up isolated temporary directories with initialized Git repositories for test isolation.",
-          "Invokes the built CLI binary via child_process to simulate user interactions.",
-          "Verifies that CLI commands (scan, sync, etc.) produce correct output and exit codes.",
-          "Ensures the full pipeline (scanning, analysis, indexing) behaves correctly under controlled, mock conditions."
+          "Sets up isolated temporary directories with git initialization to test the CLI in a clean environment.",
+          "Invokes the built CLI binary (`dist/cli/index.js`) and captures its stdout/stderr and exit codes to verify behavior.",
+          "Creates configuration files (e.g., `.archspine/arch-spine-config.json`) and validates the CLI's ability to read and output configuration.",
+          "Cleans up temporary directories after each test to ensure isolation between test cases.",
+          "Verifies the CLI correctly initializes a mirror repository and produces expected log output."
         ],
         "outOfScope": [
-          "Unit-level testing of internal modules; this suite tests the integrated CLI binary end-to-end.",
-          "Testing with real LLM providers; LLM interactions are mocked or simulated."
+          "Not a production module; does not define any public API or export symbols.",
+          "Not intended for unit testing of internal components or library code.",
+          "Does not test the CLI in a production deployment scenario (uses a local build)."
         ]
       }
     }
@@ -160,21 +166,21 @@
         "targetPath": "fs",
         "relation": "import",
         "symbols": [
-          "*"
+          "fs"
         ]
       },
       {
         "targetPath": "os",
         "relation": "import",
         "symbols": [
-          "*"
+          "os"
         ]
       },
       {
         "targetPath": "path",
         "relation": "import",
         "symbols": [
-          "*"
+          "path"
         ]
       }
     ],
@@ -183,7 +189,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:06:33.308Z",
+    "indexedAt": "2026-05-12T05:20:31.855Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -3,31 +3,23 @@
   "identity": {
     "filePath": "src/ast/rules/ruby.yml",
     "contentHash": "7178e863ee5049deff496cf460f55497ef210b861f609471f8382ac3b183323b",
-    "semanticHash": "3ad64d974f9275e6fadd6fc57c79283f21a20e955d5c303e44cd758fae2fc55c",
+    "semanticHash": "f90a9f7ad23c0260c250c34a8a88ac7fa003542ac2993ec959d5dbdba5780d71",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/ast/rules"
   },
   "semantic": {
-    "role": "This document defines the architecture, behavior, and protocol of ArchSpine, a mirror system that creates and maintains a synchronized, governance-aware representation of a software repository for both human and AI consumption.",
+    "role": "Configuration defining scanning patterns for Ruby code analysis",
     "responsibilities": [
-      "Repository scanning and file indexing",
-      "Rule-based architecture enforcement (layered architecture, naming conventions)",
-      "AST extraction for multiple programming languages",
-      "Synchronization between source repository and mirrored artifacts",
-      "View generation (architecture diagrams, public surface, risk hotspots, project health)",
-      "Integration with LLM providers and MCP tools",
-      "Manifest management and integrity verification",
-      "AI agent briefing and change impact analysis",
-      "Sync, check, fix, scan, view, init, try, remove, config, info, rules, skill CLI commands",
-      "Documentation and atlas for multi-language support"
+      "Defining import detection patterns (require, require_relative, load)",
+      "Defining export detection patterns (class, module, function)",
+      "Defining usage/call patterns",
+      "Maintenance of Ruby code analysis rules"
     ],
     "outOfScope": [
-      "Real-time code compilation or execution",
-      "User authentication and authorization systems",
-      "Deployment pipelines and CI/CD orchestration outside of provided integrations",
-      "Direct modification of source code beyond suggested fixes",
-      "Network monitoring or external service availability"
+      "Other programming languages",
+      "Actual Ruby source code analysis logic",
+      "Business rules of the ArchSpine mirror system"
     ],
     "invariants": [],
     "changeIntent": {
@@ -39,15 +31,15 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "The purpose of this document is to serve as the authoritative narrative and technical reference for the ArchSpine mirror system. It explains why ArchSpine exists: to bridge the gap between raw codebases and structured, governance-aware representations that both humans and AI agents can navigate and use reliably. The document outlines the core concepts—spine, atlas, manifest, rules, views—and how they interact to maintain a living mirror of a repository's architecture and health.",
-        "context_and_audience": "This document is intended for developers, architects, and AI agent operators who need to understand or contribute to the ArchSpine system. It is also designed for AI agents themselves, providing structured schemas and rules to allow automated tooling to consume, validate, and extend the mirrored representation. Teams adopting governance workflows, or those seeking to integrate AI assistance into their development process without losing architectural coherence, will find this document essential.",
+        "purpose": "To provide a machine-readable specification for how ArchSpine should parse Ruby source files to understand dependencies and symbols.",
+        "context_and_audience": "This document is intended for developers configuring the ArchSpine code analysis engine, specifically for Ruby projects. It defines the pattern rules for imports, exports, and usages that govern how the system extracts structural metadata from Ruby code.",
         "key_takeaways": [
-          "ArchSpine maintains a synchronized mirror of a codebase, enabling both human understanding and AI-driven tooling.",
-          "The system enforces architecture rules (e.g., layered architecture, naming conventions) through scans and checkpoints.",
-          "AST extraction supports multiple programming languages, allowing language-specific rule application.",
-          "Views and briefings provide actionable insights such as risk hotspots, public surface analysis, and project health.",
-          "MCP integration allows AI agents to query and interact with the mirrored repository in real time.",
-          "The manifest and index ensure integrity and traceability of the mirrored state across versions."
+          "The file uses YAML to define pattern rules for imports, exports, and usages.",
+          "Each pattern has an id, a pattern string, and optionally a kind field for exports.",
+          "Imports are matched via require, require_relative, and load statements.",
+          "Exports include classes, modules, and functions (def).",
+          "Usages cover method calls and generic function calls.",
+          "Maintenance involves updating patterns to support Ruby language changes or project-specific conventions."
         ]
       }
     }
@@ -70,7 +62,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:53:06.753Z",
+    "indexedAt": "2026-05-12T05:17:40.115Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

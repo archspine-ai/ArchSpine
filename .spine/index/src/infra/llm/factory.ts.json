@@ -2,41 +2,41 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/infra/llm/factory.ts",
-    "contentHash": "ef7d36598e99f82fedee71f515ef9123354fba45f2f55b826706d427b829b59c",
-    "skeletonHash": "3512255b9321e68a48dcdde0cfc81e8ad18a1ee989c2ea60787cb87b9feb8958",
-    "semanticHash": "826fe8545e6046d8f786639a683a9e9193a13212dff72129d32aa4c53946c136",
+    "contentHash": "78c3024c3db46bd82309b0050b27802e30865503c0344eaeaff7bc045eba54f5",
+    "skeletonHash": "9e67de5b886a5e698c4754039896bb96a07fca1c9dae45aa52795d3118202a97",
+    "semanticHash": "83cc2455f9aac7f5cf4e478cb72990587d99828ed06dfb38b2a5608a14093eb5",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/llm"
   },
   "semantic": {
-    "role": "LLM Transport Factory — Central factory that constructs LLMTransport instances for specific providers based on a provider string, acting as the public entry point for provider instantiation.",
+    "role": "Infrastructure factory implementing the Factory Method pattern to instantiate provider-specific LLM transport clients. Acts as the central point for provider selection and initialization in the ArchSpine LLM subsystem.",
     "responsibilities": [
-      "Creates LLMTransport objects for OpenAI-compatible providers (OpenAI, DeepSeek, OpenRouter, Groq) and Gemini.",
-      "Maps a provider string to the appropriate concrete client implementation.",
-      "Throws an error when an unsupported provider name is passed."
+      "Map provider name strings (e.g., 'openai', 'deepseek', 'gemini') to corresponding concrete LLM client implementations (OpenAICompatibleClient, GeminiClient).",
+      "Construct and return an LLMTransport instance configured with the given ProviderConfig, abstracting away provider-specific instantiation details.",
+      "Perform case-insensitive provider name matching to ensure robust selection.",
+      "Throw an Error for unsupported provider names to enforce a closed set of known providers."
     ],
     "outOfScope": [
-      "Does not manage LLM runtime lifecycle, retries, or configuration loading.",
-      "Does not handle authentication or credential resolution."
+      "Handling network communication, request lifecycle, or token estimation – delegated to the transport clients.",
+      "Managing provider API keys or credential rotation – expected from ProviderConfig.",
+      "Performing prompt formatting or inference logic.",
+      "Provider-specific configuration validation beyond what is required for instantiation."
     ],
     "invariants": [
-      "The factory must return an LLMTransport for any supported provider string.",
-      "The provider string comparison must be case-insensitive.",
-      "Unsupported providers must result in a thrown Error."
+      "The createTransport method must always return an object conforming to the LLMTransport interface.",
+      "Provider name matching must be case-insensitive (via toLowerCase).",
+      "Unsupported provider names must throw an Error.",
+      "The factory must not leak provider-specific imports or implementation details to consumers."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a stable, centralized factory for creating LLM transport instances, isolating provider-specific client code behind a single dispatch point.",
-      "recentChangeIntent": "ArchSpine v1.0.0 — consolidates LLM provider instantiation into a factory pattern to support architectural governance across multiple AI providers."
+      "architecturalIntent": "Provide a stable, single-entry point for LLM transport creation that isolates provider instantiation logic and allows easy addition of new providers without affecting consumers.",
+      "recentChangeIntent": "The git log indicates recent fixes for ESLint errors, E2E prompt injection, and better-sqlite3 compatibility. These are maintenance and compatibility fixes with no behavioral change to the factory itself (e.g., no new providers or signature changes)."
     },
     "publicSurface": [
       {
         "symbolName": "LLMFactory",
-        "description": "Class that provides a static factory method for creating LLMTransport instances. Exported for external consumption by all LLM-dependent modules."
-      },
-      {
-        "symbolName": "LLMFactory.createTransport",
-        "description": "Static method that accepts a provider string and ProviderConfig, returns the corresponding LLMTransport. Throws for unsupported providers. The primary instantiation contract for the LLM subsystem."
+        "description": "Factory class providing a static createTransport method for constructing LLM transport clients. This is the sole exported symbol from the module, consumed by higher-level orchestration layers to obtain a configured LLMTransport for a given provider name."
       }
     ],
     "ruleViolations": [],
@@ -44,15 +44,18 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "LLM Transport Factory — Central factory that constructs LLMTransport instances for specific providers based on a provider string, acting as the public entry point for provider instantiation.",
+        "role": "Infrastructure factory implementing the Factory Method pattern to instantiate provider-specific LLM transport clients. Acts as the central point for provider selection and initialization in the ArchSpine LLM subsystem.",
         "responsibilities": [
-          "Creates LLMTransport objects for OpenAI-compatible providers (OpenAI, DeepSeek, OpenRouter, Groq) and Gemini.",
-          "Maps a provider string to the appropriate concrete client implementation.",
-          "Throws an error when an unsupported provider name is passed."
+          "Map provider name strings (e.g., 'openai', 'deepseek', 'gemini') to corresponding concrete LLM client implementations (OpenAICompatibleClient, GeminiClient).",
+          "Construct and return an LLMTransport instance configured with the given ProviderConfig, abstracting away provider-specific instantiation details.",
+          "Perform case-insensitive provider name matching to ensure robust selection.",
+          "Throw an Error for unsupported provider names to enforce a closed set of known providers."
         ],
         "outOfScope": [
-          "Does not manage LLM runtime lifecycle, retries, or configuration loading.",
-          "Does not handle authentication or credential resolution."
+          "Handling network communication, request lifecycle, or token estimation – delegated to the transport clients.",
+          "Managing provider API keys or credential rotation – expected from ProviderConfig.",
+          "Performing prompt formatting or inference logic.",
+          "Provider-specific configuration validation beyond what is required for instantiation."
         ]
       }
     }
@@ -62,7 +65,6 @@
       {
         "source": "'./base.js'",
         "symbols": [
-          "LLMClient",
           "LLMTransport",
           "ProviderConfig"
         ],
@@ -108,23 +110,22 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "src/infra/llm/base.js",
+        "targetPath": "./base.js",
         "relation": "import",
         "symbols": [
-          "LLMClient",
           "LLMTransport",
           "ProviderConfig"
         ]
       },
       {
-        "targetPath": "src/infra/llm/providers/openai.js",
+        "targetPath": "./providers/openai.js",
         "relation": "import",
         "symbols": [
           "OpenAICompatibleClient"
         ]
       },
       {
-        "targetPath": "src/infra/llm/providers/gemini.js",
+        "targetPath": "./providers/gemini.js",
         "relation": "import",
         "symbols": [
           "GeminiClient"
@@ -151,7 +152,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:58:27.470Z",
+    "indexedAt": "2026-05-12T05:18:40.628Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
@@ -163,7 +164,7 @@
     "isHub": true,
     "hubPercentile": 76,
     "inCycle": true,
-    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "cycleId": "src/core → src/types → src/infra",
     "isDeadCodeSuspect": false
   }
 }

@@ -2,74 +2,25 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/infra/llm/providers/utils.ts",
-    "contentHash": "05f3f70e95d5a2464324a6b5d1e6267bf3dad209710f2df333d9f54741df28e7",
-    "skeletonHash": "671f13c24120d2432ae1b589d1c9535a34cf84f08e07ad4a7f856d8ce9945a91",
-    "semanticHash": "0823c757d4fecb0210920aca7fe6bf98d8d22e7c19ab1d050a964875d5c7945e",
+    "contentHash": "57baa65d2643dd832dc22f83b28409b1d47b71634b8dab49834f5d20f99066de",
+    "skeletonHash": "d23c2fa4b318ae500d4558fa5e5b478d699fe972e83339879df686dbd55d6289",
+    "semanticHash": "43d72a0291f4217673728e734f7cb7cc7c41a6f1f801b58a8833602b04ddde49",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/llm/providers"
   },
   "semantic": {
-    "role": "Infrastructure utility module providing low-level parsers for LLM response extraction and prompt context construction in the prompt subsystem.",
-    "responsibilities": [
-      "Combine source content and optional context data into a single string for supporting context, conditionally based on file kind.",
-      "Parse generic markdown code blocks from an LLM response string, returning blocks filtered by requested languages.",
-      "Parse a structured JSON+Markdown response from an LLM into a JSON object, with fallback and cleanup for robustness.",
-      "Merge multiple optional `UsageInfo` objects into a single aggregated usage record, summing fields as appropriate."
-    ],
-    "outOfScope": [
-      "High-level prompt assembly or orchestration.",
-      "Handling of non-markdown or non-JSON response formats.",
-      "Configuration loading or validation.",
-      "LLM API calls or provider abstraction."
-    ],
-    "invariants": [
-      "All exported functions are pure and side-effect free (no I/O, no logging beyond console.warn in parsing fallback).",
-      "The module depends only on `FileKind` from the protocol types layer, no infra or service dependencies.",
-      "Public surface should remain stable; callers should prefer this module over reimplementing parsing logic."
-    ],
+    "role": "Unknown role",
+    "responsibilities": [],
+    "outOfScope": [],
+    "invariants": [],
     "changeIntent": {
-      "architecturalIntent": "Provide reusable, testable parsing utilities to transform raw LLM text output into structured data (JSON, code blocks, usage stats) that downstream prompt builders and response handlers can consume reliably.",
-      "recentChangeIntent": "fix: repair aggregator doc locale lookup and add JSON array parsing resilience (per git intent). The `parseStructuredResponse` likely received added resilience for JSON array parsing (handling arrays at top-level) to fix aggregator locale lookups."
+      "architecturalIntent": null,
+      "recentChangeIntent": null
     },
-    "publicSurface": [
-      {
-        "symbolName": "buildSupportingContext",
-        "description": "Constructs a single string of supporting context by concatenating file content and optional context data, used when the file is a source file; otherwise returns content unchanged."
-      },
-      {
-        "symbolName": "parseMarkdownBlocks",
-        "description": "Extracts all markdown fenced code blocks from a full LLM response string and returns a map of language to block content, filtering to only include requested languages."
-      },
-      {
-        "symbolName": "parseStructuredResponse",
-        "description": "Parses a structured LLM response that contains both a JSON section (wrapped with ---JSON--- markers) and markdown sections, returning the parsed JSON object with fallback for malformed responses."
-      },
-      {
-        "symbolName": "mergeUsage",
-        "description": "Merges multiple optional UsageInfo objects into a single aggregated object, summing numerical fields and combining symbolic values. Returns undefined if no usage data provided."
-      }
-    ],
-    "ruleViolations": [],
+    "publicSurface": [],
     "driftDetected": false,
-    "driftReason": null,
-    "localized": {
-      "English": {
-        "role": "Infrastructure utility module providing low-level parsers for LLM response extraction and prompt context construction in the prompt subsystem.",
-        "responsibilities": [
-          "Combine source content and optional context data into a single string for supporting context, conditionally based on file kind.",
-          "Parse generic markdown code blocks from an LLM response string, returning blocks filtered by requested languages.",
-          "Parse a structured JSON+Markdown response from an LLM into a JSON object, with fallback and cleanup for robustness.",
-          "Merge multiple optional `UsageInfo` objects into a single aggregated usage record, summing fields as appropriate."
-        ],
-        "outOfScope": [
-          "High-level prompt assembly or orchestration.",
-          "Handling of non-markdown or non-JSON response formats.",
-          "Configuration loading or validation.",
-          "LLM API calls or provider abstraction."
-        ]
-      }
-    }
+    "driftReason": null
   },
   "skeleton": {
     "imports": [
@@ -90,12 +41,12 @@
       {
         "name": "parseMarkdownBlocks",
         "kind": "function",
-        "signature": "parseMarkdownBlocks(\n  fullResponse: string,\n  languages: string[],\n)"
+        "signature": "parseMarkdownBlocks(fullResponse: string)"
       },
       {
         "name": "parseStructuredResponse",
         "kind": "function",
-        "signature": "parseStructuredResponse(\n  fullResponse: string,\n  languages: string[],\n  logContext: string,\n)"
+        "signature": "parseStructuredResponse(\n  fullResponse: string,\n  logContext: string,\n)"
       },
       {
         "name": "mergeUsage",
@@ -137,21 +88,13 @@
     }
   },
   "graph": {
-    "dependsOn": [
-      {
-        "targetPath": "../../../types/protocol.js",
-        "relation": "import",
-        "symbols": [
-          "FileKind"
-        ]
-      }
-    ],
+    "dependsOn": [],
     "dependedBy": [],
     "reverseIndexComplete": false,
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:58:58.615Z",
+    "indexedAt": "2026-05-12T05:18:50.845Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
@@ -163,7 +106,7 @@
     "isHub": true,
     "hubPercentile": 76,
     "inCycle": true,
-    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "cycleId": "src/core → src/types → src/infra",
     "isDeadCodeSuspect": false
   }
 }

@@ -3,24 +3,22 @@
   "identity": {
     "filePath": ".spine/rules/naming-conventions.yml",
     "contentHash": "4a4bd7f139cf95424d4829c3369b7e04d197411be0840bdf99aec10d7aae113b",
-    "semanticHash": "d7d4a1ca4e9b458fdce57cfd512179dbd9f1d1de63f4cca311bdff0166fa7eea",
+    "semanticHash": "4190a61ff1515b402b8369595ddad982c4d2acfdbf495b2cf4294d616589c8e0",
     "language": "unsupported",
     "fileKind": "document",
     "scope": ".spine/rules"
   },
   "semantic": {
-    "role": "Defines mandatory naming convention rules for ArchSpine-governed codebases to enforce style consistency and automated validation.",
+    "role": "Define and enforce naming convention rules for the codebase to maintain consistency and readability.",
     "responsibilities": [
-      "Documents two concrete naming rules: Interface Prefix (I-prefix for internal TypeScript interfaces) and Test File Suffix (.test.ts or .spec.ts).",
-      "Specifies scope, severity, constraint, and rationale for each rule.",
-      "Serves as a machine-readable policy that ArchSpine’s enforcement engine can parse and apply during scans.",
-      "Maintains a single source of truth for naming standards across a monorepo or multi-team project."
+      "Interface naming conventions (I prefix) for files under src/types/**/*.ts",
+      "Test file naming conventions (.test.ts or .spec.ts) for files under tests/**",
+      "Maintenance scope: rules are scoped to specific directories and serve as a reference for code review and automated checks"
     ],
     "outOfScope": [
-      "Does not cover class, function, or variable naming conventions.",
-      "Excludes code formatting rules (e.g., indentation, bracket placement).",
-      "Does not address architectural layering or dependency constraints.",
-      "Omits language-specific conventions beyond TypeScript and test file patterns."
+      "Naming conventions for other file types or code elements (classes, functions, variables, etc.)",
+      "Code formatting rules beyond naming (e.g., indentation, spacing)",
+      "Detailed linting tool configuration or severity override justifications"
     ],
     "invariants": [],
     "changeIntent": {
@@ -32,13 +30,12 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document establishes a minimal, enforceable set of naming conventions to keep the codebase consistent and reduce cognitive overhead for developers. By codifying rules like interface prefixes and test file suffixes, it ensures that automated tooling (ArchSpine) can flag violations during scans and guide teams toward a uniform style without manual code reviews.",
-        "context_and_audience": "Intended for software architects, team leads, and developers who configure ArchSpine for their projects. It is especially relevant in large monorepos or multi-repository environments where naming inconsistencies can cause confusion and maintenance overhead. The rules are machine-parsed by ArchSpine's rule engine, so the audience includes both human readers and CI pipelines that enforce the policy.",
+        "purpose": "To document the naming rules that must be followed across the ArchSpine monorepo, ensuring a consistent and predictable codebase style.",
+        "context_and_audience": "This rule list is intended for all developers contributing to the ArchSpine project, especially those creating or modifying TypeScript interfaces in src/types or adding test files under tests/. It serves as a quick reference to avoid style disputes and to align with automated linting expectations.",
         "key_takeaways": [
-          "Two core rules are defined: internal TypeScript interfaces must start with 'I' (severity Warning), and test files must end with '.test.ts' or '.spec.ts' (severity Error).",
-          "Rules include scope paths, constraints, severity levels, and a reasoning field for transparency.",
-          "The document is not merely human documentation — it is an executable policy file that ArchSpine’s scanner and checker consume.",
-          "Out of scope: any naming rule for classes, functions, variables; any formatting rule; any architectural rule."
+          "All internal interfaces in src/types must be prefixed with 'I' (e.g., IUserRepository).",
+          "Test files must end with either .test.ts or .spec.ts to match test runner conventions.",
+          "Violations are treated as Warnings for interface naming and Errors for test file naming, reflecting their relative importance."
         ]
       }
     }
@@ -61,7 +58,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:50:12.255Z",
+    "indexedAt": "2026-05-12T05:15:59.428Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

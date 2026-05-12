@@ -2,51 +2,61 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/services/sync-service.ts",
-    "contentHash": "fc13ba1abcd2d6ea6c107795a196171cc113ddc5a98aa6cb537c5448542f8ca8",
-    "skeletonHash": "0ba94d1b0ea911f8c0a48294f5e7b2812bc4eb77668b833849644be2ebd0062a",
-    "semanticHash": "d87704afa35265ef7a869f370f952b8191c5e6713161dd777ee1d8699f7c1b1f",
+    "contentHash": "e304d28110f79a71ce19f895f0ab667f7a72c94be1b9ae18e2083e7772f17ff8",
+    "skeletonHash": "179efa50fb1a02d53e26429701feb20e86546ad6bbbd94595c26af0eecfa9a9a",
+    "semanticHash": "439f55ed90725dd942dee2ea33cb111daf0d2042c0f4bed78d4f3275c2744659",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/services"
   },
   "semantic": {
-    "role": "Orchestrator service that coordinates the full synchronization pipeline (scan, reconcile, AST extraction, summarization, state commit, post-commit derivation). It is the primary entry point for the sync command and manages runtime sessions, protected output detection, and resume logic.",
+    "role": "Service orchestrator coordinating the multi-stage synchronization pipeline for the ArchSpine mirror system.",
     "responsibilities": [
-      "Orchestrates the complete sync pipeline by instantiating and running TaskRunner with a sequence of tasks (ScanAndCleanupTask, ReconcileTask, ASTExtractionTask, SummarizationTask, StateCommitTask, PostCommitDerivationTask).",
-      "Detects protected output mutations before sync execution via detectProtectedOutputMutations and emits warnings.",
-      "Constructs a task context (createTaskContext) with scanner, runtime IO, and manifest for pipeline execution.",
-      "Supports sync resumption by deriving candidate files from execution checkpoints (deriveSyncResumeCandidateFiles).",
-      "Tracks sync statistics (bytes processed, file counts) and returns a SyncStats report.",
-      "Runs the pipeline within a runtime session (runWithRuntimeSession) for lifecycle management."
+      "Orchestrates the full sync workflow: file scanning, AST extraction, summarization, state commit, reconciliation, and post-commit derivation.",
+      "Manages protected output detection and warnings via spine-gate integration before committing changes.",
+      "Coordinates checkpointing and resume logic through ExecutionCheckpointStore to allow recovery from partial failures.",
+      "Manages language discovery and registry updates to ensure the sync operates on correct file types.",
+      "Evaluates repair policy decisions when the sync encounters drift or corruption.",
+      "Performs file hashing via Manifest to detect stale summaries needing regeneration.",
+      "Wraps the entire workflow inside a runtime session (runWithRuntimeSession) for transactional boundaries and error scoping."
     ],
     "outOfScope": [
-      "Does not handle individual task implementations (those are in src/tasks/).",
-      "Does not manage authentication or network transport.",
-      "Does not directly manipulate the database or file system (delegates to infra modules).",
-      "Does not provide CLI argument parsing or output formatting (handled by CLI commands)."
+      "Implementation details of individual task algorithms (e.g., AST parsing, summarization, reconciliation).",
+      "Low-level filesystem I/O beyond orchestration (delegated to runtimeIO).",
+      "UI/CLI rendering logic (delegated to external UI modules).",
+      "Language registration and extension tracking (handled by LangRegistry).",
+      "Protected output baseline writing and mutation detection (handled by infra/spine-gate)."
     ],
     "invariants": [
-      "Must run within a runtime session via runWithRuntimeSession.",
-      "Must check for protected output mutations before pipeline execution using detectProtectedOutputMutations.",
-      "Must use TaskRunner to sequence tasks in the defined order (scan → reconcile → AST extraction → summarization → state commit → post-commit derivation).",
-      "Services may orchestrate core/tasks/engines/infra modules, but view-specific service modules must reside under src/services/view/ (as per rule service-runtime-boundary)."
+      "The sync workflow must be idempotent – re-running from scratch or resume produces consistent state.",
+      "All protected output mutations must be detected and confirmed by the user before being written.",
+      "Checkpointing must allow resume from the point of failure without redoing completed stages.",
+      "Language registry must be synchronized with the latest discovered languages before task execution."
     ],
     "changeIntent": {
-      "architecturalIntent": "Defines the top-level sync orchestration service that sequences all project snapshot update tasks.",
-      "recentChangeIntent": "Apply release gate fixes and sync accumulated source changes."
+      "architecturalIntent": "Provide a centralized orchestrator that decouples the sync pipeline stages from each other and from the runtime environment, enabling composability and resilience.",
+      "recentChangeIntent": "No direct evidence in the source that this file was modified in the referenced commit; the commit focused on ESLint fixes, prompt injection, and better-sqlite3 compatibility."
     },
     "publicSurface": [
       {
         "symbolName": "SyncService",
-        "description": "Primary service class that orchestrates the full synchronization pipeline. Called by the sync CLI command to update the project state."
+        "kind": "Class",
+        "description": "Primary orchestrator class that executes the entire ArchSpine sync workflow. Consumed by CLI commands and the MCP server to trigger a sync operation."
       },
       {
         "symbolName": "SyncStats",
-        "description": "Interface describing sync execution results including bytes processed, file counts, and task completion status."
+        "kind": "Interface",
+        "description": "Data structure returned after a sync execution, summarizing counts of scanned, extracted, summarized, committed, and reconciled files."
       },
       {
         "symbolName": "SyncExecutionOptions",
-        "description": "Interface defining configurable options for sync execution, such as target paths and resume flags."
+        "kind": "Interface",
+        "description": "Configuration options that control how a single sync run behaves, including resume mode, repair policy, and protected output handling."
+      },
+      {
+        "symbolName": "SyncWorkflowOptions",
+        "kind": "Interface",
+        "description": "Configuration options that determine which stages of the sync pipeline are executed (e.g., skip summarize, skip reconcile)."
       }
     ],
     "ruleViolations": [],
@@ -54,20 +64,22 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Orchestrator service that coordinates the full synchronization pipeline (scan, reconcile, AST extraction, summarization, state commit, post-commit derivation). It is the primary entry point for the sync command and manages runtime sessions, protected output detection, and resume logic.",
+        "role": "Service orchestrator coordinating the multi-stage synchronization pipeline for the ArchSpine mirror system.",
         "responsibilities": [
-          "Orchestrates the complete sync pipeline by instantiating and running TaskRunner with a sequence of tasks (ScanAndCleanupTask, ReconcileTask, ASTExtractionTask, SummarizationTask, StateCommitTask, PostCommitDerivationTask).",
-          "Detects protected output mutations before sync execution via detectProtectedOutputMutations and emits warnings.",
-          "Constructs a task context (createTaskContext) with scanner, runtime IO, and manifest for pipeline execution.",
-          "Supports sync resumption by deriving candidate files from execution checkpoints (deriveSyncResumeCandidateFiles).",
-          "Tracks sync statistics (bytes processed, file counts) and returns a SyncStats report.",
-          "Runs the pipeline within a runtime session (runWithRuntimeSession) for lifecycle management."
+          "Orchestrates the full sync workflow: file scanning, AST extraction, summarization, state commit, reconciliation, and post-commit derivation.",
+          "Manages protected output detection and warnings via spine-gate integration before committing changes.",
+          "Coordinates checkpointing and resume logic through ExecutionCheckpointStore to allow recovery from partial failures.",
+          "Manages language discovery and registry updates to ensure the sync operates on correct file types.",
+          "Evaluates repair policy decisions when the sync encounters drift or corruption.",
+          "Performs file hashing via Manifest to detect stale summaries needing regeneration.",
+          "Wraps the entire workflow inside a runtime session (runWithRuntimeSession) for transactional boundaries and error scoping."
         ],
         "outOfScope": [
-          "Does not handle individual task implementations (those are in src/tasks/).",
-          "Does not manage authentication or network transport.",
-          "Does not directly manipulate the database or file system (delegates to infra modules).",
-          "Does not provide CLI argument parsing or output formatting (handled by CLI commands)."
+          "Implementation details of individual task algorithms (e.g., AST parsing, summarization, reconciliation).",
+          "Low-level filesystem I/O beyond orchestration (delegated to runtimeIO).",
+          "UI/CLI rendering logic (delegated to external UI modules).",
+          "Language registration and extension tracking (handled by LangRegistry).",
+          "Protected output baseline writing and mutation detection (handled by infra/spine-gate)."
         ]
       }
     }
@@ -157,7 +169,16 @@
       {
         "source": "'../infra/execution-checkpoint.js'",
         "symbols": [
+          "ExecutionCheckpointStore",
+          "deriveSyncFailedCandidateFiles",
           "deriveSyncResumeCandidateFiles"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/repair-policy.js'",
+        "symbols": [
+          "evaluateRepairPolicy"
         ],
         "locality": "external"
       },
@@ -169,6 +190,58 @@
         "locality": "external"
       },
       {
+        "source": "'../engines/scanner.js'",
+        "symbols": [
+          "Scanner"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/manifest.js'",
+        "symbols": [
+          "Manifest"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../ast/lang-discovery.js'",
+        "symbols": [
+          "discoverLanguages",
+          "diffLanguages"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../utils/confirm.js'",
+        "symbols": [
+          "promptForExplicitConfirmation"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../infra/ui.js'",
+        "symbols": [
+          "runWithFoldableOutput"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'../core/errors.js'",
+        "symbols": [
+          "ArchSpineError",
+          "ErrorCodes",
+          "toArchSpineError"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'./repository-admin-service.js'",
+        "symbols": [
+          "syncV2AgentInstructionBlocks"
+        ],
+        "locality": "external"
+      },
+      {
         "source": "'fs'",
         "symbols": [
           "* as fs"
@@ -183,6 +256,13 @@
         "locality": "external"
       },
       {
+        "source": "'process'",
+        "symbols": [
+          "* as process"
+        ],
+        "locality": "external"
+      },
+      {
         "source": "'fs'",
         "symbols": [
           "* as fs"
@@ -193,6 +273,13 @@
         "source": "'path'",
         "symbols": [
           "* as path"
+        ],
+        "locality": "external"
+      },
+      {
+        "source": "'process'",
+        "symbols": [
+          "* as process"
         ],
         "locality": "external"
       }
@@ -212,6 +299,11 @@
         "name": "SyncExecutionOptions",
         "kind": "interface",
         "signature": "interface SyncExecutionOptions"
+      },
+      {
+        "name": "SyncWorkflowOptions",
+        "kind": "interface",
+        "signature": "interface SyncWorkflowOptions"
       }
     ],
     "declaredSymbols": [
@@ -232,11 +324,17 @@
         "kind": "interface",
         "exported": true,
         "symbolUri": "src/services/sync-service.ts#"
+      },
+      {
+        "name": "SyncWorkflowOptions",
+        "kind": "interface",
+        "exported": true,
+        "symbolUri": "src/services/sync-service.ts#"
       }
     ],
     "structuralHints": {
-      "importCount": 17,
-      "exportCount": 3,
+      "importCount": 27,
+      "exportCount": 4,
       "isBarrel": true,
       "isTypeOnly": false
     }
@@ -327,7 +425,16 @@
         "targetPath": "../infra/execution-checkpoint.js",
         "relation": "import",
         "symbols": [
+          "ExecutionCheckpointStore",
+          "deriveSyncFailedCandidateFiles",
           "deriveSyncResumeCandidateFiles"
+        ]
+      },
+      {
+        "targetPath": "../infra/repair-policy.js",
+        "relation": "import",
+        "symbols": [
+          "evaluateRepairPolicy"
         ]
       },
       {
@@ -338,23 +445,44 @@
         ]
       },
       {
-        "targetPath": "fs",
+        "targetPath": "../engines/scanner.js",
         "relation": "import",
         "symbols": [
-          "fs"
+          "Scanner"
         ]
       },
       {
-        "targetPath": "path",
+        "targetPath": "../infra/manifest.js",
         "relation": "import",
         "symbols": [
-          "path"
+          "Manifest"
+        ]
+      },
+      {
+        "targetPath": "../ast/lang-discovery.js",
+        "relation": "import",
+        "symbols": [
+          "discoverLanguages",
+          "diffLanguages"
+        ]
+      },
+      {
+        "targetPath": "../utils/confirm.js",
+        "relation": "import",
+        "symbols": [
+          "promptForExplicitConfirmation"
         ]
       }
     ],
     "dependedBy": [
       {
         "targetPath": "tests/integration/system/demo-governance.test.ts",
+        "relation": "import",
+        "edgeProvenance": "ast",
+        "symbols": []
+      },
+      {
+        "targetPath": "tests/integration/system/semantic-drift.test.ts",
         "relation": "import",
         "edgeProvenance": "ast",
         "symbols": []
@@ -412,6 +540,62 @@
       },
       {
         "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/infra/execution-checkpoint.ts/deriveSyncFailedCandidateFiles#",
+        "targetPath": "src/infra/execution-checkpoint.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/infra/repair-policy.ts/evaluateRepairPolicy#",
+        "targetPath": "src/infra/repair-policy.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/utils/confirm.ts/promptForExplicitConfirmation#",
+        "targetPath": "src/utils/confirm.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/toArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/ast/lang-discovery.ts/discoverLanguages#",
+        "targetPath": "src/ast/lang-discovery.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/ast/lang-discovery.ts/diffLanguages#",
+        "targetPath": "src/ast/lang-discovery.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/infra/ui.ts/runWithFoldableOutput#",
+        "targetPath": "src/infra/ui.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/services/repository-admin-service.ts/syncV2AgentInstructionBlocks#",
+        "targetPath": "src/services/repository-admin-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
         "targetSymbol": "src/core/pipeline.ts/TaskRunner#",
         "targetPath": "src/core/pipeline.ts",
         "relation": "references",
@@ -461,6 +645,27 @@
       },
       {
         "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/infra/execution-checkpoint.ts/ExecutionCheckpointStore#",
+        "targetPath": "src/infra/execution-checkpoint.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/core/errors.ts/ArchSpineError#",
+        "targetPath": "src/core/errors.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/engines/scanner.ts/Scanner#",
+        "targetPath": "src/engines/scanner.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
         "targetSymbol": "src/infra/manifest/integrity.ts/calculateHash#",
         "targetPath": "src/infra/manifest/integrity.ts",
         "relation": "references",
@@ -472,11 +677,32 @@
         "targetPath": "src/infra/db/repositories/usage.ts",
         "relation": "references",
         "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/state.ts/needsInitialSync#",
+        "targetPath": "src/infra/manifest/state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/state.ts/loadLanguageSnapshot#",
+        "targetPath": "src/infra/manifest/state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/services/sync-service.ts/_file_#",
+        "targetSymbol": "src/infra/manifest/state.ts/saveLanguageSnapshot#",
+        "targetPath": "src/infra/manifest/state.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
       }
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:03:12.820Z",
+    "indexedAt": "2026-05-12T05:19:46.053Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

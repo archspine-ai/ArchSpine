@@ -3,15 +3,23 @@
   "identity": {
     "filePath": "src/ast/rules/c.yml",
     "contentHash": "764067e49382a73c612f61a9787f7dbdccb062c9e49fdfbdef2d4e4c5ebe60c6",
-    "semanticHash": "43d72a0291f4217673728e734f7cb7cc7c41a6f1f801b58a8833602b04ddde49",
+    "semanticHash": "7a8ab9fd6918304132e6c3f9de5ea41bf8cecd2c42de597775c6e4c0e012e711",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/ast/rules"
   },
   "semantic": {
-    "role": "Unknown role",
-    "responsibilities": [],
-    "outOfScope": [],
+    "role": "Defines structural extraction patterns for the ArchSpine mirror system's code analyzer",
+    "responsibilities": [
+      "Specifies import recognition (e.g., #include directives)",
+      "Defines export extraction rules for functions, structs, and variables",
+      "Outlines usage detection patterns for calls, field access, and pointer field access"
+    ],
+    "outOfScope": [
+      "Does not describe the output format or data model of extracted elements",
+      "Does not provide language semantics beyond C-like pattern matching",
+      "Does not include error handling, validation, or metadata about extracted items"
+    ],
     "invariants": [],
     "changeIntent": {
       "architecturalIntent": null,
@@ -19,7 +27,19 @@
     },
     "publicSurface": [],
     "driftDetected": false,
-    "driftReason": null
+    "driftReason": null,
+    "localized": {
+      "English": {
+        "purpose": "This document serves as the pattern configuration for ArchSpine’s code-mirroring pipeline. It tells the system how to identify and extract structural units (imports, exports, usages) from source files using a simple pattern language.",
+        "context_and_audience": "Intended for developers integrating or extending ArchSpine’s code analysis. It is a low-level definition file that controls how the ‘mirror’ reflects code structure. Readers should be familiar with C-like syntax and the ArchSpine mirror concept.",
+        "key_takeaways": [
+          "The patterns are written in a template language with placeholders like $SOURCE, $NAME, $RET, etc.",
+          "Exports are categorized by kind: Function, Class, Variable — each with its own matching rule.",
+          "Usages detect calls and member access (both dot and arrow) to track how exports are referenced.",
+          "The configuration is highly specific to C-family languages and would need adaptation for other syntaxes."
+        ]
+      }
+    }
   },
   "skeleton": {
     "imports": [],
@@ -39,7 +59,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:52:22.521Z",
+    "indexedAt": "2026-05-12T05:17:27.323Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/infra/config",
-  "role": "Infrastructure configuration layer providing centralized settings management, default factories, environment overrides, and type-safe access to the ArchSpine system configuration.",
-  "responsibility": "This directory implements the canonical configuration factory, file-based loading with merge logic, environment variable parsing, pre-commit hook resolution, and a unified facade for reading/writing structured configuration values like LLM provider settings, artifact strategies, and project metadata.",
+  "role": "Central configuration infrastructure for ArchSpine.",
+  "responsibility": "Provides default settings, environment variable parsing, configuration loading and validation, type-safe accessors, and pre-commit hook resolution, ensuring consistent and overridable configuration across the system.",
   "children": [
     {
       "filePath": "src/infra/config/defaults.ts",
-      "role": "Infrastructure configuration factory providing the canonical default configuration for the ArchSpine system.",
+      "role": "Factory function for creating a default SpineConfig object, providing baseline configuration values for the ArchSpine system.",
       "fileKind": "source"
     },
     {
@@ -16,7 +16,7 @@
     },
     {
       "filePath": "src/infra/config/facade.ts",
-      "role": "Centralized configuration facade for ArchSpine, providing a unified read/write API over project settings with environment overrides and policy integration.",
+      "role": "Central configuration management facade for the ArchSpine system. Loads, validates, and provides access to configuration values including LLM, artifacts, init state, and scan policy. Implements `ConfigSupportedValueAccess` to delegate supported configuration key-value operations.",
       "fileKind": "source"
     },
     {
@@ -46,7 +46,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-10T05:12:07.352Z",
+    "indexedAt": "2026-05-12T05:21:39.678Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

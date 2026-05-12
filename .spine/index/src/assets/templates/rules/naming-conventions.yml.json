@@ -2,22 +2,22 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/assets/templates/rules/naming-conventions.yml",
-    "contentHash": "4a4bd7f139cf95424d4829c3369b7e04d197411be0840bdf99aec10d7aae113b",
-    "semanticHash": "6a40f6ba4cb58e7d743f0493d1c2d7e509560e92cfc9d1a67a5b3cac96325d8b",
+    "contentHash": "fa254882e0797b1090052ba647404bf81ae8c30937935e695b07278a127276bc",
+    "semanticHash": "b9e00ef074d5d5e0040cce3dcc94facd9304c896f56568394f05e6ee8acd9221",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/assets/templates/rules"
   },
   "semantic": {
-    "role": "Defines specific naming convention rules to enforce codebase consistency.",
+    "role": "Defines a specific naming convention rule for test files.",
     "responsibilities": [
-      "Interface naming: internal interfaces must start with 'I'",
-      "Test file naming: test files must end with .test.ts or .spec.ts"
+      "Enforcing test file suffix convention (.test.ts or .spec.ts)",
+      "Maintaining consistency in test file naming across the monorepo"
     ],
     "outOfScope": [
-      "General architecture rules",
-      "Code structure rules",
-      "Non-naming style rules"
+      "Other file naming conventions (source files, configs, etc.)",
+      "General coding standards or style guidelines",
+      "Non-test file types or directories outside tests/"
     ],
     "invariants": [],
     "changeIntent": {
@@ -29,12 +29,12 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document establishes a small set of mandatory naming conventions for the ArchSpine project. Its goal is to keep the codebase style uniform, especially across a large monorepo with many contributors and automated tooling.",
-        "context_and_audience": "The document is intended for all developers and automated agents working on the ArchSpine codebase. It lives within the .spine/rules/ folder and is checked by the ArchSpine governance engine during scans and validation runs.",
+        "purpose": "To ensure all test files follow a consistent naming pattern for reliable test runner matching.",
+        "context_and_audience": "This document is intended for developers contributing to the ArchSpine monorepo, particularly those writing or maintaining test suites. It is a specific rule within a larger set of naming conventions used to enforce codebase consistency.",
         "key_takeaways": [
-          "All internal interfaces in src/types/**/*.ts must be prefixed with 'I' (e.g., IUserRepository). Violations generate a Warning.",
-          "All test files under tests/ must use the suffix .test.ts or .spec.ts. Violations produce an Error.",
-          "The rules are minimal and focused on naming only—they do not address architecture, layering, or code style outside of naming."
+          "Test files must end with .test.ts or .spec.ts",
+          "The rule applies only to files under the tests/ directory",
+          "Violations are treated as errors to guarantee adherence"
         ]
       }
     }
@@ -57,7 +57,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:51:59.276Z",
+    "indexedAt": "2026-05-12T05:17:10.398Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

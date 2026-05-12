@@ -3,23 +3,23 @@
   "identity": {
     "filePath": "scripts/dev-build.mjs",
     "contentHash": "3556aade1deb02ae67ce4badc916245c1da1afdd9b980d08b85eab2500283953",
-    "semanticHash": "3f55351bc467f4fe37993b0bb4a605a5d3ab34e47b4afc89679296daac5dec0b",
+    "semanticHash": "457aeb05f625085d5880a4777f3f91a2eea0bf30ad2faa2f5a5a8e14fbc18a83",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "scripts"
   },
   "semantic": {
-    "role": "Development build watcher script that polls source files and triggers rebuilds on changes.",
+    "role": "Describes the automated build-watcher script for the ArchSpine project's development workflow",
     "responsibilities": [
-      "Automatically rebuilds the ArchSpine project when source files change.",
-      "Polls specified directories and files for modification timestamps and sizes.",
-      "Queues builds if one is already in progress to avoid concurrent builds.",
-      "Reports build success or failure to the console."
+      "Explains how the script watches key source files for changes",
+      "Describes the polling mechanism and signature computation",
+      "Covers build triggering, queuing, and debouncing behavior",
+      "Documents the rebuild lifecycle (initial, file change, queued)"
     ],
     "outOfScope": [
-      "Does not perform incremental compilation or hot module replacement.",
-      "Does not integrate with IDE or editor watch modes.",
-      "Does not clean the build output or handle complex dependency tracking."
+      "Does not cover build configuration, transpiler options, or deployment",
+      "Does not describe the ArchSpine mirror system itself",
+      "Does not include testing or linting watchers"
     ],
     "invariants": [],
     "changeIntent": {
@@ -31,13 +31,13 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This script provides a simple polling-based file watcher for the ArchSpine development process. It continuously monitors key source directories and configuration files, automatically invoking the build process whenever it detects a change. This reduces the need for manual rebuilds and speeds up the development feedback loop.",
-        "context_and_audience": "Targeted at ArchSpine developers who need a lightweight, cross-platform method to automatically rebuild the project during active development. It avoids relying on system-specific file watchers and works reliably across different operating systems.",
+        "purpose": "This document details the `dev:build` watcher script that automatically rebuilds the ArchSpine project when source files change. It explains the polling strategy, signature-based change detection, and the queued build mechanism that prevents overlapping rebuilds.",
+        "context_and_audience": "Intended for developers maintaining or contributing to the ArchSpine project. This script is part of the local development environment, ensuring that builds stay current without manual intervention.",
         "key_takeaways": [
-          "The script polls every 1 second for changes in specified source files and directories.",
-          "It debounces builds by queuing requests if a build is already in progress.",
-          "The build is triggered via `npm run build`, and the console provides clear feedback on success or failure.",
-          "No external dependencies are required beyond Node.js and npm."
+          "The watcher polls a defined set of files every 1000ms, comparing file modification timestamps and sizes.",
+          "A single build queue ensures no concurrent rebuilds; changes during a build are queued for the next cycle.",
+          "The script uses a signature (concatenation of file paths, mtime, and size) to detect changes.",
+          "Initial build runs immediately on start, then watches for subsequent changes."
         ]
       }
     }
@@ -60,7 +60,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:51:28.645Z",
+    "indexedAt": "2026-05-12T05:16:56.903Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

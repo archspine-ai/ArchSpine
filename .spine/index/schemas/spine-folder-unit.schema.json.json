@@ -3,24 +3,24 @@
   "identity": {
     "filePath": "schemas/spine-folder-unit.schema.json",
     "contentHash": "f0d70ca6d346612da6e4c70f044934103521cc1582fb5c4209daffe8f2fa6e63",
-    "semanticHash": "277cdc9bd252e74b44b68bd90fc4b9ceab4af6d8d018b8ce80112dadc2bf7d04",
+    "semanticHash": "867c8a2bd5da31af6868c98d22b40cc24a224154e0ed1dd4aaf7e188811ddd0b",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas"
   },
   "semantic": {
-    "role": "Defines the schema for a SpineFolderUnit, which is the metadata structure used to describe a directory node in the ArchSpine project tree.",
+    "role": "Defines the structural schema for a SpineFolderUnit, ensuring each folder unit in the ArchSpine mirror system adheres to a consistent format.",
     "responsibilities": [
-      "Specify required and optional fields for each folder unit in the project index",
-      "Enforce structural consistency for folder roles, responsibilities, and child file declarations",
-      "Track provenance metadata such as indexing time, generator version, and pipeline stages"
+      "Specifying required fields (schemaVersion, directory, role, responsibility, children, provenance).",
+      "Defining the structure and types of child entries (files/subunits) within a folder unit.",
+      "Enforcing metadata provenance tracking (indexedAt, generatorVersion, pipelineStages)."
     ],
     "outOfScope": [],
     "invariants": [
-      "All six required properties (schemaVersion, directory, role, responsibility, children, provenance) must be present",
-      "No additional properties are allowed beyond those defined in the schema",
-      "Each child entry must include filePath, role, and fileKind",
-      "Provenance must include indexedAt, generatorVersion, and pipelineStages"
+      "All required fields must be present; no additional properties are allowed (additionalProperties: false).",
+      "The directory field must reference a valid scope path as per shared schema.",
+      "Each child entry must have filePath, role, and fileKind.",
+      "Provenance must include indexedAt (ISO timestamp), generatorVersion, and pipelineStages."
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -31,16 +31,16 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "This schema governs the format of folder unit documents in ArchSpine, ensuring every directory in the project tree is consistently described with its purpose, contained files, and lineage.",
+        "role": "This schema defines the blueprint for folder units in ArchSpine. It ensures every folder unit (a directory in the mirror) is described uniformly, enabling automated processing and validation.",
         "parameter_definitions": {
-          "schemaVersion": "Version identifier for the schema, ensuring compatibility with the shared schema system.",
-          "directory": "Repository-relative path of the folder being described, used to locate it in the workspace.",
-          "role": "A concise label describing the functional role of the folder (e.g., 'source', 'test', 'docs').",
-          "responsibility": "A short statement explaining what the folder is responsible for in the project architecture.",
-          "children": "Array of file entries within the folder, each requiring a relative file path, a role label, and a file-kind indicator (e.g., source, test, asset).",
-          "provenance": "Metadata block capturing when the unit was indexed, the generator version that produced it, and the list of pipeline stages applied."
+          "schemaVersion": "Specifies the version of the schema used, ensuring compatibility across different releases of ArchSpine.",
+          "directory": "The relative scope path within the repository that this folder unit describes. Must be a valid path per shared definitions.",
+          "role": "A non-empty string describing the functional role of this folder unit within the system (e.g., 'source', 'configuration').",
+          "responsibility": "A non-empty string summarizing the responsibility or purpose of the folder unit.",
+          "children": "An array of child entries (files or subfolders) belonging to this unit. Each child must have a filePath (repo-relative), role, and fileKind. This enables recursive mirroring and validation.",
+          "provenance": "Metadata about when and how this folder unit was generated. Includes indexedAt (timestamp of indexing), generatorVersion (version of the tool that created it), and pipelineStages (history of processing stages)."
         },
-        "stability_and_risks": "This schema enforces a rigid structure for folder units, which is essential for reliable indexing and cross-referencing in the ArchSpine mirror system. If the schema is not kept in sync with the actual project structure, validation failures may occur. The required provenance fields guarantee traceability, aiding audit and debugging. However, additionalProperties being false means that any new metadata must be explicitly added to the schema, which can slow down iteration if not properly managed. Overall, the schema contributes to system stability by preventing malformed folder unit definitions."
+        "stability_and_risks": "This schema defines invariants that, if violated, can cause failures in mirror synchronization, validation, and system integrity. The 'additionalProperties: false' constraint prevents unexpected fields from being injected, reducing security risks. The required provenance ensures traceability, which is critical for audit and debugging. Changes to this schema should be backward-compatible to avoid breaking existing folder units. The reliance on shared schema references means changes in shared.schema.json can propagate risks."
       }
     }
   },
@@ -62,7 +62,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:51:02.817Z",
+    "indexedAt": "2026-05-12T05:16:49.109Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

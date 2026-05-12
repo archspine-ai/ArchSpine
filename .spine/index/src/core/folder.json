@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/core",
-  "role": "Core pipeline infrastructure and task execution engine for the ArchSpine system.",
-  "responsibility": "Provides the foundational components for pipeline stage orchestration, including configuration validation, standardized error handling, scan policy definition, task state management, task type contracts, and a base class for all pipeline tasks.",
+  "role": "Foundational execution infrastructure for the ArchSpine pipeline, providing configuration validation, error handling, task state management, and an abstract task lifecycle.",
+  "responsibility": "Collectively, these modules establish the core contracts, error handling, state management, and execution orchestration that underpin all pipeline tasks in ArchSpine.",
   "children": [
     {
       "filePath": "src/core/config-schema.ts",
@@ -36,12 +36,12 @@
     },
     {
       "filePath": "src/core/task.ts",
-      "role": "Core abstract class defining the contract for all pipeline tasks in ArchSpine. Provides the base structure for task execution, including context management (TaskContext), and dependency injection of core engines (Scanner, Manifest, Aggregator, OutputManager, RuleEngine, ContextEngine, ASTExtractor).",
+      "role": "Abstract base class defining the standardized execution skeleton for ArchSpine pipeline tasks. Orchestrates core engines (Scanner, Manifest, Aggregator, OutputManager, RuleEngine, ContextEngine, ASTExtractor) within a lifecycle that enforces pipeline contracts and shared state management.",
       "fileKind": "source"
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-10T05:13:19.905Z",
+    "indexedAt": "2026-05-12T05:22:04.181Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

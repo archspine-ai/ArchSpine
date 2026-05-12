@@ -3,24 +3,23 @@
   "identity": {
     "filePath": "src/ast/rules/kotlin.yml",
     "contentHash": "4b4e177f05a8719b52b274a4efbf19615c70b3b52cf4abc852d7a0bb9dc02641",
-    "semanticHash": "ae9ebded40bfd6a302d6b288a8fa3a68b92b465983e44ad0e43466413bf1c229",
+    "semanticHash": "c96cc58a78fc3c6c238db05b9df5f0e533526cd85dea596da6770310945bd354",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/ast/rules"
   },
   "semantic": {
-    "role": "Defines AST extraction rules for Kotlin language syntax within the ArchSpine mirror system",
+    "role": "Define patterns for extracting symbol declarations and usages from Kotlin source code for the ArchSpine mirror system.",
     "responsibilities": [
-      "Specifies patterns for importing modules",
-      "Defines export patterns for declarations: functions (including private and suspend), classes (standard, data, sealed), interfaces, objects, companion objects, variables (val/var), and typealiases",
-      "Provides usage patterns for function calls and property accesses",
-      "Serves as a Kotlin-specific grammar rule file for the ArchSpine scanner engine"
+      "Define import patterns (import statements)",
+      "Define export patterns for Kotlin constructs: functions (including private and suspend), classes, data classes, sealed classes, interfaces, objects, companion objects, properties (val/var), type aliases",
+      "Define usage patterns for function calls and property accesses"
     ],
     "outOfScope": [
-      "Does not cover other programming languages",
-      "Does not handle advanced Kotlin idioms (inline functions, destructuring declarations, lambda expressions, extension functions)",
-      "Excludes semantic analysis, type resolution, or control flow patterns beyond simple call and property usage",
-      "Does not address Kotlin multiplatform or scripting contexts"
+      "Specify project-specific policies, naming conventions, or architectural rules",
+      "Describe the algorithm for interpreting or applying these patterns",
+      "Cover other programming languages beyond Kotlin",
+      "Provide narrative explanations or examples"
     ],
     "invariants": [],
     "changeIntent": {
@@ -32,13 +31,13 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document defines the syntactic patterns used by the ArchSpine AST extractor to parse Kotlin source code. It maps Kotlin language constructs (imports, declarations, and usage references) to standardized identifiers so the system can build an index of symbols, dependencies, and usage across a repository.",
-        "context_and_audience": "This rules file is part of the ArchSpine project's language support system. It is primarily intended for developers and maintainers of the ArchSpine tool itself, as well as for AI agents that process Kotlin-based repositories. Understanding these patterns helps ensure accurate extraction of code structure and dependencies.",
+        "purpose": "This document defines a set of pattern definitions that enable the ArchSpine mirror system to parse Kotlin source code and identify all significant symbols (imports, functions, classes, variables, etc.) and their usages (calls, property accesses). It serves as a configuration for the code model extraction engine.",
+        "context_and_audience": "This configuration file is intended for developers and maintainers of the ArchSpine project, particularly those working on the code analysis components. It is not a user-facing document but a machine-readable specification that drives the parsing logic.",
         "key_takeaways": [
-          "The file covers three categories: imports, exports (functions, classes, objects, variables, typealiases), and usages (calls, property accesses).",
-          "Each pattern uses a placeholder syntax (e.g., $NAME, $ARGS) to match variable parts of Kotlin code.",
-          "This is one of many language rule files; ArchSpine supports multiple languages through similar rule definitions.",
-          "The patterns are intentionally limited to common Kotlin constructs and do not cover all idiomatic features."
+          "The document uses a pattern-based approach to describe Kotlin language constructs.",
+          "Each pattern has an id, a pattern string with placeholders like $NAME, $ARGS, $BODY, and a kind classification.",
+          "Exports are categorized into kinds (e.g., Function, Class, Interface, Variable, Type) for different symbol types.",
+          "Usages capture relationships such as function calls and property accesses between symbols."
         ]
       }
     }
@@ -61,7 +60,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:52:43.716Z",
+    "indexedAt": "2026-05-12T05:17:35.970Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

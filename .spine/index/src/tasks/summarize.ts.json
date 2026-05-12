@@ -2,43 +2,44 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/tasks/summarize.ts",
-    "contentHash": "ac021e2adc0ad1793a428bc49617de3c54d2b7be200bd0af30821af11554af91",
+    "contentHash": "651b2bfe48e4913e78eb97e6ebe06883df7a4df72d5d239b54e27ad30386bc53",
     "skeletonHash": "4fddbd514a9ab22f66bde18d90498a02583ae97bc17d355e89898d2e112b1f65",
-    "semanticHash": "d2b61df899ecf6f6eddaf5425d0e7b3920474339aee4bf36184b348d92827dc5",
+    "semanticHash": "5e20fbfdacc25f549a15c362d45b6d95c93af02108d47435262739b5aafc6e4e",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/tasks"
   },
   "semantic": {
-    "role": "Pipeline stage task that orchestrates LLM-based semantic summarization and synthesis from extracted source artifacts, consuming skeletons and units to produce structured semantic output with drift awareness and validation.",
+    "role": "Pipeline task module orchestrating the LLM-based summarization and synthesis stage, consuming extraction artifacts and producing structured semantic summaries.",
     "responsibilities": [
-      "Process extracted artifacts (skeletons, units, violations) by invoking the LLM to generate per-file semantic summaries and structured symbols.",
-      "Build prompt artifacts using `buildSourcePromptArtifacts` and resolve validation policies via `resolveValidatePolicy` to guide the LLM generation.",
-      "Handle semantic drift detection by comparing the new LLM output against the previous semantic context (`PreviousSemanticContext`), adding drift warnings when the contract changes.",
-      "Retry LLM calls on transient failures using `isRetryableError` and `p-limit` concurrency control.",
-      "Calculate structural and semantic footprints (`calculateStructuralFootprint`, `calculateSemanticFootprint`) for each processed file.",
-      "Manage task state transitions: mark processed files, queue commits, increment success/failure/skipped counters, and record usage and diagnostics.",
-      "Produce and return `SummarizationStageOutput` containing the synthesized semantics, updated skeletons, and accumulated violations.",
-      "Integrate with the manifest to record violations and trigger index updates when forced sync is requested."
+      "Process extraction stage artifacts (skeletons, dependencies) to generate semantic summaries via LLM calls.",
+      "Manage per-file summarization concurrency using p-limit.",
+      "Handle LLM retry logic via isRetryableError.",
+      "Invoke prompt policy resolution and validation via resolveValidatePolicy.",
+      "Record task progress, diagnostics, and drift warnings via task-state functions.",
+      "Calculate structural and semantic footprint for change detection.",
+      "Read and write summarization outputs (SpineSemantic) and index files."
     ],
     "outOfScope": [
-      "CLI command parsing or direct user interaction",
-      "Unrelated service orchestration (e.g., view rendering, MCP server, database CRUD outside task state)",
-      "Source code extraction (handled by preceding ExtractionTask stage)",
-      "File system scanning or repository index building",
-      "Final artifact output formatting (delegated to writer boundary or output manager)"
+      "CLI command parsing or argument handling.",
+      "HTTP server or route definitions.",
+      "Direct manipulation of external storage beyond task output files.",
+      "Cross-stage orchestration beyond the summarization pipeline step."
     ],
     "invariants": [
-      "Task modules shall implement stage-local work on top of core contracts (SpineTask, TaskContext) and engines, and shall not take over CLI command parsing or unrelated service orchestration."
+      "Must not take over CLI parsing or cross-stage orchestration (rule: task-stage-boundary).",
+      "Must use provided core contracts (SpineTask, TaskContext) and infrastructure rather than reimplementing them.",
+      "Must produce output conforming to SummarizationStageOutput type.",
+      "Must maintain checkpoint integrity for resumability."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a self-contained summarization stage within the pipeline that leverages LLM calls to transform raw extracted data into structured semantic representations, with built-in drift detection and validation.",
-      "recentChangeIntent": "chore: apply release gate fixes and sync accumulated source changes — likely includes minor corrections to LLM prompt assembly, error handling, or task state integration, but no change to the module's core contract."
+      "architecturalIntent": "Implement the LLM summarization stage as a focused, resumable task within the ArchSpine pipeline, relying on core abstractions and policy-driven behavior.",
+      "recentChangeIntent": "Initial version of the task, bringing up the summarization stage of the pipeline."
     },
     "publicSurface": [
       {
         "symbolName": "SummarizationTask",
-        "description": "Pipeline stage that orchestrates LLM-based semantic summarization and synthesis from extracted source artifacts, consuming skeletons and units to produce structured semantic output with drift awareness and validation. This is the only exported symbol and forms the module contract."
+        "description": "Task class that executes the LLM summarization stage. Instantiated and run by the pipeline orchestrator with ExtractionStageOutput input, producing SummarizationStageOutput. Entry point for the summarization phase."
       }
     ],
     "ruleViolations": [],
@@ -46,23 +47,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Pipeline stage task that orchestrates LLM-based semantic summarization and synthesis from extracted source artifacts, consuming skeletons and units to produce structured semantic output with drift awareness and validation.",
+        "role": "Pipeline task module orchestrating the LLM-based summarization and synthesis stage, consuming extraction artifacts and producing structured semantic summaries.",
         "responsibilities": [
-          "Process extracted artifacts (skeletons, units, violations) by invoking the LLM to generate per-file semantic summaries and structured symbols.",
-          "Build prompt artifacts using `buildSourcePromptArtifacts` and resolve validation policies via `resolveValidatePolicy` to guide the LLM generation.",
-          "Handle semantic drift detection by comparing the new LLM output against the previous semantic context, adding drift warnings when the contract changes.",
-          "Retry LLM calls on transient failures using `isRetryableError` and concurrency control via `p-limit`.",
-          "Calculate structural and semantic footprints for each processed file.",
-          "Manage task state transitions: mark processed files, queue commits, increment success/failure/skipped counters, and record usage and diagnostics.",
-          "Produce and return `SummarizationStageOutput` containing the synthesized semantics, updated skeletons, and accumulated violations.",
-          "Integrate with the manifest to record violations and trigger index updates when forced sync is requested."
+          "Process extraction stage artifacts (skeletons, dependencies) to generate semantic summaries via LLM calls.",
+          "Manage per-file summarization concurrency using p-limit.",
+          "Handle LLM retry logic via isRetryableError.",
+          "Invoke prompt policy resolution and validation via resolveValidatePolicy.",
+          "Record task progress, diagnostics, and drift warnings via task-state functions.",
+          "Calculate structural and semantic footprint for change detection.",
+          "Read and write summarization outputs (SpineSemantic) and index files."
         ],
         "outOfScope": [
-          "CLI command parsing or direct user interaction",
-          "Unrelated service orchestration (e.g., view rendering, MCP server, database CRUD outside task state)",
-          "Source code extraction (handled by preceding ExtractionTask stage)",
-          "File system scanning or repository index building",
-          "Final artifact output formatting (delegated to writer boundary or output manager)"
+          "CLI command parsing or argument handling.",
+          "HTTP server or route definitions.",
+          "Direct manipulation of external storage beyond task output files.",
+          "Cross-stage orchestration beyond the summarization pipeline step."
         ]
       }
     }
@@ -438,7 +437,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:05:04.077Z",
+    "indexedAt": "2026-05-12T05:19:53.921Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
