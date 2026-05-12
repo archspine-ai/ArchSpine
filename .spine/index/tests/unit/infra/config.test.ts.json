@@ -2,31 +2,31 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "tests/unit/infra/config.test.ts",
-    "contentHash": "87667cfea1ad11131d0515843ebc353f21af73575ff3d399dfcaba1283cd22b2",
+    "contentHash": "a91eb89a1dc9279279f3a8a41ddc1208f170ded18da8257755509cde279d66f2",
     "skeletonHash": "8cfe176e6bf1f6c638a66fd2f7323f1d7f288bf18d980cf397b5d48b60c93c35",
-    "semanticHash": "532ab2ad5e281a248d1594c5aa444b778f3527d9929428efc1a2ee89439db3b1",
+    "semanticHash": "14259c893a94a28fa92fe34d6bbcc5f5cfb0df8f44219001f9ed74210643878b",
     "language": "typescript",
     "fileKind": "source",
     "scope": "tests/unit/infra"
   },
   "semantic": {
-    "role": "Test suite for the Config configuration management class.",
+    "role": "Test suite for the Config infrastructure module, validating configuration persistence and LLM provider/model settings.",
     "responsibilities": [
-      "Verifies that Config.hasPersistedConfig() correctly detects whether a persistent config file exists.",
-      "Tests the round-trip persistence of LLM provider and model settings via setLLMProvider, setLLMModel, getLLMProvider, getLLMModel.",
-      "Ensures that the config file is persisted to the expected .spine/config.json path.",
-      "Cleans up temporary directories and environment stubs after each test."
+      "Verify that Config can detect and report the existence of a persisted configuration file.",
+      "Verify that Config correctly stores and retrieves the LLM provider and model settings.",
+      "Ensure each test runs in an isolated temporary directory and cleans up afterwards."
     ],
     "outOfScope": [
-      "This test file does not define or export any production symbols.",
-      "Does not test other Config methods beyond persistence and LLM settings."
+      "Configuration merging or default values are not tested here.",
+      "Environment variable overrides or configuration validation logic are not covered.",
+      "Other Config methods like load, save, or get/set of arbitrary keys are not tested."
     ],
     "invariants": [
-      "The test file must end with .test.ts suffix to comply with naming conventions."
+      "Each test must create a fresh temporary directory under os.tmpdir() and remove it after completion."
     ],
     "changeIntent": {
-      "architecturalIntent": "Test infrastructure to validate config persistence behaviors for the ArchSpine mirror system.",
-      "recentChangeIntent": "No recent changes indicated beyond test maintenance."
+      "architecturalIntent": "Provide isolated, reproducible tests for the Config module's persistence and LLM settings behavior.",
+      "recentChangeIntent": "Initial commit establishing basic test infrastructure for the Config module."
     },
     "publicSurface": [],
     "ruleViolations": [],
@@ -34,16 +34,16 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Test suite for the Config configuration management class.",
+        "role": "Test suite for the Config infrastructure module, validating configuration persistence and LLM provider/model settings.",
         "responsibilities": [
-          "Verifies that Config.hasPersistedConfig() correctly detects whether a persistent config file exists.",
-          "Tests the round-trip persistence of LLM provider and model settings via setLLMProvider, setLLMModel, getLLMProvider, getLLMModel.",
-          "Ensures that the config file is persisted to the expected .spine/config.json path.",
-          "Cleans up temporary directories and environment stubs after each test."
+          "Verify that Config can detect and report the existence of a persisted configuration file.",
+          "Verify that Config correctly stores and retrieves the LLM provider and model settings.",
+          "Ensure each test runs in an isolated temporary directory and cleans up afterwards."
         ],
         "outOfScope": [
-          "This test file does not define or export any production symbols.",
-          "Does not test other Config methods beyond persistence and LLM settings."
+          "Configuration merging or default values are not tested here.",
+          "Environment variable overrides or configuration validation logic are not covered.",
+          "Other Config methods like load, save, or get/set of arbitrary keys are not tested."
         ]
       }
     }
@@ -145,23 +145,17 @@
       {
         "targetPath": "path",
         "relation": "import",
-        "symbols": [
-          "* as path"
-        ]
+        "symbols": []
       },
       {
         "targetPath": "fs",
         "relation": "import",
-        "symbols": [
-          "* as fs"
-        ]
+        "symbols": []
       },
       {
         "targetPath": "os",
         "relation": "import",
-        "symbols": [
-          "* as os"
-        ]
+        "symbols": []
       }
     ],
     "dependedBy": [],
@@ -205,7 +199,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:09:30.051Z",
+    "indexedAt": "2026-05-12T05:20:55.287Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

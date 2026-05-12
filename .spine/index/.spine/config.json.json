@@ -3,32 +3,30 @@
   "identity": {
     "filePath": ".spine/config.json",
     "contentHash": "ca5a3bd65352bd8b8a80825ed090c367109f4742bc8dc4f3f4932fcd2c9c8349",
-    "semanticHash": "8a5fd84b3adbd005834989ce90a3e63d5db37bb5d8c807709e351b7767a93e5f",
+    "semanticHash": "f98342f3f3e2f7bd2be7ad6731b7c97bd534401eace663dfcf5f98e4bad4ca6e",
     "language": "unsupported",
     "fileKind": "config",
     "scope": ".spine"
   },
   "semantic": {
-    "role": "Core configuration for the ArchSpine repository mirror system, governing scanning policies, ignore chains, hook integration, artifact strategy, and initialization state to maintain repository consistency and agent context.",
+    "role": "Core configuration for the ArchSpine mirror system",
     "responsibilities": [
-      "scanPolicy: defines file inclusion/exclusion for indexing and mirroring",
-      "hooks: controls pre-commit hooks and sync mode (hook vs. disable)",
-      "artifacts: selects artifact distribution strategy (e.g., distributable)",
-      "initState: manages git integration flags and injected npm scripts",
-      "mcp: enables or disables MCP context mode",
-      "project: sets project name and supported locales"
+      "File scan and ignore policies (git-tracked, .spineignore, local overrides)",
+      "Hook settings for pre-commit and sync mode",
+      "Artifact distribution strategy",
+      "Initialization state tracking and agent instruction file management",
+      "Protocol exclusions/inclusions for scanning"
     ],
     "outOfScope": [],
     "invariants": [
-      "schemaVersion must be exactly '1.0.0'",
-      "project.name must be 'ArchSpine'",
-      "scanPolicy.fileSource must be 'git-tracked'",
-      "protocolExclusions must always include .spine/ and common lock files (package-lock.json, pnpm-lock.yaml, yarn.lock, bun.lockb)",
-      "protocolInclusions must include .spine/rules/ and .spine/config.json to ensure spine metadata is indexed",
-      "initState must contain exactly the listed boolean and array fields for proper initialization",
-      "hooks.syncMode must be 'hook' or equivalent; if false, preCommit must be false",
-      "artifacts.strategy must be 'distributable' to enable distribution features",
-      "ignoreChain must include inheritGitIgnore, projectIgnore (.spineignore), and localIgnore (.spineignore.local) in that order"
+      "schemaVersion must be '1.0.0'",
+      "MCP contextMode is forced to 'off' (prevents context sharing)",
+      "preCommit hook is disabled (false) to avoid unintended interference",
+      "scanPolicy.fileSource must be 'git-tracked' to prevent scanning non-repo files",
+      "ignoreChain must inherit .gitignore plus project/local ignore files",
+      "Protocol exclusions protect .spine/ directories and lock files",
+      "Protocol inclusions only allow .spine/rules/ and .spine/config.json from inside .spine/",
+      "initState defines which files are managed by ArchSpine and their creation status"
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -39,23 +37,22 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "This configuration file is the central control panel for ArchSpine. It determines how the system crawls the repository, which files are mirrored, how it integrates with Git hooks, and what initialization steps are applied. The file must be present and correctly structured for ArchSpine to function reliably. It ensures that the spine index stays synchronized with the actual repository state, prevents accidental inclusion of build artifacts or node_modules via protocolExclusions, and enforces a consistent ignore chain that respects both global .gitignore and project‑specific .spineignore files. The initState section records whether ArchSpine has taken ownership of various dotfiles (like CLAUDE.md, .gitignore, .gitattributes) and which npm scripts were injected. This allows the system to detect modifications by the user and avoid overwriting manual changes.",
+        "role": "This JSON file serves as the master configuration for the ArchSpine project mirror system. It controls how the system scans files, respects ignore rules, manages hooks, distributes artifacts, and tracks its own initialization state.",
         "parameter_definitions": {
-          "schemaVersion": "Defines the version of the configuration schema. Must be exactly '1.0.0' to ensure compatibility with ArchSpine's parser.",
-          "project.locales": "Array of supported interface languages. Currently only 'English'.",
-          "mcp.contextMode": "Turns MCP context integration on ('on') or off ('off'). When off, no MCP context is injected into agent prompts.",
-          "hooks.preCommit": "Enables or disables pre‑commit hooks. When false, no automatic sync on commit occurs. Must be false if syncMode is not 'hook'.",
-          "hooks.syncMode": "Sets the synchronization trigger mechanism. 'hook' means Git hooks initiate sync; other values may disable sync.",
-          "artifacts.strategy": "Strategy for distributing artifacts. 'distributable' means artifacts are stored and shared across clones; other strategies may be local.",
-          "scanPolicy.fileSource": "Source of files to scan. 'git-tracked' limits scanning to files tracked by Git, avoiding untracked or ignored files.",
-          "scanPolicy.ignoreChain": "Ordered chain of ignore files. inheritGitIgnore first (global), then project .spineignore, then local .spineignore.local. Files matching any are excluded.",
-          "scanPolicy.protocolExclusions": "Patterns that are always excluded from scanning and mirroring, regardless of ignore chain. Protects spine internals and lock files.",
-          "scanPolicy.protocolInclusions": "Patterns that are always included, even if otherwise ignored. Ensures spine configuration and rules are always picked up.",
-          "initState.agentInstructionsFile": "Name of the agent instructions file (CLAUDE.md). ArchSpine manages this if agentInstructionsCreatedByArchSpine is true.",
-          "initState.spineIgnoreManaged": "Indicates whether ArchSpine is managing the .spineignore file. If true, user modifications may be overwritten.",
-          "initState.injectedPackageScripts": "List of npm scripts that ArchSpine has injected into package.json. Used for lifecycle management (init, sync, check, fix)."
+          "schemaVersion": "Version identifier '1.0.0' ensures backward compatibility and validates configuration structure.",
+          "project": "Defines project metadata: name 'ArchSpine' and supported locales (only 'English').",
+          "llm": "Empty object; no LLM-specific settings configured.",
+          "mcp.contextMode": "Set to 'off' to disable MCP context sharing, preventing unintentional cross-project state exposure.",
+          "hooks.preCommit": "Disabled (false); no pre-commit hook is installed, reducing risk of interfering with workflows.",
+          "hooks.syncMode": "Set to 'hook', meaning sync is triggered via Git hooks rather than manual runs.",
+          "artifacts.strategy": "Set to 'distributable', meaning artifacts are prepared for distribution to environment(s).",
+          "scanPolicy.fileSource": "Only scans files tracked by Git, excluding untracked or generated files from analysis.",
+          "scanPolicy.ignoreChain": "Three-layer ignore chain: inherit global .gitignore, project .spineignore, and local .spineignore.local for maximum flexibility.",
+          "scanPolicy.protocolExclusions": "Explicitly excludes .spine/ directories and common lock files (package-lock, pnpm-lock, yarn.lock, bun.lockb) to avoid clutter and scanning unnecessary dependency records.",
+          "scanPolicy.protocolInclusions": "Overrides exclusion to include .spine/rules/ and .spine/config.json, ensuring critical configuration files are not missed.",
+          "initState": "Comprehensive tracking of initialization flags: which files are managed and whether they were created by ArchSpine or externally. Also lists injected package scripts (spine:init, sync, check, fix)."
         },
-        "stability_and_risks": "This configuration file is the backbone of ArchSpine’s stability. Incorrect settings can lead to incomplete indexing, missed file mirrors, or broken Git hooks. For example, removing `**/.spine/` from protocolExclusions would cause the spine’s own index to be mirrored, creating infinite loops and bloating the repository. Disabling protocolInclusions for `.spine/config.json` would break the system’s ability to locate its own configuration. If hooks are disabled, users must manually trigger sync operations; otherwise, the spine becomes stale. The initState flags record ownership of dotfiles; overriding these without updating actual files can cause ArchSpine to erroneously overwrite user customizations. The ignoreChain must be carefully maintained: if `inheritGitIgnore` is removed, the system would ignore all standard Git ignores, leading to massive unnecessary files. In summary, any manual edits to this file should be done with full understanding of the interplay between exclusions, inclusions, and hook behavior. The safest approach is to let ArchSpine manage this file automatically via its init and sync commands."
+        "stability_and_risks": "This configuration is critical for system stability. The ignore chain prevents scanning of irrelevant or dangerous files. Disabling MCP context and pre-commit hooks reduces complexity and unintended side effects. Protocol exclusions protect internal directories and lock files, while inclusions ensure key config files are scanned. The initState provides a reliable mechanism for tracking managed files, preventing overwrites of externally created files. The only risk is misconfiguration of ignore paths leading to missing important files or scanning sensitive data; however, the layered ignore system with local overrides minimizes human error."
       }
     }
   },
@@ -77,7 +74,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-11T05:40:19.090Z",
+    "indexedAt": "2026-05-12T05:16:17.145Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -3,23 +3,23 @@
   "identity": {
     "filePath": "examples/github/spine-check.yml",
     "contentHash": "fe3705c9bfac80abcd60e685ea58b600a66aa99195d6a35c9f1f8efd5ff8a855",
-    "semanticHash": "f42713ff571f2f93f0735e10e1ebbe045b02d2e33e45f6d1dd5fb92160a2db4d",
+    "semanticHash": "97bff423e0df232535252a5b8d9470dbeba907b51ca15daef86c64acf7e72805",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "examples/github"
   },
   "semantic": {
-    "role": "CI/CD integration template for automated architecture validation on pull requests",
+    "role": "GitHub Actions workflow template for automated architecture compliance checks on pull requests",
     "responsibilities": [
-      "Providing a reusable GitHub Actions workflow for ArchSpine",
-      "Defining steps to install ArchSpine, sync spine data, and run checks",
-      "Automatically posting PR comments when architecture violations are detected",
-      "Guiding users on setup prerequisites (spine init, LLM_API_KEY secret)"
+      "Defines CI/CD pipeline for ArchSpine verification on pull request events (opened, synchronize, reopened)",
+      "Handles installation of ArchSpine via npm and execution of `spine sync` and `spine check` commands",
+      "Posts a PR comment with architecture violation details when checks fail",
+      "Updates existing bot comments to avoid duplicates, then fails the workflow on violations"
     ],
     "outOfScope": [
-      "Other CI platforms (GitLab, CircleCI, etc.)",
-      "Manual or local architecture checks",
-      "Configuration of ArchSpine rules or policies"
+      "Spine CLI usage instructions or configuration (e.g., `.spine/config.json`)",
+      "Deployment steps, testing, or other CI/CD tasks beyond architecture checks",
+      "Detailed explanation of the ArchSpine tool itself"
     ],
     "invariants": [],
     "changeIntent": {
@@ -31,13 +31,13 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document is a GitHub Actions workflow template that enables automated architecture governance within pull request workflows. It defines a complete pipeline to install ArchSpine, synchronize project state, run architecture checks, and report violations as PR comments, ensuring architectural rules are enforced before merging.",
-        "context_and_audience": "Designed for development teams using GitHub and ArchSpine who want to integrate architecture validation into their CI pipeline. The intended audience includes DevOps engineers, platform engineers, and developers responsible for maintaining architectural standards in a repository. Readers should already have initialized ArchSpine (spine init) and configured their project with appropriate rules.",
+        "purpose": "To provide a ready-to-use GitHub Actions workflow that automatically verifies pull requests for architectural violations using ArchSpine, ensuring code changes stay compliant with the project's defined architecture.",
+        "context_and_audience": "Intended for DevOps engineers or project maintainers who have already initialized `spine` in their repository and configured an LLM API key as a secret. They need to integrate automated architecture checks into their CI/CD pipeline to catch regressions early.",
         "key_takeaways": [
-          "Automates architecture checks on every pull request synchronize/reopen event",
-          "Requires an LLM_API_KEY secret to be set in the repository for LLM-based analysis",
-          "Fails the workflow if violations are found, preventing non-compliant merges",
-          "Updates existing bot comments rather than creating duplicate comments"
+          "The workflow triggers on every opened, synchronized, or reopened pull request.",
+          "It installs ArchSpine globally, syncs the spine model, then runs `spine check`.",
+          "If violations are found, a PR comment is posted (or updated if one from the bot already exists) and the workflow fails.",
+          "Requires an `LLM_API_KEY` secret and prior `spine init` in the repository."
         ]
       }
     }
@@ -60,7 +60,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:50:30.185Z",
+    "indexedAt": "2026-05-12T05:16:04.813Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -2,73 +2,64 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/cli/commands/view.ts",
-    "contentHash": "4ee6c199f6b454e011c73640adb1af8d72569739845e145589b85f948da29b69",
-    "skeletonHash": "21dcc3fea5f815d7146c25322bffdedee2d2c5ac45aaf4babdb811aeaca3d4ec",
-    "semanticHash": "b9dc91548d6dc3170726591ec3b118adf5e8b3dbd9f211eadc238ea354c277ee",
+    "contentHash": "1899ea0050761714de4c876920359bc5eaa2db0554fb883a9c1fa0b7e86b5b53",
+    "skeletonHash": "71115b1209fac43bb3a92b5d8a40113f5d947038f2aa227805243340ee6b3872",
+    "semanticHash": "dab48ee9774bf55a45a34fef5eb3fff4283aed4cc0da54c868603b7514d785ba",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli/commands"
   },
   "semantic": {
-    "role": "CLI command adapter for view operations (show, list, info, configure). Acts as the entrypoint for view-related CLI subcommands, delegating to view service layer for resolving views and layers, and directly orchestrating protected output baseline writes via infra utilities.",
+    "role": "CLI command adapter for managing and viewing ArchSpine view configuration interactively.",
     "responsibilities": [
-      "Parse CLI subcommands ('show', 'list', 'info', 'configure') from the 'arch-spine view' command and dispatch to appropriate handlers.",
-      "Interactively prompt users to select which views to enable when configuring view settings.",
-      "Resolve and normalize enabled view IDs and layer configurations by delegating to the view service layer.",
-      "Orchestrate writing baseline files for protected outputs by directly invoking writeProtectedOutputBaseline and withProtectedOutputsWriteAccess.",
-      "Display current view configuration and enabled view information to the user."
+      "Execute the 'view' subcommand to display current view configuration (configured, effective, enabled, unknown).",
+      "Prompt the user interactively to change which views are enabled, using the terminal checkbox prompt.",
+      "Normalize view IDs before storing and resolve view layers via service calls.",
+      "Validate view IDs and produce usage errors for unrecognized subcommands."
     ],
     "outOfScope": [
-      "AST extraction or language discovery — handled by src/ast/ modules.",
-      "LLM client initialization or management — handled by src/infra/llm/.",
-      "Database persistence or repository operations — handled by src/infra/db/.",
-      "Pipeline task execution or scan policy evaluation — handled by src/engines/ and src/tasks/."
+      "Core view resolution logic (layer computation, view-to-pipeline mapping).",
+      "Persistence of view configuration (handled by Config).",
+      "Business logic for determining view layering or effective view set."
     ],
     "invariants": [
-      "CLI commands must not absorb pipeline or persistence logic that belongs in services, core, engines, or infra (Rule: cli-entrypoint-separation)."
+      "CLI modules must remain thin entrypoints; they must not absorb pipeline or persistence logic that belongs in services, core, engines, or infra (per rule cli-entrypoint-separation).",
+      "View configuration is read from Config and written back via prompts; no direct file manipulation outside of Config abstractions."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a thin CLI adapter that routes view subcommands (show, list, info, configure) to the appropriate view and configuration services, while maintaining user interaction for dynamic view selection.",
-      "recentChangeIntent": "Based on git history, recent changes involve removing legacy CLI aliases, rebuilding documentation, fixing schema and tests. This file likely underwent refactoring to align with the updated CLI structure, but still retains direct infra calls that violate the entrypoint separation rule."
+      "architecturalIntent": "Provide a CLI interface for inspecting and modifying the set of enabled views, keeping the command shell separate from core view logic.",
+      "recentChangeIntent": "Initial commit — no prior version exists."
     },
     "publicSurface": [
       {
+        "symbolName": "ExecuteViewCommandOptions",
+        "description": "Configuration options passed to executeViewCommand, containing parsed command-line arguments and the application Config."
+      },
+      {
         "symbolName": "promptForEnabledViews",
-        "description": "Asynchronously prompts the user via interactive CLI to select which views to enable from the current set, returning the chosen view IDs or undefined if cancelled."
+        "description": "Prompts the user interactively to select which views to enable, returning the updated list of ViewIds. Used by the view configuration workflow."
       },
       {
         "symbolName": "executeViewCommand",
-        "description": "Main entrypoint for the 'arch-spine view' CLI command, parsing the subcommand from args and dispatching to show, list, info, or configure logic, including syncing view configuration and writing protected output baselines."
-      },
-      {
-        "symbolName": "ExecuteViewCommandOptions",
-        "description": "Interface defining the configuration passed to executeViewCommand: CLI args, global config, runtime service, and LLM client."
+        "description": "Main entry point for the 'view' CLI subcommand. Displays current view configuration or handles 'configure' to launch an interactive prompt for enabling views. Dispatches subcommands like 'show' and 'configure'."
       }
     ],
-    "ruleViolations": [
-      {
-        "id": "cli-entrypoint-separation",
-        "severity": "error",
-        "reason": "The CLI command adapter `executeViewCommand` directly imports and uses `withProtectedOutputsWriteAccess` and `writeProtectedOutputBaseline` to perform file I/O for protected output baselines. This absorbs persistence logic that should be delegated to a service (e.g., sync-service or view-service), violating the rule that CLI modules should stay as thin entrypoints and not absorb pipeline/persistence logic."
-      }
-    ],
+    "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "CLI command adapter for view operations (show, list, info, configure). Acts as the entrypoint for view-related CLI subcommands, delegating to view service layer for resolving views and layers, and directly orchestrating protected output baseline writes via infra utilities.",
+        "role": "CLI command adapter for managing and viewing ArchSpine view configuration interactively.",
         "responsibilities": [
-          "Parse CLI subcommands ('show', 'list', 'info', 'configure') from the 'arch-spine view' command and dispatch to appropriate handlers.",
-          "Interactively prompt users to select which views to enable when configuring view settings.",
-          "Resolve and normalize enabled view IDs and layer configurations by delegating to the view service layer.",
-          "Orchestrate writing baseline files for protected outputs by directly invoking writeProtectedOutputBaseline and withProtectedOutputsWriteAccess.",
-          "Display current view configuration and enabled view information to the user."
+          "Execute the 'view' subcommand to display current view configuration (configured, effective, enabled, unknown).",
+          "Prompt the user interactively to change which views are enabled, using the terminal checkbox prompt.",
+          "Normalize view IDs before storing and resolve view layers via service calls.",
+          "Validate view IDs and produce usage errors for unrecognized subcommands."
         ],
         "outOfScope": [
-          "AST extraction or language discovery — handled by src/ast/ modules.",
-          "LLM client initialization or management — handled by src/infra/llm/.",
-          "Database persistence or repository operations — handled by src/infra/db/.",
-          "Pipeline task execution or scan policy evaluation — handled by src/engines/ and src/tasks/."
+          "Core view resolution logic (layer computation, view-to-pipeline mapping).",
+          "Persistence of view configuration (handled by Config).",
+          "Business logic for determining view layering or effective view set."
         ]
       }
     }
@@ -98,20 +89,6 @@
         "source": "'../cli-utils.js'",
         "symbols": [
           "throwCliUsage"
-        ],
-        "locality": "external"
-      },
-      {
-        "source": "'../../infra/writer-boundary.js'",
-        "symbols": [
-          "withProtectedOutputsWriteAccess"
-        ],
-        "locality": "external"
-      },
-      {
-        "source": "'../../infra/spine-gate.js'",
-        "symbols": [
-          "writeProtectedOutputBaseline"
         ],
         "locality": "external"
       },
@@ -189,7 +166,7 @@
       }
     ],
     "structuralHints": {
-      "importCount": 10,
+      "importCount": 8,
       "exportCount": 3,
       "isBarrel": true,
       "isTypeOnly": false
@@ -224,20 +201,6 @@
         ]
       },
       {
-        "targetPath": "../../infra/writer-boundary.js",
-        "relation": "import",
-        "symbols": [
-          "withProtectedOutputsWriteAccess"
-        ]
-      },
-      {
-        "targetPath": "../../infra/spine-gate.js",
-        "relation": "import",
-        "symbols": [
-          "writeProtectedOutputBaseline"
-        ]
-      },
-      {
         "targetPath": "fs",
         "relation": "import",
         "symbols": []
@@ -250,9 +213,7 @@
       {
         "targetPath": "prompts",
         "relation": "import",
-        "symbols": [
-          "prompts"
-        ]
+        "symbols": []
       }
     ],
     "dependedBy": [
@@ -309,20 +270,6 @@
       },
       {
         "sourceSymbol": "src/cli/commands/view.ts/_file_#",
-        "targetSymbol": "src/infra/writer-boundary.ts/withProtectedOutputsWriteAccess#",
-        "targetPath": "src/infra/writer-boundary.ts",
-        "relation": "references",
-        "edgeProvenance": "ast"
-      },
-      {
-        "sourceSymbol": "src/cli/commands/view.ts/_file_#",
-        "targetSymbol": "src/infra/spine-gate.ts/writeProtectedOutputBaseline#",
-        "targetPath": "src/infra/spine-gate.ts",
-        "relation": "references",
-        "edgeProvenance": "ast"
-      },
-      {
-        "sourceSymbol": "src/cli/commands/view.ts/_file_#",
         "targetSymbol": "src/services/view/view-server.ts/startViewServer#",
         "targetPath": "src/services/view/view-server.ts",
         "relation": "references",
@@ -344,6 +291,13 @@
       },
       {
         "sourceSymbol": "src/cli/commands/view.ts/_file_#",
+        "targetSymbol": "src/services/view/view-service.ts/ViewService#",
+        "targetPath": "src/services/view/view-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/view.ts/_file_#",
         "targetSymbol": "src/infra/db/repositories/drift.ts/getDriftHistory#",
         "targetPath": "src/infra/db/repositories/drift.ts",
         "relation": "references",
@@ -359,7 +313,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:54:25.619Z",
+    "indexedAt": "2026-05-12T05:18:11.111Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

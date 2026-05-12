@@ -3,23 +3,22 @@
   "identity": {
     "filePath": "src/ast/rules/elixir.yml",
     "contentHash": "1ded5f0eebe076048c44ff9ecbd98416eb4074ccb52a9e57633f798216cafa62",
-    "semanticHash": "f64d46fbbdfffc4fa88b03b69bd416ed45f75ad92d6c9fb013725733c4020920",
+    "semanticHash": "0d0db8776eea9a635b9ce3a03282edfbcf3004998c0813382a1c71704d0cbf62",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/ast/rules"
   },
   "semantic": {
-    "role": "Defines AST extraction patterns for the Elixir programming language within the ArchSpine mirror system.",
+    "role": "Language parsing pattern configuration for ArchSpine's mirror system",
     "responsibilities": [
-      "Specifies how to detect import statements (import, alias, require, use) in Elixir source code.",
-      "Defines export pattern rules for functions, private functions, macros, modules, protocols, and implementations.",
-      "Provides usage pattern rules for function calls and module-qualified function calls.",
-      "Serves as a language-specific rule set for the ArchSpine code analysis and governance engine."
+      "Defines import patterns (import, alias, require, use)",
+      "Defines export patterns (function, private_function, macro, module, protocol, implementation)",
+      "Defines usage patterns (call, module_call)"
     ],
     "outOfScope": [
-      "Does not cover other programming languages supported by ArchSpine.",
-      "Does not include semantic analysis beyond pattern matching.",
-      "Does not define project-level governance or architectural constraints."
+      "Source code logic and semantics",
+      "Build and dependency management rules",
+      "Language runtime configuration"
     ],
     "invariants": [],
     "changeIntent": {
@@ -31,13 +30,12 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document acts as the Elixir language grammar for ArchSpine’s AST extraction pipeline. It translates the structural conventions of Elixir source files into patterns that the scanner can match to identify imports, exports, and usage references. By doing so, it enables ArchSpine to understand Elixir code structure for dependency analysis, violation detection, and architectural documentation.",
-        "context_and_audience": "ArchSpine contributors who extend language support, maintainers of the scanning engine, and developers configuring project rules for Elixir repositories. Also relevant for AI agents that need to interpret how Elixir code is parsed and indexed.",
+        "purpose": "This document specifies the syntax patterns used by ArchSpine to parse source code files and identify imports, exports, and usage references within a codebase. It acts as a language definition for the system's static analysis.",
+        "context_and_audience": "Intended for developers configuring language support in ArchSpine and for AI agents that process code structure. The patterns follow Elixir syntax conventions.",
         "key_takeaways": [
-          "The document codifies four import patterns (import, alias, require, use) to capture external dependencies.",
-          "Export patterns cover functions (def, defp), macros (defmacro), modules (defmodule), protocols (defprotocol), and implementations (defimpl), each classified as Function, Class, or Interface.",
-          "Usage patterns detect both direct function calls and module-qualified calls, which are critical for building a dependency graph.",
-          "This file is part of the `src/ast/rules/` directory and is loaded by ArchSpine’s language registry to configure the scanner for Elixir projects."
+          "ArchSpine uses pattern-based recognition for code analysis.",
+          "The configuration covers imports (e.g., import, alias), exports (e.g., def, defmodule), and usages (e.g., function calls).",
+          "Each pattern has an ID and a template with placeholders like $SOURCE, $NAME, $ARGS."
         ]
       }
     }
@@ -60,7 +58,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:52:25.383Z",
+    "indexedAt": "2026-05-12T05:17:21.963Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

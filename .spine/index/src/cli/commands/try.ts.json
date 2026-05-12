@@ -2,47 +2,45 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/cli/commands/try.ts",
-    "contentHash": "20d32fe0bbbaf20bb556e1adb77356e2bc98315d7eb9fa634a04cb06090b0cf9",
-    "skeletonHash": "e2d724416a686261cfa1f5e7eb7851dd0dceaa807cac8aa0b166385436b62578",
-    "semanticHash": "1f06385e7062f1ed182d622ece34db9cbabb7d8e63c153a75e2a09c235908a8e",
+    "contentHash": "15932b60bec56a35edcd30f57ca16bd2d0fd5ac8df05290ac2aa9d15d53f7a51",
+    "skeletonHash": "956b6f5ce60b2502db935fccbcf91aba0f6a362300689edc0bfde5b6d6abcb65",
+    "semanticHash": "cf4885d451a12709efcba9bcb39f9d6d41d935631a2f8b128ab538b409f17d3d",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli/commands"
   },
   "semantic": {
-    "role": "CLI command handler for the 'try' subcommand. Orchestrates a three-stage operation (repository posture validation, language landscape discovery, and AST preview generation) by delegating entirely to the TryService.",
+    "role": "CLI command adapter for the 'try' workflow. Orchestrates the execution of repository posture checks, language landscape discovery, and AST preview generation by invoking service-layer functions. Serves as a thin entrypoint that delegates core logic to services.",
     "responsibilities": [
-      "Parse and validate CLI arguments for the 'try' command, providing usage instructions on failure.",
-      "Delegate to TryService.checkRepoPosture to validate the repository state.",
-      "Delegate to TryService.discoverLanguageLandscape to detect programming languages used in the project.",
-      "Delegate to TryService.generateASTPreviews to produce AST samples for detected languages.",
-      "Format and print the combined result (posture, languages, AST previews) to the console via console.log.",
-      "Accept optional banner callback for consistent UI display across commands."
+      "Parse and validate CLI arguments for the 'try' command using throwCliUsage",
+      "Display a UI banner via displayUIBanner to signal start of the command",
+      "Invoke checkRepoPosture to assess repository health and state",
+      "Invoke discoverLanguageLandscape to identify languages present in the project",
+      "Invoke generateASTPreviews to produce abstract syntax tree previews",
+      "Output command results to the console via console.log"
     ],
     "outOfScope": [
-      "Persistence of any kind (database writes, file storage).",
-      "Pipeline orchestration or multi-step sequencing beyond the single try command.",
-      "Cross-command state management or runtime session coordination.",
-      "Architectural rule checking or validation logic (those belong in engines).",
-      "LLM interaction or prompt rendering."
+      "Repository posture scanning logic (implemented in services/try-service.ts)",
+      "Language detection algorithms (implemented in services/try-service.ts)",
+      "AST generation and parsing (implemented in services/try-service.ts)",
+      "Configuration management (handled by infra/config.ts)",
+      "Command-line argument parsing (handled by cli-utils.ts)"
     ],
     "invariants": [
-      "Must remain a thin entrypoint: all business logic belongs in services/engines/infra, never absorbed into this module.",
-      "Must always validate arguments via throwCliUsage before performing any service call.",
-      "Must delegate checkRepoPosture, discoverLanguageLandscape, and generateASTPreviews to the TryService — never implement them locally."
+      "Must not contain pipeline or persistence logic; all such logic must reside in services, core, or infra layers (rule: cli-entrypoint-separation)"
     ],
     "changeIntent": {
-      "architecturalIntent": "Implement the 'try' CLI command as a thin entrypoint that delegates to a dedicated service layer, maintaining separation between CLI adapters and business logic.",
-      "recentChangeIntent": "Part of a broader refactoring that removed legacy CLI aliases, rebuilt documentation, fixed schemas, and updated tests. No semantic change to this file's contract."
+      "architecturalIntent": "Maintain a clean separation of concerns where CLI commands are thin adapters delegating to service-layer functions. This file aligns with that intent.",
+      "recentChangeIntent": "Recent commit 4a75a38 focused on fixing ESLint errors, E2E prompt injection, and better-sqlite3 compatibility. No direct impact on this command's contract is evident from the AST."
     },
     "publicSurface": [
       {
-        "symbolName": "ExecuteTryCommandOptions",
-        "description": "Options interface for the try command handler, providing CLI arguments, project root directory, and an optional banner display callback. Used by the CLI framework to invoke the command."
+        "symbolName": "executeTryCommand",
+        "description": "Asynchronously executes the 'try' command: validates arguments, displays UI banner, calls service functions (checkRepoPosture, discoverLanguageLandscape, generateASTPreviews), and prints results to the console."
       },
       {
-        "symbolName": "executeTryCommand",
-        "description": "Main entry point for the 'try' CLI command. It validates arguments, calls TryService to check repo posture, discover languages, and generate AST previews, then prints results to stdout."
+        "symbolName": "ExecuteTryCommandOptions",
+        "description": "Configuration interface for executeTryCommand: expects args (string array), rootDir (string), and a displayUIBanner callback function."
       }
     ],
     "ruleViolations": [],
@@ -50,21 +48,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "CLI command handler for the 'try' subcommand. Orchestrates a three-stage operation (repository posture validation, language landscape discovery, and AST preview generation) by delegating entirely to the TryService.",
+        "role": "CLI command adapter for the 'try' workflow. Orchestrates the execution of repository posture checks, language landscape discovery, and AST preview generation by invoking service-layer functions. Serves as a thin entrypoint that delegates core logic to services.",
         "responsibilities": [
-          "Parse and validate CLI arguments for the 'try' command, providing usage instructions on failure.",
-          "Delegate to TryService.checkRepoPosture to validate the repository state.",
-          "Delegate to TryService.discoverLanguageLandscape to detect programming languages used in the project.",
-          "Delegate to TryService.generateASTPreviews to produce AST samples for detected languages.",
-          "Format and print the combined result (posture, languages, AST previews) to the console via console.log.",
-          "Accept optional banner callback for consistent UI display across commands."
+          "Parse and validate CLI arguments for the 'try' command using throwCliUsage",
+          "Display a UI banner via displayUIBanner to signal start of the command",
+          "Invoke checkRepoPosture to assess repository health and state",
+          "Invoke discoverLanguageLandscape to identify languages present in the project",
+          "Invoke generateASTPreviews to produce abstract syntax tree previews",
+          "Output command results to the console via console.log"
         ],
         "outOfScope": [
-          "Persistence of any kind (database writes, file storage).",
-          "Pipeline orchestration or multi-step sequencing beyond the single try command.",
-          "Cross-command state management or runtime session coordination.",
-          "Architectural rule checking or validation logic (those belong in engines).",
-          "LLM interaction or prompt rendering."
+          "Repository posture scanning logic (implemented in services/try-service.ts)",
+          "Language detection algorithms (implemented in services/try-service.ts)",
+          "AST generation and parsing (implemented in services/try-service.ts)",
+          "Configuration management (handled by infra/config.ts)",
+          "Command-line argument parsing (handled by cli-utils.ts)"
         ]
       }
     }
@@ -75,13 +73,6 @@
         "source": "'../../infra/config.js'",
         "symbols": [
           "Config"
-        ],
-        "locality": "external"
-      },
-      {
-        "source": "'../../ast/lang-registry.js'",
-        "symbols": [
-          "LangRegistry"
         ],
         "locality": "external"
       },
@@ -157,7 +148,7 @@
       }
     ],
     "structuralHints": {
-      "importCount": 8,
+      "importCount": 7,
       "exportCount": 2,
       "isBarrel": false,
       "isTypeOnly": false
@@ -166,27 +157,10 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "fs",
-        "relation": "import",
-        "symbols": []
-      },
-      {
-        "targetPath": "path",
-        "relation": "import",
-        "symbols": []
-      },
-      {
         "targetPath": "../../infra/config.js",
         "relation": "import",
         "symbols": [
           "Config"
-        ]
-      },
-      {
-        "targetPath": "../../ast/lang-registry.js",
-        "relation": "import",
-        "symbols": [
-          "LangRegistry"
         ]
       },
       {
@@ -204,6 +178,16 @@
           "discoverLanguageLandscape",
           "generateASTPreviews"
         ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": []
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": []
       }
     ],
     "dependedBy": [],
@@ -225,6 +209,27 @@
       },
       {
         "sourceSymbol": "src/cli/commands/try.ts/_file_#",
+        "targetSymbol": "src/services/try-service.ts/checkRepoPosture#",
+        "targetPath": "src/services/try-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/try.ts/_file_#",
+        "targetSymbol": "src/services/try-service.ts/discoverLanguageLandscape#",
+        "targetPath": "src/services/try-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/try.ts/_file_#",
+        "targetSymbol": "src/services/try-service.ts/generateASTPreviews#",
+        "targetPath": "src/services/try-service.ts",
+        "relation": "references",
+        "edgeProvenance": "ast"
+      },
+      {
+        "sourceSymbol": "src/cli/commands/try.ts/_file_#",
         "targetSymbol": "src/infra/config.ts/Config#",
         "targetPath": "src/infra/config.ts",
         "relation": "references",
@@ -240,7 +245,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:54:15.405Z",
+    "indexedAt": "2026-05-12T05:18:02.842Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

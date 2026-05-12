@@ -3,22 +3,24 @@
   "identity": {
     "filePath": "src/ast/rules/go.yml",
     "contentHash": "da10fedffd58638c6fcfd783590fd567b3de663411b19d272e5522401480b2b8",
-    "semanticHash": "a9d9e2a8f96477ddcc4fa1c4e185d11091ebc51a2ae4f0fcd179e46d19981b6d",
+    "semanticHash": "4d892f7ed97fcd9a47fae1bcd8b7d6214cd3951fd4f3a13bf29ea59a94ea577a",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/ast/rules"
   },
   "semantic": {
-    "role": "Defines AST extraction patterns for the Go programming language within the ArchSpine mirror system.",
+    "role": "Defines code pattern recognition rules for the ArchSpine mirror system",
     "responsibilities": [
-      "Specifies import pattern recognition for Go single and grouped imports.",
-      "Specifies export pattern recognition for Go functions, structs, interfaces, type aliases, variables, and constants.",
-      "Specifies usage pattern recognition for Go function calls and field/method selectors."
+      "Specifying patterns for import statements (single and grouped)",
+      "Specifying patterns for exportable code elements: functions, structs, interfaces, type aliases, variables, constants",
+      "Specifying patterns for usage relationships: function calls and selector expressions",
+      "Mapping recognized patterns to semantic kinds (e.g., Function, Class, Interface, Variable, Type)"
     ],
     "outOfScope": [
-      "Does not cover other programming languages.",
-      "Does not include patterns for error handling or control flow.",
-      "Does not define architectural rules or governance policies."
+      "Non-Go programming languages or syntax extensions",
+      "Build system or dependency resolution logic",
+      "Code generation, refactoring, or runtime analysis",
+      "Specific versioning or compatibility constraints beyond pattern syntax"
     ],
     "invariants": [],
     "changeIntent": {
@@ -30,13 +32,13 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document provides a set of pattern definitions used by the ArchSpine system's AST extractor to identify imports, exports, and usages in Go source code.",
-        "context_and_audience": "This document is intended for developers and AI agents maintaining the ArchSpine system, specifically those working on language-specific AST extraction rules for Go. It serves as a reference for the patterns that govern how Go code symbols are discovered and tracked.",
+        "purpose": "This document provides the pattern configuration that enables ArchSpine's mirror layer to identify and extract structural code elements from Go source files. It defines a declarative mapping between text patterns (e.g., import grouping, function signatures, struct definitions) and the semantic categories used by the mirror for tracking design, dependencies, and architecture.",
+        "context_and_audience": "This configuration is intended for developers and maintainers of the ArchSpine system who need to extend, customize, or verify the code recognition capabilities for Go projects. It assumes familiarity with Go syntax and the ArchSpine mirror architecture. The patterns are written in a simple DSL using placeholders ($SOURCE, $NAME, etc.) and optional grouping constructs.",
         "key_takeaways": [
-          "The document contains pattern-matching rules for imports, exports, and usages.",
-          "Imports can be single or grouped.",
-          "Exports include functions, structs, interfaces, type aliases, variables, and constants.",
-          "Usages include function calls and selector expressions."
+          "The file defines three top-level sections: imports, exports, and usages, each with a list of pattern objects.",
+          "Each pattern object has a unique id and a pattern string; exports additionally include a kind (Function, Class, Interface, Variable) to categorize discovered elements.",
+          "The patterns use a specific placeholder syntax (e.g., $NAME, $$$ARGS, $$$BODY) to match code fragments with variable content.",
+          "This configuration is language-specific (Go) and can be extended with additional patterns as needed."
         ]
       }
     }
@@ -59,7 +61,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:52:27.329Z",
+    "indexedAt": "2026-05-12T05:17:34.332Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

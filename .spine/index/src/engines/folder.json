@@ -1,12 +1,12 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/engines",
-  "role": "Core engine directory containing all primary processing, analysis, and reporting modules for the ArchSpine system.",
-  "responsibility": "Collectively, these modules handle file scanning, dependency graph construction, architectural rule loading and matching, context resolution for LLM integration, violation detection, fix prompt generation, diagnostic analysis (cycles, dead code, hubs, drift), project information and usage reporting, and aggregation of index documents into a unified architectural dossier.",
+  "role": "Engine modules that implement core ArchSpine functionality including scanning, dependency analysis, rule enforcement, fix generation, and reporting.",
+  "responsibility": "Collectively, these modules provide the complete backend for ArchSpine: they scan project files, build a dependency knowledge graph, load architectural rules, detect violations, generate fix suggestions, produce diagnostic reports like the god document and usage audit, and resolve contextual dependencies for LLM integration.",
   "children": [
     {
       "filePath": "src/engines/aggregator.ts",
-      "role": "Engine module responsible for reading, validating, and aggregating spine index documents (folder units, project units) from the .spine/index directory into a unified in-memory structure for downstream analysis and transformation.",
+      "role": "Engine module that aggregates project directory structure into a hierarchical SpineProjectUnit by scanning folders, reading index documents, and validating compatibility.",
       "fileKind": "source"
     },
     {
@@ -61,7 +61,7 @@
     },
     {
       "filePath": "src/engines/info.ts",
-      "role": "Engine module that generates a comprehensive informational report about the project state, including configuration, manifest integrity, LLM settings, scan statistics, and file counts. Used by the CLI info command and potentially by service-level orchestrators.",
+      "role": "Engine module that generates a comprehensive info report summarising the metadata and state of an ArchSpine project.",
       "fileKind": "source"
     },
     {
@@ -96,7 +96,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-10T05:13:21.375Z",
+    "indexedAt": "2026-05-12T05:22:02.731Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

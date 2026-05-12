@@ -3,24 +3,22 @@
   "identity": {
     "filePath": "schemas/examples/spine-unit.example.json",
     "contentHash": "dd0170bd06ba517ac9c85a319a4d09be661885daf052ce0c619bb02b28d20fd2",
-    "semanticHash": "94093a8c39f838aad49a139451819902e17c766f0a67595a085c5381f704b7c9",
+    "semanticHash": "df4d294cbe7921df8a205fc1869465cf352d3bc18d20808c6442f102358fbe96",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas/examples"
   },
   "semantic": {
-    "role": "Spine unit document for the authentication source module in the ArchSpine mirror system.",
+    "role": "Metadata index file describing a source module (auth.ts) for the ArchSpine mirror system, enabling structural analysis and integrity verification.",
     "responsibilities": [
-      "Record source file metadata and semantic properties for a single module (auth.ts).",
-      "Define the authentication module's public surface and exported symbols.",
-      "Enforce invariants such as no direct database access from this module.",
-      "Provide dependency and graph information for structural analysis."
+      "Define the identity and location of the source file.",
+      "Enumerate the module's public surface (login, logout, AuthService).",
+      "Declare invariants that prevent architectural violations (e.g., no direct DB access).",
+      "Provide dependency graph information for system-level reasoning."
     ],
     "outOfScope": [],
     "invariants": [
-      "This module must not import database adapters directly.",
-      "The content hash must match the actual source file to ensure index freshness.",
-      "All exports must be declared in the skeleton section."
+      "The module must not import database adapters directly (enforceable invariant)."
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -31,21 +29,15 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "This document is a spine unit for the authentication module in the ArchSpine mirror system. It captures the module's identity, semantics, skeleton, graph dependencies, and provenance metadata to enable systematic code analysis and architecture enforcement.",
+        "role": "This file is an ArchSpine metadata record for src/auth.ts. It captures the module's identity, semantic role, invariants, exported symbols, and dependency graph. It serves as a lightweight contract that guides refactoring and ensures the authentication entry point remains free of database coupling.",
         "parameter_definitions": {
-          "identity.filePath": "The relative file path from the repository root. Affects how the module is located during scans and cross-references.",
-          "identity.contentHash": "A SHA-256 hash of the file content. Used to detect staleness or tampering; mismatches trigger re-indexing.",
-          "semantic.role": "A human-readable description of the module's functional role. Impacts architectural reports and agent briefings.",
-          "semantic.responsibilities": "Explicitly scoped responsibilities of the module. Used for dependency analysis and violation detection.",
-          "semantic.invariants": "Enforceable constraints that the module must not violate. Directly influences check and fix operations.",
-          "semantic.publicSurface": "The exported symbols intended for external consumption. Defines the module's API contract.",
-          "skeleton.exports": "Structural declarations of exported symbols. Used for signature matching and usage tracking.",
-          "graph.dependsOn": "List of intra-project dependencies. Critical for cycle detection, impact analysis, and architecture validation.",
-          "graph.dependedBy": "Reverse dependencies populated after a full scan. Incomplete if not all modules are indexed.",
-          "provenance.indexedAt": "Timestamp of the last successful indexing. Determines whether the unit is stale and needs re-indexing.",
-          "provenance.pipelineStages": "The processing stages applied (e.g., AST, LLM). Indicates the completeness of semantic extraction."
+          "identity.filePath": "Specifies the file location within the project. Impacts tooling and path resolution; if incorrect, analysis may break.",
+          "identity.contentHash": "SHA-256 hash of the file content for integrity verification. A mismatch indicates file changes without metadata update, which could lead to stale analysis.",
+          "semantic.invariants": "Array of mandatory constraints. The invariant 'no-direct-db-access' ensures AuthService cannot bypass service layers, preventing data access misconfiguration.",
+          "publicSurface": "List of exported API symbols (login, logout, AuthService). Determines the module's external contract; changes require coordination with consumers.",
+          "graph.dependsOn": "List of dependencies. Currently empty, meaning the module is self-contained. Adding dependencies would introduce coupling and potential instability."
         },
-        "stability_and_risks": "This spine unit document is a foundational building block for ArchSpine's code mirror. The system's stability relies on the accuracy of the content hash to prevent stale analyses, and on the invariants to enforce architectural rules. Risks include: (1) a mismatched content hash leading to false positives or missed violations; (2) missing dependency edges causing incomplete impact analysis; (3) stale provenance timestamps causing outdated views. Proper synchronization (via `archspine sync`) mitigates these risks. The document itself is read-only for most operations, ensuring that changes come only from actual file modifications and re-indexing."
+        "stability_and_risks": "The metadata file ensures that the authentication module adheres to architectural boundaries by enforcing invariants. Its stability is high because the module has zero dependencies and a small public surface. Risks include: (1) contentHash drift if file is edited without re-indexing, causing misrepresentation; (2) modifications to invariants could inadvertently allow database access, compromising security; (3) changes to publicSurface without updating consumers leads to runtime errors. Overall, this metadata enhances system reliability by providing a machine-readable contract that can be validated in CI/CD."
       }
     }
   },
@@ -67,7 +59,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:51:15.472Z",
+    "indexedAt": "2026-05-12T05:16:55.234Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

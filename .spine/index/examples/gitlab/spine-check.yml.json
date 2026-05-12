@@ -3,24 +3,22 @@
   "identity": {
     "filePath": "examples/gitlab/spine-check.yml",
     "contentHash": "f649e42202dbd53330a22ecae1b0ab2fb569f8a1c9ceab3b00dbc475382fbca5",
-    "semanticHash": "440c5e0f4d7f2a5886a8508a171bf2807e1218e6bb55075841c0158e93107900",
+    "semanticHash": "8bcb60fb07d82c0088a3c96aa6ffbdd8998329dd34bd6627bc0cac8ad8d60e84",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "examples/gitlab"
   },
   "semantic": {
-    "role": "CI/CD integration template for ArchSpine architecture checks within GitLab merge requests",
+    "role": "GitLab CI template for automated architecture compliance checking using ArchSpine",
     "responsibilities": [
-      "Provides a reusable .gitlab-ci.yml job to run 'spine check' on merge requests",
-      "Includes setup for LLM API key and GitLab token for MR comments",
-      "Defines artifact collection for failure output",
-      "Covers prerequisite configuration (spine init and config)"
+      "Automated execution of `spine sync` and `spine check` in the CI pipeline",
+      "Posting violation comments to merge requests via GitLab API",
+      "Configuration instructions for required CI variables and prerequisites"
     ],
     "outOfScope": [
-      "Documentation of ArchSpine commands beyond this template",
-      "CI integration for other platforms (GitHub Actions, etc.)",
-      "Troubleshooting ArchSpine check results",
-      "Detailed explanation of architecture rules or violations"
+      "Detailed explanation of `archspine` subcommands or output",
+      "ArchSpine installation outside of CI contexts",
+      "Support for CI platforms other than GitLab CI"
     ],
     "invariants": [],
     "changeIntent": {
@@ -32,13 +30,14 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document provides a ready-to-use GitLab CI job template that integrates ArchSpine's architecture validation into the merge request workflow, automatically blocking merges if architectural violations are detected.",
-        "context_and_audience": "Intended for development teams using GitLab who want to enforce architectural rules automatically. Readers are expected to have ArchSpine initialized in their repository and have basic knowledge of GitLab CI. The template assumes a project with LLM access and a GitLab API token for posting comments.",
+        "purpose": "To provide a reusable GitLab CI template that enforces ArchSpine architecture rules during merge request workflows.",
+        "context_and_audience": "This document is intended for developers and DevOps engineers using GitLab CI who wish to integrate ArchSpine's architecture check into their pipeline. It assumes the repository has already been initialized with `spine init` and that the required CI variables (LLM_API_KEY, GITLAB_TOKEN) are available.",
         "key_takeaways": [
-          "The job runs on merge request events only.",
-          "It executes 'spine sync --no-docs' then 'spine check'.",
-          "If violations are found, it posts a formatted comment on the MR and exits with failure.",
-          "Required CI/CD variables: LLM_API_KEY, GITLAB_TOKEN."
+          "Include this template in `.gitlab-ci.yml` to run architecture checks on every merge request event.",
+          "Set CI variables `LLM_API_KEY` (for LLM calls) and `GITLAB_TOKEN` (for MR comments) beforehand.",
+          "If `spine check` detects violations, a detailed comment is automatically posted on the MR, and the pipeline fails.",
+          "The job runs only on `merge_request_event` triggers, saving resources.",
+          "On failure, an artifact (`spine-check-output.txt`) is retained for 7 days for troubleshooting."
         ]
       }
     }
@@ -61,7 +60,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:50:32.059Z",
+    "indexedAt": "2026-05-12T05:16:10.591Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

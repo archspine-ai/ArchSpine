@@ -2,40 +2,41 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/tasks/state-commit.ts",
-    "contentHash": "c8ee286d6d83b88a58a80d34acf69105b40beefd5c046dee5c137bd09f88dd90",
+    "contentHash": "d8d00b7dee10d7f86bec81dce9e4e216d954849274db07b749bcb2b4e2f0ca1e",
     "skeletonHash": "d7e2b3fcabbc8c55ea5144984734084084bc0b5a388287a9988c1ddbb04792b3",
-    "semanticHash": "e234c77d1274d850a7f7a5640c08906de5486f5ab269517a5853ff625c4e3fa0",
+    "semanticHash": "28095b666cb6bfd21b19dd9b224b4b44397d943851cde5b28b3608b47158960f",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/tasks"
   },
   "semantic": {
-    "role": "Pipeline task implementing the state commitment stage for the ArchSpine synchronization pipeline.",
+    "role": "Pipeline task for committing synchronized file state to SQLite after AST extraction and LLM summarization. Extends SpineTask to enforce stage-local execution within the ArchSpine pipeline.",
     "responsibilities": [
-      "Commit file hashes and metadata to the SQLite database after AST extraction and LLM summarization are complete to prevent write competition.",
-      "Ensure that partial failures during summarization do not leave the database in a synced state for failed files.",
-      "Iterate over pending files retrieved from the manifest and write their state atomically in a batch operation.",
-      "Mark items as completed in the execution checkpoint for progress tracking and checkpoint recovery."
+      "Commits file hashes and metadata to the database after AST extraction and LLM summarization are complete.",
+      "Prevents write competition by ensuring partial failures during summarization do not leave the database in a 'synced' state for failed files.",
+      "Uses execution checkpointing to mark items as completed during the commit process, enabling resumability.",
+      "Reads pending file docs from the manifest and commits them in batches via ctx.manifest.commitBatch."
     ],
     "outOfScope": [
-      "Not responsible for AST extraction or LLM summarization itself.",
-      "Does not handle CLI command parsing or user interaction.",
-      "Does not perform scanning or file discovery.",
-      "Does not define database schema or migration logic."
+      "AST extraction or LLM summarization – this task runs after those stages.",
+      "CLI command parsing or general service orchestration.",
+      "Database schema management, migrations, or connection lifecycle.",
+      "File system operations beyond those exposed through the manifest API."
     ],
     "invariants": [
-      "Runs strictly after AST extraction and summarization stages in the pipeline execution graph.",
-      "Assumes a valid TaskContext with runtimeIO, manifest, and executionCheckpoint provided by the pipeline orchestrator.",
-      "Commit operation is non-destructive: does not roll back or delete previously committed state."
+      "StateCommitTask executes only after both AST extraction and LLM summarization stages have completed.",
+      "It must not commit state for files that failed summarization – only files that passed the summarization stage are eligible.",
+      "All database writes are performed via the manifest interface (commitBatch, getFileDocs), preserving abstraction boundaries of the data layer.",
+      "The task honours checkpoint semantics: it can resume from a known state if interrupted."
     ],
     "changeIntent": {
-      "architecturalIntent": "ArchSpine v1.0.0 introduces an architectural governance and semantic layer. The state-commit task is a focused pipeline stage ensuring atomic writes of synchronized state after LLM processing.",
-      "recentChangeIntent": "The commit message 'ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era' suggests a major release focused on governance. This task enforces integrity by committing completed state only after successful summarization."
+      "architecturalIntent": "Dedicate a well-defined pipeline stage for committing synchronized state to the database, maintaining the principle that each task works on top of core contracts and engines without assuming responsibility for other stages or cross-cutting concerns.",
+      "recentChangeIntent": "Initial commit establishing the state commitment task as part of the ArchSpine pipeline."
     },
     "publicSurface": [
       {
         "symbolName": "StateCommitTask",
-        "description": "Pipeline task that commits file hashes and metadata to SQLite after AST extraction and LLM summarization complete. Consumed by the pipeline orchestrator as a stage in the sync workflow."
+        "description": "Pipeline task that commits file hashes and metadata to the database after AST extraction and LLM summarization. Called by the pipeline orchestrator to complete the sync cycle and persist the results of summarization."
       }
     ],
     "ruleViolations": [],
@@ -43,16 +44,18 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Pipeline task implementing the state commitment stage for the ArchSpine synchronization pipeline.",
+        "role": "Pipeline task for committing synchronized file state to SQLite after AST extraction and LLM summarization. Extends SpineTask to enforce stage-local execution within the ArchSpine pipeline.",
         "responsibilities": [
-          "Commit file hashes and metadata to the SQLite database after AST extraction and LLM summarization are complete, preventing write competition from partial failures.",
-          "Iterate over pending files from the manifest and write their state in a batch to ensure atomicity.",
-          "Mark items as completed in the execution checkpoint for progress tracking and checkpoint recovery."
+          "Commits file hashes and metadata to the database after AST extraction and LLM summarization are complete.",
+          "Prevents write competition by ensuring partial failures during summarization do not leave the database in a 'synced' state for failed files.",
+          "Uses execution checkpointing to mark items as completed during the commit process, enabling resumability.",
+          "Reads pending file docs from the manifest and commits them in batches via ctx.manifest.commitBatch."
         ],
         "outOfScope": [
-          "Not responsible for AST extraction, LLM summarization, or file scanning.",
-          "Does not handle CLI command parsing, configuration management, or user interaction.",
-          "Does not define the database schema or perform migrations."
+          "AST extraction or LLM summarization – this task runs after those stages.",
+          "CLI command parsing or general service orchestration.",
+          "Database schema management, migrations, or connection lifecycle.",
+          "File system operations beyond those exposed through the manifest API."
         ]
       }
     }
@@ -93,7 +96,7 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "src/core/task.ts",
+        "targetPath": "../core/task.js",
         "relation": "import",
         "symbols": [
           "SpineTask",
@@ -101,7 +104,7 @@
         ]
       },
       {
-        "targetPath": "src/core/task-types.ts",
+        "targetPath": "../core/task-types.js",
         "relation": "import",
         "symbols": [
           "CommitStageOutput",
@@ -129,7 +132,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:05:14.227Z",
+    "indexedAt": "2026-05-12T05:20:01.424Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -2,35 +2,37 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "tests/e2e/cli-readonly.test.ts",
-    "contentHash": "789ac11793e27c6abbceec373f66c13b60d5a5b96583e1183c43a3d996a47cc7",
+    "contentHash": "f90b875d8237287f50c113be99fefe87adc363840e92a6d1a0a24fbf24b81034",
     "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
-    "semanticHash": "bfe437fdb93d7ab951c76914b1abc7e24bb9004fea1c6bc253fc94f2932734e7",
+    "semanticHash": "b5449d1bd85aeefeea39d3a55693cb5089493d94f17566fca33e1c567211658d",
     "language": "typescript",
     "fileKind": "source",
     "scope": "tests/e2e"
   },
   "semantic": {
-    "role": "Test harness for integration testing of the ArchSpine CLI; spawns the built CLI binary in a child process against isolated temporary workspaces.",
+    "role": "E2E test suite for the ArchSpine CLI, validating the built CLI binary against real filesystem operations and child processes.",
     "responsibilities": [
-      "Provide a `runCli` helper function that executes the built CLI (`dist/cli/index.js`) via `spawnSync` and returns stdout, stderr, and exit status.",
-      "Set up temporary test directories using `fs.mkdtempSync` to isolate each test run.",
-      "Execute CLI command scenarios (e.g. `init`, `sync`, `build`, `scan`) and assert output correctness and exit codes.",
-      "Clean up temporary test artefacts after each test via vitest lifecycle hooks (`afterEach`, `beforeAll`).",
-      "Simulate interactive CLI flows if needed by writing input files or using `execFileSync` (e.g., for prompts module)."
+      "Executes the built CLI binary (`dist/cli/index.js`) with various arguments via `spawnSync`.",
+      "Sets up temporary directories using `fs.mkdtempSync` for isolated test environments.",
+      "Invokes git commands (`execFileSync`) to simulate version control operations.",
+      "Writes prompts module wrapper scripts to control interactive input.",
+      "Collects stdout, stderr, and exit codes to assert correct CLI behavior.",
+      "Runs under the Vitest framework with `describe`, `it`, `beforeAll`, `afterEach`."
     ],
     "outOfScope": [
-      "Not a production or runtime module; does not contribute to the application's public API.",
-      "Does not define any exported symbols for external consumption.",
-      "Does not implement CLI command logic; only invokes it externally."
+      "Unit testing individual CLI modules or internal functions.",
+      "Integration testing backend services or databases.",
+      "Testing non-CLI project components (e.g., HTTP handlers, MCP tools)."
     ],
     "invariants": [
-      "Requires the CLI to be pre-built at `dist/cli/index.js` before test execution.",
-      "Assumes `node_modules/prompts` is available for interactive mode simulation.",
-      "Test isolation is achieved through unique temporary directories per test."
+      "Must be executed by the Vitest test runner.",
+      "Must import the built CLI from `dist/cli/index.js` (built artifact).",
+      "Test file name must end with `.test.ts` or `.spec.ts` (rule compliance).",
+      "Must never be imported as a module; it is a standalone test suite."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a black-box integration test suite that validates the compiled CLI behaviour end-to-end in a clean environment.",
-      "recentChangeIntent": "Updated test suite for security hardening and infrastructure changes."
+      "architecturalIntent": "Provide end-to-end coverage for CLI behavior using real process execution and temporary filesystems.",
+      "recentChangeIntent": "This test file was involved in recent fixes addressing ESLint errors and prompt injection vulnerabilities (e.g., interacting with the `prompts` module)."
     },
     "publicSurface": [],
     "ruleViolations": [],
@@ -38,18 +40,18 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Test harness for integration testing of the ArchSpine CLI; spawns the built CLI binary in a child process against isolated temporary workspaces.",
+        "role": "End-to-end test suite for the ArchSpine command-line interface.",
         "responsibilities": [
-          "Provide a `runCli` helper function that executes the built CLI (`dist/cli/index.js`) via `spawnSync` and returns stdout, stderr, and exit status.",
-          "Set up temporary test directories using `fs.mkdtempSync` to isolate each test run.",
-          "Execute CLI command scenarios (e.g. `init`, `sync`, `build`, `scan`) and assert output correctness and exit codes.",
-          "Clean up temporary test artefacts after each test via vitest lifecycle hooks (`afterEach`, `beforeAll`).",
-          "Simulate interactive CLI flows if needed by writing input files or using `execFileSync` (e.g., for prompts module)."
+          "Spawns the built CLI as a child process and verifies its output.",
+          "Creates temporary directories to isolate tests from real project state.",
+          "Runs git subprocesses for repository mocking.",
+          "Writes prompt wrappers to automate interactive CLI scenarios.",
+          "Asserts exit codes, stdout, and stderr match expected behavior."
         ],
         "outOfScope": [
-          "Not a production or runtime module; does not contribute to the application's public API.",
-          "Does not define any exported symbols for external consumption.",
-          "Does not implement CLI command logic; only invokes it externally."
+          "Unit tests for internal modules.",
+          "Integration tests for server-side or database components.",
+          "Manual or interactive CLI testing."
         ]
       }
     }
@@ -166,22 +168,27 @@
         "targetPath": "fs",
         "relation": "import",
         "symbols": [
-          "* as fs"
+          "fs"
         ]
       },
       {
         "targetPath": "os",
         "relation": "import",
         "symbols": [
-          "* as os"
+          "os"
         ]
       },
       {
         "targetPath": "path",
         "relation": "import",
         "symbols": [
-          "* as path"
+          "path"
         ]
+      },
+      {
+        "targetPath": "built CLI artifact",
+        "relation": "execution",
+        "symbols": []
       }
     ],
     "dependedBy": [],
@@ -189,7 +196,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:06:41.375Z",
+    "indexedAt": "2026-05-12T05:20:16.341Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

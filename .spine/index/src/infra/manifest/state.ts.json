@@ -2,73 +2,71 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/infra/manifest/state.ts",
-    "contentHash": "3c804d04f25db77916c68d65da444cb25a44fe66eb6911dc4bc1bca4c12b9a33",
-    "skeletonHash": "71677de97144ed84dd3d87453644fb364262ccb75a6343fb9ef269b82a4a8aa5",
-    "semanticHash": "a697e6e03a5752eee2a49de6aecbb6227ac3a2956c6557451420b659755f4ff2",
+    "contentHash": "800967a320f0c421a207b61d0c7c880da184e3825467ade166646774543802f6",
+    "skeletonHash": "1e194d2076a0179eefe357a24e84d72de2525d1a850656720051bb91e1a57e59",
+    "semanticHash": "d8a0d5ca49c828aead30a507953a522f6b7498109781f8cf8da4a240b5c7ce7b",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/manifest"
   },
   "semantic": {
-    "role": "State persistence and lifecycle manager for the Spine manifest runtime state and language detection snapshots.",
+    "role": "Infrastructure facade for manifest and language snapshot persistence in the ArchSpine mirror system.",
     "responsibilities": [
-      "Persist and load runtime state (ManifestRuntimeState) to/from the manifest JSON file under `.spine/manifest.json`.",
-      "Save and load language detection snapshots (LanguageSnapshot) to/from the language snapshot file.",
-      "Determine if a manifest is in a 'virgin' state by checking the lastSync timestamp – used to decide whether to perform a full scan.",
-      "Check for the existence of a manifest baseline file to support incremental sync decisions.",
-      "Record and persist scan metadata (mode, duration, LLM provider/model) alongside runtime state and violation counts from a status source."
+      "Read and load the runtime manifest state (e.g., reverse index completeness) from the manifest file.",
+      "Determine whether an initial sync is needed based on manifest existence and the global status from a provided source.",
+      "Persist the reverse index completion flag back to the manifest file.",
+      "Save a complete manifest state including metadata (sync mode, duration, LLM information) and active violations.",
+      "Load and save the language snapshot (LanguageSnapshot) to and from disk.",
+      "Provide stable typed interfaces (ManifestRuntimeState, ManifestStatusSource) for consumers of this module."
     ],
     "outOfScope": [
-      "Manifest schema validation and integrity checks (handled by `infra/manifest/integrity.ts`).",
-      "Index document management or knowledge graph operations.",
-      "Triggering or orchestrating scan operations – this module only persists results."
+      "Low-level JSON file reads/writes (delegated to './io.js').",
+      "Actual reverse index building or language detection logic.",
+      "Database queries for global status or active violations (provided via ManifestStatusSource)."
     ],
     "invariants": [
-      "All state files are persisted as JSON under the `.spine` directory using paths defined in `io.ts`.",
-      "The `saveManifestState` function requires a valid `ManifestStatusSource` with `getGlobalStatus` and `getActiveViolations` methods.",
-      "Language snapshots are written atomically via `FileSystemManager.safeWriteFile` to prevent partial writes.",
-      "The `reverseIndexComplete` flag is the only mutable runtime state field; all other fields are derived or metadata."
+      "All manifest writes go through FileSystemManager.safeWriteFile for atomicity.",
+      "Manifest file is always stored as JSON at the path returned by getManifestPath.",
+      "Language snapshot is always stored as JSON at the path returned by getLanguageSnapshotPath.",
+      "Manifest state must include schema version and generator version from the protocol types.",
+      "The module respects the infra-facade-imports rule: it only uses public facades (io.js, fs.js) and does not reach into deep private implementation paths."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a centralized persistence layer for Spine manifest runtime state, decoupling state I/O from business logic and scan orchestration.",
-      "recentChangeIntent": "Initial production release of ArchSpine v1.0.0 — Architectural Governance & Semantic Layer for the AI Era; this module was created to support the core manifest state lifecycle."
+      "architecturalIntent": "Provide a stable, isolated persistence layer for the manifest and language snapshots, enabling other parts of the system to reliably persist and query state without depending on low-level file I/O details.",
+      "recentChangeIntent": "Initial commit introducing the manifest and snapshot persistence module."
     },
     "publicSurface": [
       {
         "symbolName": "ManifestRuntimeState",
-        "description": "Interface representing the persisted runtime state of the manifest, currently only containing a `reverseIndexComplete` flag."
+        "description": "Interface representing the runtime state of the manifest, currently containing a reverseIndexComplete flag."
       },
       {
         "symbolName": "ManifestStatusSource",
-        "description": "Interface for an external status source that provides global status (`getGlobalStatus`) and active violation counts (`getActiveViolations`) for inclusion in saved manifest state."
+        "description": "Interface for sources that can provide global status and active violation data (e.g., from a database repository)."
       },
       {
         "symbolName": "loadManifestState",
-        "description": "Reads and returns the `ManifestRuntimeState` from the manifest JSON file, or returns a default state with `reverseIndexComplete: false` if the file does not exist."
+        "description": "Reads the manifest file from disk and returns the runtime state (ManifestRuntimeState)."
       },
       {
-        "symbolName": "isVirginManifestState",
-        "description": "Checks whether the manifest has ever been synced by examining the lastSyncAt timestamp; returns `true` if the manifest file is missing, empty, or has no valid sync timestamp."
-      },
-      {
-        "symbolName": "hasManifestBaseline",
-        "description": "Returns `true` if the manifest JSON file exists on disk and can be read, indicating a prior scan baseline is available."
+        "symbolName": "needsInitialSync",
+        "description": "Determines whether an initial synchronization is required, based on the existence of a manifest file and the current global status."
       },
       {
         "symbolName": "persistReverseIndexState",
-        "description": "Persists the `reverseIndexComplete` flag into the manifest file without overwriting other state, used to mark completion of reverse index derivation."
+        "description": "Updates the reverse index completion flag in the manifest file without altering other state."
       },
       {
         "symbolName": "saveManifestState",
-        "description": "Writes the complete manifest runtime state, scan metadata (mode, duration, LLM provider/model), and current violation count from the status source to the manifest JSON file."
+        "description": "Writes a complete manifest state to disk, including metadata such as sync mode, duration, LLM details, and active violations."
       },
       {
         "symbolName": "loadLanguageSnapshot",
-        "description": "Loads and returns the `LanguageSnapshot` from the language snapshot file, or `null` if the file does not exist or cannot be parsed."
+        "description": "Reads the language snapshot file from disk and returns a LanguageSnapshot object, or null if the file does not exist."
       },
       {
         "symbolName": "saveLanguageSnapshot",
-        "description": "Saves the given `LanguageSnapshot` to the language snapshot file using atomic file write."
+        "description": "Writes a LanguageSnapshot object to disk as a JSON file."
       }
     ],
     "ruleViolations": [],
@@ -76,18 +74,19 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "State persistence and lifecycle manager for the Spine manifest runtime state and language detection snapshots.",
+        "role": "Infrastructure facade for manifest and language snapshot persistence in the ArchSpine mirror system.",
         "responsibilities": [
-          "Persist and load runtime state (ManifestRuntimeState) to/from the manifest JSON file under `.spine/manifest.json`.",
-          "Save and load language detection snapshots (LanguageSnapshot) to/from the language snapshot file.",
-          "Determine if a manifest is in a 'virgin' state by checking the lastSync timestamp – used to decide whether to perform a full scan.",
-          "Check for the existence of a manifest baseline file to support incremental sync decisions.",
-          "Record and persist scan metadata (mode, duration, LLM provider/model) alongside runtime state and violation counts from a status source."
+          "Read and load the runtime manifest state (e.g., reverse index completeness) from the manifest file.",
+          "Determine whether an initial sync is needed based on manifest existence and the global status from a provided source.",
+          "Persist the reverse index completion flag back to the manifest file.",
+          "Save a complete manifest state including metadata (sync mode, duration, LLM information) and active violations.",
+          "Load and save the language snapshot (LanguageSnapshot) to and from disk.",
+          "Provide stable typed interfaces (ManifestRuntimeState, ManifestStatusSource) for consumers of this module."
         ],
         "outOfScope": [
-          "Manifest schema validation and integrity checks (handled by `infra/manifest/integrity.ts`).",
-          "Index document management or knowledge graph operations.",
-          "Triggering or orchestrating scan operations – this module only persists results."
+          "Low-level JSON file reads/writes (delegated to './io.js').",
+          "Actual reverse index building or language detection logic.",
+          "Database queries for global status or active violations (provided via ManifestStatusSource)."
         ]
       }
     }
@@ -149,14 +148,9 @@
         "signature": "loadManifestState(rootDir: string)"
       },
       {
-        "name": "isVirginManifestState",
+        "name": "needsInitialSync",
         "kind": "function",
-        "signature": "isVirginManifestState(\n  rootDir: string,\n  statusSource: ManifestStatusSource,\n)"
-      },
-      {
-        "name": "hasManifestBaseline",
-        "kind": "function",
-        "signature": "hasManifestBaseline(rootDir: string)"
+        "signature": "needsInitialSync(rootDir: string, statusSource: ManifestStatusSource)"
       },
       {
         "name": "persistReverseIndexState",
@@ -197,13 +191,7 @@
         "symbolUri": "src/infra/manifest/state.ts#"
       },
       {
-        "name": "isVirginManifestState",
-        "kind": "function",
-        "exported": true,
-        "symbolUri": "src/infra/manifest/state.ts#"
-      },
-      {
-        "name": "hasManifestBaseline",
+        "name": "needsInitialSync",
         "kind": "function",
         "exported": true,
         "symbolUri": "src/infra/manifest/state.ts#"
@@ -247,7 +235,7 @@
     ],
     "structuralHints": {
       "importCount": 6,
-      "exportCount": 9,
+      "exportCount": 8,
       "isBarrel": true,
       "isTypeOnly": false
     }
@@ -255,7 +243,7 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "src/infra/manifest/io.ts",
+        "targetPath": "./io.js",
         "relation": "import",
         "symbols": [
           "getLanguageSnapshotPath",
@@ -265,14 +253,7 @@
         ]
       },
       {
-        "targetPath": "src/utils/fs.ts",
-        "relation": "import",
-        "symbols": [
-          "FileSystemManager"
-        ]
-      },
-      {
-        "targetPath": "src/types/protocol.ts",
+        "targetPath": "../../types/protocol.js",
         "relation": "import",
         "symbols": [
           "CURRENT_SCHEMA_VERSION",
@@ -281,7 +262,14 @@
         ]
       },
       {
-        "targetPath": "src/core/errors.ts",
+        "targetPath": "../../utils/fs.js",
+        "relation": "import",
+        "symbols": [
+          "FileSystemManager"
+        ]
+      },
+      {
+        "targetPath": "../../core/errors.js",
         "relation": "import",
         "symbols": [
           "ErrorCodes"
@@ -290,9 +278,7 @@
       {
         "targetPath": "path",
         "relation": "import",
-        "symbols": [
-          "path"
-        ]
+        "symbols": []
       }
     ],
     "dependedBy": [],
@@ -329,7 +315,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:00:23.437Z",
+    "indexedAt": "2026-05-12T05:19:08.258Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
@@ -341,7 +327,7 @@
     "isHub": true,
     "hubPercentile": 76,
     "inCycle": true,
-    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "cycleId": "src/core → src/types → src/infra",
     "isDeadCodeSuspect": false
   }
 }

@@ -3,23 +3,21 @@
   "identity": {
     "filePath": "src/ast/rules/php.yml",
     "contentHash": "7671cdb554ffa91263b3b04a91b894665bdea9b0b0f9a3d077f9a41670adbd12",
-    "semanticHash": "c0d02ff251d71fd1827ac5db7838613d379a606726590d4309110bb3b064f712",
+    "semanticHash": "c1595c2d589468b90467ec76e6cea6e6fba89848d6896cbcece8dbe95fa71bc6",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/ast/rules"
   },
   "semantic": {
-    "role": "Language-specific pattern definition for PHP code analysis within the ArchSpine mirror system.",
+    "role": "Defines the syntactic patterns for importing, exporting, and using symbols in PHP source code, enabling ArchSpine to build a dependency graph of the project.",
     "responsibilities": [
-      "Define import detection patterns (use, require, require_once, include, include_once)",
-      "Define export detection patterns (namespace, class, function)",
-      "Define usage detection patterns (call, method, static)",
-      "Support ArchSpine's AST extraction and dependency analysis for PHP projects"
+      "Specify regex-like patterns to detect import statements (use, require, include, etc.)",
+      "Specify patterns to detect export declarations (namespace, class, function)",
+      "Specify patterns to detect usage of symbols (function calls, method calls, static accesses)"
     ],
     "outOfScope": [
-      "Non-PHP languages",
-      "Full AST parsing logic",
-      "Patterns for other constructs like traits, interfaces, or anonymous classes"
+      "Not a full PHP parser; only covers specific predefined patterns",
+      "Does not cover PHP 8+ attributes, anonymous classes, trait use statements, or complex expressions"
     ],
     "invariants": [],
     "changeIntent": {
@@ -31,14 +29,13 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "To provide the ArchSpine system with the necessary pattern definitions for parsing and analyzing PHP source code, enabling automated dependency detection and architecture validation.",
-        "context_and_audience": "This document is intended for ArchSpine maintainers and contributors who are extending or maintaining PHP language support. It is used by the AST extraction engine to identify imports, exports, and usages in PHP files.",
+        "purpose": "This document provides the pattern definitions that ArchSpine uses to scan PHP files for import, export, and usage references. It is part of the core scanner configuration and specifies how the mirror system identifies code structure for dependency mapping.",
+        "context_and_audience": "Intended for developers maintaining the ArchSpine mirror system and AI agents that need to understand how PHP code is analyzed. The patterns are used by the scanner to extract symbols and build a module dependency graph.",
         "key_takeaways": [
-          "ArchSpine uses pattern-based rules to understand PHP code structure.",
-          "Imports are detected via 'use', 'require', 'require_once', 'include', and 'include_once' statements.",
-          "Exports are identified through 'namespace', 'class', and 'function' declarations.",
-          "Usages track function calls, method calls, and static method calls.",
-          "These patterns enable ArchSpine to build dependency graphs and enforce architectural rules."
+          "Defines how ArchSpine identifies PHP imports via patterns for `use`, `require`, `require_once`, `include`, `include_once`.",
+          "Defines how ArchSpine identifies PHP exports via patterns for `namespace`, `class`, `function` declarations.",
+          "Defines how ArchSpine identifies PHP usages via patterns for function calls, method calls, and static accesses.",
+          "The patterns use a simple variable template system (e.g., `$SOURCE`, `$NAME`, `$OBJ`, `$ARGS`)."
         ]
       }
     }
@@ -61,7 +58,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:52:42.074Z",
+    "indexedAt": "2026-05-12T05:17:33.961Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

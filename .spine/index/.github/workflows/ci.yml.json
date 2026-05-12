@@ -2,24 +2,26 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": ".github/workflows/ci.yml",
-    "contentHash": "575fa255d73a2482b38d2d5dc0b5ce0bb4c2ef52b81270c1117491e7dda96601",
-    "semanticHash": "2bba11a2416d0e1e52b7174f03e73b87811fb43dcc69f48a0f29e6bbe75b1be1",
+    "contentHash": "4aebcac2e4aa78d009a598eac469f88e41630859d09387597e59d4f1aaed494b",
+    "semanticHash": "263af35c7b46d4777a3a732bc772bb2d6a6465269098bd71b6ce2a15655d6023",
     "language": "unsupported",
     "fileKind": "document",
     "scope": ".github/workflows"
   },
   "semantic": {
-    "role": "Define the automated CI pipeline for the ArchSpine project to ensure code quality, build success, and pre-release validation.",
+    "role": "Continuous Integration Pipeline Definition",
     "responsibilities": [
-      "Verification of code on push to main and pull requests across multiple Node.js versions (20 and 22).",
-      "Running lint, build, test, and protocol asset validation.",
-      "Executing a release gate for comprehensive pre-publishing checks.",
-      "Building the project documentation.",
-      "Performing a package smoke check to verify npm packaging integrity."
+      "Verification of code quality (lint, build, test) across Node.js 20 and 22",
+      "Validation of protocol assets",
+      "Release gate execution to check release readiness",
+      "Building project documentation",
+      "Smoke testing of the packaged build for npm publish"
     ],
     "outOfScope": [
-      "Deployment or publishing steps to registry or production environments.",
-      "Manual triggers or environment-specific configurations beyond Node 20/22."
+      "Actual deployment or publishing to npm",
+      "Production environment monitoring",
+      "Manual or ad-hoc build steps",
+      "Platform-specific CI outside GitHub Actions"
     ],
     "invariants": [],
     "changeIntent": {
@@ -31,13 +33,13 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This workflow defines the Continuous Integration pipeline for the ArchSpine project. It automates code verification, builds, tests, documentation generation, and pre-release validation to maintain high code quality and prevent regressions.",
-        "context_and_audience": "The document is intended for project maintainers, contributors, and anyone reviewing the CI setup. It explains what checks run automatically on every push to main and on pull requests, ensuring that all proposed changes meet the project's quality standards before merging.",
+        "purpose": "This document defines the automated continuous integration workflow for the ArchSpine project. It ensures every push to main and every pull request undergoes a standardized set of checks: linting, building, testing, protocol validation, documentation building, and a release gate. The workflow also includes a package smoke test to verify that the npm package can be built and is publishable.",
+        "context_and_audience": "The intended audience is developers and maintainers of the ArchSpine project who need to understand how changes are verified before merging and before release. It also serves as a single source of truth for CI behavior, helping contributors and release managers ensure consistency and quality.",
         "key_takeaways": [
-          "CI automatically runs lint, build, test, and asset validation on Node 20 and 22 for every push and pull request.",
-          "A dedicated release gate job runs additional checks before any potential release.",
-          "Documentation builds and package smoke checks are part of the pipeline to catch issues early.",
-          "The workflow is designed with cancellation of in-progress runs for efficiency."
+          "The workflow runs on pushes to main and pull requests, plus manual triggers.",
+          "There are four main jobs: verify (Node 20 & 22), release gate, docs build, and package smoke check.",
+          "All jobs use Node 20 (except verify which tests both 20 and 22) and rely on npm ci for reproducible installs.",
+          "The release gate job is a separate gate that must pass for a release to proceed, but actual publishing is not handled here."
         ]
       }
     }
@@ -60,7 +62,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:49:47.696Z",
+    "indexedAt": "2026-05-12T05:15:39.618Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

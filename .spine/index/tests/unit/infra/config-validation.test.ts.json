@@ -2,32 +2,32 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "tests/unit/infra/config-validation.test.ts",
-    "contentHash": "29a204ffbd705c197b33759900694970765f190c2260a503776551ea932cb4bf",
+    "contentHash": "e7af0a616545c383629b776179a41d1571f6ebad1b4e4bce2f248d625325f290",
     "skeletonHash": "93105931e39f3d6a92696c0d2560983ed2d5a46b2958737aa6e5e9ea85a8829b",
-    "semanticHash": "4020a13cb6df89c3d86994e1b06c30caa680f340a6cc686bed2a99c9e45811fb",
+    "semanticHash": "827ebd00cb808ea57de4633d29be6359a41a1db3758a6a90ee3e55f28a5fef42",
     "language": "typescript",
     "fileKind": "source",
     "scope": "tests/unit/infra"
   },
   "semantic": {
-    "role": "Unit test suite for the configuration validation module of ArchSpine.",
+    "role": "Test suite for configuration validation logic, exercising the `Config` facade and `resolveSpineConfig` function.",
     "responsibilities": [
-      "Verify that Config objects are constructed correctly from valid .spine/config.json files.",
-      "Validate that resolveSpineConfig handles schema version mismatches and other config errors.",
-      "Ensure appropriate warnings are emitted for missing or invalid configuration fields.",
-      "Test edge cases such as missing directories, invalid JSON, or out-of-range schema versions."
+      "Set up a temporary directory with a `.spine` subdirectory before each test.",
+      "Tear down the temporary directory and restore mocks after each test.",
+      "Write configuration files with varying schema versions to disk and verify that `Config` initializes correctly from them.",
+      "Verify that `resolveSpineConfig` resolves the configuration schema file correctly.",
+      "Assert that warnings are emitted when schema version mismatch occurs."
     ],
     "outOfScope": [
-      "Production code deployment or runtime behavior.",
-      "Integration or end-to-end testing of the full CLI pipeline.",
-      "Performance or security testing."
+      "Production code – this file is not imported by any module; it is only executed by the test runner.",
+      "Other aspects of the ArchSpine system such as event handling, file watching, or command execution."
     ],
     "invariants": [
-      "Test file must end with .test.ts or .spec.ts (rule: test-file-suffix)."
+      "The test file must be named with a `.test.ts` or `.spec.ts` suffix (rule: test-file-suffix)."
     ],
     "changeIntent": {
-      "architecturalIntent": "Maintain a comprehensive unit test suite covering config validation logic to ensure configuration reliability across releases.",
-      "recentChangeIntent": "Align test file with broader release gate fixes and accumulated source changes."
+      "architecturalIntent": "Provide automated verification that configuration reading, validation, and schema version detection work correctly.",
+      "recentChangeIntent": "Recent commit addressed ESLint errors, prompt injection, and better-sqlite3 compatibility; this test file likely remains unchanged in its logic."
     },
     "publicSurface": [],
     "ruleViolations": [],
@@ -35,17 +35,17 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Unit test suite for the configuration validation module of ArchSpine.",
+        "role": "Test suite for configuration validation logic, exercising the `Config` facade and `resolveSpineConfig` function.",
         "responsibilities": [
-          "Verify that Config objects are constructed correctly from valid .spine/config.json files.",
-          "Validate that resolveSpineConfig handles schema version mismatches and other config errors.",
-          "Ensure appropriate warnings are emitted for missing or invalid configuration fields.",
-          "Test edge cases such as missing directories, invalid JSON, or out-of-range schema versions."
+          "Set up a temporary directory with a `.spine` subdirectory before each test.",
+          "Tear down the temporary directory and restore mocks after each test.",
+          "Write configuration files with varying schema versions to disk and verify that `Config` initializes correctly from them.",
+          "Verify that `resolveSpineConfig` resolves the configuration schema file correctly.",
+          "Assert that warnings are emitted when schema version mismatch occurs."
         ],
         "outOfScope": [
-          "Production code deployment or runtime behavior.",
-          "Integration or end-to-end testing of the full CLI pipeline.",
-          "Performance or security testing."
+          "Production code – this file is not imported by any module; it is only executed by the test runner.",
+          "Other aspects of the ArchSpine system such as event handling, file watching, or command execution."
         ]
       }
     }
@@ -140,6 +140,18 @@
   "graph": {
     "dependsOn": [
       {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "afterEach",
+          "beforeEach",
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
+      {
         "targetPath": "../../../src/infra/config.js",
         "relation": "import",
         "symbols": [
@@ -161,31 +173,25 @@
         ]
       },
       {
-        "targetPath": "vitest",
-        "relation": "import",
-        "symbols": [
-          "afterEach",
-          "beforeEach",
-          "describe",
-          "expect",
-          "it",
-          "vi"
-        ]
-      },
-      {
         "targetPath": "fs",
         "relation": "import",
-        "symbols": []
+        "symbols": [
+          "* as fs"
+        ]
       },
       {
         "targetPath": "os",
         "relation": "import",
-        "symbols": []
+        "symbols": [
+          "* as os"
+        ]
       },
       {
         "targetPath": "path",
         "relation": "import",
-        "symbols": []
+        "symbols": [
+          "* as path"
+        ]
       }
     ],
     "dependedBy": [],
@@ -222,7 +228,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:09:26.664Z",
+    "indexedAt": "2026-05-12T05:21:04.693Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

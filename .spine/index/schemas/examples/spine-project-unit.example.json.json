@@ -3,24 +3,23 @@
   "identity": {
     "filePath": "schemas/examples/spine-project-unit.example.json",
     "contentHash": "949e27b174b4537099a624487eaadcf5a73fb4e76b92ae93e1ffb941f1cb9d04",
-    "semanticHash": "2dec12f3d3ec05d8925b54f7a9ff5f6979f2340e3e9b81d946ce3366b7c8cf57",
+    "semanticHash": "d05794ae83552900215fde47e842083ad3ad020b3c400ff87ecccb0ef7b34e42",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas/examples"
   },
   "semantic": {
-    "role": "Defines project identity, module structure, and provenance metadata for the ArchSpine semantic indexing system.",
+    "role": "Semantic indexing and protocol tooling for repository knowledge graphs.",
     "responsibilities": [
-      "Declares the project name and schema version for consistency checks.",
-      "Specifies top-level module directories and their roles.",
-      "Records provenance information including indexing timestamp, generator version, and pipeline stages used."
+      "Manages project metadata and module structure for the ArchSpine indexing pipeline.",
+      "Defines provenance and pipeline stages for reproducible semantic contract generation.",
+      "Coordinates indexing and documentation generation under the .spine directory."
     ],
     "outOfScope": [],
     "invariants": [
-      "schemaVersion must be exactly '1.0.0' for this version.",
-      "projectName is fixed to 'archspine'.",
-      "provenance.indexedAt must be a valid ISO 8601 timestamp.",
-      "provenance.pipelineStages must include at least 'ast' and 'llm'."
+      "schemaVersion must be '1.0.0' to ensure compatible interpretation.",
+      "provenance must include both 'ast' and 'llm' pipeline stages.",
+      "projectName must be 'archspine'."
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -31,16 +30,16 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Defines project identity, module structure, and provenance metadata for the ArchSpine semantic indexing system.",
+        "role": "Semantic indexing and protocol tooling for repository knowledge graphs.",
         "parameter_definitions": {
-          "schemaVersion": "Controls compatibility with the expected configuration schema. Must be '1.0.0'.",
-          "projectName": "Identifies the project as 'archspine'. Used for routing and naming.",
-          "role": "Describes the high-level purpose of the project.",
-          "responsibility": "Summarizes the operational responsibility of the indexer.",
-          "modules": "Defines top-level work directories with their roles and child counts. Unauthorized changes could disrupt pipeline structure.",
-          "provenance": "Records metadata about the indexing run, including timestamp, generator version, and pipeline stages. Critical for auditing and reproducibility."
+          "schemaVersion": "Defines the version of the configuration schema; fixes interpretation rules.",
+          "projectName": "Identifies the project as 'archspine'; used for routing and namespace scoping.",
+          "role": "Declares the high-level functional purpose of this configuration file.",
+          "responsibility": "Describes the primary deliverable or outcome this configuration governs.",
+          "modules": "Lists indexed source directories and their roles; controls which parts of the repository are included in the semantic graph.",
+          "provenance": "Records when the index was generated and which pipeline stages were applied; ensures reproducibility and auditability."
         },
-        "stability_and_risks": "This configuration acts as a project descriptor for the ArchSpine indexing system. It is not runtime-critical but influences how the system organizes its knowledge base. Modifying the schemaVersion or projectName improperly could cause version mismatches. The modules array defines expected source directories; omitting 'src' or 'docs' could break pipeline stages that depend on them. Provenance data is read-only after generation; tampering with the indexedAt timestamp could invalidate audit trails. Overall, this file has low direct operational risk but high semantic importance for maintaining consistency across indexing runs."
+        "stability_and_risks": "This configuration file establishes the fundamental identity and scope of the ArchSpine project within the repository. Changes to 'modules' can add or remove entire subsystems from indexing, potentially breaking downstream tools that rely on the semantic graph. Altering 'provenance' stages may produce inconsistent semantic contracts if the pipeline is not re-run under identical conditions. The 'schemaVersion' acts as a compatibility lock; deviating from it could cause parsing failures in agents or CI systems. Overall, the file is low-churn but high-impact — any modification should be reviewed against the indexing pipeline's contract."
       }
     }
   },
@@ -62,7 +61,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:51:02.320Z",
+    "indexedAt": "2026-05-12T05:16:30.046Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

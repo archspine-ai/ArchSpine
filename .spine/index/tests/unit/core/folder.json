@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "tests/unit/core",
-  "role": "Unit tests for core modules in the ArchSpine system including task orchestration, prompt generation, aggregation, repair policies, and validation.",
-  "responsibility": "The tests directory contains unit test suites that collectively verify the correctness and reliability of critical ArchSpine components: the Aggregator engine lifecycle, ContextEngine relevance sorting, execution checkpoint state management, output manager scaffolding, post-commit derivation pipeline ordering, prompt-context budget and diagnostics, prompt engine skeleton compaction, forced processing under repair policy, repair policy decision logic, syntax validation for FixTask, task-runtime service and task-state core, task-state structural integrity, and ValidationTask construction and execution. These tests ensure that each module behaves correctly in isolation, handles edge cases, and maintains the expected contract, providing a safety net for refactoring and development.",
+  "role": "Contains all automated test suites for the ArchSpine mirror system's core components and modules.",
+  "responsibility": "These tests verify the correctness and robustness of key subsystems including aggregation resume, context engine dependency resolution, execution checkpoint state management, output manager scaffolding, post-commit derivation pipeline orchestration, prompt context budget and diagnostics, prompt engine integration, repair forced processing and policy decisions, syntax validation, task state management, task state structural integrity, and validation task execution. They ensure deterministic behavior through isolated temporary directories and mocked dependencies.",
   "children": [
     {
       "filePath": "tests/unit/core/aggregation-resume.test.ts",
@@ -36,7 +36,7 @@
     },
     {
       "filePath": "tests/unit/core/prompt-engine.test.ts",
-      "role": "Test suite for the source prompt artifact compaction and prompt rendering pipeline.",
+      "role": "Integration test suite for the ArchSpine prompt engine pipeline (P0). Validates the end-to-end flow from building source prompt artifacts with task-specific budgets to generating rendered JSON prompts.",
       "fileKind": "source"
     },
     {
@@ -56,7 +56,7 @@
     },
     {
       "filePath": "tests/unit/core/task-runtime.test.ts",
-      "role": "Vitest unit test suite for the task-runtime service and task-state core.",
+      "role": "Unit test suite for task state management and pipeline execution.",
       "fileKind": "source"
     },
     {
@@ -71,7 +71,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-10T05:12:20.549Z",
+    "indexedAt": "2026-05-12T05:21:31.704Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

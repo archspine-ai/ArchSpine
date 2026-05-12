@@ -2,34 +2,33 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "tests/e2e/cli-pipeline-mock.test.ts",
-    "contentHash": "e0e3e39403356ad3a2342f61d1faf5aeb3a2918a1c730aba6d5325ed7ba68fb2",
+    "contentHash": "bab8cab08761f5d5e7e3d6f38a2c3097f0e9322001cbdca0049c875ce69ffde1",
     "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
-    "semanticHash": "7a19f7457849766cb51316ab962f556ce36d1b07101c012af02c8449df72358e",
+    "semanticHash": "99983bd4a36e7d3d9fc9b28d21b7007ac36660ef3722b919f4ac69e0996237d8",
     "language": "typescript",
     "fileKind": "source",
     "scope": "tests/e2e"
   },
   "semantic": {
-    "role": "Vitest end-to-end test suite that validates the ArchSpine CLI pipeline via mock (simulated) commands in isolated temporary git repositories.",
+    "role": "Vitest E2E integration test suite for the ArchSpine CLI pipeline.",
     "responsibilities": [
-      "Create temporary directories and initialize git repositories to serve as isolated test environments for each scenario.",
-      "Execute the pre-built CLI binary (`dist/cli/index.js`) with various subcommands and assertions.",
-      "Clean up test artifacts and restore state after each test execution via vitest lifecycle hooks.",
-      "Validate that CLI pipeline steps (scan, sync, etc.) produce expected outputs, error codes, and side effects in a controlled mock setting.",
-      "Adapt test expectations to reflect changes from CLI refactoring, such as removed legacy aliases and updated schemas."
+      "Creates temporary directories for isolated test environments.",
+      "Initializes git repositories with default configuration for testing.",
+      "Executes the built CLI binary (from dist/cli/index.js) using child_process.",
+      "Monitors CLI execution and captures output/errors.",
+      "Verifies end-to-end pipeline behavior (likely prompts, file generation, etc.)."
     ],
     "outOfScope": [
-      "Production logic of the CLI or its subsystems (scanning, AST extraction, LLM integration, etc.).",
-      "Real network calls or interactions with external LLM providers.",
-      "Unit tests of individual modules or services.",
-      "Integration tests that require a fully initialized ArchSpine repository or multi-language project."
+      "Production CLI implementation logic.",
+      "Unit tests of individual modules.",
+      "Runtime behavior of the system outside of the CLI pipeline."
     ],
     "invariants": [
-      "Test file must end with `.test.ts` or `.spec.ts` as per repository convention."
+      "Test file naming must comply with the 'test-file-suffix' rule (end with .test.ts or .spec.ts). (Cannot verify without filename)"
     ],
     "changeIntent": {
-      "architecturalIntent": "Maintain end-to-end test coverage for the CLI pipeline to ensure that refactored components (e.g., removed legacy CLI aliases, schema changes) behave correctly in a simulated environment.",
-      "recentChangeIntent": "Updated to align with removal of legacy CLI aliases and rebuilt documentation/schema, adjusting test expectations accordingly."
+      "architecturalIntent": "Provide automated end-to-end verification of the CLI pipeline to prevent regressions in build, prompting, and file generation workflows.",
+      "recentChangeIntent": "Resolved ESLint errors, E2E prompt injection issues, and better-sqlite3 compatibility, likely affecting the CLI or modules consumed by this test."
     },
     "publicSurface": [],
     "ruleViolations": [],
@@ -37,19 +36,18 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Vitest end-to-end test suite that validates the ArchSpine CLI pipeline via mock (simulated) commands in isolated temporary git repositories.",
+        "role": "Vitest E2E integration test suite for the ArchSpine CLI pipeline.",
         "responsibilities": [
-          "Create temporary directories and initialize git repositories to serve as isolated test environments for each scenario.",
-          "Execute the pre-built CLI binary (`dist/cli/index.js`) with various subcommands and assertions.",
-          "Clean up test artifacts and restore state after each test execution via vitest lifecycle hooks.",
-          "Validate that CLI pipeline steps (scan, sync, etc.) produce expected outputs, error codes, and side effects in a controlled mock setting.",
-          "Adapt test expectations to reflect changes from CLI refactoring, such as removed legacy aliases and updated schemas."
+          "Creates temporary directories for isolated test environments.",
+          "Initializes git repositories with default configuration for testing.",
+          "Executes the built CLI binary (from dist/cli/index.js) using child_process.",
+          "Monitors CLI execution and captures output/errors.",
+          "Verifies end-to-end pipeline behavior (likely prompts, file generation, etc.)."
         ],
         "outOfScope": [
-          "Production logic of the CLI or its subsystems (scanning, AST extraction, LLM integration, etc.).",
-          "Real network calls or interactions with external LLM providers.",
-          "Unit tests of individual modules or services.",
-          "Integration tests that require a fully initialized ArchSpine repository or multi-language project."
+          "Production CLI implementation logic.",
+          "Unit tests of individual modules.",
+          "Runtime behavior of the system outside of the CLI pipeline."
         ]
       }
     }
@@ -165,17 +163,23 @@
       {
         "targetPath": "fs",
         "relation": "import",
-        "symbols": []
+        "symbols": [
+          "*"
+        ]
       },
       {
         "targetPath": "os",
         "relation": "import",
-        "symbols": []
+        "symbols": [
+          "*"
+        ]
       },
       {
         "targetPath": "path",
         "relation": "import",
-        "symbols": []
+        "symbols": [
+          "*"
+        ]
       }
     ],
     "dependedBy": [],
@@ -183,11 +187,11 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-11T05:39:49.760Z",
+    "indexedAt": "2026-05-12T05:20:20.907Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
-      "fallback"
+      "llm"
     ]
   },
   "healthFlags": {

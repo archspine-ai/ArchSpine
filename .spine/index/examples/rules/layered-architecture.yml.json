@@ -3,22 +3,21 @@
   "identity": {
     "filePath": "examples/rules/layered-architecture.yml",
     "contentHash": "0de48a7c61fe6f1c8f51b0886997c2cdef8dbf5ba768236889f92c07eba43050",
-    "semanticHash": "e9264272e79f1c31aec48045343a6efcfdf8929261d414f416c2b6775a8cbabe",
+    "semanticHash": "f4ef123237dc8e6a3aaef9c0486fc42875c7448027e3c7dc58d099f0738a6975",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "examples/rules"
   },
   "semantic": {
-    "role": "Defines layered architecture constraints to enforce domain isolation and proper layer dependencies.",
+    "role": "Define and enforce layered architecture constraints for the ArchSpine project to maintain domain purity and proper dependency direction.",
     "responsibilities": [
-      "Specify that domain modules must not depend on infrastructure or CLI layers.",
-      "Ensure domain modules depend only on internal domain logic or generic utilities.",
-      "Mandate that API layers can only call Service or Domain layers, preventing bypass of business logic."
+      "Ensuring domain layer remains independent of infrastructure and presentation concerns.",
+      "Maintaining correct dependency direction: API -> Service/Domain, Domain -> Domain only.",
+      "Providing explicit rules for domain isolation, interface-only dependency, and API layer separation."
     ],
     "outOfScope": [
-      "Conventions for naming, file organization, or technology choices.",
-      "Other architectural patterns (e.g., microservices, event-driven).",
-      "Implementation details of specific frameworks or tools."
+      "Specific implementation details of infrastructure or CLI layers.",
+      "Rules for other architectural concerns like data flow or error handling."
     ],
     "invariants": [],
     "changeIntent": {
@@ -30,13 +29,12 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "To maintain a clean layered architecture by preventing reverse dependencies and ensuring that each layer adheres to its defined responsibilities.",
-        "context_and_audience": "This document is intended for developers and code reviewers who need to enforce architectural constraints within a project. It serves as a rule set for both human review and automated compliance checking.",
+        "purpose": "The purpose of this document is to codify the architectural constraints that enforce a classic layered architecture in ArchSpine, preventing reverse dependencies and ensuring the domain layer remains pure and focused.",
+        "context_and_audience": "This document is intended for all developers contributing to ArchSpine, especially those working on domain, API, or infrastructure layers. It serves as a reference for maintaining separation of concerns and avoiding architectural violations.",
         "key_takeaways": [
-          "Domain layer must be pure and independent of infrastructure or presentation concerns.",
-          "Domain should only depend on internal domain logic or generic utilities.",
-          "API layers must route through Service or Domain layers, not bypass business logic.",
-          "Violations are treated as errors or warnings with clear rationale."
+          "Domain modules must not import from infrastructure or CLI modules (Domain Isolation).",
+          "Domain should only depend on internal domain logic or generic utilities (Interface Only Dependency).",
+          "API layers should only call Service or Domain layers, not infrastructure directly (API Layer Separation)."
         ]
       }
     }
@@ -59,7 +57,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:50:36.166Z",
+    "indexedAt": "2026-05-12T05:16:13.558Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -2,48 +2,53 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/services/task-runtime.ts",
-    "contentHash": "392d90f8a64e73c29db2366acf5f242de87bd327eec28fc59a0cccaaea50616d",
+    "contentHash": "5d0d9cfbc894bbc9d8dc9f5978802878b7f398394bc92a99596c03eb84a0fae9",
     "skeletonHash": "e4b9058f835a6593006e86dd0fceb5fd1767e9f35cba4630ec00cd1fe05eaecf",
-    "semanticHash": "64d34e595b7b92a707b9059a435432d223a26f1c898e68bd785125246d47e527",
+    "semanticHash": "8cdd1de1fa23b533e9f352e8822e1364aa24ea7c6b4e654d627aca7c9c6c62e7",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/services"
   },
   "semantic": {
-    "role": "Central factory module that assembles a fully wired task execution context, composing Scanner, Aggregator, ASTExtractor, RuleEngine, OutputManager, ContextEngine, LockManager, Manifest, and RuntimeIO into a single PreparedTaskContext object.",
+    "role": "Service orchestrator that initializes and configures the complete task execution context, gluing together scanner, aggregator, AST extractor, rule engine, output manager, context engine, and lock manager based on provided options.",
     "responsibilities": [
-      "Construct a PreparedTaskContext by opening a Manifest, creating task state and artifacts state, instantiating Scanner, Aggregator, ASTExtractor, RuleEngine, OutputManager, ContextEngine, and LockManager, and binding RuntimeIO.",
-      "Parse the SPINE_DIAGNOSTICS_MODE environment variable to configure diagnostic mode via parseRelevanceDiagnosticsMode.",
-      "Provide the ServiceOptions interface to specify rootDir, llmClient, targetLocales, scanPolicy, and other optional dependencies for task context creation.",
-      "Provide the PreparedTaskContext interface that exposes all assembled components and state for downstream task execution."
+      "Parse relevance diagnostics mode from the SPINE_DIAGNOSTICS_MODE environment variable.",
+      "Open the project manifest and create task state and task artifacts state.",
+      "Instantiate and configure Scanner, Aggregator, ASTExtractor, RuleEngine, OutputManager, ContextEngine, and LockManager.",
+      "Combine all initialized components into a single PreparedTaskContext object for downstream use.",
+      "Expose the ServiceOptions interface to define required inputs (rootDir, llmClient, scanPolicy)."
     ],
     "outOfScope": [
-      "Actual execution of scan, check, fix, or sync tasks (delegated to the engines).",
-      "Manifest persistence or file system operations beyond what RuntimeIO handles.",
-      "Lock management internals (delegated to LockManager).",
-      "LLM client initialization (injected via options).",
-      "View-specific rendering or agent briefing (handled by separate view services)."
+      "Direct file system scanning – delegated to Scanner.",
+      "AST extraction from source files – delegated to ASTExtractor.",
+      "Rule evaluation – delegated to RuleEngine.",
+      "Output formatting/export – delegated to OutputManager.",
+      "Context enrichment or LLM interaction – delegated to ContextEngine.",
+      "Concurrency control – delegated to LockManager.",
+      "Manifest persistence – delegated to Manifest.open/close."
     ],
     "invariants": [
-      "The module must remain under src/services/ as a core service, not view-specific; view-specific service modules should live under src/services/view/ as per the service-runtime-boundary rule.",
-      "The returned PreparedTaskContext must include all required engines (Scanner, Aggregator, ASTExtractor, RuleEngine, ContextEngine) and state (taskState, artifactsState) for any task to function."
+      "The rootDir option must be a valid directory path.",
+      "The llmClient option must be provided if the context engine requires it.",
+      "The scanPolicy option must be provided to define scanning behavior.",
+      "The manifest must be openable and closeable."
     ],
     "changeIntent": {
-      "architecturalIntent": "Centralize task context creation to reduce duplication across runtime entry points and enforce consistent wiring of engines, state, and I/O.",
-      "recentChangeIntent": "Stabilized the task context preparation interface and aligned it with recent runtime service restructuring; incorporates accumulated sync and release gate fixes."
+      "architecturalIntent": "Provide a single entry point for initializing all runtime components needed to execute a spine task, decoupling configuration from execution.",
+      "recentChangeIntent": "Initial commit – establishes the baseline orchestration service for task context creation."
     },
     "publicSurface": [
       {
         "symbolName": "createTaskContext",
-        "description": "Factory function that accepts TaskContextOptions (rootDir, llmClient, targetLocales, scanPolicy, etc.) and returns a fully prepared PreparedTaskContext with all engines, state, and runtime I/O wired together. Called by task runtime executors."
+        "description": "Factory function that accepts TaskContextOptions and returns a PreparedTaskContext. It initializes all engines and infra components, parses environment-based diagnostics mode, and wires everything together. This is the primary way to bootstrap a task execution."
       },
       {
         "symbolName": "ServiceOptions",
-        "description": "TypeScript interface defining the configuration shape for createTaskContext, including rootDir, scanPolicy, llmClient, targetLocales, and optional overrides for individual engines and state stores."
+        "description": "Interface defining the configuration shape required to create a task context: rootDir, llmClient, scanPolicy, and other optional settings. Consumers must pass an object conforming to this interface."
       },
       {
         "symbolName": "PreparedTaskContext",
-        "description": "TypeScript interface describing the assembled context object that exposes scanner, aggregator, astExtractor, ruleEngine, outputManager, contextEngine, lockManager, manifest, taskState, artifactsState, and runtimeIO, ready for task execution."
+        "description": "Interface representing the fully initialized runtime context, exposing references to Scanner, Aggregator, ASTExtractor, RuleEngine, OutputManager, ContextEngine, LockManager, task state, etc. Consumed by the task execution pipeline."
       }
     ],
     "ruleViolations": [],
@@ -51,19 +56,22 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Central factory module that assembles a fully wired task execution context, composing Scanner, Aggregator, ASTExtractor, RuleEngine, OutputManager, ContextEngine, LockManager, Manifest, and RuntimeIO into a single PreparedTaskContext object.",
+        "role": "Service orchestrator that initializes and configures the complete task execution context, gluing together scanner, aggregator, AST extractor, rule engine, output manager, context engine, and lock manager based on provided options.",
         "responsibilities": [
-          "Construct a PreparedTaskContext by opening a Manifest, creating task state and artifacts state, instantiating Scanner, Aggregator, ASTExtractor, RuleEngine, OutputManager, ContextEngine, and LockManager, and binding RuntimeIO.",
-          "Parse the SPINE_DIAGNOSTICS_MODE environment variable to configure diagnostic mode via parseRelevanceDiagnosticsMode.",
-          "Provide the ServiceOptions interface to specify rootDir, llmClient, targetLocales, scanPolicy, and other optional dependencies for task context creation.",
-          "Provide the PreparedTaskContext interface that exposes all assembled components and state for downstream task execution."
+          "Parse relevance diagnostics mode from the SPINE_DIAGNOSTICS_MODE environment variable.",
+          "Open the project manifest and create task state and task artifacts state.",
+          "Instantiate and configure Scanner, Aggregator, ASTExtractor, RuleEngine, OutputManager, ContextEngine, and LockManager.",
+          "Combine all initialized components into a single PreparedTaskContext object for downstream use.",
+          "Expose the ServiceOptions interface to define required inputs (rootDir, llmClient, scanPolicy)."
         ],
         "outOfScope": [
-          "Actual execution of scan, check, fix, or sync tasks (delegated to the engines).",
-          "Manifest persistence or file system operations beyond what RuntimeIO handles.",
-          "Lock management internals (delegated to LockManager).",
-          "LLM client initialization (injected via options).",
-          "View-specific rendering or agent briefing (handled by separate view services)."
+          "Direct file system scanning – delegated to Scanner.",
+          "AST extraction from source files – delegated to ASTExtractor.",
+          "Rule evaluation – delegated to RuleEngine.",
+          "Output formatting/export – delegated to OutputManager.",
+          "Context enrichment or LLM interaction – delegated to ContextEngine.",
+          "Concurrency control – delegated to LockManager.",
+          "Manifest persistence – delegated to Manifest.open/close."
         ]
       }
     }
@@ -232,6 +240,13 @@
         ]
       },
       {
+        "targetPath": "../infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "LLMClient"
+        ]
+      },
+      {
         "targetPath": "../ast/extractor.js",
         "relation": "import",
         "symbols": [
@@ -292,7 +307,8 @@
         "targetPath": "../infra/prompt-policy.js",
         "relation": "import",
         "symbols": [
-          "parseRelevanceDiagnosticsMode"
+          "parseRelevanceDiagnosticsMode",
+          "PromptTaskMode"
         ]
       },
       {
@@ -301,6 +317,13 @@
         "symbols": [
           "RuntimeIO",
           "defaultRuntimeIO"
+        ]
+      },
+      {
+        "targetPath": "../infra/config.js",
+        "relation": "import",
+        "symbols": [
+          "Config"
         ]
       }
     ],
@@ -394,7 +417,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:03:12.520Z",
+    "indexedAt": "2026-05-12T05:19:22.736Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

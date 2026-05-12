@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/services",
-  "role": "Orchestration services that coordinate the core pipelines (sync, check, fix) and manage runtime lifecycle, configuration, repository artifacts, and output generation for the ArchSpine mirror system.",
-  "responsibility": "Acts as the central orchestration layer, providing service classes and functions to execute scanning, AST extraction, validation, summarization, and fix pipelines with retry logic and session management; handles LLM configuration persistence, repository artifact strategy (init/sync), preflight checks, runtime dependency composition, and view-based output production (Markdown, SVG, JSON).",
+  "role": "Orchestration and service layer for the ArchSpine mirror system, providing all core workflows (sync, check, fix, init, publish, administration) and runtime lifecycle management.",
+  "responsibility": "Collectively, these services coordinate the complete lifecycle of repository mirroring, validation, and repair: from initialization (scanning, language detection), synchronization (scanning, AST extraction, summarization, commit, reconciliation), validation (check pipeline), automated fixing, LLM configuration management, artifact strategy application, rule template management, execution profile resolution, runtime session management (concurrency, checkpointing, error handling), Claude skill installation, and view rendering for developer insights. They serve as the primary orchestration layer between CLI entry points and engine/infrastructure components, ensuring transactional boundaries, resumability, and structured error handling across all operations.",
   "children": [
     {
       "filePath": "src/services/check-service.ts",
@@ -10,8 +10,18 @@
       "fileKind": "source"
     },
     {
+      "filePath": "src/services/dashboard-service.ts",
+      "role": "Service-layer data-access function providing ArchSpine dashboard metadata from the .spine control plane.",
+      "fileKind": "source"
+    },
+    {
       "filePath": "src/services/fix-service.ts",
-      "role": "Service-layer orchestrator for automated violation remediation via retry-able fix pipelines.",
+      "role": "Service orchestrating the automated fix pipeline for ArchSpine violations.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/init-service.ts",
+      "role": "Service layer function that coordinates file scanning, language detection, and manifest persistence for a given project root.",
       "fileKind": "source"
     },
     {
@@ -21,12 +31,17 @@
     },
     {
       "filePath": "src/services/publish-preflight.ts",
-      "role": "Preflight validation module for the ArchSpine publish pipeline, guarding against missing runtime state and misconfiguration before a publish operation can proceed.",
+      "role": "Pre-publish validation and safety service for the ArchSpine publish pipeline.",
       "fileKind": "source"
     },
     {
       "filePath": "src/services/repository-admin-service.ts",
       "role": "CLI-level orchestration module for applying and verifying the ArchSpine repository artifact strategy (e.g., agent instruction files, gitignore, scripts, rule templates). It coordinates the initial bootstrap and ongoing sync of managed repository files during 'init', 'sync', and 'scan' CLI commands.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/rule-service.ts",
+      "role": "Rule template registry providing predefined architectural constraint definitions for the ArchSpine project.",
       "fileKind": "source"
     },
     {
@@ -50,23 +65,33 @@
       "fileKind": "source"
     },
     {
+      "filePath": "src/services/skill-service.ts",
+      "role": "Claude skill lifecycle installer/uninstaller for the ArchSpine project.",
+      "fileKind": "source"
+    },
+    {
       "filePath": "src/services/sync-service.ts",
-      "role": "Orchestrator service that coordinates the full synchronization pipeline (scan, reconcile, AST extraction, summarization, state commit, post-commit derivation). It is the primary entry point for the sync command and manages runtime sessions, protected output detection, and resume logic.",
+      "role": "Service orchestrator coordinating the multi-stage synchronization pipeline for the ArchSpine mirror system.",
       "fileKind": "source"
     },
     {
       "filePath": "src/services/task-runtime.ts",
-      "role": "Central factory module that assembles a fully wired task execution context, composing Scanner, Aggregator, ASTExtractor, RuleEngine, OutputManager, ContextEngine, LockManager, Manifest, and RuntimeIO into a single PreparedTaskContext object.",
+      "role": "Service orchestrator that initializes and configures the complete task execution context, gluing together scanner, aggregator, AST extractor, rule engine, output manager, context engine, and lock manager based on provided options.",
+      "fileKind": "source"
+    },
+    {
+      "filePath": "src/services/try-service.ts",
+      "role": "Service orchestrating repository landscape analysis by combining scanning, configuration, language discovery, and AST extraction.",
       "fileKind": "source"
     },
     {
       "filePath": "src/services/view",
-      "role": "The view subsystem that produces all output artifacts (Markdown, SVG, JSON) from the internal knowledge graph and index data for the ArchSpine mirror system.",
+      "role": "This directory implements the view rendering subsystem for ArchSpine, transforming knowledge graph and index data into actionable visual artifacts (Markdown, SVG, JSON) for developer insight.",
       "fileKind": "folder"
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-10T05:13:26.548Z",
+    "indexedAt": "2026-05-12T05:22:18.172Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

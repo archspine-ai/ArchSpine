@@ -3,24 +3,22 @@
   "identity": {
     "filePath": "src/ast/rules/rust.yml",
     "contentHash": "5ace25732f8c327e49304b0edf02a758966a63d37e9f1224b5cffea5d083962b",
-    "semanticHash": "a62f204579874f884218a838944938b1a356adbc029428915dce7d9a3a21eea7",
+    "semanticHash": "68919f17b68eb1f1d029e72b7be6318f1716058d1a6af0ef4422f2ed0a3d8d07",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/ast/rules"
   },
   "semantic": {
-    "role": "Defines the Abstract Syntax Tree (AST) extraction rules for the Rust language within the ArchSpine mirror system, enabling automatic recognition of code structures such as imports, exports (functions, structs, traits, implementations, variables), and usage patterns (function calls and path references).",
+    "role": "Defines extraction rules for code elements and usage patterns for the ArchSpine mirror system.",
     "responsibilities": [
-      "Specifies how Rust import statements are matched using the `use $SOURCE` pattern.",
-      "Defines export extractions for Rust functions (including parameters), structs, traits, implementations, and mutable/immutable variables.",
-      "Outlines usage pattern detection for function calls and path-based member accesses (e.g., `$OBJ::$NAME`).",
-      "Serves as a pluggable rule document that the ArchSpine scanner loads to perform language-specific static analysis.",
-      "Maintains compatibility with the ArchSpine protocol schemas for rules and manifest."
+      "Describing how to import code entities",
+      "Specifying export patterns for functions, structs, traits, implementations, and variables",
+      "Specifying usage patterns for function calls and path accesses"
     ],
     "outOfScope": [
-      "Does not cover other programming languages (e.g., TypeScript, Python, Go) – each language has its own rule file.",
-      "Does not handle advanced Rust concepts such as macros, attributes, closures, or lifetime annotations.",
-      "Does not define error handling or violation reporting – that is handled by other ArchSpine components."
+      "Documentation of the overall ArchSpine system architecture",
+      "User guide for using the mirror system",
+      "Implementation details of the parsing engine"
     ],
     "invariants": [],
     "changeIntent": {
@@ -32,13 +30,13 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document is the Rust language definition file for the ArchSpine AST extraction engine. It tells the scanner how to identify and index key Rust code structures like imports, functions, structs, traits, implementations, and common usage patterns. Without it, ArchSpine would not be able to understand Rust source code during a mirror scan.",
-        "context_and_audience": "This rule file is used by ArchSpine's internal scanner and language discovery modules. It is maintained primarily by developers extending language support for the system. Human readers should be comfortable with Rust syntax and tree-sitter query concepts. The audience includes both ArchSpine contributors verifying language coverage and AI agents that process the rules programmatically.",
+        "purpose": "This document serves as a configuration schema for defining how code symbols are extracted from source code within the ArchSpine mirror system. It specifies pattern-based rules for identifying imports, exports (such as functions, structs, traits, implementations, and variables), and usages (like function calls and path accesses). The patterns are based on tree-sitter grammar constructs.",
+        "context_and_audience": "This document is intended for developers and maintainers of the ArchSpine mirror system who need to customize or understand the code extraction rules. It provides the formal specification for mapping source code constructs to mirror entities.",
         "key_takeaways": [
-          "The file follows ArchSpine's schema for language rules and uses tree-sitter query syntax for pattern matching.",
-          "Exports are defined as 'kind' entries (e.g., Function, Class, Interface, Type, Variable) that map to Rust AST nodes.",
-          "Usage patterns capture two fundamental operations: direct function calls and method/path accesses via ::.",
-          "All identifiers are parameterized ($NAME, $SOURCE, etc.) to enable dynamic matching when the scanner encounters actual code."
+          "The document defines a pattern language for code extraction",
+          "It covers imports, exports (functions, structs, traits, impls, variables), and usages (calls, paths)",
+          "The patterns rely on tree-sitter node types and query syntax",
+          "It serves as a schema that drives the ArchSpine's ability to create a mirrored representation of code."
         ]
       }
     }
@@ -61,7 +59,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:52:56.820Z",
+    "indexedAt": "2026-05-12T05:17:39.521Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

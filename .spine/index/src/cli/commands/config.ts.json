@@ -2,75 +2,70 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/cli/commands/config.ts",
-    "contentHash": "9715b7edd81093147d313f64f2c6512b1802071b1a62fbdf6d0699450d75cc0f",
-    "skeletonHash": "11580710e3b1c254dea5013f08d0e2eb9b6293074d98955d09b1b1af1f2716c5",
-    "semanticHash": "dc4a0c5fab79e5f07d9217b5ab6dee9839ea384f48dac35b441b5712480196b8",
+    "contentHash": "114b6c19943c798108d25c0869a0fbd2231e15b1fdc6b25d2422ae4c52e949b0",
+    "skeletonHash": "923a1e72d584ae0942eacc7e02e9f9194dca00600fa909e43f478eff80131768",
+    "semanticHash": "5acf23b56bd179c022dc1546f55ca9c99b3e6588258222d2fe85a8f9ad3e2dc8",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/cli/commands"
   },
   "semantic": {
-    "role": "CLI command handler for the `spine config` subcommand, responsible for reading and writing project configuration, managing documentation languages, repo settings, and git hooks via interactive prompts or direct argument-driven commands.",
+    "role": "CLI command adapter that parses and dispatches configuration subcommands (get, set, list, repo, git-hook, sync) to appropriate service and infra modules.",
     "responsibilities": [
-      "Parse CLI arguments and dispatch subcommands (get, set, list, languages, repo, hooks) for configuration management.",
-      "Interact with Config and Manifest objects to read and persist configuration state, including language settings and repository artifact strategies.",
-      "Manage documentation language selection by prompting users interactively or resolving from command arguments.",
-      "Install and uninstall Git hooks based on user configuration preferences.",
-      "Validate configuration keys and values before applying changes.",
-      "Render configuration output to the console in a human-readable format."
+      "Parse CLI arguments to identify configuration subcommands and their options (get, set, list, repo-check, repo-set, git-hook-install, git-hook-uninstall, hook-sync-mode, sync).",
+      "Route get/set/list operations to the Config API via infra/config.",
+      "Route repo-check/repo-set to the repo/strategy module for artifact strategy validation and updates.",
+      "Route git-hook-install/uninstall to utils/git-hook for managing pre-commit hooks.",
+      "Route hook-sync-mode configuration changes to infra/config.",
+      "Route sync subcommand to the sync workflow module (runSyncWorkflow).",
+      "Provide usage error feedback to the user via throwCliUsage.",
+      "Print user-facing output for config values and operation status."
     ],
     "outOfScope": [
-      "Pipeline execution and task orchestration logic.",
-      "Scanning or AST extraction from source files.",
-      "Direct manipulation of database or knowledge graph state (beyond config and manifest)."
+      "Business logic for artifact scanning, syncing, or repository analysis.",
+      "Direct database or persistence operations.",
+      "Engine orchestration logic (e.g., the full sync pipeline).",
+      "Non-configuration CLI subcommands (e.g., init, help)."
     ],
     "invariants": [
-      "Config validation must occur before any write operation; invalid values must be rejected.",
-      "Language selection prompts must respect the current language list and support interactive reordering or removal.",
-      "The config command must not silently overwrite hooks or repo settings without user confirmation when appropriate."
+      "All substantial operations must be delegated to non-CLI modules (services, infra, engines); this module must not absorb pipeline or persistence logic.",
+      "The module must not directly call or contain logic from core or engine layers; it acts only as a command router."
     ],
     "changeIntent": {
-      "architecturalIntent": "The config command serves as the thin adapter for reading and modifying Spine project configuration from the CLI, respecting the separation between entrypoint and business logic.",
-      "recentChangeIntent": "No recent changes detected for this file in the current branch; the overall project intent involved removing legacy CLI aliases and rebuilding documentation."
+      "architecturalIntent": "Initial implementation of CLI config command adapter to handle user-facing configuration operations (get/set/list, repo strategy, git hooks, sync).",
+      "recentChangeIntent": "Initial commit - added executeConfigCommand to manage all configuration-related CLI commands."
     },
     "publicSurface": [
       {
-        "symbolName": "promptForDocumentationLanguages",
-        "description": "Prompts the user via an interactive menu to select which languages to generate documentation for, returning the chosen language codes or undefined if cancelled."
-      },
-      {
         "symbolName": "executeConfigCommand",
-        "description": "Main entry point for the `spine config` CLI command; parses sub-arguments and dispatches configuration operations such as getting/setting keys, managing languages, repository settings, and git hooks."
+        "description": "Main entry point for handling 'config' CLI subcommands. Parses the argument vector, determines the intended operation, and delegates to the appropriate service or infra module. Called by the top-level CLI dispatcher when the 'config' command is invoked."
       },
       {
         "symbolName": "ExecuteConfigCommandOptions",
-        "description": "Interface defining the expected arguments (`args`, `config`, `rootDir`, `runtimeService`) for the executeConfigCommand function."
+        "description": "Interface for the options object passed to executeConfigCommand, containing the raw argument array, Config instance, optional root directory, and optional RuntimeService. Consumed by the CLI dispatcher when calling the config command handler."
       }
     ],
-    "ruleViolations": [
-      {
-        "id": "cli-entrypoint-separation",
-        "severity": "error",
-        "reason": "The config command directly opens the Manifest via `Manifest.open` and loads language snapshots via `langManifest.loadLanguageSnapshot`, which are persistence/infra operations. It also directly calls `config.saveLanguages()` and `config.getLanguages()` without delegating to a service layer. This couples the CLI entrypoint to infrastructural persistence concerns, violating the rule that CLI modules must not absorb pipeline or persistence logic."
-      }
-    ],
+    "ruleViolations": [],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "CLI command handler for the `spine config` subcommand, responsible for reading and writing project configuration, managing documentation languages, repo settings, and git hooks via interactive prompts or direct argument-driven commands.",
+        "role": "CLI command adapter that parses and dispatches configuration subcommands (get, set, list, repo, git-hook, sync) to appropriate service and infra modules.",
         "responsibilities": [
-          "Parse CLI arguments and dispatch subcommands (get, set, list, languages, repo, hooks) for configuration management.",
-          "Interact with Config and Manifest objects to read and persist configuration state, including language settings and repository artifact strategies.",
-          "Manage documentation language selection by prompting users interactively or resolving from command arguments.",
-          "Install and uninstall Git hooks based on user configuration preferences.",
-          "Validate configuration keys and values before applying changes.",
-          "Render configuration output to the console in a human-readable format."
+          "Parse CLI arguments to identify configuration subcommands and their options (get, set, list, repo-check, repo-set, git-hook-install, git-hook-uninstall, hook-sync-mode, sync).",
+          "Route get/set/list operations to the Config API via infra/config.",
+          "Route repo-check/repo-set to the repo/strategy module for artifact strategy validation and updates.",
+          "Route git-hook-install/uninstall to utils/git-hook for managing pre-commit hooks.",
+          "Route hook-sync-mode configuration changes to infra/config.",
+          "Route sync subcommand to the sync workflow module (runSyncWorkflow).",
+          "Provide usage error feedback to the user via throwCliUsage.",
+          "Print user-facing output for config values and operation status."
         ],
         "outOfScope": [
-          "Pipeline execution and task orchestration logic.",
-          "Scanning or AST extraction from source files.",
-          "Direct manipulation of database or knowledge graph state (beyond config and manifest)."
+          "Business logic for artifact scanning, syncing, or repository analysis.",
+          "Direct database or persistence operations.",
+          "Engine orchestration logic (e.g., the full sync pipeline).",
+          "Non-configuration CLI subcommands (e.g., init, help)."
         ]
       }
     }
@@ -87,28 +82,12 @@
         "locality": "external"
       },
       {
-        "source": "'../../infra/manifest.js'",
-        "symbols": [
-          "Manifest"
-        ],
-        "locality": "external"
-      },
-      {
         "source": "'../cli-utils.js'",
         "symbols": [
           "throwCliUsage",
           "parseConfigValue",
           "formatConfigValue",
-          "printStep",
-          "printLanguageDiscovery"
-        ],
-        "locality": "external"
-      },
-      {
-        "source": "'../document-languages.js'",
-        "symbols": [
-          "getDocumentLanguageChoices",
-          "HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE"
+          "printStep"
         ],
         "locality": "external"
       },
@@ -144,13 +123,6 @@
         "locality": "external"
       },
       {
-        "source": "'prompts'",
-        "symbols": [
-          "prompts"
-        ],
-        "locality": "external"
-      },
-      {
         "source": "'process'",
         "symbols": [
           "* as process"
@@ -159,11 +131,6 @@
       }
     ],
     "exports": [
-      {
-        "name": "promptForDocumentationLanguages",
-        "kind": "function",
-        "signature": "promptForDocumentationLanguages(\n  currentLanguages: string[] = [],\n)"
-      },
       {
         "name": "executeConfigCommand",
         "kind": "function",
@@ -176,12 +143,6 @@
       }
     ],
     "declaredSymbols": [
-      {
-        "name": "promptForDocumentationLanguages",
-        "kind": "function",
-        "exported": true,
-        "symbolUri": "src/cli/commands/config.ts#"
-      },
       {
         "name": "executeConfigCommand",
         "kind": "function",
@@ -196,9 +157,9 @@
       }
     ],
     "structuralHints": {
-      "importCount": 10,
-      "exportCount": 3,
-      "isBarrel": true,
+      "importCount": 7,
+      "exportCount": 2,
+      "isBarrel": false,
       "isTypeOnly": false
     }
   },
@@ -214,29 +175,13 @@
         ]
       },
       {
-        "targetPath": "../../infra/manifest.js",
-        "relation": "import",
-        "symbols": [
-          "Manifest"
-        ]
-      },
-      {
         "targetPath": "../cli-utils.js",
         "relation": "import",
         "symbols": [
           "throwCliUsage",
           "parseConfigValue",
           "formatConfigValue",
-          "printStep",
-          "printLanguageDiscovery"
-        ]
-      },
-      {
-        "targetPath": "../document-languages.js",
-        "relation": "import",
-        "symbols": [
-          "getDocumentLanguageChoices",
-          "HIGH_CAPACITY_LANGUAGE_SEPARATOR_VALUE"
+          "printStep"
         ]
       },
       {
@@ -269,13 +214,6 @@
         "symbols": [
           "* as process"
         ]
-      },
-      {
-        "targetPath": "prompts",
-        "relation": "import",
-        "symbols": [
-          "prompts"
-        ]
       }
     ],
     "dependedBy": [],
@@ -284,20 +222,6 @@
       {
         "sourceSymbol": "src/cli/commands/config.ts/_file_#",
         "targetSymbol": "src/cli/cli-utils.ts/throwCliUsage#",
-        "targetPath": "src/cli/cli-utils.ts",
-        "relation": "references",
-        "edgeProvenance": "ast"
-      },
-      {
-        "sourceSymbol": "src/cli/commands/config.ts/_file_#",
-        "targetSymbol": "src/cli/document-languages.ts/getDocumentLanguageChoices#",
-        "targetPath": "src/cli/document-languages.ts",
-        "relation": "references",
-        "edgeProvenance": "ast"
-      },
-      {
-        "sourceSymbol": "src/cli/commands/config.ts/_file_#",
-        "targetSymbol": "src/cli/cli-utils.ts/printLanguageDiscovery#",
         "targetPath": "src/cli/cli-utils.ts",
         "relation": "references",
         "edgeProvenance": "ast"
@@ -367,13 +291,6 @@
       },
       {
         "sourceSymbol": "src/cli/commands/config.ts/_file_#",
-        "targetSymbol": "src/infra/manifest/state.ts/loadLanguageSnapshot#",
-        "targetPath": "src/infra/manifest/state.ts",
-        "relation": "references",
-        "edgeProvenance": "ast"
-      },
-      {
-        "sourceSymbol": "src/cli/commands/config.ts/_file_#",
         "targetSymbol": "src/infra/config/supported-values.ts/getSupportedValue#",
         "targetPath": "src/infra/config/supported-values.ts",
         "relation": "references",
@@ -389,7 +306,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:53:56.450Z",
+    "indexedAt": "2026-05-12T05:18:18.184Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -3,27 +3,29 @@
   "identity": {
     "filePath": "schemas/spine-manifest.schema.json",
     "contentHash": "63ef3291e0e8d90eebfe8cf16f0263163dee1ebc6b8255f0e00a67023c0a4c4d",
-    "semanticHash": "eb372aed35566d528ca2973c3da1493b01641661820af6d73d8bc000c42764bc",
+    "semanticHash": "7de5f15be3600f3a6dc227262a85d36b1b88a8d86671e2c08ac9087616ce9244",
     "language": "unsupported",
     "fileKind": "config",
     "scope": "schemas"
   },
   "semantic": {
-    "role": "Schema definition for the ArchSpine SpineManifest, a JSON configuration file that records the state of indexed files, synchronization metadata, and documentation mappings within a repository.",
+    "role": "Schema for the ArchSpine SpineManifest configuration file, which records synchronization state and file-level indexing metadata for the mirror system.",
     "responsibilities": [
-      "Defines the structure for tracking synced file metadata (content hashes, file kinds, indexing timestamps)",
-      "Specifies synchronization status including last sync timestamp, mode, and completeness of reverse index",
-      "Maps each indexed file to its associated documentation (locale-specific doc paths)",
-      "Ensures integrity and version alignment via required fields and schema constraints"
+      "Tracking synchronization events (last sync timestamp, mode, reverse index completeness, indexed unit count)",
+      "Storing per-file metadata including content hash, file kind, indexing timestamp, associated documentation files (by locale), and source existence flag"
     ],
     "outOfScope": [],
     "invariants": [
-      "Files must always have a contentHash, fileKind, lastIndexedAt, docs array, and sourceExists flag",
-      "Each doc entry must include a locale (conforming to locale pattern) and a repo-relative path",
-      "lastSyncMode must be one of 'full', 'incremental', or 'unknown'",
-      "indexedUnitCount must be a non-negative integer",
-      "Top-level properties schemaVersion and generatorVersion are mandatory and must be non-empty",
-      "createdAt and updatedAt must be ISO timestamps"
+      "schemaVersion and generatorVersion must be non-empty strings",
+      "createdAt and updatedAt must be ISO 8601 timestamps",
+      "sync.lastSyncMode must be one of 'full', 'incremental', or 'unknown'",
+      "sync.indexedUnitCount must be >= 0",
+      "Each file entry must include contentHash, fileKind, lastIndexedAt, docs (array), and sourceExists",
+      "File paths (keys and doc paths) must match repoRelativePath pattern (external reference)",
+      "contentHash must match contentHash pattern (external reference)",
+      "fileKind must be a valid file kind (external reference)",
+      "docs array items must have locale (valid locale) and path (repoRelativePath)",
+      "No additional properties allowed at manifest root, sync object, or file entry level"
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -34,16 +36,24 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "This JSON Schema defines the structure of the ArchSpine SpineManifest, an essential configuration file that records every indexed file, its documentation links, and synchronization state across the repository mirror. It acts as the source of truth for what has been analyzed, when, and how the index relates to the live codebase.",
+        "role": "Schema for the ArchSpine SpineManifest configuration file, which records synchronization state and file-level indexing metadata for the mirror system.",
         "parameter_definitions": {
-          "schemaVersion": "The version of the manifest schema format used. Ensures forward and backward compatibility between tools.",
-          "generatorVersion": "The version of the ArchSpine generator that produced this manifest. Helps trace which software version created the file.",
-          "createdAt": "ISO 8601 timestamp of when the manifest was first created. Establishes the origin of the index.",
-          "updatedAt": "ISO 8601 timestamp of the last update to the manifest. Allows consumers to detect staleness.",
-          "sync": "An object describing the last synchronization operation. Contains lastSyncAt (nullable timestamp), lastSyncMode (full/incremental/unknown), reverseIndexComplete (boolean), and indexedUnitCount (non-negative integer count of indexed entities). Controls how the mirror knows the completeness of its analysis.",
-          "files": "An object mapping repository-relative file paths to their indexing metadata. Each entry includes: contentHash (hash of file contents for change detection), fileKind (type classification of the file), lastIndexedAt (when it was last analyzed), docs (array of {locale, path} linking the file to its documentation in various languages), and sourceExists (whether the original source file still exists on disk). This dictionary is the core of the mirror’s file-level inventory."
+          "schemaVersion": "Declares the version of the manifest schema; enforces compatibility with the system.",
+          "generatorVersion": "Identifies the version of the tool that generated this manifest; helps track provenance.",
+          "createdAt": "ISO timestamp of when this manifest was first created.",
+          "updatedAt": "ISO timestamp of the last modification to this manifest.",
+          "sync.lastSyncAt": "The most recent synchronization timestamp; can be null if never synced.",
+          "sync.lastSyncMode": "Indicates whether the last sync was full, incremental, or unknown; affects delta decisions.",
+          "sync.reverseIndexComplete": "Boolean flag indicating if the reverse index (mapping docs to files) is fully built; false implies incomplete.",
+          "sync.indexedUnitCount": "Total number of indexing units (e.g., files or chunks) processed; must be non-negative.",
+          "files": "Map of file paths (relative to repo root) to their metadata objects.",
+          "files.*.contentHash": "Cryptographic hash of the file content; used for integrity and change detection.",
+          "files.*.fileKind": "The type or category of the file (e.g., 'source', 'doc', 'config'); controls how the file is processed.",
+          "files.*.lastIndexedAt": "ISO timestamp of when this file was last indexed.",
+          "files.*.docs": "Array of associated documentation file references, each with a locale and path.",
+          "files.*.sourceExists": "Boolean indicating whether the original source file still exists on disk; used for cleanup detection."
         },
-        "stability_and_risks": "The SpineManifest is critical to system stability because it drives incremental sync and reverse index completeness. If the schema is violated (e.g., missing required fields, invalid timestamps, or corrupted content hashes), the system may fail to detect changes, skip necessary re-indexing, or misreport documentation coverage. The strict schema validation prevents malformed manifests from being loaded, but manual editing of the manifest outside the tool can cause silent data corruption. Version misalignment between schemaVersion and generatorVersion may lead to interoperability failures when using different ArchSpine versions. The boolean reverseIndexComplete flag is especially important: if incorrectly set to true when the index is incomplete, downstream views and reports may be incorrect."
+        "stability_and_risks": "This schema defines the structure of the SpineManifest, a critical state file for the ArchSpine mirror system. Correctness and completeness of sync metadata directly impact the system's ability to perform incremental updates, detect stale indexes, and maintain consistency between mirrored files and their documentation. The enforced invariants (e.g., required fields, type constraints, no additional properties) help prevent data corruption and misconfiguration. Key risks include: (1) an incorrect lastSyncMode could cause the system to skip necessary full resyncs, leading to missing data; (2) a false reverseIndexComplete might prevent documentation from being linked properly; (3) missing or inconsistent contentHash values could cause undetected file changes; (4) setting sourceExists incorrectly may lead to orphaned index entries or missed file deletions. Regular validation against this schema is recommended to maintain operational stability."
       }
     }
   },
@@ -65,7 +75,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:51:07.669Z",
+    "indexedAt": "2026-05-12T05:16:51.345Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

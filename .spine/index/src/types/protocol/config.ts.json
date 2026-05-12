@@ -2,69 +2,64 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/types/protocol/config.ts",
-    "contentHash": "64114570a344767eb4cb36681154bab7fd1f57c5220c6fdf545883ff7f7267c5",
+    "contentHash": "d2ec46b36e71a401b2ba3960551d06f772138bad10963530e8f951c96d1a57a7",
     "skeletonHash": "4df3fa499c4b8ef7f91292ae284b2e481ccd8712a3c1f25112f8497cfea008e1",
-    "semanticHash": "5ae3c2ffd11d84202122684a01095e4d2e1a0fd14cad1be23acb6481823c59c5",
+    "semanticHash": "82923f462114ce0f7855004aaf6a36476319dc72f27438be9c2352d4b067d0c3",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/types/protocol"
   },
   "semantic": {
-    "role": "Configuration schema types for the ArchSpine project — defines the structure of the `spine.config.json` file and related type aliases.",
+    "role": "Configuration schema definition module for the ArchSpine mirror system, providing the canonical shape for project-, LLM-, and MCP-related settings.",
     "responsibilities": [
-      "Define the `SpineConfig` interface that describes the project configuration schema, including project name, locales, and LLM settings.",
-      "Define the `MCPContextMode` type alias for the context mode used by MCP tools.",
-      "Import and re-export the `SchemaVersion` type from the versions module to enforce versioning on configuration files.",
-      "Import the `PartialScanPolicy` type from scan-policy to allow embedding partial scan policies within the configuration."
+      "Define the `SpineConfig` interface that describes the complete project configuration structure, including schema version, project metadata, LLM provider details, and optional MCP context.",
+      "Define the `MCPContextMode` type, likely an enumeration or union of allowed context modes for the MCP server integration.",
+      "Serve as the single-source-of-truth contract consumed by configuration loaders, validators, and downstream services that read ArchSpine settings."
     ],
     "outOfScope": [
-      "Runtime configuration loading or validation.",
-      "Default configuration values.",
-      "Configuration file I/O.",
-      "CLI handling of configuration."
+      "Configuration file parsing, validation, or default-value injection.",
+      "Runtime logic for LLM or MCP interactions.",
+      "Schema version migration or compatibility logic."
     ],
     "invariants": [
-      "Configuration schema must include a `schemaVersion` field of type `SchemaVersion`.",
-      "Configuration must include a `project` object with `name` and `locales` fields.",
-      "Configuration may optionally include an `llm` object with `provider`, `model`, and `baseURL` fields."
+      "`SpineConfig.schemaVersion` must be compatible with `SchemaVersion` from `./versions.js`.",
+      "`SpineConfig.project.name` must be a non-empty string (implied by usage contracts)."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a type-safe contract for the project's main configuration file (spine.config.json), ensuring that all required and optional fields are well-typed and that the configuration is versioned.",
-      "recentChangeIntent": "No recent changes specific to this file are indicated by git history or environment context beyond broad release gate fixes."
+      "architecturalIntent": "Define a stable configuration interface that decouples configuration consumers from specific JSON/YAML shapes and enables future schema versioning.",
+      "recentChangeIntent": "Initial commit – established the foundational configuration schema for the ArchSpine project."
     },
     "publicSurface": [
       {
         "symbolName": "SpineConfig",
-        "description": "The primary configuration interface for the ArchSpine project. Consumed by configuration loaders and validators to enforce the shape of `spine.config.json`."
+        "description": "The primary configuration interface for the ArchSpine tool. Consumed by initialization, CLI, and LLM/MCP module setup to read project settings."
       },
       {
         "symbolName": "MCPContextMode",
-        "description": "A type alias defining the available context modes for MCP operations. Used by MCP server and tool configurations."
+        "description": "Type alias defining permissible context modes for MCP server interaction (e.g., 'full', 'minimal' or similar). Used in MCP configuration and runtime context selection."
       }
     ],
     "ruleViolations": [
       {
         "id": "interface-prefix",
         "severity": "warning",
-        "reason": "Interface `SpineConfig` is exported and does not follow the rule that internal interfaces must start with the character 'I'. According to the architecture rule, `SpineConfig` should be named `ISpineConfig` or similar."
+        "reason": "Interface `SpineConfig` does not begin with the required prefix `I` as mandated by the `interface-prefix` rule."
       }
     ],
     "driftDetected": false,
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Configuration schema types for the ArchSpine project — defines the structure of the `spine.config.json` file and related type aliases.",
+        "role": "Configuration schema definition module for the ArchSpine mirror system, providing the canonical shape for project-, LLM-, and MCP-related settings.",
         "responsibilities": [
-          "Define the `SpineConfig` interface that describes the project configuration schema, including project name, locales, and LLM settings.",
-          "Define the `MCPContextMode` type alias for the context mode used by MCP tools.",
-          "Import and re-export the `SchemaVersion` type from the versions module to enforce versioning on configuration files.",
-          "Import the `PartialScanPolicy` type from scan-policy to allow embedding partial scan policies within the configuration."
+          "Define the `SpineConfig` interface that describes the complete project configuration structure, including schema version, project metadata, LLM provider details, and optional MCP context.",
+          "Define the `MCPContextMode` type, likely an enumeration or union of allowed context modes for the MCP server integration.",
+          "Serve as the single-source-of-truth contract consumed by configuration loaders, validators, and downstream services that read ArchSpine settings."
         ],
         "outOfScope": [
-          "Runtime configuration loading or validation.",
-          "Default configuration values.",
-          "Configuration file I/O.",
-          "CLI handling of configuration."
+          "Configuration file parsing, validation, or default-value injection.",
+          "Runtime logic for LLM or MCP interactions.",
+          "Schema version migration or compatibility logic."
         ]
       }
     }
@@ -126,7 +121,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:05:13.539Z",
+    "indexedAt": "2026-05-12T05:20:00.572Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

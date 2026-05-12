@@ -2,32 +2,35 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "tests/e2e/cli-init-advanced.test.ts",
-    "contentHash": "13717ed6b0bb4431c360a69d71789aa140674638b93ed9361c69598ef15d600f",
+    "contentHash": "0b2611f931a130da052c1772844b38cfb74e1149383dffacf04e836c657bdcc9",
     "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
-    "semanticHash": "72277436f9a4cbd496fd3bea628ce7a6e7d06bf0cdc0d18938b1cb75405fcd3d",
+    "semanticHash": "08cc5d6854089d0858b1ce4937f068d8ce3cc5191d42445eaa10977614b77a7f",
     "language": "typescript",
     "fileKind": "source",
     "scope": "tests/e2e"
   },
   "semantic": {
-    "role": "End-to-end test suite for the advanced CLI initialization workflow.",
+    "role": "E2E test suite for the 'archspine init' command, validating advanced initialization scenarios including temporary project creation, git repository initialization, mocked interactive prompts, and configuration generation.",
     "responsibilities": [
-      "Verifies that the CLI init command creates the required .spine directory structure, configuration files, and manifest when advanced options are used.",
-      "Tests the behavior of CLI flags such as --yes, --skip-git, and --template during initialization.",
-      "Uses temporary directories and Git initialization to simulate a fresh project environment without side-effects.",
-      "Ensures that the CLI exits with expected codes and produces expected output under various scenarios."
+      "Sets up isolated temporary directories for each test case.",
+      "Initializes a minimal Git repository within the temporary directory.",
+      "Writes a wrapper script to mock the 'prompts' module and inject predetermined responses to simulate user input during CLI invocation.",
+      "Runs the built CLI executable (dist/cli/index.js) in a child process, capturing its behavior and output.",
+      "Cleans up temporary directories after each test via afterEach.",
+      "Validates that the CLI command generates expected output and configuration files."
     ],
     "outOfScope": [
-      "Does not test the init command against an existing real Git repository or remote integration.",
-      "Does not cover runtime bootstrap logic or plugin loading.",
-      "Does not include unit tests for individual init functions."
+      "Unit testing of individual modules or functions.",
+      "Testing of the 'archspine' CLI in scenarios other than init (e.g., add, remove).",
+      "Testing of the underlying file system or operating system abstractions.",
+      "Performance or load testing."
     ],
     "invariants": [
-      "The test file name ends with '.test.ts', satisfying the test-file-suffix rule."
+      "Test files must end with .test.ts or .spec.ts (rule test-file-suffix)."
     ],
     "changeIntent": {
-      "architecturalIntent": "The test suite ensures that the advanced CLI initialization workflow remains reliable after changes such as security hardening and infrastructure updates.",
-      "recentChangeIntent": "Updated test suite for security hardening and infrastructure changes in the CLI init flow."
+      "architecturalIntent": "Provide E2E coverage for the advanced initialization workflow of the ArchSpine CLI.",
+      "recentChangeIntent": "Fixed ESLint errors, improved E2E prompt injection mocking, and ensured better-sqlite3 compatibility."
     },
     "publicSurface": [],
     "ruleViolations": [],
@@ -35,17 +38,20 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "End-to-end test suite for the advanced CLI initialization workflow.",
+        "role": "E2E test suite for the 'archspine init' command, validating advanced initialization scenarios including temporary project creation, git repository initialization, mocked interactive prompts, and configuration generation.",
         "responsibilities": [
-          "Verifies that the CLI init command creates the required .spine directory structure, configuration files, and manifest when advanced options are used.",
-          "Tests the behavior of CLI flags such as --yes, --skip-git, and --template during initialization.",
-          "Uses temporary directories and Git initialization to simulate a fresh project environment without side-effects.",
-          "Ensures that the CLI exits with expected codes and produces expected output under various scenarios."
+          "Sets up isolated temporary directories for each test case.",
+          "Initializes a minimal Git repository within the temporary directory.",
+          "Writes a wrapper script to mock the 'prompts' module and inject predetermined responses to simulate user input during CLI invocation.",
+          "Runs the built CLI executable (dist/cli/index.js) in a child process, capturing its behavior and output.",
+          "Cleans up temporary directories after each test via afterEach.",
+          "Validates that the CLI command generates expected output and configuration files."
         ],
         "outOfScope": [
-          "Does not test the init command against an existing real Git repository or remote integration.",
-          "Does not cover runtime bootstrap logic or plugin loading.",
-          "Does not include unit tests for individual init functions."
+          "Unit testing of individual modules or functions.",
+          "Testing of the 'archspine' CLI in scenarios other than init (e.g., add, remove).",
+          "Testing of the underlying file system or operating system abstractions.",
+          "Performance or load testing."
         ]
       }
     }
@@ -185,7 +191,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:06:38.224Z",
+    "indexedAt": "2026-05-12T05:20:22.519Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -3,22 +3,22 @@
   "identity": {
     "filePath": "schemas/examples/spine-rule.example.md",
     "contentHash": "18231edd62f334e91aab6d1cfcce55a2c77689ca3dbbe959cac476d429713d96",
-    "semanticHash": "d488094549edbf64c036bf4fd7b07c0c5c88ff9753745d79028a9a15e01df0a1",
+    "semanticHash": "525e82df9fd5fe3d40e8aebf8de6f717e34eaf6fa0561207277ba42cccdd6eff",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "schemas/examples"
   },
   "semantic": {
-    "role": "Defines an architectural rule that prohibits service layers from directly importing database adapters, ensuring separation of concerns.",
+    "role": "Architectural rule document for maintaining clean architecture boundaries",
     "responsibilities": [
-      "Defines the rule ID 'no-direct-db-import'",
-      "Specifies file patterns where rule applies and excludes",
-      "Sets severity to error and enforceability",
-      "Provides rationale for domain boundary preservation"
+      "Define rule against direct DB imports",
+      "Specify allowed alternatives (service abstractions/repository interfaces)",
+      "Provide rationale for architectural enforcement"
     ],
     "outOfScope": [
-      "Does not define specific repository interfaces or abstractions",
-      "Does not cover other architectural rules or exceptions"
+      "Implementation details of repository interfaces",
+      "Other rules in the rule set",
+      "Tool configuration beyond this rule"
     ],
     "invariants": [],
     "changeIntent": {
@@ -30,12 +30,12 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "To prevent tight coupling between application services and the database implementation layer by enforcing that only repository abstractions are used.",
-        "context_and_audience": "This rule targets developers and automated governance tools (ArchSpine) that scan TypeScript source files. It is used in CI and local development to catch violations early.",
+        "purpose": "To prevent tight coupling between business logic and database implementations by enforcing a rule that service layers must not directly import database adapters.",
+        "context_and_audience": "This document is intended for developers and architects working on the ArchSpine project who need to understand and adhere to the project's architectural constraints. It is part of a set of architectural rules that define how components should interact.",
         "key_takeaways": [
-          "Service layers must not import from src/db/* directly.",
-          "Use repository interfaces or abstractions as intermediaries.",
-          "Violations are treated as errors (severity: error)."
+          "Direct imports from src/db/* are prohibited in application services.",
+          "Use service abstractions or repository interfaces instead.",
+          "The rule is enforced with 'error' severity in the codebase."
         ]
       }
     }
@@ -58,7 +58,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:50:50.893Z",
+    "indexedAt": "2026-05-12T05:16:26.361Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

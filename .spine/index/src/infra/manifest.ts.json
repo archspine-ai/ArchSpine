@@ -2,39 +2,35 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/infra/manifest.ts",
-    "contentHash": "f69e3cd6a70d8acd0e476a9c38f2df23a0bcb69dd348a319395275cfab90512f",
-    "skeletonHash": "d6c62eec9fd2da76c4c9cb9dc44e589ad2fd5acce386e21836e48285a450b12c",
-    "semanticHash": "250cbc631bd0f66728172e2a7e973fce700bd335dff153f4f84a8ff4d1a9c9b9",
+    "contentHash": "aa5c58408e28f2a90b801058da3edc1c84bcd8702161165e1e5647556f3f5508",
+    "skeletonHash": "2b5c8050e844b44aa10288b11aad0b8f332d8a7993147a7080469c931ca6c1b1",
+    "semanticHash": "b4ba866cc5b6d58a4645c91a6191e4b0d517888ad2a19157c6a06fb06b993423",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra"
   },
   "semantic": {
-    "role": "Infrastructure barrel module re-exporting the public API of the manifest subsystem.",
+    "role": "Barrel export module providing a stable public facade for the Manifest entity.",
     "responsibilities": [
-      "Expose the Manifest type/class and hasManifestBaseline function as the stable public interface for manifest operations.",
-      "Provide a single import point for consumers to access manifest capabilities without depending on deeper implementation modules."
+      "Re-export the 'Manifest' symbol from the manifest facade submodule to provide a single import point.",
+      "Abstract internal module structure so callers depend only on this stable entry point."
     ],
     "outOfScope": [
-      "Manifest internals, serialization, validation, or state management logic.",
-      "Any symbols not re-exported through this file."
+      "Any business logic or data manipulation related to manifests."
     ],
     "invariants": [
-      "All re-exports originate from the public facade submodule (./manifest/facade.js).",
-      "The public surface is limited to the two explicitly re-exported symbols."
+      "The module must only re-export symbols from the designated facade path; it must not define new exports.",
+      "External consumers should import Manifest from this module rather than from deeper internal paths.",
+      "The re-exported symbol must remain compatible with the contract defined in the manifest facade."
     ],
     "changeIntent": {
-      "architecturalIntent": "Maintain a clean, documented public API surface for the manifest infrastructure layer.",
-      "recentChangeIntent": "The file was modified as part of the v1.0.0 release, but the semantic role remains unchanged — it still serves as the barrel re-export for the manifest facade."
+      "architecturalIntent": "Provide a stable, minimal public API surface for the Manifest domain to decouple callers from internal module structure.",
+      "recentChangeIntent": "Initial commit establishing the module as a facade barrel export."
     },
     "publicSurface": [
       {
         "symbolName": "Manifest",
-        "description": "Represents the full manifest entity, including metadata and state. Consumed by services and tasks that need read or write access to the project manifest."
-      },
-      {
-        "symbolName": "hasManifestBaseline",
-        "description": "Checks whether a manifest baseline exists for the current project context. Used by initialization and sync logic to decide whether to create or update the manifest."
+        "description": "Re-exported symbol representing the Manifest entity. External modules should import Manifest from this module to obtain the public interface for working with manifests."
       }
     ],
     "ruleViolations": [],
@@ -42,14 +38,13 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Infrastructure barrel module re-exporting the public API of the manifest subsystem.",
+        "role": "Barrel export module that acts as a stable public facade for the Manifest entity.",
         "responsibilities": [
-          "Expose the Manifest type/class and hasManifestBaseline function as the stable public interface for manifest operations.",
-          "Provide a single import point for consumers to access manifest capabilities without depending on deeper implementation modules."
+          "Re-export Manifest from the manifest facade submodule to provide a single import point.",
+          "Abstract internal module structure so callers depend only on this stable entry point."
         ],
         "outOfScope": [
-          "Manifest internals, serialization, validation, or state management logic.",
-          "Any symbols not re-exported through this file."
+          "Any business logic or data manipulation related to manifests."
         ]
       }
     }
@@ -61,11 +56,6 @@
         "name": "Manifest",
         "kind": "unknown",
         "signature": "export { Manifest }"
-      },
-      {
-        "name": "hasManifestBaseline",
-        "kind": "unknown",
-        "signature": "export { hasManifestBaseline }"
       }
     ],
     "declaredSymbols": [
@@ -74,17 +64,11 @@
         "kind": "unknown",
         "exported": true,
         "symbolUri": "src/infra/manifest.ts#"
-      },
-      {
-        "name": "hasManifestBaseline",
-        "kind": "unknown",
-        "exported": true,
-        "symbolUri": "src/infra/manifest.ts#"
       }
     ],
     "structuralHints": {
       "importCount": 0,
-      "exportCount": 2,
+      "exportCount": 1,
       "isBarrel": false,
       "isTypeOnly": false
     }
@@ -95,8 +79,7 @@
         "targetPath": "./manifest/facade.js",
         "relation": "import",
         "symbols": [
-          "Manifest",
-          "hasManifestBaseline"
+          "Manifest"
         ]
       }
     ],
@@ -114,7 +97,7 @@
         "symbols": []
       },
       {
-        "targetPath": "tests/integration/system/error-system.test.ts",
+        "targetPath": "tests/integration/system/semantic-drift.test.ts",
         "relation": "import",
         "edgeProvenance": "ast",
         "symbols": []
@@ -124,7 +107,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:58:57.192Z",
+    "indexedAt": "2026-05-12T05:18:31.110Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
@@ -136,7 +119,7 @@
     "isHub": true,
     "hubPercentile": 76,
     "inCycle": true,
-    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "cycleId": "src/core → src/types → src/infra",
     "isDeadCodeSuspect": false
   }
 }

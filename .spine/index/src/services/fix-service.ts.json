@@ -2,53 +2,55 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/services/fix-service.ts",
-    "contentHash": "ffd79bd72a169c3d4dcac3b80667694086f3efa9f25997c08cfb5b5b1db50188",
+    "contentHash": "f839c8873f198c2e06363cb7457abb489942275eda9d20335c5d8f799f407c66",
     "skeletonHash": "12f6fe8e2b4f85ebf083cba63dea7517e3e3a6c01fc834567a6589f599ac6d84",
-    "semanticHash": "c6c3cb6d5c5e839e80934b2b46240b0ba998ef34ce974214b6f63481c14945c6",
+    "semanticHash": "efe1bc039fe83dbd27a0e594a97d01946d16c49bae254a0019da6e3da1173a0e",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/services"
   },
   "semantic": {
-    "role": "Service-layer orchestrator for automated violation remediation via retry-able fix pipelines.",
+    "role": "Service orchestrating the automated fix pipeline for ArchSpine violations.",
     "responsibilities": [
-      "Exposes the standalone `runFix()` function as a convenience entry point for executing a complete fix run.",
-      "Defines the `FixService` class to encapsulate fix orchestration with configurable options (LLM client, scan policy, runtime I/O).",
-      "Runs a pipeline of tasks in sequence: validation, AST extraction, fix application, scan+cleanup, then re-validation with retry logic (up to 2 retries).",
-      "Tracks fix outcomes via `FixRunSummary` containing initial/remaining violations and count of fixed items.",
-      "Wraps the orchestration in a runtime session for checkpointing and consistent I/O."
+      "Orchestrate a sequence of fix tasks (FixTask, ScanAndCleanupTask, ASTExtractionTask, ValidationTask) in a defined pipeline.",
+      "Manage retry logic with up to MAX_FIX_RETRIES (2) fix attempts per run.",
+      "Provide both a standalone function (runFix) and a class-based service (FixService) to initiate fix runs.",
+      "Integrate with runtime session via runWithRuntimeSession to provide structured logging and error handling.",
+      "Coordinate validation and re-check after fixes to measure remaining violations.",
+      "Track fix run metrics via FixRunSummary including initial and remaining violations."
     ],
     "outOfScope": [
-      "Individual task implementations (validation, scanning, AST extraction, fix generation).",
-      "Runtime session lifecycle management (delegated to `runWithRuntimeSession`).",
-      "Low-level error handling and error code definitions (delegated to core/errors).",
-      "Configuration loading or policy definition (provided as inputs)."
+      "Low-level task implementations (FixTask, ScanAndCleanupTask, ASTExtractionTask, ValidationTask).",
+      "LLM client details.",
+      "Scan policy definition and enforcement logic.",
+      "Error types and error conversion utilities (ArchSpineError, ErrorCodes, toArchSpineError).",
+      "Runtime IO abstractions (RuntimeIO, defaultRuntimeIO)."
     ],
     "invariants": [
-      "Fix orchestration follows a strict task pipeline: validate → extract AST → apply fix → scan+cleanup → revalidate.",
-      "FixService may orchestrate core, task, engine, and infra modules, but must not contain view-specific logic.",
-      "The module lives under `src/services/` and complies with the service-layer boundary rule."
+      "Fix runs are always executed within a runtime session via runWithRuntimeSession.",
+      "The module enforces a maximum of 2 fix retry attempts (MAX_FIX_RETRIES).",
+      "All fix pipelines begin by scanning active violations from the project manifest."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a reusable, retry-capable fix orchestration service that decouples the fix workflow from CLI commands and enables programmatic invocation.",
-      "recentChangeIntent": "Applied release gate fixes and synced accumulated source changes; no semantic changes to the public contract or orchestration logic."
+      "architecturalIntent": "Provide a reusable service layer for orchestrating automated fixes of violations.",
+      "recentChangeIntent": "Initial implementation of the fix service layer (from commit 'Initial commit')."
     },
     "publicSurface": [
       {
         "symbolName": "runFix",
-        "description": "Standalone async function that kicks off a full fix run with optional LLM client and scan policy. Intended as a quick entry point for non-class-based consumers."
+        "description": "Standalone async function that executes a full fix pipeline given a root directory and optional LLM client and scan policy. Returns a FixRunSummary."
       },
       {
         "symbolName": "FixService",
-        "description": "Class that encapsulates fix orchestration. Accepts `FixServiceOptions` in the constructor and provides a `run()` method that executes the fix pipeline with retry logic."
+        "description": "Class that encapsulates the fix orchestration logic with configurable options. Provides a method (presumably run) to execute the pipeline."
       },
       {
         "symbolName": "FixRunSummary",
-        "description": "Interface describing the outcome of a fix run: `initialViolations`, `remainingViolations`, and `fixed` counts."
+        "description": "Interface describing the outcome of a fix run, including initial and remaining violation counts and number of fixes applied."
       },
       {
         "symbolName": "FixServiceOptions",
-        "description": "Interface for configuring `FixService`: optional LLM client, scan policy, runtime I/O interface, and root directory."
+        "description": "Interface defining configuration options for the FixService, such as root directory and optional LLM client."
       }
     ],
     "ruleViolations": [],
@@ -56,19 +58,21 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Service-layer orchestrator for automated violation remediation via retry-able fix pipelines.",
+        "role": "Service orchestrating the automated fix pipeline for ArchSpine violations.",
         "responsibilities": [
-          "Exposes a standalone `runFix()` function as a convenient entry point for executing a complete fix run.",
-          "Defines the `FixService` class to encapsulate fix orchestration with configurable options (LLM client, scan policy, runtime I/O).",
-          "Runs a pipeline of tasks in sequence: validation, AST extraction, fix application, scan+cleanup, then re-validation with retry logic (up to 2 retries).",
-          "Tracks fix outcomes via `FixRunSummary` containing initial/remaining violations and count of fixed items.",
-          "Wraps the orchestration in a runtime session for checkpointing and consistent I/O."
+          "Orchestrate a sequence of fix tasks (FixTask, ScanAndCleanupTask, ASTExtractionTask, ValidationTask) in a defined pipeline.",
+          "Manage retry logic with up to MAX_FIX_RETRIES (2) fix attempts per run.",
+          "Provide both a standalone function (runFix) and a class-based service (FixService) to initiate fix runs.",
+          "Integrate with runtime session via runWithRuntimeSession to provide structured logging and error handling.",
+          "Coordinate validation and re-check after fixes to measure remaining violations.",
+          "Track fix run metrics via FixRunSummary including initial and remaining violations."
         ],
         "outOfScope": [
-          "Individual task implementations (validation, scanning, AST extraction, fix generation).",
-          "Runtime session lifecycle management (delegated to `runWithRuntimeSession`).",
-          "Low-level error handling and error code definitions (delegated to core/errors).",
-          "Configuration loading or policy definition (provided as inputs)."
+          "Low-level task implementations (FixTask, ScanAndCleanupTask, ASTExtractionTask, ValidationTask).",
+          "LLM client details.",
+          "Scan policy definition and enforcement logic.",
+          "Error types and error conversion utilities (ArchSpineError, ErrorCodes, toArchSpineError).",
+          "Runtime IO abstractions (RuntimeIO, defaultRuntimeIO)."
         ]
       }
     }
@@ -215,10 +219,24 @@
   "graph": {
     "dependsOn": [
       {
+        "targetPath": "../infra/llm.js",
+        "relation": "import",
+        "symbols": [
+          "LLMClient"
+        ]
+      },
+      {
         "targetPath": "../core/pipeline.js",
         "relation": "import",
         "symbols": [
           "TaskRunner"
+        ]
+      },
+      {
+        "targetPath": "../core/task-types.js",
+        "relation": "import",
+        "symbols": [
+          "FixStageInput"
         ]
       },
       {
@@ -296,15 +314,8 @@
         ]
       }
     ],
-    "dependedBy": [
-      {
-        "targetPath": "tests/integration/system/error-system.test.ts",
-        "relation": "import",
-        "edgeProvenance": "ast",
-        "symbols": []
-      }
-    ],
-    "reverseIndexComplete": true,
+    "dependedBy": [],
+    "reverseIndexComplete": false,
     "symbolEdges": [
       {
         "sourceSymbol": "src/services/fix-service.ts/_file_#",
@@ -400,7 +411,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:02:18.431Z",
+    "indexedAt": "2026-05-12T05:19:39.581Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

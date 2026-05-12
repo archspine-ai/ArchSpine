@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "tests/integration/system",
-  "role": "This directory aggregates all test suites for the ArchSpine mirror system, covering unit and integration tests for core utilities, CLI governance, error handling, footprint calculation, manifest persistence, distributed locking, security boundaries, semantic drift detection, and spine gate infrastructure.",
-  "responsibility": "Collectively, the test suites in this directory verify the correctness, robustness, and integration of ArchSpine’s key modules, ensuring that synchronization, governance, error propagation, structural analysis, database persistence, concurrency, security isolation, drift detection, and mutation detection all behave as specified, providing a comprehensive regression guard for the entire system.",
+  "role": "This directory contains comprehensive test suites for ArchSpine's core infrastructure, CLI, synchronization, error handling, security, and governance modules.",
+  "responsibility": "The tests in this directory verify the correctness, robustness, and security of ArchSpine's build scripts, agent instructions synchronization, demo governance lifecycle, error system convergence, structural/semantic footprint calculations, manifest persistence, distributed lock worker, CLI security commands, sync service pipeline, and spine gate protected output mutation detection. They use isolated temporary directories, mock clients, and multi-process scenarios to ensure reliability.",
   "children": [
     {
       "filePath": "tests/integration/system/agent-host-init.test.ts",
@@ -21,7 +21,7 @@
     },
     {
       "filePath": "tests/integration/system/error-system.test.ts",
-      "role": "Test suite for the error system convergence, validating that error types propagate correctly through CheckService, FixService, MCP tools, and other core infrastructure components.",
+      "role": "Integration test suite for error system convergence across core services and MCP infrastructure.",
       "fileKind": "source"
     },
     {
@@ -41,12 +41,12 @@
     },
     {
       "filePath": "tests/integration/system/security.test.ts",
-      "role": "Test support module providing isolated filesystem and dependency mocking helpers for CLI security boundary tests.",
+      "role": "Integration test suite for the ArchSpine CLI, specifically testing security-related commands (likely 'sec') using mocked prompts and temporary directories.",
       "fileKind": "source"
     },
     {
       "filePath": "tests/integration/system/semantic-drift.test.ts",
-      "role": "Integration test suite for the semantic drift detection feature of the ArchSpine mirror system.",
+      "role": "Integration test suite for the SyncService synchronization pipeline and Manifest infrastructure.",
       "fileKind": "source"
     },
     {
@@ -56,7 +56,7 @@
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-10T05:12:14.608Z",
+    "indexedAt": "2026-05-12T05:21:31.515Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

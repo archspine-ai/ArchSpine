@@ -2,69 +2,25 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/infra/prompt/shared.ts",
-    "contentHash": "be70097ede9d3a94955696ccc1211eaf63ba4db7cc7fd12458933a79ffb02541",
-    "skeletonHash": "9b3b1fbf065a94ae8cff22f4413063e19bedb3045890ef9ac49b53056f86d9f0",
-    "semanticHash": "9d803b353cfcf3a68ce918db2c1475cf94ee364c7e0b76efb3eaa87168d53485",
+    "contentHash": "f9c1aaa34cc0160599f1fb4b41713ad5a1a074c2609fa488157d00fb3f5ebb10",
+    "skeletonHash": "b58cd2f11ba262a5168d04de9890cab528f5f2e6e014096892dbbb5b961d5b77",
+    "semanticHash": "43d72a0291f4217673728e734f7cb7cc7c41a6f1f801b58a8833602b04ddde49",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/prompt"
   },
   "semantic": {
-    "role": "Prompt template utility generating the standardized output contract instructions (JSON + Markdown) for language model responses. Part of the prompt-building infrastructure.",
-    "responsibilities": [
-      "Generate the base output contract directive that instructs models on JSON and Markdown formatting.",
-      "Produce language-specific instructions for localized documentation blocks based on the provided language list.",
-      "Generate markdown section guidance tailored to the type of file being documented (document, source, project, folder)."
-    ],
-    "outOfScope": [
-      "Does not handle response validation or parsing.",
-      "Does not manage prompt context or token budgets.",
-      "Does not interact with LLM providers directly."
-    ],
-    "invariants": [
-      "Output contract must always start with '---JSON---' and a valid JSON object.",
-      "The 'localized' block must be populated for each requested language.",
-      "Markdown block guidance must match the file kind (source, document, project, folder)."
-    ],
+    "role": "Unknown role",
+    "responsibilities": [],
+    "outOfScope": [],
+    "invariants": [],
     "changeIntent": {
-      "architecturalIntent": "Provide a reusable, consistent output contract snippet for all prompt templates that require JSON and markdown formatted responses from language models.",
-      "recentChangeIntent": "v1.0.0 release — finalized output contract formatting for multi-language agent summaries."
+      "architecturalIntent": null,
+      "recentChangeIntent": null
     },
-    "publicSurface": [
-      {
-        "symbolName": "renderOutputContract",
-        "description": "Builds the base output contract string starting with '---JSON---', instructing the model to produce a JSON object with a 'localized' block for each language and optionally disabling markdown prose.",
-        "signature": "renderOutputContract(responseMode: PromptResponseMode, languages: string[]): string"
-      },
-      {
-        "symbolName": "buildLocalizedLanguageInstructions",
-        "description": "Returns an array of instruction strings telling the model to write natural prose in each requested language inside the JSON 'localized' block.",
-        "signature": "buildLocalizedLanguageInstructions(languages: string[]): string[]"
-      },
-      {
-        "symbolName": "buildMarkdownSectionGuidance",
-        "description": "Returns guidance for generating markdown documentation blocks based on the kind of file (document, source, project, folder).",
-        "signature": "buildMarkdownSectionGuidance(fileKind: FileKind | 'project'): string[]"
-      }
-    ],
-    "ruleViolations": [],
+    "publicSurface": [],
     "driftDetected": false,
-    "driftReason": null,
-    "localized": {
-      "English": {
-        "role": "Prompt template utility generating the standardized output contract instructions (JSON + Markdown) for language model responses. Part of the prompt-building infrastructure.",
-        "responsibilities": [
-          "Generate the base output contract directive that instructs models on JSON and Markdown formatting.",
-          "Produce language-specific instructions for localized documentation blocks based on the provided language list.",
-          "Generate markdown section guidance tailored to the type of file being documented (document, source, project, folder)."
-        ],
-        "outOfScope": [
-          "Does not handle response validation or parsing.",
-          "Does not manage prompt context or token budgets.",
-          "Does not interact with LLM providers directly."
-        ]
-      }
-    }
+    "driftReason": null
   },
   "skeleton": {
     "imports": [],
@@ -72,17 +28,17 @@
       {
         "name": "renderOutputContract",
         "kind": "function",
-        "signature": "renderOutputContract(\n  responseMode: PromptResponseMode,\n  languages: string[],\n)"
-      },
-      {
-        "name": "buildLocalizedLanguageInstructions",
-        "kind": "function",
-        "signature": "buildLocalizedLanguageInstructions(languages: string[])"
+        "signature": "renderOutputContract(responseMode: PromptResponseMode)"
       },
       {
         "name": "buildMarkdownSectionGuidance",
         "kind": "function",
         "signature": "buildMarkdownSectionGuidance(fileKind: FileKind | 'project')"
+      },
+      {
+        "name": "LOCALIZED_INSTRUCTIONS",
+        "kind": "variable",
+        "signature": "const LOCALIZED_INSTRUCTIONS"
       }
     ],
     "declaredSymbols": [
@@ -93,14 +49,14 @@
         "symbolUri": "src/infra/prompt/shared.ts#"
       },
       {
-        "name": "buildLocalizedLanguageInstructions",
+        "name": "buildMarkdownSectionGuidance",
         "kind": "function",
         "exported": true,
         "symbolUri": "src/infra/prompt/shared.ts#"
       },
       {
-        "name": "buildMarkdownSectionGuidance",
-        "kind": "function",
+        "name": "LOCALIZED_INSTRUCTIONS",
+        "kind": "variable",
         "exported": true,
         "symbolUri": "src/infra/prompt/shared.ts#"
       }
@@ -113,34 +69,13 @@
     }
   },
   "graph": {
-    "dependsOn": [
-      {
-        "targetPath": "src/types/protocol",
-        "relation": "import",
-        "symbols": [
-          {
-            "symbolName": "FileKind",
-            "nature": "type"
-          }
-        ]
-      },
-      {
-        "targetPath": "src/infra/prompt/types",
-        "relation": "import",
-        "symbols": [
-          {
-            "symbolName": "PromptResponseMode",
-            "nature": "type"
-          }
-        ]
-      }
-    ],
+    "dependsOn": [],
     "dependedBy": [],
     "reverseIndexComplete": false,
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:01:15.560Z",
+    "indexedAt": "2026-05-12T05:18:51.023Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
@@ -152,7 +87,7 @@
     "isHub": true,
     "hubPercentile": 76,
     "inCycle": true,
-    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "cycleId": "src/core → src/types → src/infra",
     "isDeadCodeSuspect": false
   }
 }

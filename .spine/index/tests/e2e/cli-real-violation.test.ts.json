@@ -2,30 +2,38 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "tests/e2e/cli-real-violation.test.ts",
-    "contentHash": "a435493b3a99e543b9953d4982dd56c2173ed639c81cf3974db0e37442e60477",
+    "contentHash": "23218fddbf3f74200a4b4e54fc177cbb143a7c310ad1c3e5e3afcb4672597aca",
     "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
-    "semanticHash": "aad5866ba457edf07cdb2ffac0d98ee79ec03b2bbf5a2aefef0e36c4b301bef5",
+    "semanticHash": "b6b8c50418df08ad7d916dd2ab63df4a92302f558aae129678c3f0248b0c7d3e",
     "language": "typescript",
     "fileKind": "source",
     "scope": "tests/e2e"
   },
   "semantic": {
-    "role": "E2E test suite verifying the CLI's detection of real architectural violations in a temporary Git repository.",
+    "role": "Vitest integration test suite for the ArchSpine CLI violation detection system.",
     "responsibilities": [
-      "Tests that the CLI scan command correctly identifies intentional code violations.",
-      "Sets up temporary Git repositories with pre-configured rule files and deliberate code violations.",
-      "Validates that scan output reports the expected violations with proper severity and location."
+      "Creates temporary directories and initializes git repositories for isolated test environments.",
+      "Executes the built ArchSpine CLI (dist/cli/index.js) via child_process to simulate violation detection.",
+      "Asserts correct exit codes, stdout/stderr output, and log file generation under various violation scenarios.",
+      "Cleans up temporary files and handles test teardown via afterEach or beforeAll hooks.",
+      "Provides end-to-end coverage of the 'spine check violations' command and rule enforcement."
     ],
     "outOfScope": [
-      "Does not cover unit-level validation logic.",
-      "Does not test other CLI commands outside scan."
+      "Production code logic for violation detection or rule parsing.",
+      "Unit tests for internal functions or modules.",
+      "CLI command definitions or configuration interfaces.",
+      "Any exported symbols for external consumption."
     ],
     "invariants": [
-      "Test file suffix must be .test.ts (currently satisfied)."
+      "Must be run after building the CLI (dist/cli/index.js must exist).",
+      "Requires git CLI installed and available in PATH.",
+      "Requires Node.js environment with vitest test runner.",
+      "Temporary directories are created under the system's temp directory.",
+      "Logs are written to .e2e-logs directory for debugging."
     ],
     "changeIntent": {
-      "architecturalIntent": "Reinforce end-to-end correctness of violation detection after CLI and schema refactoring.",
-      "recentChangeIntent": "Updated to match schema changes and CLI argument removals after legacy alias cleanup."
+      "architecturalIntent": "Provide end-to-end validation that the ArchSpine CLI correctly detects and reports rule violations in a project context.",
+      "recentChangeIntent": "Fix ESLint errors, E2E prompt injection, and better-sqlite3 compatibility — likely ensuring the test suite runs cleanly with updated tooling."
     },
     "publicSurface": [],
     "ruleViolations": [],
@@ -33,15 +41,19 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "E2E test suite verifying the CLI's detection of real architectural violations in a temporary Git repository.",
+        "role": "Vitest integration test suite for the ArchSpine CLI violation detection system.",
         "responsibilities": [
-          "Tests that the CLI scan command correctly identifies intentional code violations.",
-          "Sets up temporary Git repositories with pre-configured rule files and deliberate code violations.",
-          "Validates that scan output reports the expected violations with proper severity and location."
+          "Creates temporary directories and initializes git repositories for isolated test environments.",
+          "Executes the built ArchSpine CLI (dist/cli/index.js) via child_process to simulate violation detection.",
+          "Asserts correct exit codes, stdout/stderr output, and log file generation under various violation scenarios.",
+          "Cleans up temporary files and handles test teardown via afterEach or beforeAll hooks.",
+          "Provides end-to-end coverage of the 'spine check violations' command and rule enforcement."
         ],
         "outOfScope": [
-          "Does not cover unit-level validation logic.",
-          "Does not test other CLI commands outside scan."
+          "Production code logic for violation detection or rule parsing.",
+          "Unit tests for internal functions or modules.",
+          "CLI command definitions or configuration interfaces.",
+          "Any exported symbols for external consumption."
         ]
       }
     }
@@ -158,21 +170,21 @@
         "targetPath": "fs",
         "relation": "import",
         "symbols": [
-          "*"
+          "* as fs"
         ]
       },
       {
         "targetPath": "os",
         "relation": "import",
         "symbols": [
-          "*"
+          "* as os"
         ]
       },
       {
         "targetPath": "path",
         "relation": "import",
         "symbols": [
-          "*"
+          "* as path"
         ]
       }
     ],
@@ -181,7 +193,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:06:47.848Z",
+    "indexedAt": "2026-05-12T05:20:26.406Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

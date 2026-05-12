@@ -2,33 +2,31 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "tests/unit/infra/llm-provider-utils.test.ts",
-    "contentHash": "63094da80d81678a3c06cb018aba605e053cfb9d41b15b4df27b0f9bdb8097c0",
+    "contentHash": "a5c0bec43b70ce516bd112ff61de90183300d10bfb31d85503c22d316a1e5650",
     "skeletonHash": "063770f75b731222ada4551b82f56b422ac3c3362fb3748b903439f7734a3f92",
-    "semanticHash": "77a4040cf3ed6f792c8068f58bed615ab3aabd91ebad53f938c75c9b1204cd23",
+    "semanticHash": "b192bb9c83aaa7008d2173e0afa64499145eed95408ae3716e4ef0ecc91d84a8",
     "language": "typescript",
     "fileKind": "source",
     "scope": "tests/unit/infra"
   },
   "semantic": {
-    "role": "Vitest test suite exercising LLM provider utility functions (parseMarkdownBlocks, parseStructuredResponse, and related helpers).",
+    "role": "Vitest test suite for LLM provider utility functions (parseMarkdownBlocks, parseStructuredResponse, and related helpers).",
     "responsibilities": [
-      "Verify that `parseMarkdownBlocks` correctly splits locale-tagged markdown into language-keyed blocks.",
-      "Verify that `parseStructuredResponse` correctly extracts JSON and markdown from combined JSON/Markdown responses.",
-      "Ensure edge cases like code fences around JSON in structured responses are handled properly.",
-      "Serve as regression guard for the parser functions used in prompt rendering and agent response processing."
+      "Validates parseMarkdownBlocks correctly splits locale-tagged markdown blocks into a key-value object.",
+      "Validates parseStructuredResponse correctly separates the JSON portion from the markdown portion, handling code fences and extra delimiters.",
+      "Provides regression coverage for edge cases such as markdown blocks without newlines or with multiple JSON objects."
     ],
     "outOfScope": [
-      "Integration tests with real LLM providers.",
-      "Testing of `buildSupportingContext` or `mergeUsage` beyond what is implicitly exercised (not directly tested in the visible snippets).",
-      "Performance or load testing.",
-      "Non-test files or production code."
+      "Not a production module; does not export any runtime functionality.",
+      "Does not cover integration tests or end-to-end LLM provider behavior."
     ],
     "invariants": [
-      "Test file must end with `.test.ts` or `.spec.ts` (rule: test-file-suffix)."
+      "Tests must pass under vitest and must not rely on external services.",
+      "Utility functions behave purely synchronously with string inputs and structured outputs."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide unit-level coverage for core parsing utilities used across the prompt and agent interaction pipeline.",
-      "recentChangeIntent": "No explicit change intent captured; test file appears stable."
+      "architecturalIntent": "Ensure correctness and stability of LLM provider utility functions through isolated unit tests.",
+      "recentChangeIntent": "Initial commit — add test suite for LLM provider utils."
     },
     "publicSurface": [],
     "ruleViolations": [],
@@ -36,18 +34,15 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Vitest test suite exercising LLM provider utility functions (parseMarkdownBlocks, parseStructuredResponse, and related helpers).",
+        "role": "Vitest test suite for LLM provider utility functions (parseMarkdownBlocks, parseStructuredResponse, and related helpers).",
         "responsibilities": [
-          "Verify that `parseMarkdownBlocks` correctly splits locale-tagged markdown into language-keyed blocks.",
-          "Verify that `parseStructuredResponse` correctly extracts JSON and markdown from combined JSON/Markdown responses.",
-          "Ensure edge cases like code fences around JSON in structured responses are handled properly.",
-          "Serve as regression guard for the parser functions used in prompt rendering and agent response processing."
+          "Validates parseMarkdownBlocks correctly splits locale-tagged markdown blocks into a key-value object.",
+          "Validates parseStructuredResponse correctly separates the JSON portion from the markdown portion, handling code fences and extra delimiters.",
+          "Provides regression coverage for edge cases such as markdown blocks without newlines or with multiple JSON objects."
         ],
         "outOfScope": [
-          "Integration tests with real LLM providers.",
-          "Testing of `buildSupportingContext` or `mergeUsage` beyond what is implicitly exercised (not directly tested in the visible snippets).",
-          "Performance or load testing.",
-          "Non-test files or production code."
+          "Not a production module; does not export any runtime functionality.",
+          "Does not cover integration tests or end-to-end LLM provider behavior."
         ]
       }
     }
@@ -86,6 +81,16 @@
   },
   "graph": {
     "dependsOn": [
+      {
+        "targetPath": "vitest",
+        "relation": "import",
+        "symbols": [
+          "describe",
+          "expect",
+          "it",
+          "vi"
+        ]
+      },
       {
         "targetPath": "../../../src/infra/llm/providers/utils.js",
         "relation": "import",
@@ -131,7 +136,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:09:50.442Z",
+    "indexedAt": "2026-05-12T05:21:05.225Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

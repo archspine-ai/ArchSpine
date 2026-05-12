@@ -2,48 +2,44 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/tasks/knowledge-graph.ts",
-    "contentHash": "d283d69d8a57c30b46af96beb4d0b7f1f6d283cadf1dcedae30b4b972163b06f",
+    "contentHash": "a73803f97155ceb372ffcc959d1306abed1b87cb2db21140a25591a7697003da",
     "skeletonHash": "d22175ddf3e94509128019bfedd51662d222fd220f7fb3572cc3fd6c75d32cff",
-    "semanticHash": "c5b714b9435d271937e363642926137a4be2464109bf996111aa0ef58d748dd1",
+    "semanticHash": "bcc061b29efd5c0692cacc75312598a422cfc6ef4bcd21adc48c75ee0673f4fa",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/tasks"
   },
   "semantic": {
-    "role": "Stage-local task module that builds a dependency knowledge graph from the repository's tracked source files and runs structural diagnostics (cycles, dead code, hubs), saving the results as view data files for downstream views.",
+    "role": "Pipeline stage task that constructs a knowledge graph from the module dependency graph, runs structural diagnostics (cycle detection, dead code detection, hub detection), and persists views (JSON outputs) and health flags for downstream inspection.",
     "responsibilities": [
-      "Construct a dependency graph from all tracked source files using the engine's buildGraph function.",
-      "Detect circular dependencies (cycles) in the graph and report them per module.",
-      "Detect dead code (modules with no incoming dependencies) and report the list of unused modules.",
-      "Detect hub modules (modules with an abnormally high number of incoming dependencies) and report them with their dependency counts.",
-      "Save the knowledge graph view data (knowledge-graph.json) via the output manager.",
-      "Save diagnostics data for cycles, dead code, and hubs as separate view data files.",
-      "Write health flags (e.g., derived from diagnostics severity) to the output.",
-      "Read index documents to obtain unit definitions needed for module identification.",
-      "Iterate over all tracked files from the scanner to build and analyze the graph.",
-      "Use the filesystem to ensure the output directory exists before writing view data."
+      "Build a dependency graph for tracked files using the buildGraph engine.",
+      "Run diagnostics: detect cycles, detect dead code (modules with no dependents), detect hubs (highly depended-upon modules).",
+      "Save views of the graph and each diagnostic result to the output manager.",
+      "Write health flags (e.g., hasCycles, hasDeadCode, hasHubs) to the output for fast status checks.",
+      "Read the index document from the file system to determine root nodes for graph construction.",
+      "Register as a SpineTask with name 'Knowledge Graph Construction' and checkpointId 'knowledge-graph'."
     ],
     "outOfScope": [
-      "Does not parse CLI arguments or dispatch commands.",
-      "Does not interact with LLM providers or manage credentials.",
-      "Does not modify source code files or create new files beyond view data.",
-      "Does not orchestrate other services or handle user prompts.",
-      "Does not perform any runtime execution scheduling or checkpointing."
+      "Direct CLI command parsing or argument handling.",
+      "Orchestrating other pipeline stages or services.",
+      "File-level editing or code generation.",
+      "Testing or mocking utilities."
     ],
     "invariants": [
-      "Only imports from core contracts, engines, infra (index-reader), and types/protocol; no direct coupling to CLI or service layers.",
-      "Produces only view data output; no side effects on source code or database beyond saving view data.",
-      "Complete dependency on the scanner's tracked file list and index reader for unit definitions.",
-      "Task executes after scanning and before view derivation in the pipeline."
+      "Must be executed within a SpineTask pipeline that provides a scanner and output manager via TaskContext.",
+      "Assumes existence of an index document compatible with isCompatibleIndexDocument.",
+      "The task’s execute method does not throw on diagnostic anomalies (cycles/dead code/hubs) but flags them via health flags.",
+      "All saved views are named using a convention (e.g., 'knowledge-graph', 'cycles', 'dead-code', 'hubs').",
+      "Does not mutate source files; only reads and produces output artifacts."
     ],
     "changeIntent": {
-      "architecturalIntent": "This task is a dedicated stage in the pipeline that augments the unit index with structural insights from dependency analysis. It converts raw dependency data into view-ready diagnostics and knowledge graph structures, reducing the complexity of downstream view derivation.",
-      "recentChangeIntent": "Refactor to remove legacy CLI aliases, rebuild documentation, fix schema issues and tests. No direct changes to this file's logic or responsibilities."
+      "architecturalIntent": "Provide a stage that bridges the dependency graph engine and diagnostic engines into a reusable task that can be inserted into any SpineTask pipeline to produce knowledge-graph artifacts.",
+      "recentChangeIntent": "The git commit 4a75a38 focused on fixing ESLint errors, E2E prompt injection, and better-sqlite3 compatibility. No semantic changes to this file are implied; any modifications were likely compliance/cleanup."
     },
     "publicSurface": [
       {
         "symbolName": "KnowledgeGraphTask",
-        "description": "Pipeline task that constructs a dependency knowledge graph, runs structural diagnostics, and saves the results as view data. Invoked by the task runtime after scanning, consumes tracked files and index documents, and produces knowledge-graph.json, cycle, dead-code, and hub diagnostics."
+        "description": "A pipeline task that constructs a knowledge graph from the project's dependency graph, runs cycle/dead-code/hub diagnostics, and saves views and health flags. Consumed by the pipeline orchestrator that schedules tasks (e.g., SpineEngine or a higher-level task runner)."
       }
     ],
     "ruleViolations": [],
@@ -51,25 +47,20 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Stage-local task module that builds a dependency knowledge graph from the repository's tracked source files and runs structural diagnostics (cycles, dead code, hubs), saving the results as view data files for downstream views.",
+        "role": "Pipeline stage task that constructs a knowledge graph from the module dependency graph, runs structural diagnostics (cycle detection, dead code detection, hub detection), and persists views (JSON outputs) and health flags for downstream inspection.",
         "responsibilities": [
-          "Construct a dependency graph from all tracked source files using the engine's buildGraph function.",
-          "Detect circular dependencies (cycles) in the graph and report them per module.",
-          "Detect dead code (modules with no incoming dependencies) and report the list of unused modules.",
-          "Detect hub modules (modules with an abnormally high number of incoming dependencies) and report them with their dependency counts.",
-          "Save the knowledge graph view data (knowledge-graph.json) via the output manager.",
-          "Save diagnostics data for cycles, dead code, and hubs as separate view data files.",
-          "Write health flags (e.g., derived from diagnostics severity) to the output.",
-          "Read index documents to obtain unit definitions needed for module identification.",
-          "Iterate over all tracked files from the scanner to build and analyze the graph.",
-          "Use the filesystem to ensure the output directory exists before writing view data."
+          "Build a dependency graph for tracked files using the buildGraph engine.",
+          "Run diagnostics: detect cycles, detect dead code (modules with no dependents), detect hubs (highly depended-upon modules).",
+          "Save views of the graph and each diagnostic result to the output manager.",
+          "Write health flags (e.g., hasCycles, hasDeadCode, hasHubs) to the output for fast status checks.",
+          "Read the index document from the file system to determine root nodes for graph construction.",
+          "Register as a SpineTask with name 'Knowledge Graph Construction' and checkpointId 'knowledge-graph'."
         ],
         "outOfScope": [
-          "Does not parse CLI arguments or dispatch commands.",
-          "Does not interact with LLM providers or manage credentials.",
-          "Does not modify source code files or create new files beyond view data.",
-          "Does not orchestrate other services or handle user prompts.",
-          "Does not perform any runtime execution scheduling or checkpointing."
+          "Direct CLI command parsing or argument handling.",
+          "Orchestrating other pipeline stages or services.",
+          "File-level editing or code generation.",
+          "Testing or mocking utilities."
         ]
       }
     }
@@ -183,6 +174,13 @@
         ]
       },
       {
+        "targetPath": "../core/task-types.js",
+        "relation": "import",
+        "symbols": [
+          "CommitStageOutput"
+        ]
+      },
+      {
         "targetPath": "../engines/dependency-graph.js",
         "relation": "import",
         "symbols": [
@@ -217,6 +215,20 @@
         "relation": "import",
         "symbols": [
           "SpineUnit"
+        ]
+      },
+      {
+        "targetPath": "fs",
+        "relation": "import",
+        "symbols": [
+          "* as fs"
+        ]
+      },
+      {
+        "targetPath": "path",
+        "relation": "import",
+        "symbols": [
+          "* as path"
         ]
       }
     ],
@@ -282,7 +294,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:04:40.165Z",
+    "indexedAt": "2026-05-12T05:19:37.432Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

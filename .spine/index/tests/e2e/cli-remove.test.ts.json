@@ -2,35 +2,33 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "tests/e2e/cli-remove.test.ts",
-    "contentHash": "0e670d8386f29a58a1b336bc1a6a632fbc6259151056f7c8c1576e81d43c699c",
+    "contentHash": "8871c2c991211b50f3e4ba08db9b659f5c19ef225e1884b68953362cde569d5b",
     "skeletonHash": "9f35d349f6830a657ab7aea9a745e89112dc784358915d36332828b2f063e766",
-    "semanticHash": "843ae89bb8183f11b5c9027420c6c723ca4af72b473586af0ee57a05ee48fe3a",
+    "semanticHash": "f439f2401bd725fa09849f1f8cf1d1440035e5145e595e0f9b9acd48654c00c2",
     "language": "typescript",
     "fileKind": "source",
     "scope": "tests/e2e"
   },
   "semantic": {
-    "role": "End-to-end (E2E) test suite for the ArchSpine CLI pipeline using a mocked LLM provider. Validates that the CLI handles subcommands (scan, sync, etc.) correctly in a controlled environment.",
+    "role": "Vitest end-to-end test suite for validating the CLI binary behavior across various arguments and project states.",
     "responsibilities": [
-      "Provides a temporary isolated workspace per test run temp directory.",
-      "Runs the built CLI as a child process with configurable arguments and a working directory.",
-      "Verifies that the CLI pipeline executes without errors and produces the expected output (stdout/stderr).",
-      "Tests the integration of core pipeline stages (scan, sync) with a mock LLM to avoid external dependencies.",
-      "Supports cleanup of temporary test directories after each test to avoid state leakage."
+      "Set up temporary project directories with minimal config to isolate CLI execution",
+      "Invoke the built CLI via child_process.spawnSync with controllable arguments",
+      "Supply mock prompts (via wrapper script) to simulate interactive input",
+      "Assert correct exit codes, stdout, stderr, and side effects like file creation"
     ],
     "outOfScope": [
-      "Production pipeline logic or business rules.",
-      "Real LLM provider communication or credential handling.",
-      "Performance/scaling characteristics.",
-      "UI rendering or user interaction beyond CLI exit codes and stdout/stderr."
+      "Unit tests for internal functions of modules",
+      "Integration tests for HTTP or MCP server endpoints",
+      "Testing of GUI or non-CLI components"
     ],
     "invariants": [
-      "Test file name must end with .test.ts or .spec.ts (satisfied).",
-      "CLI binary must be built before tests run (ensured by build script or CI step)."
+      "The file must be a valid Vitest test file (imports from 'vitest')",
+      "The file should follow naming convention *.test.ts or *.spec.ts"
     ],
     "changeIntent": {
-      "architecturalIntent": "This file is part of the E2E test suite that validates the end-to-end behavior of the CLI pipeline using a mocked LLM. It isolates tests via temporary directories and child processes.",
-      "recentChangeIntent": "Added as part of an E2E test suite expansion (37 tests across 7 files) to cover CLI commands including pipeline mock scenarios."
+      "architecturalIntent": "Provide reliable E2E coverage for the CLI to prevent regressions in argument parsing, prompt handling, and output formatting.",
+      "recentChangeIntent": "No evidence of recent changes in this file; the git intent mentions ESLint fixes and compat improvements elsewhere."
     },
     "publicSurface": [],
     "ruleViolations": [],
@@ -38,19 +36,17 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "End-to-end (E2E) test suite for the ArchSpine CLI pipeline using a mocked LLM provider. Validates that the CLI handles subcommands (scan, sync, etc.) correctly in a controlled environment.",
+        "role": "Vitest end-to-end test suite for validating the CLI binary behavior across various arguments and project states.",
         "responsibilities": [
-          "Provides a temporary isolated workspace per test run temp directory.",
-          "Runs the built CLI as a child process with configurable arguments and a working directory.",
-          "Verifies that the CLI pipeline executes without errors and produces the expected output (stdout/stderr).",
-          "Tests the integration of core pipeline stages (scan, sync) with a mock LLM to avoid external dependencies.",
-          "Supports cleanup of temporary test directories after each test to avoid state leakage."
+          "Set up temporary project directories with minimal config to isolate CLI execution",
+          "Invoke the built CLI via child_process.spawnSync with controllable arguments",
+          "Supply mock prompts (via wrapper script) to simulate interactive input",
+          "Assert correct exit codes, stdout, stderr, and side effects like file creation"
         ],
         "outOfScope": [
-          "Production pipeline logic or business rules.",
-          "Real LLM provider communication or credential handling.",
-          "Performance/scaling characteristics.",
-          "UI rendering or user interaction beyond CLI exit codes and stdout/stderr."
+          "Unit tests for internal functions of modules",
+          "Integration tests for HTTP or MCP server endpoints",
+          "Testing of GUI or non-CLI components"
         ]
       }
     }
@@ -190,7 +186,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:06:40.770Z",
+    "indexedAt": "2026-05-12T05:20:27.132Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

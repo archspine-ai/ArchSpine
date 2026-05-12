@@ -3,24 +3,24 @@
   "identity": {
     "filePath": ".github/workflows/spine-sync.yml.example",
     "contentHash": "10a204a37aedf1d299c2d003237678aa99f69f97c0c4a9a4833660c3db804ad1",
-    "semanticHash": "d21119785b84983c940e197ebaf2367b051bc0e81b809d1d896f8b27a6d31545",
+    "semanticHash": "cb139b096502678b930e114cd07f1ea4c4a2c30d6b59fc925bd21732c1e52c5a",
     "language": "unsupported",
     "fileKind": "document",
     "scope": ".github/workflows"
   },
   "semantic": {
-    "role": "GitHub Actions workflow template for automated architecture sync and compliance checking in pull requests",
+    "role": "CI/CD integration template for automated architecture compliance checks on pull requests",
     "responsibilities": [
-      "Run spine sync and check on pull request events (opened, synchronize, reopened)",
-      "Post a PR comment with architecture violations when check fails",
-      "Fail the workflow on violations to block merging",
-      "Update existing comments instead of creating duplicates"
+      "Defines a GitHub Actions workflow (.yml) that runs `spine sync` and `spine check` on PR events",
+      "Covers required environment variables (LLM_API_KEY), permissions, and Node.js setup",
+      "Posts a PR comment with violation details when architecture checks fail",
+      "Updates existing bot comments to avoid duplication",
+      "Fails the workflow if violations are detected"
     ],
     "outOfScope": [
-      "Detailed configuration of ArchSpine rules or sync options",
-      "Setup for multi-language repositories",
-      "Non-GitHub CI platforms (GitLab, Jenkins, etc.)",
-      "Manual troubleshooting of violations"
+      "Detailed configuration of ArchSpine (e.g., .spine/config.json, language models)",
+      "Local or non-GitHub CI usage",
+      "Explanation of `spine sync` or `spine check` commands themselves"
     ],
     "invariants": [],
     "changeIntent": {
@@ -32,13 +32,13 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document provides a ready-to-use GitHub Actions workflow that enforces architectural governance automatically on every pull request. It runs ArchSpine's sync and check commands, reports violations as PR comments, and blocks merging if architecture rules are violated.",
-        "context_and_audience": "This template is intended for DevOps engineers and project maintainers who want to integrate ArchSpine into their CI pipeline using GitHub Actions. It assumes the repository has already been initialized with spine init and that an LLM API key has been configured as a GitHub secret.",
+        "purpose": "This document provides a ready-to-use GitHub Actions workflow that automatically enforces architectural rules on every pull request. It helps teams maintain a consistent architecture by running ArchSpine’s sync and check steps in CI.",
+        "context_and_audience": "Intended for developers who have initialized ArchSpine in their repository and want to add an automated architecture gate to their PR workflow. Readers need basic familiarity with GitHub Actions and should have a valid LLM_API_KEY secret configured.",
         "key_takeaways": [
-          "Automates architecture validation on every PR for consistent governance",
-          "Requires only basic setup: initializing spine and adding an LLM API key",
-          "Provides clear failure feedback via PR comments and workflow exit code",
-          "Keeps comments concise and updates them on new pushes to avoid spam"
+          "The workflow triggers on pull request open, synchronize, and reopen events.",
+          "It runs `spine sync` to update the architecture model, then `spine check` to detect violations.",
+          "On failure, it posts a detailed comment on the PR (or updates an existing one) and fails the workflow.",
+          "Requires a secret named `LLM_API_KEY` set in the repository’s Actions settings."
         ]
       }
     }
@@ -61,7 +61,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:49:53.629Z",
+    "indexedAt": "2026-05-12T05:15:41.210Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

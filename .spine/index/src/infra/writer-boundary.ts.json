@@ -2,44 +2,46 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/infra/writer-boundary.ts",
-    "contentHash": "52a2735780c2edeaf8cd6540dd0a8af6a0ddae2c60497239c4135dd307f58eba",
+    "contentHash": "08599f9d52f9b7354e9ab8c2e0f34b690e87ef3ab411639f933ddaea88d233e3",
     "skeletonHash": "8515c37618f504161e3e9b72c570c8de81292a239ad3e39f645915af23c1a034",
-    "semanticHash": "3156e534f85e072d2d705099e19c149a17a6a21c078b1566b362d3bc50ab96dd",
+    "semanticHash": "78c2f2e4cab967a70ef2eb2b70b6e6ed36e3fb3776e4fac461b2501c80354cd9",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra"
   },
   "semantic": {
-    "role": "Infrastructure module that enforces write-access protection for critical Spine metadata directories and files, providing a safe gate for file system mutations.",
+    "role": "Low-level infrastructure boundary that manages file permissions on protected Spine output directories, providing both a functional and an object-oriented facade for temporarily granting write access while preventing accidental modification.",
     "responsibilities": [
-      "Define protected paths for Spine index and view directories, as well as lock and cache database files.",
-      "Provide a function (withProtectedOutputsWriteAccess) that temporarily allows write operations on protected resources, ensuring permissions are restored afterward.",
-      "Provide a class (SpineWriterBoundary) that validates file paths against protected zones and manages file/directory permission modes (lock/unlock).",
-      "Normalize file paths to ensure consistent protection checks across OS platforms.",
-      "Walk directory trees for recursive permission management."
+      "Define the set of protected directories (e.g., .spine/index, .spine/view) that should remain read-only under normal operation.",
+      "Enforce permission locks on protected directories and their contents by setting restrictive modes (0o444 for files, 0o755 for directories).",
+      "Provide `withProtectedOutputsWriteAccess` as a safe functional API to temporarily relax permissions, execute a write operation, and restore the original locked state — even if the operation fails.",
+      "Provide `SpineWriterBoundary` as an object-oriented wrapper that scopes write access to a given root directory and manages the permission lifecycle automatically.",
+      "Maintain invariants that protected directories are never writable outside of explicit write-access calls."
     ],
     "outOfScope": [
-      "File content reading or parsing.",
-      "High-level business logic or service orchestration.",
-      "Any network or external API interaction."
+      "Any file content operations beyond permission manipulation (reading, writing, or indexing logic).",
+      "Higher-level orchestration of the indexing pipeline or domain logic.",
+      "Persistence of any state related to the write sessions beyond the call scope.",
+      "Cross-platform permission handling beyond POSIX chmod semantics."
     ],
     "invariants": [
-      "The .spine/index, .spine/view directories and .spine/.lock, .spine/cache.db file prefixes are always write-protected.",
-      "Write access to protected resources must go through the provided boundary functions/classes.",
-      "Permission modes for locked directories are 0o755, locked files are 0o444; unlocked directories are 0o755, unlocked files are 0o644."
+      "Protected directories must always be restored to locked permissions after a write operation completes, regardless of success or failure.",
+      "Permission changes must be synchronous (using `fs.chmodSync`) and applied before the caller's operation executes.",
+      "The set of protected directories is fixed at module load time and cannot be modified at runtime.",
+      "Only paths within the protected set are subject to permission changes; all other paths are unaffected."
     ],
     "changeIntent": {
-      "architecturalIntent": "To create a stable, safe write-access boundary around sensitive Spine internal data stores, preventing accidental corruption from other modules or external actors.",
-      "recentChangeIntent": "No recent change intent provided beyond the commit message 'chore: apply release gate fixes and sync accumulated source changes', which suggests maintenance consistency rather than a new architectural direction."
+      "architecturalIntent": "Establish a robust permission-management layer for the Spine indexing system's output directories, ensuring that accidental writes to critical files are prevented while allowing intentional writes through a controlled, fault-tolerant API.",
+      "recentChangeIntent": "Initial commit: set up protected directory write access mechanism with functional and OOP interfaces."
     },
     "publicSurface": [
       {
         "symbolName": "withProtectedOutputsWriteAccess",
-        "description": "Executes an asynchronous operation with write access to protected Spine output directories and files, temporarily relaxing protections, and ensuring they are restored after the operation completes or fails."
+        "description": "Asynchronously executes an arbitrary operation under write access on protected directories within a given root directory. It temporarily changes permissions from locked to unlocked, invokes the operation, and restores the locked permissions afterward. Used by any component that needs to write to protected Spine output directories (e.g., the indexer)."
       },
       {
         "symbolName": "SpineWriterBoundary",
-        "description": "A class that encapsulates path validation and permission management for Spine's protected file system resources, providing methods to check and modify locked/unlocked states."
+        "description": "Class that encapsulates write-access management for a specific root directory. When methods are called, it locks/unlocks the protected directories scoped to that root. Callers instantiate it with a root directory and use its methods to perform writes without manually managing permission states."
       }
     ],
     "ruleViolations": [],
@@ -47,18 +49,19 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Infrastructure module that enforces write-access protection for critical Spine metadata directories and files, providing a safe gate for file system mutations.",
+        "role": "Low-level infrastructure boundary that manages file permissions on protected Spine output directories, providing both a functional and an object-oriented facade for temporarily granting write access while preventing accidental modification.",
         "responsibilities": [
-          "Define protected paths for Spine index and view directories, as well as lock and cache database files.",
-          "Provide a function (withProtectedOutputsWriteAccess) that temporarily allows write operations on protected resources, ensuring permissions are restored afterward.",
-          "Provide a class (SpineWriterBoundary) that validates file paths against protected zones and manages file/directory permission modes (lock/unlock).",
-          "Normalize file paths to ensure consistent protection checks across OS platforms.",
-          "Walk directory trees for recursive permission management."
+          "Define the set of protected directories (e.g., .spine/index, .spine/view) that should remain read-only under normal operation.",
+          "Enforce permission locks on protected directories and their contents by setting restrictive modes (0o444 for files, 0o755 for directories).",
+          "Provide `withProtectedOutputsWriteAccess` as a safe functional API to temporarily relax permissions, execute a write operation, and restore the original locked state — even if the operation fails.",
+          "Provide `SpineWriterBoundary` as an object-oriented wrapper that scopes write access to a given root directory and manages the permission lifecycle automatically.",
+          "Maintain invariants that protected directories are never writable outside of explicit write-access calls."
         ],
         "outOfScope": [
-          "File content reading or parsing.",
-          "High-level business logic or service orchestration.",
-          "Any network or external API interaction."
+          "Any file content operations beyond permission manipulation (reading, writing, or indexing logic).",
+          "Higher-level orchestration of the indexing pipeline or domain logic.",
+          "Persistence of any state related to the write sessions beyond the call scope.",
+          "Cross-platform permission handling beyond POSIX chmod semantics."
         ]
       }
     }
@@ -132,21 +135,19 @@
       {
         "targetPath": "fs",
         "relation": "import",
-        "symbols": []
+        "symbols": [
+          "*"
+        ]
       },
       {
         "targetPath": "path",
         "relation": "import",
-        "symbols": []
+        "symbols": [
+          "*"
+        ]
       }
     ],
     "dependedBy": [
-      {
-        "targetPath": "src/services/view/view-service.ts",
-        "relation": "import",
-        "edgeProvenance": "ast",
-        "symbols": []
-      },
       {
         "targetPath": "tests/unit/services/runtime-session.test.ts",
         "relation": "import",
@@ -158,7 +159,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:02:04.914Z",
+    "indexedAt": "2026-05-12T05:19:24.505Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
@@ -170,7 +171,7 @@
     "isHub": true,
     "hubPercentile": 76,
     "inCycle": true,
-    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "cycleId": "src/core → src/types → src/infra",
     "isDeadCodeSuspect": false
   }
 }

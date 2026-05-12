@@ -3,24 +3,23 @@
   "identity": {
     "filePath": "src/ast/rules/java.yml",
     "contentHash": "e7a1b864c9d2a40de2af30ed514891c4cad4025f920c4c9fef689bad9fc5d567",
-    "semanticHash": "934e7a6454b5e87bf304ae6775956c6e9e388ba01b92659e2fe6eb8a395c456a",
+    "semanticHash": "b5f5bf3e8e4356e584446bab37531fb4eeea629cddc5180d0b1357ebf80b59ef",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/ast/rules"
   },
   "semantic": {
-    "role": "Defines Java-specific AST extraction patterns for ArchSpine's code analysis pipeline.",
+    "role": "Language Pattern Definition for Code Analysis",
     "responsibilities": [
-      "Specifies pattern-based rules for identifying Java import statements.",
-      "Defines how to recognize Java class and interface definitions (including public variants).",
-      "Describes usage detection patterns for method calls and object instantiation.",
-      "Provides the foundation for automatic extraction of structural metadata from Java source files."
+      "Defining import pattern (import $SOURCE;)",
+      "Defining export patterns for classes (class $NAME, public class $NAME) and interfaces (interface $NAME, public interface $NAME)",
+      "Defining usage patterns for method calls ($OBJ.$NAME($$ARGS)) and object instantiation (new $NAME($$ARGS))"
     ],
     "outOfScope": [
-      "Does not cover runtime behavior or execution semantics.",
-      "Does not handle languages other than Java.",
-      "Does not include dependency resolution or module-level analysis.",
-      "Excludes documentation generation or rendering logic."
+      "Other language constructs (e.g., annotations, enums, generics)",
+      "Grammar rules or parsing logic",
+      "Runtime behavior or execution semantics",
+      "Specific language versions or dialects"
     ],
     "invariants": [],
     "changeIntent": {
@@ -32,13 +31,13 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document defines the pattern rules that ArchSpine uses to parse Java source code. It tells the system how to recognize imports, class/interface declarations, and typical usage patterns like method calls and object creation. Without this file, ArchSpine would not know how to extract structural information from Java code.",
-        "context_and_audience": "This file is intended for developers maintaining ArchSpine's multi-language analysis capabilities and for AI agents that need to understand how the system processes Java code. It is part of the AST rules layer and should be modified only when the Java pattern definitions need to be updated, for example to support new language constructs or changes in Java syntax.",
+        "purpose": "This document provides a set of pattern definitions used by the ArchSpine system to recognize key structural elements in Java-like source code. It enables automatic identification of imports, class/interface declarations, method calls, and object creations, which are essential for code mirroring and dependency analysis.",
+        "context_and_audience": "The intended audience is developers who maintain or extend the language support layer of ArchSpine. It describes how the system matches code constructs using placeholder-based patterns, making it easy to add or modify recognition rules for different programming languages.",
         "key_takeaways": [
-          "Imports are matched using a simple 'import $SOURCE;' pattern.",
-          "Classes and interfaces are captured via pattern templates that recognize both public and non-public declarations.",
-          "Usage patterns detect method calls ($OBJ.$NAME($$$ARGS)) and object instantiation (new $NAME($$$ARGS)).",
-          "These patterns are language-specific and are used by the AST extractor to build a structured index of a Java codebase."
+          "Patterns are defined under three categories: imports, exports, and usages.",
+          "Export patterns recognize both default and public class/interface declarations, each with a unique ID and kind.",
+          "Usage patterns cover method invocations and object instantiation, using placeholders like $OBJ, $NAME, and $ARGS.",
+          "The patterns use a simple, template‑like syntax with placeholders beginning with '$'."
         ]
       }
     }
@@ -61,7 +60,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:52:35.828Z",
+    "indexedAt": "2026-05-12T05:17:28.868Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

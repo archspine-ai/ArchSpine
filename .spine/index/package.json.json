@@ -3,26 +3,26 @@
   "identity": {
     "filePath": "package.json",
     "contentHash": "853f6fed4e133d4929136f28a302440df92fb6656167fd57ebb2ee920aa692f1",
-    "semanticHash": "1e401fc8d8677c0da94789b13a26a0cbdb64d76da2118a4f43b89c591906f2ce",
+    "semanticHash": "60420ebbee218495d497488c1780913c38723e0e2de1a61b769e52d751088d29",
     "language": "unsupported",
     "fileKind": "config",
     "scope": ""
   },
   "semantic": {
-    "role": "Project metadata and build configuration for the ArchSpine architectural governance toolkit",
+    "role": "Package manifest defining the ArchSpine project metadata, entry points, scripts, and engine requirements for the architectural governance tool.",
     "responsibilities": [
-      "Defines the package identity and entry points for CLI execution",
-      "Specifies Node.js runtime version constraints and module system",
-      "Controls which files are included in the published npm package",
-      "Coordinates build, test, lint, and validation scripts",
-      "Lists development dependencies that scaffold the development environment"
+      "Package publishing and distribution",
+      "CLI entry point resolution",
+      "Build and development workflow",
+      "Engine compatibility enforcement",
+      "License and metadata management"
     ],
     "outOfScope": [],
     "invariants": [
-      "Node.js version must be >=20.18.1 and <21 or >=22 – a strict engine boundary",
-      "The module type is set to ECMAScript modules (type: module), enforcing ESM import/export syntax",
-      "The main entry point is dist/cli/index.js; binary symlinks (spine, archspine) are generated from that script",
-      "Only the dist/ directory and approved documentation/licensing files are included in the published artifact"
+      "Node.js engine must be >=20.18.1 <21 or >=22",
+      "Main entry must resolve to dist/cli/index.js",
+      "The package type is ESM ('module')",
+      "Scripts must be run within project root"
     ],
     "changeIntent": {
       "architecturalIntent": null,
@@ -33,21 +33,15 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "This is the package.json for ArchSpine – a command-line tool for architectural governance, semantic code analysis, and AI‑driven codebase understanding. It defines how the project is built, published, and executed, and serves as the single source of truth for the npm ecosystem integration.",
+        "role": "This package.json file serves as the identity and configuration hub for the ArchSpine tool. It declares the project's name, version, description, entry points, and the commands that users can run (e.g., `spine` and `archspine`). It also sets the supported Node.js versions, which is a critical safety constraint to ensure runtime compatibility.",
         "parameter_definitions": {
-          "name": "The registry name 'archspine' under which the package is published; must be unique on npm.",
-          "version": "Semantic version identifier (1.0.0) that drives release life‑cycle, dependency resolution, and changelog generation.",
-          "description": "Brief summary of the tool's purpose: architectural governance and semantic layer for AI era.",
-          "main": "Sets the module entry point; all require/import of the package resolves to dist/cli/index.js.",
-          "bin": "Maps CLI commands 'spine' and 'archspine' to the same JavaScript file, giving users two invocation names.",
-          "type": "Forces all .js files to be treated as ES modules; affects import/export syntax and top‑level await support.",
-          "engines": "Defines the acceptable Node.js range to prevent installation on incompatible runtimes – critical for feature availability and security.",
-          "files": "Whitelist of directories/files for npm publish; exclusion patterns block __mocks__, source maps, and other non‑essential assets to keep the package lean and secure.",
-          "scripts": "Automation hooks for development: build, test in unit/e2e/schema modes, linting, formatting, and release gating. Each script invokes a custom Node script or vitest.",
-          "license": "Apache-2.0 license identifier, determining legal usage rights and obligations.",
-          "devDependencies": "Development‑only dependency declarations (e.g., TypeScript, ESLint, vitest) that are not included in the final package but are needed for building and testing."
+          "engines": "Specifies the required Node.js version range. This is a safety invariant to prevent runtime errors. Using outdated or mismatched Node versions can cause crashes or security issues.",
+          "type": "Setting to 'module' enables ES module syntax. Impacts all file imports and may require adjustments in CommonJS contexts. Failing to adhere can lead to import/export errors.",
+          "scripts": "Defines automated tasks. These can have operational impact as they control build, test, and release processes. Malicious modifications could execute arbitrary commands. Security review needed for script contents.",
+          "bin": "Defines CLI commands. These determine how users invoke the tool. Changes could break user workflows or introduce command injection if not properly handled.",
+          "files": "Specifies which files are included in npm pack/publish. Relevancy to distribution; omitting required files may break installation, while including sensitive files could leak internal data."
         },
-        "stability_and_risks": "The package.json file is foundational to the project's stability. The strict engine requirement prevents accidental deployment on unsupported Node.js versions, reducing runtime failures. The ESM module type (type: module) may cause breakage in projects using CommonJS unless a compatibility bridge is present. The files whitelist minimizes attack surface by excluding sensitive or unnecessary artifacts from the published package. The build script (node scripts/build.mjs) must produce a valid dist/ directory before any binary can be invoked; if the build fails, the entire CLI becomes unusable. DevDependencies are numerous and could introduce vulnerabilities if not kept up‑to‑date. The scripts section centralises all automation; any misconfiguration (e.g., missing script) could block CI/CD pipelines. Overall, this file directly controls the project's delivery pipeline and runtime contract, and should be reviewed with every release."
+        "stability_and_risks": "The package.json is a critical file for system stability. Incorrect engine restrictions may prevent installation on many systems. Scripts that are not properly sandboxed could be exploited. The bin entries should be audited to avoid name collisions or shadowing system commands. The 'files' array must be kept accurate to avoid distributing unnecessary or sensitive files. Overall, changes to this file should be reviewed for compatibility and security."
       }
     }
   },
@@ -69,7 +63,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:50:57.543Z",
+    "indexedAt": "2026-05-12T05:16:38.646Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

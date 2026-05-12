@@ -2,31 +2,31 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "tests/integration/boundaries/writer-boundary.test.ts",
-    "contentHash": "1c3d8c5024da2b9442f8516e78928a3102c7282d2b5614cd9384f117756854e8",
+    "contentHash": "ce220d62c9ff370f51f244d805f83e4e14dcc7f5e97d9d59f1b5eb4be77d8a7d",
     "skeletonHash": "d3773fc4d8a381c7e6682a765ace320432bb21294ef0ee72f80bee093db3856f",
-    "semanticHash": "fcfa990a789eab38bd77d78291c80a13c01a2327ca129f96d001b3c88ac61a6c",
+    "semanticHash": "17be4e258b9e4e79b354613ab33f5e635df5978915e993896fb2b421ffef0f2c",
     "language": "typescript",
     "fileKind": "source",
     "scope": "tests/integration/boundaries"
   },
   "semantic": {
-    "role": "Unit/integration test suite for the SpineWriterBoundary module, verifying write access protection and output isolation.",
+    "role": "Test suite for the SpineWriterBoundary class and withProtectedOutputsWriteAccess function, using vitest to validate write protection behavior against the local filesystem.",
     "responsibilities": [
-      "Validate that withProtectedOutputsWriteAccess correctly restricts write operations to allowed output directories.",
-      "Verify that SpineWriterBoundary properly handles allowed paths, disallowed paths, and edge cases like non-writable directories.",
-      "Ensure test scenarios are self-contained, using temporary directories to avoid side effects."
+      "Set up temporary directory structures with files of varying permissions to simulate protected and unprotected outputs.",
+      "Invoke SpineWriterBoundary or withProtectedOutputsWriteAccess under test conditions and assert their behavior (e.g., write success, write denial, error propagation).",
+      "Clean up temporary test directories after each test to maintain isolation between test runs."
     ],
     "outOfScope": [
-      "The implementation details of SpineWriterBoundary and withProtectedOutputsWriteAccess.",
-      "End-to-end integration with actual LLM or file system beyond local temp directories."
+      "Production implementation of the writer boundary logic.",
+      "Integration with cloud or remote storage systems; tests are confined to local filesystem operations."
     ],
     "invariants": [
-      "Test file must end with .test.ts or .spec.ts (satisfied).",
-      "All tests must clean up temporary directories and files after execution."
+      "The test file name must end with .test.ts or .spec.ts according to project conventions (rule: test-file-suffix). (Violation not assessable without filename.)",
+      "Tests must not modify files outside the temporary directory created for each test."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide isolated, verifiable test coverage for the writer boundary module to prevent accidental writes outside allowed zones.",
-      "recentChangeIntent": "Refactor and removal of legacy CLI aliases; rebuild of docs; fixes to schema and tests (from git intent). This test file may have been adjusted to match updated boundary contracts."
+      "architecturalIntent": "Provide automated regression tests for the write protection boundary, guaranteeing that protected outputs cannot be written by unauthorized code and that the boundary behaves correctly under various permission scenarios.",
+      "recentChangeIntent": "Initial commit — added this test suite as part of the project bootstrap to verify the writer boundary module from the start."
     },
     "publicSurface": [],
     "ruleViolations": [],
@@ -34,15 +34,15 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Unit/integration test suite for the SpineWriterBoundary module, verifying write access protection and output isolation.",
+        "role": "Test suite for the SpineWriterBoundary class and withProtectedOutputsWriteAccess function, using vitest to validate write protection behavior against the local filesystem.",
         "responsibilities": [
-          "Validate that withProtectedOutputsWriteAccess correctly restricts write operations to allowed output directories.",
-          "Verify that SpineWriterBoundary properly handles allowed paths, disallowed paths, and edge cases like non-writable directories.",
-          "Ensure test scenarios are self-contained, using temporary directories to avoid side effects."
+          "Set up temporary directory structures with files of varying permissions to simulate protected and unprotected outputs.",
+          "Invoke SpineWriterBoundary or withProtectedOutputsWriteAccess under test conditions and assert their behavior (e.g., write success, write denial, error propagation).",
+          "Clean up temporary test directories after each test to maintain isolation between test runs."
         ],
         "outOfScope": [
-          "The implementation details of SpineWriterBoundary and withProtectedOutputsWriteAccess.",
-          "End-to-end integration with actual LLM or file system beyond local temp directories."
+          "Production implementation of the writer boundary logic.",
+          "Integration with cloud or remote storage systems; tests are confined to local filesystem operations."
         ]
       }
     }
@@ -123,14 +123,6 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "../../../src/infra/writer-boundary.js",
-        "relation": "import",
-        "symbols": [
-          "SpineWriterBoundary",
-          "withProtectedOutputsWriteAccess"
-        ]
-      },
-      {
         "targetPath": "vitest",
         "relation": "import",
         "symbols": [
@@ -142,24 +134,32 @@
         ]
       },
       {
+        "targetPath": "../../../src/infra/writer-boundary.ts",
+        "relation": "import",
+        "symbols": [
+          "SpineWriterBoundary",
+          "withProtectedOutputsWriteAccess"
+        ]
+      },
+      {
         "targetPath": "fs",
         "relation": "import",
         "symbols": [
-          "* as fs"
+          "*"
         ]
       },
       {
         "targetPath": "path",
         "relation": "import",
         "symbols": [
-          "* as path"
+          "*"
         ]
       },
       {
         "targetPath": "os",
         "relation": "import",
         "symbols": [
-          "* as os"
+          "*"
         ]
       }
     ],
@@ -183,7 +183,7 @@
     ]
   },
   "provenance": {
-    "indexedAt": "2026-05-10T05:07:03.412Z",
+    "indexedAt": "2026-05-12T05:20:40.676Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

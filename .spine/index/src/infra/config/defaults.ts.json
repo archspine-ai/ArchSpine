@@ -2,37 +2,38 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": "src/infra/config/defaults.ts",
-    "contentHash": "599d9b8a15edc6a5a0771536936a1388d2cbf9d2f6f2c3fbb14280634f8422ea",
+    "contentHash": "70fdaaa89d087e45b600fa4cf2e8f78fa8e2a4682ed88bfa34ae8264897572ae",
     "skeletonHash": "01da34d483dc229e33db1ee5b735db6535ff9df2181aba668083b23472dbffcd",
-    "semanticHash": "a64f5cc789c61bd0640153ac13a5d64b90e9285f27a909e0b4163fcae6526263",
+    "semanticHash": "f68e369adba5826ecc3f90933204b89b41188c8f2d74c1abc2a19a64f8953b19",
     "language": "typescript",
     "fileKind": "source",
     "scope": "src/infra/config"
   },
   "semantic": {
-    "role": "Infrastructure configuration factory providing the canonical default configuration for the ArchSpine system.",
+    "role": "Factory function for creating a default SpineConfig object, providing baseline configuration values for the ArchSpine system.",
     "responsibilities": [
-      "Create and return a SpineConfig object with the current schema version and default scan policy.",
-      "Set default project metadata (name, locales) for newly initialized projects.",
-      "Initialize default empty stubs for LLM and MCP configuration sections."
+      "Define and export the default configuration values for the ArchSpine system.",
+      "Initialize the config object with a specific schema version, project metadata, LLM settings, MCP context mode, and other baseline settings.",
+      "Integrate the default scan policy from the core module into the default config."
     ],
     "outOfScope": [
-      "Does not validate or merge user-supplied configurations.",
-      "Does not load configuration from disk or environment variables.",
-      "Does not handle configuration migration or schema evolution."
+      "Specific default values (implementation details, subject to change).",
+      "Configuration validation or mutation logic.",
+      "Reading or writing configuration from external sources (files, env vars)."
     ],
     "invariants": [
-      "The returned config always uses CURRENT_CONFIG_SCHEMA_VERSION from the protocol constants.",
-      "The returned config always includes the DEFAULT_SCAN_POLICY from the core scan-policy module."
+      "The default config must always have a schemaVersion equal to CURRENT_CONFIG_SCHEMA_VERSION.",
+      "The returned object must conform to the SpineConfig interface as defined in types.js.",
+      "The `mcp.contextMode` defaults to 'off'."
     ],
     "changeIntent": {
-      "architecturalIntent": "Provide a single source of truth for default configuration values, ensuring consistency across initialization, reset, and testing scenarios.",
-      "recentChangeIntent": "Align with ArchSpine v1.0.0 release — stabilize the default configuration contract as part of the architectural governance layer."
+      "architecturalIntent": "Provide a single, canonical factory for creating a default SpineConfig, ensuring consistency and centralizing initial configuration values.",
+      "recentChangeIntent": "Initial commit — this file is part of the first layout of the config subsystem."
     },
     "publicSurface": [
       {
         "symbolName": "createDefaultConfig",
-        "description": "Factory function that returns a fully populated SpineConfig object with current schema version, default project settings, and empty LLM/MCP stubs. Used by initialization routines and configuration resets."
+        "description": "Creates and returns a default SpineConfig object pre-populated with sensible defaults for project, LLM, MCP, and other settings. Consumed by the system bootstrapping process to establish initial configuration."
       }
     ],
     "ruleViolations": [],
@@ -40,16 +41,16 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "role": "Infrastructure configuration factory providing the canonical default configuration for the ArchSpine system.",
+        "role": "Factory function for creating a default SpineConfig object.",
         "responsibilities": [
-          "Create and return a SpineConfig object with the current schema version and default scan policy.",
-          "Set default project metadata (name, locales) for newly initialized projects.",
-          "Initialize default empty stubs for LLM and MCP configuration sections."
+          "Export the single function `createDefaultConfig` that produces a baseline configuration for the ArchSpine system.",
+          "Initialize the config with a versioned schema identifier, project metadata, empty LLM settings, and an MCP context mode defaulting to off.",
+          "Incorporate the default scan policy from the core scan-policy module into the config defaults."
         ],
         "outOfScope": [
-          "Does not validate or merge user-supplied configurations.",
-          "Does not load configuration from disk or environment variables.",
-          "Does not handle configuration migration or schema evolution."
+          "Reading config from external storage or environment variables.",
+          "Validating or overriding user-supplied config.",
+          "Tracking changes to config values at runtime."
         ]
       }
     }
@@ -103,21 +104,21 @@
   "graph": {
     "dependsOn": [
       {
-        "targetPath": "src/types/protocol.ts",
+        "targetPath": "../../types/protocol.js",
         "relation": "import",
         "symbols": [
           "CURRENT_CONFIG_SCHEMA_VERSION"
         ]
       },
       {
-        "targetPath": "src/core/scan-policy.ts",
+        "targetPath": "../../core/scan-policy.js",
         "relation": "import",
         "symbols": [
           "DEFAULT_SCAN_POLICY"
         ]
       },
       {
-        "targetPath": "src/infra/config/types.ts",
+        "targetPath": "./types.js",
         "relation": "import",
         "symbols": [
           "SpineConfig"
@@ -129,7 +130,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:56:55.161Z",
+    "indexedAt": "2026-05-12T05:18:14.017Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
@@ -141,7 +142,7 @@
     "isHub": true,
     "hubPercentile": 76,
     "inCycle": true,
-    "cycleId": "src/ast → src/utils → src/infra → src/core → src/types",
+    "cycleId": "src/core → src/types → src/infra",
     "isDeadCodeSuspect": false
   }
 }

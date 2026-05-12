@@ -2,25 +2,23 @@
   "schemaVersion": "1.0.0",
   "identity": {
     "filePath": ".github/workflows/release.yml",
-    "contentHash": "09b58df3db95c4828f285cb31c16c7ab8472977117442ffda9f49ccbb4feb371",
-    "semanticHash": "e7baf0f13cf4cb1855e18a93a2102bc2068095ae89618dafb69c3d763f09afa6",
+    "contentHash": "a14e8ae6d17a9da2cac6c6c7dc9b0a1c1581b19f65f157a4b41286110950cecd",
+    "semanticHash": "5d596841fbdf6b3584b2fc8fe1f18c4f9d40ece01807c7a655d01545a126fdeb",
     "language": "unsupported",
     "fileKind": "document",
     "scope": ".github/workflows"
   },
   "semantic": {
-    "role": "This document defines the automated release pipeline for the ArchSpine project, triggered by version tags.",
+    "role": "CI/CD workflow for automated release and npm publishing",
     "responsibilities": [
-      "Specifies the workflow that runs on pushes to tags matching 'v*'",
-      "Checks out the repository, sets up Node.js 20, installs dependencies and builds",
-      "Publishes the package to the npm registry using the NPM_TOKEN secret",
-      "Creates a GitHub Release with auto-generated release notes"
+      "Trigger on version tag push (v*)",
+      "Publish the package to npm",
+      "Create a GitHub release with auto-generated release notes"
     ],
     "outOfScope": [
-      "Manual or ad-hoc release steps",
-      "Other CI workflows (e.g., testing, linting)",
-      "Pre-release validation or changelog generation beyond GitHub notes",
-      "Multi-platform builds or deployment to other registries"
+      "Unit or integration testing",
+      "Manual release steps or approvals",
+      "Deployment to other registries or environments"
     ],
     "invariants": [],
     "changeIntent": {
@@ -32,12 +30,12 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document describes the release workflow of the ArchSpine project, an automated pipeline that builds, publishes to npm, and creates a GitHub release whenever a version tag is pushed.",
-        "context_and_audience": "It is intended for maintainers and contributors who need to understand how official releases are cut, as well as for developers integrating ArchSpine via npm who want assurance about the release automation.",
+        "purpose": "Automates the release process for the ArchSpine project when a version tag is pushed.",
+        "context_and_audience": "Intended for maintainers and developers who want to automate npm publishing and GitHub release creation. This workflow ensures consistent and repeatable release procedures.",
         "key_takeaways": [
-          "The release is triggered by any tag starting with 'v' (e.g., v1.2.3).",
-          "The workflow runs on Ubuntu, uses Node 20, and caches npm dependencies.",
-          "After building, it publishes to npm using a secret token and creates a GitHub Release with auto-generated notes."
+          "Triggered by any tag starting with 'v' (e.g., v1.0.0).",
+          "Publishes the built package to npm using the NPM_TOKEN secret.",
+          "Generates release notes and creates a GitHub release via the softprops/action-gh-release action."
         ]
       }
     }
@@ -60,7 +58,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:49:46.258Z",
+    "indexedAt": "2026-05-12T05:15:42.431Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "directory": "src/infra",
-  "role": "Provides the foundational infrastructure layer for the ArchSpine mirror system, encompassing configuration, LLM interaction, database management, prompt building, security, file I/O, and integrity protection.",
-  "responsibility": "The src/infra directory aggregates all low-level support modules that power the ArchSpine system. It delivers centralized configuration management with type-safe access, a unified LLM client abstraction with provider factory and retry logic, a persistent SQLite database for file tracking and symbol indexing, a prompt-building framework for structured AI agent interactions, an MCP server for external tool integration, secure credential storage, manifest and output management, file system integrity guards, and utility functions for runtime I/O and UI folding. Together, these components form the reusable backbone that higher layers depend on, ensuring separation of concerns and stable interfaces across the entire system.",
+  "role": "Infrastructure directory that contains the core supporting subsystems for the ArchSpine mirror system, including database, configuration, LLM orchestration, credential management, file system operations, and MCP integration.",
+  "responsibility": "Collectively, these components provide a comprehensive infrastructure layer that handles database lifecycle and data access (db), configuration loading and validation (config), secure credential storage (credentials), LLM client abstraction and prompt generation (llm, prompt, prompt-context), file manifest tracking and integrity (manifest), MCP server and tools for AI integration (mcp), output rendering and documentation generation (renderer, output), protected output integrity gating (spine-gate, writer-boundary), utility functions for UI, I/O, and policy decisions (runtime-io, ui, repair-policy, repository-artifacts, rules-loader), and authentication stubs (auth) for early development.",
   "children": [
     {
       "filePath": "src/infra/__mocks__",
@@ -16,7 +16,7 @@
     },
     {
       "filePath": "src/infra/config",
-      "role": "Infrastructure configuration layer providing centralized settings management, default factories, environment overrides, and type-safe access to the ArchSpine system configuration.",
+      "role": "Central configuration infrastructure for ArchSpine.",
       "fileKind": "folder"
     },
     {
@@ -56,7 +56,7 @@
     },
     {
       "filePath": "src/infra/llm",
-      "role": "Defines the core abstractions and runtime infrastructure for interacting with Large Language Models (LLMs) in the ArchSpine system, including type contracts, provider factory, global configuration management, retry logic, and runtime resolution.",
+      "role": "LLM abstraction and orchestration layer for the ArchSpine mirror system, providing a unified interface to interact with various language model providers.",
       "fileKind": "folder"
     },
     {
@@ -66,17 +66,17 @@
     },
     {
       "filePath": "src/infra/manifest",
-      "role": "Core manifest management directory for ArchSpine, handling file tracking, integrity, I/O, state persistence, and type definitions.",
+      "role": "Core file management and integrity tracking subsystem for the ArchSpine mirror system.",
       "fileKind": "folder"
     },
     {
       "filePath": "src/infra/manifest.ts",
-      "role": "Infrastructure barrel module re-exporting the public API of the manifest subsystem.",
+      "role": "Barrel export module providing a stable public facade for the Manifest entity.",
       "fileKind": "source"
     },
     {
       "filePath": "src/infra/mcp",
-      "role": "This directory contains the MCP (Model Context Protocol) server implementation, tool definitions, and context management layer that expose ArchSpine's core capabilities to external AI agents and IDE clients.",
+      "role": "MCP integration layer that exposes ArchSpine's introspection, scanning, drift detection, and dependency graph features as callable tools and resources for AI agents.",
       "fileKind": "folder"
     },
     {
@@ -86,7 +86,7 @@
     },
     {
       "filePath": "src/infra/prompt",
-      "role": "This directory contains the prompt-building infrastructure for the ArchSpine mirror system, providing factory functions and a fluent builder to construct structured LLM prompts for summarizing and validating various artifact types.",
+      "role": "This directory provides the prompt construction infrastructure for the ArchSpine system, enabling dynamic assembly of structured analysis prompts for source code and markdown files.",
       "fileKind": "folder"
     },
     {
@@ -156,12 +156,12 @@
     },
     {
       "filePath": "src/infra/writer-boundary.ts",
-      "role": "Infrastructure module that enforces write-access protection for critical Spine metadata directories and files, providing a safe gate for file system mutations.",
+      "role": "Low-level infrastructure boundary that manages file permissions on protected Spine output directories, providing both a functional and an object-oriented facade for temporarily granting write access while preventing accidental modification.",
       "fileKind": "source"
     }
   ],
   "provenance": {
-    "indexedAt": "2026-05-10T05:13:35.971Z",
+    "indexedAt": "2026-05-12T05:22:14.149Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",

@@ -3,23 +3,24 @@
   "identity": {
     "filePath": "src/ast/rules/typescript.yml",
     "contentHash": "910d8cc916f11a4bce4f9b92c7255ad544c34413509f9ba8ada6987c14a928fd",
-    "semanticHash": "416fd3c9e7a64f7a67f3faaada7082c65475598b37f0fa4fe17e38c376a113d1",
+    "semanticHash": "4aa989cf6b3cc78eb1b2627011fb22e2d8eb67228394c9ad2231be2351fc6e09",
     "language": "unsupported",
     "fileKind": "document",
     "scope": "src/ast/rules"
   },
   "semantic": {
-    "role": "Defines the grammar for extracting TypeScript symbols and relationships in the ArchSpine AST pipeline.",
+    "role": "Defines the pattern-matching rules for parsing TypeScript/JavaScript imports, exports, and usages within the ArchSpine code analysis engine.",
     "responsibilities": [
-      "Configures import pattern matching (named, default, namespace)",
-      "Configures export pattern matching (function, class, interface, type, variable, default, list)",
-      "Configures usage pattern matching (call, new, property access)",
-      "Maintenance scope: updated when TypeScript syntax evolves or new patterns are needed"
+      "Specifying import pattern definitions (named, default, namespace)",
+      "Specifying export pattern definitions (function, class, interface, type, const, let, var, default, list)",
+      "Specifying usage pattern definitions (call, new, property)",
+      "Mapping matched syntax nodes to semantic kinds (e.g., Function, Class, Interface, Type, Variable, Unknown)"
     ],
     "outOfScope": [
-      "Runtime behavior of code",
-      "Other programming languages",
-      "Execution logic or pipeline orchestration"
+      "Non-JavaScript/TypeScript language patterns",
+      "AST traversal logic beyond pattern matching",
+      "Dependency resolution logic (e.g., module paths, cyclic detection)",
+      "UI or reporting components"
     ],
     "invariants": [],
     "changeIntent": {
@@ -31,12 +32,13 @@
     "driftReason": null,
     "localized": {
       "English": {
-        "purpose": "This document serves as the pattern definition file for ArchSpine's AST scanner, telling the system how to recognize TypeScript imports, exports, and usages in source code.",
-        "context_and_audience": "Intended for developers maintaining ArchSpine's TypeScript analysis capabilities, as well as for the AST scanner engine itself. It is part of the scanner configuration and should be updated when TypeScript syntax changes or when new export/import patterns need to be supported.",
+        "purpose": "This document provides the pattern definitions that ArchSpine uses to identify and categorize code structures such as imports, exports, and usage references in TypeScript/JavaScript files. It acts as the configuration for a structural code parser, enabling the system to understand how modules relate to one another.",
+        "context_and_audience": "Intended for developers maintaining the ArchSpine analysis engine, particularly those responsible for extending or refining the set of recognized patterns. It assumes familiarity with tree-sitter grammar syntax and TypeScript/JavaScript module systems.",
         "key_takeaways": [
-          "Provides structured patterns that the scanner uses to parse TypeScript files",
-          "Covers imports (named, default, namespace), exports (function, class, interface, type, variable, default, list), and usages (call, new, property)",
-          "Maintenance typically involves adding new patterns for modern TypeScript features or verifying existing patterns against the language grammar"
+          "Imports are captured via three pattern variants: named, default, and namespace.",
+          "Exports encompass a wide range of declarations (functions, classes, interfaces, types, variables) and are tagged with a 'kind' for downstream processing.",
+          "Usage patterns cover function calls, constructor invocations, and property accesses to track reference relationships.",
+          "The document is exclusively concerned with syntactic pattern matching, not semantic analysis or dependency resolution."
         ]
       }
     }
@@ -59,7 +61,7 @@
     "symbolEdges": []
   },
   "provenance": {
-    "indexedAt": "2026-05-10T04:52:59.072Z",
+    "indexedAt": "2026-05-12T05:17:45.923Z",
     "generatorVersion": "archspine/1.0.0",
     "pipelineStages": [
       "ast",
